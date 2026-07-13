@@ -1,0 +1,761 @@
+import './style.css';
+import { biomes, districts } from './data/districts';
+import {
+  IslandWorld,
+  type EditorAssetDefinition,
+  type GizmoMode,
+  type ImportedDefinition,
+  type ObjectState,
+  type SceneDefinition,
+  type SceneLayer,
+  type ViewMode,
+} from './world/IslandWorld';
+import type { EditorWorkspace } from './world/editorAssets';
+
+declare global {
+  interface Window {
+    render_game_to_text: () => string;
+    advanceTime: (milliseconds: number) => void;
+    labIsland: IslandWorld;
+  }
+}
+
+const required = <T extends HTMLElement>(selector: string) => {
+  const element = document.querySelector<T>(selector);
+  if (!element) throw new Error(`Missing required UI element: ${selector}`);
+  return element;
+};
+
+const viewport = required<HTMLElement>('#viewport');
+const districtList = required<HTMLElement>('#district-list');
+const districtSearch = required<HTMLInputElement>('#district-search');
+const inspectorTitle = required<HTMLElement>('#inspector-title');
+const selectionIndex = required<HTMLElement>('#selection-index');
+const emptyInspector = required<HTMLElement>('#empty-inspector');
+const inspectorContent = required<HTMLElement>('#inspector-content');
+const selectionKind = required<HTMLElement>('#selection-kind');
+const selectionDescription = required<HTMLElement>('#selection-description');
+const selectionRing = required<HTMLElement>('#selection-ring');
+const selectionArchetype = required<HTMLElement>('#selection-archetype');
+const positionInputs = {
+  x: required<HTMLInputElement>('#pos-x'),
+  y: required<HTMLInputElement>('#pos-y'),
+  z: required<HTMLInputElement>('#pos-z'),
+};
+const rotationInput = required<HTMLInputElement>('#rot-y');
+const rotationOutput = required<HTMLOutputElement>('#rot-output');
+const scaleInput = required<HTMLInputElement>('#scale-uniform');
+const scaleOutput = required<HTMLElement>('#scale-output');
+const accentInput = required<HTMLInputElement>('#accent-color');
+const visibilityInput = required<HTMLInputElement>('#object-visible');
+const loadingScreen = required<HTMLElement>('#loading-screen');
+const loadingStatus = required<HTMLElement>('#loading-status');
+const sceneCardTitle = required<HTMLElement>('#scene-card-title');
+const sceneCardCopy = required<HTMLElement>('#scene-card-copy');
+const toastRegion = required<HTMLElement>('#toast-region');
+const atlas = required<HTMLElement>('#atlas-panel');
+const inspector = required<HTMLElement>('#inspector-panel');
+const importInput = required<HTMLInputElement>('#mesh-file');
+const importTrigger = required<HTMLButtonElement>('#import-trigger');
+const timeToggle = required<HTMLButtonElement>('#toggle-time');
+const walkHud = required<HTMLElement>('#walk-hud');
+const walkLookButton = required<HTMLButtonElement>('#walk-look-button');
+const walkStatus = required<HTMLElement>('#walk-status');
+const editWorkspacePanel = required<HTMLElement>('#edit-workspace');
+const editLandscapeButton = required<HTMLButtonElement>('#edit-landscape');
+const editInteriorButton = required<HTMLButtonElement>('#edit-interior');
+const assetCategory = required<HTMLSelectElement>('#asset-category');
+const assetSearch = required<HTMLInputElement>('#asset-search');
+const assetLibrary = required<HTMLElement>('#asset-library');
+const addAssetButton = required<HTMLButtonElement>('#add-asset');
+const deleteObjectButton = required<HTMLButtonElement>('#delete-object');
+const enterInteriorButton = required<HTMLButtonElement>('#enter-interior');
+const exitInteriorButton = required<HTMLButtonElement>('#exit-interior');
+const editWorkspaceHint = required<HTMLElement>('[data-workspace-hint]');
+
+const allDefinitions: SceneDefinition[] = [...districts, ...biomes];
+const definitionIndex = new Map<string, number>();
+const listButtons = new Map<string, HTMLButtonElement>();
+let currentSelection: SceneDefinition | null = null;
+let currentMode: ViewMode = 'explore';
+let activeGizmo: GizmoMode = 'translate';
+let currentEditWorkspace: EditorWorkspace = 'landscape';
+let selectedCatalogAssetId: string | null = null;
+let assetSourceFilter = 'all';
+let dragDepth = 0;
+let queuedImportFiles: File[] | null = null;
+
+const categoryNames: Record<string, string> = {
+  core: 'Central landmark',
+  bioscience: 'Life science',
+  engineering: 'Engineering',
+  chemistry: 'Chemistry',
+  physics: 'Physics',
+  civic: 'Civic & residential',
+  commercial: 'Commercial',
+  academic: 'Academic',
+  security: 'Restricted research',
+  environmental: 'Environmental science',
+  infrastructure: 'Operations',
+  biome: 'Climate biome',
+  imported: 'Imported asset',
+  editor: 'Design studio asset',
+};
+
+const groupOrder = [
+  'Core systems',
+  'Life sciences',
+  'Applied research',
+  'Civic campus',
+  'Operations & edge',
+  'Biome domes',
+  'Design studio assets',
+  'Imported assets',
+] as const;
+
+function getAtlasGroup(definition: SceneDefinition) {
+  if (definition.category === 'core') return 'Core systems';
+  if (definition.category === 'bioscience') return 'Life sciences';
+  if (['engineering', 'chemistry', 'physics'].includes(definition.category)) return 'Applied research';
+  if (['civic', 'commercial', 'academic'].includes(definition.category)) return 'Civic campus';
+  if (['security', 'environmental', 'infrastructure'].includes(definition.category)) return 'Operations & edge';
+  if (definition.category === 'biome') return 'Biome domes';
+  if (definition.category === 'editor') return 'Design studio assets';
+  return 'Imported assets';
+}
+
+function symbolFor(definition: SceneDefinition) {
+  const symbols: Record<string, string> = {
+    core: '◉',
+    bioscience: 'B',
+    engineering: 'E',
+    chemistry: 'C',
+    physics: 'P',
+    civic: 'H',
+    commercial: 'M',
+    academic: 'A',
+    security: 'S',
+    environmental: 'N',
+    infrastructure: 'I',
+    biome: '○',
+    imported: '+',
+    editor: 'D',
+  };
+  return symbols[definition.category] ?? '·';
+}
+
+function escapeHtml(value: string) {
+  const element = document.createElement('div');
+  element.textContent = value;
+  return element.innerHTML;
+}
+
+function createAtlasButton(definition: SceneDefinition, index: number) {
+  const button = document.createElement('button');
+  button.className = 'district-item';
+  button.dataset.id = definition.id;
+  button.style.setProperty('--item-accent', definition.accent);
+  button.innerHTML = `
+    <span class="district-symbol">${escapeHtml(symbolFor(definition))}</span>
+    <span class="district-item-copy">
+      <strong>${escapeHtml(definition.name)}</strong>
+      <small>${escapeHtml(categoryNames[definition.category] ?? definition.category)}</small>
+    </span>
+    <span class="district-item-index">${String(index).padStart(2, '0')}</span>
+  `;
+  button.addEventListener('click', () => {
+    world.select(definition.id, 'ui');
+    if (currentMode === 'explore') world.focus(definition.id);
+  });
+  button.addEventListener('dblclick', () => world.focus(definition.id));
+  return button;
+}
+
+function renderAtlas(query = '') {
+  const normalizedQuery = query.trim().toLowerCase();
+  const grouped = new Map<string, SceneDefinition[]>();
+  groupOrder.forEach((group) => grouped.set(group, []));
+  allDefinitions.forEach((definition) => {
+    const haystack = `${definition.name} ${definition.sourceLabel ?? ''} ${definition.category} ${definition.archetype}`.toLowerCase();
+    if (normalizedQuery && !haystack.includes(normalizedQuery)) return;
+    grouped.get(getAtlasGroup(definition))!.push(definition);
+  });
+  districtList.innerHTML = '';
+  listButtons.clear();
+  grouped.forEach((definitions, groupName) => {
+    if (!definitions.length) return;
+    const group = document.createElement('section');
+    group.className = 'district-group';
+    const title = document.createElement('div');
+    title.className = 'district-group-title';
+    title.innerHTML = `<span>${escapeHtml(groupName)}</span><span>${String(definitions.length).padStart(2, '0')}</span>`;
+    group.appendChild(title);
+    definitions.forEach((definition) => {
+      const index = definitionIndex.get(definition.id) ?? allDefinitions.indexOf(definition) + 1;
+      const button = createAtlasButton(definition, index);
+      if (definition.id === currentSelection?.id) button.classList.add('active');
+      listButtons.set(definition.id, button);
+      group.appendChild(button);
+    });
+    districtList.appendChild(group);
+  });
+  if (!districtList.childElementCount) {
+    districtList.innerHTML = '<div class="empty-search">No districts match this search.</div>';
+  }
+}
+
+function previewClassForAsset(category: string, kind: string, workspace: EditorWorkspace) {
+  if (workspace === 'interior') return 'asset-preview-interior';
+  if (kind === 'building') return 'asset-preview-pavilion';
+  if (/tree|veget|garden|canopy/i.test(category)) return 'asset-preview-canopy';
+  if (/water/i.test(category)) return 'asset-preview-water';
+  return 'asset-preview-terrain';
+}
+
+function renderAssetLibrary() {
+  const catalog = world.getAssetCatalog(currentEditWorkspace);
+  const categories = Array.from(new Set(catalog.map((item) => item.category))).sort();
+  const previousCategory = assetCategory.value || 'all';
+  assetCategory.innerHTML = [
+    '<option value="all">All assets</option>',
+    ...categories.map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`),
+  ].join('');
+  assetCategory.value = categories.includes(previousCategory) ? previousCategory : 'all';
+  const query = assetSearch.value.trim().toLowerCase();
+  const visible = catalog.filter((item) => {
+    if (assetSourceFilter === 'imported') return false;
+    if (assetCategory.value !== 'all' && item.category !== assetCategory.value) return false;
+    return !query || `${item.name} ${item.category} ${item.description}`.toLowerCase().includes(query);
+  });
+  if (!visible.some((item) => item.id === selectedCatalogAssetId)) selectedCatalogAssetId = visible[0]?.id ?? null;
+  assetLibrary.innerHTML = visible.length
+    ? visible
+        .map((item) => {
+          const selected = item.id === selectedCatalogAssetId;
+          const preview = previewClassForAsset(item.category, item.kind, item.workspace);
+          return `
+            <button class="asset-card${selected ? ' active' : ''}" type="button" role="option"
+              aria-selected="${selected}" data-asset-id="${escapeHtml(item.id)}"
+              data-asset-category="${escapeHtml(item.category)}" data-asset-source="procedural"
+              style="--asset-accent:${escapeHtml(item.accent)}">
+              <span class="asset-preview ${preview}" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>${escapeHtml(item.name)}</strong><small>${escapeHtml(item.category)} · ${escapeHtml(item.kind)}</small></span>
+            </button>`;
+        })
+        .join('')
+    : '<div class="empty-search">No matching procedural assets. Use Import for a custom mesh.</div>';
+  assetLibrary.querySelectorAll<HTMLButtonElement>('[data-asset-id]').forEach((button) => {
+    button.addEventListener('click', () => {
+      selectedCatalogAssetId = button.dataset.assetId ?? null;
+      assetLibrary.querySelectorAll<HTMLButtonElement>('[data-asset-id]').forEach((card) => {
+        const selected = card === button;
+        card.classList.toggle('active', selected);
+        card.setAttribute('aria-selected', String(selected));
+      });
+      refreshEditWorkspaceUI();
+    });
+  });
+  refreshEditWorkspaceUI();
+}
+
+function refreshEditWorkspaceUI() {
+  const activeInteriorId = world.getActiveInteriorBuildingId();
+  const insideInterior = Boolean(activeInteriorId);
+  editWorkspacePanel.dataset.activeWorkspace = currentEditWorkspace;
+  document.body.classList.toggle('interior-design-active', insideInterior);
+  [editLandscapeButton, editInteriorButton].forEach((button) => {
+    const active = button.dataset.editWorkspace === currentEditWorkspace;
+    button.classList.toggle('active', active);
+    button.setAttribute('aria-selected', String(active));
+  });
+  enterInteriorButton.hidden = currentEditWorkspace !== 'interior' || insideInterior;
+  enterInteriorButton.disabled = !world.canEnterInterior(currentSelection?.id ?? null);
+  exitInteriorButton.hidden = !insideInterior;
+  deleteObjectButton.disabled = !currentSelection;
+  addAssetButton.disabled = !selectedCatalogAssetId || (currentEditWorkspace === 'interior' && !insideInterior);
+  editWorkspaceHint.textContent = insideInterior
+    ? 'Inside building — add, select, move, rotate, scale, import, or delete furnishings.'
+    : currentEditWorkspace === 'interior'
+      ? 'Select a building, choose Enter Interior, then furnish its editable room.'
+      : 'Choose an asset, then add and position it anywhere on the island.';
+}
+
+function registerDynamicDefinition(definition: SceneDefinition) {
+  if (!allDefinitions.some((entry) => entry.id === definition.id)) allDefinitions.push(definition);
+  definitionIndex.set(definition.id, allDefinitions.length);
+  renderAtlas(districtSearch.value);
+}
+
+function unregisterDynamicDefinition(id: string) {
+  const index = allDefinitions.findIndex((definition) => definition.id === id);
+  if (index >= 0) allDefinitions.splice(index, 1);
+  definitionIndex.clear();
+  allDefinitions.forEach((definition, definitionIndexValue) => definitionIndex.set(definition.id, definitionIndexValue + 1));
+  renderAtlas(districtSearch.value);
+  refreshEditWorkspaceUI();
+}
+
+function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
+  currentSelection = definition;
+  document.body.classList.toggle('has-selection', Boolean(definition));
+  listButtons.forEach((button, id) => button.classList.toggle('active', id === definition?.id));
+  if (!definition) {
+    inspectorTitle.textContent = 'No selection';
+    selectionIndex.textContent = '—';
+    emptyInspector.hidden = false;
+    inspectorContent.hidden = true;
+    sceneCardTitle.textContent = 'Central research campus';
+    sceneCardCopy.textContent = '41 editable zones · procedural architecture · Blender-ready GLB';
+    refreshEditWorkspaceUI();
+    return;
+  }
+  const objectState = state ?? world.getObjectState(definition.id);
+  inspectorTitle.textContent = definition.name;
+  selectionIndex.textContent = `#${String(definitionIndex.get(definition.id) ?? allDefinitions.indexOf(definition) + 1).padStart(2, '0')}`;
+  selectionKind.textContent = categoryNames[definition.category] ?? definition.category;
+  selectionDescription.textContent = definition.description;
+  selectionRing.textContent = definition.ring.replace('-', ' ');
+  selectionArchetype.textContent = definition.archetype.replaceAll('-', ' ');
+  emptyInspector.hidden = true;
+  inspectorContent.hidden = false;
+  sceneCardTitle.textContent = definition.name;
+  sceneCardCopy.textContent = `${categoryNames[definition.category] ?? definition.category} · ${definition.ring.replace('-', ' ')} · editable object group`;
+  if (objectState) updateTransformFields(objectState);
+  accentInput.value = definition.accent;
+  const listButton = listButtons.get(definition.id);
+  listButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  refreshEditWorkspaceUI();
+}
+
+function updateTransformFields(state: ObjectState) {
+  positionInputs.x.value = state.position.x.toFixed(2);
+  positionInputs.y.value = state.position.y.toFixed(2);
+  positionInputs.z.value = state.position.z.toFixed(2);
+  rotationInput.value = String(Math.round(state.rotationY));
+  rotationOutput.value = `${Math.round(state.rotationY)}°`;
+  scaleInput.value = state.scale.toFixed(2);
+  scaleOutput.textContent = `${Math.round(state.scale * 100)}%`;
+  visibilityInput.checked = state.visible;
+}
+
+function toast(title: string, message: string, kind: 'normal' | 'error' = 'normal', duration = 3600) {
+  const element = document.createElement('div');
+  element.className = `toast${kind === 'error' ? ' error' : ''}`;
+  element.innerHTML = `<strong>${escapeHtml(title)}</strong><p>${escapeHtml(message)}</p>`;
+  toastRegion.appendChild(element);
+  window.setTimeout(() => {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(-6px)';
+    window.setTimeout(() => element.remove(), 220);
+  }, duration);
+}
+
+function setMode(mode: ViewMode) {
+  currentMode = mode;
+  document.querySelectorAll<HTMLButtonElement>('.mode').forEach((button) => {
+    button.classList.toggle('active', button.dataset.mode === mode);
+  });
+  document.body.classList.toggle('plan-mode', mode === 'plan');
+  document.body.classList.toggle('edit-mode', mode === 'edit');
+  document.body.classList.toggle('walk-mode', mode === 'walk');
+  walkHud.hidden = mode !== 'walk';
+  if (!window.matchMedia('(max-width: 760px)').matches) {
+    const collapseForView = mode === 'plan' || mode === 'walk';
+    atlas.classList.toggle('collapsed', collapseForView);
+    required<HTMLButtonElement>('#atlas-collapse').textContent = collapseForView ? '›' : '‹';
+  }
+  inspector.classList.toggle('hidden-panel', mode === 'walk' || (!currentSelection && mode !== 'edit'));
+  world.setMode(mode);
+  currentEditWorkspace = world.getEditWorkspace();
+  const hints: Record<ViewMode, string> = {
+    explore: '<span><b>Drag</b> orbit</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
+    plan: '<span><b>Drag</b> pan</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
+    edit: '<span><b>G / R / S</b> transform</span><span><b>Drag</b> gizmo</span><span><b>Click</b> select</span>',
+    walk: '<span><b>WASD</b> move</span><span><b>Mouse</b> look</span><span><b>E</b> inspect</span>',
+  };
+  required<HTMLElement>('#interaction-hint').innerHTML = hints[mode];
+  if (mode === 'edit' && currentSelection) toast('Edit mode active', 'Use the gizmo or inspector fields; changes are included in the GLB export.');
+  if (mode === 'walk') {
+    sceneCardTitle.textContent = 'Human-scale campus walk';
+    sceneCardCopy.textContent = '1.8 m eye height · walkable roads and ramps · click viewport for mouse look';
+    walkStatus.textContent = 'Human-scale exploration ready';
+    walkLookButton.textContent = 'Click to look around';
+  }
+  refreshEditWorkspaceUI();
+}
+
+function setGizmo(mode: GizmoMode) {
+  activeGizmo = mode;
+  world.setGizmoMode(mode);
+  document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) => {
+    button.classList.toggle('active', button.dataset.gizmo === mode);
+  });
+}
+
+function refreshSelectedState(definition: SceneDefinition, state: ObjectState) {
+  if (definition.id !== currentSelection?.id) return;
+  const liveDefinition = world.getDefinition(definition.id) ?? definition;
+  updateInspector(liveDefinition, state);
+}
+
+const world = new IslandWorld(viewport, {
+  onSelection: (definition) => {
+    updateInspector(definition);
+    inspector.classList.toggle('hidden-panel', currentMode === 'walk' || (!definition && currentMode !== 'edit'));
+  },
+  onTransform: refreshSelectedState,
+  onImport: (definition: ImportedDefinition) => {
+    registerDynamicDefinition(definition);
+  },
+  onObjectAdded: (definition: EditorAssetDefinition) => registerDynamicDefinition(definition),
+  onObjectDeleted: (id) => unregisterDynamicDefinition(id),
+  onEditWorkspaceChange: (workspace, buildingId) => {
+    currentEditWorkspace = workspace;
+    renderAssetLibrary();
+    if (buildingId) {
+      sceneCardTitle.textContent = world.getDefinition(buildingId)?.name ?? 'Building interior';
+      sceneCardCopy.textContent = 'Interior Design · isolated editable room · GLB-ready hierarchy';
+    }
+  },
+  onReady: () => {
+    loadingStatus.textContent = 'Spatial twin ready';
+    window.setTimeout(() => loadingScreen.classList.add('done'), 220);
+  },
+  onError: (message, error) => {
+    console.error(message, error);
+    toast('Scene error', message, 'error', 5600);
+  },
+  onWalkLockChange: (locked, dragLookActive) => {
+    document.body.classList.toggle('walk-locked', locked);
+    if (locked) {
+      walkStatus.textContent = 'Mouse look active';
+      walkLookButton.textContent = 'Mouse look active';
+    } else if (dragLookActive) {
+      walkStatus.textContent = 'Drag or move on the viewport to look around';
+      walkLookButton.textContent = 'Drag mouse to look';
+    } else {
+      walkStatus.textContent = 'Pointer released — click to resume';
+      walkLookButton.textContent = 'Resume mouse look';
+    }
+  },
+  onImportPlacementChange: (state, position) => {
+    const choosing = state === 'choosing';
+    document.body.classList.toggle('import-placement-active', choosing);
+    importTrigger.classList.toggle('active', choosing);
+    const label = importTrigger.querySelector<HTMLElement>('.action-label');
+    if (label) label.textContent = choosing ? 'Pick location' : 'Import';
+    if (choosing) {
+      sceneCardTitle.textContent = 'Choose building location';
+      sceneCardCopy.textContent = 'Orbit if needed, then click a walkable island surface · Esc cancels';
+      return;
+    }
+    if (state === 'chosen') {
+      sceneCardTitle.textContent = 'Import location selected';
+      sceneCardCopy.textContent = position
+        ? `X ${position[0].toFixed(1)} · Z ${position[2].toFixed(1)} · choose the GLB or mesh file`
+        : 'Choose the GLB or mesh file';
+      const queued = queuedImportFiles;
+      queuedImportFiles = null;
+      if (queued?.length) void handleImport(queued);
+      else importInput.click();
+      return;
+    }
+    if (state === 'cancelled') {
+      queuedImportFiles = null;
+      sceneCardTitle.textContent = currentSelection?.name ?? 'Central research campus';
+      sceneCardCopy.textContent = currentSelection
+        ? `${categoryNames[currentSelection.category] ?? currentSelection.category} · editable object group`
+        : '41 editable zones · procedural architecture · Blender-ready GLB';
+    }
+  },
+});
+
+window.labIsland = world;
+window.render_game_to_text = () => JSON.stringify(world.getTextSnapshot());
+window.advanceTime = (milliseconds: number) => world.advanceTime(milliseconds);
+
+allDefinitions.forEach((definition, index) => definitionIndex.set(definition.id, index + 1));
+required<HTMLElement>('#district-count').textContent = String(districts.length).padStart(2, '0');
+renderAtlas();
+renderAssetLibrary();
+
+districtSearch.addEventListener('input', () => renderAtlas(districtSearch.value));
+
+document.querySelectorAll<HTMLButtonElement>('.mode').forEach((button) => {
+  button.addEventListener('click', () => setMode(button.dataset.mode as ViewMode));
+});
+
+[editLandscapeButton, editInteriorButton].forEach((button) => {
+  button.addEventListener('click', () => {
+    if (currentMode !== 'edit') setMode('edit');
+    currentEditWorkspace = button.dataset.editWorkspace as EditorWorkspace;
+    world.setEditWorkspace(currentEditWorkspace);
+    renderAssetLibrary();
+  });
+});
+
+assetCategory.addEventListener('change', renderAssetLibrary);
+assetSearch.addEventListener('input', renderAssetLibrary);
+document.querySelectorAll<HTMLButtonElement>('[data-asset-filter]').forEach((button) => {
+  button.addEventListener('click', () => {
+    assetSourceFilter = button.dataset.assetFilter ?? 'all';
+    document.querySelectorAll<HTMLButtonElement>('[data-asset-filter]').forEach((filterButton) => {
+      const active = filterButton === button;
+      filterButton.classList.toggle('active', active);
+      filterButton.setAttribute('aria-pressed', String(active));
+    });
+    renderAssetLibrary();
+  });
+});
+
+addAssetButton.addEventListener('click', () => {
+  if (!selectedCatalogAssetId) return;
+  const definition = world.addCatalogAsset(selectedCatalogAssetId);
+  if (!definition) {
+    toast('Choose a building first', 'Interior assets can be added after entering a selected building.', 'error');
+    return;
+  }
+  toast('Asset added', `${definition.name} is selected and ready to transform.`);
+});
+
+deleteObjectButton.addEventListener('click', () => {
+  if (!currentSelection) return;
+  const name = currentSelection.name;
+  if (world.deleteObject(currentSelection.id)) toast('Object deleted', `${name} was removed from the editable scene.`);
+});
+
+enterInteriorButton.addEventListener('click', () => {
+  if (!currentSelection) return;
+  const buildingName = currentSelection.name;
+  if (world.enterInterior(currentSelection.id)) {
+    currentEditWorkspace = 'interior';
+    renderAssetLibrary();
+    toast('Interior Design active', `${buildingName} is open as an isolated, editable interior.`);
+  }
+});
+
+exitInteriorButton.addEventListener('click', () => {
+  world.exitInterior();
+  renderAssetLibrary();
+  toast('Returned to island', 'Select another building or continue editing the landscape.');
+});
+
+walkLookButton.addEventListener('click', () => world.activateWalkLook());
+
+document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) => {
+  button.addEventListener('click', () => setGizmo(button.dataset.gizmo as GizmoMode));
+});
+
+Object.entries(positionInputs).forEach(([axis, input]) => {
+  input.addEventListener('change', () => {
+    if (!currentSelection) return;
+    world.setObjectPosition(currentSelection.id, axis as 'x' | 'y' | 'z', Number(input.value));
+  });
+});
+
+rotationInput.addEventListener('input', () => {
+  rotationOutput.value = `${Math.round(Number(rotationInput.value))}°`;
+  if (currentSelection) world.setObjectRotationY(currentSelection.id, Number(rotationInput.value));
+});
+
+scaleInput.addEventListener('input', () => {
+  scaleOutput.textContent = `${Math.round(Number(scaleInput.value) * 100)}%`;
+  if (currentSelection) world.setObjectScale(currentSelection.id, Number(scaleInput.value));
+});
+
+accentInput.addEventListener('input', () => {
+  if (!currentSelection) return;
+  world.setObjectAccent(currentSelection.id, accentInput.value);
+  listButtons.get(currentSelection.id)?.style.setProperty('--item-accent', accentInput.value);
+});
+
+visibilityInput.addEventListener('change', () => {
+  if (currentSelection) world.setObjectVisible(currentSelection.id, visibilityInput.checked);
+});
+
+required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => {
+  if (currentSelection) world.focus(currentSelection.id);
+});
+
+required<HTMLButtonElement>('#reset-selection').addEventListener('click', () => {
+  if (!currentSelection) return;
+  world.resetObject(currentSelection.id);
+  updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
+  toast('Object reset', `${currentSelection.name} restored to its masterplan transform.`);
+});
+
+document.querySelectorAll<HTMLButtonElement>('.section-toggle').forEach((button) => {
+  button.addEventListener('click', () => {
+    const section = button.closest('.inspector-section');
+    const closed = section?.classList.toggle('closed') ?? false;
+    const indicator = button.lastElementChild;
+    if (indicator) indicator.textContent = closed ? '+' : '−';
+  });
+});
+
+document.querySelectorAll<HTMLButtonElement>('[data-layer]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const visible = button.classList.toggle('active');
+    const layer = button.dataset.layer as SceneLayer;
+    world.setLayer(layer, visible);
+    document.body.classList.toggle('labels-hidden', layer === 'labels' && !visible);
+  });
+});
+
+timeToggle.addEventListener('click', () => {
+  const daylight = !world.isDaylight();
+  world.setDaylight(daylight);
+  const icon = timeToggle.querySelector<HTMLElement>('.action-icon');
+  const label = timeToggle.querySelector<HTMLElement>('.action-label');
+  if (icon) icon.textContent = daylight ? '◒' : '☼';
+  if (label) label.textContent = daylight ? 'Daylight' : 'Blue hour';
+  toast(daylight ? 'Daylight study' : 'Blue-hour study', daylight ? 'Material colors and landscape detail are now emphasized.' : 'Transit light, laboratories, and cyber city glow are now emphasized.');
+});
+
+required<HTMLButtonElement>('#home-view').addEventListener('click', () => {
+  world.overview();
+  world.clearSelection('ui');
+});
+
+required<HTMLButtonElement>('#atlas-collapse').addEventListener('click', () => {
+  const collapseButton = required<HTMLButtonElement>('#atlas-collapse');
+  if (window.matchMedia('(max-width: 760px)').matches) {
+    const open = atlas.classList.toggle('mobile-open');
+    collapseButton.textContent = open ? '‹' : '›';
+    return;
+  }
+  const collapsed = atlas.classList.toggle('collapsed');
+  collapseButton.textContent = collapsed ? '›' : '‹';
+});
+
+importTrigger.addEventListener('click', () => {
+  if (world.getActiveInteriorBuildingId()) {
+    importInput.click();
+    return;
+  }
+  queuedImportFiles = null;
+  if (currentMode === 'walk') setMode('edit');
+  world.beginImportPlacement();
+  toast('Select import location', 'Click the island where the building should be placed. You can orbit and zoom first.');
+});
+importInput.addEventListener('change', async () => {
+  if (!importInput.files?.length) {
+    world.cancelImportPlacement();
+    return;
+  }
+  await handleImport(Array.from(importInput.files));
+  importInput.value = '';
+});
+importInput.addEventListener('cancel', () => world.cancelImportPlacement());
+
+async function handleImport(files: File[]) {
+  loadingStatus.textContent = 'Resolving imported mesh hierarchy…';
+  loadingScreen.classList.remove('done');
+  try {
+    const results = await world.importFiles(files);
+    if (!results.length) throw new Error('No supported GLB, GLTF, OBJ, or STL file was found.');
+    toast('Mesh imported', `${results.length} asset${results.length === 1 ? '' : 's'} added to the Imported Assets collection.`);
+    if (currentMode !== 'edit') setMode('edit');
+  } catch (error) {
+    console.error(error);
+    toast('Import failed', error instanceof Error ? error.message : 'The selected file could not be parsed.', 'error', 5600);
+  } finally {
+    loadingScreen.classList.add('done');
+  }
+}
+
+document.addEventListener('dragenter', (event) => {
+  event.preventDefault();
+  dragDepth += 1;
+  document.body.classList.add('drop-active');
+});
+document.addEventListener('dragover', (event) => event.preventDefault());
+document.addEventListener('dragleave', (event) => {
+  event.preventDefault();
+  dragDepth -= 1;
+  if (dragDepth <= 0) {
+    dragDepth = 0;
+    document.body.classList.remove('drop-active');
+  }
+});
+document.addEventListener('drop', (event) => {
+  event.preventDefault();
+  dragDepth = 0;
+  document.body.classList.remove('drop-active');
+  const files = Array.from(event.dataTransfer?.files ?? []);
+  if (!files.length) return;
+  if (world.getActiveInteriorBuildingId()) {
+    void handleImport(files);
+    return;
+  }
+  queuedImportFiles = files;
+  if (currentMode === 'walk') setMode('edit');
+  world.beginImportPlacement();
+  toast('Asset ready to place', 'Click a walkable island surface to place the dropped building.');
+});
+
+required<HTMLButtonElement>('#export-trigger').addEventListener('click', async (event) => {
+  const button = event.currentTarget as HTMLButtonElement;
+  if (event.shiftKey) {
+    world.exportProject();
+    toast('Project data exported', 'Editable transforms, metadata, and camera state saved as JSON.');
+    return;
+  }
+  const previousText = button.querySelector('span')?.textContent ?? 'Export scene';
+  button.disabled = true;
+  button.dataset.exportStatus = 'working';
+  const label = button.querySelector('span');
+  if (label) label.textContent = 'Preparing GLB…';
+  try {
+    await world.exportGLB();
+    button.dataset.exportStatus = 'success';
+    toast('Blender-ready GLB exported', 'Import with Blender → File → Import → glTF 2.0. Shift-click Export for project JSON.');
+  } catch (error) {
+    button.dataset.exportStatus = 'error';
+    console.error(error);
+    toast('Export failed', error instanceof Error ? error.message : 'The scene could not be serialized.', 'error', 5600);
+  } finally {
+    button.disabled = false;
+    if (label) label.textContent = previousText;
+  }
+});
+
+async function toggleFullscreen() {
+  if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+  else await document.exitFullscreen();
+}
+
+required<HTMLButtonElement>('#fullscreen-toggle').addEventListener('click', () => void toggleFullscreen());
+
+document.addEventListener('keydown', (event) => {
+  const target = event.target as HTMLElement;
+  const editingText = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
+  if (event.key === '/' && !editingText) {
+    event.preventDefault();
+    districtSearch.focus();
+    return;
+  }
+  if (editingText) return;
+  if (event.key.toLowerCase() === 'f') void toggleFullscreen();
+  if (event.key === '1') setMode('explore');
+  if (event.key === '2') setMode('plan');
+  if (event.key === '3') setMode('edit');
+  if (event.key === '4') setMode('walk');
+  if (event.key.toLowerCase() === 'g' && currentMode === 'edit') setGizmo('translate');
+  if (event.key.toLowerCase() === 'r' && currentMode === 'edit') setGizmo('rotate');
+  if (event.key.toLowerCase() === 's' && currentMode === 'edit') setGizmo('scale');
+  if (event.key.toLowerCase() === 'a' && currentMode === 'edit' && !addAssetButton.disabled) addAssetButton.click();
+  if (event.key === 'Delete' && currentMode === 'edit' && !deleteObjectButton.disabled) deleteObjectButton.click();
+  if (event.key === 'Escape') {
+    if (world.cancelImportPlacement()) {
+      queuedImportFiles = null;
+      toast('Import cancelled', 'No building was added.');
+      return;
+    }
+    world.clearSelection('ui');
+  }
+  if (event.key === 'Home') world.overview();
+});
+
+window.addEventListener('beforeunload', () => world.dispose(), { once: true });
+setGizmo(activeGizmo);

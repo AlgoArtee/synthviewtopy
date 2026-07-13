@@ -1,0 +1,20 @@
+{
+  "name": "synthviewtopy-lab-island",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
+    "build": "tsc && vite build",
+    "preview": "vite preview --host 0.0.0.0"
+  },
+  "dependencies": {
+    "three": "^0.178.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.178.1",
+    "playwright": "^1.61.1",
+    "typescript": "^5.8.3",
+    "vite": "^7.0.0"
+  }
+}

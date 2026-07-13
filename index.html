@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#071013" />
+    <meta
+      name="description"
+      content="A procedural, editable 3D interpretation of the YouTopy Lab Island masterplan."
+    />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23091013' d='M32 2 58 17v30L32 62 6 47V17z'/%3E%3Cpath fill='%235ad8d1' d='m32 11 17 10v20L32 53 15 41V21z'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%23091013'/%3E%3C/svg%3E" />
+    <title>SynthViewTopy · Lab Island</title>
+  </head>
+  <body>
+    <div id="app">
+      <div id="viewport" aria-label="Interactive 3D Lab Island viewport"></div>
+
+      <header class="topbar glass-panel">
+        <button class="brand" id="home-view" aria-label="Return to overview">
+          <span class="brand-mark"><i></i><i></i><i></i></span>
+          <span class="brand-copy">
+            <span class="eyebrow">YouTopy / Spatial Systems</span>
+            <strong>LAB ISLAND <span>01</span></strong>
+          </span>
+        </button>
+
+        <nav class="mode-switch" aria-label="View mode">
+          <button class="mode active" data-mode="explore">Explore</button>
+          <button class="mode" data-mode="plan">Plan</button>
+          <button class="mode" data-mode="edit">Edit</button>
+          <button class="mode" id="walk-mode" data-mode="walk">Walk</button>
+        </nav>
+
+        <div class="top-actions">
+          <button class="icon-action" id="toggle-time" title="Toggle day / night">
+            <span class="action-icon">☼</span><span class="action-label">Blue hour</span>
+          </button>
+          <button class="icon-action" id="import-trigger" title="Choose a location, then import GLB, GLTF, OBJ or STL">
+            <span class="action-icon">↥</span><span class="action-label">Import</span>
+          </button>
+          <button class="primary-action" id="export-trigger" data-export-status="idle" title="Export Blender-ready GLB · Shift-click for project JSON">
+            <span>Export scene</span><span class="action-icon">↗</span>
+          </button>
+          <input id="mesh-file" type="file" accept=".glb,.gltf,.bin,.obj,.stl,.png,.jpg,.jpeg,.webp" hidden multiple />
+        </div>
+      </header>
+
+      <aside class="atlas glass-panel" id="atlas-panel">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Masterplan directory</span>
+            <h1>District Atlas</h1>
+          </div>
+          <button class="collapse-button" id="atlas-collapse" aria-label="Collapse atlas">‹</button>
+        </div>
+
+        <label class="search-box">
+          <span>⌕</span>
+          <input id="district-search" type="search" placeholder="Find a lab or district" autocomplete="off" />
+          <kbd>/</kbd>
+        </label>
+
+        <div class="atlas-metrics">
+          <div><strong id="district-count">35</strong><span>districts</span></div>
+          <div><strong>06</strong><span>biomes</span></div>
+          <div><strong>01</strong><span>city link</span></div>
+        </div>
+
+        <div class="atlas-scroll" id="district-list"></div>
+
+        <div class="atlas-foot">
+          <span class="live-dot"></span>
+          <span>Editable procedural model</span>
+          <span class="version">v1.0</span>
+        </div>
+      </aside>
+
+      <aside class="inspector glass-panel hidden-panel" id="inspector-panel">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Object inspector</span>
+            <h2 id="inspector-title">No selection</h2>
+          </div>
+          <span id="selection-index" class="selection-index">—</span>
+        </div>
+
+        <div class="empty-inspector" id="empty-inspector">
+          <div class="focus-reticle"><span></span><span></span></div>
+          <strong>Select a district</strong>
+          <p>Click a structure in the model or choose one from the atlas.</p>
+        </div>
+
+        <div class="inspector-content" id="inspector-content" hidden>
+          <div class="selection-hero">
+            <span class="selection-kind" id="selection-kind">Science district</span>
+            <p id="selection-description"></p>
+            <div class="selection-tags">
+              <span id="selection-ring">Ring 01</span>
+              <span id="selection-archetype">Wet lab</span>
+            </div>
+          </div>
+
+          <section class="inspector-section">
+            <button class="section-toggle"><span>Transform</span><span>−</span></button>
+            <div class="section-body">
+              <div class="segmented" id="gizmo-mode">
+                <button class="active" data-gizmo="translate">Move</button>
+                <button data-gizmo="rotate">Rotate</button>
+                <button data-gizmo="scale">Scale</button>
+              </div>
+              <div class="field-label"><span>Position</span><small>metres / 10</small></div>
+              <div class="vector-fields">
+                <label><span>X</span><input type="number" id="pos-x" step="0.1" /></label>
+                <label><span>Y</span><input type="number" id="pos-y" step="0.1" /></label>
+                <label><span>Z</span><input type="number" id="pos-z" step="0.1" /></label>
+              </div>
+              <div class="field-label"><span>Rotation / Y</span><small>degrees</small></div>
+              <label class="range-field"><input type="range" id="rot-y" min="-180" max="180" step="1" /><output id="rot-output">0°</output></label>
+              <div class="field-label"><span>Uniform scale</span><small id="scale-output">100%</small></div>
+              <input class="full-range" type="range" id="scale-uniform" min="0.4" max="2" step="0.01" value="1" />
+            </div>
+          </section>
+
+          <section class="inspector-section">
+            <button class="section-toggle"><span>Appearance</span><span>−</span></button>
+            <div class="section-body material-row">
+              <label class="color-field"><input type="color" id="accent-color" /><span>District accent</span></label>
+              <label class="toggle-row"><span>Visible</span><input type="checkbox" id="object-visible" checked /><i></i></label>
+            </div>
+          </section>
+
+          <div class="inspector-actions">
+            <button id="focus-selection">Focus view</button>
+            <button id="reset-selection">Reset</button>
+          </div>
+        </div>
+      </aside>
+
+      <section
+        class="edit-workspace glass-panel"
+        id="edit-workspace"
+        data-active-workspace="landscape"
+        aria-label="Design workspace"
+      >
+        <header class="edit-workspace-head">
+          <div class="edit-workspace-title">
+            <span class="eyebrow">Edit studio / site + space</span>
+            <strong>Design workspace</strong>
+          </div>
+          <div class="edit-workspace-tabs" role="tablist" aria-label="Edit workspace">
+            <button
+              class="active"
+              id="edit-landscape"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              aria-controls="asset-library"
+              data-edit-workspace="landscape"
+            >
+              <span aria-hidden="true">⌁</span>Landscape
+            </button>
+            <button
+              id="edit-interior"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              aria-controls="asset-library"
+              data-edit-workspace="interior"
+            >
+              <span aria-hidden="true">▦</span>Interior Design
+            </button>
+          </div>
+        </header>
+
+        <div class="asset-catalog">
+          <div class="asset-catalog-tools">
+            <label class="asset-select-label" for="asset-category">
+              <span>Category</span>
+              <select id="asset-category" data-asset-control="category">
+                <option value="all">All assets</option>
+                <option value="terrain">Terrain</option>
+                <option value="vegetation">Vegetation</option>
+                <option value="water">Water</option>
+                <option value="structures">Structures</option>
+                <option value="lighting">Lighting</option>
+                <option value="interior">Interior</option>
+                <option value="imported">Imported</option>
+              </select>
+            </label>
+            <label class="asset-search" for="asset-search">
+              <span aria-hidden="true">⌕</span>
+              <input
+                id="asset-search"
+                type="search"
+                aria-label="Filter design assets"
+                placeholder="Filter assets"
+                autocomplete="off"
+                data-asset-control="search"
+              />
+            </label>
+            <div class="asset-filter-chips" aria-label="Asset filters">
+              <button class="active" type="button" aria-pressed="true" data-asset-filter="all">All</button>
+              <button type="button" aria-pressed="false" data-asset-filter="procedural">Procedural</button>
+              <button type="button" aria-pressed="false" data-asset-filter="imported">Imported</button>
+            </div>
+          </div>
+
+          <div class="asset-library" id="asset-library" role="listbox" aria-label="Available design assets">
+            <button
+              class="asset-card active"
+              type="button"
+              role="option"
+              aria-selected="true"
+              data-asset-id="native-canopy"
+              data-asset-category="vegetation"
+              data-asset-source="procedural"
+            >
+              <span class="asset-preview asset-preview-canopy" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>Native Canopy</strong><small>Vegetation · 06 variants</small></span>
+            </button>
+            <button
+              class="asset-card"
+              type="button"
+              role="option"
+              aria-selected="false"
+              data-asset-id="terrain-terrace"
+              data-asset-category="terrain"
+              data-asset-source="procedural"
+            >
+              <span class="asset-preview asset-preview-terrain" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>Terrain Terrace</strong><small>Terrain · Parametric</small></span>
+            </button>
+            <button
+              class="asset-card"
+              type="button"
+              role="option"
+              aria-selected="false"
+              data-asset-id="water-basin"
+              data-asset-category="water"
+              data-asset-source="procedural"
+            >
+              <span class="asset-preview asset-preview-water" aria-hidden="true"><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>Research Basin</strong><small>Water · Reflective</small></span>
+            </button>
+            <button
+              class="asset-card"
+              type="button"
+              role="option"
+              aria-selected="false"
+              data-asset-id="lab-pavilion"
+              data-asset-category="structures"
+              data-asset-source="procedural"
+            >
+              <span class="asset-preview asset-preview-pavilion" aria-hidden="true"><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>Lab Pavilion</strong><small>Structure · Modular</small></span>
+            </button>
+            <button
+              class="asset-card"
+              type="button"
+              role="option"
+              aria-selected="false"
+              data-asset-id="cleanroom-bench"
+              data-asset-category="interior"
+              data-asset-source="procedural"
+            >
+              <span class="asset-preview asset-preview-interior" aria-hidden="true"><i></i><i></i><i></i></span>
+              <span class="asset-card-copy"><strong>Cleanroom Bench</strong><small>Interior · Lab systems</small></span>
+            </button>
+          </div>
+        </div>
+
+        <footer class="edit-commandbar">
+          <p class="edit-workspace-hint">
+            <span class="live-dot" aria-hidden="true"></span>
+            <span data-workspace-hint="landscape">Choose an asset, then place it in the scene.</span>
+            <kbd>A</kbd><span>Add</span><kbd>Del</kbd><span>Remove</span>
+          </p>
+          <div class="edit-context-actions" aria-label="Edit actions">
+            <button
+              class="context-action interior-action"
+              id="enter-interior"
+              type="button"
+              data-edit-action="enter-interior"
+              disabled
+            >
+              Enter Interior
+            </button>
+            <button
+              class="context-action interior-action"
+              id="exit-interior"
+              type="button"
+              data-edit-action="exit-interior"
+              hidden
+            >
+              Exit Interior
+            </button>
+            <button
+              class="context-action danger-action"
+              id="delete-object"
+              type="button"
+              data-edit-action="delete-object"
+              disabled
+            >
+              Delete
+            </button>
+            <button
+              class="context-action add-action"
+              id="add-asset"
+              type="button"
+              data-edit-action="add-asset"
+            >
+              <span aria-hidden="true">＋</span>Add asset
+            </button>
+          </div>
+        </footer>
+      </section>
+
+      <div class="scene-card glass-panel" id="scene-card">
+        <div class="scene-card-icon"><span></span></div>
+        <div>
+          <span class="eyebrow">Live spatial twin</span>
+          <strong id="scene-card-title">Central research campus</strong>
+          <p id="scene-card-copy">41 editable zones · procedural architecture · Blender-ready GLB</p>
+        </div>
+      </div>
+
+      <div class="layerbar glass-panel" aria-label="Scene layers">
+        <button class="layer active" data-layer="buildings"><span class="layer-icon">▤</span>Architecture</button>
+        <button class="layer active" data-layer="landscape"><span class="layer-icon">⌁</span>Landscape</button>
+        <button class="layer active" data-layer="labels"><span class="layer-icon">Aa</span>Labels</button>
+        <button class="layer active" data-layer="transit"><span class="layer-icon">⌁</span>Transit</button>
+        <span class="layer-divider"></span>
+        <button id="fullscreen-toggle" title="Toggle fullscreen (F)"><span>⛶</span></button>
+      </div>
+
+      <div class="compass" aria-hidden="true">
+        <span>N</span><i></i>
+      </div>
+
+      <div class="interaction-hint" id="interaction-hint">
+        <span><b>Drag</b> orbit</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>
+      </div>
+
+      <div class="walk-hud" id="walk-hud" hidden aria-live="polite">
+        <div class="walk-crosshair" aria-hidden="true"><i></i><i></i><span></span></div>
+        <div class="walk-readout glass-panel">
+          <span class="walk-scale">01.8 M EYE HEIGHT</span>
+          <strong id="walk-status">Human-scale exploration ready</strong>
+          <span>WASD / ARROWS · MOVE &nbsp; SHIFT · FASTER &nbsp; E · INSPECT &nbsp; ESC · RELEASE</span>
+          <button class="walk-look-button" id="walk-look-button">Click to look around</button>
+        </div>
+      </div>
+
+      <div class="toast-region" id="toast-region" aria-live="polite"></div>
+      <div class="loading-screen" id="loading-screen">
+        <div class="loader-orbit"><span></span><i></i></div>
+        <span class="eyebrow">Synthesizing spatial model</span>
+        <strong>LAB ISLAND / 01</strong>
+        <small id="loading-status">Initializing terrain systems…</small>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

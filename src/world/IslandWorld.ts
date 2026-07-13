@@ -1,0 +1,1573 @@
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { TransformControls } from 'three/addons/controls/TransformControls.js';
+import { CSS2DObject, CSS2DRenderer } from 'three/addons/renderers/CSS2DRenderer.js';
+import { GLTFExporter } from 'three/addons/exporters/GLTFExporter.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { biomes, districts, type BiomeDefinition, type DistrictDefinition } from '../data/districts';
+import { ISLAND_POINTS, ISLAND_SURFACE_Y } from '../config/island';
+import { WalkController } from './WalkController';
+import { createBiomeModel, createDistrictModel, setModelAccent } from './procedural';
+import {
+  EDITOR_ASSET_CATALOG,
+  createEditorAsset,
+  createInteriorShell,
+  type EditorAssetCatalogItem,
+  type EditorWorkspace,
+} from './editorAssets';
+import {
+  createBridgeAndCity,
+  createIndustrialPort,
+  createIslandShell,
+  createOcean,
+  createSkyDome,
+  createTransitNetwork,
+  type SkyDome,
+  type WaterSurface,
+} from './environment';
+
+export type ViewMode = 'explore' | 'plan' | 'edit' | 'walk';
+export type GizmoMode = 'translate' | 'rotate' | 'scale';
+export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
+
+export interface EditorAssetDefinition {
+  id: string;
+  name: string;
+  sourceLabel?: string;
+  category: 'editor';
+  ring: 'custom';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: EditorWorkspace;
+  assetKind: 'building' | 'prop' | 'interior';
+  catalogId: string;
+  parentBuildingId?: string;
+}
+
+export interface ImportedDefinition {
+  id: string;
+  name: string;
+  sourceLabel?: string;
+  category: 'imported';
+  ring: 'custom';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace?: EditorWorkspace;
+  parentBuildingId?: string;
+}
+
+export type SceneDefinition = DistrictDefinition | BiomeDefinition | ImportedDefinition | EditorAssetDefinition;
+
+export interface ObjectState {
+  position: { x: number; y: number; z: number };
+  rotationY: number;
+  scale: number;
+  visible: boolean;
+  accent: string;
+}
+
+interface CameraTween {
+  startedAt: number;
+  duration: number;
+  positionFrom: THREE.Vector3;
+  positionTo: THREE.Vector3;
+  targetFrom: THREE.Vector3;
+  targetTo: THREE.Vector3;
+}
+
+interface LabelRecord {
+  id: string;
+  definition: SceneDefinition;
+  anchor: CSS2DObject;
+  object: THREE.Object3D;
+  labelHeight: number;
+}
+
+interface InteriorReturnState {
+  cameraPosition: THREE.Vector3;
+  cameraTarget: THREE.Vector3;
+  cameraFov: number;
+  cameraNear: number;
+  minDistance: number;
+  maxDistance: number;
+  maxPolarAngle: number;
+  rootVisibility: Map<THREE.Object3D, boolean>;
+}
+
+export interface IslandWorldCallbacks {
+  onSelection?: (definition: SceneDefinition | null, source: 'scene' | 'ui' | 'system') => void;
+  onTransform?: (definition: SceneDefinition, state: ObjectState) => void;
+  onImport?: (definition: ImportedDefinition) => void;
+  onObjectAdded?: (definition: EditorAssetDefinition) => void;
+  onObjectDeleted?: (id: string) => void;
+  onEditWorkspaceChange?: (workspace: EditorWorkspace, buildingId: string | null) => void;
+  onReady?: () => void;
+  onError?: (message: string, error?: unknown) => void;
+  onWalkLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
+  onImportPlacementChange?: (
+    state: 'choosing' | 'chosen' | 'cancelled' | 'cleared',
+    position?: readonly [number, number, number],
+  ) => void;
+}
+
+const CATEGORY_PRIORITY = new Set(['core', 'biome', 'perimeter', 'commercial']);
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .replace(/\.[^.]+$/, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+    .slice(0, 48);
+}
+
+function downloadBlob(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+}
+
+function getFileExtension(file: File) {
+  return file.name.split('.').pop()?.toLowerCase() ?? '';
+}
+
+function cloneMaterial(material: THREE.Material | THREE.Material[]) {
+  return Array.isArray(material) ? material.map((entry) => entry.clone()) : material.clone();
+}
+
+function isInsideIslandFootprint(x: number, z: number) {
+  let inside = false;
+  for (let current = 0, previous = ISLAND_POINTS.length - 1; current < ISLAND_POINTS.length; previous = current++) {
+    const [currentX, currentZ] = ISLAND_POINTS[current];
+    const [previousX, previousZ] = ISLAND_POINTS[previous];
+    const crosses = (currentZ > z) !== (previousZ > z);
+    const edgeX = ((previousX - currentX) * (z - currentZ)) / (previousZ - currentZ || Number.EPSILON) + currentX;
+    if (crosses && x < edgeX) inside = !inside;
+  }
+  return inside;
+}
+
+function createImportPlacementMarker() {
+  const marker = new THREE.Group();
+  marker.name = 'EDITOR__IMPORT_PLACEMENT_MARKER';
+  const cyan = new THREE.MeshBasicMaterial({ color: '#55f5ff', transparent: true, opacity: 0.95, depthTest: false });
+  const magenta = new THREE.MeshBasicMaterial({ color: '#ff4ecb', transparent: true, opacity: 0.9, depthTest: false });
+  const outer = new THREE.Mesh(new THREE.RingGeometry(1.4, 1.58, 48), cyan);
+  outer.rotation.x = -Math.PI / 2;
+  outer.renderOrder = 20;
+  marker.add(outer);
+  const inner = new THREE.Mesh(new THREE.RingGeometry(0.48, 0.58, 32), magenta);
+  inner.rotation.x = -Math.PI / 2;
+  inner.position.y = 0.02;
+  inner.renderOrder = 20;
+  marker.add(inner);
+  for (const rotation of [0, Math.PI / 2]) {
+    const cross = new THREE.Mesh(new THREE.BoxGeometry(3.8, 0.035, 0.075), cyan);
+    cross.rotation.y = rotation;
+    cross.position.y = 0.035;
+    cross.renderOrder = 20;
+    marker.add(cross);
+  }
+  const beacon = new THREE.Mesh(new THREE.ConeGeometry(0.22, 0.72, 12), magenta);
+  beacon.position.y = 0.62;
+  beacon.renderOrder = 20;
+  marker.add(beacon);
+  marker.visible = false;
+  marker.userData.editorOnly = true;
+  return marker;
+}
+
+export class IslandWorld {
+  readonly scene = new THREE.Scene();
+  readonly renderer: THREE.WebGLRenderer;
+  readonly labelRenderer: CSS2DRenderer;
+  readonly camera: THREE.PerspectiveCamera;
+  readonly controls: OrbitControls;
+  readonly transformControls: TransformControls;
+  readonly walkController: WalkController;
+  readonly modelRoot = new THREE.Group();
+  readonly architectureRoot = new THREE.Group();
+  readonly landscapeRoot = new THREE.Group();
+  readonly transitRoot = new THREE.Group();
+  readonly cityRoot = new THREE.Group();
+  readonly importedRoot = new THREE.Group();
+  readonly interiorsRoot = new THREE.Group();
+  readonly presentationRoot = new THREE.Group();
+
+  private readonly container: HTMLElement;
+  private readonly callbacks: IslandWorldCallbacks;
+  private readonly objectGroups = new Map<string, THREE.Group>();
+  private readonly definitions = new Map<string, SceneDefinition>();
+  private readonly initialTransforms = new Map<
+    string,
+    { position: THREE.Vector3; quaternion: THREE.Quaternion; scale: THREE.Vector3; visible: boolean; accent: string }
+  >();
+  private readonly labels = new Map<string, LabelRecord>();
+  private readonly labelRoot = new THREE.Group();
+  private readonly raycaster = new THREE.Raycaster();
+  private readonly pointer = new THREE.Vector2();
+  private readonly selectionBox: THREE.Box3Helper;
+  private readonly selectionBounds = new THREE.Box3();
+  private readonly clock = new THREE.Clock();
+  private readonly sky: SkyDome;
+  private readonly ocean: WaterSurface;
+  private readonly hemisphere: THREE.HemisphereLight;
+  private readonly sun: THREE.DirectionalLight;
+  private readonly pointerDown = new THREE.Vector2();
+  private readonly animatedObjects: THREE.Object3D[] = [];
+  private readonly interiorGroups = new Map<string, THREE.Group>();
+  private readonly interiorAssetIds = new Map<string, Set<string>>();
+  private readonly importPlacementMarker = createImportPlacementMarker();
+  private importPlacementChoosing = false;
+  private importPlacement: THREE.Vector3 | null = null;
+  private selectedId: string | null = null;
+  private hoveredId: string | null = null;
+  private mode: ViewMode = 'explore';
+  private editWorkspace: EditorWorkspace = 'landscape';
+  private activeInteriorBuildingId: string | null = null;
+  private interiorReturnState: InteriorReturnState | null = null;
+  private generatedAssetSequence = 0;
+  private dayTarget = 0;
+  private dayMix = 0;
+  private elapsed = 0;
+  private cameraTween: CameraTween | null = null;
+  private draggingGizmo = false;
+  private disposed = false;
+  private resizeObserver: ResizeObserver;
+
+  constructor(container: HTMLElement, callbacks: IslandWorldCallbacks = {}) {
+    this.container = container;
+    this.callbacks = callbacks;
+    this.scene.name = 'YouTopy Lab Island Spatial Twin';
+    this.scene.background = new THREE.Color('#07131b');
+    this.scene.fog = new THREE.FogExp2('#102632', 0.00115);
+
+    this.renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: false,
+      powerPreference: 'high-performance',
+      preserveDrawingBuffer: false,
+      logarithmicDepthBuffer: true,
+    });
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
+    this.renderer.outputColorSpace = THREE.SRGBColorSpace;
+    this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = 1.08;
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    this.renderer.domElement.setAttribute('aria-label', 'Editable 3D model of the YouTopy Lab Island');
+    this.container.appendChild(this.renderer.domElement);
+
+    this.labelRenderer = new CSS2DRenderer();
+    this.labelRenderer.domElement.className = 'label-layer';
+    this.labelRenderer.domElement.setAttribute('aria-hidden', 'true');
+    this.container.appendChild(this.labelRenderer.domElement);
+
+    // The masterplan is large, but overview cameras never approach geometry closer
+    // than several world units. A tighter clip range keeps flush road markings from
+    // disappearing into the campus plateau because of depth-buffer precision.
+    this.camera = new THREE.PerspectiveCamera(42, 1, 0.65, 1800);
+    this.camera.position.set(390, 305, 420);
+    this.camera.lookAt(0, 2, 0);
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls.target.set(0, 2, 0);
+    this.controls.enableDamping = true;
+    this.controls.dampingFactor = 0.065;
+    this.controls.minDistance = 8;
+    this.controls.maxDistance = 980;
+    this.controls.maxPolarAngle = Math.PI * 0.485;
+    this.controls.screenSpacePanning = false;
+    this.controls.zoomToCursor = true;
+
+    this.transformControls = new TransformControls(this.camera, this.renderer.domElement);
+    const transformHelper = this.transformControls.getHelper();
+    transformHelper.name = 'EDITOR__TRANSFORM_GIZMO';
+    transformHelper.visible = false;
+    this.scene.add(transformHelper);
+    this.transformControls.setSize(0.72);
+    this.transformControls.addEventListener('dragging-changed', (event: { value: unknown }) => {
+      this.draggingGizmo = Boolean(event.value);
+      this.controls.enabled = this.mode !== 'walk' && !this.draggingGizmo;
+    });
+    this.transformControls.addEventListener('objectChange', () => {
+      this.refreshSelectionBounds();
+      this.updateLabels(true);
+      const definition = this.getSelectedDefinition();
+      if (definition) {
+        this.syncInteriorTransform(definition.id);
+        this.callbacks.onTransform?.(definition, this.getObjectState(definition.id)!);
+      }
+      this.walkController?.refreshNavigation();
+    });
+
+    const pmremGenerator = new THREE.PMREMGenerator(this.renderer);
+    const roomEnvironment = new RoomEnvironment();
+    this.scene.environment = pmremGenerator.fromScene(roomEnvironment, 0.035).texture;
+    roomEnvironment.dispose();
+    pmremGenerator.dispose();
+
+    this.modelRoot.name = 'LAB_ISLAND__EXPORT_ROOT';
+    this.architectureRoot.name = 'COLLECTION__DISTRICT_ARCHITECTURE';
+    this.landscapeRoot.name = 'COLLECTION__TERRAIN_AND_BIOMES';
+    this.transitRoot.name = 'COLLECTION__TRANSIT_AND_BRIDGE';
+    this.cityRoot.name = 'COLLECTION__DISTANT_CYBERPUNK_CITY';
+    this.importedRoot.name = 'COLLECTION__IMPORTED_ASSETS';
+    this.interiorsRoot.name = 'COLLECTION__EDITABLE_INTERIORS';
+    // Terrain renders first, then flush road graphics, then buildings and
+    // imported meshes so road markings never bleed through architecture.
+    this.architectureRoot.renderOrder = 2;
+    this.importedRoot.renderOrder = 2;
+    this.presentationRoot.name = 'PRESENTATION_ONLY__DO_NOT_EXPORT';
+    this.labelRoot.name = 'EDITOR__LABELS';
+    this.modelRoot.userData = {
+      project: 'YouTopy Lab Island',
+      sourceSketch: 'YT_LabIsland_Ideas1.png',
+      units: '10 metres per world unit',
+      coordinateSystem: 'X east, Y up, Z south',
+      blenderImport: 'File > Import > glTF 2.0',
+    };
+    this.modelRoot.add(
+      this.landscapeRoot,
+      this.architectureRoot,
+      this.transitRoot,
+      this.cityRoot,
+      this.importedRoot,
+      this.interiorsRoot,
+    );
+    this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
+
+    this.ocean = createOcean();
+    this.sky = createSkyDome();
+    this.presentationRoot.add(this.ocean, this.sky, this.importPlacementMarker);
+
+    this.hemisphere = new THREE.HemisphereLight('#9ecbd4', '#17241f', 1.55);
+    this.hemisphere.name = 'Blue-hour hemisphere light';
+    this.scene.add(this.hemisphere);
+    this.sun = new THREE.DirectionalLight('#ffd9be', 3.6);
+    this.sun.name = 'Low-angle island sun';
+    this.sun.position.set(-180, 310, 170);
+    this.sun.castShadow = true;
+    this.sun.shadow.mapSize.set(2048, 2048);
+    this.sun.shadow.camera.left = -335;
+    this.sun.shadow.camera.right = 335;
+    this.sun.shadow.camera.top = 335;
+    this.sun.shadow.camera.bottom = -335;
+    this.sun.shadow.camera.near = 4;
+    this.sun.shadow.camera.far = 560;
+    this.sun.shadow.bias = -0.00018;
+    this.scene.add(this.sun);
+    const rimLight = new THREE.DirectionalLight('#5be8ff', 0.95);
+    rimLight.position.set(70, 26, -62);
+    rimLight.name = 'Cyber city rim light';
+    this.scene.add(rimLight);
+
+    createIslandShell(this.landscapeRoot);
+    createTransitNetwork(this.transitRoot, biomes);
+    createIndustrialPort(this.transitRoot);
+    createBridgeAndCity(this.transitRoot, this.cityRoot);
+    this.createDistrictsAndBiomes();
+
+    this.selectionBox = new THREE.Box3Helper(this.selectionBounds, new THREE.Color('#b7f34b'));
+    this.selectionBox.name = 'EDITOR__SELECTION_BOUNDS';
+    this.selectionBox.visible = false;
+    this.scene.add(this.selectionBox);
+
+    this.walkController = new WalkController({
+      camera: this.camera,
+      element: this.renderer.domElement,
+      navigationRoot: this.modelRoot,
+      onLockChange: (locked, dragLookActive) => this.callbacks.onWalkLockChange?.(locked, dragLookActive),
+      onInteract: () => this.inspectFromWalkView(),
+    });
+
+    this.modelRoot.traverse((child) => {
+      if (child.userData.animate) this.animatedObjects.push(child);
+    });
+
+    this.renderer.domElement.addEventListener('pointerdown', this.onPointerDown);
+    this.renderer.domElement.addEventListener('pointerup', this.onPointerUp);
+    this.renderer.domElement.addEventListener('pointermove', this.onPointerMove);
+    this.renderer.domElement.addEventListener('dblclick', this.onDoubleClick);
+
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(this.container);
+    this.resize();
+    this.updateLabels(true);
+    this.renderer.setAnimationLoop(this.animate);
+    window.setTimeout(() => this.callbacks.onReady?.(), 560);
+  }
+
+  private createDistrictsAndBiomes() {
+    districts.forEach((definition) => {
+      const { group, labelHeight } = createDistrictModel(definition);
+      group.renderOrder = 2;
+      this.architectureRoot.add(group);
+      this.registerSelectable(definition, group, labelHeight, false);
+    });
+    biomes.forEach((definition) => {
+      const { group, labelHeight } = createBiomeModel(definition);
+      group.renderOrder = 2;
+      this.landscapeRoot.add(group);
+      this.registerSelectable(definition, group, labelHeight, true);
+    });
+  }
+
+  private registerSelectable(
+    definition: SceneDefinition,
+    group: THREE.Group,
+    labelHeight: number,
+    biome: boolean,
+    showLabel = true,
+  ) {
+    this.definitions.set(definition.id, definition);
+    this.objectGroups.set(definition.id, group);
+    this.initialTransforms.set(definition.id, {
+      position: group.position.clone(),
+      quaternion: group.quaternion.clone(),
+      scale: group.scale.clone(),
+      visible: group.visible,
+      accent: definition.accent,
+    });
+    if (!showLabel) return;
+    const element = document.createElement('div');
+    element.className = `district-label${biome ? ' biome-label' : ''}`;
+    element.textContent = definition.name;
+    element.dataset.labelId = definition.id;
+    element.style.setProperty('--label-accent', definition.accent);
+    const anchor = new CSS2DObject(element);
+    anchor.name = `LABEL__${definition.id}`;
+    this.labelRoot.add(anchor);
+    this.labels.set(definition.id, { id: definition.id, definition, anchor, object: group, labelHeight });
+    this.updateSingleLabel(this.labels.get(definition.id)!);
+  }
+
+  private updateSingleLabel(record: LabelRecord) {
+    const position = new THREE.Vector3(0, record.labelHeight, 0);
+    record.object.localToWorld(position);
+    record.anchor.position.copy(position);
+  }
+
+  private updateLabels(force = false) {
+    this.labels.forEach((record) => {
+      this.updateSingleLabel(record);
+      const element = record.anchor.element as HTMLElement;
+      if (!record.object.visible) {
+        element.classList.add('label-suppressed');
+        return;
+      }
+      const distance = this.camera.position.distanceTo(record.anchor.position);
+      const priority =
+        record.definition.id === this.selectedId ||
+        (this.mode !== 'walk' && (record.definition.category === 'core' || record.definition.category === 'biome'));
+      const distanceThreshold = this.mode === 'walk' ? 10 : this.mode === 'edit' ? 52 : 42;
+      const visible = this.mode === 'plan' || priority || distance < distanceThreshold;
+      element.classList.toggle('label-suppressed', !visible);
+      if (force || visible) {
+        const distanceOpacity = THREE.MathUtils.clamp(1.25 - distance / 150, 0.38, 1);
+        element.style.opacity = record.definition.id === this.selectedId ? '1' : String(distanceOpacity);
+      }
+    });
+  }
+
+  private onPointerDown = (event: PointerEvent) => {
+    this.pointerDown.set(event.clientX, event.clientY);
+  };
+
+  private onPointerUp = (event: PointerEvent) => {
+    if (this.draggingGizmo) return;
+    const distance = this.pointerDown.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
+    if (distance > 5) return;
+    if (this.importPlacementChoosing) {
+      const placement = this.pickImportPlacement(event);
+      if (!placement) return;
+      this.importPlacementChoosing = false;
+      this.importPlacement = placement.clone();
+      this.updateImportPlacementMarker(placement);
+      this.renderer.domElement.style.cursor = 'crosshair';
+      this.callbacks.onImportPlacementChange?.('chosen', placement.toArray());
+      return;
+    }
+    if (this.mode === 'walk') return;
+    const id = this.pick(event);
+    if (id) this.select(id, 'scene');
+    else if (this.mode !== 'edit') this.clearSelection('scene');
+  };
+
+  private onPointerMove = (event: PointerEvent) => {
+    if (this.importPlacementChoosing) {
+      const placement = this.pickImportPlacement(event);
+      if (placement) this.updateImportPlacementMarker(placement);
+      this.renderer.domElement.style.cursor = placement ? 'crosshair' : 'not-allowed';
+      return;
+    }
+    if (this.mode === 'walk') {
+      this.renderer.domElement.style.cursor = this.walkController.pointerControls.isLocked ? 'none' : 'crosshair';
+      return;
+    }
+    if (this.draggingGizmo) return;
+    const id = this.pick(event);
+    if (id === this.hoveredId) return;
+    this.hoveredId = id;
+    this.renderer.domElement.style.cursor = id ? 'pointer' : this.controls.enabled ? 'grab' : 'default';
+  };
+
+  private onDoubleClick = (event: MouseEvent) => {
+    if (this.mode === 'walk') return;
+    const id = this.pick(event);
+    if (id) {
+      this.select(id, 'scene');
+      this.focus(id);
+    }
+  };
+
+  private inspectFromWalkView() {
+    this.pointer.set(0, 0);
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    this.raycaster.far = 14;
+    const intersections = this.raycaster.intersectObjects(
+      [this.architectureRoot, this.landscapeRoot, this.importedRoot, this.interiorsRoot],
+      true,
+    );
+    for (const intersection of intersections) {
+      let object: THREE.Object3D | null = intersection.object;
+      while (object) {
+        if (typeof object.userData.selectableId === 'string') {
+          this.select(object.userData.selectableId as string, 'scene');
+          return;
+        }
+        object = object.parent;
+      }
+    }
+  }
+
+  private pick(event: MouseEvent | PointerEvent) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    this.raycaster.far = Infinity;
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const intersections = this.raycaster.intersectObjects(
+      [this.architectureRoot, this.landscapeRoot, this.importedRoot, this.interiorsRoot],
+      true,
+    );
+    for (const intersection of intersections) {
+      let object: THREE.Object3D | null = intersection.object;
+      while (object) {
+        if (typeof object.userData.selectableId === 'string') return object.userData.selectableId as string;
+        object = object.parent;
+      }
+    }
+    return null;
+  }
+
+  private pickImportPlacement(event: MouseEvent | PointerEvent) {
+    const rect = this.renderer.domElement.getBoundingClientRect();
+    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    this.raycaster.far = Infinity;
+    this.raycaster.setFromCamera(this.pointer, this.camera);
+    const intersections = this.raycaster.intersectObjects(
+      [this.transitRoot, this.architectureRoot, this.landscapeRoot],
+      true,
+    );
+    const surface = intersections.find(
+      (intersection) => intersection.object.visible && intersection.object.userData.walkable,
+    );
+    if (surface) return surface.point;
+    const islandPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -ISLAND_SURFACE_Y);
+    const fallback = this.raycaster.ray.intersectPlane(islandPlane, new THREE.Vector3());
+    return fallback && isInsideIslandFootprint(fallback.x, fallback.z) ? fallback : null;
+  }
+
+  private updateImportPlacementMarker(position: THREE.Vector3) {
+    this.importPlacementMarker.position.copy(position);
+    this.importPlacementMarker.position.y += 0.08;
+    this.importPlacementMarker.visible = true;
+  }
+
+  private animate = (time: number) => {
+    if (this.disposed) return;
+    const delta = Math.min(this.clock.getDelta(), 0.05);
+    this.elapsed = time / 1000;
+    this.update(delta);
+    this.render();
+  };
+
+  private update(delta: number) {
+    if (this.mode === 'walk') this.walkController.update(delta);
+    else this.controls.update(delta);
+    this.ocean.material.uniforms.uTime.value = this.elapsed;
+    this.dayMix = THREE.MathUtils.damp(this.dayMix, this.dayTarget, 3.2, delta);
+    this.sky.material.uniforms.uDayMix.value = this.dayMix;
+    this.ocean.material.uniforms.uNight.value = 1 - this.dayMix;
+    this.hemisphere.intensity = THREE.MathUtils.lerp(1.55, 2.55, this.dayMix);
+    this.sun.intensity = THREE.MathUtils.lerp(3.6, 5.2, this.dayMix);
+    this.renderer.toneMappingExposure = THREE.MathUtils.lerp(1.08, 1.22, this.dayMix);
+    const fog = this.scene.fog as THREE.FogExp2;
+    fog.color.lerpColors(new THREE.Color('#102632'), new THREE.Color('#99b9bf'), this.dayMix);
+    this.scene.background = fog.color;
+
+    this.animatedObjects.forEach((object) => {
+      if (object.userData.animate === 'ring-pod') {
+        const angle = this.elapsed * Number(object.userData.speed) + Number(object.userData.phase);
+        const rx = Number(object.userData.ringX);
+        const rz = Number(object.userData.ringZ);
+        object.position.set(Math.cos(angle) * rx, 2.15, Math.sin(angle) * rz);
+        object.rotation.y = -angle;
+      } else if (object.userData.animate === 'quantum-core') {
+        object.rotation.y += delta * 0.55;
+        object.rotation.x += delta * 0.22;
+        const pulse = 1 + Math.sin(this.elapsed * 2.1) * 0.06;
+        object.scale.setScalar(pulse);
+      }
+    });
+
+    if (this.cameraTween && this.mode !== 'walk') {
+      const now = performance.now();
+      const linear = THREE.MathUtils.clamp((now - this.cameraTween.startedAt) / this.cameraTween.duration, 0, 1);
+      const eased = 1 - Math.pow(1 - linear, 3);
+      this.camera.position.lerpVectors(this.cameraTween.positionFrom, this.cameraTween.positionTo, eased);
+      this.controls.target.lerpVectors(this.cameraTween.targetFrom, this.cameraTween.targetTo, eased);
+      if (linear >= 1) this.cameraTween = null;
+    }
+    this.refreshSelectionBounds();
+    this.updateLabels();
+  }
+
+  private render() {
+    this.renderer.render(this.scene, this.camera);
+    this.labelRenderer.render(this.scene, this.camera);
+  }
+
+  private resize() {
+    const width = Math.max(1, this.container.clientWidth);
+    const height = Math.max(1, this.container.clientHeight);
+    this.renderer.setSize(width, height, false);
+    this.labelRenderer.setSize(width, height);
+    this.camera.aspect = width / height;
+    this.camera.updateProjectionMatrix();
+  }
+
+  private refreshSelectionBounds() {
+    if (!this.selectedId) {
+      this.selectionBox.visible = false;
+      return;
+    }
+    const group = this.objectGroups.get(this.selectedId);
+    if (!group || !group.visible) {
+      this.selectionBox.visible = false;
+      return;
+    }
+    this.selectionBounds.setFromObject(group, true);
+    this.selectionBox.box = this.selectionBounds;
+    this.selectionBox.visible = true;
+  }
+
+  private animateCamera(position: THREE.Vector3, target: THREE.Vector3, duration = 1100) {
+    this.cameraTween = {
+      startedAt: performance.now(),
+      duration,
+      positionFrom: this.camera.position.clone(),
+      positionTo: position.clone(),
+      targetFrom: this.controls.target.clone(),
+      targetTo: target.clone(),
+    };
+  }
+
+  select(id: string, source: 'scene' | 'ui' | 'system' = 'ui') {
+    const definition = this.definitions.get(id);
+    const group = this.objectGroups.get(id);
+    if (!definition || !group) return;
+    if (
+      this.activeInteriorBuildingId &&
+      !(
+        ((definition.category === 'editor' && definition.workspace === 'interior') ||
+          (definition.category === 'imported' && definition.workspace === 'interior')) &&
+        definition.parentBuildingId === this.activeInteriorBuildingId
+      )
+    ) {
+      return;
+    }
+    if (this.selectedId) {
+      const previousLabel = this.labels.get(this.selectedId)?.anchor.element;
+      previousLabel?.classList.remove('selected');
+    }
+    this.selectedId = id;
+    const label = this.labels.get(id)?.anchor.element;
+    label?.classList.add('selected');
+    this.refreshSelectionBounds();
+    if (this.mode === 'edit') {
+      this.transformControls.attach(group);
+      this.transformControls.getHelper().visible = true;
+    }
+    this.callbacks.onSelection?.(definition, source);
+  }
+
+  clearSelection(source: 'scene' | 'ui' | 'system' = 'ui') {
+    if (this.selectedId) this.labels.get(this.selectedId)?.anchor.element.classList.remove('selected');
+    this.selectedId = null;
+    this.selectionBox.visible = false;
+    this.transformControls.detach();
+    this.transformControls.getHelper().visible = false;
+    this.callbacks.onSelection?.(null, source);
+  }
+
+  setMode(mode: ViewMode) {
+    const previousMode = this.mode;
+    if (this.activeInteriorBuildingId && mode !== 'edit') this.exitInterior(false);
+    if (previousMode === 'walk' && mode !== 'walk') {
+      this.walkController.exit();
+      const forward = this.camera.getWorldDirection(new THREE.Vector3());
+      this.controls.target.copy(this.camera.position).addScaledVector(forward, 12);
+      this.camera.near = 0.65;
+      this.camera.updateProjectionMatrix();
+      this.renderer.domElement.style.cursor = 'grab';
+    }
+    this.mode = mode;
+    this.controls.enabled = mode !== 'walk';
+    this.controls.enableRotate = mode !== 'plan' && mode !== 'walk';
+    this.controls.enablePan = true;
+    this.transformControls.detach();
+    this.transformControls.getHelper().visible = false;
+    if (mode === 'walk') {
+      this.cameraTween = null;
+      this.clearSelection('system');
+      const preservedDirection = this.camera.getWorldDirection(new THREE.Vector3());
+      const preferredSpawn = this.camera.position.clone();
+      const focusedSpawn = this.controls.target.clone();
+      this.camera.near = 0.015;
+      this.camera.updateProjectionMatrix();
+      this.walkController.enter(preferredSpawn, preservedDirection, focusedSpawn);
+      this.renderer.domElement.style.cursor = 'crosshair';
+    } else if (mode === 'plan') {
+      this.camera.fov = 34;
+      this.camera.updateProjectionMatrix();
+      this.animateCamera(new THREE.Vector3(0, 940, 0.1), new THREE.Vector3(0, 0, 0), 1050);
+    } else if (mode === 'edit') {
+      this.cameraTween = null;
+      if (this.selectedId) {
+        const group = this.objectGroups.get(this.selectedId);
+        if (group) {
+          this.transformControls.attach(group);
+          this.transformControls.getHelper().visible = true;
+        }
+      }
+    } else {
+      this.cameraTween = null;
+    }
+    this.updateLabels(true);
+  }
+
+  getMode() {
+    return this.mode;
+  }
+
+  setGizmoMode(mode: GizmoMode) {
+    this.transformControls.setMode(mode);
+  }
+
+  getEditWorkspace() {
+    return this.editWorkspace;
+  }
+
+  getAssetCatalog(workspace: EditorWorkspace = this.editWorkspace): readonly EditorAssetCatalogItem[] {
+    return EDITOR_ASSET_CATALOG.filter((item) => item.workspace === workspace);
+  }
+
+  getActiveInteriorBuildingId() {
+    return this.activeInteriorBuildingId;
+  }
+
+  setEditWorkspace(workspace: EditorWorkspace) {
+    if (workspace === 'landscape' && this.activeInteriorBuildingId) this.exitInterior();
+    this.editWorkspace = workspace;
+    this.callbacks.onEditWorkspaceChange?.(workspace, this.activeInteriorBuildingId);
+  }
+
+  canEnterInterior(id = this.selectedId) {
+    if (!id) return false;
+    const definition = this.definitions.get(id);
+    if (!definition) return false;
+    if (definition.category === 'biome') return true;
+    if (definition.category === 'editor') return definition.assetKind === 'building';
+    if (definition.category === 'imported') {
+      return definition.workspace !== 'interior' && definition.footprint[0] >= 2;
+    }
+    return true;
+  }
+
+  addCatalogAsset(catalogId: string): EditorAssetDefinition | null {
+    const item = EDITOR_ASSET_CATALOG.find((entry) => entry.id === catalogId);
+    if (!item || item.workspace !== this.editWorkspace) return null;
+    if (item.workspace === 'interior' && !this.activeInteriorBuildingId) return null;
+
+    this.generatedAssetSequence += 1;
+    const id = `editor-${slugify(item.id)}-${this.generatedAssetSequence.toString(36)}`;
+    const group = createEditorAsset(item, id);
+    group.name = `${item.workspace === 'interior' ? 'INTERIOR_ASSET' : 'LANDSCAPE_ASSET'}__${slugify(item.name)}`;
+    group.userData.editable = true;
+    group.userData.catalogId = item.id;
+    group.userData.workspace = item.workspace;
+
+    let parentBuildingId: string | undefined;
+    if (item.workspace === 'interior') {
+      parentBuildingId = this.activeInteriorBuildingId ?? undefined;
+      if (!parentBuildingId) return null;
+      const interior = this.ensureInterior(parentBuildingId);
+      if (!interior) return null;
+      const placed = this.interiorAssetIds.get(parentBuildingId)?.size ?? 0;
+      const width = Number(interior.userData.roomWidth) || 8;
+      const depth = Number(interior.userData.roomDepth) || 6;
+      const columns = 4;
+      const column = placed % columns;
+      const row = Math.floor(placed / columns) % 3;
+      group.position.set(
+        THREE.MathUtils.lerp(-width * 0.31, width * 0.31, column / (columns - 1)),
+        0.012,
+        THREE.MathUtils.lerp(-depth * 0.24, depth * 0.2, row / 2),
+      );
+      interior.add(group);
+    } else {
+      const selected = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+      const base = selected?.getWorldPosition(new THREE.Vector3()) ?? new THREE.Vector3(0, ISLAND_SURFACE_Y, 20);
+      const angle = this.generatedAssetSequence * 2.39996;
+      const radius = 3.8 + (this.generatedAssetSequence % 4) * 1.25;
+      group.position.set(
+        base.x + Math.cos(angle) * radius,
+        ISLAND_SURFACE_Y + 0.04,
+        base.z + Math.sin(angle) * radius,
+      );
+      (item.kind === 'building' ? this.architectureRoot : this.landscapeRoot).add(group);
+    }
+
+    const definition: EditorAssetDefinition = {
+      id,
+      name: item.name,
+      sourceLabel: `Design Studio / ${item.category}`,
+      category: 'editor',
+      ring: 'custom',
+      position: [group.position.x, group.position.y, group.position.z],
+      footprint: item.footprint,
+      height: item.height,
+      archetype: item.kind === 'building' ? 'Editable building' : item.workspace === 'interior' ? 'Interior object' : 'Landscape object',
+      accent: item.accent,
+      palette: ['#10191b', '#26383b', '#d6e1de', item.accent],
+      description: item.description,
+      workspace: item.workspace,
+      assetKind: item.kind,
+      catalogId: item.id,
+      parentBuildingId,
+    };
+    this.registerSelectable(definition, group, item.height + 0.8, false, item.workspace === 'landscape');
+    if (parentBuildingId) {
+      const ids = this.interiorAssetIds.get(parentBuildingId) ?? new Set<string>();
+      ids.add(id);
+      this.interiorAssetIds.set(parentBuildingId, ids);
+    }
+    this.walkController.refreshNavigation();
+    this.callbacks.onObjectAdded?.(definition);
+    this.select(id, 'system');
+    this.focus(id);
+    return definition;
+  }
+
+  deleteObject(id = this.selectedId) {
+    if (!id || !this.definitions.has(id)) return false;
+    if (this.activeInteriorBuildingId === id) this.exitInterior();
+    const interiorAssets = Array.from(this.interiorAssetIds.get(id) ?? []);
+    interiorAssets.forEach((assetId) => this.unregisterObject(assetId));
+    const interior = this.interiorGroups.get(id);
+    if (interior) {
+      interior.removeFromParent();
+      this.interiorGroups.delete(id);
+      this.interiorAssetIds.delete(id);
+    }
+    this.unregisterObject(id);
+    this.walkController.refreshNavigation();
+    return true;
+  }
+
+  enterInterior(id = this.selectedId) {
+    if (!id || !this.canEnterInterior(id)) return false;
+    if (this.mode !== 'edit') this.setMode('edit');
+    if (this.activeInteriorBuildingId && this.activeInteriorBuildingId !== id) this.exitInterior();
+    const interior = this.ensureInterior(id);
+    if (!interior) return false;
+
+    if (!this.interiorReturnState) {
+      const isolatedRoots = [
+        this.landscapeRoot,
+        this.architectureRoot,
+        this.transitRoot,
+        this.cityRoot,
+        this.importedRoot,
+        this.presentationRoot,
+        this.labelRoot,
+      ];
+      this.interiorReturnState = {
+        cameraPosition: this.camera.position.clone(),
+        cameraTarget: this.controls.target.clone(),
+        cameraFov: this.camera.fov,
+        cameraNear: this.camera.near,
+        minDistance: this.controls.minDistance,
+        maxDistance: this.controls.maxDistance,
+        maxPolarAngle: this.controls.maxPolarAngle,
+        rootVisibility: new Map(isolatedRoots.map((root) => [root, root.visible])),
+      };
+      isolatedRoots.forEach((root) => {
+        root.userData.editorIsolationRestoreVisible = root.visible;
+        root.visible = false;
+      });
+    }
+
+    this.editWorkspace = 'interior';
+    this.activeInteriorBuildingId = id;
+    this.interiorsRoot.children.forEach((child) => {
+      child.visible = child === interior;
+    });
+    interior.traverse((child) => {
+      if (child.userData.editorCutawayCeiling || child.name.includes('INTERIOR_SHELL__CEILING_BEAM')) {
+        child.userData.editorCutawayCeiling = true;
+        child.visible = false;
+      }
+    });
+    this.clearSelection('system');
+    this.cameraTween = null;
+    this.camera.fov = 52;
+    this.camera.near = 0.02;
+    this.camera.updateProjectionMatrix();
+    this.controls.minDistance = 0.28;
+    this.controls.maxDistance = 24;
+    this.controls.maxPolarAngle = Math.PI * 0.495;
+    interior.updateMatrixWorld(true);
+    const depth = Number(interior.userData.roomDepth) || 7;
+    const roomHeight = Number(interior.userData.roomHeight) || 0.5;
+    const target = interior.localToWorld(new THREE.Vector3(0, roomHeight * 0.34, -depth * 0.04));
+    const position = interior.localToWorld(new THREE.Vector3(0, roomHeight * 1.28, depth * 0.52));
+    this.camera.position.copy(position);
+    this.controls.target.copy(target);
+    this.controls.update();
+    this.callbacks.onEditWorkspaceChange?.('interior', id);
+    this.updateLabels(true);
+    return true;
+  }
+
+  exitInterior(restoreCamera = true) {
+    const activeId = this.activeInteriorBuildingId;
+    if (!activeId) return;
+    const active = this.interiorGroups.get(activeId);
+    if (active) {
+      active.visible = false;
+      active.traverse((child) => {
+        if (child.userData.editorCutawayCeiling) child.visible = true;
+      });
+    }
+    if (this.selectedId) this.clearSelection('system');
+    const saved = this.interiorReturnState;
+    if (saved) {
+      saved.rootVisibility.forEach((visible, root) => {
+        root.visible = visible;
+        delete root.userData.editorIsolationRestoreVisible;
+      });
+      this.camera.fov = saved.cameraFov;
+      this.camera.near = saved.cameraNear;
+      this.camera.updateProjectionMatrix();
+      this.controls.minDistance = saved.minDistance;
+      this.controls.maxDistance = saved.maxDistance;
+      this.controls.maxPolarAngle = saved.maxPolarAngle;
+      if (restoreCamera) {
+        this.camera.position.copy(saved.cameraPosition);
+        this.controls.target.copy(saved.cameraTarget);
+        this.controls.update();
+      }
+    }
+    this.activeInteriorBuildingId = null;
+    this.interiorReturnState = null;
+    this.callbacks.onEditWorkspaceChange?.(this.editWorkspace, null);
+  }
+
+  private ensureInterior(buildingId: string) {
+    const existing = this.interiorGroups.get(buildingId);
+    if (existing) return existing;
+    const definition = this.definitions.get(buildingId);
+    if (!definition || !this.canEnterInterior(buildingId)) return null;
+    const biomeInterior = definition.category === 'biome';
+    const width = biomeInterior ? 5.8 : THREE.MathUtils.clamp(definition.footprint[0] * 0.76, 4.8, 12);
+    const depth = biomeInterior ? 4.6 : THREE.MathUtils.clamp(definition.footprint[1] * 0.76, 4.5, 10);
+    const interior = createInteriorShell(buildingId, width, depth, definition.accent);
+    interior.name = `INTERIOR__${slugify(definition.name)}`;
+    interior.userData.buildingId = buildingId;
+    interior.userData.roomWidth = width;
+    interior.userData.roomDepth = depth;
+    interior.userData.exportAlways = true;
+    if (definition.category === 'biome') {
+      interior.userData.biomeLaboratory = true;
+      interior.userData.labType = 'Biome field laboratory';
+      const fixturePlacements = [
+        { id: 'interior-wet-lab-bench', x: -1.35, z: -0.65, rotation: 0 },
+        { id: 'interior-biosafety-cabinet', x: 1.45, z: -1.4, rotation: 0 },
+        { id: 'interior-holo-microscope', x: 0.15, z: 0.25, rotation: Math.PI * 0.5 },
+        { id: 'interior-cryo-freezer', x: 1.55, z: 1.35, rotation: Math.PI },
+        { id: 'interior-focus-workstation', x: -1.35, z: 1.25, rotation: Math.PI },
+      ];
+      fixturePlacements.forEach((placement) => {
+        const item = EDITOR_ASSET_CATALOG.find((entry) => entry.id === placement.id);
+        if (!item) return;
+        const fixture = createEditorAsset(item, buildingId);
+        fixture.name = `BIOME_LAB_DEFAULT__${slugify(item.name)}`;
+        fixture.position.set(placement.x, 0.012, placement.z);
+        fixture.rotation.y = placement.rotation;
+        fixture.scale.setScalar(item.id === 'interior-wet-lab-bench' ? 1.85 : 1.7);
+        fixture.traverse((child) => {
+          child.userData.selectableId = buildingId;
+          child.userData.biomeLabFixture = true;
+          child.userData.editorWorkspace = 'interior';
+        });
+        interior.add(fixture);
+      });
+      interior.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((material) => {
+          const typed = material as THREE.MeshStandardMaterial;
+          if (material.name.includes('PALE') && typed.color) typed.color.set('#25363b');
+          if (material.name.includes('SHELL') && typed.color) typed.color.set('#52656b');
+          if (material.name.includes('DARK') && typed.color) typed.color.set('#0b151b');
+        });
+      });
+    }
+    interior.visible = false;
+    this.interiorsRoot.add(interior);
+    this.interiorGroups.set(buildingId, interior);
+    this.interiorAssetIds.set(buildingId, new Set());
+    this.syncInteriorTransform(buildingId);
+    return interior;
+  }
+
+  private syncInteriorTransform(buildingId: string) {
+    const building = this.objectGroups.get(buildingId);
+    const interior = this.interiorGroups.get(buildingId);
+    if (!building || !interior) return;
+    building.updateWorldMatrix(true, false);
+    building.getWorldPosition(interior.position);
+    building.getWorldQuaternion(interior.quaternion);
+    building.getWorldScale(interior.scale);
+    interior.updateMatrixWorld(true);
+  }
+
+  private unregisterObject(id: string) {
+    const definition = this.definitions.get(id);
+    const group = this.objectGroups.get(id);
+    if (!definition || !group) return;
+    if (this.selectedId === id) this.clearSelection('system');
+    const label = this.labels.get(id);
+    if (label) {
+      label.anchor.removeFromParent();
+      label.anchor.element.remove();
+      this.labels.delete(id);
+    }
+    group.removeFromParent();
+    this.objectGroups.delete(id);
+    this.definitions.delete(id);
+    this.initialTransforms.delete(id);
+    if ('parentBuildingId' in definition && definition.parentBuildingId) {
+      this.interiorAssetIds.get(definition.parentBuildingId)?.delete(id);
+    }
+    this.callbacks.onObjectDeleted?.(id);
+  }
+
+  focus(id: string) {
+    if (this.mode === 'walk') return;
+    const object = this.objectGroups.get(id);
+    if (!object) return;
+    const box = new THREE.Box3().setFromObject(object, true);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const radius = Math.max(size.x, size.y, size.z, this.activeInteriorBuildingId ? 0.55 : 4);
+    if (this.mode === 'plan') {
+      this.animateCamera(new THREE.Vector3(center.x, Math.max(45, radius * 7), center.z + 0.01), center, 820);
+      return;
+    }
+    const viewDirection = new THREE.Vector3().subVectors(this.camera.position, this.controls.target).normalize();
+    const distance = THREE.MathUtils.clamp(
+      radius * 2.7,
+      this.activeInteriorBuildingId ? 1.8 : 11,
+      this.activeInteriorBuildingId ? 12 : 38,
+    );
+    const destination = center.clone().addScaledVector(viewDirection, distance);
+    destination.y = Math.max(destination.y, center.y + radius * (this.activeInteriorBuildingId ? 0.65 : 1.15));
+    this.animateCamera(destination, center, 820);
+  }
+
+  overview() {
+    const plan = this.mode === 'plan';
+    if (!plan) this.setMode('explore');
+    this.cameraTween = null;
+    this.camera.fov = plan ? 34 : 42;
+    this.camera.near = 0.65;
+    this.camera.updateProjectionMatrix();
+    this.animateCamera(
+      plan ? new THREE.Vector3(0, 940, 0.1) : new THREE.Vector3(390, 305, 420),
+      plan ? new THREE.Vector3(0, 0, 0) : new THREE.Vector3(0, 2, -18),
+      1050,
+    );
+  }
+
+  setLayer(layer: SceneLayer, visible: boolean) {
+    let affectedRoot: THREE.Object3D | null = null;
+    if (layer === 'buildings') affectedRoot = this.architectureRoot;
+    if (layer === 'landscape') affectedRoot = this.landscapeRoot;
+    if (layer === 'transit') affectedRoot = this.transitRoot;
+    if (affectedRoot) affectedRoot.visible = visible;
+    if (layer === 'labels') this.labelRoot.visible = visible;
+    if (!visible && affectedRoot && this.selectedId) {
+      const selected = this.objectGroups.get(this.selectedId);
+      let cursor: THREE.Object3D | null = selected ?? null;
+      while (cursor && cursor !== affectedRoot) cursor = cursor.parent;
+      if (cursor === affectedRoot) this.clearSelection('system');
+    }
+  }
+
+  setDaylight(daylight: boolean) {
+    this.dayTarget = daylight ? 1 : 0;
+  }
+
+  isDaylight() {
+    return this.dayTarget > 0.5;
+  }
+
+  getDefinition(id: string) {
+    return this.definitions.get(id) ?? null;
+  }
+
+  getSelectedDefinition() {
+    return this.selectedId ? this.definitions.get(this.selectedId) ?? null : null;
+  }
+
+  getObjectState(id: string): ObjectState | null {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return null;
+    return {
+      position: { x: group.position.x, y: group.position.y, z: group.position.z },
+      rotationY: THREE.MathUtils.radToDeg(group.rotation.y),
+      scale: (group.scale.x + group.scale.y + group.scale.z) / 3,
+      visible: group.visible,
+      accent: definition.accent,
+    };
+  }
+
+  setObjectPosition(id: string, axis: 'x' | 'y' | 'z', value: number) {
+    const group = this.objectGroups.get(id);
+    if (!group || !Number.isFinite(value)) return;
+    group.position[axis] = value;
+    this.walkController.refreshNavigation();
+    this.notifyTransform(id);
+  }
+
+  setObjectRotationY(id: string, degrees: number) {
+    const group = this.objectGroups.get(id);
+    if (!group || !Number.isFinite(degrees)) return;
+    group.rotation.y = THREE.MathUtils.degToRad(degrees);
+    this.walkController.refreshNavigation();
+    this.notifyTransform(id);
+  }
+
+  setObjectScale(id: string, scale: number) {
+    const group = this.objectGroups.get(id);
+    if (!group || !Number.isFinite(scale)) return;
+    group.scale.setScalar(scale);
+    this.walkController.refreshNavigation();
+    this.notifyTransform(id);
+  }
+
+  setObjectVisible(id: string, visible: boolean) {
+    const group = this.objectGroups.get(id);
+    if (!group) return;
+    group.visible = visible;
+    this.walkController.refreshNavigation();
+    this.refreshSelectionBounds();
+    this.updateLabels(true);
+  }
+
+  setObjectAccent(id: string, color: string) {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return;
+    setModelAccent(group, color);
+    const replacement = { ...definition, accent: color } as SceneDefinition;
+    this.definitions.set(id, replacement);
+    const label = this.labels.get(id);
+    label?.anchor.element.style.setProperty('--label-accent', color);
+    if (label) label.definition = replacement;
+    this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+    this.walkController.refreshNavigation();
+  }
+
+  resetObject(id: string) {
+    const group = this.objectGroups.get(id);
+    const initial = this.initialTransforms.get(id);
+    if (!group || !initial) return;
+    group.position.copy(initial.position);
+    group.quaternion.copy(initial.quaternion);
+    group.scale.copy(initial.scale);
+    group.visible = initial.visible;
+    setModelAccent(group, initial.accent);
+    const definition = this.definitions.get(id);
+    if (definition && definition.accent !== initial.accent) {
+      const replacement = { ...definition, accent: initial.accent } as SceneDefinition;
+      this.definitions.set(id, replacement);
+      const label = this.labels.get(id);
+      if (label) {
+        label.definition = replacement;
+        label.anchor.element.style.setProperty('--label-accent', initial.accent);
+      }
+    }
+    this.notifyTransform(id);
+    this.walkController.refreshNavigation();
+  }
+
+  private notifyTransform(id: string) {
+    this.syncInteriorTransform(id);
+    this.refreshSelectionBounds();
+    this.updateLabels(true);
+    const definition = this.definitions.get(id);
+    const state = this.getObjectState(id);
+    if (definition && state) this.callbacks.onTransform?.(definition, state);
+  }
+
+  beginImportPlacement() {
+    if (this.activeInteriorBuildingId) return false;
+    this.importPlacementChoosing = true;
+    this.importPlacement = null;
+    this.importPlacementMarker.visible = false;
+    this.clearSelection('system');
+    this.renderer.domElement.style.cursor = 'crosshair';
+    this.callbacks.onImportPlacementChange?.('choosing');
+    return true;
+  }
+
+  cancelImportPlacement() {
+    if (!this.importPlacementChoosing && !this.importPlacement) return false;
+    this.importPlacementChoosing = false;
+    this.importPlacement = null;
+    this.importPlacementMarker.visible = false;
+    this.renderer.domElement.style.cursor = this.mode === 'walk' ? 'crosshair' : 'grab';
+    this.callbacks.onImportPlacementChange?.('cancelled');
+    return true;
+  }
+
+  private clearImportPlacement() {
+    this.importPlacementChoosing = false;
+    this.importPlacement = null;
+    this.importPlacementMarker.visible = false;
+    this.renderer.domElement.style.cursor = this.mode === 'walk' ? 'crosshair' : 'grab';
+    this.callbacks.onImportPlacementChange?.('cleared');
+  }
+
+  getImportPlacementState() {
+    return {
+      choosing: this.importPlacementChoosing,
+      position: this.importPlacement?.toArray() ?? null,
+    };
+  }
+
+  async importFiles(files: readonly File[]) {
+    if (!files.length) return [];
+    const objectUrls = new Map<string, string>();
+    files.forEach((file) => objectUrls.set(file.name.toLowerCase(), URL.createObjectURL(file)));
+    const manager = new THREE.LoadingManager();
+    manager.setURLModifier((url) => {
+      const filename = decodeURIComponent(url).split('/').pop()?.toLowerCase() ?? '';
+      return objectUrls.get(filename) ?? url;
+    });
+    const imported: ImportedDefinition[] = [];
+    try {
+      for (const file of files) {
+        const extension = getFileExtension(file);
+        if (!['glb', 'gltf', 'obj', 'stl'].includes(extension)) continue;
+        let object: THREE.Object3D;
+        if (extension === 'glb' || extension === 'gltf') {
+          const loader = new GLTFLoader(manager);
+          const result = await loader.loadAsync(objectUrls.get(file.name.toLowerCase())!);
+          object = result.scene;
+          object.animations = result.animations;
+        } else if (extension === 'obj') {
+          const loader = new OBJLoader(manager);
+          object = loader.parse(await file.text());
+        } else {
+          const loader = new STLLoader(manager);
+          const geometry = loader.parse(await file.arrayBuffer());
+          geometry.computeVertexNormals();
+          object = new THREE.Mesh(
+            geometry,
+            new THREE.MeshPhysicalMaterial({ color: '#cbd5d2', roughness: 0.4, metalness: 0.22 }),
+          );
+        }
+        const definition = this.addImportedObject(object, file.name, imported.length);
+        imported.push(definition);
+      }
+    } finally {
+      objectUrls.forEach((url) => URL.revokeObjectURL(url));
+      this.clearImportPlacement();
+    }
+    return imported;
+  }
+
+  private addImportedObject(object: THREE.Object3D, filename: string, placementIndex = 0) {
+    const interiorBuildingId = this.activeInteriorBuildingId;
+    const interiorTarget = interiorBuildingId ? this.ensureInterior(interiorBuildingId) : null;
+    const safeName = slugify(filename) || 'mesh';
+    const id = `imported-${safeName}-${Date.now().toString(36)}-${this.importedRoot.children.length + 1}`;
+    const wrapper = new THREE.Group();
+    wrapper.name = `IMPORTED__${safeName}`;
+    wrapper.userData = {
+      selectableId: id,
+      type: 'imported',
+      originalFilename: filename,
+      editable: true,
+    };
+    object.name ||= safeName;
+    object.traverse((child) => {
+      child.userData.selectableId = id;
+      if (child instanceof THREE.Mesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+        child.material = cloneMaterial(child.material);
+        child.userData.navObstacle = true;
+      }
+    });
+    wrapper.add(object);
+    object.updateMatrixWorld(true);
+    let bounds = new THREE.Box3().setFromObject(object, true);
+    const size = bounds.getSize(new THREE.Vector3());
+    const maxDimension = Math.max(size.x, size.y, size.z, 0.001);
+    const fitScale = THREE.MathUtils.clamp((interiorTarget ? 1.15 : 8) / maxDimension, 0.001, 50);
+    object.scale.multiplyScalar(fitScale);
+    object.updateMatrixWorld(true);
+    bounds = new THREE.Box3().setFromObject(object, true);
+    const center = bounds.getCenter(new THREE.Vector3());
+    object.position.x -= center.x;
+    object.position.z -= center.z;
+    object.position.y -= bounds.min.y;
+    if (interiorTarget) {
+      const placed = this.interiorAssetIds.get(interiorBuildingId!)?.size ?? 0;
+      const width = Number(interiorTarget.userData.roomWidth) || 8;
+      const depth = Number(interiorTarget.userData.roomDepth) || 6;
+      wrapper.position.set(
+        THREE.MathUtils.lerp(-width * 0.3, width * 0.3, (placed % 4) / 3),
+        0.012,
+        THREE.MathUtils.lerp(-depth * 0.23, depth * 0.18, (Math.floor(placed / 4) % 3) / 2),
+      );
+      interiorTarget.add(wrapper);
+    } else {
+      if (this.importPlacement) {
+        const angle = placementIndex * 2.39996;
+        const radius = placementIndex === 0 ? 0 : 4 + Math.floor(placementIndex / 6) * 2.5;
+        wrapper.position.set(
+          this.importPlacement.x + Math.cos(angle) * radius,
+          this.importPlacement.y + 0.04,
+          this.importPlacement.z + Math.sin(angle) * radius,
+        );
+      } else {
+        const selectedGroup = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+        if (selectedGroup) {
+          const selectedPosition = selectedGroup.getWorldPosition(new THREE.Vector3());
+          wrapper.position.set(selectedPosition.x + 2.5, ISLAND_SURFACE_Y + 0.04, selectedPosition.z + 2.5);
+        } else {
+          wrapper.position.set(0, ISLAND_SURFACE_Y + 0.04, 18);
+        }
+      }
+      this.importedRoot.add(wrapper);
+    }
+    wrapper.updateMatrixWorld(true);
+    const finalBounds = new THREE.Box3().setFromObject(wrapper, true);
+    const finalSize = finalBounds.getSize(new THREE.Vector3());
+    const definition: ImportedDefinition = {
+      id,
+      name: filename.replace(/\.[^.]+$/, ''),
+      sourceLabel: filename,
+      category: 'imported',
+      ring: 'custom',
+      position: [wrapper.position.x, wrapper.position.y, wrapper.position.z],
+      footprint: [Math.max(finalSize.x, 1), Math.max(finalSize.z, 1)],
+      height: Math.max(finalSize.y, 1),
+      archetype: `Imported ${filename.split('.').pop()?.toUpperCase() ?? 'mesh'} asset`,
+      accent: '#b7f34b',
+      palette: ['#11181a', '#344246', '#c9d3d0', '#b7f34b'],
+      description: `Editable mesh imported from ${filename}; its hierarchy and PBR materials are preserved for re-export${interiorTarget ? ' inside this building' : ''}.`,
+      workspace: interiorTarget ? 'interior' : 'landscape',
+      parentBuildingId: interiorBuildingId ?? undefined,
+    };
+    this.registerSelectable(definition, wrapper, Math.max(finalSize.y + 1.5, 3), false, !interiorTarget);
+    if (interiorBuildingId) {
+      const ids = this.interiorAssetIds.get(interiorBuildingId) ?? new Set<string>();
+      ids.add(id);
+      this.interiorAssetIds.set(interiorBuildingId, ids);
+    }
+    this.walkController.refreshNavigation();
+    this.callbacks.onImport?.(definition);
+    this.select(id, 'system');
+    this.focus(id);
+    return definition;
+  }
+
+  async exportGLB(filename = 'YouTopy_Lab_Island.glb') {
+    this.modelRoot.updateMatrixWorld(true);
+    const exporter = new GLTFExporter();
+    const exportRoot = this.modelRoot.clone(true);
+    exportRoot.name = 'LAB_ISLAND__BLENDER_EXPORT';
+    exportRoot.traverse((child) => {
+      if (child.userData.exportFallback) child.visible = true;
+      if (child.userData.exportAlways) child.visible = true;
+      if (child.userData.editorCutawayCeiling) child.visible = true;
+      if (typeof child.userData.editorIsolationRestoreVisible === 'boolean') {
+        child.visible = child.userData.editorIsolationRestoreVisible;
+        delete child.userData.editorIsolationRestoreVisible;
+      }
+    });
+    const exportSun = this.sun.clone();
+    exportSun.name = 'Blender Sun';
+    exportSun.castShadow = true;
+    exportSun.target.position.set(0, 0, -1);
+    exportSun.add(exportSun.target);
+    exportRoot.add(exportSun);
+    const result = await exporter.parseAsync(exportRoot, {
+      binary: true,
+      onlyVisible: true,
+      trs: true,
+      maxTextureSize: 2048,
+      includeCustomExtensions: true,
+    });
+    if (!(result instanceof ArrayBuffer)) throw new Error('GLB exporter returned an unexpected text payload.');
+    downloadBlob(new Blob([result], { type: 'model/gltf-binary' }), filename);
+  }
+
+  exportProject(filename = 'YouTopy_Lab_Island.project.json') {
+    const objects = Array.from(this.definitions.values()).map((definition) => ({
+      ...definition,
+      state: this.getObjectState(definition.id),
+    }));
+    const payload = {
+      schema: 'youtopy.lab-island/1.0',
+      exportedAt: new Date().toISOString(),
+      units: '10 metres per world unit',
+      coordinateSystem: { x: 'east', y: 'up', z: 'south' },
+      sourceSketch: 'YT_LabIsland_Ideas1.png',
+      objects,
+      editor: {
+        mode: this.mode,
+        workspace: this.editWorkspace,
+        activeInteriorBuildingId: this.activeInteriorBuildingId,
+        daylight: this.isDaylight(),
+        camera: {
+          position: this.camera.position.toArray(),
+          target: this.controls.target.toArray(),
+        },
+      },
+      blender: {
+        import: 'File > Import > glTF 2.0',
+        primaryExchangeFile: 'YouTopy_Lab_Island.glb',
+      },
+    };
+    downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), filename);
+  }
+
+  getTextSnapshot() {
+    const selected = this.getSelectedDefinition();
+    const visibleLabels = Array.from(this.labels.values()).filter(
+      (label) => !(label.anchor.element as HTMLElement).classList.contains('label-suppressed'),
+    );
+    return {
+      application: 'YouTopy Lab Island spatial editor',
+      coordinateSystem: 'origin at central megabuilding; +X east, +Y up, +Z south; 1 unit = 10 metres',
+      mode: this.mode,
+      environment: this.isDaylight() ? 'daylight' : 'blue-hour',
+      counts: {
+        districts: districts.length,
+        biomes: biomes.length,
+        importedAssets: this.importedRoot.children.length,
+        editorAssets: Array.from(this.definitions.values()).filter((definition) => definition.category === 'editor').length,
+        authoredInteriors: this.interiorGroups.size,
+      },
+      edit: {
+        workspace: this.editWorkspace,
+        activeInteriorBuildingId: this.activeInteriorBuildingId,
+        availableAssets: this.getAssetCatalog().map((item) => item.id),
+      },
+      importPlacement: this.getImportPlacementState(),
+      selected: selected
+        ? {
+            id: selected.id,
+            name: selected.name,
+            category: selected.category,
+            state: this.getObjectState(selected.id),
+          }
+        : null,
+      visibleLabels: visibleLabels.map((label) => label.definition.name),
+      camera: {
+        position: this.camera.position.toArray().map((value) => Number(value.toFixed(2))),
+        target: this.controls.target.toArray().map((value) => Number(value.toFixed(2))),
+      },
+      walk: {
+        ...this.walkController.getSnapshot(),
+        nearbyDistricts: Array.from(this.objectGroups.entries())
+          .filter(([, group]) => group.getWorldPosition(new THREE.Vector3()).distanceTo(this.camera.position) <= 12)
+          .map(([id]) => this.definitions.get(id)?.name)
+          .filter((name): name is string => Boolean(name)),
+      },
+    };
+  }
+
+  activateWalkLook() {
+    this.walkController.requestPointerLock();
+  }
+
+  setWalkIntent(x: number, z: number, sprint = false) {
+    this.walkController.setMoveIntent(x, z, sprint);
+  }
+
+  advanceTime(milliseconds: number) {
+    const steps = Math.max(1, Math.round(milliseconds / (1000 / 60)));
+    for (let index = 0; index < steps; index += 1) {
+      this.elapsed += 1 / 60;
+      this.update(1 / 60);
+    }
+    this.render();
+  }
+
+  dispose() {
+    this.disposed = true;
+    this.renderer.setAnimationLoop(null);
+    this.resizeObserver.disconnect();
+    this.renderer.domElement.removeEventListener('pointerdown', this.onPointerDown);
+    this.renderer.domElement.removeEventListener('pointerup', this.onPointerUp);
+    this.renderer.domElement.removeEventListener('pointermove', this.onPointerMove);
+    this.renderer.domElement.removeEventListener('dblclick', this.onDoubleClick);
+    this.controls.dispose();
+    this.walkController.dispose();
+    this.transformControls.dispose();
+    this.renderer.dispose();
+    this.labelRenderer.domElement.remove();
+    this.renderer.domElement.remove();
+  }
+}

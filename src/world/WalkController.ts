@@ -58,6 +58,8 @@ export class WalkController {
   private currentSpeed = 0;
   private dragLookActive = false;
   private lastPointer: { x: number; y: number } | null = null;
+  private velocityY = 0;
+  private isJumping = false;
   public isSitting = false;
   public seatTarget = new THREE.Vector3();
 
@@ -234,17 +236,34 @@ export class WalkController {
     }
 
     const sampledGround = this.sampleGround(this.camera.position.x, this.camera.position.z);
-    if (sampledGround !== null) {
-      this.groundY = sampledGround;
-      this.grounded = true;
-      this.camera.position.y = THREE.MathUtils.damp(
-        this.camera.position.y,
-        sampledGround + WALK_EYE_HEIGHT,
-        18,
-        delta,
-      );
+    const targetY = (sampledGround !== null ? sampledGround : (this.groundY !== null ? this.groundY : 0)) + WALK_EYE_HEIGHT;
+    
+    if (this.isJumping) {
+      this.velocityY -= 2.5 * delta;
+      this.camera.position.y += this.velocityY * delta;
+      
+      if (this.camera.position.y <= targetY) {
+        this.camera.position.y = targetY;
+        this.velocityY = 0;
+        this.isJumping = false;
+        this.grounded = sampledGround !== null;
+        if (sampledGround !== null) this.groundY = sampledGround;
+      } else {
+        this.grounded = false;
+      }
     } else {
-      this.grounded = false;
+      if (sampledGround !== null) {
+        this.groundY = sampledGround;
+        this.grounded = true;
+        this.camera.position.y = THREE.MathUtils.damp(
+          this.camera.position.y,
+          targetY,
+          18,
+          delta,
+        );
+      } else {
+        this.grounded = false;
+      }
     }
   }
 
@@ -384,6 +403,14 @@ export class WalkController {
     this.enableDragLook();
   };
 
+  private triggerJump() {
+    if (!this.active || this.isSitting) return;
+    if (this.grounded && !this.isJumping) {
+      this.velocityY = 0.85;
+      this.isJumping = true;
+    }
+  }
+
   private onKeyDown = (event: KeyboardEvent) => {
     if (!this.active) return;
     const target = event.target as HTMLElement | null;
@@ -399,10 +426,14 @@ export class WalkController {
       'ArrowRight',
       'ShiftLeft',
       'ShiftRight',
+      'Space',
     ]);
     if (movementCodes.has(event.code)) {
       event.preventDefault();
       this.keys.add(event.code);
+    }
+    if (event.code === 'Space' && !event.repeat) {
+      this.triggerJump();
     }
     if (event.code === 'KeyE' && !event.repeat) this.onInteract?.();
   };

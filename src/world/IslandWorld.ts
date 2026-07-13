@@ -15,6 +15,7 @@ import {
   EDITOR_ASSET_CATALOG,
   createEditorAsset,
   createInteriorShell,
+  applyCustomStyles,
   type EditorAssetCatalogItem,
   type EditorWorkspace,
 } from './editorAssets';
@@ -50,6 +51,12 @@ export interface EditorAssetDefinition {
   assetKind: 'building' | 'prop' | 'interior';
   catalogId: string;
   parentBuildingId?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  patternType?: string;
+  patternScale?: number;
+  collisionEnabled?: boolean;
+  interactions?: string[];
 }
 
 export interface ImportedDefinition {
@@ -67,6 +74,12 @@ export interface ImportedDefinition {
   description: string;
   workspace?: EditorWorkspace;
   parentBuildingId?: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  patternType?: string;
+  patternScale?: number;
+  collisionEnabled?: boolean;
+  interactions?: string[];
 }
 
 export type SceneDefinition = DistrictDefinition | BiomeDefinition | ImportedDefinition | EditorAssetDefinition;
@@ -77,6 +90,12 @@ export interface ObjectState {
   scale: number;
   visible: boolean;
   accent: string;
+  primaryColor?: string;
+  secondaryColor?: string;
+  patternType?: string;
+  patternScale?: number;
+  collisionEnabled?: boolean;
+  interactions?: string[];
 }
 
 interface CameraTween {
@@ -121,6 +140,7 @@ export interface IslandWorldCallbacks {
     state: 'choosing' | 'chosen' | 'cancelled' | 'cleared',
     position?: readonly [number, number, number],
   ) => void;
+  onUndoStackChange?: (canUndo: boolean) => void;
 }
 
 const CATEGORY_PRIORITY = new Set(['core', 'biome', 'perimeter', 'commercial']);
@@ -195,6 +215,101 @@ function createImportPlacementMarker() {
   return marker;
 }
 
+class PrecipitationSystem {
+  points: THREE.Points;
+  private readonly particleCount = 2000;
+  private readonly boxSize = 250;
+  private readonly velocities: number[] = [];
+  private readonly drifts: number[] = [];
+  private type: 'rain' | 'snow' = 'rain';
+
+  constructor() {
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(this.particleCount * 3);
+    for (let i = 0; i < this.particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * this.boxSize;
+      positions[i * 3 + 1] = Math.random() * 80;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * this.boxSize;
+      this.velocities.push(18 + Math.random() * 12);
+      this.drifts.push(Math.random() * 2 * Math.PI);
+    }
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 16;
+    canvas.height = 16;
+    const ctx = canvas.getContext('2d')!;
+    const grad = ctx.createRadialGradient(8, 8, 0, 8, 8, 8);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    grad.addColorStop(0.5, 'rgba(230, 245, 255, 0.5)');
+    grad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.arc(8, 8, 6, 0, Math.PI * 2);
+    ctx.fill();
+    const texture = new THREE.CanvasTexture(canvas);
+
+    const material = new THREE.PointsMaterial({
+      color: '#ffffff',
+      size: 0.6,
+      map: texture,
+      transparent: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false,
+    });
+    this.points = new THREE.Points(geometry, material);
+    this.points.visible = false;
+  }
+
+  setType(type: 'rain' | 'snow') {
+    this.type = type;
+    const mat = this.points.material as THREE.PointsMaterial;
+    if (type === 'rain') {
+      mat.size = 0.5;
+      mat.color.set('#cbe4f9');
+      for (let i = 0; i < this.particleCount; i++) {
+        this.velocities[i] = 20 + Math.random() * 15;
+      }
+    } else {
+      mat.size = 0.8;
+      mat.color.set('#ffffff');
+      for (let i = 0; i < this.particleCount; i++) {
+        this.velocities[i] = 2.5 + Math.random() * 2;
+      }
+    }
+    this.points.geometry.attributes.position.needsUpdate = true;
+  }
+
+  update(delta: number, playerPos: THREE.Vector3, elapsed: number) {
+    if (!this.points.visible) return;
+    const positions = this.points.geometry.attributes.position.array as Float32Array;
+    const isRain = this.type === 'rain';
+
+    for (let i = 0; i < this.particleCount; i++) {
+      positions[i * 3 + 1] -= this.velocities[i] * delta;
+
+      if (!isRain) {
+        positions[i * 3] += Math.sin(elapsed + this.drifts[i]) * 1.5 * delta;
+        positions[i * 3 + 2] += Math.cos(elapsed + this.drifts[i]) * 1.5 * delta;
+      }
+
+      if (positions[i * 3 + 1] < playerPos.y - 12) {
+        positions[i * 3 + 1] = playerPos.y + 75;
+      }
+
+      const dx = positions[i * 3] - playerPos.x;
+      const dz = positions[i * 3 + 2] - playerPos.z;
+      const halfSize = this.boxSize / 2;
+      if (dx > halfSize) positions[i * 3] -= this.boxSize;
+      else if (dx < -halfSize) positions[i * 3] += this.boxSize;
+
+      if (dz > halfSize) positions[i * 3 + 2] -= this.boxSize;
+      else if (dz < -halfSize) positions[i * 3 + 2] += this.boxSize;
+    }
+    this.points.geometry.attributes.position.needsUpdate = true;
+  }
+}
+
 export class IslandWorld {
   readonly scene = new THREE.Scene();
   readonly renderer: THREE.WebGLRenderer;
@@ -214,8 +329,9 @@ export class IslandWorld {
 
   private readonly container: HTMLElement;
   private readonly callbacks: IslandWorldCallbacks;
-  private readonly objectGroups = new Map<string, THREE.Group>();
+  public readonly objectGroups = new Map<string, THREE.Group>();
   private readonly definitions = new Map<string, SceneDefinition>();
+  private readonly undoStack: string[] = [];
   private readonly initialTransforms = new Map<
     string,
     { position: THREE.Vector3; quaternion: THREE.Quaternion; scale: THREE.Vector3; visible: boolean; accent: string }
@@ -247,6 +363,11 @@ export class IslandWorld {
   private generatedAssetSequence = 0;
   private dayTarget = 0;
   private dayMix = 0;
+  private activeTimeOfDay: 'sunrise' | 'noon' | 'sunset' | 'night' = 'noon';
+  private activeWeather: 'clear' | 'rain' | 'fog' | 'storm' = 'clear';
+  private activeSeason: 'summer' | 'spring' | 'autumn' | 'winter' = 'summer';
+  private readonly precipitation: PrecipitationSystem;
+  private lightningFlashTime = 0;
   private elapsed = 0;
   private cameraTween: CameraTween | null = null;
   private draggingGizmo = false;
@@ -307,15 +428,82 @@ export class IslandWorld {
     this.transformControls.addEventListener('dragging-changed', (event: { value: unknown }) => {
       this.draggingGizmo = Boolean(event.value);
       this.controls.enabled = this.mode !== 'walk' && !this.draggingGizmo;
+      if (this.draggingGizmo && this.selectedId) {
+        this.saveUndoState();
+        const group = this.objectGroups.get(this.selectedId);
+        if (group) {
+          if (!group.userData.lastSafePosition) {
+            group.userData.lastSafePosition = new THREE.Vector3();
+          }
+          group.userData.lastSafePosition.copy(group.position);
+        }
+      }
     });
     this.transformControls.addEventListener('objectChange', () => {
-      this.refreshSelectionBounds();
-      this.updateLabels(true);
       const definition = this.getSelectedDefinition();
       if (definition) {
+        const group = this.objectGroups.get(definition.id);
+        const collisionEnabled = group?.userData.collisionEnabled !== false && (definition as any).collisionEnabled !== false;
+
+        // 1. Interior Wall Clamping
+        const defAny = definition as any;
+        if (group && collisionEnabled && defAny.workspace === 'interior' && this.activeInteriorBuildingId) {
+          const interior = this.interiorGroups.get(this.activeInteriorBuildingId);
+          if (interior) {
+            const W = Number(interior.userData.roomWidth) || 8;
+            const D = Number(interior.userData.roomDepth) || 6;
+            const fw = defAny.footprint ? defAny.footprint[0] : 0.2;
+            const fd = defAny.footprint ? defAny.footprint[1] : 0.2;
+            const minX = -W * 0.5 + fw * 0.5;
+            const maxX = W * 0.5 - fw * 0.5;
+            const minZ = -D * 0.5 + fd * 0.5;
+            const maxZ = D * 0.5 - fd * 0.5;
+            group.position.x = THREE.MathUtils.clamp(group.position.x, minX, maxX);
+            group.position.z = THREE.MathUtils.clamp(group.position.z, minZ, maxZ);
+            group.position.y = 0.012; // Snap to floor
+          }
+        }
+
+        // 2. Overlap collision check with other objects in the same root
+        if (group && collisionEnabled) {
+          const parent = group.parent;
+          if (parent) {
+            const selectedBox = new THREE.Box3().setFromObject(group);
+            let intersects = false;
+            for (const child of parent.children) {
+              if (child === group || child.name === 'EDITOR__TRANSFORM_GIZMO' || child.name === 'EDITOR__SELECTION_BOUNDS') continue;
+              
+              // Only check objects that have collisions enabled
+              const childId = child.userData.selectableId;
+              if (childId) {
+                const childDef = this.definitions.get(childId);
+                if (childDef && (childDef as any).collisionEnabled === false) continue;
+              }
+              
+              const childBox = new THREE.Box3().setFromObject(child);
+              if (selectedBox.intersectsBox(childBox)) {
+                intersects = true;
+                break;
+              }
+            }
+            if (intersects) {
+              if (group.userData.lastSafePosition) {
+                group.position.copy(group.userData.lastSafePosition);
+              }
+            } else {
+              if (!group.userData.lastSafePosition) {
+                group.userData.lastSafePosition = new THREE.Vector3();
+              }
+              group.userData.lastSafePosition.copy(group.position);
+            }
+          }
+        }
+
         this.syncInteriorTransform(definition.id);
         this.callbacks.onTransform?.(definition, this.getObjectState(definition.id)!);
       }
+      this.refreshSelectionBounds();
+      this.updateLabels(true);
       this.walkController?.refreshNavigation();
     });
 
@@ -355,9 +543,10 @@ export class IslandWorld {
     );
     this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
 
+    this.precipitation = new PrecipitationSystem();
     this.ocean = createOcean();
     this.sky = createSkyDome();
-    this.presentationRoot.add(this.ocean, this.sky, this.importPlacementMarker);
+    this.presentationRoot.add(this.ocean, this.sky, this.importPlacementMarker, this.precipitation.points);
 
     this.hemisphere = new THREE.HemisphereLight('#9ecbd4', '#17241f', 1.55);
     this.hemisphere.name = 'Blue-hour hemisphere light';
@@ -413,6 +602,11 @@ export class IslandWorld {
     this.resize();
     this.updateLabels(true);
     this.renderer.setAnimationLoop(this.animate);
+    try {
+      this.loadProjectFromLocalStorage();
+    } catch (e) {
+      console.error('Error loading saved project on init', e);
+    }
     window.setTimeout(() => this.callbacks.onReady?.(), 560);
   }
 
@@ -616,15 +810,143 @@ export class IslandWorld {
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
     this.ocean.material.uniforms.uTime.value = this.elapsed;
-    this.dayMix = THREE.MathUtils.damp(this.dayMix, this.dayTarget, 3.2, delta);
+    let targetDayMix = 0;
+    const targetSkyTop = new THREE.Color('#071827');
+    const targetSkyHorizon = new THREE.Color('#9b5f6c');
+    const targetSkyBottom = new THREE.Color('#1a3036');
+    let targetSunIntensity = 3.6;
+    const targetSunColor = new THREE.Color('#ffd9be');
+    const targetSunPos = new THREE.Vector3(-180, 310, 170);
+    let targetHemiIntensity = 1.55;
+    const targetHemiSky = new THREE.Color('#9ecbd4');
+    const targetHemiGround = new THREE.Color('#17241f');
+    const targetFogColor = new THREE.Color('#102632');
+    let targetFogDensity = 0.00115;
+    let targetExposure = 1.08;
+
+    if (this.activeTimeOfDay === 'noon') {
+      targetDayMix = 1;
+      targetSkyTop.set('#162a45');
+      targetSkyHorizon.set('#64a3be');
+      targetSkyBottom.set('#a8cbdc');
+      targetSunIntensity = 5.2;
+      targetSunColor.set('#ffffff');
+      targetSunPos.set(-50, 350, 50);
+      targetHemiIntensity = 2.55;
+      targetHemiSky.set('#bee4eb');
+      targetHemiGround.set('#2f3e3a');
+      targetFogColor.set('#99b9bf');
+      targetFogDensity = 0.0006;
+      targetExposure = 1.22;
+    } else if (this.activeTimeOfDay === 'sunrise') {
+      targetDayMix = 0;
+      targetSkyTop.set('#1a2639');
+      targetSkyHorizon.set('#ffa67e');
+      targetSkyBottom.set('#ffe6a3');
+      targetSunIntensity = 3.8;
+      targetSunColor.set('#ffc8a0');
+      targetSunPos.set(-240, 80, 100);
+      targetHemiIntensity = 2.4;
+      targetHemiSky.set('#ffd8c0');
+      targetHemiGround.set('#1b2025');
+      targetFogColor.set('#fcd2b8');
+      targetFogDensity = 0.0018;
+      targetExposure = 1.15;
+    } else if (this.activeTimeOfDay === 'sunset') {
+      targetDayMix = 0;
+      targetSkyTop.set('#0b0e24');
+      targetSkyHorizon.set('#ff5e62');
+      targetSkyBottom.set('#ff9966');
+      targetSunIntensity = 3.2;
+      targetSunColor.set('#ff5c20');
+      targetSunPos.set(240, 60, -120);
+      targetHemiIntensity = 2.2;
+      targetHemiSky.set('#ff9670');
+      targetHemiGround.set('#181822');
+      targetFogColor.set('#e2725b');
+      targetFogDensity = 0.0011;
+      targetExposure = 1.1;
+    } else { // night
+      targetDayMix = 0;
+      targetSkyTop.set('#02040a');
+      targetSkyHorizon.set('#061021');
+      targetSkyBottom.set('#03070f');
+      targetSunIntensity = 0.85;
+      targetSunColor.set('#8ab0ff');
+      targetSunPos.set(-150, 220, 150);
+      targetHemiIntensity = 0.9;
+      targetHemiSky.set('#0c1630');
+      targetHemiGround.set('#04070a');
+      targetFogColor.set('#050912');
+      targetFogDensity = 0.0008;
+      targetExposure = 1.05;
+    }
+
+    if (this.activeWeather === 'fog') {
+      targetFogColor.lerp(new THREE.Color('#cad5d6'), 0.8);
+      targetFogDensity = this.mode === 'walk' ? 0.024 : 0.008;
+      targetSunIntensity *= 0.15;
+      targetHemiIntensity *= 1.25;
+    } else if (this.activeWeather === 'rain') {
+      targetFogColor.lerp(new THREE.Color('#4c5b63'), 0.75);
+      targetFogDensity = this.mode === 'walk' ? 0.006 : 0.0022;
+      targetSunIntensity *= 0.6;
+      targetSkyTop.lerp(new THREE.Color('#101a24'), 0.85);
+      targetSkyHorizon.lerp(new THREE.Color('#384c56'), 0.85);
+      targetSkyBottom.lerp(new THREE.Color('#4c5d68'), 0.85);
+    } else if (this.activeWeather === 'storm') {
+      targetFogColor.lerp(new THREE.Color('#222830'), 0.9);
+      targetFogDensity = this.mode === 'walk' ? 0.009 : 0.003;
+      targetSunIntensity *= 0.25;
+      targetSkyTop.lerp(new THREE.Color('#080d14'), 0.9);
+      targetSkyHorizon.lerp(new THREE.Color('#1c232d'), 0.9);
+      targetSkyBottom.lerp(new THREE.Color('#242c38'), 0.9);
+    }
+
+    const rate = 3.6;
+    this.dayMix = THREE.MathUtils.damp(this.dayMix, targetDayMix, rate, delta);
     this.sky.material.uniforms.uDayMix.value = this.dayMix;
+    this.sky.material.uniforms.uTop.value.lerp(targetSkyTop, delta * rate);
+    this.sky.material.uniforms.uHorizon.value.lerp(targetSkyHorizon, delta * rate);
+    this.sky.material.uniforms.uBottom.value.lerp(targetSkyBottom, delta * rate);
+    this.sky.material.uniforms.uSunDir.value.copy(this.sun.position).normalize();
+    this.sky.material.uniforms.uIsNight.value = (this.activeTimeOfDay === 'night') ? 1.0 : 0.0;
+
     this.ocean.material.uniforms.uNight.value = 1 - this.dayMix;
-    this.hemisphere.intensity = THREE.MathUtils.lerp(1.55, 2.55, this.dayMix);
-    this.sun.intensity = THREE.MathUtils.lerp(3.6, 5.2, this.dayMix);
-    this.renderer.toneMappingExposure = THREE.MathUtils.lerp(1.08, 1.22, this.dayMix);
+
+    this.hemisphere.intensity = THREE.MathUtils.damp(this.hemisphere.intensity, targetHemiIntensity, rate, delta);
+    this.hemisphere.color.lerp(targetHemiSky, delta * rate);
+    this.hemisphere.groundColor.lerp(targetHemiGround, delta * rate);
+
+    this.sun.intensity = THREE.MathUtils.damp(this.sun.intensity, targetSunIntensity, rate, delta);
+    this.sun.color.lerp(targetSunColor, delta * rate);
+    this.sun.position.lerp(targetSunPos, delta * rate);
+
+    let exposure = THREE.MathUtils.damp(this.renderer.toneMappingExposure, targetExposure, rate, delta);
+
     const fog = this.scene.fog as THREE.FogExp2;
-    fog.color.lerpColors(new THREE.Color('#102632'), new THREE.Color('#99b9bf'), this.dayMix);
+    fog.color.lerp(targetFogColor, delta * rate);
+    fog.density = THREE.MathUtils.damp(fog.density, targetFogDensity, rate, delta);
     this.scene.background = fog.color;
+
+    if (this.activeWeather === 'storm') {
+      if (this.lightningFlashTime > 0) {
+        this.lightningFlashTime -= delta;
+        if (this.lightningFlashTime <= 0) {
+          this.lightningFlashTime = 0;
+        }
+        exposure = 3.8;
+        fog.color.set('#ffffff');
+        this.sun.intensity = 12.0;
+        this.sun.color.set('#ffffff');
+      } else if (Math.random() < 0.004) {
+        this.lightningFlashTime = 0.08 + Math.random() * 0.12;
+      }
+    }
+    this.renderer.toneMappingExposure = exposure;
+
+    const playerPos = this.mode === 'walk' ? this.camera.position : this.controls.target;
+    this.precipitation.update(delta, playerPos, this.elapsed);
 
     this.animatedObjects.forEach((object) => {
       if (object.userData.animate === 'ring-pod') {
@@ -815,7 +1137,7 @@ export class IslandWorld {
     return true;
   }
 
-  addCatalogAsset(catalogId: string): EditorAssetDefinition | null {
+  addCatalogAsset(catalogId: string, customPosition?: THREE.Vector3): EditorAssetDefinition | null {
     const item = EDITOR_ASSET_CATALOG.find((entry) => entry.id === catalogId);
     if (!item || item.workspace !== this.editWorkspace) return null;
     if (item.workspace === 'interior' && !this.activeInteriorBuildingId) return null;
@@ -827,6 +1149,37 @@ export class IslandWorld {
     group.userData.editable = true;
     group.userData.catalogId = item.id;
     group.userData.workspace = item.workspace;
+
+    const defaultInteractions = (() => {
+      const list: string[] = [];
+      const lid = item.id;
+      if (lid.includes('chair') || lid.includes('bench') || lid.includes('sofa') || lid.includes('desk') || lid.includes('workstation')) {
+        list.push('sit');
+      }
+      if (lid.includes('sofa') || lid.includes('chair') || lid.includes('pod')) {
+        list.push('sleep');
+      }
+      if (lid.includes('microscope') || lid.includes('sequencer') || lid.includes('centrifuge') || lid.includes('dispenser') || lid.includes('bench') || lid.includes('lab') || lid.includes('tower')) {
+        list.push('research');
+        list.push('analyze');
+      }
+      if (lid.includes('lamp') || lid.includes('gate') || lid.includes('spire') || lid.includes('rack') || lid.includes('console') || lid.includes('sequencer') || lid.includes('dispenser') || lid.includes('canopy')) {
+        list.push('power');
+      }
+      if (lid.includes('shower') || lid.includes('dome') || lid.includes('cabinet') || lid.includes('airlock')) {
+        list.push('decontaminate');
+      }
+      return list.length ? list : ['research'];
+    })();
+
+    group.userData.primaryColor = '#ffffff';
+    group.userData.secondaryColor = '#74858a';
+    group.userData.patternType = 'solid';
+    group.userData.patternScale = 1.0;
+    group.userData.collisionEnabled = true;
+    group.userData.interactions = defaultInteractions;
+
+    applyCustomStyles(group, '#ffffff', '#74858a', item.accent, 'solid', 1.0);
 
     let parentBuildingId: string | undefined;
     if (item.workspace === 'interior') {
@@ -847,15 +1200,20 @@ export class IslandWorld {
       );
       interior.add(group);
     } else {
-      const selected = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
-      const base = selected?.getWorldPosition(new THREE.Vector3()) ?? new THREE.Vector3(0, ISLAND_SURFACE_Y, 20);
-      const angle = this.generatedAssetSequence * 2.39996;
-      const radius = 3.8 + (this.generatedAssetSequence % 4) * 1.25;
-      group.position.set(
-        base.x + Math.cos(angle) * radius,
-        ISLAND_SURFACE_Y + 0.04,
-        base.z + Math.sin(angle) * radius,
-      );
+      if (customPosition) {
+        group.position.copy(customPosition);
+        group.position.y = ISLAND_SURFACE_Y + 0.04;
+      } else {
+        const selected = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+        const base = selected?.getWorldPosition(new THREE.Vector3()) ?? new THREE.Vector3(0, ISLAND_SURFACE_Y, 20);
+        const angle = this.generatedAssetSequence * 2.39996;
+        const radius = 3.8 + (this.generatedAssetSequence % 4) * 1.25;
+        group.position.set(
+          base.x + Math.cos(angle) * radius,
+          ISLAND_SURFACE_Y + 0.04,
+          base.z + Math.sin(angle) * radius,
+        );
+      }
       (item.kind === 'building' ? this.architectureRoot : this.landscapeRoot).add(group);
     }
 
@@ -876,6 +1234,12 @@ export class IslandWorld {
       assetKind: item.kind,
       catalogId: item.id,
       parentBuildingId,
+      primaryColor: '#ffffff',
+      secondaryColor: '#74858a',
+      patternType: 'solid',
+      patternScale: 1.0,
+      collisionEnabled: true,
+      interactions: defaultInteractions,
     };
     this.registerSelectable(definition, group, item.height + 0.8, false, item.workspace === 'landscape');
     if (parentBuildingId) {
@@ -887,6 +1251,7 @@ export class IslandWorld {
     this.callbacks.onObjectAdded?.(definition);
     this.select(id, 'system');
     this.focus(id);
+    this.applySeasonColors(this.activeSeason);
     return definition;
   }
 
@@ -1149,10 +1514,109 @@ export class IslandWorld {
 
   setDaylight(daylight: boolean) {
     this.dayTarget = daylight ? 1 : 0;
+    this.activeTimeOfDay = daylight ? 'noon' : 'night';
   }
 
   isDaylight() {
-    return this.dayTarget > 0.5;
+    return this.activeTimeOfDay === 'noon' || this.activeTimeOfDay === 'sunrise';
+  }
+
+  setTimeOfDay(time: 'sunrise' | 'noon' | 'sunset' | 'night') {
+    this.activeTimeOfDay = time;
+    this.dayTarget = time === 'noon' ? 1 : 0;
+  }
+
+  getTimeOfDay() {
+    return this.activeTimeOfDay;
+  }
+
+  setWeather(weather: 'clear' | 'rain' | 'fog' | 'storm') {
+    this.activeWeather = weather;
+    if (weather === 'rain' || weather === 'storm') {
+      this.precipitation.points.visible = true;
+      this.precipitation.setType(this.activeSeason === 'winter' ? 'snow' : 'rain');
+    } else {
+      this.precipitation.points.visible = false;
+    }
+  }
+
+  getWeather() {
+    return this.activeWeather;
+  }
+
+  setSeason(season: 'spring' | 'summer' | 'autumn' | 'winter') {
+    this.activeSeason = season;
+    if (this.activeWeather === 'rain' || this.activeWeather === 'storm') {
+      this.precipitation.setType(season === 'winter' ? 'snow' : 'rain');
+    }
+    this.applySeasonColors(season);
+  }
+
+  getSeason() {
+    return this.activeSeason;
+  }
+
+  applySeasonColors(season: 'spring' | 'summer' | 'autumn' | 'winter') {
+    const isFoliage = (material: any, name: string) => {
+      const n = name.toUpperCase();
+      if (n.includes('FOLIAGE') || n.includes('LEAF') || n.includes('VEGETATION') || n.includes('PLANT') || n.includes('TREE')) return true;
+      if (material && material.name && material.name.toUpperCase().includes('FOLIAGE')) return true;
+      if (material && material.color) {
+        const c = material.color;
+        if (c.g > c.r && c.g > c.b && c.r < 0.6) return true;
+      }
+      return false;
+    };
+
+    const isLandscape = (node: THREE.Object3D) => {
+      let p: THREE.Object3D | null = node;
+      while (p) {
+        if (p === this.landscapeRoot) return true;
+        p = p.parent;
+      }
+      return false;
+    };
+
+    this.scene.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((mat) => {
+          if (mat instanceof THREE.MeshStandardMaterial) {
+            if (mat.userData.originalColor === undefined) {
+              mat.userData.originalColor = mat.color.clone();
+            }
+
+            if (isFoliage(mat, child.name)) {
+              if (season === 'spring') {
+                const idx = child.id % 3;
+                if (idx === 0) mat.color.set('#ffb7c5');
+                else if (idx === 1) mat.color.set('#78e08f');
+                else mat.color.set('#b8e994');
+              } else if (season === 'summer') {
+                mat.color.copy(mat.userData.originalColor);
+              } else if (season === 'autumn') {
+                const idx = child.id % 3;
+                if (idx === 0) mat.color.set('#e17055');
+                else if (idx === 1) mat.color.set('#fdcb6e');
+                else mat.color.set('#d63031');
+              } else if (season === 'winter') {
+                mat.color.set('#f1f2f6');
+              }
+            }
+
+            if (season === 'winter') {
+              if (isLandscape(child) && (child.name.includes('basalt') || child.name.includes('shelf') || child.name.includes('surface') || child.name.includes('plateau') || child.name.includes('rock') || child.name.includes('foundation') || child.name.includes('SHELL'))) {
+                mat.color.set('#f5f6fa');
+              }
+            } else {
+              if (isLandscape(child) && (child.name.includes('basalt') || child.name.includes('shelf') || child.name.includes('surface') || child.name.includes('plateau') || child.name.includes('rock') || child.name.includes('foundation') || child.name.includes('SHELL'))) {
+                if (mat.userData.originalColor) mat.color.copy(mat.userData.originalColor);
+              }
+            }
+          }
+        });
+      }
+    });
   }
 
   getDefinition(id: string) {
@@ -1173,6 +1637,12 @@ export class IslandWorld {
       scale: (group.scale.x + group.scale.y + group.scale.z) / 3,
       visible: group.visible,
       accent: definition.accent,
+      primaryColor: group.userData.primaryColor ?? (definition as any).primaryColor ?? '#ffffff',
+      secondaryColor: group.userData.secondaryColor ?? (definition as any).secondaryColor ?? '#74858a',
+      patternType: group.userData.patternType ?? (definition as any).patternType ?? 'solid',
+      patternScale: group.userData.patternScale ?? (definition as any).patternScale ?? 1.0,
+      collisionEnabled: group.userData.collisionEnabled !== false && (definition as any).collisionEnabled !== false,
+      interactions: group.userData.interactions ?? (definition as any).interactions ?? [],
     };
   }
 
@@ -1214,6 +1684,9 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
     setModelAccent(group, color);
+    const primary = group.userData.primaryColor ?? '#ffffff';
+    const secondary = group.userData.secondaryColor ?? '#74858a';
+    applyCustomStyles(group, primary, secondary, color, group.userData.patternType, group.userData.patternScale);
     const replacement = { ...definition, accent: color } as SceneDefinition;
     this.definitions.set(id, replacement);
     const label = this.labels.get(id);
@@ -1221,6 +1694,379 @@ export class IslandWorld {
     if (label) label.definition = replacement;
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
     this.walkController.refreshNavigation();
+  }
+
+  setObjectColors(id: string, primary: string, secondary: string, accent: string) {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return;
+
+    group.userData.primaryColor = primary;
+    group.userData.secondaryColor = secondary;
+    group.userData.accent = accent;
+
+    applyCustomStyles(group, primary, secondary, accent, group.userData.patternType, group.userData.patternScale);
+
+    const replacement = {
+      ...definition,
+      accent,
+      primaryColor: primary,
+      secondaryColor: secondary,
+    } as SceneDefinition;
+    this.definitions.set(id, replacement);
+
+    const label = this.labels.get(id);
+    label?.anchor.element.style.setProperty('--label-accent', accent);
+    if (label) label.definition = replacement;
+
+    this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+  }
+
+  setObjectPattern(id: string, pattern: string, scale: number) {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return;
+
+    group.userData.patternType = pattern;
+    group.userData.patternScale = scale;
+
+    applyCustomStyles(group, group.userData.primaryColor ?? '#ffffff', group.userData.secondaryColor ?? '#74858a', definition.accent, pattern, scale);
+
+    const replacement = {
+      ...definition,
+      patternType: pattern,
+      patternScale: scale,
+    } as SceneDefinition;
+    this.definitions.set(id, replacement);
+
+    this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+  }
+
+  setObjectCollision(id: string, enabled: boolean) {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return;
+
+    group.userData.collisionEnabled = enabled;
+
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        if (child.userData.originalNavObstacle === undefined) {
+          child.userData.originalNavObstacle = child.userData.navObstacle || false;
+        }
+        child.userData.navObstacle = enabled ? child.userData.originalNavObstacle : false;
+      }
+    });
+
+    const replacement = {
+      ...definition,
+      collisionEnabled: enabled,
+    } as SceneDefinition;
+    this.definitions.set(id, replacement);
+
+    this.walkController.refreshNavigation();
+    this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+  }
+
+  setObjectInteractions(id: string, list: string[]) {
+    const group = this.objectGroups.get(id);
+    const definition = this.definitions.get(id);
+    if (!group || !definition) return;
+
+    group.userData.interactions = list;
+
+    const replacement = {
+      ...definition,
+      interactions: list,
+    } as SceneDefinition;
+    this.definitions.set(id, replacement);
+
+    this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+  }
+
+  saveProjectToLocalStorage() {
+    const objects = Array.from(this.definitions.values()).map((definition) => ({
+      ...definition,
+      state: this.getObjectState(definition.id),
+    }));
+    const payload = {
+      schema: 'youtopy.lab-island/1.0',
+      exportedAt: new Date().toISOString(),
+      objects,
+      editor: {
+        workspace: this.editWorkspace,
+        daylight: this.isDaylight(),
+        camera: {
+          position: this.camera.position.toArray(),
+          target: this.controls.target.toArray(),
+        },
+      },
+    };
+    localStorage.setItem('youtopy_saved_project', JSON.stringify(payload));
+  }
+
+  loadProjectFromLocalStorage(): boolean {
+    const raw = localStorage.getItem('youtopy_saved_project');
+    if (!raw) return false;
+    try {
+      const payload = JSON.parse(raw);
+      return this.loadProject(payload);
+    } catch (e) {
+      console.error('Failed to parse saved project from LocalStorage', e);
+      return false;
+    }
+  }
+
+  rebuildStaticDistrictsAndBiomes() {
+    const toRemove: string[] = [];
+    districts.forEach((d) => toRemove.push(d.id));
+    biomes.forEach((b) => toRemove.push(b.id));
+
+    toRemove.forEach((id) => {
+      this.unregisterObject(id);
+    });
+
+    this.createDistrictsAndBiomes();
+  }
+
+  loadProject(payload: any): boolean {
+    if (!payload || payload.schema !== 'youtopy.lab-island/1.0') return false;
+
+    this.rebuildStaticDistrictsAndBiomes();
+
+    // 1. Clear any editor/imported dynamic assets
+    const dynamicIds = Array.from(this.definitions.keys()).filter((id) => id.startsWith('editor-') || id.startsWith('imported-'));
+    dynamicIds.forEach((id) => this.unregisterObject(id));
+
+    this.interiorGroups.forEach((group) => {
+      group.removeFromParent();
+    });
+    this.interiorGroups.clear();
+    this.interiorAssetIds.clear();
+
+    const defaultInteractionsHelper = (lid: string) => {
+      const list: string[] = [];
+      if (lid.includes('chair') || lid.includes('bench') || lid.includes('sofa') || lid.includes('desk') || lid.includes('workstation')) {
+        list.push('sit');
+      }
+      if (lid.includes('sofa') || lid.includes('chair') || lid.includes('pod')) {
+        list.push('sleep');
+      }
+      if (lid.includes('microscope') || lid.includes('sequencer') || lid.includes('centrifuge') || lid.includes('dispenser') || lid.includes('bench') || lid.includes('lab') || lid.includes('tower')) {
+        list.push('research');
+        list.push('analyze');
+      }
+      if (lid.includes('lamp') || lid.includes('gate') || lid.includes('spire') || lid.includes('rack') || lid.includes('console') || lid.includes('sequencer') || lid.includes('dispenser') || lid.includes('canopy')) {
+        list.push('power');
+      }
+      if (lid.includes('shower') || lid.includes('dome') || lid.includes('cabinet') || lid.includes('airlock')) {
+        list.push('decontaminate');
+      }
+      return list.length ? list : ['research'];
+    };
+
+    // 2. Load objects
+    payload.objects.forEach((obj: any) => {
+      const id = obj.id;
+      const state = obj.state;
+
+      if (id.startsWith('editor-')) {
+        const catalogId = obj.catalogId;
+        const item = EDITOR_ASSET_CATALOG.find((entry) => entry.id === catalogId);
+        if (item) {
+          const group = createEditorAsset(item, id);
+          group.name = `${item.workspace === 'interior' ? 'INTERIOR_ASSET' : 'LANDSCAPE_ASSET'}__${slugify(item.name)}`;
+          group.userData.editable = true;
+          group.userData.catalogId = item.id;
+          group.userData.workspace = item.workspace;
+
+          if (state) {
+            group.position.set(state.position.x, state.position.y, state.position.z);
+            group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
+            group.scale.setScalar(state.scale);
+            group.visible = state.visible;
+          }
+
+          const primaryColor = state?.primaryColor ?? obj.primaryColor ?? '#ffffff';
+          const secondaryColor = state?.secondaryColor ?? obj.secondaryColor ?? '#74858a';
+          const patternType = state?.patternType ?? obj.patternType ?? 'solid';
+          const patternScale = state?.patternScale ?? obj.patternScale ?? 1.0;
+          const collisionEnabled = state?.collisionEnabled !== false && obj.collisionEnabled !== false;
+          const interactions = state?.interactions ?? obj.interactions ?? defaultInteractionsHelper(item.id);
+
+          group.userData.primaryColor = primaryColor;
+          group.userData.secondaryColor = secondaryColor;
+          group.userData.patternType = patternType;
+          group.userData.patternScale = patternScale;
+          group.userData.collisionEnabled = collisionEnabled;
+          group.userData.interactions = interactions;
+
+          applyCustomStyles(group, primaryColor, secondaryColor, state?.accent ?? obj.accent, patternType, patternScale);
+
+          group.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+              child.userData.originalNavObstacle = child.userData.navObstacle || false;
+              child.userData.navObstacle = collisionEnabled ? child.userData.originalNavObstacle : false;
+            }
+          });
+
+          if (item.workspace === 'interior') {
+            const parentId = obj.parentBuildingId;
+            if (parentId) {
+              const interior = this.ensureInterior(parentId);
+              if (interior) {
+                interior.add(group);
+                const ids = this.interiorAssetIds.get(parentId) ?? new Set<string>();
+                ids.add(id);
+                this.interiorAssetIds.set(parentId, ids);
+              }
+            }
+          } else {
+            (item.kind === 'building' ? this.architectureRoot : this.landscapeRoot).add(group);
+          }
+
+          const definition: EditorAssetDefinition = {
+            ...obj,
+            primaryColor,
+            secondaryColor,
+            patternType,
+            patternScale,
+            collisionEnabled,
+            interactions,
+          };
+          this.registerSelectable(definition, group, item.height + 0.8, false, item.workspace === 'landscape');
+        }
+      } else if (id.startsWith('imported-')) {
+        // Skip recreating base64 imported models for LocalStorage context, but preserve definition if needed
+      } else {
+        const group = this.objectGroups.get(id);
+        const definition = this.definitions.get(id);
+        if (group && definition) {
+          if (state) {
+            group.position.set(state.position.x, state.position.y, state.position.z);
+            group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
+            group.scale.setScalar(state.scale);
+            group.visible = state.visible;
+          }
+
+          const primaryColor = state?.primaryColor ?? obj.primaryColor;
+          const secondaryColor = state?.secondaryColor ?? obj.secondaryColor;
+          const patternType = state?.patternType ?? obj.patternType;
+          const patternScale = state?.patternScale ?? obj.patternScale;
+          const collisionEnabled = state?.collisionEnabled !== false && obj.collisionEnabled !== false;
+          const interactions = state?.interactions ?? obj.interactions ?? [];
+
+          group.userData.primaryColor = primaryColor;
+          group.userData.secondaryColor = secondaryColor;
+          group.userData.patternType = patternType;
+          group.userData.patternScale = patternScale;
+          group.userData.collisionEnabled = collisionEnabled;
+          group.userData.interactions = interactions;
+
+          const accent = state?.accent ?? obj.accent;
+          if (primaryColor || secondaryColor || patternType) {
+            applyCustomStyles(group, primaryColor, secondaryColor, accent, patternType, patternScale);
+          } else {
+            setModelAccent(group, accent);
+          }
+
+          group.traverse((child) => {
+            if (child instanceof THREE.Mesh) {
+              child.userData.originalNavObstacle = child.userData.navObstacle || false;
+              child.userData.navObstacle = collisionEnabled ? child.userData.originalNavObstacle : false;
+            }
+          });
+
+          const replacement = {
+            ...definition,
+            accent,
+            primaryColor,
+            secondaryColor,
+            patternType,
+            patternScale,
+            collisionEnabled,
+            interactions,
+          } as SceneDefinition;
+          this.definitions.set(id, replacement);
+
+          const label = this.labels.get(id);
+          label?.anchor.element.style.setProperty('--label-accent', accent);
+          if (label) label.definition = replacement;
+        }
+      }
+    });
+
+    if (payload.editor) {
+      if (payload.editor.timeOfDay !== undefined) {
+        this.setTimeOfDay(payload.editor.timeOfDay);
+      } else if (payload.editor.daylight !== undefined) {
+        this.setDaylight(payload.editor.daylight);
+      }
+      if (payload.editor.weather !== undefined) {
+        this.setWeather(payload.editor.weather);
+      }
+      if (payload.editor.season !== undefined) {
+        this.setSeason(payload.editor.season);
+      }
+      if (payload.editor.camera) {
+        const cam = payload.editor.camera;
+        this.camera.position.fromArray(cam.position);
+        this.controls.target.fromArray(cam.target);
+        this.controls.update();
+      }
+    }
+
+    this.applySeasonColors(this.activeSeason);
+    this.walkController.refreshNavigation();
+    this.clearSelection('ui');
+    return true;
+  }
+
+  takeSnapshotPayload() {
+    return {
+      schema: 'youtopy.lab-island/1.0',
+      exportedAt: new Date().toISOString(),
+      objects: Array.from(this.definitions.values()).map((definition) => ({
+        ...definition,
+        state: this.getObjectState(definition.id),
+      })),
+      editor: {
+        workspace: this.editWorkspace,
+        daylight: this.isDaylight(),
+        timeOfDay: this.activeTimeOfDay,
+        weather: this.activeWeather,
+        season: this.activeSeason,
+        camera: {
+          position: this.camera.position.toArray(),
+          target: this.controls.target.toArray(),
+        },
+      },
+    };
+  }
+
+  saveUndoState() {
+    const payloadStr = JSON.stringify(this.takeSnapshotPayload());
+    if (this.undoStack.length === 0 || this.undoStack[this.undoStack.length - 1] !== payloadStr) {
+      this.undoStack.push(payloadStr);
+      if (this.undoStack.length > 50) {
+        this.undoStack.shift();
+      }
+      this.callbacks.onUndoStackChange?.(true);
+    }
+  }
+
+  undo() {
+    if (this.undoStack.length === 0) return false;
+    const prevStr = this.undoStack.pop()!;
+    try {
+      const payload = JSON.parse(prevStr);
+      this.loadProject(payload);
+      this.callbacks.onUndoStackChange?.(this.undoStack.length > 0);
+      return true;
+    } catch (e) {
+      console.error('Failed to undo', e);
+      return false;
+    }
   }
 
   resetObject(id: string) {

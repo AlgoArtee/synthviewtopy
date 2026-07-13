@@ -32,6 +32,18 @@
         </nav>
 
         <div class="top-actions">
+          <button class="icon-action" id="save-project" title="Save changes to LocalStorage">
+            <span class="action-icon">💾</span><span class="action-label">Save</span>
+          </button>
+          <button class="icon-action" id="refresh-project" title="Reload from last saved state">
+            <span class="action-icon">⟳</span><span class="action-label">Refresh</span>
+          </button>
+          <button class="icon-action" id="undo-action" title="Undo last action" disabled>
+            <span class="action-icon">↶</span><span class="action-label">Undo</span>
+          </button>
+          <button class="icon-action" id="toggle-theme" title="Toggle theme (Cyber Tech / Clean Tech)">
+            <span class="action-icon">◐</span><span class="action-label">Cyber Tech</span>
+          </button>
           <button class="icon-action" id="toggle-time" title="Toggle day / night">
             <span class="action-icon">☼</span><span class="action-label">Blue hour</span>
           </button>
@@ -59,6 +71,38 @@
           <input id="district-search" type="search" placeholder="Find a lab or district" autocomplete="off" />
           <kbd>/</kbd>
         </label>
+
+        <section class="atlas-atmosphere" aria-label="Atmospheric controls">
+          <div class="field-row">
+            <label class="select-field">
+              <span>Time of Day</span>
+              <select id="env-time">
+                <option value="noon">Noon (Day)</option>
+                <option value="sunrise">Sunrise</option>
+                <option value="sunset">Sunset</option>
+                <option value="night">Night</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>Weather</span>
+              <select id="env-weather">
+                <option value="clear">Clear sky</option>
+                <option value="rain">Rainy</option>
+                <option value="fog">Foggy</option>
+                <option value="storm">Stormy</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>Season</span>
+              <select id="env-season">
+                <option value="summer">Summer</option>
+                <option value="spring">Spring</option>
+                <option value="autumn">Autumn</option>
+                <option value="winter">Winter</option>
+              </select>
+            </label>
+          </div>
+        </section>
 
         <div class="atlas-metrics">
           <div><strong id="district-count">35</strong><span>districts</span></div>
@@ -122,16 +166,50 @@
           </section>
 
           <section class="inspector-section">
-            <button class="section-toggle"><span>Appearance</span><span>−</span></button>
-            <div class="section-body material-row">
-              <label class="color-field"><input type="color" id="accent-color" /><span>District accent</span></label>
+            <button class="section-toggle"><span>Appearance & Pattern</span><span>−</span></button>
+            <div class="section-body">
+              <div class="color-row">
+                <label class="color-field"><input type="color" id="primary-color" value="#ffffff" /><span>Primary</span></label>
+                <label class="color-field"><input type="color" id="secondary-color" value="#74858a" /><span>Secondary</span></label>
+                <label class="color-field"><input type="color" id="accent-color" /><span>Accent</span></label>
+              </div>
+              <label class="select-field">
+                <span>Pattern Type</span>
+                <select id="pattern-type">
+                  <option value="solid">Solid</option>
+                  <option value="striped">Striped</option>
+                  <option value="grid">Grid</option>
+                  <option value="hexagon">Hexagon</option>
+                  <option value="dots">Polka Dots</option>
+                  <option value="metallic">Metallic</option>
+                </select>
+              </label>
+              <div class="field-label"><span>Pattern density</span><small id="pattern-scale-output">100%</small></div>
+              <input class="full-range" type="range" id="pattern-scale" min="0.25" max="3.0" step="0.05" value="1.0" />
               <label class="toggle-row"><span>Visible</span><input type="checkbox" id="object-visible" checked /><i></i></label>
+            </div>
+          </section>
+
+          <section class="inspector-section">
+            <button class="section-toggle"><span>Physics & Behavior</span><span>−</span></button>
+            <div class="section-body">
+              <label class="toggle-row"><span>Enable Collision</span><input type="checkbox" id="object-collision" checked /><i></i></label>
+              <div class="field-label"><span>Sims Interaction Options</span></div>
+              <div class="interaction-checkboxes" id="interaction-options">
+                <label class="checkbox-row"><input type="checkbox" value="sit" /><span>Sit</span></label>
+                <label class="checkbox-row"><input type="checkbox" value="sleep" /><span>Sleep / Rest</span></label>
+                <label class="checkbox-row"><input type="checkbox" value="research" /><span>Research</span></label>
+                <label class="checkbox-row"><input type="checkbox" value="analyze" /><span>Analyze Samples</span></label>
+                <label class="checkbox-row"><input type="checkbox" value="power" /><span>Power Toggle</span></label>
+                <label class="checkbox-row"><input type="checkbox" value="decontaminate" /><span>Decontaminate</span></label>
+              </div>
             </div>
           </section>
 
           <div class="inspector-actions">
             <button id="focus-selection">Focus view</button>
             <button id="reset-selection">Reset</button>
+            <button id="save-inspector-changes" class="inspector-save-btn">Save changes</button>
           </div>
         </div>
       </aside>
@@ -170,6 +248,7 @@
               <span aria-hidden="true">▦</span>Interior Design
             </button>
           </div>
+          <button class="collapse-button" id="edit-studio-collapse" aria-label="Collapse edit studio" style="margin-left: 12px;">▼</button>
         </header>
 
         <div class="asset-catalog">
@@ -349,6 +428,15 @@
           <span>WASD / ARROWS · MOVE &nbsp; SHIFT · FASTER &nbsp; E · INSPECT &nbsp; ESC · RELEASE</span>
           <button class="walk-look-button" id="walk-look-button">Click to look around</button>
         </div>
+      </div>
+
+      <div id="walk-interaction-menu" class="glass-panel walk-interaction-menu" hidden>
+        <div class="interaction-menu-head">
+          <span class="eyebrow">Object interactions</span>
+          <h3 id="interaction-menu-title">Select Action</h3>
+        </div>
+        <div class="interaction-menu-body" id="interaction-menu-buttons"></div>
+        <button class="interaction-menu-close" id="close-interaction-menu">Cancel</button>
       </div>
 
       <div class="toast-region" id="toast-region" aria-live="polite"></div>

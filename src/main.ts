@@ -1,3 +1,4 @@
+import * as THREE from 'three';
 import './style.css';
 import { biomes, districts } from './data/districts';
 import {
@@ -10,7 +11,7 @@ import {
   type SceneLayer,
   type ViewMode,
 } from './world/IslandWorld';
-import type { EditorWorkspace } from './world/editorAssets';
+import { EDITOR_ASSET_CATALOG, type EditorWorkspace } from './world/editorAssets';
 
 declare global {
   interface Window {
@@ -46,8 +47,29 @@ const rotationInput = required<HTMLInputElement>('#rot-y');
 const rotationOutput = required<HTMLOutputElement>('#rot-output');
 const scaleInput = required<HTMLInputElement>('#scale-uniform');
 const scaleOutput = required<HTMLElement>('#scale-output');
+const primaryColorInput = required<HTMLInputElement>('#primary-color');
+const secondaryColorInput = required<HTMLInputElement>('#secondary-color');
 const accentInput = required<HTMLInputElement>('#accent-color');
+const patternTypeSelect = required<HTMLSelectElement>('#pattern-type');
+const patternScaleInput = required<HTMLInputElement>('#pattern-scale');
+const patternScaleOutput = required<HTMLElement>('#pattern-scale-output');
 const visibilityInput = required<HTMLInputElement>('#object-visible');
+const collisionInput = required<HTMLInputElement>('#object-collision');
+const interactionOptionsContainer = required<HTMLElement>('#interaction-options');
+const saveProjectButton = required<HTMLButtonElement>('#save-project');
+const refreshProjectButton = required<HTMLButtonElement>('#refresh-project');
+const themeToggleButton = required<HTMLButtonElement>('#toggle-theme');
+const undoActionButton = required<HTMLButtonElement>('#undo-action');
+const envTimeSelect = required<HTMLSelectElement>('#env-time');
+const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
+const envSeasonSelect = required<HTMLSelectElement>('#env-season');
+const editStudioCollapseButton = required<HTMLButtonElement>('#edit-studio-collapse');
+const saveInspectorChangesButton = required<HTMLButtonElement>('#save-inspector-changes');
+const walkInteractionMenu = required<HTMLElement>('#walk-interaction-menu');
+let pendingCatalogAssetId: string | null = null;
+const walkInteractionMenuTitle = required<HTMLElement>('#interaction-menu-title');
+const walkInteractionButtonsContainer = required<HTMLElement>('#interaction-menu-buttons');
+const walkInteractionMenuCloseButton = required<HTMLButtonElement>('#close-interaction-menu');
 const loadingScreen = required<HTMLElement>('#loading-screen');
 const loadingStatus = required<HTMLElement>('#loading-status');
 const sceneCardTitle = required<HTMLElement>('#scene-card-title');
@@ -320,7 +342,10 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
   inspectorContent.hidden = false;
   sceneCardTitle.textContent = definition.name;
   sceneCardCopy.textContent = `${categoryNames[definition.category] ?? definition.category} · ${definition.ring.replace('-', ' ')} · editable object group`;
-  if (objectState) updateTransformFields(objectState);
+  if (objectState) {
+    updateTransformFields(objectState);
+    updateCustomizationFields(objectState);
+  }
   accentInput.value = definition.accent;
   const listButton = listButtons.get(definition.id);
   listButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
@@ -336,6 +361,20 @@ function updateTransformFields(state: ObjectState) {
   scaleInput.value = state.scale.toFixed(2);
   scaleOutput.textContent = `${Math.round(state.scale * 100)}%`;
   visibilityInput.checked = state.visible;
+}
+
+function updateCustomizationFields(state: ObjectState) {
+  primaryColorInput.value = state.primaryColor ?? '#ffffff';
+  secondaryColorInput.value = state.secondaryColor ?? '#74858a';
+  patternTypeSelect.value = state.patternType ?? 'solid';
+  patternScaleInput.value = String(state.patternScale ?? 1.0);
+  patternScaleOutput.textContent = `${Math.round((state.patternScale ?? 1.0) * 100)}%`;
+  collisionInput.checked = state.collisionEnabled !== false;
+
+  const interactions = state.interactions ?? [];
+  interactionOptionsContainer.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.checked = interactions.includes(checkbox.value);
+  });
 }
 
 function toast(title: string, message: string, kind: 'normal' | 'error' = 'normal', duration = 3600) {
@@ -402,6 +441,9 @@ const world = new IslandWorld(viewport, {
   onSelection: (definition) => {
     updateInspector(definition);
     inspector.classList.toggle('hidden-panel', currentMode === 'walk' || (!definition && currentMode !== 'edit'));
+    if (currentMode === 'walk' && definition) {
+      showWalkInteractionMenu(definition);
+    }
   },
   onTransform: refreshSelectedState,
   onImport: (definition: ImportedDefinition) => {
@@ -416,6 +458,9 @@ const world = new IslandWorld(viewport, {
       sceneCardTitle.textContent = world.getDefinition(buildingId)?.name ?? 'Building interior';
       sceneCardCopy.textContent = 'Interior Design · isolated editable room · GLB-ready hierarchy';
     }
+  },
+  onUndoStackChange: (canUndo) => {
+    undoActionButton.disabled = !canUndo;
   },
   onReady: () => {
     loadingStatus.textContent = 'Spatial twin ready';
@@ -450,6 +495,17 @@ const world = new IslandWorld(viewport, {
       return;
     }
     if (state === 'chosen') {
+      if (pendingCatalogAssetId) {
+        const catalogId = pendingCatalogAssetId;
+        pendingCatalogAssetId = null;
+        const posVec = position ? new THREE.Vector3(position[0], position[1], position[2]) : undefined;
+        world.saveUndoState();
+        const definition = world.addCatalogAsset(catalogId, posVec);
+        if (definition) {
+          toast('Asset placed', `${definition.name} has been placed at selected location.`);
+        }
+        return;
+      }
       sceneCardTitle.textContent = 'Import location selected';
       sceneCardCopy.textContent = position
         ? `X ${position[0].toFixed(1)} · Z ${position[2].toFixed(1)} · choose the GLB or mesh file`
@@ -460,7 +516,8 @@ const world = new IslandWorld(viewport, {
       else importInput.click();
       return;
     }
-    if (state === 'cancelled') {
+    if (state === 'cancelled' || state === 'cleared') {
+      pendingCatalogAssetId = null;
       queuedImportFiles = null;
       sceneCardTitle.textContent = currentSelection?.name ?? 'Central research campus';
       sceneCardCopy.textContent = currentSelection
@@ -510,17 +567,28 @@ document.querySelectorAll<HTMLButtonElement>('[data-asset-filter]').forEach((but
 
 addAssetButton.addEventListener('click', () => {
   if (!selectedCatalogAssetId) return;
-  const definition = world.addCatalogAsset(selectedCatalogAssetId);
-  if (!definition) {
-    toast('Choose a building first', 'Interior assets can be added after entering a selected building.', 'error');
-    return;
+  const item = EDITOR_ASSET_CATALOG.find((entry) => entry.id === selectedCatalogAssetId);
+  if (!item) return;
+
+  if (item.workspace === 'landscape') {
+    pendingCatalogAssetId = selectedCatalogAssetId;
+    world.beginImportPlacement();
+    toast('Select location', `Click on the island surface to place ${item.name}. Esc cancels.`);
+  } else {
+    world.saveUndoState();
+    const definition = world.addCatalogAsset(selectedCatalogAssetId);
+    if (!definition) {
+      toast('Choose a building first', 'Interior assets can be added after entering a selected building.', 'error');
+      return;
+    }
+    toast('Asset added', `${definition.name} is selected and ready to transform.`);
   }
-  toast('Asset added', `${definition.name} is selected and ready to transform.`);
 });
 
 deleteObjectButton.addEventListener('click', () => {
   if (!currentSelection) return;
   const name = currentSelection.name;
+  world.saveUndoState();
   if (world.deleteObject(currentSelection.id)) toast('Object deleted', `${name} was removed from the editable scene.`);
 });
 
@@ -549,9 +617,20 @@ document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) =>
 Object.entries(positionInputs).forEach(([axis, input]) => {
   input.addEventListener('change', () => {
     if (!currentSelection) return;
+    world.saveUndoState();
     world.setObjectPosition(currentSelection.id, axis as 'x' | 'y' | 'z', Number(input.value));
   });
 });
+
+const undoOnFocus = () => {
+  world.saveUndoState();
+};
+rotationInput.addEventListener('focus', undoOnFocus);
+scaleInput.addEventListener('focus', undoOnFocus);
+accentInput.addEventListener('focus', undoOnFocus);
+primaryColorInput.addEventListener('focus', undoOnFocus);
+secondaryColorInput.addEventListener('focus', undoOnFocus);
+patternScaleInput.addEventListener('focus', undoOnFocus);
 
 rotationInput.addEventListener('input', () => {
   rotationOutput.value = `${Math.round(Number(rotationInput.value))}°`;
@@ -570,7 +649,93 @@ accentInput.addEventListener('input', () => {
 });
 
 visibilityInput.addEventListener('change', () => {
-  if (currentSelection) world.setObjectVisible(currentSelection.id, visibilityInput.checked);
+  if (currentSelection) {
+    world.saveUndoState();
+    world.setObjectVisible(currentSelection.id, visibilityInput.checked);
+  }
+});
+
+primaryColorInput.addEventListener('input', () => {
+  if (!currentSelection) return;
+  world.setObjectColors(currentSelection.id, primaryColorInput.value, secondaryColorInput.value, accentInput.value);
+});
+
+secondaryColorInput.addEventListener('input', () => {
+  if (!currentSelection) return;
+  world.setObjectColors(currentSelection.id, primaryColorInput.value, secondaryColorInput.value, accentInput.value);
+});
+
+patternTypeSelect.addEventListener('change', () => {
+  if (!currentSelection) return;
+  world.saveUndoState();
+  world.setObjectPattern(currentSelection.id, patternTypeSelect.value, Number(patternScaleInput.value));
+});
+
+patternScaleInput.addEventListener('input', () => {
+  patternScaleOutput.textContent = `${Math.round(Number(patternScaleInput.value) * 100)}%`;
+  if (!currentSelection) return;
+  world.setObjectPattern(currentSelection.id, patternTypeSelect.value, Number(patternScaleInput.value));
+});
+
+collisionInput.addEventListener('change', () => {
+  if (!currentSelection) return;
+  world.saveUndoState();
+  world.setObjectCollision(currentSelection.id, collisionInput.checked);
+});
+
+interactionOptionsContainer.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((checkbox) => {
+  checkbox.addEventListener('change', () => {
+    if (!currentSelection) return;
+    world.saveUndoState();
+    const checkedList: string[] = [];
+    interactionOptionsContainer.querySelectorAll<HTMLInputElement>('input[type="checkbox"]').forEach((cb) => {
+      if (cb.checked) checkedList.push(cb.value);
+    });
+    world.setObjectInteractions(currentSelection.id, checkedList);
+  });
+});
+
+saveProjectButton.addEventListener('click', () => {
+  world.saveProjectToLocalStorage();
+  toast('Project Saved', 'Changes to layout, colors, patterns, and behaviors saved to LocalStorage.');
+});
+
+refreshProjectButton.addEventListener('click', () => {
+  if (world.loadProjectFromLocalStorage()) {
+    if (currentSelection) {
+      updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
+    } else {
+      updateInspector(null);
+    }
+    syncEnvironmentUI();
+    toast('Project Reloaded', 'Successfully loaded from the last saved state.');
+  } else {
+    toast('Load Failed', 'No saved project found in LocalStorage.', 'error');
+  }
+});
+
+undoActionButton.addEventListener('click', () => {
+  if (world.undo()) {
+    if (currentSelection) {
+      updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
+    } else {
+      updateInspector(null);
+    }
+    syncEnvironmentUI();
+    toast('Action Undone', 'The last customization or transformation step has been reverted.');
+  } else {
+    toast('Cannot Undo', 'No remaining history steps in the undo stack.', 'error');
+  }
+});
+
+editStudioCollapseButton.addEventListener('click', () => {
+  const collapsed = editWorkspacePanel.classList.toggle('collapsed');
+  editStudioCollapseButton.textContent = collapsed ? '▲' : '▼';
+});
+
+saveInspectorChangesButton.addEventListener('click', () => {
+  world.saveProjectToLocalStorage();
+  toast('Changes Saved', 'Object customizations and placement saved to LocalStorage.');
 });
 
 required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => {
@@ -756,6 +921,217 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key === 'Home') world.overview();
 });
+
+function showWalkInteractionMenu(definition: SceneDefinition) {
+  if (world.walkController?.pointerControls.isLocked) {
+    world.walkController.pointerControls.unlock();
+  }
+
+  const state = world.getObjectState(definition.id);
+  const rawList = state?.interactions ?? [];
+  const interactions = rawList.length ? rawList : ['examine'];
+
+  walkInteractionMenuTitle.textContent = definition.name;
+  walkInteractionButtonsContainer.innerHTML = '';
+
+  interactions.forEach((act) => {
+    const btn = document.createElement('button');
+    btn.className = 'interaction-menu-btn';
+    btn.textContent = act === 'sit' ? 'Sit down' : act === 'sleep' ? 'Sleep / Rest' : act === 'research' ? 'Research' : act === 'analyze' ? 'Analyze samples' : act === 'power' ? 'Power toggle' : act === 'decontaminate' ? 'Decontaminate' : act;
+    btn.addEventListener('click', () => {
+      triggerWalkInteraction(definition, act);
+      walkInteractionMenu.hidden = true;
+      world.clearSelection('ui');
+    });
+    walkInteractionButtonsContainer.appendChild(btn);
+  });
+
+  walkInteractionMenu.hidden = false;
+}
+
+function triggerWalkInteraction(definition: SceneDefinition, action: string) {
+  const group = world.objectGroups.get(definition.id);
+  if (!group) return;
+
+  if (action === 'sit' || action === 'sleep') {
+    let seatPos = new THREE.Vector3();
+    let seatFound = false;
+
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh && child.userData.surfaceKind === 'seat') {
+        child.getWorldPosition(seatPos);
+        seatFound = true;
+      }
+    });
+
+    if (!seatFound) {
+      group.getWorldPosition(seatPos);
+      seatPos.y += definition.height * 0.4;
+    }
+
+    const cameraTargetYOffset = action === 'sleep' ? 0.25 : 0.42;
+    seatPos.y += cameraTargetYOffset;
+
+    world.walkController.seatTarget.copy(seatPos);
+    world.walkController.isSitting = true;
+
+    toast(
+      action === 'sit' ? 'Sitting Down' : 'Resting',
+      `You are now ${action === 'sit' ? 'seated' : 'resting'} on ${definition.name}. Press WASD / Arrow keys to stand up.`
+    );
+  } else if (action === 'power') {
+    let isOff = false;
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((mat) => {
+          if (mat instanceof THREE.MeshStandardMaterial && mat.emissive) {
+            if (mat.userData.originalEmissiveIntensity === undefined) {
+              mat.userData.originalEmissiveIntensity = mat.emissiveIntensity;
+            }
+            mat.emissiveIntensity = mat.emissiveIntensity > 0 ? 0 : mat.userData.originalEmissiveIntensity;
+            isOff = mat.emissiveIntensity === 0;
+            mat.needsUpdate = true;
+          }
+        });
+      }
+    });
+    toast('Power Grid Toggle', `${definition.name} systems are now ${isOff ? 'OFF' : 'ON'}.`);
+  } else if (action === 'research' || action === 'analyze') {
+    const reports = [
+      "Analyzing quantum state... Coherence stable at 99.8%.",
+      "Scanning molecular structures... Polymer chains aligned successfully.",
+      "Calibrating telemetry grids... Atmospheric radiation within standard deviations.",
+      "Processing sample array... 82% organic content, bio-markers identified.",
+      "Running micro-simulation... Catalyst accelerates reaction rate by 4.2x.",
+      "Mapping cellular pathways... Active mitochondria detected in tundra-specimen.",
+      "Synthesizing compounds... Target bio-agent isolated.",
+    ];
+    const report = reports[Math.floor(Math.random() * reports.length)];
+    toast(action === 'research' ? 'Research Log' : 'Sample Analysis', `${definition.name}: ${report}`);
+
+    group.traverse((child) => {
+      if (child instanceof THREE.Mesh) {
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        materials.forEach((mat) => {
+          if (mat instanceof THREE.MeshStandardMaterial && mat.emissive) {
+            const original = mat.emissiveIntensity;
+            mat.emissiveIntensity = original * 3.5;
+            mat.needsUpdate = true;
+            setTimeout(() => {
+              mat.emissiveIntensity = original;
+              mat.needsUpdate = true;
+            }, 600);
+          }
+        });
+      }
+    });
+  } else if (action === 'decontaminate') {
+    toast('Decontamination Wash', `Wash cycle initiated on ${definition.name}. Stay clear!`);
+    let flashes = 0;
+    const interval = setInterval(() => {
+      group.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          const materials = Array.isArray(child.material) ? child.material : [child.material];
+          materials.forEach((mat) => {
+            if (mat instanceof THREE.MeshStandardMaterial && mat.emissive) {
+              if (mat.userData.originalEmissiveIntensity === undefined) {
+                mat.userData.originalEmissiveIntensity = mat.emissiveIntensity;
+              }
+              mat.emissiveIntensity = flashes % 2 === 0 ? 6.0 : 0.0;
+              mat.needsUpdate = true;
+            }
+          });
+        }
+      });
+      flashes++;
+      if (flashes >= 6) {
+        clearInterval(interval);
+        group.traverse((child) => {
+          if (child instanceof THREE.Mesh) {
+            const materials = Array.isArray(child.material) ? child.material : [child.material];
+            materials.forEach((mat) => {
+              if (mat instanceof THREE.MeshStandardMaterial && mat.emissive) {
+                mat.emissiveIntensity = mat.userData.originalEmissiveIntensity ?? 1.8;
+                mat.needsUpdate = true;
+              }
+            });
+          }
+        });
+        toast('Wash Complete', `Decontamination cycle on ${definition.name} finished successfully.`);
+      }
+    }, 300);
+  } else {
+    toast('Object Inspected', `Examinated ${definition.name}: ${definition.description}`);
+  }
+}
+
+walkInteractionMenuCloseButton.addEventListener('click', () => {
+  walkInteractionMenu.hidden = true;
+  world.clearSelection('ui');
+});
+
+themeToggleButton.addEventListener('click', () => {
+  const cleanTech = document.body.classList.toggle('theme-cleantech');
+  localStorage.setItem('youtopy_theme', cleanTech ? 'cleantech' : 'cybertech');
+  updateThemeUI(cleanTech);
+  world.setTimeOfDay(cleanTech ? 'noon' : 'night');
+  syncEnvironmentUI();
+  const icon = timeToggle.querySelector<HTMLElement>('.action-icon');
+  const label = timeToggle.querySelector<HTMLElement>('.action-label');
+  if (icon) icon.textContent = cleanTech ? '◒' : '☼';
+  if (label) label.textContent = cleanTech ? 'Daylight' : 'Blue hour';
+  toast(
+    cleanTech ? 'Clean Tech' : 'Cyber Tech',
+    cleanTech ? 'Futuristic light minimalism with electric blue accents active.' : 'Cyber Tech dark city mode active.'
+  );
+});
+
+function updateThemeUI(cleanTech: boolean) {
+  const icon = themeToggleButton.querySelector<HTMLElement>('.action-icon');
+  const label = themeToggleButton.querySelector<HTMLElement>('.action-label');
+  if (icon) icon.textContent = cleanTech ? '◒' : '◐';
+  if (label) label.textContent = cleanTech ? 'Clean Tech' : 'Cyber Tech';
+}
+
+function syncEnvironmentUI() {
+  envTimeSelect.value = world.getTimeOfDay();
+  envWeatherSelect.value = world.getWeather();
+  envSeasonSelect.value = world.getSeason();
+}
+
+envTimeSelect.addEventListener('change', () => {
+  world.saveUndoState();
+  world.setTimeOfDay(envTimeSelect.value as any);
+  toast('Time of Day Changed', `Atmospheric lighting morphing to ${envTimeSelect.options[envTimeSelect.selectedIndex].text}.`);
+});
+
+envWeatherSelect.addEventListener('change', () => {
+  world.saveUndoState();
+  world.setWeather(envWeatherSelect.value as any);
+  toast('Weather Shifted', `Atmospheric particles and fog density adjusting to ${envWeatherSelect.options[envWeatherSelect.selectedIndex].text}.`);
+});
+
+envSeasonSelect.addEventListener('change', () => {
+  world.saveUndoState();
+  world.setSeason(envSeasonSelect.value as any);
+  toast('Season Transition', `Foliage colors and ground conditions shifting to ${envSeasonSelect.options[envSeasonSelect.selectedIndex].text}.`);
+});
+
+const savedTheme = localStorage.getItem('youtopy_theme');
+if (savedTheme === 'cleantech') {
+  document.body.classList.add('theme-cleantech');
+  updateThemeUI(true);
+  world.setTimeOfDay('noon');
+  const icon = timeToggle.querySelector<HTMLElement>('.action-icon');
+  const label = timeToggle.querySelector<HTMLElement>('.action-label');
+  if (icon) icon.textContent = '◒';
+  if (label) label.textContent = 'Daylight';
+} else {
+  updateThemeUI(false);
+  world.setTimeOfDay('night');
+}
+syncEnvironmentUI();
 
 window.addEventListener('beforeunload', () => world.dispose(), { once: true });
 setGizmo(activeGizmo);

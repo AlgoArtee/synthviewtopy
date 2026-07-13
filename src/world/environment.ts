@@ -789,6 +789,8 @@ export function createSkyDome(): SkyDome {
       uHorizon: { value: new THREE.Color('#9b5f6c') },
       uBottom: { value: new THREE.Color('#1a3036') },
       uDayMix: { value: 0 },
+      uSunDir: { value: new THREE.Vector3(0, 1, 0) },
+      uIsNight: { value: 0.0 },
     },
     vertexShader: `varying vec3 vPosition; void main(){ vPosition = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
     fragmentShader: `
@@ -796,12 +798,35 @@ export function createSkyDome(): SkyDome {
       uniform vec3 uHorizon;
       uniform vec3 uBottom;
       uniform float uDayMix;
+      uniform vec3 uSunDir;
+      uniform float uIsNight;
       varying vec3 vPosition;
       void main(){
         float h = normalize(vPosition).y * 0.5 + 0.5;
         vec3 dusk = h < 0.48 ? mix(uBottom, uHorizon, h / 0.48) : mix(uHorizon, uTop, (h - 0.48) / 0.52);
         vec3 day = mix(vec3(0.64, 0.78, 0.82), vec3(0.16, 0.42, 0.62), smoothstep(0.1, 0.9, h));
-        gl_FragColor = vec4(mix(dusk, day, uDayMix), 1.0);
+
+        vec3 dir = normalize(vPosition);
+        float sunDot = max(0.0, dot(dir, uSunDir));
+
+        // Sun disk
+        float sunSize = 0.9995;
+        float sunGlow = 0.96;
+        float sunDisk = smoothstep(sunSize, sunSize + 0.0003, sunDot);
+        float glowVal = pow(smoothstep(sunGlow, 1.0, sunDot), 6.0) * 1.6;
+
+        vec3 sunColor = vec3(1.0, 0.95, 0.85);
+        if (uDayMix < 0.5) {
+          if (uIsNight > 0.5) {
+            sunColor = vec3(0.68, 0.82, 1.0);
+          } else {
+            sunColor = mix(vec3(1.0, 0.42, 0.12), vec3(1.0, 0.8, 0.6), sunDot * sunDot);
+          }
+        }
+
+        vec3 skyColor = mix(dusk, day, uDayMix);
+        vec3 finalColor = skyColor + sunColor * (sunDisk * 2.5 + glowVal);
+        gl_FragColor = vec4(finalColor, 1.0);
       }
     `,
     side: THREE.BackSide,

@@ -389,8 +389,14 @@ function addCyberpunkDistrictLife(group: THREE.Group, definition: DistrictDefini
 
 function createMaterials(definition: DistrictDefinition) {
   const [base, secondary, trim, glow] = definition.palette;
-  const body = physicalMaterial(secondary);
-  const dark = physicalMaterial(base, { roughness: 0.38, metalness: 0.52 });
+  let body = physicalMaterial(secondary);
+  let dark = physicalMaterial(base, { roughness: 0.38, metalness: 0.52 });
+
+  if (definition.id === 'dark-center-lab-megabuilding') {
+    body = physicalMaterial('#090a0f', { roughness: 0.16, metalness: 0.65, clearcoat: 0.65, clearcoatRoughness: 0.12 });
+    dark = physicalMaterial('#030406', { roughness: 0.12, metalness: 0.75, clearcoat: 0.8, clearcoatRoughness: 0.08 });
+  }
+
   const metal = standardMaterial(trim, { roughness: 0.35, metalness: 0.68 });
   const glass = physicalMaterial(glow, {
     roughness: 0.1,
@@ -1016,59 +1022,172 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
 
   const usableRadius = radius * 0.68;
   if (definition.id === 'alpine-dome') {
+    for (let index = 0; index < 12; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      const h = 0.7 + random() * 1.2;
+      const rock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.25 + random() * 0.35, h, 5), biomeMaterial(definition.palette, 1)), definition.id);
+      rock.position.set(Math.cos(angle) * distance, 0.7 + (h * 0.4), Math.sin(angle) * distance * (depth / width));
+      rock.rotation.y = random() * Math.PI;
+      rock.rotation.x = (random() - 0.5) * 0.15;
+      group.add(rock);
+    }
+    for (let index = 0; index < 14; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      addConifer(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.5 + random() * 0.6, true);
+    }
+    for (let index = 0; index < 15; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.08 + random() * 0.08, 0), biomeMaterial(definition.palette, 2)), definition.id);
+      pebble.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
+      pebble.rotation.set(random() * 3, random() * 3, random() * 3);
+      group.add(pebble);
+    }
+  } else if (definition.id === 'tundra-dome') {
+    for (let index = 0; index < 30; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + random() * 0.16, 1), biomeMaterial(definition.palette, index % 2)), definition.id);
+      shrub.scale.set(1.1, 0.35 + random() * 0.15, 1.1);
+      shrub.position.set(Math.cos(angle) * distance, 0.74, Math.sin(angle) * distance * (depth / width));
+      group.add(shrub);
+    }
+    for (let index = 0; index < 12; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      const stone = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.2 + random() * 0.3, 0.15 + random() * 0.25, 0.2 + random() * 0.3), biomeMaterial(definition.palette, 1)), definition.id);
+      stone.position.set(Math.cos(angle) * distance, 0.72, Math.sin(angle) * distance * (depth / width));
+      stone.rotation.set(random() * 0.2, random() * Math.PI, random() * 0.2);
+      group.add(stone);
+    }
     for (let index = 0; index < 8; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const rock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.35 + random() * 0.45, 1 + random() * 1.6, 6), biomeMaterial(definition.palette, 1)), definition.id);
-      rock.position.set(Math.cos(angle) * distance, 1.05, Math.sin(angle) * distance * (depth / width));
-      rock.rotation.y = random() * Math.PI;
-      group.add(rock);
-      if (index < 5) addConifer(group, definition.id, Math.cos(angle + 0.5) * distance * 0.8, Math.sin(angle + 0.5) * distance * 0.55, 0.7 + random() * 0.5, true);
-    }
-  } else if (definition.id === 'tundra-dome') {
-    for (let index = 0; index < 18; index += 1) {
-      const angle = random() * Math.PI * 2;
-      const distance = random() * usableRadius;
-      const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.16 + random() * 0.18, 1), biomeMaterial(definition.palette, index % 2)), definition.id);
-      shrub.scale.y = 0.45;
-      shrub.position.set(Math.cos(angle) * distance, 0.84, Math.sin(angle) * distance * (depth / width));
-      group.add(shrub);
+      const patch = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(0.3 + random() * 0.5, 8), physicalMaterial('#ffffff', { roughness: 0.1, transparent: true, opacity: 0.75 })), definition.id, false);
+      patch.rotation.x = -Math.PI / 2;
+      patch.position.set(Math.cos(angle) * distance, 0.78, Math.sin(angle) * distance * (depth / width));
+      group.add(patch);
     }
   } else if (definition.id === 'desert-dome') {
-    for (let index = 0; index < 7; index += 1) {
+    for (let index = 0; index < 10; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const dune = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.65 + random() * 0.65, 14, 7), biomeMaterial(definition.palette, index % 2)), definition.id);
-      dune.scale.set(1.8, 0.22, 0.72);
+      const dune = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.5 + random() * 0.6, 12, 6), biomeMaterial(definition.palette, index % 2)), definition.id);
+      dune.scale.set(2.0, 0.18, 0.8);
       dune.position.set(Math.cos(angle) * distance, 0.72, Math.sin(angle) * distance * (depth / width));
       dune.rotation.y = random() * Math.PI;
       group.add(dune);
-      if (index < 4) addCactus(group, definition.id, Math.cos(angle + 0.8) * distance * 0.75, Math.sin(angle + 0.8) * distance * 0.5, 0.7 + random() * 0.6);
+    }
+    for (let index = 0; index < 12; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      addCactus(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.6 + random() * 0.5);
+    }
+    for (let index = 0; index < 15; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.06 + random() * 0.08, 0), standardMaterial('#c2b280', { roughness: 0.9 })), definition.id);
+      pebble.position.set(Math.cos(angle) * distance, 0.74, Math.sin(angle) * distance * (depth / width));
+      group.add(pebble);
     }
   } else if (definition.id === 'savanna-dome') {
-    for (let index = 0; index < 7; index += 1) {
+    for (let index = 0; index < 10; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      addAcacia(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.75 + random() * 0.5);
+      addAcacia(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.65 + random() * 0.5);
     }
-    const pool = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(1.2, 24), physicalMaterial('#3e9196', { roughness: 0.12, metalness: 0.05 })), definition.id, false);
+    const grassMat = standardMaterial('#c2b87f', { roughness: 0.95 });
+    for (let index = 0; index < 25; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius;
+      if (Math.cos(angle) * distance > 0.8 && Math.sin(angle) * distance * (depth / width) < -0.1) continue;
+      const tuft = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.06 + random() * 0.06, 0.25 + random() * 0.25, 4), grassMat), definition.id);
+      tuft.position.set(Math.cos(angle) * distance, 0.7 + 0.125 * tuft.scale.y, Math.sin(angle) * distance * (depth / width));
+      tuft.rotation.x = (random() - 0.5) * 0.25;
+      tuft.rotation.z = (random() - 0.5) * 0.25;
+      group.add(tuft);
+    }
+    const clayMat = standardMaterial('#b85c37', { roughness: 0.98 });
+    for (let index = 0; index < 3; index += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = random() * usableRadius * 0.8;
+      const h = 0.5 + random() * 0.5;
+      const mound = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.18 + random() * 0.1, h, 5), clayMat), definition.id);
+      mound.position.set(Math.cos(angle) * distance, 0.7 + (h * 0.5), Math.sin(angle) * distance * (depth / width));
+      mound.rotation.y = random() * Math.PI;
+      group.add(mound);
+    }
+    const pool = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(1.3, 24), physicalMaterial('#3e9196', { roughness: 0.08, metalness: 0.05 })), definition.id, false);
     pool.rotation.x = -Math.PI / 2;
-    pool.position.set(1.4, 0.81, -0.4);
+    pool.position.set(1.3, 0.81, -0.4);
     group.add(pool);
+
+    const borderRockMat = standardMaterial('#8c7f70', { roughness: 0.88 });
+    for (let i = 0; i < 8; i++) {
+      const theta = (i / 8) * Math.PI * 2;
+      const rockRadius = 1.35;
+      const rx = 1.3 + Math.cos(theta) * rockRadius;
+      const rz = -0.4 + Math.sin(theta) * rockRadius;
+      const rScale = 0.08 + random() * 0.08;
+      const borderRock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(rScale, 0), borderRockMat), definition.id);
+      borderRock.position.set(rx, 0.74, rz);
+      borderRock.rotation.set(random() * 3, random() * 3, random() * 3);
+      group.add(borderRock);
+    }
   } else {
     const tropical = definition.id === 'tropical-rainforest-dome';
-    for (let index = 0; index < (tropical ? 18 : 13); index += 1) {
-      const angle = random() * Math.PI * 2;
-      const distance = random() * usableRadius;
-      addTree(
-        group,
-        definition.id,
-        Math.cos(angle) * distance,
-        Math.sin(angle) * distance * (depth / width),
-        (tropical ? 0.65 : 0.55) + random() * 0.72,
-        tropical ? '#1f6e3f' : '#537342',
-        !tropical,
-      );
+    if (tropical) {
+      for (let index = 0; index < 28; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius;
+        const leafColor = random() > 0.5 ? '#135c34' : '#1b7a43';
+        addTree(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.6 + random() * 0.8, leafColor, false);
+      }
+      const fernMat = standardMaterial('#1f6e30', { roughness: 0.9 });
+      for (let index = 0; index < 15; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius;
+        const fern = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.12 + random() * 0.12, 8, 4), fernMat), definition.id);
+        fern.scale.set(1.4, 0.12, 1.4);
+        fern.position.set(Math.cos(angle) * distance, 0.75, Math.sin(angle) * distance * (depth / width));
+        group.add(fern);
+      }
+      const logMat = standardMaterial('#422d1b', { roughness: 0.94 });
+      for (let index = 0; index < 4; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius * 0.6;
+        const log = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.5 + random() * 0.5, 6), logMat), definition.id);
+        log.rotation.z = Math.PI / 2;
+        log.rotation.y = random() * Math.PI;
+        log.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
+        group.add(log);
+      }
+    } else {
+      for (let index = 0; index < 22; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius;
+        const leafColor = random() > 0.4 ? '#4a6b32' : '#698a3c';
+        addTree(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.55 + random() * 0.65, leafColor, true);
+      }
+      const shrubMat = standardMaterial('#3e5c26', { roughness: 0.92 });
+      for (let index = 0; index < 12; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius;
+        const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + random() * 0.12, 1), shrubMat), definition.id);
+        shrub.position.set(Math.cos(angle) * distance, 0.78, Math.sin(angle) * distance * (depth / width));
+        group.add(shrub);
+      }
+      const rockMat = standardMaterial('#5e615b', { roughness: 0.85 });
+      for (let index = 0; index < 8; index += 1) {
+        const angle = random() * Math.PI * 2;
+        const distance = random() * usableRadius;
+        const rock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.14 + random() * 0.14, 0), rockMat), definition.id);
+        rock.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
+        rock.rotation.set(random() * 3, random() * 3, random() * 3);
+        group.add(rock);
+      }
     }
   }
 

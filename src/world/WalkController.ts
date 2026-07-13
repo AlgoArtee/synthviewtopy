@@ -58,6 +58,8 @@ export class WalkController {
   private currentSpeed = 0;
   private dragLookActive = false;
   private lastPointer: { x: number; y: number } | null = null;
+  public isSitting = false;
+  public seatTarget = new THREE.Vector3();
 
   constructor(options: WalkControllerOptions) {
     this.camera = options.camera;
@@ -87,6 +89,35 @@ export class WalkController {
     document.addEventListener('pointerlockerror', this.onPointerLockError, { capture: true });
   }
 
+  private findNearestWalkable(x: number, z: number): { x: number; y: number; z: number } | null {
+    const gy = this.sampleGround(x, z);
+    if (gy !== null && this.isSpawnClear(x, z, gy)) {
+      return { x, y: gy, z };
+    }
+
+    const steps = 8;
+    const angleSteps = 12;
+    for (let r = 1; r <= steps; r++) {
+      const radius = r * 0.75;
+      for (let a = 0; a < angleSteps; a++) {
+        const angle = (a / angleSteps) * Math.PI * 2;
+        const cx = x + Math.cos(angle) * radius;
+        const cz = z + Math.sin(angle) * radius;
+        const cy = this.sampleGround(cx, cz);
+        if (cy !== null && this.isSpawnClear(cx, cz, cy)) {
+          return { x: cx, y: cy, z: cz };
+        }
+      }
+    }
+
+    const bridgeSpawn = new THREE.Vector3(0, 1.82, 44);
+    const bgy = this.sampleGround(bridgeSpawn.x, bridgeSpawn.z);
+    if (bgy !== null) {
+      return { x: bridgeSpawn.x, y: bgy, z: bridgeSpawn.z };
+    }
+    return null;
+  }
+
   enter(
     preferredSpawn = new THREE.Vector3(0, 0, 44),
     lookDirection?: THREE.Vector3,
@@ -98,35 +129,19 @@ export class WalkController {
     this.dragLookActive = false;
     this.lastPointer = null;
     this.refreshNavigation();
-    const spawnCandidates = [preferredSpawn.clone()];
-    if (fallbackSpawn) {
-      spawnCandidates.push(fallbackSpawn.clone());
-      const heading = lookDirection?.clone() ?? new THREE.Vector3(0, 0, -1);
-      heading.y = 0;
-      if (heading.lengthSq() < 0.0001) heading.set(0, 0, -1);
-      heading.normalize();
-      const side = new THREE.Vector3(-heading.z, 0, heading.x);
-      for (const radius of [3, 6, 10, 14]) {
-        spawnCandidates.push(
-          fallbackSpawn.clone().addScaledVector(heading, -radius),
-          fallbackSpawn.clone().addScaledVector(side, radius),
-          fallbackSpawn.clone().addScaledVector(side, -radius),
-          fallbackSpawn.clone().addScaledVector(heading, radius),
-        );
-      }
+
+    let pt = this.findNearestWalkable(preferredSpawn.x, preferredSpawn.z);
+    if (!pt && fallbackSpawn) {
+      pt = this.findNearestWalkable(fallbackSpawn.x, fallbackSpawn.z);
     }
-    let spawn = spawnCandidates[0];
-    let ground: number | null = null;
-    for (const candidate of spawnCandidates) {
-      const candidateGround = this.sampleGround(candidate.x, candidate.z);
-      if (candidateGround === null || !this.isSpawnClear(candidate.x, candidate.z, candidateGround)) continue;
-      spawn = candidate;
-      ground = candidateGround;
-      break;
+    if (!pt) {
+      pt = { x: 0, y: 1.82, z: 44 };
     }
-    this.groundY = ground ?? 1.82;
-    this.grounded = ground !== null;
-    this.camera.position.set(spawn.x, this.groundY + WALK_EYE_HEIGHT, spawn.z);
+
+    this.groundY = pt.y;
+    this.grounded = true;
+    this.camera.position.set(pt.x, this.groundY + WALK_EYE_HEIGHT, pt.z);
+
     if (lookDirection && lookDirection.lengthSq() > 0.0001) {
       this.direction.copy(lookDirection);
       this.direction.y = THREE.MathUtils.clamp(this.direction.y, -0.3, 0.3);
@@ -191,21 +206,31 @@ export class WalkController {
     const keyZ = Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')) - Number(this.keys.has('KeyS') || this.keys.has('ArrowDown'));
     const inputX = THREE.MathUtils.clamp(keyX + this.externalIntent.x, -1, 1);
     const inputZ = THREE.MathUtils.clamp(keyZ + this.externalIntent.z, -1, 1);
-    const sprinting = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.externalIntent.sprint;
-    const speed = sprinting ? WALK_FAST_SPEED : WALK_SPEED;
-    this.currentSpeed = Math.hypot(inputX, inputZ) > 0 ? speed : 0;
 
-    if (this.currentSpeed > 0) {
-      this.camera.getWorldDirection(this.direction);
-      this.direction.y = 0;
-      if (this.direction.lengthSq() < 0.0001) this.direction.set(0, 0, -1);
-      this.direction.normalize();
-      this.right.crossVectors(this.direction, this.camera.up).normalize();
-      this.move.copy(this.direction).multiplyScalar(inputZ).addScaledVector(this.right, inputX);
-      if (this.move.lengthSq() > 1) this.move.normalize();
-      this.move.multiplyScalar(speed * delta);
-      this.tryAxisMove(this.move.x, 0);
-      this.tryAxisMove(0, this.move.z);
+    if (this.isSitting && (Math.abs(inputX) > 0.01 || Math.abs(inputZ) > 0.01)) {
+      this.isSitting = false;
+    }
+
+    if (this.isSitting) {
+      this.currentSpeed = 0;
+      this.camera.position.copy(this.seatTarget);
+    } else {
+      const sprinting = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.externalIntent.sprint;
+      const speed = sprinting ? WALK_FAST_SPEED : WALK_SPEED;
+      this.currentSpeed = Math.hypot(inputX, inputZ) > 0 ? speed : 0;
+
+      if (this.currentSpeed > 0) {
+        this.camera.getWorldDirection(this.direction);
+        this.direction.y = 0;
+        if (this.direction.lengthSq() < 0.0001) this.direction.set(0, 0, -1);
+        this.direction.normalize();
+        this.right.crossVectors(this.direction, this.camera.up).normalize();
+        this.move.copy(this.direction).multiplyScalar(inputZ).addScaledVector(this.right, inputX);
+        if (this.move.lengthSq() > 1) this.move.normalize();
+        this.move.multiplyScalar(speed * delta);
+        this.tryAxisMove(this.move.x, 0);
+        this.tryAxisMove(0, this.move.z);
+      }
     }
 
     const sampledGround = this.sampleGround(this.camera.position.x, this.camera.position.z);
@@ -293,7 +318,7 @@ export class WalkController {
     this.candidate.z += dz;
     const nextGround = this.sampleGround(this.candidate.x, this.candidate.z);
     if (nextGround === null) return;
-    if (this.groundY !== null && nextGround - this.groundY > 0.09) return;
+    if (this.groundY !== null && nextGround - this.groundY > 0.38) return;
     const bodyBottom = nextGround + 0.015;
     const bodyTop = nextGround + WALK_EYE_HEIGHT;
     const insideAccess = this.accessBounds.some(

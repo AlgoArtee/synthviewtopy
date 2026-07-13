@@ -261,6 +261,127 @@ export const EDITOR_ASSET_CATALOG: EditorAssetCatalogItem[] = [
     footprint: [0.15, 0.085],
     height: 0.15,
   },
+  {
+    id: 'landscape-decontamination-dome',
+    name: 'Decontamination Dome',
+    workspace: 'landscape',
+    category: 'buildings',
+    kind: 'building',
+    accent: '#00f3ff',
+    description: 'Pressurized dome structure equipped with chemical wash cycles, exhaust portals, and warning lights.',
+    footprint: [5.2, 5.2],
+    height: 3.5,
+  },
+  {
+    id: 'landscape-greenhouse-pod',
+    name: 'Eco Greenhouse Pod',
+    workspace: 'landscape',
+    category: 'buildings',
+    kind: 'building',
+    accent: '#55ff55',
+    description: 'Laminated glass hydroponics dome containing lush vegetation arrays and atmospheric monitors.',
+    footprint: [4.5, 4.5],
+    height: 2.8,
+  },
+  {
+    id: 'landscape-cyber-tree',
+    name: 'Luminescent Cyber Tree',
+    workspace: 'landscape',
+    category: 'landscape',
+    kind: 'prop',
+    accent: '#ff00ff',
+    description: 'Procedurally branch-grafted artificial tree structure with fiber-optic foliage and glowing nodes.',
+    footprint: [1.5, 1.5],
+    height: 3.2,
+  },
+  {
+    id: 'landscape-sensor-spire',
+    name: 'Telematic Sensor Spire',
+    workspace: 'landscape',
+    category: 'infrastructure',
+    kind: 'prop',
+    accent: '#ffbb00',
+    description: 'Slender structural mast with solar cells, rotating sensors, and high-frequency antenna arrays.',
+    footprint: [0.8, 0.8],
+    height: 4.8,
+  },
+  {
+    id: 'landscape-security-gate',
+    name: 'Laser Security Gate',
+    workspace: 'landscape',
+    category: 'infrastructure',
+    kind: 'prop',
+    accent: '#ff3333',
+    description: 'Dual barrier stanchions generating safe light shields with status panels and motion nodes.',
+    footprint: [2.5, 0.6],
+    height: 1.4,
+  },
+  {
+    id: 'interior-dna-sequencer',
+    name: 'DNA Sequencing Rig',
+    workspace: 'interior',
+    category: 'lab',
+    kind: 'interior',
+    accent: '#ff00aa',
+    description: 'Articulated genetic sequencer bench with thermal cyclers, liquid handlers, and screen display.',
+    footprint: [0.24, 0.12],
+    height: 0.16,
+  },
+  {
+    id: 'interior-centrifuge-rack',
+    name: 'Lab Centrifuge Rack',
+    workspace: 'interior',
+    category: 'lab',
+    kind: 'interior',
+    accent: '#aaff00',
+    description: 'Heavy workbench holding rapid spin rotors, speed-control console, and warning indicator.',
+    footprint: [0.16, 0.11],
+    height: 0.12,
+  },
+  {
+    id: 'interior-chem-dispenser',
+    name: 'Reagent Dispenser',
+    workspace: 'interior',
+    category: 'lab',
+    kind: 'interior',
+    accent: '#00aaff',
+    description: 'Automated overhead fluidic rack with mechanical syringes, vial tubes, and glass casing.',
+    footprint: [0.18, 0.1],
+    height: 0.15,
+  },
+  {
+    id: 'interior-decon-shower',
+    name: 'Decontamination Shower',
+    workspace: 'interior',
+    category: 'lab',
+    kind: 'interior',
+    accent: '#55ffff',
+    description: 'Stainless steel overhead spray shower with pull-lever trigger and non-slip floor basin.',
+    footprint: [0.14, 0.14],
+    height: 0.26,
+  },
+  {
+    id: 'interior-plasma-chair',
+    name: 'Rest Capsule Pod',
+    workspace: 'interior',
+    category: 'furniture',
+    kind: 'interior',
+    accent: '#ff7700',
+    description: 'Deep semi-enclosed futuristic lounge chair with integrated cushion, task lighting, and display rail.',
+    footprint: [0.12, 0.12],
+    height: 0.13,
+  },
+  {
+    id: 'interior-executive-desk',
+    name: 'Executive Office Desk',
+    workspace: 'interior',
+    category: 'furniture',
+    kind: 'interior',
+    accent: '#8888ff',
+    description: 'Floating glass-top desk with steel corner beams, high-end chair, and keyboard rail.',
+    footprint: [0.28, 0.16],
+    height: 0.14,
+  },
 ];
 
 interface AssetMaterials {
@@ -1089,6 +1210,39 @@ export function createEditorAsset(item: EditorAssetCatalogItem, selectableId: st
     case 'interior-utility-console':
       buildUtilityConsole(group, width, depth, height, materials);
       break;
+    case 'landscape-decontamination-dome':
+      buildDeconDome(group, width, depth, height, materials);
+      break;
+    case 'landscape-greenhouse-pod':
+      buildGreenhousePod(group, width, depth, height, materials);
+      break;
+    case 'landscape-cyber-tree':
+      buildCyberTree(group, width, depth, height, materials);
+      break;
+    case 'landscape-sensor-spire':
+      buildSensorSpire(group, width, depth, height, materials);
+      break;
+    case 'landscape-security-gate':
+      buildSecurityGate(group, width, depth, height, materials);
+      break;
+    case 'interior-dna-sequencer':
+      buildDNASequencer(group, width, depth, height, materials);
+      break;
+    case 'interior-centrifuge-rack':
+      buildCentrifugeRack(group, width, depth, height, materials);
+      break;
+    case 'interior-chem-dispenser':
+      buildChemDispenser(group, width, depth, height, materials);
+      break;
+    case 'interior-decon-shower':
+      buildDeconShower(group, width, depth, height, materials);
+      break;
+    case 'interior-plasma-chair':
+      buildPlasmaChair(group, width, depth, height, materials);
+      break;
+    case 'interior-executive-desk':
+      buildExecutiveDesk(group, width, depth, height, materials);
+      break;
     default:
       buildGenericAsset(group, item, width, depth, height, materials);
       break;
@@ -1249,4 +1403,276 @@ export function createInteriorShell(buildingId: string, width: number, depth: nu
     child.userData.buildingId = buildingId;
   });
   return group;
+}
+
+export function createPatternTexture(
+  patternType: string,
+  primaryColor: string,
+  secondaryColor: string,
+  scale: number
+): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = 256;
+  canvas.height = 256;
+  const ctx = canvas.getContext('2d')!;
+
+  ctx.fillStyle = primaryColor;
+  ctx.fillRect(0, 0, 256, 256);
+
+  ctx.fillStyle = secondaryColor;
+  ctx.strokeStyle = secondaryColor;
+  ctx.lineWidth = Math.max(2, 6 * scale);
+
+  const step = Math.max(16, Math.round(48 / scale));
+
+  if (patternType === 'striped') {
+    for (let x = 0; x < 256 + step; x += step) {
+      ctx.fillRect(x, 0, step / 2, 256);
+    }
+  } else if (patternType === 'grid') {
+    for (let x = 0; x < 256 + step; x += step) {
+      ctx.beginPath();
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, 256);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, x);
+      ctx.lineTo(256, x);
+      ctx.stroke();
+    }
+  } else if (patternType === 'hexagon') {
+    const r = step / 2;
+    const h = r * Math.sin(Math.PI / 3);
+    ctx.lineWidth = Math.max(1, 3 * scale);
+    for (let y = -r; y < 256 + r * 2; y += h * 2) {
+      for (let x = -r; x < 256 + r * 2; x += r * 3) {
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i;
+          const px = x + r * Math.cos(angle);
+          const py = y + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.beginPath();
+        for (let i = 0; i < 6; i++) {
+          const angle = (Math.PI / 3) * i;
+          const px = x + r * 1.5 + r * Math.cos(angle);
+          const py = y + h + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(px, py);
+          else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+    }
+  } else if (patternType === 'dots') {
+    const r = Math.max(2, (step / 5) * scale);
+    for (let y = step / 2; y < 256; y += step) {
+      for (let x = step / 2; x < 256; x += step) {
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+  } else if (patternType === 'metallic') {
+    const grad = ctx.createLinearGradient(0, 0, 256, 256);
+    grad.addColorStop(0, primaryColor);
+    grad.addColorStop(0.5, secondaryColor);
+    grad.addColorStop(1, primaryColor);
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 256, 256);
+
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    for (let i = 0; i < 256; i += 12) {
+      ctx.fillRect(i, 0, 2, 256);
+    }
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+    for (let i = 6; i < 256; i += 12) {
+      ctx.fillRect(i, 0, 2, 256);
+    }
+  }
+
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(2, 2);
+  return texture;
+}
+
+export function applyCustomStyles(
+  group: THREE.Object3D,
+  primaryColor?: string,
+  secondaryColor?: string,
+  accentColor?: string,
+  patternType?: string,
+  patternScale?: number
+) {
+  const pColor = primaryColor ? new THREE.Color(primaryColor) : null;
+  const sColor = secondaryColor ? new THREE.Color(secondaryColor) : null;
+  const aColor = accentColor ? new THREE.Color(accentColor) : null;
+
+  let patternTexture: THREE.CanvasTexture | null = null;
+  if (patternType && patternType !== 'solid' && primaryColor && secondaryColor) {
+    patternTexture = createPatternTexture(patternType, primaryColor, secondaryColor, patternScale || 1.0);
+  }
+
+  group.traverse((child) => {
+    if (!(child instanceof THREE.Mesh || child instanceof THREE.LineSegments)) return;
+
+    const originalMaterials = Array.isArray(child.material) ? child.material : [child.material];
+    const newMaterials = originalMaterials.map((mat) => {
+      const cloned = mat.clone() as THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial;
+      cloned.name = mat.name.replace(/_customized/g, '') + '_customized';
+
+      const matName = mat.name.toUpperCase();
+      const isAccent = cloned.userData.isDistrictAccent || matName.includes('ACCENT') || matName.includes('GLOW') || matName.includes('GLASS') || matName.includes('LIGHT') || matName.includes('PUNCTUAL');
+      const isSecondary = matName.includes('FRAME') || matName.includes('METAL') || matName.includes('RUBBER') || matName.includes('STEEL') || matName.includes('UPRIGHT') || matName.includes('SUPPORT') || matName.includes('DARK');
+      const isPrimary = !isAccent && !isSecondary;
+
+      if (isAccent && aColor) {
+        if ('color' in cloned) cloned.color.copy(aColor);
+        if ('emissive' in cloned) {
+          cloned.emissive.copy(aColor);
+          if (cloned.emissiveIntensity === 0 || cloned.emissiveIntensity === undefined) {
+            cloned.emissiveIntensity = 1.5;
+          }
+        }
+      } else if (isSecondary && sColor) {
+        if ('color' in cloned) cloned.color.copy(sColor);
+      } else if (isPrimary && pColor) {
+        if ('color' in cloned) cloned.color.copy(pColor);
+        if (patternTexture && 'map' in cloned) {
+          cloned.map = patternTexture;
+        } else if ('map' in cloned) {
+          cloned.map = null;
+        }
+      }
+      cloned.needsUpdate = true;
+      return cloned;
+    });
+
+    child.material = Array.isArray(child.material) ? newMaterials : newMaterials[0];
+  });
+}
+
+function buildDeconDome(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  cylinder(group, 'DOME__BASE_RING', width * 0.5, width * 0.5, height * 0.06, 32, m.dark, 0, height * 0.03, 0, { obstacle: true });
+  const dome = sphere(group, 'DOME__MAIN_SHELL', width * 0.46, m.glass, 0, height * 0.2, 0, { obstacle: true });
+  dome.scale.y = height / (width * 0.46);
+  cylinder(group, 'DOME__DECON_RING', width * 0.35, width * 0.35, height * 0.03, 16, m.metal, 0, height * 0.1, 0);
+  for (let index = 0; index < 4; index += 1) {
+    const angle = (index / 4) * Math.PI * 2;
+    const x = Math.cos(angle) * width * 0.35;
+    const z = Math.sin(angle) * width * 0.35;
+    cylinder(group, `DOME__NOZZLE_${index + 1}`, width * 0.02, width * 0.025, height * 0.65, 8, m.metal, x, height * 0.33, z, { obstacle: true });
+    sphere(group, `DOME__GLOW_NODE_${index + 1}`, width * 0.03, m.accent, x, height * 0.66, z, { shadows: false });
+  }
+}
+
+function buildGreenhousePod(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  cylinder(group, 'GREENHOUSE__FOUNDATION', width * 0.5, width * 0.5, height * 0.08, 16, m.pale, 0, height * 0.04, 0, { obstacle: true });
+  const structure = sphere(group, 'GREENHOUSE__GLASS_DOME', width * 0.45, m.glass, 0, height * 0.28, 0, { obstacle: true });
+  structure.scale.y = height / (width * 0.45);
+  box(group, 'GREENHOUSE__BED_LEFT', width * 0.32, height * 0.16, depth * 0.16, m.dark, -width * 0.18, height * 0.12, 0, { obstacle: true });
+  box(group, 'GREENHOUSE__BED_RIGHT', width * 0.32, height * 0.16, depth * 0.16, m.dark, width * 0.18, height * 0.12, 0, { obstacle: true });
+  box(group, 'GREENHOUSE__PLANTS_LEFT', width * 0.28, height * 0.24, depth * 0.13, m.plant, -width * 0.18, height * 0.24, 0);
+  box(group, 'GREENHOUSE__PLANTS_RIGHT', width * 0.28, height * 0.24, depth * 0.13, m.plant, width * 0.18, height * 0.24, 0);
+  cylinder(group, 'GREENHOUSE__SOLAR_SPINE', width * 0.025, width * 0.025, height * 0.78, 8, m.accent, 0, height * 0.42, 0, { shadows: false });
+}
+
+function buildCyberTree(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  cylinder(group, 'CYBERTREE__TRUNK', width * 0.06, width * 0.11, height * 0.58, 8, m.dark, 0, height * 0.29, 0, { obstacle: true });
+  for (let index = 0; index < 3; index += 1) {
+    const y = height * (0.45 + index * 0.22);
+    const scaleFactor = 1.0 - index * 0.24;
+    cylinder(group, `CYBERTREE__BRANCH_RING_${index + 1}`, width * 0.42 * scaleFactor, width * 0.42 * scaleFactor, height * 0.05, 12, m.metal, 0, y, 0);
+    sphere(group, `CYBERTREE__FOLIAGE_${index + 1}_L`, width * 0.22 * scaleFactor, m.accent, -width * 0.18 * scaleFactor, y + height * 0.07, 0, { shadows: false });
+    sphere(group, `CYBERTREE__FOLIAGE_${index + 1}_R`, width * 0.22 * scaleFactor, m.accent, width * 0.18 * scaleFactor, y + height * 0.07, 0, { shadows: false });
+  }
+}
+
+function buildSensorSpire(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  cylinder(group, 'SPIRE__BASE', width * 0.35, width * 0.45, height * 0.15, 6, m.dark, 0, height * 0.075, 0, { obstacle: true });
+  cylinder(group, 'SPIRE__MAST', width * 0.07, width * 0.16, height * 0.72, 4, m.metal, 0, height * 0.48, 0, { obstacle: true });
+  cylinder(group, 'SPIRE__HEAD', width * 0.24, width * 0.24, height * 0.07, 16, m.dark, 0, height * 0.86, 0);
+  for (let index = 0; index < 3; index += 1) {
+    const angle = (index / 3) * Math.PI * 2;
+    const x = Math.cos(angle) * width * 0.2;
+    const z = Math.sin(angle) * width * 0.2;
+    sphere(group, `SPIRE__SENSOR_NODE_${index + 1}`, width * 0.045, m.accent, x, height * 0.89, z, { shadows: false });
+  }
+  cylinder(group, 'SPIRE__ANTENNA_TIP', 0.005, width * 0.015, height * 0.14, 4, m.metal, 0, height * 0.96, 0);
+}
+
+function buildSecurityGate(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'GATE__POST_LEFT', width * 0.12, height * 0.92, depth, m.dark, -width * 0.44, height * 0.46, 0, { obstacle: true });
+  box(group, 'GATE__POST_RIGHT', width * 0.12, height * 0.92, depth, m.dark, width * 0.44, height * 0.46, 0, { obstacle: true });
+  box(group, 'GATE__GLOW_LEFT', width * 0.04, height * 0.58, depth * 0.22, m.accent, -width * 0.37, height * 0.56, 0, { shadows: false });
+  box(group, 'GATE__GLOW_RIGHT', width * 0.04, height * 0.58, depth * 0.22, m.accent, width * 0.37, height * 0.56, 0, { shadows: false });
+  box(group, 'GATE__LASER_SHIELD', width * 0.72, height * 0.52, depth * 0.08, m.glass, 0, height * 0.48, 0, { shadows: false });
+}
+
+function buildDNASequencer(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'SEQUENCER__BENCH', width, height * 0.52, depth, m.dark, 0, height * 0.26, 0, { obstacle: true, surface: 'worktop' });
+  box(group, 'SEQUENCER__CHASSIS', width * 0.56, height * 0.42, depth * 0.78, m.shell, -width * 0.18, height * 0.73, 0, { obstacle: true });
+  cylinder(group, 'SEQUENCER__ROTARY', width * 0.16, width * 0.16, height * 0.04, 12, m.metal, width * 0.27, height * 0.54, -depth * 0.12);
+  sphere(group, 'SEQUENCER__HOLO_NODE', width * 0.035, m.accent, width * 0.27, height * 0.62, depth * 0.15, { shadows: false });
+  box(group, 'SEQUENCER__SCREEN', width * 0.32, height * 0.28, 0.008, m.accent, -width * 0.18, height * 0.75, depth * 0.4, { shadows: false });
+}
+
+function buildCentrifugeRack(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'CENTRIFUGE__BENCH', width, height * 0.46, depth, m.pale, 0, height * 0.23, 0, { obstacle: true, surface: 'worktop' });
+  cylinder(group, 'CENTRIFUGE__HOUSING', width * 0.35, width * 0.38, height * 0.42, 16, m.dark, -width * 0.2, height * 0.67, 0, { obstacle: true });
+  cylinder(group, 'CENTRIFUGE__LID', width * 0.32, width * 0.32, height * 0.04, 16, m.metal, -width * 0.2, height * 0.89, 0);
+  box(group, 'CENTRIFUGE__PANEL', width * 0.32, height * 0.28, depth * 0.62, m.shell, width * 0.26, height * 0.6, 0, { obstacle: true });
+  sphere(group, 'CENTRIFUGE__LED', width * 0.045, m.accent, width * 0.26, height * 0.68, depth * 0.32, { shadows: false });
+}
+
+function buildChemDispenser(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'DISPENSER__BASE', width, height * 0.38, depth, m.dark, 0, height * 0.19, 0, { obstacle: true, surface: 'worktop' });
+  box(group, 'DISPENSER__PILLAR_L', width * 0.05, height * 0.58, depth * 0.18, m.metal, -width * 0.4, height * 0.67, -depth * 0.24, { obstacle: true });
+  box(group, 'DISPENSER__PILLAR_R', width * 0.05, height * 0.58, depth * 0.18, m.metal, width * 0.4, height * 0.67, -depth * 0.24, { obstacle: true });
+  box(group, 'DISPENSER__OVERHEAD', width * 0.86, height * 0.22, depth * 0.48, m.shell, 0, height * 0.85, -depth * 0.12, { obstacle: true });
+  box(group, 'DISPENSER__LEVEL_INDICATOR', width * 0.52, height * 0.04, 0.008, m.accent, 0, height * 0.85, depth * 0.13, { shadows: false });
+  for (let index = 0; index < 3; index += 1) {
+    const x = -width * 0.24 + index * width * 0.24;
+    cylinder(group, `DISPENSER__SYRINGE_${index + 1}`, width * 0.02, width * 0.02, height * 0.18, 8, m.metal, x, height * 0.48, 0);
+  }
+}
+
+function buildDeconShower(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'SHOWER__BASIN', width, height * 0.06, depth, m.dark, 0, height * 0.03, 0, { obstacle: true, walkable: true, surface: 'threshold' });
+  box(group, 'SHOWER__WALL_BACK', width, height, depth * 0.08, m.shell, 0, height * 0.5, -depth * 0.46, { obstacle: true });
+  box(group, 'SHOWER__SCREEN_L', depth * 0.04, height * 0.88, depth * 0.84, m.glass, -width * 0.48, height * 0.5, 0);
+  box(group, 'SHOWER__SCREEN_R', depth * 0.04, height * 0.88, depth * 0.84, m.glass, width * 0.48, height * 0.5, 0);
+  cylinder(group, 'SHOWER__HEAD', width * 0.12, width * 0.15, height * 0.05, 12, m.metal, 0, height * 0.9, 0);
+  cylinder(group, 'SHOWER__LIGHT_RING', width * 0.18, width * 0.18, height * 0.02, 16, m.accent, 0, height * 0.94, 0, { shadows: false });
+}
+
+function buildPlasmaChair(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  const outer = sphere(group, 'PLASMASHAIR__OUTER_SHELL', width * 0.48, m.shell, 0, height * 0.46, 0, { obstacle: true });
+  outer.scale.set(1.0, 1.1, 0.88);
+  box(group, 'PLASMACHAIR__SEAT', width * 0.72, height * 0.28, depth * 0.62, m.fabric, 0, height * 0.35, depth * 0.04, {
+    obstacle: true,
+    surface: 'seat',
+  });
+  box(group, 'PLASMACHAIR__PILLOW', width * 0.38, height * 0.16, depth * 0.12, m.dark, 0, height * 0.72, -depth * 0.2, { obstacle: true });
+  cylinder(group, 'PLASMACHAIR__ARC_L', width * 0.44, width * 0.44, height * 0.04, 12, m.accent, -width * 0.4, height * 0.48, 0, { shadows: false });
+  cylinder(group, 'PLASMACHAIR__ARC_R', width * 0.44, width * 0.44, height * 0.04, 12, m.accent, width * 0.4, height * 0.48, 0, { shadows: false });
+}
+
+function buildExecutiveDesk(group: THREE.Group, width: number, depth: number, height: number, m: AssetMaterials) {
+  box(group, 'EXECDUTIVEDESK__GLASS_TOP', width, height * 0.06, depth, m.glass, 0, height * 0.68, 0, { obstacle: true, surface: 'worktop' });
+  for (const x of [-width * 0.44, width * 0.44]) {
+    for (const z of [-depth * 0.42, depth * 0.42]) {
+      cylinder(group, `EXECDUTIVEDESK__LEG_${x < 0 ? 'L' : 'R'}_${z < 0 ? 'F' : 'B'}`, width * 0.035, width * 0.035, height * 0.65, 8, m.metal, x, height * 0.325, z, { obstacle: true });
+    }
+  }
+  box(group, 'EXECDUTIVEDESK__CABINET', width * 0.28, height * 0.52, depth * 0.72, m.dark, -width * 0.28, height * 0.28, 0, { obstacle: true });
+  box(group, 'EXECDUTIVEDESK__GLOW_BAR', width * 0.88, height * 0.024, depth * 0.04, m.accent, 0, height * 0.645, depth * 0.42, { shadows: false });
 }

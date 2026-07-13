@@ -85,13 +85,14 @@ function addAccessRamp(
   rise: number,
   length: number,
   material: THREE.Material,
+  innerEdgeZ: number,
 ) {
   const rampWidth = Math.min(2.2, plotWidth * 0.34);
   const thickness = 0.1;
   const ramp = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(rampWidth, thickness, length), material), id);
   ramp.name = `${id}__ACCESS_RAMP`;
   ramp.rotation.x = Math.atan2(rise, length);
-  ramp.position.set(0, rise * 0.5 + thickness * 0.42, plotDepth * 0.5 + length * 0.5 - 0.04);
+  ramp.position.set(0, rise * 0.5 + thickness * 0.42, innerEdgeZ + length * 0.5);
   ramp.userData.walkable = true;
   group.add(ramp);
 }
@@ -840,7 +841,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   plot.receiveShadow = true;
   plot.userData.walkable = true;
   group.add(plot);
-  addAccessRamp(group, definition.id, width, depth, 0.34, 1.7, plotMaterial);
+  addAccessRamp(group, definition.id, width, depth, 0.34, 1.7, plotMaterial, depth * 0.5 - 0.04);
 
   const inset = new THREE.LineSegments(
     new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, 0.355, depth * 0.95, 2, 0.26)),
@@ -1761,7 +1762,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
 
   const airlock = roundedBlock(definition.id, width * 0.16, 1.15, 1.2, physicalMaterial(definition.palette[2]), 0, 0.6, depth * 0.47, 0.14);
   group.add(airlock);
-  addAccessRamp(group, definition.id, width * 0.52, depth, 0.78, 2.6, physicalMaterial(definition.palette[2]));
+  addAccessRamp(group, definition.id, width * 0.52, depth, 0.81, 2.6, physicalMaterial(definition.palette[2]), depth * 0.47 + 0.75 - 0.05);
   const airlockGlow = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width * 0.09, 0.06, 0.04), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.5 }))), definition.id, false);
   airlockGlow.position.set(0, 1.5, depth * 0.47 + 0.62);
   group.add(airlockGlow);

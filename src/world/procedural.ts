@@ -941,6 +941,298 @@ function addAcacia(group: THREE.Group, id: string, x: number, z: number, scale: 
   group.add(trunk, crown);
 }
 
+function buildFuturisticTropicalBiodome(
+  group: THREE.Group,
+  definition: BiomeDefinition,
+  radius: number,
+  depth: number,
+  width: number,
+  random: () => number,
+) {
+  const usableRadius = radius * 0.72;
+  const aspect = depth / width;
+
+  // 1. Water Features: Waterfall, Stream, Pond
+  const wfX = 0;
+  const wfZ = -usableRadius * 0.65 * aspect;
+  const wfY = 0.7;
+  const wfHeight = 4.5;
+  
+  const waterfallGeom = new THREE.CylinderGeometry(0.35, 0.45, wfHeight, 12, 1, true);
+  const waterfallMat = new THREE.MeshPhysicalMaterial({
+    color: '#3cd3ff',
+    emissive: '#1188bb',
+    emissiveIntensity: 1.5,
+    transparent: true,
+    opacity: 0.82,
+    roughness: 0.05,
+    metalness: 0.1,
+    transmission: 0.3,
+  });
+  const waterfall = prepareMesh(new THREE.Mesh(waterfallGeom, waterfallMat), definition.id, false);
+  waterfall.position.set(wfX, wfY + wfHeight * 0.5, wfZ);
+  group.add(waterfall);
+
+  const rockMat = standardMaterial('#4c4e4b', { roughness: 0.92 });
+  for (let i = 0; i < 5; i++) {
+    const rHeight = 2.0 + i * 0.8;
+    const rWidth = 1.0 + random() * 0.8;
+    const rRock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(rWidth, rHeight, 5), rockMat), definition.id);
+    rRock.position.set(wfX - 1.2 + i * 0.6, 0.7 + rHeight * 0.4, wfZ - 0.3);
+    rRock.rotation.y = random() * 3;
+    group.add(rRock);
+  }
+
+  const pondX = 0;
+  const pondZ = usableRadius * 0.28 * aspect;
+  const pondRad = 1.6;
+  const pond = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(pondRad, 24), physicalMaterial('#1cb2d6', { roughness: 0.08, metalness: 0.05 })), definition.id, false);
+  pond.rotation.x = -Math.PI / 2;
+  pond.position.set(pondX, 0.78, pondZ);
+  group.add(pond);
+
+  const streamPoints = 6;
+  for (let i = 0; i <= streamPoints; i++) {
+    const t = i / streamPoints;
+    const sx = Math.sin(t * Math.PI * 2.5) * 0.65;
+    const sz = THREE.MathUtils.lerp(wfZ + 0.4, pondZ - 0.8, t);
+    const sWidth = 0.5 - t * 0.15;
+    const segment = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(sWidth, 12), physicalMaterial('#1cb2d6', { roughness: 0.1, metalness: 0.05 })), definition.id, false);
+    segment.rotation.x = -Math.PI / 2;
+    segment.position.set(sx, 0.775, sz);
+    group.add(segment);
+  }
+
+  // 2. Elevated Visitor Path
+  const pathPoints = 18;
+  const pathRadius = radius * 0.78;
+  const pathWidth = 0.38;
+  const pathColor = '#5c4838';
+  const pathMaterial = standardMaterial(pathColor, { roughness: 0.88 });
+  const railMaterial = markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 1.5 }));
+  
+  for (let i = 0; i < pathPoints; i++) {
+    const angle = Math.PI * 0.45 - (i / pathPoints) * Math.PI * 0.95;
+    const px = Math.cos(angle) * pathRadius;
+    const pz = Math.sin(angle) * pathRadius * aspect;
+    const py = 0.82 + (i / pathPoints) * 2.2;
+
+    const plank = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(pathWidth, 0.04, 0.22), pathMaterial), definition.id);
+    plank.position.set(px, py, pz);
+    plank.rotation.y = -angle;
+    group.add(plank);
+
+    if (i % 3 === 0 && i > 0) {
+      const pillar = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, py - 0.7, 8), standardMaterial('#4c5c68')), definition.id);
+      pillar.position.set(px, 0.7 + (py - 0.7) * 0.5, pz);
+      group.add(pillar);
+    }
+
+    const post = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.52, 6), standardMaterial('#3a4a58')), definition.id);
+    post.position.set(px + Math.cos(angle) * 0.16, py + 0.26, pz + Math.sin(angle) * 0.16 * aspect);
+    group.add(post);
+
+    if (i < pathPoints - 1) {
+      const nextAngle = Math.PI * 0.45 - ((i + 1) / pathPoints) * Math.PI * 0.95;
+      const npx = Math.cos(nextAngle) * pathRadius;
+      const npz = Math.sin(nextAngle) * pathRadius * aspect;
+      const npy = 0.82 + ((i + 1) / pathPoints) * 2.2;
+      
+      const dx = npx - px;
+      const dy = npy - py;
+      const dz = npz - pz;
+      const dist = Math.hypot(dx, dy, dz);
+
+      const rail = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, dist, 6), railMaterial), definition.id, false);
+      rail.position.set(px + dx * 0.5 + Math.cos(angle) * 0.16, py + dy * 0.5 + 0.52, pz + dz * 0.5 + Math.sin(angle) * 0.16 * aspect);
+      rail.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
+      group.add(rail);
+    }
+  }
+
+  // 3. Raised Research Station / Lab Pod
+  const podX = usableRadius * 0.52;
+  const podZ = -usableRadius * 0.42 * aspect;
+  const podHeightY = 2.8;
+
+  const column = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.14, podHeightY - 0.7, 8), standardMaterial('#3e4b54', { roughness: 0.4, metalness: 0.8 })), definition.id);
+  column.position.set(podX, 0.7 + (podHeightY - 0.7) * 0.5, podZ);
+  group.add(column);
+
+  const platform = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.1, 16), standardMaterial('#1f2a32', { metalness: 0.7, roughness: 0.3 })), definition.id);
+  platform.position.set(podX, podHeightY, podZ);
+  group.add(platform);
+
+  const platRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.03, 8, 24), railMaterial), definition.id, false);
+  platRail.rotation.x = Math.PI / 2;
+  platRail.position.set(podX, podHeightY + 0.48, podZ);
+  group.add(platRail);
+
+  const podBody = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.82, 12), standardMaterial('#dbe6e4', { metalness: 0.4, roughness: 0.25 })), definition.id);
+  podBody.position.set(podX, podHeightY + 0.46, podZ);
+  group.add(podBody);
+
+  const podDome = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.55, 12, 10, 0, Math.PI*2, 0, Math.PI/2), physicalMaterial(definition.accent, { roughness: 0.1, opacity: 0.5, transparent: true, transmission: 0.8 })), definition.id, false);
+  podDome.position.set(podX, podHeightY + 0.87, podZ);
+  group.add(podDome);
+
+  const ant = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.015, 0.42, 4), standardMaterial('#8fa0a8')), definition.id);
+  ant.position.set(podX, podHeightY + 1.42, podZ);
+  group.add(ant);
+
+  // 4. Plant Nursery & Greenhouses
+  const ghX = usableRadius * 0.46;
+  const ghZ = usableRadius * 0.22 * aspect;
+  
+  const ghGeom = new THREE.BoxGeometry(0.82, 0.65, 0.62);
+  const ghWire = new THREE.Mesh(ghGeom, new THREE.MeshBasicMaterial({ color: '#ffffff', wireframe: true }));
+  const ghGlass = new THREE.Mesh(ghGeom, new THREE.MeshPhysicalMaterial({ color: '#8df5e8', transparent: true, opacity: 0.2, roughness: 0.1, transmission: 0.7 }));
+  const ghMesh = prepareMesh(ghGlass, definition.id, false);
+  ghMesh.add(ghWire);
+  ghMesh.position.set(ghX, 0.7 + 0.325, ghZ);
+  group.add(ghMesh);
+
+  const plantMat = standardMaterial('#4ade80', { roughness: 0.9 });
+  for (let px = -0.28; px <= 0.28; px += 0.28) {
+    for (let pz = -0.18; pz <= 0.18; pz += 0.36) {
+      const baby = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.12, 4), plantMat), definition.id);
+      baby.position.set(ghX + px, 0.7 + 0.06, ghZ + pz);
+      group.add(baby);
+    }
+  }
+
+  // 5. Technical Recycling & Water Filtration Systems
+  const techX = usableRadius * 0.22;
+  const techZ = usableRadius * 0.58 * aspect;
+  
+  const tankMat = standardMaterial('#2f383e', { roughness: 0.4, metalness: 0.85 });
+  const tank = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.58, 12), tankMat), definition.id);
+  tank.position.set(techX, 0.7 + 0.29, techZ);
+  group.add(tank);
+
+  const compBox = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.42), standardMaterial('#4c544d')), definition.id);
+  compBox.position.set(techX - 0.45, 0.7 + 0.21, techZ - 0.15);
+  group.add(compBox);
+
+  const tubeGeom = new THREE.TorusGeometry(0.3, 0.02, 6, 16, Math.PI);
+  const tube = prepareMesh(new THREE.Mesh(tubeGeom, railMaterial), definition.id, false);
+  tube.position.set(techX - 0.22, 0.7 + 0.32, techZ - 0.08);
+  tube.rotation.z = -Math.PI / 2;
+  group.add(tube);
+
+  // 6. Solar Panel array on the base skirt
+  const solarMat = new THREE.MeshPhysicalMaterial({
+    color: '#07162b',
+    roughness: 0.08,
+    metalness: 0.9,
+    clearcoat: 0.8,
+  });
+  const solarFrameMat = standardMaterial('#cbd2d6', { roughness: 0.3, metalness: 0.8 });
+  
+  for (let i = 0; i < 4; i++) {
+    const angle = Math.PI * 0.72 + i * 0.18;
+    const spX = Math.cos(angle) * (radius + 0.15);
+    const spZ = Math.sin(angle) * (radius + 0.15) * aspect;
+    
+    const panelGroup = new THREE.Group();
+    panelGroup.position.set(spX, 0.38, spZ);
+    panelGroup.rotation.y = -angle + Math.PI / 2;
+    panelGroup.rotation.x = 0.52;
+
+    const panelPlate = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.02, 0.38), solarMat), definition.id, false);
+    panelPlate.name = 'Solar Panel Cells';
+    const panelFrame = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.03, 0.42), solarFrameMat), definition.id);
+    panelFrame.name = 'Solar Panel Frame';
+    panelGroup.add(panelFrame, panelPlate);
+
+    const panelLeg = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.32, 6), solarFrameMat), definition.id);
+    panelLeg.position.set(0, -0.16, 0);
+    panelLeg.rotation.x = -0.52;
+    panelGroup.add(panelLeg);
+
+    group.add(panelGroup);
+  }
+
+  // 7. Base Cutaway basement with glowing research chambers
+  const baseCenterY = 0.34;
+  const basementRadius = radius * 0.86;
+
+  const room1Ang = Math.PI * 1.5;
+  const rx1 = Math.cos(room1Ang) * (basementRadius - 0.8);
+  const rz1 = Math.sin(room1Ang) * (basementRadius - 0.8) * aspect;
+  
+  const tubeMat = physicalMaterial('#e056fd', { roughness: 0.1, emissive: '#be2edd', emissiveIntensity: 3.5 });
+  const biolumTube = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.38, 12), tubeMat), definition.id, false);
+  biolumTube.position.set(rx1, baseCenterY, rz1);
+  group.add(biolumTube);
+
+  const room2Ang = Math.PI * 1.7;
+  const rx2 = Math.cos(room2Ang) * (basementRadius - 0.8);
+  const rz2 = Math.sin(room2Ang) * (basementRadius - 0.8) * aspect;
+  const displayMat = physicalMaterial('#34e7f4', { roughness: 0.1, emissive: '#00d2d3', emissiveIntensity: 2.2 });
+  const displayConsole = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.26, 0.12), displayMat), definition.id, false);
+  displayConsole.position.set(rx2, baseCenterY, rz2);
+  displayConsole.rotation.y = -room2Ang;
+  group.add(displayConsole);
+
+  const room3Ang = Math.PI * 1.3;
+  const rx3 = Math.cos(room3Ang) * (basementRadius - 0.8);
+  const rz3 = Math.sin(room3Ang) * (basementRadius - 0.8) * aspect;
+  const chairMat = standardMaterial('#bf9b6c');
+  const table = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.16, 8), standardMaterial('#2f3640')), definition.id);
+  table.position.set(rx3, baseCenterY - 0.05, rz3);
+  group.add(table);
+
+  for (let i = 0; i < 3; i++) {
+    const ca = (i / 3) * Math.PI * 2;
+    const cx = rx3 + Math.cos(ca) * 0.34;
+    const cz = rz3 + Math.sin(ca) * 0.34 * aspect;
+    const chair = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.15, 0.12), chairMat), definition.id);
+    chair.position.set(cx, baseCenterY - 0.08, cz);
+    group.add(chair);
+  }
+
+  // 8. Forest Vegetation
+  for (let index = 0; index < 24; index += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = random() * (usableRadius - 0.8);
+    const tx = Math.cos(angle) * distance;
+    const tz = Math.sin(angle) * distance * aspect;
+    const distToPond = Math.hypot(tx - pondX, tz - pondZ);
+    if (distToPond < 1.4) continue;
+    if (tx < -radius * 0.5) continue;
+
+    const leafColor = random() > 0.5 ? '#0d532b' : '#146f38';
+    addTree(group, definition.id, tx, tz, 0.62 + random() * 0.75, leafColor, false);
+  }
+
+  const fernMat = standardMaterial('#1f6e30', { roughness: 0.9 });
+  for (let index = 0; index < 18; index += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = random() * usableRadius;
+    const fx = Math.cos(angle) * distance;
+    const fz = Math.sin(angle) * distance * aspect;
+    const distToPond = Math.hypot(fx - pondX, fz - pondZ);
+    if (distToPond < 0.6) continue;
+
+    const fern = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.12 + random() * 0.12, 8, 4), fernMat), definition.id);
+    fern.scale.set(1.4, 0.12, 1.4);
+    fern.position.set(fx, 0.75, fz);
+    group.add(fern);
+  }
+
+  const logMat = standardMaterial('#3e2515', { roughness: 0.94 });
+  for (let index = 0; index < 4; index += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = random() * usableRadius * 0.5;
+    const log = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.45 + random() * 0.45, 6), logMat), definition.id);
+    log.rotation.z = Math.PI / 2;
+    log.rotation.y = random() * Math.PI;
+    log.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * aspect);
+    group.add(log);
+  }
+}
+
 export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const group = new THREE.Group();
   group.name = `BIOME__${definition.id}`;
@@ -1139,31 +1431,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   } else {
     const tropical = definition.id === 'tropical-rainforest-dome';
     if (tropical) {
-      for (let index = 0; index < 28; index += 1) {
-        const angle = random() * Math.PI * 2;
-        const distance = random() * usableRadius;
-        const leafColor = random() > 0.5 ? '#135c34' : '#1b7a43';
-        addTree(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.6 + random() * 0.8, leafColor, false);
-      }
-      const fernMat = standardMaterial('#1f6e30', { roughness: 0.9 });
-      for (let index = 0; index < 15; index += 1) {
-        const angle = random() * Math.PI * 2;
-        const distance = random() * usableRadius;
-        const fern = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.12 + random() * 0.12, 8, 4), fernMat), definition.id);
-        fern.scale.set(1.4, 0.12, 1.4);
-        fern.position.set(Math.cos(angle) * distance, 0.75, Math.sin(angle) * distance * (depth / width));
-        group.add(fern);
-      }
-      const logMat = standardMaterial('#422d1b', { roughness: 0.94 });
-      for (let index = 0; index < 4; index += 1) {
-        const angle = random() * Math.PI * 2;
-        const distance = random() * usableRadius * 0.6;
-        const log = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.5 + random() * 0.5, 6), logMat), definition.id);
-        log.rotation.z = Math.PI / 2;
-        log.rotation.y = random() * Math.PI;
-        log.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
-        group.add(log);
-      }
+      buildFuturisticTropicalBiodome(group, definition, radius, depth, width, random);
     } else {
       for (let index = 0; index < 22; index += 1) {
         const angle = random() * Math.PI * 2;

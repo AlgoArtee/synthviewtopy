@@ -636,7 +636,7 @@ const biomeBlueprints: readonly BiomeDefinition[] = [
     archetype: "geodesic-biome-dome",
     accent: "#54E58A",
     palette: ["#1E6D43", "#17462F", "#0B2C20", "#54E58A"],
-    description: "Dense layered canopy, hanging vines, mist, wetlands, and a small waterfall fill the humid rainforest dome.",
+    description: "A layered tropical canopy frames a tall waterfall, winding wetland stream, elevated visitor walk, smart-glass nursery, and raised research station beneath active climate-control rings.",
   },
 ];
 

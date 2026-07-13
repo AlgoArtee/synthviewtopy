@@ -172,7 +172,7 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
   );
   threshold.position.set(0, floorY + 0.036, doorZ + 0.035);
   group.add(threshold);
-  addNavigationAccessVolume(group, id, portalWidth * 0.78, 1.35, corridorDepth + 0.16, floorY + 0.68, corridorCenter, 'district');
+  addNavigationAccessVolume(group, id, portalWidth * 1.3, 1.35, corridorDepth + 0.16, floorY + 0.68, corridorCenter, 'district');
 }
 
 function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
@@ -215,7 +215,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   const lintel = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth + 0.1, 0.05, 0.08), frameMaterial), id, false);
   lintel.position.set(0, floorY + doorHeight + 0.05, doorZ);
   group.add(lintel);
-  addNavigationAccessVolume(group, id, portalWidth * 0.76, 1.3, corridorDepth + 0.14, floorY + 0.66, corridorCenter, 'dome');
+  addNavigationAccessVolume(group, id, portalWidth * 1.3, 1.3, corridorDepth + 0.14, floorY + 0.66, corridorCenter, 'dome');
 }
 
 function addFacadeBands(
@@ -949,343 +949,559 @@ function buildFuturisticTropicalBiodome(
   width: number,
   random: () => number,
 ) {
-  const usableRadius = radius * 0.72;
-  const aspect = depth / width;
-
-  // 1. Water Features: Cascading Waterfall, Winding Stream, Wetland Pond
-  const wfX = 0.5;
-  const wfZ = -usableRadius * 0.65 * aspect;
-  const wfY = 0.7;
-  const wfHeight = 5.5; // Taller waterfall!
-  
-  const waterfallGeom = new THREE.CylinderGeometry(0.55, 0.7, wfHeight, 16, 2, true);
-  const waterfallMat = new THREE.MeshPhysicalMaterial({
-    color: '#3cd3ff',
-    emissive: '#1188bb',
-    emissiveIntensity: 2.2,
+  const usableRadius = radius * 0.78;
+  const floorY = 0.78;
+  const metal = standardMaterial('#34464d', { roughness: 0.34, metalness: 0.82 });
+  const darkMetal = standardMaterial('#17252a', { roughness: 0.28, metalness: 0.9 });
+  const pathMaterial = standardMaterial('#6b4a2f', { roughness: 0.86 });
+  const railMaterial = markAccent(new THREE.MeshStandardMaterial({
+    color: '#a9f7d0',
+    emissive: definition.accent,
+    emissiveIntensity: 1.15,
+    metalness: 0.62,
+    roughness: 0.28,
+  }));
+  const waterMaterial = new THREE.MeshPhysicalMaterial({
+    color: '#45d8e9',
+    emissive: '#087f9e',
+    emissiveIntensity: 1.15,
     transparent: true,
-    opacity: 0.85,
-    roughness: 0.02,
-    metalness: 0.1,
-    transmission: 0.35,
+    opacity: 0.82,
+    roughness: 0.05,
+    transmission: 0.42,
+    thickness: 0.28,
+    depthWrite: false,
   });
-  const waterfall = prepareMesh(new THREE.Mesh(waterfallGeom, waterfallMat), definition.id, false);
-  waterfall.position.set(wfX, wfY + wfHeight * 0.5, wfZ);
-  group.add(waterfall);
 
-  // Cascading rock tiers framing the waterfall
-  const rockMat = standardMaterial('#4c4e4b', { roughness: 0.92 });
-  for (let i = 0; i < 7; i++) {
-    const rHeight = 2.4 + i * 0.7;
-    const rWidth = 1.2 + random() * 0.8;
-    const rRock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(rWidth, rHeight, 5), rockMat), definition.id);
-    rRock.position.set(wfX - 1.4 + i * 0.52, 0.7 + rHeight * 0.4, wfZ - 0.2);
-    rRock.rotation.y = random() * 3;
-    group.add(rRock);
-  }
+  const addCylinderBetween = (
+    parent: THREE.Object3D,
+    start: THREE.Vector3,
+    end: THREE.Vector3,
+    radiusValue: number,
+    material: THREE.Material,
+    name = '',
+    selectable = true,
+  ) => {
+    const delta = end.clone().sub(start);
+    const mesh = prepareMesh(
+      new THREE.Mesh(new THREE.CylinderGeometry(radiusValue, radiusValue, delta.length(), 7), material),
+      definition.id,
+      selectable,
+    );
+    mesh.position.copy(start).add(end).multiplyScalar(0.5);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
+    mesh.name = name;
+    parent.add(mesh);
+    return mesh;
+  };
 
-  const pondX = 0;
-  const pondZ = usableRadius * 0.28 * aspect;
-  const pondRad = 1.6;
-  const pond = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(pondRad, 24), physicalMaterial('#1cb2d6', { roughness: 0.08, metalness: 0.05 })), definition.id, false);
-  pond.rotation.x = -Math.PI / 2;
-  pond.position.set(pondX, 0.78, pondZ);
-  group.add(pond);
+  // Align the deck's local Z axis with the route while keeping its local X axis
+  // horizontal. `setFromUnitVectors` alone leaves roll under-constrained, which
+  // made curved, climbing sections bank sharply and break the walkable surface.
+  const orientWalkwaySegment = (mesh: THREE.Mesh, direction: THREE.Vector3) => {
+    const horizontalLength = Math.hypot(direction.x, direction.z);
+    mesh.rotation.order = 'YXZ';
+    mesh.rotation.set(
+      -Math.atan2(direction.y, horizontalLength),
+      Math.atan2(direction.x, direction.z),
+      0,
+      'YXZ',
+    );
+    mesh.userData.walkwayRollLocked = true;
+  };
 
-  const streamPoints = 8;
-  for (let i = 0; i <= streamPoints; i++) {
-    const t = i / streamPoints;
-    const sx = Math.sin(t * Math.PI * 2.5) * 0.65;
-    const sz = THREE.MathUtils.lerp(wfZ + 0.4, pondZ - 0.8, t);
-    const sWidth = 0.5 - t * 0.15;
-    const segment = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(sWidth, 12), physicalMaterial('#1cb2d6', { roughness: 0.1, metalness: 0.05 })), definition.id, false);
-    segment.rotation.x = -Math.PI / 2;
-    segment.position.set(sx, 0.775, sz);
-    group.add(segment);
-  }
+  // A continuous timber-and-alloy visitor route climbs from the airlock to the waterfall.
+  const routeCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-2.4, 0.94, 11.4),
+    new THREE.Vector3(-7.2, 1.35, 9.0),
+    new THREE.Vector3(-10.1, 2.1, 4.2),
+    new THREE.Vector3(-10.4, 3.0, -1.8),
+    new THREE.Vector3(-8.4, 3.8, -6.5),
+    new THREE.Vector3(-4.1, 4.35, -8.1),
+  ]);
+  const routePoints = routeCurve.getPoints(38);
+  const routeSamplePoints: THREE.Vector3[] = [];
+  routePoints.forEach((point) => routeSamplePoints.push(point));
+  const pathWidth = 1.12;
 
-  // 2. Elevated Visitor Path winding along the left side
-  const pathPoints = 18;
-  const pathRadius = radius * 0.76;
-  const pathWidth = 0.42;
-  const pathColor = '#5c4838';
-  const pathMaterial = standardMaterial(pathColor, { roughness: 0.88 });
-  const railMaterial = markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 1.5 }));
-  
-  for (let i = 0; i < pathPoints; i++) {
-    // Sweep angle from front-center (Math.PI*0.5) leftwards around to back-center (Math.PI*1.5)
-    const angle = Math.PI * 0.5 + (i / pathPoints) * Math.PI;
-    const px = Math.cos(angle) * pathRadius;
-    const pz = Math.sin(angle) * pathRadius * aspect;
-    const py = 0.82 + (i / pathPoints) * 2.2; // climbs to y = 3.02
-
-    const plank = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(pathWidth, 0.045, 0.22), pathMaterial), definition.id);
-    plank.position.set(px, py, pz);
-    plank.rotation.y = -angle;
+  for (let index = 0; index < routePoints.length - 1; index += 1) {
+    const start = routePoints[index];
+    const end = routePoints[index + 1];
+    const direction = end.clone().sub(start);
+    const horizontalPerpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    const plank = prepareMesh(
+      new THREE.Mesh(new THREE.BoxGeometry(pathWidth, 0.11, direction.length() + 0.035), pathMaterial),
+      definition.id,
+    );
+    plank.name = 'TROPICAL__ELEVATED_CANOPY_WALK';
+    plank.position.copy(start).add(end).multiplyScalar(0.5);
+    orientWalkwaySegment(plank, direction);
+    plank.userData.walkable = true;
     group.add(plank);
 
-    if (i % 3 === 0 && i > 0) {
-      const pillar = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, py - 0.7, 8), standardMaterial('#4c5c68')), definition.id);
-      pillar.position.set(px, 0.7 + (py - 0.7) * 0.5, pz);
-      group.add(pillar);
+    for (const side of [-1, 1]) {
+      const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
+      addCylinderBetween(
+        group,
+        start.clone().add(offset).add(new THREE.Vector3(0, 0.72, 0)),
+        end.clone().add(offset).add(new THREE.Vector3(0, 0.72, 0)),
+        0.027,
+        railMaterial,
+        'TROPICAL__CANOPY_WALK_RAIL',
+        false,
+      );
     }
 
-    const post = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.52, 6), standardMaterial('#3a4a58')), definition.id);
-    post.position.set(px + Math.cos(angle) * 0.18, py + 0.26, pz + Math.sin(angle) * 0.18 * aspect);
-    group.add(post);
-
-    if (i < pathPoints - 1) {
-      const nextAngle = Math.PI * 0.5 + ((i + 1) / pathPoints) * Math.PI;
-      const npx = Math.cos(nextAngle) * pathRadius;
-      const npz = Math.sin(nextAngle) * pathRadius * aspect;
-      const npy = 0.82 + ((i + 1) / pathPoints) * 2.2;
-      
-      const dx = npx - px;
-      const dy = npy - py;
-      const dz = npz - pz;
-      const dist = Math.hypot(dx, dy, dz);
-
-      const rail = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, dist, 6), railMaterial), definition.id, false);
-      rail.position.set(px + dx * 0.5 + Math.cos(angle) * 0.18, py + dy * 0.5 + 0.52, pz + dz * 0.5 + Math.sin(angle) * 0.18 * aspect);
-      rail.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dx, dy, dz).normalize());
-      group.add(rail);
-    }
-  }
-
-  // Circular Observation lookout deck at the end of the stairs (back-left, next to the waterfall!)
-  const deckX = -1.1;
-  const deckZ = -usableRadius * 0.58 * aspect;
-  const deckY = 3.02;
-
-  const obsDeck = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.08, 16), pathMaterial), definition.id);
-  obsDeck.position.set(deckX, deckY, deckZ);
-  group.add(obsDeck);
-
-  const deckPillar = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, deckY - 0.7, 8), standardMaterial('#4c5c68')), definition.id);
-  deckPillar.position.set(deckX, 0.7 + (deckY - 0.7) * 0.5, deckZ);
-  group.add(deckPillar);
-
-  const deckRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.024, 8, 24), railMaterial), definition.id, false);
-  deckRail.rotation.x = Math.PI / 2;
-  deckRail.position.set(deckX, deckY + 0.48, deckZ);
-  group.add(deckRail);
-
-  for (let k = 0; k < 6; k++) {
-    const ra = (k / 6) * Math.PI * 2;
-    if (ra > Math.PI * 0.2 && ra < Math.PI * 0.8) continue; // Gap for stairway entry
-    const rpx = deckX + Math.cos(ra) * 0.83;
-    const rpz = deckZ + Math.sin(ra) * 0.83 * aspect;
-    const rpost = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.48, 6), standardMaterial('#3a4a58')), definition.id);
-    rpost.position.set(rpx, deckY + 0.24, rpz);
-    group.add(rpost);
-  }
-
-  // 3. Raised Research Station / Lab Pod
-  const podX = usableRadius * 0.52;
-  const podZ = -usableRadius * 0.42 * aspect;
-  const podHeightY = 2.8;
-
-  const column = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.14, podHeightY - 0.7, 8), standardMaterial('#3e4b54', { roughness: 0.4, metalness: 0.8 })), definition.id);
-  column.position.set(podX, 0.7 + (podHeightY - 0.7) * 0.5, podZ);
-  group.add(column);
-
-  const platform = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.85, 0.85, 0.1, 16), standardMaterial('#1f2a32', { metalness: 0.7, roughness: 0.3 })), definition.id);
-  platform.position.set(podX, podHeightY, podZ);
-  group.add(platform);
-
-  const platRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(0.83, 0.03, 8, 24), railMaterial), definition.id, false);
-  platRail.rotation.x = Math.PI / 2;
-  platRail.position.set(podX, podHeightY + 0.48, podZ);
-  group.add(platRail);
-
-  const podBody = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.55, 0.55, 0.82, 12), standardMaterial('#dbe6e4', { metalness: 0.4, roughness: 0.25 })), definition.id);
-  podBody.position.set(podX, podHeightY + 0.46, podZ);
-  group.add(podBody);
-
-  const podDome = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.55, 12, 10, 0, Math.PI*2, 0, Math.PI/2), physicalMaterial(definition.accent, { roughness: 0.1, opacity: 0.5, transparent: true, transmission: 0.8 })), definition.id, false);
-  podDome.position.set(podX, podHeightY + 0.87, podZ);
-  group.add(podDome);
-
-  const ant = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.005, 0.015, 0.42, 4), standardMaterial('#8fa0a8')), definition.id);
-  ant.position.set(podX, podHeightY + 1.42, podZ);
-  group.add(ant);
-
-  // 4. Plant Nursery & Greenhouses
-  const ghX = usableRadius * 0.46;
-  const ghZ = usableRadius * 0.22 * aspect;
-  
-  const ghGeom = new THREE.BoxGeometry(0.82, 0.65, 0.62);
-  const ghWire = new THREE.Mesh(ghGeom, new THREE.MeshBasicMaterial({ color: '#ffffff', wireframe: true }));
-  const ghGlass = new THREE.Mesh(ghGeom, new THREE.MeshPhysicalMaterial({ color: '#8df5e8', transparent: true, opacity: 0.2, roughness: 0.1, transmission: 0.7 }));
-  const ghMesh = prepareMesh(ghGlass, definition.id, false);
-  ghMesh.add(ghWire);
-  ghMesh.position.set(ghX, 0.7 + 0.325, ghZ);
-  group.add(ghMesh);
-
-  const plantMat = standardMaterial('#4ade80', { roughness: 0.9 });
-  for (let px = -0.28; px <= 0.28; px += 0.28) {
-    for (let pz = -0.18; pz <= 0.18; pz += 0.36) {
-      const baby = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.12, 4), plantMat), definition.id);
-      baby.position.set(ghX + px, 0.7 + 0.06, ghZ + pz);
-      group.add(baby);
+    if (index % 4 === 0) {
+      for (const side of [-1, 1]) {
+        const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
+        addCylinderBetween(
+          group,
+          start.clone().add(offset),
+          start.clone().add(offset).add(new THREE.Vector3(0, 0.74, 0)),
+          0.035,
+          metal,
+          'TROPICAL__CANOPY_WALK_POST',
+        );
+      }
+      if (index > 1) {
+        addCylinderBetween(
+          group,
+          new THREE.Vector3(start.x, floorY, start.z),
+          start,
+          0.075,
+          metal,
+          'TROPICAL__CANOPY_WALK_SUPPORT',
+        );
+      }
     }
   }
 
-  // 5. Technical Recycling & Water Filtration Systems
-  const techX = usableRadius * 0.22;
-  const techZ = usableRadius * 0.58 * aspect;
-  
-  const tankMat = standardMaterial('#2f383e', { roughness: 0.4, metalness: 0.85 });
-  const tank = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.58, 12), tankMat), definition.id);
-  tank.position.set(techX, 0.7 + 0.29, techZ);
-  group.add(tank);
+  // Central water axis: a high waterfall, natural stream and broad wetland pond.
+  const waterfallX = 0;
+  const waterfallZ = -8.25;
+  const waterfallTopY = 7.2;
+  const rockMaterial = standardMaterial('#414b43', { roughness: 0.96 });
+  const mossMaterial = standardMaterial('#245b31', { roughness: 0.98 });
 
-  const compBox = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.42, 0.42), standardMaterial('#4c544d')), definition.id);
-  compBox.position.set(techX - 0.45, 0.7 + 0.21, techZ - 0.15);
-  group.add(compBox);
+  for (const side of [-1, 1]) {
+    for (let tier = 0; tier < 5; tier += 1) {
+      const rock = prepareMesh(
+        new THREE.Mesh(new THREE.DodecahedronGeometry(1.05 + random() * 0.62, 0), tier % 2 ? mossMaterial : rockMaterial),
+        definition.id,
+      );
+      rock.name = 'TROPICAL__WATERFALL_CLIFF';
+      rock.scale.set(1.25, 1.2 + tier * 0.16, 0.9);
+      rock.position.set(side * (1.25 + tier * 0.24), 1.2 + tier * 1.18, waterfallZ - 0.2 + random() * 0.5);
+      rock.rotation.set(random() * 0.35, random() * Math.PI, random() * 0.25);
+      group.add(rock);
+    }
+  }
 
-  const tubeGeom = new THREE.TorusGeometry(0.3, 0.02, 6, 16, Math.PI);
-  const tube = prepareMesh(new THREE.Mesh(tubeGeom, railMaterial), definition.id, false);
-  tube.position.set(techX - 0.22, 0.7 + 0.32, techZ - 0.08);
-  tube.rotation.z = -Math.PI / 2;
-  group.add(tube);
+  for (let ribbon = 0; ribbon < 7; ribbon += 1) {
+    const widthValue = 0.24 + random() * 0.22;
+    const fall = prepareMesh(
+      new THREE.Mesh(new THREE.PlaneGeometry(widthValue, 6.15), waterMaterial),
+      definition.id,
+      false,
+    );
+    fall.name = 'TROPICAL__WATERFALL';
+    fall.position.set(waterfallX - 0.95 + ribbon * 0.31, 4.02, waterfallZ + 0.58 + random() * 0.08);
+    fall.rotation.z = (random() - 0.5) * 0.035;
+    group.add(fall);
+  }
 
-  // 6. Solar Panel array on the base skirt
-  const solarMat = new THREE.MeshPhysicalMaterial({
-    color: '#07162b',
-    roughness: 0.08,
-    metalness: 0.9,
-    clearcoat: 0.8,
+  const upperPool = prepareMesh(
+    new THREE.Mesh(new THREE.CircleGeometry(1.65, 32), waterMaterial),
+    definition.id,
+    false,
+  );
+  upperPool.name = 'TROPICAL__UPPER_POOL';
+  upperPool.rotation.x = -Math.PI / 2;
+  upperPool.scale.set(1.35, 0.72, 1);
+  upperPool.position.set(0, waterfallTopY, waterfallZ - 0.48);
+  group.add(upperPool);
+
+  const streamCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, -6.6),
+    new THREE.Vector3(-0.65, 0.03, -4.4),
+    new THREE.Vector3(0.72, 0, -2.5),
+    new THREE.Vector3(-0.42, 0.02, -1.2),
+  ]);
+  const stream = prepareMesh(
+    new THREE.Mesh(new THREE.TubeGeometry(streamCurve, 64, 0.58, 10, false), waterMaterial),
+    definition.id,
+    false,
+  );
+  stream.name = 'TROPICAL__WINDING_STREAM';
+  stream.scale.y = 0.13;
+  stream.position.y = floorY + 0.04;
+  group.add(stream);
+
+  const pond = prepareMesh(
+    new THREE.Mesh(new THREE.CircleGeometry(2.85, 48), waterMaterial),
+    definition.id,
+    false,
+  );
+  pond.name = 'TROPICAL__WETLAND_POND';
+  pond.rotation.x = -Math.PI / 2;
+  pond.scale.set(1.28, 0.84, 1);
+  pond.position.set(0.25, floorY + 0.055, -0.5);
+  group.add(pond);
+
+  for (let index = 0; index < 25; index += 1) {
+    const t = index / 24;
+    const point = streamCurve.getPoint(t);
+    const tangent = streamCurve.getTangent(t);
+    const side = index % 2 ? 1 : -1;
+    const bankOffset = new THREE.Vector3(-tangent.z, 0, tangent.x).normalize().multiplyScalar(side * (0.72 + random() * 0.25));
+    const stone = prepareMesh(
+      new THREE.Mesh(new THREE.DodecahedronGeometry(0.18 + random() * 0.2, 0), index % 3 === 0 ? mossMaterial : rockMaterial),
+      definition.id,
+    );
+    stone.name = 'TROPICAL__STREAM_BANK';
+    stone.scale.y = 0.62;
+    stone.position.copy(point).add(bankOffset).add(new THREE.Vector3(0, floorY + 0.12, 0));
+    stone.rotation.set(random(), random() * Math.PI, random());
+    group.add(stone);
+  }
+
+  const mistMaterial = new THREE.MeshBasicMaterial({
+    color: '#d9ffff',
+    transparent: true,
+    opacity: 0.12,
+    depthWrite: false,
   });
-  const solarFrameMat = standardMaterial('#cbd2d6', { roughness: 0.3, metalness: 0.8 });
-  
-  for (let i = 0; i < 4; i++) {
-    const angle = Math.PI * 0.72 + i * 0.18;
-    const spX = Math.cos(angle) * (radius + 0.15);
-    const spZ = Math.sin(angle) * (radius + 0.15) * aspect;
-    
-    const panelGroup = new THREE.Group();
-    panelGroup.position.set(spX, 0.38, spZ);
-    panelGroup.rotation.y = -angle + Math.PI / 2;
-    panelGroup.rotation.x = 0.52;
-
-    const panelPlate = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.68, 0.02, 0.38), solarMat), definition.id, false);
-    panelPlate.name = 'Solar Panel Cells';
-    const panelFrame = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.03, 0.42), solarFrameMat), definition.id);
-    panelFrame.name = 'Solar Panel Frame';
-    panelGroup.add(panelFrame, panelPlate);
-
-    const panelLeg = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.32, 6), solarFrameMat), definition.id);
-    panelLeg.position.set(0, -0.16, 0);
-    panelLeg.rotation.x = -0.52;
-    panelGroup.add(panelLeg);
-
-    group.add(panelGroup);
+  for (let index = 0; index < 18; index += 1) {
+    const mist = prepareMesh(
+      new THREE.Mesh(new THREE.SphereGeometry(0.32 + random() * 0.48, 8, 5), mistMaterial),
+      definition.id,
+      false,
+    );
+    mist.name = 'TROPICAL__WATERFALL_MIST';
+    mist.scale.set(1.8, 0.5, 1);
+    mist.position.set((random() - 0.5) * 3.5, floorY + 0.22 + random() * 1.25, waterfallZ + 1.0 + random() * 1.4);
+    group.add(mist);
   }
 
-  // 7. Base Cutaway basement with glowing research chambers
-  const baseCenterY = 0.34;
-  const basementRadius = radius * 0.86;
-
-  const room1Ang = Math.PI * 1.5;
-  const rx1 = Math.cos(room1Ang) * (basementRadius - 0.8);
-  const rz1 = Math.sin(room1Ang) * (basementRadius - 0.8) * aspect;
-  
-  const tubeMat = physicalMaterial('#e056fd', { roughness: 0.1, emissive: '#be2edd', emissiveIntensity: 3.5 });
-  const biolumTube = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.38, 12), tubeMat), definition.id, false);
-  biolumTube.position.set(rx1, baseCenterY, rz1);
-  group.add(biolumTube);
-
-  const room2Ang = Math.PI * 1.7;
-  const rx2 = Math.cos(room2Ang) * (basementRadius - 0.8);
-  const rz2 = Math.sin(room2Ang) * (basementRadius - 0.8) * aspect;
-  const displayMat = physicalMaterial('#34e7f4', { roughness: 0.1, emissive: '#00d2d3', emissiveIntensity: 2.2 });
-  const displayConsole = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.38, 0.26, 0.12), displayMat), definition.id, false);
-  displayConsole.position.set(rx2, baseCenterY, rz2);
-  displayConsole.rotation.y = -room2Ang;
-  group.add(displayConsole);
-
-  const room3Ang = Math.PI * 1.3;
-  const rx3 = Math.cos(room3Ang) * (basementRadius - 0.8);
-  const rz3 = Math.sin(room3Ang) * (basementRadius - 0.8) * aspect;
-  const chairMat = standardMaterial('#bf9b6c');
-  const table = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.16, 8), standardMaterial('#2f3640')), definition.id);
-  table.position.set(rx3, baseCenterY - 0.05, rz3);
-  group.add(table);
-
-  for (let i = 0; i < 3; i++) {
-    const ca = (i / 3) * Math.PI * 2;
-    const cx = rx3 + Math.cos(ca) * 0.34;
-    const cz = rz3 + Math.sin(ca) * 0.34 * aspect;
-    const chair = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.15, 0.12), chairMat), definition.id);
-    chair.position.set(cx, baseCenterY - 0.08, cz);
-    group.add(chair);
+  // Lookout deck beside the waterfall and a suspension bridge to the research pod.
+  const deckPosition = new THREE.Vector3(-3.7, 4.35, -8.0);
+  const deck = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, 0.14, 24), pathMaterial), definition.id);
+  deck.name = 'TROPICAL__OBSERVATION_DECK';
+  deck.position.copy(deckPosition);
+  deck.userData.walkable = true;
+  group.add(deck);
+  const deckRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(1.39, 0.035, 8, 36), railMaterial), definition.id, false);
+  deckRail.name = 'TROPICAL__OBSERVATION_DECK_RAIL';
+  deckRail.rotation.x = Math.PI / 2;
+  deckRail.position.copy(deckPosition).add(new THREE.Vector3(0, 0.76, 0));
+  group.add(deckRail);
+  addCylinderBetween(group, new THREE.Vector3(deckPosition.x, floorY, deckPosition.z), deckPosition, 0.13, metal, 'TROPICAL__OBSERVATION_SUPPORT');
+  for (let index = 0; index < 10; index += 1) {
+    const angle = (index / 10) * Math.PI * 2;
+    if (angle > 0.1 && angle < 1.1) continue;
+    const x = deckPosition.x + Math.cos(angle) * 1.38;
+    const z = deckPosition.z + Math.sin(angle) * 1.38;
+    addCylinderBetween(group, new THREE.Vector3(x, deckPosition.y, z), new THREE.Vector3(x, deckPosition.y + 0.78, z), 0.035, metal);
   }
 
-  // 8. Forest Vegetation: Multi-layered lush canopy and floor ferns
-  // Deep tropical trees (much larger scale and higher counts!)
-  for (let index = 0; index < 65; index += 1) {
+  const podPosition = new THREE.Vector3(7.15, 5.15, -5.7);
+  const bridgeCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(-2.7, 4.4, -7.6),
+    new THREE.Vector3(0.3, 4.12, -7.1),
+    new THREE.Vector3(3.5, 4.4, -6.7),
+    new THREE.Vector3(5.8, 5.1, -6.0),
+  ]);
+  const bridgePoints = bridgeCurve.getPoints(24);
+  bridgePoints.forEach((point) => routeSamplePoints.push(point));
+  for (let index = 0; index < bridgePoints.length - 1; index += 1) {
+    const start = bridgePoints[index];
+    const end = bridgePoints[index + 1];
+    const direction = end.clone().sub(start);
+    const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    const plank = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.09, direction.length() + 0.025), pathMaterial), definition.id);
+    plank.name = 'TROPICAL__SUSPENSION_BRIDGE';
+    plank.position.copy(start).add(end).multiplyScalar(0.5);
+    orientWalkwaySegment(plank, direction);
+    plank.userData.walkable = true;
+    group.add(plank);
+    for (const side of [-1, 1]) {
+      const offset = perpendicular.clone().multiplyScalar(side * 0.46);
+      addCylinderBetween(
+        group,
+        start.clone().add(offset).add(new THREE.Vector3(0, 0.68, 0)),
+        end.clone().add(offset).add(new THREE.Vector3(0, 0.68, 0)),
+        0.024,
+        railMaterial,
+        'TROPICAL__SUSPENSION_BRIDGE_RAIL',
+        false,
+      );
+    }
+  }
+
+  const podPlatform = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(1.82, 1.82, 0.16, 28), darkMetal), definition.id);
+  podPlatform.name = 'TROPICAL__RESEARCH_STATION';
+  podPlatform.position.copy(podPosition);
+  podPlatform.userData.walkable = true;
+  group.add(podPlatform);
+  const podRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(1.76, 0.04, 8, 40), railMaterial), definition.id, false);
+  podRail.rotation.x = Math.PI / 2;
+  podRail.position.copy(podPosition).add(new THREE.Vector3(0, 0.8, 0));
+  group.add(podRail);
+  addCylinderBetween(group, new THREE.Vector3(podPosition.x, floorY, podPosition.z), podPosition, 0.22, metal, 'TROPICAL__RESEARCH_STATION_COLUMN');
+  for (let index = 0; index < 12; index += 1) {
+    const angle = (index / 12) * Math.PI * 2;
+    const x = podPosition.x + Math.cos(angle) * 1.75;
+    const z = podPosition.z + Math.sin(angle) * 1.75;
+    addCylinderBetween(group, new THREE.Vector3(x, podPosition.y, z), new THREE.Vector3(x, podPosition.y + 0.82, z), 0.035, metal);
+  }
+  const stationBody = prepareMesh(
+    new THREE.Mesh(new THREE.CylinderGeometry(0.88, 0.88, 1.35, 20), physicalMaterial('#b9d8d3', {
+      roughness: 0.12,
+      metalness: 0.25,
+      transparent: true,
+      opacity: 0.58,
+      transmission: 0.58,
+    })),
+    definition.id,
+    false,
+  );
+  stationBody.name = 'TROPICAL__RESEARCH_LAB_POD';
+  stationBody.position.copy(podPosition).add(new THREE.Vector3(0, 0.74, 0));
+  group.add(stationBody);
+  const stationRoof = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.92, 20, 8, 0, Math.PI * 2, 0, Math.PI / 2), darkMetal), definition.id);
+  stationRoof.position.copy(podPosition).add(new THREE.Vector3(0, 1.4, 0));
+  group.add(stationRoof);
+
+  // Glazed propagation house with visible plant benches.
+  const greenhouse = new THREE.Group();
+  greenhouse.name = 'TROPICAL__PLANT_NURSERY_GREENHOUSE';
+  greenhouse.position.set(7.45, floorY, 2.25);
+  const greenhouseShape = new THREE.Shape();
+  greenhouseShape.moveTo(-1.7, 0);
+  greenhouseShape.lineTo(-1.7, 1.25);
+  greenhouseShape.lineTo(0, 2.25);
+  greenhouseShape.lineTo(1.7, 1.25);
+  greenhouseShape.lineTo(1.7, 0);
+  greenhouseShape.closePath();
+  const greenhouseGeometry = new THREE.ExtrudeGeometry(greenhouseShape, { depth: 2.8, bevelEnabled: false });
+  greenhouseGeometry.translate(0, 0, -1.4);
+  const greenhouseGlass = prepareMesh(
+    new THREE.Mesh(greenhouseGeometry, new THREE.MeshPhysicalMaterial({
+      color: '#a6fff0',
+      transparent: true,
+      opacity: 0.24,
+      roughness: 0.06,
+      transmission: 0.78,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+    })),
+    definition.id,
+    false,
+  );
+  greenhouseGlass.name = 'TROPICAL__NURSERY_SMART_GLASS';
+  greenhouse.add(greenhouseGlass);
+  const greenhouseFrame = new THREE.LineSegments(
+    new THREE.EdgesGeometry(greenhouseGeometry, 18),
+    new THREE.LineBasicMaterial({ color: '#d2fff4', transparent: true, opacity: 0.8 }),
+  );
+  greenhouseFrame.userData.selectableId = definition.id;
+  greenhouse.add(greenhouseFrame);
+  for (const z of [-0.82, 0.82]) {
+    const bench = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.12, 0.56), darkMetal), definition.id);
+    bench.position.set(0, 0.48, z);
+    greenhouse.add(bench);
+    for (let plantIndex = 0; plantIndex < 7; plantIndex += 1) {
+      const plant = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.42 + random() * 0.25, 6), standardMaterial(plantIndex % 2 ? '#4ce67d' : '#79f2a2')), definition.id);
+      plant.position.set(-1.02 + plantIndex * 0.34, 0.74, z);
+      greenhouse.add(plant);
+    }
+  }
+  group.add(greenhouse);
+
+  // Closed-loop filtration and composting equipment occupies the front-right service edge.
+  const serviceZone = new THREE.Group();
+  serviceZone.name = 'TROPICAL__WATER_RECYCLING_HUB';
+  serviceZone.position.set(6.2, floorY, 7.0);
+  for (let index = 0; index < 3; index += 1) {
+    const tank = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.42, 1.18, 14), darkMetal), definition.id);
+    tank.position.set(index * 0.92 - 0.92, 0.59, 0);
+    serviceZone.add(tank);
+    const statusRing = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(0.43, 0.035, 6, 20), railMaterial), definition.id, false);
+    statusRing.position.set(index * 0.92 - 0.92, 0.64, 0);
+    statusRing.rotation.x = Math.PI / 2;
+    serviceZone.add(statusRing);
+  }
+  group.add(serviceZone);
+
+  // Suspended climate-control rings, irrigation vents and a fine rain curtain.
+  const climateRing = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(5.3, 0.11, 10, 64), metal), definition.id);
+  climateRing.name = 'TROPICAL__CLIMATE_CONTROL_RING';
+  climateRing.rotation.x = Math.PI / 2;
+  climateRing.position.set(0, 10.8, -1.8);
+  group.add(climateRing);
+  const irrigationRing = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(3.15, 0.055, 8, 48), railMaterial), definition.id, false);
+  irrigationRing.name = 'TROPICAL__IRRIGATION_RING';
+  irrigationRing.rotation.x = Math.PI / 2;
+  irrigationRing.position.set(0, 10.55, -1.8);
+  group.add(irrigationRing);
+  const rainMaterial = new THREE.MeshBasicMaterial({ color: '#a8ecff', transparent: true, opacity: 0.34, depthWrite: false });
+  for (let index = 0; index < 46; index += 1) {
     const angle = random() * Math.PI * 2;
-    const distance = random() * (usableRadius - 0.2);
-    const tx = Math.cos(angle) * distance;
-    const tz = Math.sin(angle) * distance * aspect;
-    
-    const distToPond = Math.hypot(tx - pondX, tz - pondZ);
-    if (distToPond < 1.1) continue;
-    const distToPath = Math.hypot(tx - Math.cos(angle) * pathRadius, tz - Math.sin(angle) * pathRadius * aspect);
-    if (distToPath < 0.45 && tx < 0) continue; // avoid path intersection
-    const distToDeck = Math.hypot(tx - deckX, tz - deckZ);
-    if (distToDeck < 0.9) continue;
-
-    // Use huge scales! (height ranges from 3.5 to 8.0 units!)
-    const tScale = 3.5 + random() * 4.5;
-    const leafColor = random() > 0.55 ? '#0d532b' : '#146f38';
-    addTree(group, definition.id, tx, tz, tScale, leafColor, false);
+    const distance = Math.sqrt(random()) * 4.8;
+    const x = Math.cos(angle) * distance;
+    const z = -1.8 + Math.sin(angle) * distance;
+    const dropLength = 0.28 + random() * 0.7;
+    const drop = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, dropLength, 4), rainMaterial), definition.id, false);
+    drop.name = 'TROPICAL__MISTING_RAIN';
+    drop.position.set(x, 8.2 + random() * 2.05, z);
+    group.add(drop);
+  }
+  for (let index = 0; index < 8; index += 1) {
+    const angle = (index / 8) * Math.PI * 2;
+    const vent = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.38, 0.34, 12), darkMetal), definition.id);
+    vent.name = 'TROPICAL__CLIMATE_VENT';
+    vent.position.set(Math.cos(angle) * 5.3, 10.55, -1.8 + Math.sin(angle) * 5.3);
+    group.add(vent);
   }
 
-  // Understory Plants & Ferns
-  const fernMat = standardMaterial('#1f6e30', { roughness: 0.9 });
-  for (let index = 0; index < 35; index += 1) {
-    const angle = random() * Math.PI * 2;
-    const distance = random() * usableRadius;
-    const fx = Math.cos(angle) * distance;
-    const fz = Math.sin(angle) * distance * aspect;
-    const distToPond = Math.hypot(fx - pondX, fz - pondZ);
-    if (distToPond < 0.5) continue;
+  // Layered rainforest canopy. The central water vista and visitor routes remain open.
+  const trunkMaterial = standardMaterial('#4b321f', { roughness: 0.98 });
+  const vineMaterial = standardMaterial('#327443', { roughness: 0.96 });
+  const leafMaterials = [
+    standardMaterial('#0d4a2b', { roughness: 0.94 }),
+    standardMaterial('#14693b', { roughness: 0.94 }),
+    standardMaterial('#23824b', { roughness: 0.94 }),
+    standardMaterial('#3b9b58', { roughness: 0.94 }),
+  ];
+  const distanceToRoute = (point: THREE.Vector3) => routeSamplePoints.reduce(
+    (closest, routePoint) => Math.min(closest, Math.hypot(point.x - routePoint.x, point.z - routePoint.z)),
+    Number.POSITIVE_INFINITY,
+  );
 
-    const fern = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.18 + random() * 0.18, 8, 4), fernMat), definition.id);
-    fern.scale.set(1.4, 0.12, 1.4);
-    fern.position.set(fx, 0.75, fz);
+  const addRainforestTree = (treeIndex: number, x: number, z: number, heightValue: number) => {
+    const tree = new THREE.Group();
+    tree.name = `TROPICAL__CANOPY_TREE_${treeIndex}`;
+    const trunkHeight = heightValue * 0.68;
+    const trunk = prepareMesh(
+      new THREE.Mesh(new THREE.CylinderGeometry(heightValue * 0.032, heightValue * 0.07, trunkHeight, 9), trunkMaterial),
+      definition.id,
+    );
+    trunk.position.y = floorY + trunkHeight * 0.5;
+    tree.add(trunk);
+    for (let root = 0; root < 3; root += 1) {
+      const angle = (root / 3) * Math.PI * 2 + random() * 0.45;
+      addCylinderBetween(
+        tree,
+        new THREE.Vector3(0, floorY + 0.65, 0),
+        new THREE.Vector3(Math.cos(angle) * 0.85, floorY + 0.06, Math.sin(angle) * 0.85),
+        0.09 + heightValue * 0.006,
+        trunkMaterial,
+        'TROPICAL__BUTTRESS_ROOT',
+      );
+    }
+    const crownY = floorY + heightValue * 0.76;
+    for (let crownIndex = 0; crownIndex < 4; crownIndex += 1) {
+      const angle = (crownIndex / 4) * Math.PI * 2 + random() * 0.65;
+      const crownRadius = heightValue * (0.105 + random() * 0.025);
+      const crown = prepareMesh(
+        new THREE.Mesh(new THREE.IcosahedronGeometry(crownRadius, 1), leafMaterials[(treeIndex + crownIndex) % leafMaterials.length]),
+        definition.id,
+      );
+      crown.position.set(Math.cos(angle) * crownRadius * 0.72, crownY + (crownIndex % 2) * crownRadius * 0.55, Math.sin(angle) * crownRadius * 0.72);
+      crown.scale.set(1.35, 0.9, 1.15);
+      tree.add(crown);
+    }
+    if (treeIndex % 2 === 0) {
+      const vineStart = new THREE.Vector3(heightValue * 0.08, crownY, 0);
+      const vineEnd = new THREE.Vector3(heightValue * 0.12, floorY + 1.0 + random() * 1.4, heightValue * 0.04);
+      addCylinderBetween(tree, vineStart, vineEnd, 0.025, vineMaterial, 'TROPICAL__HANGING_VINE');
+    }
+    tree.position.set(x, 0, z);
+    group.add(tree);
+  };
+
+  let treeCount = 0;
+  for (let attempt = 0; attempt < 160 && treeCount < 22; attempt += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = 6.0 + Math.sqrt(random()) * (usableRadius - 6.0);
+    const point = new THREE.Vector3(Math.cos(angle) * distance, 0, Math.sin(angle) * distance);
+    if (Math.abs(point.x) < 4.2 && point.z > -10.2 && point.z < 9.4) continue;
+    if (Math.abs(point.x) < 7.2 && point.z > 0.4) continue;
+    if (distanceToRoute(point) < 1.55) continue;
+    if (Math.hypot(point.x - podPosition.x, point.z - podPosition.z) < 4.2) continue;
+    if (Math.hypot(point.x - 7.45, point.z - 2.25) < 4.0) continue;
+    if (Math.hypot(point.x - 6.2, point.z - 7.0) < 2.3) continue;
+    if (Math.hypot(point.x - 0.25, point.z - (-0.5)) < 2.2) continue; // Clear pond center
+    if (Math.hypot(point.x - (-2.4), point.z - 11.4) < 2.2) continue; // Clear stairs start
+    addRainforestTree(treeCount, point.x, point.z, 6.4 + random() * 4.7);
+    treeCount += 1;
+  }
+
+  // Ferns, broad-leaf understory, wetland flowers and softly bioluminescent pollinator beds.
+  const fernMaterial = standardMaterial('#2d8c4b', { roughness: 0.96 });
+  for (let index = 0; index < 44; index += 1) {
+    const angle = random() * Math.PI * 2;
+    const distance = 2.2 + random() * (usableRadius - 2.4);
+    const x = Math.cos(angle) * distance;
+    const z = Math.sin(angle) * distance;
+    if (Math.abs(x) < 1.5 && z > -7 && z < 8) continue;
+    if (Math.hypot(x - (-2.4), z - 11.4) < 2.0) continue; // Clear stairs start
+    if (Math.hypot(x - 0.25, z - (-0.5)) < 2.4) continue; // Clear pond
+    const fern = new THREE.Group();
+    fern.name = 'TROPICAL__FERN_UNDERSTORY';
+    fern.position.set(x, floorY + 0.08, z);
+    for (let leaf = 0; leaf < 3; leaf += 1) {
+      const frond = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.26 + random() * 0.16, 8, 4), fernMaterial), definition.id);
+      frond.scale.set(1.55, 0.12, 0.38);
+      frond.rotation.y = (leaf / 3) * Math.PI * 2 + random() * 0.3;
+      frond.rotation.z = (random() - 0.5) * 0.25;
+      fern.add(frond);
+    }
     group.add(fern);
   }
 
-  // Low-lying tropical shrubs to fill understory gaps
-  const shrubMat = standardMaterial('#135422', { roughness: 0.92 });
-  for (let index = 0; index < 35; index += 1) {
+  const glowColors = ['#cb6cff', '#6ee7ff', '#ff72c8', '#9cff8a'];
+  for (let index = 0; index < 30; index += 1) {
     const angle = random() * Math.PI * 2;
-    const distance = random() * usableRadius;
-    const sx = Math.cos(angle) * distance;
-    const sz = Math.sin(angle) * distance * aspect;
-    
-    const distToPond = Math.hypot(sx - pondX, sz - pondZ);
-    if (distToPond < 0.8) continue;
-    const distToDeck = Math.hypot(sx - deckX, sz - deckZ);
-    if (distToDeck < 0.8) continue;
-
-    const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.18 + random() * 0.22, 1), shrubMat), definition.id);
-    shrub.position.set(sx, 0.78, sz);
-    group.add(shrub);
+    const pondRadius = 3.15 + random() * 1.25;
+    const x = 0.25 + Math.cos(angle) * pondRadius * 1.2;
+    const z = -0.5 + Math.sin(angle) * pondRadius * 0.72;
+    if (z > 4.2) continue; // Clear entrance area
+    const stemHeight = 0.28 + random() * 0.42;
+    const stem = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.025, stemHeight, 5), vineMaterial), definition.id);
+    stem.name = 'TROPICAL__POLLINATOR_GARDEN';
+    stem.position.set(x, floorY + stemHeight * 0.5, z);
+    group.add(stem);
+    const color = glowColors[index % glowColors.length];
+    const flower = prepareMesh(
+      new THREE.Mesh(new THREE.SphereGeometry(0.09 + random() * 0.07, 8, 6), physicalMaterial(color, {
+        roughness: 0.22,
+        emissive: color,
+        emissiveIntensity: 2.8,
+      })),
+      definition.id,
+      false,
+    );
+    flower.name = 'TROPICAL__BIOLUMINESCENT_FLORA';
+    flower.position.set(x, floorY + stemHeight, z);
+    group.add(flower);
   }
 
-  const logMat = standardMaterial('#3e2515', { roughness: 0.94 });
+  // Solar energy integrated into the front-left base skirt.
+  const solarCells = new THREE.MeshPhysicalMaterial({ color: '#071b38', roughness: 0.08, metalness: 0.92, clearcoat: 0.9 });
   for (let index = 0; index < 5; index += 1) {
-    const angle = random() * Math.PI * 2;
-    const distance = random() * usableRadius * 0.5;
-    const log = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.065, 0.065, 0.45 + random() * 0.45, 6), logMat), definition.id);
-    log.rotation.z = Math.PI / 2;
-    log.rotation.y = random() * Math.PI;
-    log.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * aspect);
-    group.add(log);
+    const angle = Math.PI * 0.68 + index * 0.13;
+    const panel = new THREE.Group();
+    panel.name = 'TROPICAL__SOLAR_ENERGY_ARRAY';
+    panel.position.set(Math.cos(angle) * (radius + 0.16), 0.46, Math.sin(angle) * (radius + 0.16));
+    panel.rotation.y = -angle + Math.PI / 2;
+    panel.rotation.x = 0.42;
+    const frame = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.055, 0.68), metal), definition.id);
+    const cells = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.96, 0.062, 0.59), solarCells), definition.id, false);
+    cells.position.y = 0.025;
+    panel.add(frame, cells);
+    group.add(panel);
   }
 }
 
@@ -1305,6 +1521,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   };
   const [width, depth] = definition.footprint;
   const radius = width * 0.48;
+  const isTropicalRainforest = definition.id === 'tropical-rainforest-dome';
   const random = seededRandom(hashString(definition.id));
   const base = prepareMesh(
     new THREE.Mesh(new THREE.CylinderGeometry(radius, radius * 1.04, 0.6, 48), biomeMaterial(definition.palette, 2)),
@@ -1315,7 +1532,12 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   group.add(base);
 
   const ground = prepareMesh(
-    new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, 0.16, 48), biomeMaterial(definition.palette, 0)),
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, 0.16, 48),
+      isTropicalRainforest
+        ? standardMaterial('#17472f', { roughness: 0.98 })
+        : biomeMaterial(definition.palette, 0),
+    ),
     definition.id,
   );
   ground.scale.z = depth / width;
@@ -1325,12 +1547,12 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
 
   const domeGeometry = new THREE.SphereGeometry(radius, 40, 18, 0, Math.PI * 2, 0, Math.PI / 2);
   const domeMaterial = new THREE.MeshPhysicalMaterial({
-    color: definition.accent,
+    color: isTropicalRainforest ? '#b9fff0' : definition.accent,
     roughness: 0.08,
     metalness: 0.08,
     transparent: true,
-    opacity: 0.22,
-    transmission: 0.42,
+    opacity: isTropicalRainforest ? 0.1 : 0.22,
+    transmission: isTropicalRainforest ? 0.68 : 0.42,
     thickness: 0.65,
     side: THREE.DoubleSide,
     depthWrite: false,
@@ -1346,10 +1568,10 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       domeGeometry.clone(),
       markAccent(
         new THREE.MeshBasicMaterial({
-          color: definition.accent,
+          color: isTropicalRainforest ? '#d2fff2' : definition.accent,
           wireframe: true,
           transparent: true,
-          opacity: 0.18,
+          opacity: isTropicalRainforest ? 0.22 : 0.18,
           depthWrite: false,
         }),
       ),
@@ -1521,9 +1743,13 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   if (labCatalogItem) {
     const laboratory = createEditorAsset(labCatalogItem, definition.id);
     laboratory.name = `${definition.id}__BIOME_FIELD_LABORATORY`;
-    laboratory.position.set(0, 0.79, -radius * 0.24);
-    laboratory.rotation.y = Math.PI;
-    laboratory.scale.setScalar(0.72);
+    laboratory.position.set(
+      isTropicalRainforest ? radius * 0.43 : 0,
+      0.79,
+      isTropicalRainforest ? -radius * 0.34 : -radius * 0.24,
+    );
+    laboratory.rotation.y = isTropicalRainforest ? -Math.PI * 0.5 : Math.PI;
+    laboratory.scale.setScalar(isTropicalRainforest ? 0.54 : 0.72);
     laboratory.userData.biomeLaboratory = true;
     laboratory.userData.editable = true;
     laboratory.traverse((child) => {

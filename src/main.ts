@@ -416,7 +416,7 @@ function setMode(mode: ViewMode) {
   if (mode === 'edit' && currentSelection) toast('Edit mode active', 'Use the gizmo or inspector fields; changes are included in the GLB export.');
   if (mode === 'walk') {
     sceneCardTitle.textContent = 'Human-scale campus walk';
-    sceneCardCopy.textContent = '1.8 m eye height · walkable roads and ramps · click viewport for mouse look';
+    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · true-scale walking pace · click viewport for mouse look';
     walkStatus.textContent = 'Human-scale exploration ready';
     walkLookButton.textContent = 'Click to look around';
   }

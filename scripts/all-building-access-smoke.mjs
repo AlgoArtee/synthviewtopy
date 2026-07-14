@@ -71,7 +71,7 @@ const audit = await page.evaluate(() => {
     owner.updateMatrixWorld(true);
     const rampLength = ramp.geometry.parameters.depth;
     const accessDepth = access.geometry.parameters.depth;
-    const outsideZ = ramp.position.z + rampLength * 0.5 + 0.32;
+    const outsideZ = ramp.position.z + rampLength * 0.5 + 0.16;
     const insideZ = access.position.z - accessDepth * 0.5 + 0.24;
     const distance = outsideZ - insideZ;
     const steps = Math.max(2, Math.ceil(distance / 0.035));
@@ -96,7 +96,7 @@ const audit = await page.evaluate(() => {
     let blockedSteps = 0;
 
     if (!failure) {
-      world.camera.position.set(first.point.x, first.ground + 0.18, first.point.z);
+      world.camera.position.set(first.point.x, first.ground + 0.162, first.point.z);
       world.walkController.groundY = first.ground;
       world.walkController.grounded = true;
 
@@ -155,7 +155,7 @@ const audit = await page.evaluate(() => {
     owner.updateMatrixWorld(true);
     const rampLength = ramp.geometry.parameters.depth;
     const accessDepth = access.geometry.parameters.depth;
-    const exteriorZ = ramp.position.z + rampLength * 0.5 + 0.32;
+    const exteriorZ = ramp.position.z + rampLength * 0.5 + 0.16;
     const interiorZ = access.position.z - accessDepth * 0.5 + 0.24;
     const distance = exteriorZ - interiorZ;
     const steps = Math.max(2, Math.ceil(distance / 0.035));
@@ -173,7 +173,7 @@ const audit = await page.evaluate(() => {
     let failureLocalZ = failure ? first.localZ : null;
     let blockedSteps = 0;
     if (!failure) {
-      world.camera.position.set(first.point.x, first.ground + 0.18, first.point.z);
+      world.camera.position.set(first.point.x, first.ground + 0.162, first.point.z);
       world.walkController.groundY = first.ground;
       world.walkController.grounded = true;
 
@@ -222,18 +222,18 @@ const audit = await page.evaluate(() => {
     owner.updateMatrixWorld(true);
     const rampLength = ramp.geometry.parameters.depth;
     const accessDepth = access.geometry.parameters.depth;
-    const outsideZ = ramp.position.z + rampLength * 0.5 + 0.32;
+    const outsideZ = ramp.position.z + rampLength * 0.5 + 0.16;
     const insideZ = access.position.z - accessDepth * 0.5 + 0.24;
     const start = world.camera.position.clone().set(0, 0, outsideZ).applyMatrix4(owner.matrixWorld);
     const target = world.camera.position.clone().set(0, 0, insideZ - 0.5).applyMatrix4(owner.matrixWorld);
     const startGround = world.walkController.sampleGround(start.x, start.z);
     if (startGround !== null) {
-      world.camera.position.set(start.x, startGround + 0.18, start.z);
+      world.camera.position.set(start.x, startGround + 0.162, start.z);
       world.camera.lookAt(target.x, world.camera.position.y, target.z);
       world.walkController.groundY = startGround;
       world.walkController.grounded = true;
       world.setWalkIntent(0, 1, true);
-      world.advanceTime(Math.ceil(((outsideZ - insideZ + 0.65) / 1.45) * 1000));
+      world.advanceTime(Math.ceil(((outsideZ - insideZ + 0.65) / 0.45) * 1000));
       world.setWalkIntent(0, 0);
       const endLocal = owner.worldToLocal(world.camera.position.clone());
       const snapshot = world.walkController.getSnapshot();
@@ -258,7 +258,7 @@ const audit = await page.evaluate(() => {
       const target = world.camera.position.clone().set(0, 0, 0).applyMatrix4(owner.matrixWorld);
       const startGround = world.walkController.sampleGround(start.x, start.z);
       if (startGround !== null) {
-        world.camera.position.set(start.x, startGround + 0.18, start.z);
+        world.camera.position.set(start.x, startGround + 0.162, start.z);
         world.walkController.groundY = startGround;
         world.walkController.grounded = true;
         const direction = target.sub(start).setY(0).normalize().multiplyScalar(0.04);

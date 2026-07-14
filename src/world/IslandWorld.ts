@@ -8,7 +8,12 @@ import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { biomes, districts, type BiomeDefinition, type DistrictDefinition } from '../data/districts';
-import { ISLAND_POINTS, ISLAND_SURFACE_Y } from '../config/island';
+import {
+  ISLAND_POINTS,
+  ISLAND_SURFACE_Y,
+  WALK_INSPECT_DISTANCE,
+  WALK_VERTICAL_FOV,
+} from '../config/island';
 import { WalkController } from './WalkController';
 import { createBiomeModel, createDistrictModel, setModelAccent } from './procedural';
 import {
@@ -740,7 +745,7 @@ export class IslandWorld {
   private inspectFromWalkView() {
     this.pointer.set(0, 0);
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    this.raycaster.far = 14;
+    this.raycaster.far = WALK_INSPECT_DISTANCE;
     const intersections = this.raycaster.intersectObjects(
       [this.architectureRoot, this.landscapeRoot, this.importedRoot, this.interiorsRoot],
       true,
@@ -1064,6 +1069,7 @@ export class IslandWorld {
       this.walkController.exit();
       const forward = this.camera.getWorldDirection(new THREE.Vector3());
       this.controls.target.copy(this.camera.position).addScaledVector(forward, 12);
+      this.camera.fov = mode === 'plan' ? 34 : 42;
       this.camera.near = 0.65;
       this.camera.updateProjectionMatrix();
       this.renderer.domElement.style.cursor = 'grab';
@@ -1081,6 +1087,7 @@ export class IslandWorld {
       const preservedDirection = this.camera.getWorldDirection(new THREE.Vector3());
       const preferredSpawn = this.camera.position.clone();
       const focusedSpawn = this.controls.target.clone();
+      this.camera.fov = WALK_VERTICAL_FOV;
       this.camera.near = 0.015;
       this.camera.updateProjectionMatrix();
       this.walkController.enter(preferredSpawn, preservedDirection, focusedSpawn);

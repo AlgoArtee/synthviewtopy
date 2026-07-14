@@ -1,6 +1,11 @@
 import { chromium } from 'playwright';
 
-const browser = await chromium.launch({ headless: true });
+const browser = await chromium.launch({
+  headless: true,
+  ...(process.env.PLAYWRIGHT_CHROME_EXECUTABLE
+    ? { executablePath: process.env.PLAYWRIGHT_CHROME_EXECUTABLE }
+    : {}),
+});
 const page = await browser.newPage({ viewport: { width: 1280, height: 800 } });
 const consoleErrors = [];
 

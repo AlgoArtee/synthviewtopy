@@ -63,7 +63,7 @@ Additional controls:
 - Move with `W`, `A`, `S`, `D` or the arrow keys. Hold `Shift` to move faster.
 - Press `E` to inspect the object in reach.
 - Press `Escape` to release pointer lock and return the mouse to the interface.
-- The eye height is 0.18 world units, representing 1.8 metres at the project scale.
+- WALK is calibrated to a 1.7 m adult: the camera eye level is 0.162 world units (1.62 m), the normal pace is 1.4 m/s, and the dedicated 55° vertical field of view is restored to the overview lens when WALK ends.
 - Terrain, roads, district plots, bridge approaches, and city ramps expose semantic walkable surfaces. Buildings, biome structures, and imported meshes participate in collision/obstacle checks, while ramps keep traversal grounded across elevation changes.
 - Every district has a lit entry door and a walkable foyer linked to its approach ramp. Each climate dome has a glazed airlock corridor: follow its ramp, cross the glowing threshold, and continue onto the dome's interior ground.
 

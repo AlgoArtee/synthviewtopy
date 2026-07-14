@@ -1,6 +1,15 @@
 import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-import { WALK_EYE_HEIGHT, WALK_FAST_SPEED, WALK_RADIUS, WALK_SPEED } from '../config/island';
+import {
+  WALK_EYE_HEIGHT,
+  WALK_FAST_SPEED,
+  WALK_GRAVITY,
+  WALK_JUMP_SPEED,
+  WALK_RADIUS,
+  WALK_SPEED,
+  WALK_STEP_HEIGHT,
+  worldUnitsToMetres,
+} from '../config/island';
 
 export interface WalkSnapshot {
   active: boolean;
@@ -239,7 +248,7 @@ export class WalkController {
     const targetY = (sampledGround !== null ? sampledGround : (this.groundY !== null ? this.groundY : 0)) + WALK_EYE_HEIGHT;
     
     if (this.isJumping) {
-      this.velocityY -= 2.5 * delta;
+      this.velocityY -= WALK_GRAVITY * delta;
       this.camera.position.y += this.velocityY * delta;
       
       if (this.camera.position.y <= targetY) {
@@ -276,9 +285,9 @@ export class WalkController {
       lookMode: this.pointerControls.isLocked ? 'pointer-lock' : this.dragLookActive ? 'drag' : 'idle',
       grounded: this.grounded,
       positionWorld: position.map((value) => Number(value.toFixed(3))) as [number, number, number],
-      positionMetres: position.map((value) => Number((value * 10).toFixed(1))) as [number, number, number],
+      positionMetres: position.map((value) => Number(worldUnitsToMetres(value).toFixed(1))) as [number, number, number],
       groundY: this.groundY === null ? null : Number(this.groundY.toFixed(3)),
-      speedMetresPerSecond: Number((this.currentSpeed * 10).toFixed(1)),
+      speedMetresPerSecond: Number(worldUnitsToMetres(this.currentSpeed).toFixed(1)),
       movementKeys: Array.from(this.keys).sort(),
       direction: this.direction.toArray().map((value) => Number(value.toFixed(3))) as [number, number, number],
     };
@@ -337,7 +346,7 @@ export class WalkController {
     this.candidate.z += dz;
     const nextGround = this.sampleGround(this.candidate.x, this.candidate.z);
     if (nextGround === null) return;
-    if (this.groundY !== null && nextGround - this.groundY > 0.38) return;
+    if (this.groundY !== null && nextGround - this.groundY > WALK_STEP_HEIGHT) return;
     const bodyBottom = nextGround + 0.015;
     const bodyTop = nextGround + WALK_EYE_HEIGHT;
     const insideAccess = this.accessBounds.some(
@@ -406,7 +415,7 @@ export class WalkController {
   private triggerJump() {
     if (!this.active || this.isSitting) return;
     if (this.grounded && !this.isJumping) {
-      this.velocityY = 0.85;
+      this.velocityY = WALK_JUMP_SPEED;
       this.isJumping = true;
     }
   }

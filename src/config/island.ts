@@ -1,5 +1,10 @@
 /** Shared plan and navigation constants. One world unit represents ten metres. */
-export const ISLAND_SURFACE_Y = 1.61;
+export const WORLD_METRES_PER_UNIT = 10;
+export const metresToWorldUnits = (metres: number) => metres / WORLD_METRES_PER_UNIT;
+export const worldUnitsToMetres = (worldUnits: number) => worldUnits * WORLD_METRES_PER_UNIT;
+
+/** The planted island surface is 16.1 m above the ocean datum. */
+export const ISLAND_SURFACE_Y = metresToWorldUnits(16.1);
 /**
  * Keep architecture and walk controls at human scale while tripling the
  * distance between the masterplan's concentric roads.
@@ -40,7 +45,18 @@ export const DISTRICT_ROAD_RADII = [14, 21, 29.5, 40, 51.5].map(
   (radius) => radius * WORLD_EXPANSION,
 ) as readonly number[];
 
-export const WALK_EYE_HEIGHT = 0.18;
-export const WALK_RADIUS = 0.055;
-export const WALK_SPEED = 0.62;
-export const WALK_FAST_SPEED = 1.45;
+/**
+ * WALK uses an average 1.7 m adult as its scale reference. The camera sits at
+ * a realistic 1.62 m eye level rather than at the top of the head.
+ */
+export const WALK_PERSON_HEIGHT_METRES = 1.7;
+export const WALK_EYE_HEIGHT_METRES = 1.62;
+export const WALK_EYE_HEIGHT = metresToWorldUnits(WALK_EYE_HEIGHT_METRES);
+export const WALK_RADIUS = metresToWorldUnits(0.3);
+export const WALK_SPEED = metresToWorldUnits(1.4);
+export const WALK_FAST_SPEED = metresToWorldUnits(4.5);
+export const WALK_STEP_HEIGHT = metresToWorldUnits(0.38);
+export const WALK_GRAVITY = metresToWorldUnits(9.81);
+export const WALK_JUMP_SPEED = metresToWorldUnits(2.8);
+export const WALK_INSPECT_DISTANCE = metresToWorldUnits(4.5);
+export const WALK_VERTICAL_FOV = 55;

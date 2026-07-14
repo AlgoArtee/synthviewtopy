@@ -136,7 +136,7 @@ const audit = await page.evaluate(() => {
   if (entryWorldStart && entryStartGround !== null) {
     world.setMode('walk');
     world.walkController.refreshNavigation();
-    world.camera.position.set(entryWorldStart.x, entryStartGround + 0.18, entryWorldStart.z);
+    world.camera.position.set(entryWorldStart.x, entryStartGround + 0.162, entryWorldStart.z);
     world.walkController.groundY = entryStartGround;
     world.walkController.grounded = true;
 
@@ -146,7 +146,7 @@ const audit = await page.evaluate(() => {
         const distance = Math.hypot(target.x - world.camera.position.x, target.z - world.camera.position.z);
         if (distance < 0.16) break;
         world.camera.lookAt(target.x, world.camera.position.y, target.z);
-        world.setWalkIntent(0, 1);
+        world.setWalkIntent(0, 1, true);
         world.advanceTime(80);
         if (world.walkController.getSnapshot().grounded) {
           entryConsecutiveUngroundedSteps = 0;
@@ -171,7 +171,7 @@ const audit = await page.evaluate(() => {
   if (start?.ground !== null && start?.ground !== undefined) {
     world.setMode('walk');
     world.walkController.refreshNavigation();
-    world.camera.position.set(start.position.x, start.ground + 0.18, start.position.z);
+    world.camera.position.set(start.position.x, start.ground + 0.162, start.position.z);
     world.walkController.groundY = start.ground;
     world.walkController.grounded = true;
 
@@ -181,7 +181,7 @@ const audit = await page.evaluate(() => {
         const distance = Math.hypot(target.x - world.camera.position.x, target.z - world.camera.position.z);
         if (distance < 0.16) break;
         world.camera.lookAt(target.x, world.camera.position.y, target.z);
-        world.setWalkIntent(0, 1);
+        world.setWalkIntent(0, 1, true);
         world.advanceTime(80);
         if (world.walkController.getSnapshot().grounded) {
           consecutiveUngroundedSteps = 0;

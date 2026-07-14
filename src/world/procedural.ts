@@ -1,16 +1,26 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import type { BiomeDefinition, DistrictDefinition } from '../data/districts';
-import { ISLAND_SURFACE_Y } from '../config/island';
+import { ISLAND_SURFACE_Y, metresToWorldUnits } from '../config/island';
 import { EDITOR_ASSET_CATALOG, createEditorAsset } from './editorAssets';
 
 const DEG = Math.PI / 180;
-const ACCESS_APPROACH_LENGTH = 0.9;
-const DISTRICT_ACCESS_RAMP_LENGTH = 1.7;
-const DOME_ACCESS_RAMP_LENGTH = 2.6;
+const ACCESS_APPROACH_LENGTH = metresToWorldUnits(2);
+const DISTRICT_ACCESS_RAMP_LENGTH = metresToWorldUnits(41);
+const DOME_ACCESS_RAMP_LENGTH = metresToWorldUnits(48);
+const DISTRICT_FINISHED_FLOOR_Y = 0.34;
 const DOME_FINISHED_FLOOR_Y = 0.4;
 const DOME_AIRLOCK_DEPTH = 1.2;
 const DOME_AIRLOCK_HALF_DEPTH = DOME_AIRLOCK_DEPTH * 0.5;
+const HUMAN_GUARDRAIL_HEIGHT = metresToWorldUnits(1.1);
+const HUMAN_HANDRAIL_RADIUS = metresToWorldUnits(0.04);
+const HUMAN_RAIL_POST_RADIUS = metresToWorldUnits(0.05);
+const HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE = HUMAN_GUARDRAIL_HEIGHT - HUMAN_HANDRAIL_RADIUS;
+const TROPICAL_CANOPY_PATH_WIDTH = metresToWorldUnits(2.4);
+const TROPICAL_CANOPY_DECK_THICKNESS = metresToWorldUnits(0.22);
+const TROPICAL_SUSPENSION_PATH_WIDTH = metresToWorldUnits(1.8);
+const TROPICAL_SUSPENSION_DECK_THICKNESS = metresToWorldUnits(0.18);
+const TROPICAL_PLATFORM_THICKNESS = metresToWorldUnits(0.32);
 const surfaceTextureCache = new Map<string, THREE.CanvasTexture>();
 
 function hashString(value: string): number {
@@ -214,8 +224,12 @@ function addAccessRamp(
   material: THREE.Material,
   innerEdgeZ: number,
 ) {
-  const rampWidth = Math.min(2.2, plotWidth * 0.34);
-  const thickness = 0.1;
+  const rampWidth = THREE.MathUtils.clamp(
+    plotWidth * 0.08,
+    metresToWorldUnits(2.4),
+    metresToWorldUnits(4),
+  );
+  const thickness = metresToWorldUnits(0.25);
   const ramp = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(rampWidth, thickness, length), material), id);
   ramp.name = `${id}__ACCESS_RAMP`;
   const rampAngle = Math.atan2(rise, length);
@@ -228,7 +242,7 @@ function addAccessRamp(
 
   // A short, level landing guarantees that the ramp connects to the island's
   // walkable terrain even when its outer edge falls between road meshes.
-  const approachThickness = 0.06;
+  const approachThickness = metresToWorldUnits(0.2);
   const outerRampTopY = ramp.position.y
     + thickness * 0.5 * Math.cos(rampAngle)
     - length * 0.5 * Math.sin(rampAngle);
@@ -275,8 +289,13 @@ function addNavigationAccessVolume(
 }
 
 function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
-  const portalWidth = THREE.MathUtils.clamp(width * 0.28, 0.48, 1.15);
-  const floorY = 0.365;
+  const portalWidth = THREE.MathUtils.clamp(
+    width * 0.08,
+    metresToWorldUnits(1.8),
+    metresToWorldUnits(4.2),
+  );
+  const floorY = DISTRICT_FINISHED_FLOOR_Y;
+  const floorThickness = 0.05;
   const exteriorZ = depth * 0.5 + 0.08;
   const foyerZ = -Math.min(depth * 0.17, 0.9);
   const corridorDepth = exteriorZ - foyerZ;
@@ -294,41 +313,66 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
   });
   const frameMaterial = standardMaterial('#cad9d5', { roughness: 0.28, metalness: 0.76 });
 
-  const floor = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth, 0.05, corridorDepth), floorMaterial), id);
+  const floor = prepareMesh(
+    new THREE.Mesh(new THREE.BoxGeometry(portalWidth, floorThickness, corridorDepth), floorMaterial),
+    id,
+  );
   floor.name = `${id}__WALK_FOYER_FLOOR`;
-  floor.position.set(0, floorY, corridorCenter);
+  floor.position.set(0, floorY - floorThickness * 0.5, corridorCenter);
   floor.userData.walkable = true;
   group.add(floor);
 
   const doorZ = depth * 0.5 + 0.018;
-  const doorHeight = 0.52;
+  const doorHeight = metresToWorldUnits(2.6);
   const door = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth * 0.82, doorHeight, 0.035), glassMaterial), id, false);
   door.name = `${id}__WALK_ENTRY_DOOR`;
   door.position.set(0, floorY + doorHeight * 0.5, doorZ);
   group.add(door);
 
   for (const x of [-portalWidth * 0.5, portalWidth * 0.5]) {
-    const jamb = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.055, doorHeight + 0.08, 0.08), frameMaterial), id, false);
-    jamb.position.set(x, floorY + (doorHeight + 0.08) * 0.5, doorZ);
+    const jamb = prepareMesh(
+      new THREE.Mesh(
+        new THREE.BoxGeometry(
+          metresToWorldUnits(0.2),
+          doorHeight + metresToWorldUnits(0.4),
+          metresToWorldUnits(0.5),
+        ),
+        frameMaterial,
+      ),
+      id,
+      false,
+    );
+    jamb.position.set(x, floorY + (doorHeight + metresToWorldUnits(0.4)) * 0.5, doorZ);
     group.add(jamb);
   }
-  const lintel = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth + 0.11, 0.055, 0.08), frameMaterial), id, false);
-  lintel.position.set(0, floorY + doorHeight + 0.055, doorZ);
-  group.add(lintel);
-
-  const threshold = prepareMesh(
-    new THREE.Mesh(new THREE.BoxGeometry(portalWidth * 0.72, 0.018, 0.045), markAccent(new THREE.MeshStandardMaterial({ color: accent, emissive: accent, emissiveIntensity: 2.1 }))),
+  const lintelThickness = metresToWorldUnits(0.2);
+  const lintel = prepareMesh(
+    new THREE.Mesh(
+      new THREE.BoxGeometry(portalWidth + metresToWorldUnits(0.4), lintelThickness, metresToWorldUnits(0.5)),
+      frameMaterial,
+    ),
     id,
     false,
   );
-  threshold.position.set(0, floorY + 0.036, doorZ + 0.035);
+  lintel.position.set(0, floorY + doorHeight + lintelThickness * 0.5, doorZ);
+  group.add(lintel);
+
+  const threshold = prepareMesh(
+    new THREE.Mesh(
+      new THREE.BoxGeometry(portalWidth * 0.72, metresToWorldUnits(0.05), metresToWorldUnits(0.4)),
+      markAccent(new THREE.MeshStandardMaterial({ color: accent, emissive: accent, emissiveIntensity: 2.1 })),
+    ),
+    id,
+    false,
+  );
+  threshold.position.set(0, floorY + metresToWorldUnits(0.025), doorZ + metresToWorldUnits(0.2));
   group.add(threshold);
   const accessExteriorZ = depth * 0.5 - 0.04 + DISTRICT_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
   const accessDepth = accessExteriorZ - foyerZ;
   addNavigationAccessVolume(
     group,
     id,
-    Math.max(portalWidth * 1.3, 2.35),
+    Math.max(portalWidth * 1.3, metresToWorldUnits(3.2)),
     2.2,
     accessDepth,
     0.85,
@@ -338,7 +382,11 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
 }
 
 function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
-  const portalWidth = THREE.MathUtils.clamp(width * 0.13, 0.46, 0.92);
+  const portalWidth = THREE.MathUtils.clamp(
+    width * 0.04,
+    metresToWorldUnits(2.2),
+    metresToWorldUnits(4.8),
+  );
   // Keep the corridor slightly proud of the biome floor so the complete
   // airlock remains visible instead of being bisected by the ground disk.
   const floorY = DOME_FINISHED_FLOOR_Y + 0.005;
@@ -368,25 +416,44 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   group.add(floor);
 
   const doorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + 0.018;
-  const doorHeight = 0.62;
+  const doorHeight = metresToWorldUnits(3);
   const door = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth * 0.8, doorHeight, 0.035), glassMaterial), id, false);
   door.name = `${id}__AIRLOCK_ENTRY_DOOR`;
   door.position.set(0, floorY + doorHeight * 0.5, doorZ);
   group.add(door);
   for (const x of [-portalWidth * 0.5, portalWidth * 0.5]) {
-    const jamb = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.05, doorHeight + 0.08, 0.08), frameMaterial), id, false);
-    jamb.position.set(x, floorY + (doorHeight + 0.08) * 0.5, doorZ);
+    const jamb = prepareMesh(
+      new THREE.Mesh(
+        new THREE.BoxGeometry(
+          metresToWorldUnits(0.2),
+          doorHeight + metresToWorldUnits(0.4),
+          metresToWorldUnits(0.5),
+        ),
+        frameMaterial,
+      ),
+      id,
+      false,
+    );
+    jamb.position.set(x, floorY + (doorHeight + metresToWorldUnits(0.4)) * 0.5, doorZ);
     group.add(jamb);
   }
-  const lintel = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth + 0.1, 0.05, 0.08), frameMaterial), id, false);
-  lintel.position.set(0, floorY + doorHeight + 0.05, doorZ);
+  const lintelThickness = metresToWorldUnits(0.2);
+  const lintel = prepareMesh(
+    new THREE.Mesh(
+      new THREE.BoxGeometry(portalWidth + metresToWorldUnits(0.4), lintelThickness, metresToWorldUnits(0.5)),
+      frameMaterial,
+    ),
+    id,
+    false,
+  );
+  lintel.position.set(0, floorY + doorHeight + lintelThickness * 0.5, doorZ);
   group.add(lintel);
   const accessExteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + DOME_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
   const accessDepth = accessExteriorZ - interiorZ;
   addNavigationAccessVolume(
     group,
     id,
-    Math.max(portalWidth * 1.3, 2.35),
+    Math.max(portalWidth * 1.3, metresToWorldUnits(3.2)),
     2.2,
     accessDepth,
     0.65,
@@ -1024,15 +1091,27 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   // A shallow RoundedBoxGeometry does not retain its requested vertical
   // extent at these wide aspect ratios. Use a structural box for the plinth so
   // the visible/collision volume really runs from terrain to finished floor.
-  const plot = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width, 0.34, depth), plotMaterial), definition.id);
-  plot.position.y = 0.17;
+  const plot = prepareMesh(
+    new THREE.Mesh(new THREE.BoxGeometry(width, DISTRICT_FINISHED_FLOOR_Y, depth), plotMaterial),
+    definition.id,
+  );
+  plot.position.y = DISTRICT_FINISHED_FLOOR_Y * 0.5;
   plot.name = `${definition.id}__PLOT`;
   plot.receiveShadow = true;
   plot.userData.walkable = true;
   plot.userData.navObstacle = true;
   plot.userData.solidFoundation = true;
   group.add(plot);
-  addAccessRamp(group, definition.id, width, depth, 0.34, DISTRICT_ACCESS_RAMP_LENGTH, plotMaterial, depth * 0.5 - 0.04);
+  addAccessRamp(
+    group,
+    definition.id,
+    width,
+    depth,
+    DISTRICT_FINISHED_FLOOR_Y,
+    DISTRICT_ACCESS_RAMP_LENGTH,
+    plotMaterial,
+    depth * 0.5 - 0.04,
+  );
 
   const inset = new THREE.LineSegments(
     new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, 0.355, depth * 0.95, 2, 0.26)),
@@ -1203,18 +1282,26 @@ function buildFuturisticTropicalBiodome(
   };
 
   // A continuous timber-and-alloy visitor route climbs from the airlock to the waterfall.
+  const observationDeckCenterY = 4.35;
+  const researchPlatformCenterY = 5.15;
+  const canopyEntryCenterY = floorY
+    + metresToWorldUnits(0.16)
+    - TROPICAL_CANOPY_DECK_THICKNESS * 0.5;
+  const observationDeckConnectionY = observationDeckCenterY
+    + TROPICAL_PLATFORM_THICKNESS * 0.5
+    - TROPICAL_CANOPY_DECK_THICKNESS * 0.5;
   const routeCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-2.4, floorY + 0.08, 11.4),
+    new THREE.Vector3(-2.4, canopyEntryCenterY, 11.4),
     new THREE.Vector3(-7.2, 1.05, 9.0),
     new THREE.Vector3(-10.1, 2.1, 4.2),
     new THREE.Vector3(-10.4, 3.0, -1.8),
     new THREE.Vector3(-8.4, 3.8, -6.5),
-    new THREE.Vector3(-4.1, 4.35, -8.1),
+    new THREE.Vector3(-4.1, observationDeckConnectionY, -8.1),
   ]);
   const routePoints = routeCurve.getPoints(38);
   const routeSamplePoints: THREE.Vector3[] = [];
   routePoints.forEach((point) => routeSamplePoints.push(point));
-  const pathWidth = 1.12;
+  const pathWidth = TROPICAL_CANOPY_PATH_WIDTH;
 
   for (let index = 0; index < routePoints.length - 1; index += 1) {
     const start = routePoints[index];
@@ -1222,7 +1309,10 @@ function buildFuturisticTropicalBiodome(
     const direction = end.clone().sub(start);
     const horizontalPerpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
     const plank = prepareMesh(
-      new THREE.Mesh(new THREE.BoxGeometry(pathWidth, 0.11, direction.length() + 0.035), pathMaterial),
+      new THREE.Mesh(
+        new THREE.BoxGeometry(pathWidth, TROPICAL_CANOPY_DECK_THICKNESS, direction.length() + 0.035),
+        pathMaterial,
+      ),
       definition.id,
     );
     plank.name = 'TROPICAL__ELEVATED_CANOPY_WALK';
@@ -1240,9 +1330,17 @@ function buildFuturisticTropicalBiodome(
       const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
       addCylinderBetween(
         group,
-        start.clone().add(offset).add(new THREE.Vector3(0, 0.72, 0)),
-        end.clone().add(offset).add(new THREE.Vector3(0, 0.72, 0)),
-        0.027,
+        start.clone().add(offset).add(new THREE.Vector3(
+          0,
+          TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+          0,
+        )),
+        end.clone().add(offset).add(new THREE.Vector3(
+          0,
+          TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+          0,
+        )),
+        HUMAN_HANDRAIL_RADIUS,
         railMaterial,
         'TROPICAL__CANOPY_WALK_RAIL',
         false,
@@ -1254,9 +1352,13 @@ function buildFuturisticTropicalBiodome(
         const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
         addCylinderBetween(
           group,
-          start.clone().add(offset),
-          start.clone().add(offset).add(new THREE.Vector3(0, 0.74, 0)),
-          0.035,
+          start.clone().add(offset).add(new THREE.Vector3(0, TROPICAL_CANOPY_DECK_THICKNESS * 0.5, 0)),
+          start.clone().add(offset).add(new THREE.Vector3(
+            0,
+            TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+            0,
+          )),
+          HUMAN_RAIL_POST_RADIUS,
           metal,
           'TROPICAL__CANOPY_WALK_POST',
         );
@@ -1410,16 +1512,27 @@ function buildFuturisticTropicalBiodome(
   }
 
   // Lookout deck beside the waterfall and a suspension bridge to the research pod.
-  const deckPosition = new THREE.Vector3(-3.7, 4.35, -8.0);
-  const deck = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, 0.14, 24), pathMaterial), definition.id);
+  const deckPosition = new THREE.Vector3(-3.7, observationDeckCenterY, -8.0);
+  const deck = prepareMesh(
+    new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, TROPICAL_PLATFORM_THICKNESS, 24), pathMaterial),
+    definition.id,
+  );
   deck.name = 'TROPICAL__OBSERVATION_DECK';
   deck.position.copy(deckPosition);
   deck.userData.walkable = true;
   group.add(deck);
-  const deckRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(1.39, 0.035, 8, 36), railMaterial), definition.id, false);
+  const deckRail = prepareMesh(
+    new THREE.Mesh(new THREE.TorusGeometry(1.39, HUMAN_HANDRAIL_RADIUS, 8, 36), railMaterial),
+    definition.id,
+    false,
+  );
   deckRail.name = 'TROPICAL__OBSERVATION_DECK_RAIL';
   deckRail.rotation.x = Math.PI / 2;
-  deckRail.position.copy(deckPosition).add(new THREE.Vector3(0, 0.76, 0));
+  deckRail.position.copy(deckPosition).add(new THREE.Vector3(
+    0,
+    TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+    0,
+  ));
   group.add(deckRail);
   addCylinderBetween(group, new THREE.Vector3(deckPosition.x, floorY, deckPosition.z), deckPosition, 0.13, metal, 'TROPICAL__OBSERVATION_SUPPORT');
   for (let index = 0; index < 10; index += 1) {
@@ -1427,15 +1540,31 @@ function buildFuturisticTropicalBiodome(
     if (angle > 0.1 && angle < 1.1) continue;
     const x = deckPosition.x + Math.cos(angle) * 1.38;
     const z = deckPosition.z + Math.sin(angle) * 1.38;
-    addCylinderBetween(group, new THREE.Vector3(x, deckPosition.y, z), new THREE.Vector3(x, deckPosition.y + 0.78, z), 0.035, metal);
+    addCylinderBetween(
+      group,
+      new THREE.Vector3(x, deckPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5, z),
+      new THREE.Vector3(
+        x,
+        deckPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+        z,
+      ),
+      HUMAN_RAIL_POST_RADIUS,
+      metal,
+    );
   }
 
-  const podPosition = new THREE.Vector3(7.15, 5.15, -5.7);
+  const podPosition = new THREE.Vector3(7.15, researchPlatformCenterY, -5.7);
+  const bridgeStartY = observationDeckCenterY
+    + TROPICAL_PLATFORM_THICKNESS * 0.5
+    - TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5;
+  const bridgeEndY = researchPlatformCenterY
+    + TROPICAL_PLATFORM_THICKNESS * 0.5
+    - TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5;
   const bridgeCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-2.7, 4.4, -7.6),
+    new THREE.Vector3(-2.7, bridgeStartY, -7.6),
     new THREE.Vector3(0.3, 4.12, -7.1),
     new THREE.Vector3(3.5, 4.4, -6.7),
-    new THREE.Vector3(5.8, 5.1, -6.0),
+    new THREE.Vector3(5.8, bridgeEndY, -6.0),
   ]);
   const bridgePoints = bridgeCurve.getPoints(24);
   bridgePoints.forEach((point) => routeSamplePoints.push(point));
@@ -1444,19 +1573,37 @@ function buildFuturisticTropicalBiodome(
     const end = bridgePoints[index + 1];
     const direction = end.clone().sub(start);
     const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
-    const plank = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.92, 0.09, direction.length() + 0.025), pathMaterial), definition.id);
+    const plank = prepareMesh(
+      new THREE.Mesh(
+        new THREE.BoxGeometry(
+          TROPICAL_SUSPENSION_PATH_WIDTH,
+          TROPICAL_SUSPENSION_DECK_THICKNESS,
+          direction.length() + 0.025,
+        ),
+        pathMaterial,
+      ),
+      definition.id,
+    );
     plank.name = 'TROPICAL__SUSPENSION_BRIDGE';
     plank.position.copy(start).add(end).multiplyScalar(0.5);
     orientWalkwaySegment(plank, direction);
     plank.userData.walkable = true;
     group.add(plank);
     for (const side of [-1, 1]) {
-      const offset = perpendicular.clone().multiplyScalar(side * 0.46);
+      const offset = perpendicular.clone().multiplyScalar(side * TROPICAL_SUSPENSION_PATH_WIDTH * 0.5);
       addCylinderBetween(
         group,
-        start.clone().add(offset).add(new THREE.Vector3(0, 0.68, 0)),
-        end.clone().add(offset).add(new THREE.Vector3(0, 0.68, 0)),
-        0.024,
+        start.clone().add(offset).add(new THREE.Vector3(
+          0,
+          TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+          0,
+        )),
+        end.clone().add(offset).add(new THREE.Vector3(
+          0,
+          TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+          0,
+        )),
+        HUMAN_HANDRAIL_RADIUS,
         railMaterial,
         'TROPICAL__SUSPENSION_BRIDGE_RAIL',
         false,
@@ -1464,21 +1611,42 @@ function buildFuturisticTropicalBiodome(
     }
   }
 
-  const podPlatform = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(1.82, 1.82, 0.16, 28), darkMetal), definition.id);
+  const podPlatform = prepareMesh(
+    new THREE.Mesh(new THREE.CylinderGeometry(1.82, 1.82, TROPICAL_PLATFORM_THICKNESS, 28), darkMetal),
+    definition.id,
+  );
   podPlatform.name = 'TROPICAL__RESEARCH_STATION';
   podPlatform.position.copy(podPosition);
   podPlatform.userData.walkable = true;
   group.add(podPlatform);
-  const podRail = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(1.76, 0.04, 8, 40), railMaterial), definition.id, false);
+  const podRail = prepareMesh(
+    new THREE.Mesh(new THREE.TorusGeometry(1.76, HUMAN_HANDRAIL_RADIUS, 8, 40), railMaterial),
+    definition.id,
+    false,
+  );
   podRail.rotation.x = Math.PI / 2;
-  podRail.position.copy(podPosition).add(new THREE.Vector3(0, 0.8, 0));
+  podRail.position.copy(podPosition).add(new THREE.Vector3(
+    0,
+    TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+    0,
+  ));
   group.add(podRail);
   addCylinderBetween(group, new THREE.Vector3(podPosition.x, floorY, podPosition.z), podPosition, 0.22, metal, 'TROPICAL__RESEARCH_STATION_COLUMN');
   for (let index = 0; index < 12; index += 1) {
     const angle = (index / 12) * Math.PI * 2;
     const x = podPosition.x + Math.cos(angle) * 1.75;
     const z = podPosition.z + Math.sin(angle) * 1.75;
-    addCylinderBetween(group, new THREE.Vector3(x, podPosition.y, z), new THREE.Vector3(x, podPosition.y + 0.82, z), 0.035, metal);
+    addCylinderBetween(
+      group,
+      new THREE.Vector3(x, podPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5, z),
+      new THREE.Vector3(
+        x,
+        podPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+        z,
+      ),
+      HUMAN_RAIL_POST_RADIUS,
+      metal,
+    );
   }
   const stationBody = prepareMesh(
     new THREE.Mesh(new THREE.CylinderGeometry(0.88, 0.88, 1.35, 20), physicalMaterial('#b9d8d3', {
@@ -2006,8 +2174,8 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     group.add(laboratory);
   }
 
-  const airlockHeight = 0.82;
-  const airlockWidth = width * 0.16;
+  const airlockHeight = metresToWorldUnits(4);
+  const airlockWidth = Math.min(width * 0.08, metresToWorldUnits(12));
   const airlock = new THREE.Group();
   airlock.name = `${definition.id}__AIRLOCK_SHELL`;
   airlock.position.set(0, 0, depth * 0.47);
@@ -2017,9 +2185,13 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     metalness: 0.16,
     map: makeConcreteTexture(),
   });
-  const wallThickness = 0.16;
-  const doorwayWidth = THREE.MathUtils.clamp(width * 0.13, 0.46, 0.92) + 0.2;
-  const facadePanelWidth = Math.max(0.28, (airlockWidth - doorwayWidth) * 0.5);
+  const wallThickness = metresToWorldUnits(0.4);
+  const doorwayWidth = THREE.MathUtils.clamp(
+    width * 0.04,
+    metresToWorldUnits(2.2),
+    metresToWorldUnits(4.8),
+  ) + metresToWorldUnits(0.5);
+  const facadePanelWidth = Math.max(metresToWorldUnits(0.4), (airlockWidth - doorwayWidth) * 0.5);
   for (const side of [-1, 1]) {
     const facadePanel = prepareMesh(
       new THREE.Mesh(new THREE.BoxGeometry(facadePanelWidth, airlockHeight, wallThickness), airlockMaterial),
@@ -2048,18 +2220,32 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     airlock.add(sideWall);
   }
   const airlockRoof = prepareMesh(
-    new THREE.Mesh(new THREE.BoxGeometry(airlockWidth, 0.14, DOME_AIRLOCK_DEPTH), airlockMaterial),
+    new THREE.Mesh(
+      new THREE.BoxGeometry(airlockWidth, metresToWorldUnits(0.4), DOME_AIRLOCK_DEPTH),
+      airlockMaterial,
+    ),
     definition.id,
   );
   airlockRoof.name = `${definition.id}__AIRLOCK_ROOF`;
-  airlockRoof.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + 0.07, 0);
+  airlockRoof.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + metresToWorldUnits(0.2), 0);
   airlockRoof.userData.navObstacle = true;
   airlock.add(airlockRoof);
   group.add(airlock);
   addAccessRamp(group, definition.id, width * 0.52, depth, DOME_FINISHED_FLOOR_Y, DOME_ACCESS_RAMP_LENGTH, physicalMaterial(definition.palette[2]), depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH);
-  const airlockGlow = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width * 0.09, 0.06, 0.04), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.5 }))), definition.id, false);
+  const airlockGlow = prepareMesh(
+    new THREE.Mesh(
+      new THREE.BoxGeometry(doorwayWidth * 0.75, metresToWorldUnits(0.2), metresToWorldUnits(0.4)),
+      markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.5 })),
+    ),
+    definition.id,
+    false,
+  );
   airlockGlow.name = `${definition.id}__AIRLOCK_HEADER_LIGHT`;
-  airlockGlow.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + 0.18, depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH + 0.025);
+  airlockGlow.position.set(
+    0,
+    DOME_FINISHED_FLOOR_Y + airlockHeight + metresToWorldUnits(0.6),
+    depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH + metresToWorldUnits(0.25),
+  );
   group.add(airlockGlow);
   addDomeWalkPortal(group, definition.id, width, depth, definition.accent);
 

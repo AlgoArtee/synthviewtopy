@@ -172,7 +172,7 @@ const exploreDepthRestored = await page.evaluate(() => {
 });
 
 if (Math.abs(walkAudit.ground - 1.616) > 0.01) throw new Error(`Road ground sampled at ${walkAudit.ground}, expected 1.616`);
-if (Math.abs(walkAudit.cameraClearance - 0.18) > 0.01) throw new Error(`Walk camera clearance changed to ${walkAudit.cameraClearance}`);
+if (Math.abs(walkAudit.cameraClearance - 0.162) > 0.01) throw new Error(`Walk camera clearance changed to ${walkAudit.cameraClearance}`);
 if (!walkAudit.grounded) throw new Error('Walk controller lost grounding on the representative road');
 if (walkAudit.invalidWalkDepthObjects.length) throw new Error(`Walk roads outside the physical depth buffer: ${walkAudit.invalidWalkDepthObjects.join(', ')}`);
 if (exploreDepthRestored.length) throw new Error(`Explore road decal mode was not restored: ${exploreDepthRestored.join(', ')}`);

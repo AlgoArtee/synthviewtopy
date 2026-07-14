@@ -5,6 +5,9 @@ import { ISLAND_SURFACE_Y } from '../config/island';
 import { EDITOR_ASSET_CATALOG, createEditorAsset } from './editorAssets';
 
 const DEG = Math.PI / 180;
+const ACCESS_APPROACH_LENGTH = 0.9;
+const DISTRICT_ACCESS_RAMP_LENGTH = 1.7;
+const DOME_ACCESS_RAMP_LENGTH = 2.6;
 
 function hashString(value: string): number {
   let hash = 2166136261;
@@ -24,6 +27,56 @@ function seededRandom(seed: number): () => number {
     result ^= result + Math.imul(result ^ (result >>> 7), result | 61);
     return ((result ^ (result >>> 14)) >>> 0) / 4294967296;
   };
+}
+
+// Procedural canvas texture helpers for realistic surface detail.
+function makeConcreteTexture(size = 256): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#888';
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < size * 4; i += 1) {
+    const x = Math.random() * size;
+    const y = Math.random() * size;
+    const v = Math.floor(Math.random() * 60 - 30);
+    const ch = Math.abs(v).toString(16).padStart(2, '0');
+    ctx.fillStyle = v > 0 ? `#${ch}${ch}${ch}` : `#000`;
+    ctx.globalAlpha = 0.06;
+    ctx.fillRect(x, y, 2 + Math.random() * 3, 1);
+  }
+  ctx.globalAlpha = 1;
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(4, 4);
+  return tex;
+}
+
+function makeGroundTexture(baseColor: string, size = 256): THREE.CanvasTexture {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = baseColor;
+  ctx.fillRect(0, 0, size, size);
+  for (let i = 0; i < 3200; i += 1) {
+    const x = Math.random() * size;
+    const y = Math.random() * size;
+    const r = 0.5 + Math.random() * 2;
+    ctx.globalAlpha = 0.08 + Math.random() * 0.12;
+    ctx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  const tex = new THREE.CanvasTexture(canvas);
+  tex.wrapS = THREE.RepeatWrapping;
+  tex.wrapT = THREE.RepeatWrapping;
+  tex.repeat.set(6, 6);
+  return tex;
 }
 
 function standardMaterial(color: THREE.ColorRepresentation, overrides: THREE.MeshStandardMaterialParameters = {}) {
@@ -91,10 +144,31 @@ function addAccessRamp(
   const thickness = 0.1;
   const ramp = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(rampWidth, thickness, length), material), id);
   ramp.name = `${id}__ACCESS_RAMP`;
-  ramp.rotation.x = Math.atan2(rise, length);
+  const rampAngle = Math.atan2(rise, length);
+  ramp.rotation.x = rampAngle;
   ramp.position.set(0, rise * 0.5 + thickness * 0.42, innerEdgeZ + length * 0.5);
   ramp.userData.walkable = true;
   group.add(ramp);
+
+  // A short, level landing guarantees that the ramp connects to the island's
+  // walkable terrain even when its outer edge falls between road meshes.
+  const approachThickness = 0.06;
+  const outerRampTopY = ramp.position.y
+    + thickness * 0.5 * Math.cos(rampAngle)
+    - length * 0.5 * Math.sin(rampAngle);
+  const approach = prepareMesh(
+    new THREE.Mesh(new THREE.BoxGeometry(rampWidth, approachThickness, ACCESS_APPROACH_LENGTH), material),
+    id,
+  );
+  approach.name = `${id}__ACCESS_APPROACH`;
+  approach.position.set(
+    0,
+    outerRampTopY - approachThickness * 0.5,
+    innerEdgeZ + length + ACCESS_APPROACH_LENGTH * 0.5 - 0.025,
+  );
+  approach.userData.walkable = true;
+  approach.userData.accessibilityLanding = true;
+  group.add(approach);
 }
 
 function addNavigationAccessVolume(
@@ -173,13 +247,24 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
   );
   threshold.position.set(0, floorY + 0.036, doorZ + 0.035);
   group.add(threshold);
-  addNavigationAccessVolume(group, id, portalWidth * 1.3, 1.35, corridorDepth + 0.16, floorY + 0.68, corridorCenter, 'district');
+  const accessExteriorZ = depth * 0.5 - 0.04 + DISTRICT_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
+  const accessDepth = accessExteriorZ - foyerZ;
+  addNavigationAccessVolume(
+    group,
+    id,
+    Math.max(portalWidth * 1.3, 2.35),
+    2.2,
+    accessDepth,
+    0.85,
+    (accessExteriorZ + foyerZ) * 0.5,
+    'district',
+  );
 }
 
 function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
   const portalWidth = THREE.MathUtils.clamp(width * 0.13, 0.46, 0.92);
-  const floorY = 0.815;
-  const exteriorZ = depth * 0.47 + 0.75;
+  const floorY = 0.34;
+  const exteriorZ = depth * 0.47 + 0.34;
   const interiorZ = depth * 0.14;
   const corridorDepth = exteriorZ - interiorZ;
   const corridorCenter = (exteriorZ + interiorZ) * 0.5;
@@ -202,8 +287,8 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   floor.userData.walkable = true;
   group.add(floor);
 
-  const doorZ = depth * 0.47 + 0.615;
-  const doorHeight = 0.5;
+  const doorZ = depth * 0.47 + 0.24;
+  const doorHeight = 0.62;
   const door = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth * 0.8, doorHeight, 0.035), glassMaterial), id, false);
   door.name = `${id}__AIRLOCK_ENTRY_DOOR`;
   door.position.set(0, floorY + doorHeight * 0.5, doorZ);
@@ -216,7 +301,18 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   const lintel = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth + 0.1, 0.05, 0.08), frameMaterial), id, false);
   lintel.position.set(0, floorY + doorHeight + 0.05, doorZ);
   group.add(lintel);
-  addNavigationAccessVolume(group, id, portalWidth * 1.3, 1.3, corridorDepth + 0.14, floorY + 0.66, corridorCenter, 'dome');
+  const accessExteriorZ = depth * 0.47 + 0.34 - 0.05 + DOME_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
+  const accessDepth = accessExteriorZ - interiorZ;
+  addNavigationAccessVolume(
+    group,
+    id,
+    Math.max(portalWidth * 1.3, 2.35),
+    2.2,
+    accessDepth,
+    0.65,
+    (accessExteriorZ + interiorZ) * 0.5,
+    'dome',
+  );
 }
 
 function addFacadeBands(
@@ -390,8 +486,9 @@ function addCyberpunkDistrictLife(group: THREE.Group, definition: DistrictDefini
 
 function createMaterials(definition: DistrictDefinition) {
   const [base, secondary, trim, glow] = definition.palette;
-  let body = physicalMaterial(secondary);
-  let dark = physicalMaterial(base, { roughness: 0.38, metalness: 0.52 });
+  const facadeTex = makeConcreteTexture(512);
+  let body = physicalMaterial(secondary, { map: facadeTex, roughness: 0.52, metalness: 0.28 });
+  let dark = physicalMaterial(base, { map: facadeTex, roughness: 0.44, metalness: 0.42 });
 
   if (definition.id === 'dark-center-lab-megabuilding') {
     body = physicalMaterial('#090a0f', { roughness: 0.16, metalness: 0.65, clearcoat: 0.65, clearcoatRoughness: 0.12 });
@@ -841,7 +938,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   plot.receiveShadow = true;
   plot.userData.walkable = true;
   group.add(plot);
-  addAccessRamp(group, definition.id, width, depth, 0.34, 1.7, plotMaterial, depth * 0.5 - 0.04);
+  addAccessRamp(group, definition.id, width, depth, 0.34, DISTRICT_ACCESS_RAMP_LENGTH, plotMaterial, depth * 0.5 - 0.04);
 
   const inset = new THREE.LineSegments(
     new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, 0.355, depth * 0.95, 2, 0.26)),
@@ -951,7 +1048,7 @@ function buildFuturisticTropicalBiodome(
   random: () => number,
 ) {
   const usableRadius = radius * 0.78;
-  const floorY = 0.78;
+  const floorY = 0.38;
   const metal = standardMaterial('#34464d', { roughness: 0.34, metalness: 0.82 });
   const darkMetal = standardMaterial('#17252a', { roughness: 0.28, metalness: 0.9 });
   const pathMaterial = standardMaterial('#6b4a2f', { roughness: 0.86 });
@@ -1524,25 +1621,33 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const radius = width * 0.48;
   const isTropicalRainforest = definition.id === 'tropical-rainforest-dome';
   const random = seededRandom(hashString(definition.id));
+  const groundTex = makeGroundTexture(isTropicalRainforest ? '#17472f' : (definition.palette[0] as string));
+  const concreteTex = makeConcreteTexture();
   const base = prepareMesh(
-    new THREE.Mesh(new THREE.CylinderGeometry(radius, radius * 1.04, 0.6, 48), biomeMaterial(definition.palette, 2)),
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(radius, radius * 1.04, 0.3, 48),
+      new THREE.MeshStandardMaterial({ color: definition.palette[2], roughness: 0.82, metalness: 0.1, map: concreteTex }),
+    ),
     definition.id,
   );
   base.scale.z = depth / width;
-  base.position.y = 0.34;
+  base.position.y = 0.17;
   group.add(base);
 
   const ground = prepareMesh(
     new THREE.Mesh(
-      new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, 0.16, 48),
-      isTropicalRainforest
-        ? standardMaterial('#17472f', { roughness: 0.98 })
-        : biomeMaterial(definition.palette, 0),
+      new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, 0.08, 48),
+      new THREE.MeshStandardMaterial({
+        color: isTropicalRainforest ? '#17472f' : definition.palette[0],
+        roughness: 0.96,
+        metalness: 0.02,
+        map: groundTex,
+      }),
     ),
     definition.id,
   );
   ground.scale.z = depth / width;
-  ground.position.y = 0.7;
+  ground.position.y = 0.36;
   ground.userData.walkable = true;
   group.add(ground);
 
@@ -1560,7 +1665,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   });
   const dome = prepareMesh(new THREE.Mesh(domeGeometry, domeMaterial), definition.id, false);
   dome.scale.set(1, definition.height / radius, depth / width);
-  dome.position.y = 0.72;
+  dome.position.y = 0.36;
   dome.renderOrder = 4;
   group.add(dome);
 
@@ -1585,20 +1690,21 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   wire.renderOrder = 5;
   group.add(wire);
 
-  const boundary = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.1, 8, 72), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.2 }))), definition.id, false);
+  const boundary = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.07, 8, 72), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.2 }))), definition.id, false);
   boundary.rotation.x = Math.PI / 2;
   boundary.scale.z = depth / width;
-  boundary.position.y = 0.78;
+  boundary.position.y = 0.36;
   group.add(boundary);
 
   const usableRadius = radius * 0.68;
+  // The ground/flora Y references in all non-tropical dome branches should use the lowered ground position.
   if (definition.id === 'alpine-dome') {
     for (let index = 0; index < 12; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
       const h = 0.7 + random() * 1.2;
       const rock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.25 + random() * 0.35, h, 5), biomeMaterial(definition.palette, 1)), definition.id);
-      rock.position.set(Math.cos(angle) * distance, 0.7 + (h * 0.4), Math.sin(angle) * distance * (depth / width));
+      rock.position.set(Math.cos(angle) * distance, 0.38 + (h * 0.4), Math.sin(angle) * distance * (depth / width));
       rock.rotation.y = random() * Math.PI;
       rock.rotation.x = (random() - 0.5) * 0.15;
       group.add(rock);
@@ -1703,7 +1809,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const rz = -0.4 + Math.sin(theta) * rockRadius;
       const rScale = 0.08 + random() * 0.08;
       const borderRock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(rScale, 0), borderRockMat), definition.id);
-      borderRock.position.set(rx, 0.74, rz);
+      borderRock.position.set(rx, 0.38, rz);
       borderRock.rotation.set(random() * 3, random() * 3, random() * 3);
       group.add(borderRock);
     }
@@ -1723,7 +1829,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
         const angle = random() * Math.PI * 2;
         const distance = random() * usableRadius;
         const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + random() * 0.12, 1), shrubMat), definition.id);
-        shrub.position.set(Math.cos(angle) * distance, 0.78, Math.sin(angle) * distance * (depth / width));
+        shrub.position.set(Math.cos(angle) * distance, 0.38, Math.sin(angle) * distance * (depth / width));
         group.add(shrub);
       }
       const rockMat = standardMaterial('#5e615b', { roughness: 0.85 });
@@ -1731,7 +1837,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
         const angle = random() * Math.PI * 2;
         const distance = random() * usableRadius;
         const rock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.14 + random() * 0.14, 0), rockMat), definition.id);
-        rock.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
+        rock.position.set(Math.cos(angle) * distance, 0.38, Math.sin(angle) * distance * (depth / width));
         rock.rotation.set(random() * 3, random() * 3, random() * 3);
         group.add(rock);
       }
@@ -1746,7 +1852,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     laboratory.name = `${definition.id}__BIOME_FIELD_LABORATORY`;
     laboratory.position.set(
       isTropicalRainforest ? radius * 0.43 : 0,
-      0.79,
+      0.38,
       isTropicalRainforest ? -radius * 0.34 : -radius * 0.24,
     );
     laboratory.rotation.y = isTropicalRainforest ? -Math.PI * 0.5 : Math.PI;
@@ -1760,11 +1866,12 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     group.add(laboratory);
   }
 
-  const airlock = roundedBlock(definition.id, width * 0.16, 1.15, 1.2, physicalMaterial(definition.palette[2]), 0, 0.6, depth * 0.47, 0.14);
+  const airlockHeight = 0.82;
+  const airlock = roundedBlock(definition.id, width * 0.16, airlockHeight, 1.2, new THREE.MeshStandardMaterial({ color: definition.palette[2], roughness: 0.78, metalness: 0.18, map: makeConcreteTexture() }), 0, 0.0, depth * 0.47, 0.1);
   group.add(airlock);
-  addAccessRamp(group, definition.id, width * 0.52, depth, 0.81, 2.6, physicalMaterial(definition.palette[2]), depth * 0.47 + 0.75 - 0.05);
+  addAccessRamp(group, definition.id, width * 0.52, depth, 0.36, DOME_ACCESS_RAMP_LENGTH, physicalMaterial(definition.palette[2]), depth * 0.47 + 0.34 - 0.05);
   const airlockGlow = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width * 0.09, 0.06, 0.04), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.5 }))), definition.id, false);
-  airlockGlow.position.set(0, 1.5, depth * 0.47 + 0.62);
+  airlockGlow.position.set(0, airlockHeight + 0.18, depth * 0.47 + 0.28);
   group.add(airlockGlow);
   addDomeWalkPortal(group, definition.id, width, depth, definition.accent);
 

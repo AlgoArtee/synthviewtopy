@@ -1,5 +1,5 @@
 /** Shared plan and navigation constants. One world unit represents ten metres. */
-export const ISLAND_SURFACE_Y = 1.72;
+export const ISLAND_SURFACE_Y = 1.61;
 /**
  * Keep architecture and walk controls at human scale while tripling the
  * distance between the masterplan's concentric roads.

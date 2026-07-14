@@ -3,6 +3,13 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import type { BiomeDefinition } from '../data/districts';
 import { DISTRICT_ROAD_RADII, ISLAND_POINTS, ISLAND_RADIUS, ISLAND_SURFACE_Y } from '../config/island';
 
+const PLANTED_SURFACE_Y = ISLAND_SURFACE_Y;
+const ROAD_SURFACE_Y = PLANTED_SURFACE_Y + 0.006;
+const ROAD_THICKNESS = 0.012;
+const ROAD_CENTER_Y = ROAD_SURFACE_Y - ROAD_THICKNESS * 0.5;
+const ROAD_MARKING_THICKNESS = 0.003;
+const ROAD_MARKING_CENTER_Y = ROAD_SURFACE_Y + ROAD_MARKING_THICKNESS * 0.5;
+
 function islandShape(scale = 1) {
   const shape = new THREE.Shape();
   ISLAND_POINTS.forEach(([x, z], index) => {
@@ -104,7 +111,7 @@ export function createIslandShell(target: THREE.Group) {
   shoreGeometry.rotateX(Math.PI / 2);
   const shore = new THREE.Mesh(
     shoreGeometry,
-    new THREE.MeshStandardMaterial({ color: '#8d9278', roughness: 0.92, metalness: 0.02 }),
+    new THREE.MeshStandardMaterial({ color: '#8d9278', roughness: 0.92, metalness: 0.02, side: THREE.DoubleSide }),
   );
   shore.name = 'Shoreline shelf';
   shore.position.y = 1.53;
@@ -116,10 +123,10 @@ export function createIslandShell(target: THREE.Group) {
   topGeometry.rotateX(Math.PI / 2);
   const top = new THREE.Mesh(
     topGeometry,
-    new THREE.MeshStandardMaterial({ color: '#344c3f', roughness: 0.86, metalness: 0.03 }),
+    new THREE.MeshStandardMaterial({ color: '#344c3f', roughness: 0.86, metalness: 0.03, side: THREE.DoubleSide }),
   );
   top.name = 'Island planted surface';
-  top.position.y = 1.61;
+  top.position.y = PLANTED_SURFACE_Y;
   top.receiveShadow = true;
   top.userData.walkable = true;
   target.add(top);
@@ -170,6 +177,7 @@ export function createIslandShell(target: THREE.Group) {
   ];
   const detailGroup = new THREE.Group();
   detailGroup.name = 'Coastal rocks and planting';
+  detailGroup.renderOrder = 2;
   for (let index = 0; index < 120; index += 1) {
     const edgeIndex = Math.floor(random() * ISLAND_POINTS.length);
     const edgeStart = ISLAND_POINTS[edgeIndex];
@@ -218,15 +226,21 @@ export function createIslandShell(target: THREE.Group) {
 export function createTransitNetwork(target: THREE.Group, biomes: readonly BiomeDefinition[]) {
   target.name = 'INFRASTRUCTURE__TRANSIT_NETWORK';
   const roadMaterial = new THREE.MeshPhysicalMaterial({
-    color: '#18282b',
-    emissive: '#0b2527',
-    emissiveIntensity: 0.5,
-    roughness: 0.54,
-    metalness: 0.42,
-    clearcoat: 0.26,
+    color: '#142429',
+    emissive: '#09181b',
+    emissiveIntensity: 0.35,
+    roughness: 0.76,
+    metalness: 0.15,
+    clearcoat: 0.12,
     side: THREE.DoubleSide,
+    // Roads are thin ground-level world geometry and participate normally in
+    // the Walk depth buffer. Explore treats them as a terrain decal layer;
+    // buildings and biome objects are explicitly drawn after that layer.
     depthTest: false,
     depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
   });
   const laneMaterial = new THREE.MeshStandardMaterial({
     color: '#58ddd1',
@@ -236,42 +250,57 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     metalness: 0.35,
     depthTest: false,
     depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -4,
+    polygonOffsetUnits: -4,
   });
   const curbMaterial = new THREE.MeshStandardMaterial({
-    color: '#9cb6b2',
+    color: '#d0ddd8',
     emissive: '#264b49',
     emissiveIntensity: 0.45,
     roughness: 0.58,
     metalness: 0.28,
     depthTest: false,
     depthWrite: false,
+    polygonOffset: true,
+    polygonOffsetFactor: -3,
+    polygonOffsetUnits: -3,
   });
+  roadMaterial.userData.groundRoadDepthMode = true;
+  laneMaterial.userData.groundRoadDepthMode = true;
+  curbMaterial.userData.groundRoadDepthMode = true;
   DISTRICT_ROAD_RADII.forEach((radius, index) => {
     const width = index === DISTRICT_ROAD_RADII.length - 1 ? 1.85 : 1.55;
     const ringGeometry = new THREE.RingGeometry(radius - width * 0.5, radius + width * 0.5, 256);
     ringGeometry.rotateX(-Math.PI / 2);
     const road = new THREE.Mesh(ringGeometry, roadMaterial);
     road.name = `District boundary ring road ${index + 1}`;
-    road.position.y = 1.825;
+    road.position.y = ROAD_SURFACE_Y;
     road.renderOrder = 1;
     road.receiveShadow = true;
     road.userData = { walkable: true, districtDelimiter: true, roadType: 'ring' };
     target.add(road);
-    const guide = new THREE.Mesh(new THREE.TorusGeometry(radius, 0.075, 8, 256), laneMaterial);
+    const guideRadius = 0.045;
+    const guideVerticalScale = 0.08;
+    const guide = new THREE.Mesh(new THREE.TorusGeometry(radius, guideRadius, 8, 256), laneMaterial);
     guide.name = `Autonomous transit guide ${index + 1}`;
     guide.rotation.x = Math.PI / 2;
-    guide.position.y = 1.88;
+    guide.scale.z = guideVerticalScale;
+    guide.position.y = ROAD_SURFACE_Y + guideRadius * guideVerticalScale;
     guide.renderOrder = 1;
     target.add(guide);
     for (const curbOffset of [-width * 0.5, width * 0.5]) {
       const curbRadius = radius + curbOffset;
+      const curbRadiusProfile = 0.04;
+      const curbVerticalScale = 0.15;
       const curb = new THREE.Mesh(
-        new THREE.TorusGeometry(curbRadius, 0.045, 8, 256),
+        new THREE.TorusGeometry(curbRadius, curbRadiusProfile, 8, 256),
         curbMaterial,
       );
       curb.name = `Ring road ${index + 1} curb ${curbOffset < 0 ? 'inner' : 'outer'}`;
       curb.rotation.x = Math.PI / 2;
-      curb.position.y = 1.87;
+      curb.scale.z = curbVerticalScale;
+      curb.position.y = ROAD_SURFACE_Y + curbRadiusProfile * curbVerticalScale;
       curb.renderOrder = 1;
       target.add(curb);
     }
@@ -291,19 +320,19 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
   const perimeterInset = 0.905;
   ISLAND_POINTS.forEach((point, index) => {
     const next = ISLAND_POINTS[(index + 1) % ISLAND_POINTS.length];
-    const start = new THREE.Vector3(point[0] * perimeterInset, 1.84, point[1] * perimeterInset);
-    const end = new THREE.Vector3(next[0] * perimeterInset, 1.84, next[1] * perimeterInset);
-    const road = roadSegment(start, end, 2.35, roadMaterial, 0.11);
+    const start = new THREE.Vector3(point[0] * perimeterInset, ROAD_CENTER_Y, point[1] * perimeterInset);
+    const end = new THREE.Vector3(next[0] * perimeterInset, ROAD_CENTER_Y, next[1] * perimeterInset);
+    const road = roadSegment(start, end, 2.35, roadMaterial, ROAD_THICKNESS);
     road.name = `Hexagonal coastal express road ${index + 1}`;
     road.renderOrder = 1;
     road.userData = { walkable: true, districtDelimiter: true, roadType: 'perimeter' };
     target.add(road);
     const guide = roadSegment(
-      new THREE.Vector3(start.x, 1.915, start.z),
-      new THREE.Vector3(end.x, 1.915, end.z),
+      new THREE.Vector3(start.x, ROAD_MARKING_CENTER_Y, start.z),
+      new THREE.Vector3(end.x, ROAD_MARKING_CENTER_Y, end.z),
       0.09,
       index % 2 ? laneMaterial : curbMaterial,
-      0.025,
+      ROAD_MARKING_THICKNESS,
     );
     guide.name = `Coastal express luminous median ${index + 1}`;
     guide.renderOrder = 1;
@@ -319,19 +348,19 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
   axes.forEach(([startId, endId], index) => {
     const startBiome = biomeMap.get(startId)!;
     const endBiome = biomeMap.get(endId)!;
-    const start = new THREE.Vector3(startBiome.position[0], 1.785, startBiome.position[2]);
-    const end = new THREE.Vector3(endBiome.position[0], 1.785, endBiome.position[2]);
-    const road = roadSegment(start, end, 1.65, roadMaterial, 0.08);
+    const start = new THREE.Vector3(startBiome.position[0], ROAD_CENTER_Y, startBiome.position[2]);
+    const end = new THREE.Vector3(endBiome.position[0], ROAD_CENTER_Y, endBiome.position[2]);
+    const road = roadSegment(start, end, 1.65, roadMaterial, ROAD_THICKNESS);
     road.name = `Radial district boundary road ${index + 1}`;
     road.renderOrder = 1;
     road.userData = { walkable: true, districtDelimiter: true, roadType: 'radial' };
     target.add(road);
     const guide = roadSegment(
-      new THREE.Vector3(start.x, 1.865, start.z),
-      new THREE.Vector3(end.x, 1.865, end.z),
+      new THREE.Vector3(start.x, ROAD_MARKING_CENTER_Y, start.z),
+      new THREE.Vector3(end.x, ROAD_MARKING_CENTER_Y, end.z),
       0.08,
       laneMaterial,
-      0.025,
+      ROAD_MARKING_THICKNESS,
     );
     guide.name = `Biome axis light ${index + 1}`;
     guide.renderOrder = 1;

@@ -613,13 +613,17 @@ export class IslandWorld {
   private createDistrictsAndBiomes() {
     districts.forEach((definition) => {
       const { group, labelHeight } = createDistrictModel(definition);
-      group.renderOrder = 2;
+      group.traverse((child) => {
+        if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
+      });
       this.architectureRoot.add(group);
       this.registerSelectable(definition, group, labelHeight, false);
     });
     biomes.forEach((definition) => {
       const { group, labelHeight } = createBiomeModel(definition);
-      group.renderOrder = 2;
+      group.traverse((child) => {
+        if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
+      });
       this.landscapeRoot.add(group);
       this.registerSelectable(definition, group, labelHeight, true);
     });
@@ -1065,6 +1069,7 @@ export class IslandWorld {
       this.renderer.domElement.style.cursor = 'grab';
     }
     this.mode = mode;
+    this.setGroundRoadDepthMode(mode === 'walk');
     this.controls.enabled = mode !== 'walk';
     this.controls.enableRotate = mode !== 'plan' && mode !== 'walk';
     this.controls.enablePan = true;
@@ -1097,6 +1102,21 @@ export class IslandWorld {
       this.cameraTween = null;
     }
     this.updateLabels(true);
+  }
+
+  private setGroundRoadDepthMode(walkDepth: boolean) {
+    const updated = new Set<THREE.Material>();
+    this.transitRoot.traverse((child) => {
+      if (!(child instanceof THREE.Mesh)) return;
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      materials.forEach((material) => {
+        if (!material.userData.groundRoadDepthMode || updated.has(material)) return;
+        updated.add(material);
+        material.depthTest = walkDepth;
+        material.depthWrite = walkDepth;
+        material.needsUpdate = true;
+      });
+    });
   }
 
   getMode() {
@@ -2186,6 +2206,7 @@ export class IslandWorld {
     const id = `imported-${safeName}-${Date.now().toString(36)}-${this.importedRoot.children.length + 1}`;
     const wrapper = new THREE.Group();
     wrapper.name = `IMPORTED__${safeName}`;
+    wrapper.renderOrder = 2;
     wrapper.userData = {
       selectableId: id,
       type: 'imported',
@@ -2195,6 +2216,7 @@ export class IslandWorld {
     object.name ||= safeName;
     object.traverse((child) => {
       child.userData.selectableId = id;
+      if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
       if (child instanceof THREE.Mesh) {
         child.castShadow = true;
         child.receiveShadow = true;

@@ -8,6 +8,10 @@ const DEG = Math.PI / 180;
 const ACCESS_APPROACH_LENGTH = 0.9;
 const DISTRICT_ACCESS_RAMP_LENGTH = 1.7;
 const DOME_ACCESS_RAMP_LENGTH = 2.6;
+const DOME_FINISHED_FLOOR_Y = 0.4;
+const DOME_AIRLOCK_DEPTH = 1.2;
+const DOME_AIRLOCK_HALF_DEPTH = DOME_AIRLOCK_DEPTH * 0.5;
+const surfaceTextureCache = new Map<string, THREE.CanvasTexture>();
 
 function hashString(value: string): number {
   let hash = 2166136261;
@@ -31,42 +35,74 @@ function seededRandom(seed: number): () => number {
 
 // Procedural canvas texture helpers for realistic surface detail.
 function makeConcreteTexture(size = 256): THREE.CanvasTexture {
+  const cacheKey = `concrete-${size}`;
+  const cached = surfaceTextureCache.get(cacheKey);
+  if (cached) return cached;
   const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d')!;
-  ctx.fillStyle = '#888';
+  const random = seededRandom(0xc0c2e7 + size);
+  ctx.fillStyle = '#9b9d9c';
   ctx.fillRect(0, 0, size, size);
   for (let i = 0; i < size * 4; i += 1) {
-    const x = Math.random() * size;
-    const y = Math.random() * size;
-    const v = Math.floor(Math.random() * 60 - 30);
+    const x = random() * size;
+    const y = random() * size;
+    const v = Math.floor(random() * 60 - 30);
     const ch = Math.abs(v).toString(16).padStart(2, '0');
     ctx.fillStyle = v > 0 ? `#${ch}${ch}${ch}` : `#000`;
     ctx.globalAlpha = 0.06;
-    ctx.fillRect(x, y, 2 + Math.random() * 3, 1);
+    ctx.fillRect(x, y, 2 + random() * 3, 1);
   }
   ctx.globalAlpha = 1;
+  ctx.strokeStyle = 'rgba(35, 40, 42, 0.28)';
+  ctx.lineWidth = Math.max(1, size / 256);
+  const panel = size / 4;
+  for (let index = 1; index < 4; index += 1) {
+    ctx.beginPath();
+    ctx.moveTo(index * panel, 0);
+    ctx.lineTo(index * panel, size);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, index * panel);
+    ctx.lineTo(size, index * panel);
+    ctx.stroke();
+  }
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+  for (let streak = 0; streak < 18; streak += 1) {
+    const x = random() * size;
+    ctx.beginPath();
+    ctx.moveTo(x, random() * size * 0.25);
+    ctx.lineTo(x + (random() - 0.5) * 4, size * (0.55 + random() * 0.45));
+    ctx.stroke();
+  }
   const tex = new THREE.CanvasTexture(canvas);
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.RepeatWrapping;
   tex.repeat.set(4, 4);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  surfaceTextureCache.set(cacheKey, tex);
   return tex;
 }
 
 function makeGroundTexture(baseColor: string, size = 256): THREE.CanvasTexture {
+  const cacheKey = `ground-${baseColor}-${size}`;
+  const cached = surfaceTextureCache.get(cacheKey);
+  if (cached) return cached;
   const canvas = document.createElement('canvas');
   canvas.width = size;
   canvas.height = size;
   const ctx = canvas.getContext('2d')!;
   ctx.fillStyle = baseColor;
   ctx.fillRect(0, 0, size, size);
+  const random = seededRandom(hashString(cacheKey));
   for (let i = 0; i < 3200; i += 1) {
-    const x = Math.random() * size;
-    const y = Math.random() * size;
-    const r = 0.5 + Math.random() * 2;
-    ctx.globalAlpha = 0.08 + Math.random() * 0.12;
-    ctx.fillStyle = Math.random() > 0.5 ? '#000' : '#fff';
+    const x = random() * size;
+    const y = random() * size;
+    const r = 0.5 + random() * 2;
+    ctx.globalAlpha = 0.08 + random() * 0.12;
+    ctx.fillStyle = random() > 0.5 ? '#000' : '#fff';
     ctx.beginPath();
     ctx.arc(x, y, r, 0, Math.PI * 2);
     ctx.fill();
@@ -76,7 +112,45 @@ function makeGroundTexture(baseColor: string, size = 256): THREE.CanvasTexture {
   tex.wrapS = THREE.RepeatWrapping;
   tex.wrapT = THREE.RepeatWrapping;
   tex.repeat.set(6, 6);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  tex.anisotropy = 8;
+  surfaceTextureCache.set(cacheKey, tex);
   return tex;
+}
+
+function makeBrushedMetalTexture(size = 256): THREE.CanvasTexture {
+  const cacheKey = `brushed-metal-${size}`;
+  const cached = surfaceTextureCache.get(cacheKey);
+  if (cached) return cached;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const ctx = canvas.getContext('2d')!;
+  const random = seededRandom(0xb7a5ed + size);
+  ctx.fillStyle = '#aeb4b5';
+  ctx.fillRect(0, 0, size, size);
+  for (let y = 0; y < size; y += 1) {
+    const shade = 135 + Math.floor(random() * 55);
+    ctx.fillStyle = `rgba(${shade}, ${shade + 3}, ${shade + 5}, ${0.16 + random() * 0.2})`;
+    ctx.fillRect(0, y, size, 1);
+  }
+  ctx.strokeStyle = 'rgba(30, 38, 42, 0.34)';
+  ctx.lineWidth = 1;
+  for (let panel = 1; panel < 4; panel += 1) {
+    const x = (panel * size) / 4;
+    ctx.beginPath();
+    ctx.moveTo(x, 0);
+    ctx.lineTo(x, size);
+    ctx.stroke();
+  }
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(2, 5);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  surfaceTextureCache.set(cacheKey, texture);
+  return texture;
 }
 
 function standardMaterial(color: THREE.ColorRepresentation, overrides: THREE.MeshStandardMaterialParameters = {}) {
@@ -146,7 +220,9 @@ function addAccessRamp(
   ramp.name = `${id}__ACCESS_RAMP`;
   const rampAngle = Math.atan2(rise, length);
   ramp.rotation.x = rampAngle;
-  ramp.position.set(0, rise * 0.5 + thickness * 0.42, innerEdgeZ + length * 0.5);
+  // Seat the lower top edge exactly on the building datum while keeping the
+  // upper top edge flush with the raised floor.
+  ramp.position.set(0, rise * 0.5 - thickness * 0.5 * Math.cos(rampAngle), innerEdgeZ + length * 0.5);
   ramp.userData.walkable = true;
   group.add(ramp);
 
@@ -263,8 +339,11 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
 
 function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
   const portalWidth = THREE.MathUtils.clamp(width * 0.13, 0.46, 0.92);
-  const floorY = 0.34;
-  const exteriorZ = depth * 0.47 + 0.34;
+  // Keep the corridor slightly proud of the biome floor so the complete
+  // airlock remains visible instead of being bisected by the ground disk.
+  const floorY = DOME_FINISHED_FLOOR_Y + 0.005;
+  const airlockCenterZ = depth * 0.47;
+  const exteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + 0.04;
   const interiorZ = depth * 0.14;
   const corridorDepth = exteriorZ - interiorZ;
   const corridorCenter = (exteriorZ + interiorZ) * 0.5;
@@ -278,6 +357,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
     transmission: 0.3,
     roughness: 0.1,
     metalness: 0.16,
+    side: THREE.DoubleSide,
   });
   const frameMaterial = standardMaterial('#d5e4e1', { roughness: 0.24, metalness: 0.74 });
 
@@ -287,7 +367,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   floor.userData.walkable = true;
   group.add(floor);
 
-  const doorZ = depth * 0.47 + 0.24;
+  const doorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + 0.018;
   const doorHeight = 0.62;
   const door = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth * 0.8, doorHeight, 0.035), glassMaterial), id, false);
   door.name = `${id}__AIRLOCK_ENTRY_DOOR`;
@@ -301,7 +381,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   const lintel = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(portalWidth + 0.1, 0.05, 0.08), frameMaterial), id, false);
   lintel.position.set(0, floorY + doorHeight + 0.05, doorZ);
   group.add(lintel);
-  const accessExteriorZ = depth * 0.47 + 0.34 - 0.05 + DOME_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
+  const accessExteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + DOME_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
   const accessDepth = accessExteriorZ - interiorZ;
   addNavigationAccessVolume(
     group,
@@ -487,15 +567,16 @@ function addCyberpunkDistrictLife(group: THREE.Group, definition: DistrictDefini
 function createMaterials(definition: DistrictDefinition) {
   const [base, secondary, trim, glow] = definition.palette;
   const facadeTex = makeConcreteTexture(512);
-  let body = physicalMaterial(secondary, { map: facadeTex, roughness: 0.52, metalness: 0.28 });
-  let dark = physicalMaterial(base, { map: facadeTex, roughness: 0.44, metalness: 0.42 });
+  let body = physicalMaterial(secondary, { map: facadeTex, bumpMap: facadeTex, bumpScale: 0.012, roughness: 0.52, metalness: 0.28 });
+  let dark = physicalMaterial(base, { map: facadeTex, bumpMap: facadeTex, bumpScale: 0.009, roughness: 0.44, metalness: 0.42 });
 
   if (definition.id === 'dark-center-lab-megabuilding') {
     body = physicalMaterial('#090a0f', { roughness: 0.16, metalness: 0.65, clearcoat: 0.65, clearcoatRoughness: 0.12 });
     dark = physicalMaterial('#030406', { roughness: 0.12, metalness: 0.75, clearcoat: 0.8, clearcoatRoughness: 0.08 });
   }
 
-  const metal = standardMaterial(trim, { roughness: 0.35, metalness: 0.68 });
+  const brushedMetal = makeBrushedMetalTexture();
+  const metal = standardMaterial(trim, { map: brushedMetal, bumpMap: brushedMetal, bumpScale: 0.006, roughness: 0.35, metalness: 0.68 });
   const glass = physicalMaterial(glow, {
     roughness: 0.1,
     metalness: 0.08,
@@ -932,11 +1013,24 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   };
 
   const [width, depth] = definition.footprint;
-  const plotMaterial = physicalMaterial(definition.palette[0], { roughness: 0.64, metalness: 0.18 });
-  const plot = roundedBlock(definition.id, width, 0.34, depth, plotMaterial, 0, 0, 0, 0.34, false);
+  const foundationTexture = makeConcreteTexture();
+  const plotMaterial = physicalMaterial(definition.palette[0], {
+    map: foundationTexture,
+    bumpMap: foundationTexture,
+    bumpScale: 0.014,
+    roughness: 0.7,
+    metalness: 0.12,
+  });
+  // A shallow RoundedBoxGeometry does not retain its requested vertical
+  // extent at these wide aspect ratios. Use a structural box for the plinth so
+  // the visible/collision volume really runs from terrain to finished floor.
+  const plot = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width, 0.34, depth), plotMaterial), definition.id);
+  plot.position.y = 0.17;
   plot.name = `${definition.id}__PLOT`;
   plot.receiveShadow = true;
   plot.userData.walkable = true;
+  plot.userData.navObstacle = true;
+  plot.userData.solidFoundation = true;
   group.add(plot);
   addAccessRamp(group, definition.id, width, depth, 0.34, DISTRICT_ACCESS_RAMP_LENGTH, plotMaterial, depth * 0.5 - 0.04);
 
@@ -1048,7 +1142,7 @@ function buildFuturisticTropicalBiodome(
   random: () => number,
 ) {
   const usableRadius = radius * 0.78;
-  const floorY = 0.38;
+  const floorY = DOME_FINISHED_FLOOR_Y;
   const metal = standardMaterial('#34464d', { roughness: 0.34, metalness: 0.82 });
   const darkMetal = standardMaterial('#17252a', { roughness: 0.28, metalness: 0.9 });
   const pathMaterial = standardMaterial('#6b4a2f', { roughness: 0.86 });
@@ -1110,8 +1204,8 @@ function buildFuturisticTropicalBiodome(
 
   // A continuous timber-and-alloy visitor route climbs from the airlock to the waterfall.
   const routeCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-2.4, 0.94, 11.4),
-    new THREE.Vector3(-7.2, 1.35, 9.0),
+    new THREE.Vector3(-2.4, floorY + 0.08, 11.4),
+    new THREE.Vector3(-7.2, 1.05, 9.0),
     new THREE.Vector3(-10.1, 2.1, 4.2),
     new THREE.Vector3(-10.4, 3.0, -1.8),
     new THREE.Vector3(-8.4, 3.8, -6.5),
@@ -1135,6 +1229,11 @@ function buildFuturisticTropicalBiodome(
     plank.position.copy(start).add(end).multiplyScalar(0.5);
     orientWalkwaySegment(plank, direction);
     plank.userData.walkable = true;
+    if (index === 0) {
+      plank.userData.canopyEntryRamp = true;
+      plank.userData.entryLocalStart = start.toArray();
+      plank.userData.entryLocalEnd = end.toArray();
+    }
     group.add(plank);
 
     for (const side of [-1, 1]) {
@@ -1236,15 +1335,43 @@ function buildFuturisticTropicalBiodome(
   stream.position.y = floorY + 0.04;
   group.add(stream);
 
+  const pondBasin = prepareMesh(
+    new THREE.Mesh(
+      new THREE.CylinderGeometry(3.02, 3.16, 0.08, 48),
+      standardMaterial('#203e38', { roughness: 0.94, metalness: 0.02 }),
+    ),
+    definition.id,
+  );
+  pondBasin.name = 'TROPICAL__WETLAND_BASIN';
+  pondBasin.scale.set(1.28, 1, 0.84);
+  pondBasin.position.set(0.25, floorY + 0.02, -0.5);
+  group.add(pondBasin);
+
+  const pondWaterMaterial = new THREE.MeshStandardMaterial({
+    color: '#168fa5',
+    emissive: '#063e4c',
+    emissiveIntensity: 0.48,
+    transparent: true,
+    opacity: 0.88,
+    depthTest: false,
+    depthWrite: false,
+    roughness: 0.18,
+    metalness: 0.04,
+    side: THREE.DoubleSide,
+  });
+  pondWaterMaterial.name = 'TROPICAL_WATER_SURFACE_MATERIAL';
   const pond = prepareMesh(
-    new THREE.Mesh(new THREE.CircleGeometry(2.85, 48), waterMaterial),
+    new THREE.Mesh(new THREE.CircleGeometry(2.9, 48), pondWaterMaterial),
     definition.id,
     false,
   );
   pond.name = 'TROPICAL__WETLAND_POND';
   pond.rotation.x = -Math.PI / 2;
   pond.scale.set(1.28, 0.84, 1);
-  pond.position.set(0.25, floorY + 0.055, -0.5);
+  // Keep a real depth separation from the basin; a near-coplanar water sheet
+  // loses precision against the island-scale camera frustum and appears gray.
+  pond.position.set(0.25, floorY + 0.085, -0.5);
+  pond.renderOrder = 3;
   group.add(pond);
 
   for (let index = 0; index < 25; index += 1) {
@@ -1625,13 +1752,23 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const concreteTex = makeConcreteTexture();
   const base = prepareMesh(
     new THREE.Mesh(
-      new THREE.CylinderGeometry(radius, radius * 1.04, 0.3, 48),
-      new THREE.MeshStandardMaterial({ color: definition.palette[2], roughness: 0.82, metalness: 0.1, map: concreteTex }),
+      new THREE.CylinderGeometry(radius, radius * 1.04, 0.34, 48),
+      new THREE.MeshStandardMaterial({
+        color: definition.palette[2],
+        roughness: 0.82,
+        metalness: 0.1,
+        map: concreteTex,
+        bumpMap: concreteTex,
+        bumpScale: 0.016,
+      }),
     ),
     definition.id,
   );
   base.scale.z = depth / width;
   base.position.y = 0.17;
+  base.name = `${definition.id}__SOLID_FOUNDATION`;
+  base.userData.navObstacle = true;
+  base.userData.solidFoundation = true;
   group.add(base);
 
   const ground = prepareMesh(
@@ -1648,6 +1785,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   );
   ground.scale.z = depth / width;
   ground.position.y = 0.36;
+  ground.name = `${definition.id}__BIOME_FLOOR`;
   ground.userData.walkable = true;
   group.add(ground);
 
@@ -1664,8 +1802,9 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     depthWrite: false,
   });
   const dome = prepareMesh(new THREE.Mesh(domeGeometry, domeMaterial), definition.id, false);
+  dome.name = `${definition.id}__DOME_TRANSPARENT_SHELL`;
   dome.scale.set(1, definition.height / radius, depth / width);
-  dome.position.y = 0.36;
+  dome.position.y = DOME_FINISHED_FLOOR_Y;
   dome.renderOrder = 4;
   group.add(dome);
 
@@ -1674,10 +1813,10 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       domeGeometry.clone(),
       markAccent(
         new THREE.MeshBasicMaterial({
-          color: isTropicalRainforest ? '#d2fff2' : definition.accent,
+          color: isTropicalRainforest ? '#2ee878' : definition.accent,
           wireframe: true,
           transparent: true,
-          opacity: isTropicalRainforest ? 0.22 : 0.18,
+          opacity: isTropicalRainforest ? 0.56 : 0.18,
           depthWrite: false,
         }),
       ),
@@ -1685,6 +1824,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     definition.id,
     false,
   );
+  wire.name = `${definition.id}__DOME_WIREFRAME`;
   wire.scale.copy(dome.scale);
   wire.position.copy(dome.position);
   wire.renderOrder = 5;
@@ -1693,7 +1833,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const boundary = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.07, 8, 72), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.2 }))), definition.id, false);
   boundary.rotation.x = Math.PI / 2;
   boundary.scale.z = depth / width;
-  boundary.position.y = 0.36;
+  boundary.position.y = DOME_FINISHED_FLOOR_Y;
   group.add(boundary);
 
   const usableRadius = radius * 0.68;
@@ -1867,11 +2007,59 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   }
 
   const airlockHeight = 0.82;
-  const airlock = roundedBlock(definition.id, width * 0.16, airlockHeight, 1.2, new THREE.MeshStandardMaterial({ color: definition.palette[2], roughness: 0.78, metalness: 0.18, map: makeConcreteTexture() }), 0, 0.0, depth * 0.47, 0.1);
+  const airlockWidth = width * 0.16;
+  const airlock = new THREE.Group();
+  airlock.name = `${definition.id}__AIRLOCK_SHELL`;
+  airlock.position.set(0, 0, depth * 0.47);
+  const airlockMaterial = new THREE.MeshStandardMaterial({
+    color: isTropicalRainforest ? '#28533f' : definition.palette[2],
+    roughness: 0.72,
+    metalness: 0.16,
+    map: makeConcreteTexture(),
+  });
+  const wallThickness = 0.16;
+  const doorwayWidth = THREE.MathUtils.clamp(width * 0.13, 0.46, 0.92) + 0.2;
+  const facadePanelWidth = Math.max(0.28, (airlockWidth - doorwayWidth) * 0.5);
+  for (const side of [-1, 1]) {
+    const facadePanel = prepareMesh(
+      new THREE.Mesh(new THREE.BoxGeometry(facadePanelWidth, airlockHeight, wallThickness), airlockMaterial),
+      definition.id,
+    );
+    facadePanel.name = `${definition.id}__AIRLOCK_FRONT_PANEL_${side < 0 ? 'LEFT' : 'RIGHT'}`;
+    facadePanel.position.set(
+      side * (doorwayWidth * 0.5 + facadePanelWidth * 0.5),
+      DOME_FINISHED_FLOOR_Y + airlockHeight * 0.5,
+      DOME_AIRLOCK_HALF_DEPTH - wallThickness * 0.5,
+    );
+    facadePanel.userData.navObstacle = true;
+    airlock.add(facadePanel);
+
+    const sideWall = prepareMesh(
+      new THREE.Mesh(new THREE.BoxGeometry(wallThickness, airlockHeight, DOME_AIRLOCK_DEPTH), airlockMaterial),
+      definition.id,
+    );
+    sideWall.name = `${definition.id}__AIRLOCK_SIDE_WALL_${side < 0 ? 'LEFT' : 'RIGHT'}`;
+    sideWall.position.set(
+      side * (airlockWidth * 0.5 - wallThickness * 0.5),
+      DOME_FINISHED_FLOOR_Y + airlockHeight * 0.5,
+      0,
+    );
+    sideWall.userData.navObstacle = true;
+    airlock.add(sideWall);
+  }
+  const airlockRoof = prepareMesh(
+    new THREE.Mesh(new THREE.BoxGeometry(airlockWidth, 0.14, DOME_AIRLOCK_DEPTH), airlockMaterial),
+    definition.id,
+  );
+  airlockRoof.name = `${definition.id}__AIRLOCK_ROOF`;
+  airlockRoof.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + 0.07, 0);
+  airlockRoof.userData.navObstacle = true;
+  airlock.add(airlockRoof);
   group.add(airlock);
-  addAccessRamp(group, definition.id, width * 0.52, depth, 0.36, DOME_ACCESS_RAMP_LENGTH, physicalMaterial(definition.palette[2]), depth * 0.47 + 0.34 - 0.05);
+  addAccessRamp(group, definition.id, width * 0.52, depth, DOME_FINISHED_FLOOR_Y, DOME_ACCESS_RAMP_LENGTH, physicalMaterial(definition.palette[2]), depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH);
   const airlockGlow = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(width * 0.09, 0.06, 0.04), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.5 }))), definition.id, false);
-  airlockGlow.position.set(0, airlockHeight + 0.18, depth * 0.47 + 0.28);
+  airlockGlow.name = `${definition.id}__AIRLOCK_HEADER_LIGHT`;
+  airlockGlow.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + 0.18, depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH + 0.025);
   group.add(airlockGlow);
   addDomeWalkPortal(group, definition.id, width, depth, definition.accent);
 

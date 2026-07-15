@@ -3,6 +3,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import type { BiomeDefinition, DistrictDefinition } from '../data/districts';
 import { ISLAND_SURFACE_Y, metresToWorldUnits } from '../config/island';
 import { EDITOR_ASSET_CATALOG, createEditorAsset } from './editorAssets';
+import { buildIndustrialDistrict } from './industrialDistrict';
 
 const DEG = Math.PI / 180;
 const ACCESS_APPROACH_LENGTH = metresToWorldUnits(2);
@@ -10,6 +11,8 @@ const DISTRICT_ACCESS_RAMP_LENGTH = metresToWorldUnits(41);
 const DOME_ACCESS_RAMP_LENGTH = metresToWorldUnits(48);
 const DISTRICT_FINISHED_FLOOR_Y = 0.34;
 const DOME_FINISHED_FLOOR_Y = 0.4;
+const TROPICAL_FINISHED_FLOOR_Y = metresToWorldUnits(0.18);
+const TROPICAL_ACCESS_RAMP_LENGTH = metresToWorldUnits(2.4);
 const DOME_AIRLOCK_DEPTH = 1.2;
 const DOME_AIRLOCK_HALF_DEPTH = DOME_AIRLOCK_DEPTH * 0.5;
 const HUMAN_GUARDRAIL_HEIGHT = metresToWorldUnits(1.1);
@@ -288,14 +291,21 @@ function addNavigationAccessVolume(
   group.add(volume);
 }
 
-function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
+function addDistrictWalkPortal(
+  group: THREE.Group,
+  id: string,
+  width: number,
+  depth: number,
+  accent: string,
+  floorY = DISTRICT_FINISHED_FLOOR_Y,
+  rampLength = DISTRICT_ACCESS_RAMP_LENGTH,
+) {
   const portalWidth = THREE.MathUtils.clamp(
     width * 0.08,
     metresToWorldUnits(1.8),
     metresToWorldUnits(4.2),
   );
-  const floorY = DISTRICT_FINISHED_FLOOR_Y;
-  const floorThickness = 0.05;
+  const floorThickness = Math.min(0.05, floorY);
   const exteriorZ = depth * 0.5 + 0.08;
   const foyerZ = -Math.min(depth * 0.17, 0.9);
   const corridorDepth = exteriorZ - foyerZ;
@@ -367,7 +377,7 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
   );
   threshold.position.set(0, floorY + metresToWorldUnits(0.025), doorZ + metresToWorldUnits(0.2));
   group.add(threshold);
-  const accessExteriorZ = depth * 0.5 - 0.04 + DISTRICT_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
+  const accessExteriorZ = depth * 0.5 - 0.04 + rampLength + ACCESS_APPROACH_LENGTH;
   const accessDepth = accessExteriorZ - foyerZ;
   addNavigationAccessVolume(
     group,
@@ -381,7 +391,15 @@ function addDistrictWalkPortal(group: THREE.Group, id: string, width: number, de
   );
 }
 
-function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth: number, accent: string) {
+function addDomeWalkPortal(
+  group: THREE.Group,
+  id: string,
+  width: number,
+  depth: number,
+  accent: string,
+  finishedFloorY = DOME_FINISHED_FLOOR_Y,
+  rampLength = DOME_ACCESS_RAMP_LENGTH,
+) {
   const portalWidth = THREE.MathUtils.clamp(
     width * 0.04,
     metresToWorldUnits(2.2),
@@ -389,7 +407,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   );
   // Keep the corridor slightly proud of the biome floor so the complete
   // airlock remains visible instead of being bisected by the ground disk.
-  const floorY = DOME_FINISHED_FLOOR_Y + 0.005;
+  const floorY = finishedFloorY + 0.005;
   const airlockCenterZ = depth * 0.47;
   const exteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + 0.04;
   const interiorZ = depth * 0.14;
@@ -448,7 +466,7 @@ function addDomeWalkPortal(group: THREE.Group, id: string, width: number, depth:
   );
   lintel.position.set(0, floorY + doorHeight + lintelThickness * 0.5, doorZ);
   group.add(lintel);
-  const accessExteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + DOME_ACCESS_RAMP_LENGTH + ACCESS_APPROACH_LENGTH;
+  const accessExteriorZ = airlockCenterZ + DOME_AIRLOCK_HALF_DEPTH + rampLength + ACCESS_APPROACH_LENGTH;
   const accessDepth = accessExteriorZ - interiorZ;
   addNavigationAccessVolume(
     group,
@@ -1080,6 +1098,9 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   };
 
   const [width, depth] = definition.footprint;
+  const isIndustrialDistrict = definition.id === 'industrial-labs';
+  const finishedFloorY = isIndustrialDistrict ? metresToWorldUnits(0.18) : DISTRICT_FINISHED_FLOOR_Y;
+  const accessRampLength = isIndustrialDistrict ? metresToWorldUnits(2.4) : DISTRICT_ACCESS_RAMP_LENGTH;
   const foundationTexture = makeConcreteTexture();
   const plotMaterial = physicalMaterial(definition.palette[0], {
     map: foundationTexture,
@@ -1092,14 +1113,17 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   // extent at these wide aspect ratios. Use a structural box for the plinth so
   // the visible/collision volume really runs from terrain to finished floor.
   const plot = prepareMesh(
-    new THREE.Mesh(new THREE.BoxGeometry(width, DISTRICT_FINISHED_FLOOR_Y, depth), plotMaterial),
+    new THREE.Mesh(new THREE.BoxGeometry(width, finishedFloorY, depth), plotMaterial),
     definition.id,
   );
-  plot.position.y = DISTRICT_FINISHED_FLOOR_Y * 0.5;
+  plot.position.y = finishedFloorY * 0.5;
   plot.name = `${definition.id}__PLOT`;
   plot.receiveShadow = true;
   plot.userData.walkable = true;
-  plot.userData.navObstacle = true;
+  // The industrial parcel is a curb-height paved yard, not a walled plinth.
+  // Its actual buildings remain collision obstacles, while the slab can be
+  // approached from every side at normal walking step height.
+  plot.userData.navObstacle = !isIndustrialDistrict;
   plot.userData.solidFoundation = true;
   group.add(plot);
   addAccessRamp(
@@ -1107,17 +1131,17 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     definition.id,
     width,
     depth,
-    DISTRICT_FINISHED_FLOOR_Y,
-    DISTRICT_ACCESS_RAMP_LENGTH,
+    finishedFloorY,
+    accessRampLength,
     plotMaterial,
     depth * 0.5 - 0.04,
   );
 
   const inset = new THREE.LineSegments(
-    new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, 0.355, depth * 0.95, 2, 0.26)),
+    new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
     new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
   );
-  inset.position.y = 0.02;
+  inset.position.y = finishedFloorY * 0.5;
   inset.userData.selectableId = definition.id;
   group.add(inset);
 
@@ -1148,7 +1172,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       buildCivic(group, definition, height, random);
       break;
     case 'infrastructure':
-      buildInfrastructure(group, definition, height);
+      if (definition.id === 'industrial-labs') buildIndustrialDistrict(group, definition);
+      else buildInfrastructure(group, definition, height);
       break;
     case 'academic':
       buildAcademic(group, definition, height);
@@ -1158,21 +1183,28 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  addDistrictWalkPortal(group, definition.id, width, depth, definition.accent);
-  addDistrictSignature(group, definition, height, random);
+  addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
+  if (definition.id !== 'industrial-labs') addDistrictSignature(group, definition, height, random);
   addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
     new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 3 }),
   );
-  addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
-  addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
+  if (definition.id !== 'industrial-labs') {
+    addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
+    addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
+  }
 
   group.traverse((child) => {
     child.userData.selectableId = definition.id;
   });
 
-  return { group, labelHeight: 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02) };
+  return {
+    group,
+    labelHeight: definition.id === 'industrial-labs'
+      ? 8.15
+      : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
+  };
 }
 
 function biomeMaterial(palette: readonly string[], index: number, overrides: THREE.MeshStandardMaterialParameters = {}) {
@@ -1219,9 +1251,9 @@ function buildFuturisticTropicalBiodome(
   depth: number,
   width: number,
   random: () => number,
+  floorY: number,
 ) {
   const usableRadius = radius * 0.78;
-  const floorY = DOME_FINISHED_FLOOR_Y;
   const metal = standardMaterial('#34464d', { roughness: 0.34, metalness: 0.82 });
   const darkMetal = standardMaterial('#17252a', { roughness: 0.28, metalness: 0.9 });
   const pathMaterial = standardMaterial('#6b4a2f', { roughness: 0.86 });
@@ -1915,12 +1947,15 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const [width, depth] = definition.footprint;
   const radius = width * 0.48;
   const isTropicalRainforest = definition.id === 'tropical-rainforest-dome';
+  const finishedFloorY = isTropicalRainforest ? TROPICAL_FINISHED_FLOOR_Y : DOME_FINISHED_FLOOR_Y;
+  const foundationHeight = isTropicalRainforest ? TROPICAL_FINISHED_FLOOR_Y : 0.34;
+  const biomeFloorThickness = isTropicalRainforest ? metresToWorldUnits(0.08) : 0.08;
   const random = seededRandom(hashString(definition.id));
   const groundTex = makeGroundTexture(isTropicalRainforest ? '#17472f' : (definition.palette[0] as string));
   const concreteTex = makeConcreteTexture();
   const base = prepareMesh(
     new THREE.Mesh(
-      new THREE.CylinderGeometry(radius, radius * 1.04, 0.34, 48),
+      new THREE.CylinderGeometry(radius, radius * 1.04, foundationHeight, 48),
       new THREE.MeshStandardMaterial({
         color: definition.palette[2],
         roughness: 0.82,
@@ -1933,15 +1968,15 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     definition.id,
   );
   base.scale.z = depth / width;
-  base.position.y = 0.17;
+  base.position.y = foundationHeight * 0.5;
   base.name = `${definition.id}__SOLID_FOUNDATION`;
-  base.userData.navObstacle = true;
+  base.userData.navObstacle = !isTropicalRainforest;
   base.userData.solidFoundation = true;
   group.add(base);
 
   const ground = prepareMesh(
     new THREE.Mesh(
-      new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, 0.08, 48),
+      new THREE.CylinderGeometry(radius * 0.94, radius * 0.94, biomeFloorThickness, 48),
       new THREE.MeshStandardMaterial({
         color: isTropicalRainforest ? '#17472f' : definition.palette[0],
         roughness: 0.96,
@@ -1952,7 +1987,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     definition.id,
   );
   ground.scale.z = depth / width;
-  ground.position.y = 0.36;
+  ground.position.y = finishedFloorY - biomeFloorThickness * 0.5;
   ground.name = `${definition.id}__BIOME_FLOOR`;
   ground.userData.walkable = true;
   group.add(ground);
@@ -1972,7 +2007,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const dome = prepareMesh(new THREE.Mesh(domeGeometry, domeMaterial), definition.id, false);
   dome.name = `${definition.id}__DOME_TRANSPARENT_SHELL`;
   dome.scale.set(1, definition.height / radius, depth / width);
-  dome.position.y = DOME_FINISHED_FLOOR_Y;
+  dome.position.y = finishedFloorY;
   dome.renderOrder = 4;
   group.add(dome);
 
@@ -2001,7 +2036,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const boundary = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(radius, 0.07, 8, 72), markAccent(new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 2.2 }))), definition.id, false);
   boundary.rotation.x = Math.PI / 2;
   boundary.scale.z = depth / width;
-  boundary.position.y = DOME_FINISHED_FLOOR_Y;
+  boundary.position.y = finishedFloorY;
   group.add(boundary);
 
   const usableRadius = radius * 0.68;
@@ -2124,7 +2159,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   } else {
     const tropical = definition.id === 'tropical-rainforest-dome';
     if (tropical) {
-      buildFuturisticTropicalBiodome(group, definition, radius, depth, width, random);
+      buildFuturisticTropicalBiodome(group, definition, radius, depth, width, random, finishedFloorY);
     } else {
       for (let index = 0; index < 22; index += 1) {
         const angle = random() * Math.PI * 2;
@@ -2160,7 +2195,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     laboratory.name = `${definition.id}__BIOME_FIELD_LABORATORY`;
     laboratory.position.set(
       isTropicalRainforest ? radius * 0.43 : 0,
-      0.38,
+      isTropicalRainforest ? finishedFloorY : 0.38,
       isTropicalRainforest ? -radius * 0.34 : -radius * 0.24,
     );
     laboratory.rotation.y = isTropicalRainforest ? -Math.PI * 0.5 : Math.PI;
@@ -2200,7 +2235,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     facadePanel.name = `${definition.id}__AIRLOCK_FRONT_PANEL_${side < 0 ? 'LEFT' : 'RIGHT'}`;
     facadePanel.position.set(
       side * (doorwayWidth * 0.5 + facadePanelWidth * 0.5),
-      DOME_FINISHED_FLOOR_Y + airlockHeight * 0.5,
+      finishedFloorY + airlockHeight * 0.5,
       DOME_AIRLOCK_HALF_DEPTH - wallThickness * 0.5,
     );
     facadePanel.userData.navObstacle = true;
@@ -2213,7 +2248,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     sideWall.name = `${definition.id}__AIRLOCK_SIDE_WALL_${side < 0 ? 'LEFT' : 'RIGHT'}`;
     sideWall.position.set(
       side * (airlockWidth * 0.5 - wallThickness * 0.5),
-      DOME_FINISHED_FLOOR_Y + airlockHeight * 0.5,
+      finishedFloorY + airlockHeight * 0.5,
       0,
     );
     sideWall.userData.navObstacle = true;
@@ -2227,11 +2262,12 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     definition.id,
   );
   airlockRoof.name = `${definition.id}__AIRLOCK_ROOF`;
-  airlockRoof.position.set(0, DOME_FINISHED_FLOOR_Y + airlockHeight + metresToWorldUnits(0.2), 0);
+  airlockRoof.position.set(0, finishedFloorY + airlockHeight + metresToWorldUnits(0.2), 0);
   airlockRoof.userData.navObstacle = true;
   airlock.add(airlockRoof);
   group.add(airlock);
-  addAccessRamp(group, definition.id, width * 0.52, depth, DOME_FINISHED_FLOOR_Y, DOME_ACCESS_RAMP_LENGTH, physicalMaterial(definition.palette[2]), depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH);
+  const domeAccessRampLength = isTropicalRainforest ? TROPICAL_ACCESS_RAMP_LENGTH : DOME_ACCESS_RAMP_LENGTH;
+  addAccessRamp(group, definition.id, width * 0.52, depth, finishedFloorY, domeAccessRampLength, physicalMaterial(definition.palette[2]), depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH);
   const airlockGlow = prepareMesh(
     new THREE.Mesh(
       new THREE.BoxGeometry(doorwayWidth * 0.75, metresToWorldUnits(0.2), metresToWorldUnits(0.4)),
@@ -2243,11 +2279,11 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   airlockGlow.name = `${definition.id}__AIRLOCK_HEADER_LIGHT`;
   airlockGlow.position.set(
     0,
-    DOME_FINISHED_FLOOR_Y + airlockHeight + metresToWorldUnits(0.6),
+    finishedFloorY + airlockHeight + metresToWorldUnits(0.6),
     depth * 0.47 + DOME_AIRLOCK_HALF_DEPTH + metresToWorldUnits(0.25),
   );
   group.add(airlockGlow);
-  addDomeWalkPortal(group, definition.id, width, depth, definition.accent);
+  addDomeWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, domeAccessRampLength);
 
   group.traverse((child) => {
     child.userData.selectableId = definition.id;

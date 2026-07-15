@@ -40,6 +40,9 @@ export const ISLAND_POINTS: ReadonlyArray<readonly [x: number, z: number]> = [
   [-ISLAND_APOTHEM, -ISLAND_RADIUS / 2],
 ];
 
+/** Centreline inset used by the double-track railway around the island edge. */
+export const COASTAL_RAIL_INSET = 0.905;
+
 /** Exact road boundaries reconstructed from the five sketch rings after unwarping. */
 export const DISTRICT_ROAD_RADII = [14, 21, 29.5, 40, 51.5].map(
   (radius) => radius * WORLD_EXPANSION,
@@ -53,8 +56,10 @@ export const WALK_PERSON_HEIGHT_METRES = 1.7;
 export const WALK_EYE_HEIGHT_METRES = 1.62;
 export const WALK_EYE_HEIGHT = metresToWorldUnits(WALK_EYE_HEIGHT_METRES);
 export const WALK_RADIUS = metresToWorldUnits(0.3);
-export const WALK_SPEED = metresToWorldUnits(1.4);
-export const WALK_FAST_SPEED = metresToWorldUnits(4.5);
+export const WALK_SPEED = metresToWorldUnits(1.8);
+export const WALK_FAST_SPEED = metresToWorldUnits(5.5);
+/** Deliberately bicycle-like traversal speed for crossing the expanded island. */
+export const WALK_TURBO_SPEED = metresToWorldUnits(12);
 export const WALK_STEP_HEIGHT = metresToWorldUnits(0.38);
 export const WALK_GRAVITY = metresToWorldUnits(9.81);
 export const WALK_JUMP_SPEED = metresToWorldUnits(2.8);

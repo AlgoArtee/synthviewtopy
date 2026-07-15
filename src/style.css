@@ -1546,7 +1546,7 @@ input[type='number']::-webkit-inner-spin-button {
   bottom: 82px;
   min-width: 440px;
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr auto auto;
   align-items: center;
   gap: 5px 14px;
   padding: 10px 12px;
@@ -1579,8 +1579,8 @@ input[type='number']::-webkit-inner-spin-button {
   font: 400 8px 'DM Mono', monospace;
 }
 
-.walk-look-button {
-  grid-column: 3;
+.walk-look-button,
+.walk-turbo-button {
   grid-row: 1 / span 2;
   min-width: 116px;
   padding: 8px 10px;
@@ -1591,6 +1591,24 @@ input[type='number']::-webkit-inner-spin-button {
   font-size: 8px;
   cursor: pointer;
   pointer-events: auto;
+}
+
+.walk-turbo-button {
+  grid-column: 3;
+  border-color: rgba(88, 221, 209, 0.55);
+  background: rgba(88, 221, 209, 0.08);
+  color: #58ddd1;
+}
+
+.walk-turbo-button.active {
+  border-color: #ffb04b;
+  background: rgba(255, 176, 75, 0.18);
+  color: #ffd39a;
+  box-shadow: 0 0 14px rgba(255, 176, 75, 0.2);
+}
+
+.walk-look-button {
+  grid-column: 4;
 }
 
 .walk-locked .walk-look-button {
@@ -1838,7 +1856,8 @@ input[type='number']::-webkit-inner-spin-button {
   .mode { min-width: 58px; padding-inline: 7px; }
   .mode-switch { width: calc(100% - 16px); justify-content: center; }
   .walk-readout { min-width: 0; width: calc(100% - 28px); grid-template-columns: auto 1fr; }
-  .walk-look-button { grid-column: 1 / -1; grid-row: 3; }
+  .walk-turbo-button { grid-column: 1; grid-row: 3; }
+  .walk-look-button { grid-column: 2; grid-row: 3; }
   .atlas { left: 8px; top: 130px; bottom: 78px; width: 246px; }
   .atlas:not(.mobile-open) { transform: translateX(calc(-100% + 38px)); }
   .primary-action span:first-child { display: none; }

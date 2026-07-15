@@ -55,12 +55,16 @@ const audit = await page.evaluate(() => {
   });
 
   const plantedSurfaceY = 1.61;
+  const hasValidAccessIntent = (entry) => (
+    (entry.navObstacle && entry.height >= 0.3)
+    || (!entry.navObstacle && entry.height <= 0.02)
+  );
   const foundationAudit = {
     total: foundations.length,
     grounded: foundations.filter((entry) => Math.abs(entry.minY - plantedSurfaceY) <= 0.005).length,
-    collisionSolid: foundations.filter((entry) => entry.navObstacle && entry.height >= 0.3).length,
+    accessIntentValid: foundations.filter(hasValidAccessIntent).length,
     failed: foundations.filter(
-      (entry) => Math.abs(entry.minY - plantedSurfaceY) > 0.005 || !entry.navObstacle || entry.height < 0.3,
+      (entry) => Math.abs(entry.minY - plantedSurfaceY) > 0.005 || !hasValidAccessIntent(entry),
     ),
     approachTotal: approaches.length,
     groundedApproaches: approaches.filter((entry) => Math.abs(entry.topY - plantedSurfaceY) <= 0.005).length,
@@ -353,7 +357,7 @@ if (process.env.STRICT_ACCESSIBILITY === '1') {
   if (audit.domeExitAudit.total !== 6 || audit.domeExitAudit.passed !== audit.domeExitAudit.total) {
     throw new Error(`Dome exit audit failed: ${JSON.stringify(audit.domeExitAudit.failed)}`);
   }
-  if (audit.foundationAudit.total !== 41 || audit.foundationAudit.grounded !== 41 || audit.foundationAudit.collisionSolid !== 41) {
+  if (audit.foundationAudit.total !== 41 || audit.foundationAudit.grounded !== 41 || audit.foundationAudit.accessIntentValid !== 41) {
     throw new Error(`Foundation audit failed: ${JSON.stringify(audit.foundationAudit)}`);
   }
   if (audit.foundationAudit.approachTotal !== 41 || audit.foundationAudit.groundedApproaches !== 41) {
@@ -363,11 +367,11 @@ if (process.env.STRICT_ACCESSIBILITY === '1') {
     throw new Error('Live Walk-mode traversal could not enter the Tropical Rainforest Dome');
   }
   if (
-    !audit.tropicalSideCollision?.blockedOutsideFoundation ||
-    !audit.tropicalSideCollision.remainedOnTerrain ||
+    !audit.tropicalSideCollision ||
+    audit.tropicalSideCollision.blockedOutsideFoundation ||
     !audit.tropicalSideCollision.grounded
   ) {
-    throw new Error(`Tropical dome side collision failed: ${JSON.stringify(audit.tropicalSideCollision)}`);
+    throw new Error(`Tropical dome curb-access traversal failed: ${JSON.stringify(audit.tropicalSideCollision)}`);
   }
   if (consoleErrors.length) throw new Error(`Browser console errors: ${consoleErrors.join(' | ')}`);
 }

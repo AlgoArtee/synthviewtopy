@@ -141,6 +141,7 @@ export interface IslandWorldCallbacks {
   onReady?: () => void;
   onError?: (message: string, error?: unknown) => void;
   onWalkLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
+  onWalkTurboChange?: (enabled: boolean) => void;
   onImportPlacementChange?: (
     state: 'choosing' | 'chosen' | 'cancelled' | 'cleared',
     position?: readonly [number, number, number],
@@ -590,6 +591,7 @@ export class IslandWorld {
       element: this.renderer.domElement,
       navigationRoot: this.modelRoot,
       onLockChange: (locked, dragLookActive) => this.callbacks.onWalkLockChange?.(locked, dragLookActive),
+      onTurboChange: (enabled) => this.callbacks.onWalkTurboChange?.(enabled),
       onInteract: () => this.inspectFromWalkView(),
     });
 
@@ -964,11 +966,76 @@ export class IslandWorld {
         const rz = Number(object.userData.ringZ);
         object.position.set(Math.cos(angle) * rx, 2.15, Math.sin(angle) * rz);
         object.rotation.y = -angle;
+      } else if (object.userData.animate === 'coastal-train') {
+        const path = object.userData.railPath as Array<[number, number]>;
+        const totalLength = Number(object.userData.totalPathLength);
+        let distance = (this.elapsed * Number(object.userData.speed) + Number(object.userData.phaseDistance)) % totalLength;
+        let segmentIndex = 0;
+        let segmentLength = 0;
+        for (; segmentIndex < path.length; segmentIndex += 1) {
+          const [x1, z1] = path[segmentIndex];
+          const [x2, z2] = path[(segmentIndex + 1) % path.length];
+          segmentLength = Math.hypot(x2 - x1, z2 - z1);
+          if (distance <= segmentLength) break;
+          distance -= segmentLength;
+        }
+        const [x1, z1] = path[segmentIndex % path.length];
+        const [x2, z2] = path[(segmentIndex + 1) % path.length];
+        const t = segmentLength > 0 ? distance / segmentLength : 0;
+        const dx = x2 - x1;
+        const dz = z2 - z1;
+        const inverseLength = 1 / Math.max(0.0001, Math.hypot(dx, dz));
+        const trackOffset = Number(object.userData.trackOffset);
+        object.position.set(
+          THREE.MathUtils.lerp(x1, x2, t) - dz * inverseLength * trackOffset,
+          Number(object.userData.trackY),
+          THREE.MathUtils.lerp(z1, z2, t) + dx * inverseLength * trackOffset,
+        );
+        object.rotation.y = Math.atan2(dx, dz);
       } else if (object.userData.animate === 'quantum-core') {
         object.rotation.y += delta * 0.55;
         object.rotation.x += delta * 0.22;
         const pulse = 1 + Math.sin(this.elapsed * 2.1) * 0.06;
         object.scale.setScalar(pulse);
+      } else if (object.userData.animate === 'industrial-fan') {
+        object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
+      } else if (object.userData.animate === 'industrial-curtain') {
+        object.rotation.z = Math.sin(this.elapsed * 0.72 + Number(object.userData.phase ?? 0)) * 0.035;
+      } else if (object.userData.animate === 'industrial-chain') {
+        object.rotation.z = Math.sin(this.elapsed * 0.31 + Number(object.userData.phase ?? 0)) * 0.025;
+      } else if (object.userData.animate === 'industrial-pump') {
+        object.position.y = Number(object.userData.baseY) + Math.sin(this.elapsed * 4.2) * 0.006;
+      } else if (object.userData.animate === 'industrial-water') {
+        object.position.y += Math.sin(this.elapsed * 0.9 + Number(object.userData.phase ?? 0)) * delta * 0.0012;
+      } else if (object.userData.animate === 'industrial-moving-light') {
+        object.position.x = Math.sin(this.elapsed * 0.26) * 0.72;
+        if (object instanceof THREE.Light) object.intensity = 1.45 + Math.sin(this.elapsed * 0.43) * 0.55;
+      } else if (object.userData.animate === 'industrial-flicker') {
+        const flicker = Math.sin(this.elapsed * 13.7) * Math.sin(this.elapsed * 4.31) > -0.24 ? 1 : 0.08;
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          object.material.emissiveIntensity = 0.35 + flicker * 3.2;
+        }
+      } else if (object.userData.animate === 'industrial-beacon') {
+        const pulse = Math.sin(this.elapsed * 4.6 + Number(object.userData.phase ?? 0)) > 0.6 ? 1 : 0.16;
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          object.material.emissiveIntensity = 0.25 + pulse * 4.4;
+        }
+        object.scale.setScalar(0.96 + pulse * 0.09);
+      } else if (object.userData.animate === 'industrial-steam') {
+        const phase = Number(object.userData.phase ?? 0);
+        object.position.y = Number(object.userData.baseY) + ((this.elapsed * 0.055 + phase * 0.08) % 0.34);
+        object.position.x += Math.sin(this.elapsed * 0.32 + phase) * delta * 0.006;
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshBasicMaterial) {
+          object.material.opacity = 0.045 + (0.5 + 0.5 * Math.sin(this.elapsed * 0.6 + phase)) * 0.08;
+        }
+      } else if (object.userData.animate === 'industrial-conveyor') {
+        object.position.x = Number(object.userData.baseX) + ((this.elapsed * 0.018) % 0.08);
+      } else if (object.userData.animate === 'industrial-truck-vibration') {
+        object.position.y = Number(object.userData.baseY) + Math.sin(this.elapsed * 17) * 0.002;
+      } else if (object.userData.animate === 'industrial-camera') {
+        object.rotation.y = Number(object.userData.baseRotationY) + Math.sin(this.elapsed * 0.22) * 0.18;
+      } else if (object.userData.animate === 'industrial-ground-mist') {
+        object.position.x = Number(object.userData.baseX) + Math.sin(this.elapsed * 0.11 + Number(object.userData.phase ?? 0)) * 0.28;
       }
     });
 
@@ -1113,7 +1180,7 @@ export class IslandWorld {
 
   private setGroundRoadDepthMode(walkDepth: boolean) {
     const updated = new Set<THREE.Material>();
-    this.transitRoot.traverse((child) => {
+    this.modelRoot.traverse((child) => {
       if (!(child instanceof THREE.Mesh)) return;
       const materials = Array.isArray(child.material) ? child.material : [child.material];
       materials.forEach((material) => {
@@ -2369,6 +2436,7 @@ export class IslandWorld {
 
   getTextSnapshot() {
     const selected = this.getSelectedDefinition();
+    const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
     const visibleLabels = Array.from(this.labels.values()).filter(
       (label) => !(label.anchor.element as HTMLElement).classList.contains('label-suppressed'),
     );
@@ -2390,6 +2458,7 @@ export class IslandWorld {
         availableAssets: this.getAssetCatalog().map((item) => item.id),
       },
       importPlacement: this.getImportPlacementState(),
+      industrialDistrict,
       selected: selected
         ? {
             id: selected.id,
@@ -2419,6 +2488,18 @@ export class IslandWorld {
 
   setWalkIntent(x: number, z: number, sprint = false) {
     this.walkController.setMoveIntent(x, z, sprint);
+  }
+
+  setWalkTurbo(enabled: boolean) {
+    this.walkController.setTurboEnabled(enabled);
+  }
+
+  toggleWalkTurbo() {
+    return this.walkController.toggleTurbo();
+  }
+
+  getWalkTurboEnabled() {
+    return this.walkController.isTurboEnabled();
   }
 
   advanceTime(milliseconds: number) {

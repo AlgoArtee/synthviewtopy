@@ -44,7 +44,8 @@ const sceneAudit = await page.evaluate(() => {
   return {
     districtRadii,
     towerHeight: Number.isFinite(towerMinY) ? towerMaxY - towerMinY : null,
-    coastalRoadSegments: names.filter((name) => name.startsWith('Hexagonal coastal express road')).length,
+    coastalRailSegments: names.filter((name) => name.startsWith('Hexagonal coastal rail bed')).length,
+    coastalTrains: names.filter((name) => name.startsWith('COASTAL_RAIL__TRAIN_')).length,
     ships: names.filter((name) => name.includes('vessel ')),
     portPresent: names.includes('INFRASTRUCTURE__ALPINE_LOGISTICS_PORT'),
     plazaPresent: names.includes('Corporate Core futuristic plaza'),

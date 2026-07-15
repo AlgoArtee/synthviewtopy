@@ -82,6 +82,7 @@ const importTrigger = required<HTMLButtonElement>('#import-trigger');
 const timeToggle = required<HTMLButtonElement>('#toggle-time');
 const walkHud = required<HTMLElement>('#walk-hud');
 const walkLookButton = required<HTMLButtonElement>('#walk-look-button');
+const walkTurboButton = required<HTMLButtonElement>('#walk-turbo');
 const walkStatus = required<HTMLElement>('#walk-status');
 const editWorkspacePanel = required<HTMLElement>('#edit-workspace');
 const editLandscapeButton = required<HTMLButtonElement>('#edit-landscape');
@@ -410,13 +411,13 @@ function setMode(mode: ViewMode) {
     explore: '<span><b>Drag</b> orbit</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     plan: '<span><b>Drag</b> pan</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     edit: '<span><b>G / R / S</b> transform</span><span><b>Drag</b> gizmo</span><span><b>Click</b> select</span>',
-    walk: '<span><b>WASD</b> move</span><span><b>Mouse</b> look</span><span><b>E</b> inspect</span>',
+    walk: '<span><b>WASD</b> move</span><span><b>T</b> bike turbo</span><span><b>E</b> inspect</span>',
   };
   required<HTMLElement>('#interaction-hint').innerHTML = hints[mode];
   if (mode === 'edit' && currentSelection) toast('Edit mode active', 'Use the gizmo or inspector fields; changes are included in the GLB export.');
   if (mode === 'walk') {
     sceneCardTitle.textContent = 'Human-scale campus walk';
-    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · true-scale walking pace · click viewport for mouse look';
+    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · 1.8 m/s walk · T toggles 12 m/s bike-speed turbo';
     walkStatus.textContent = 'Human-scale exploration ready';
     walkLookButton.textContent = 'Click to look around';
   }
@@ -482,6 +483,11 @@ const world = new IslandWorld(viewport, {
       walkStatus.textContent = 'Pointer released — click to resume';
       walkLookButton.textContent = 'Resume mouse look';
     }
+  },
+  onWalkTurboChange: (enabled) => {
+    walkTurboButton.classList.toggle('active', enabled);
+    walkTurboButton.setAttribute('aria-pressed', String(enabled));
+    walkTurboButton.textContent = enabled ? 'Turbo · 12 m/s' : 'Turbo · Off';
   },
   onImportPlacementChange: (state, position) => {
     const choosing = state === 'choosing';
@@ -609,6 +615,7 @@ exitInteriorButton.addEventListener('click', () => {
 });
 
 walkLookButton.addEventListener('click', () => world.activateWalkLook());
+walkTurboButton.addEventListener('click', () => world.toggleWalkTurbo());
 
 document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) => {
   button.addEventListener('click', () => setGizmo(button.dataset.gizmo as GizmoMode));

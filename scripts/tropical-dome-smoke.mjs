@@ -245,7 +245,9 @@ const audit = await page.evaluate(() => {
       minimumUpDot: Math.min(...segmentAudit.map((segment) => segment.upDot)),
       maximumCrossSlope: Math.max(...segmentAudit.map((segment) => segment.crossSlope)),
       entryRampPresent: Boolean(canopyEntryRamp),
-      entryToeRiseAboveBiomeFloor: entryLocalStart ? entryLocalStart[1] - 0.4 : null,
+      entryToeRiseAboveBiomeFloor: entryWorldStart && floorBounds
+        ? entryWorldStart.y - floorBounds.max.y
+        : null,
       entryToeGround: entryStartGround,
       completedEntryTargets,
       expectedEntryTargets: entryTargetCount,

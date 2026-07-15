@@ -22,8 +22,8 @@ await page.waitForTimeout(800);
 
 const roadAudit = await page.evaluate(() => {
   const world = window.labIsland;
-  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal express road|Coastal express luminous median|Radial district boundary road|Biome axis light)/;
-  const primaryRoadName = /^(District boundary ring road|Hexagonal coastal express road|Radial district boundary road)/;
+  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
+  const primaryRoadName = /^(District boundary ring road|Hexagonal coastal rail bed|Radial district boundary road)/;
   const records = [];
   world.transitRoot.traverse((child) => {
     if (!child.isMesh || !roadName.test(child.name)) return;
@@ -57,7 +57,7 @@ const raisedMarkings = roadAudit.filter((record) => !record.primarySurface && re
 const offsetRoads = roadAudit.filter((record) => (
   record.primarySurface && record.materials.some((material) => material.polygonOffset)
 ));
-if (roadAudit.length !== 38) throw new Error(`Expected 38 primary road surfaces and markings, found ${roadAudit.length}`);
+if (roadAudit.length !== 32) throw new Error(`Expected 32 road/rail ground surfaces and markings, found ${roadAudit.length}`);
 if (invalidExploreDepthObjects.length) {
   throw new Error(`Road objects not configured as Explore terrain decals: ${invalidExploreDepthObjects.map((record) => record.name).join(', ')}`);
 }
@@ -135,7 +135,7 @@ const walkAudit = await page.evaluate(() => {
   world.walkController.groundY = ground;
   world.walkController.grounded = true;
   const invalidWalkDepthObjects = [];
-  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal express road|Coastal express luminous median|Radial district boundary road|Biome axis light)/;
+  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
   world.transitRoot.traverse((child) => {
     if (!child.isMesh || !roadName.test(child.name)) return;
     const materials = Array.isArray(child.material) ? child.material : [child.material];
@@ -161,7 +161,7 @@ await page.screenshot({ path: `${outputDirectory}/walk-ground-level.png` });
 const exploreDepthRestored = await page.evaluate(() => {
   const world = window.labIsland;
   world.setMode('explore');
-  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal express road|Coastal express luminous median|Radial district boundary road|Biome axis light)/;
+  const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
   const invalid = [];
   world.transitRoot.traverse((child) => {
     if (!child.isMesh || !roadName.test(child.name)) return;

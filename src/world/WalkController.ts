@@ -8,6 +8,7 @@ import {
   WALK_RADIUS,
   WALK_SPEED,
   WALK_STEP_HEIGHT,
+  WALK_TURBO_SPEED,
   worldUnitsToMetres,
 } from '../config/island';
 
@@ -20,6 +21,7 @@ export interface WalkSnapshot {
   positionMetres: [number, number, number];
   groundY: number | null;
   speedMetresPerSecond: number;
+  turboEnabled: boolean;
   movementKeys: string[];
   direction: [number, number, number];
 }
@@ -29,6 +31,7 @@ interface WalkControllerOptions {
   element: HTMLElement;
   navigationRoot: THREE.Object3D;
   onLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
+  onTurboChange?: (enabled: boolean) => void;
   onInteract?: () => void;
 }
 
@@ -47,6 +50,7 @@ export class WalkController {
   private readonly element: HTMLElement;
   private readonly navigationRoot: THREE.Object3D;
   private readonly onLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
+  private readonly onTurboChange?: (enabled: boolean) => void;
   private readonly onInteract?: () => void;
   private readonly raycaster = new THREE.Raycaster();
   private readonly walkables: THREE.Object3D[] = [];
@@ -65,6 +69,7 @@ export class WalkController {
   private grounded = false;
   private groundY: number | null = null;
   private currentSpeed = 0;
+  private turboEnabled = false;
   private dragLookActive = false;
   private lastPointer: { x: number; y: number } | null = null;
   private velocityY = 0;
@@ -77,6 +82,7 @@ export class WalkController {
     this.element = options.element;
     this.navigationRoot = options.navigationRoot;
     this.onLockChange = options.onLockChange;
+    this.onTurboChange = options.onTurboChange;
     this.onInteract = options.onInteract;
     this.pointerControls = new PointerLockControls(this.camera, this.element);
     this.pointerControls.addEventListener('lock', () => {
@@ -192,6 +198,21 @@ export class WalkController {
     };
   }
 
+  setTurboEnabled(enabled: boolean) {
+    if (this.turboEnabled === enabled) return;
+    this.turboEnabled = enabled;
+    this.onTurboChange?.(enabled);
+  }
+
+  toggleTurbo() {
+    this.setTurboEnabled(!this.turboEnabled);
+    return this.turboEnabled;
+  }
+
+  isTurboEnabled() {
+    return this.turboEnabled;
+  }
+
   refreshNavigation() {
     this.walkables.length = 0;
     this.obstacleBounds.length = 0;
@@ -227,7 +248,7 @@ export class WalkController {
       this.camera.position.copy(this.seatTarget);
     } else {
       const sprinting = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.externalIntent.sprint;
-      const speed = sprinting ? WALK_FAST_SPEED : WALK_SPEED;
+      const speed = this.turboEnabled ? WALK_TURBO_SPEED : sprinting ? WALK_FAST_SPEED : WALK_SPEED;
       this.currentSpeed = Math.hypot(inputX, inputZ) > 0 ? speed : 0;
 
       if (this.currentSpeed > 0) {
@@ -288,6 +309,7 @@ export class WalkController {
       positionMetres: position.map((value) => Number(worldUnitsToMetres(value).toFixed(1))) as [number, number, number],
       groundY: this.groundY === null ? null : Number(this.groundY.toFixed(3)),
       speedMetresPerSecond: Number(worldUnitsToMetres(this.currentSpeed).toFixed(1)),
+      turboEnabled: this.turboEnabled,
       movementKeys: Array.from(this.keys).sort(),
       direction: this.direction.toArray().map((value) => Number(value.toFixed(3))) as [number, number, number],
     };
@@ -436,6 +458,7 @@ export class WalkController {
       'ShiftLeft',
       'ShiftRight',
       'Space',
+      'KeyT',
     ]);
     if (movementCodes.has(event.code)) {
       event.preventDefault();
@@ -444,6 +467,7 @@ export class WalkController {
     if (event.code === 'Space' && !event.repeat) {
       this.triggerJump();
     }
+    if (event.code === 'KeyT' && !event.repeat) this.toggleTurbo();
     if (event.code === 'KeyE' && !event.repeat) this.onInteract?.();
   };
 

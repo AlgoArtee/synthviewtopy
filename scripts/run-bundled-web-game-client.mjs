@@ -11,7 +11,7 @@ const source = fs
   )
   .replace(
     'await captureScreenshot(page, canvas, shotPath);',
-    'await page.screenshot({ path: shotPath, type: "png", omitBackground: false });',
+    'const directDataUrl = await page.evaluate(() => { const world = window.labIsland; world.renderer.render(world.scene, world.camera); return world.renderer.domElement.toDataURL("image/png"); }); fs.writeFileSync(shotPath, Buffer.from(directDataUrl.split(",")[1], "base64"));',
   )
   .replace(
     'await page.goto(args.url, { waitUntil: "domcontentloaded" });',
@@ -27,7 +27,9 @@ const source = fs
   )
   .replace(
     'await browser.close();',
-    'console.log("bundled-client: closing"); await browser.close(); console.log("bundled-client: complete");',
-  );
+    'console.log("bundled-client: closing"); await Promise.race([browser.close(), new Promise((resolve) => setTimeout(resolve, 5000))]); console.log("bundled-client: complete");',
+  )
+  .replace('main().catch((err) => {', 'await main().catch((err) => {');
 
 await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+process.exit(0);

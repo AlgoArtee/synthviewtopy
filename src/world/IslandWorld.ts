@@ -9,12 +9,26 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { biomes, districts, type BiomeDefinition, type DistrictDefinition } from '../data/districts';
 import {
+  academicCampusBuildingById,
+  type AcademicCampusBuilding,
+} from '../data/academicCampus';
+import {
   ISLAND_POINTS,
+  ISLAND_RADIUS,
   ISLAND_SURFACE_Y,
+  MASTERPLAN_RESCALE,
   WALK_INSPECT_DISTANCE,
+  WALK_RADIUS,
   WALK_VERTICAL_FOV,
+  WORLD_EXPANSION,
 } from '../config/island';
 import { WalkController } from './WalkController';
+import { AcademicAudioController } from './academicAudio';
+import {
+  applyAcademicTreeSeason,
+  configureAcademicTreeQuality,
+  updateAcademicTreeWind,
+} from './academicTrees';
 import { createBiomeModel, createDistrictModel, setModelAccent } from './procedural';
 import {
   EDITOR_ASSET_CATALOG,
@@ -38,6 +52,16 @@ import {
 export type ViewMode = 'explore' | 'plan' | 'edit' | 'walk';
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
+export type GraphicsQuality = 'low' | 'medium' | 'high';
+export type WeatherMode =
+  | 'clear'
+  | 'rain'
+  | 'fog'
+  | 'storm'
+  | 'academic-autumn'
+  | 'academic-overcast'
+  | 'academic-rainy-dusk'
+  | 'academic-foggy-night';
 
 export interface EditorAssetDefinition {
   id: string;
@@ -99,6 +123,7 @@ export interface ObjectState {
   secondaryColor?: string;
   patternType?: string;
   patternScale?: number;
+  styleCustomized?: boolean;
   collisionEnabled?: boolean;
   interactions?: string[];
 }
@@ -142,6 +167,7 @@ export interface IslandWorldCallbacks {
   onError?: (message: string, error?: unknown) => void;
   onWalkLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
   onWalkTurboChange?: (enabled: boolean) => void;
+  onAcademicInteraction?: (result: { title: string; message: string }) => void;
   onImportPlacementChange?: (
     state: 'choosing' | 'chosen' | 'cancelled' | 'cleared',
     position?: readonly [number, number, number],
@@ -332,6 +358,7 @@ export class IslandWorld {
   readonly importedRoot = new THREE.Group();
   readonly interiorsRoot = new THREE.Group();
   readonly presentationRoot = new THREE.Group();
+  readonly debugRoot = new THREE.Group();
 
   private readonly container: HTMLElement;
   private readonly callbacks: IslandWorldCallbacks;
@@ -370,8 +397,12 @@ export class IslandWorld {
   private dayTarget = 0;
   private dayMix = 0;
   private activeTimeOfDay: 'sunrise' | 'noon' | 'sunset' | 'night' = 'noon';
-  private activeWeather: 'clear' | 'rain' | 'fog' | 'storm' = 'clear';
+  private activeWeather: WeatherMode = 'clear';
   private activeSeason: 'summer' | 'spring' | 'autumn' | 'winter' = 'summer';
+  private graphicsQuality: GraphicsQuality = 'medium';
+  private debugMode = false;
+  private activeAcademicHotspot: AcademicCampusBuilding | null = null;
+  private readonly academicAudio = new AcademicAudioController();
   private readonly precipitation: PrecipitationSystem;
   private lightningFlashTime = 0;
   private elapsed = 0;
@@ -385,7 +416,7 @@ export class IslandWorld {
     this.callbacks = callbacks;
     this.scene.name = 'YouTopy Lab Island Spatial Twin';
     this.scene.background = new THREE.Color('#07131b');
-    this.scene.fog = new THREE.FogExp2('#102632', 0.00115);
+    this.scene.fog = new THREE.FogExp2('#102632', 0.00115 / MASTERPLAN_RESCALE);
 
     this.renderer = new THREE.WebGLRenderer({
       antialias: true,
@@ -411,8 +442,12 @@ export class IslandWorld {
     // The masterplan is large, but overview cameras never approach geometry closer
     // than several world units. A tighter clip range keeps flush road markings from
     // disappearing into the campus plateau because of depth-buffer precision.
-    this.camera = new THREE.PerspectiveCamera(42, 1, 0.65, 1800);
-    this.camera.position.set(390, 305, 420);
+    this.camera = new THREE.PerspectiveCamera(42, 1, 0.65, 1800 * MASTERPLAN_RESCALE);
+    this.camera.position.set(
+      390 * MASTERPLAN_RESCALE,
+      305 * MASTERPLAN_RESCALE,
+      420 * MASTERPLAN_RESCALE,
+    );
     this.camera.lookAt(0, 2, 0);
 
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
@@ -420,7 +455,7 @@ export class IslandWorld {
     this.controls.enableDamping = true;
     this.controls.dampingFactor = 0.065;
     this.controls.minDistance = 8;
-    this.controls.maxDistance = 980;
+    this.controls.maxDistance = 980 * MASTERPLAN_RESCALE;
     this.controls.maxPolarAngle = Math.PI * 0.485;
     this.controls.screenSpacePanning = false;
     this.controls.zoomToCursor = true;
@@ -531,6 +566,8 @@ export class IslandWorld {
     this.architectureRoot.renderOrder = 2;
     this.importedRoot.renderOrder = 2;
     this.presentationRoot.name = 'PRESENTATION_ONLY__DO_NOT_EXPORT';
+    this.debugRoot.name = 'DEBUG__COLLISIONS_LIGHTS_AND_STATS';
+    this.debugRoot.visible = false;
     this.labelRoot.name = 'EDITOR__LABELS';
     this.modelRoot.userData = {
       project: 'YouTopy Lab Island',
@@ -547,6 +584,7 @@ export class IslandWorld {
       this.importedRoot,
       this.interiorsRoot,
     );
+    this.presentationRoot.add(this.debugRoot);
     this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
 
     this.precipitation = new PrecipitationSystem();
@@ -559,15 +597,15 @@ export class IslandWorld {
     this.scene.add(this.hemisphere);
     this.sun = new THREE.DirectionalLight('#ffd9be', 3.6);
     this.sun.name = 'Low-angle island sun';
-    this.sun.position.set(-180, 310, 170);
+    this.sun.position.set(-180, 310, 170).multiplyScalar(MASTERPLAN_RESCALE);
     this.sun.castShadow = true;
     this.sun.shadow.mapSize.set(2048, 2048);
-    this.sun.shadow.camera.left = -335;
-    this.sun.shadow.camera.right = 335;
-    this.sun.shadow.camera.top = 335;
-    this.sun.shadow.camera.bottom = -335;
+    this.sun.shadow.camera.left = -335 * MASTERPLAN_RESCALE;
+    this.sun.shadow.camera.right = 335 * MASTERPLAN_RESCALE;
+    this.sun.shadow.camera.top = 335 * MASTERPLAN_RESCALE;
+    this.sun.shadow.camera.bottom = -335 * MASTERPLAN_RESCALE;
     this.sun.shadow.camera.near = 4;
-    this.sun.shadow.camera.far = 560;
+    this.sun.shadow.camera.far = 560 * MASTERPLAN_RESCALE;
     this.sun.shadow.bias = -0.00018;
     this.scene.add(this.sun);
     const rimLight = new THREE.DirectionalLight('#5be8ff', 0.95);
@@ -594,6 +632,7 @@ export class IslandWorld {
       onTurboChange: (enabled) => this.callbacks.onWalkTurboChange?.(enabled),
       onInteract: () => this.inspectFromWalkView(),
     });
+    this.syncAcademicGateForTime(true);
 
     this.modelRoot.traverse((child) => {
       if (child.userData.animate) this.animatedObjects.push(child);
@@ -745,6 +784,20 @@ export class IslandWorld {
   };
 
   private inspectFromWalkView() {
+    this.activeAcademicHotspot = null;
+    // The main gate is a broad threshold, so requiring the centre ray to hit a
+    // thin iron bar makes the advertised E interaction unreliable. At night,
+    // prioritize the gate by physical proximity and operate it with one key
+    // press; all other WALK interactions retain the normal inspect/menu flow.
+    const academicDistrict = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (this.mode === 'walk'
+      && this.activeTimeOfDay === 'night'
+      && academicDistrict?.userData.academicGateOpen !== true
+      && this.isAcademicMainGateNearby()) {
+      const result = this.performAcademicInteraction('open main gate');
+      this.callbacks.onAcademicInteraction?.({ title: result.title, message: result.message });
+      return;
+    }
     this.pointer.set(0, 0);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     this.raycaster.far = WALK_INSPECT_DISTANCE;
@@ -754,17 +807,27 @@ export class IslandWorld {
     );
     for (const intersection of intersections) {
       let object: THREE.Object3D | null = intersection.object;
+      let academicBuilding: AcademicCampusBuilding | null = null;
+      let selectableId: string | null = null;
       while (object) {
-        if (typeof object.userData.selectableId === 'string') {
-          this.select(object.userData.selectableId as string, 'scene');
-          return;
+        if (object.userData.academicBuildingData) {
+          academicBuilding = object.userData.academicBuildingData as AcademicCampusBuilding;
+        } else if (typeof object.userData.academicHotspot === 'string') {
+          academicBuilding = academicCampusBuildingById.get(object.userData.academicHotspot) ?? academicBuilding;
         }
+        if (!selectableId && typeof object.userData.selectableId === 'string') selectableId = object.userData.selectableId;
         object = object.parent;
+      }
+      if (selectableId) {
+        this.activeAcademicHotspot = academicBuilding;
+        this.select(selectableId, 'scene');
+        return;
       }
     }
   }
 
   private pick(event: MouseEvent | PointerEvent) {
+    this.activeAcademicHotspot = null;
     const rect = this.renderer.domElement.getBoundingClientRect();
     this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -776,9 +839,20 @@ export class IslandWorld {
     );
     for (const intersection of intersections) {
       let object: THREE.Object3D | null = intersection.object;
+      let academicBuilding: AcademicCampusBuilding | null = null;
+      let selectableId: string | null = null;
       while (object) {
-        if (typeof object.userData.selectableId === 'string') return object.userData.selectableId as string;
+        if (object.userData.academicBuildingData) {
+          academicBuilding = object.userData.academicBuildingData as AcademicCampusBuilding;
+        } else if (typeof object.userData.academicHotspot === 'string') {
+          academicBuilding = academicCampusBuildingById.get(object.userData.academicHotspot) ?? academicBuilding;
+        }
+        if (!selectableId && typeof object.userData.selectableId === 'string') selectableId = object.userData.selectableId;
         object = object.parent;
+      }
+      if (selectableId) {
+        this.activeAcademicHotspot = academicBuilding;
+        return selectableId;
       }
     }
     return null;
@@ -811,6 +885,9 @@ export class IslandWorld {
 
   private animate = (time: number) => {
     if (this.disposed) return;
+    // Preserve battery/GPU time when the browser tab is not active. The next
+    // visible frame is clamped below, so simulations do not jump forward.
+    if (document.hidden) return;
     const delta = Math.min(this.clock.getDelta(), 0.05);
     this.elapsed = time / 1000;
     this.update(delta);
@@ -820,6 +897,7 @@ export class IslandWorld {
   private update(delta: number) {
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
+    this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
     let targetDayMix = 0;
     const targetSkyTop = new THREE.Color('#071827');
@@ -827,12 +905,12 @@ export class IslandWorld {
     const targetSkyBottom = new THREE.Color('#1a3036');
     let targetSunIntensity = 3.6;
     const targetSunColor = new THREE.Color('#ffd9be');
-    const targetSunPos = new THREE.Vector3(-180, 310, 170);
+    const targetSunPos = new THREE.Vector3(-180, 310, 170).multiplyScalar(MASTERPLAN_RESCALE);
     let targetHemiIntensity = 1.55;
     const targetHemiSky = new THREE.Color('#9ecbd4');
     const targetHemiGround = new THREE.Color('#17241f');
     const targetFogColor = new THREE.Color('#102632');
-    let targetFogDensity = 0.00115;
+    let targetFogDensity = 0.00115 / MASTERPLAN_RESCALE;
     let targetExposure = 1.08;
 
     if (this.activeTimeOfDay === 'noon') {
@@ -842,12 +920,12 @@ export class IslandWorld {
       targetSkyBottom.set('#a8cbdc');
       targetSunIntensity = 5.2;
       targetSunColor.set('#ffffff');
-      targetSunPos.set(-50, 350, 50);
+      targetSunPos.set(-50, 350, 50).multiplyScalar(MASTERPLAN_RESCALE);
       targetHemiIntensity = 2.55;
       targetHemiSky.set('#bee4eb');
       targetHemiGround.set('#2f3e3a');
       targetFogColor.set('#99b9bf');
-      targetFogDensity = 0.0006;
+      targetFogDensity = 0.0006 / MASTERPLAN_RESCALE;
       targetExposure = 1.22;
     } else if (this.activeTimeOfDay === 'sunrise') {
       targetDayMix = 0;
@@ -856,12 +934,12 @@ export class IslandWorld {
       targetSkyBottom.set('#ffe6a3');
       targetSunIntensity = 3.8;
       targetSunColor.set('#ffc8a0');
-      targetSunPos.set(-240, 80, 100);
+      targetSunPos.set(-240, 80, 100).multiplyScalar(MASTERPLAN_RESCALE);
       targetHemiIntensity = 2.4;
       targetHemiSky.set('#ffd8c0');
       targetHemiGround.set('#1b2025');
       targetFogColor.set('#fcd2b8');
-      targetFogDensity = 0.0018;
+      targetFogDensity = 0.0018 / MASTERPLAN_RESCALE;
       targetExposure = 1.15;
     } else if (this.activeTimeOfDay === 'sunset') {
       targetDayMix = 0;
@@ -870,12 +948,12 @@ export class IslandWorld {
       targetSkyBottom.set('#ff9966');
       targetSunIntensity = 3.2;
       targetSunColor.set('#ff5c20');
-      targetSunPos.set(240, 60, -120);
+      targetSunPos.set(240, 60, -120).multiplyScalar(MASTERPLAN_RESCALE);
       targetHemiIntensity = 2.2;
       targetHemiSky.set('#ff9670');
       targetHemiGround.set('#181822');
       targetFogColor.set('#e2725b');
-      targetFogDensity = 0.0011;
+      targetFogDensity = 0.0011 / MASTERPLAN_RESCALE;
       targetExposure = 1.1;
     } else { // night
       targetDayMix = 0;
@@ -884,16 +962,53 @@ export class IslandWorld {
       targetSkyBottom.set('#03070f');
       targetSunIntensity = 0.85;
       targetSunColor.set('#8ab0ff');
-      targetSunPos.set(-150, 220, 150);
+      targetSunPos.set(-150, 220, 150).multiplyScalar(MASTERPLAN_RESCALE);
       targetHemiIntensity = 0.9;
       targetHemiSky.set('#0c1630');
       targetHemiGround.set('#04070a');
       targetFogColor.set('#050912');
-      targetFogDensity = 0.0008;
+      targetFogDensity = 0.0008 / MASTERPLAN_RESCALE;
       targetExposure = 1.05;
     }
 
-    if (this.activeWeather === 'fog') {
+    if (this.activeWeather === 'academic-autumn') {
+      targetFogColor.set('#667074');
+      targetFogDensity = this.mode === 'walk' ? 0.0075 : 0.0024;
+      targetSunIntensity *= 0.32;
+      targetHemiIntensity *= 1.08;
+      targetSkyTop.set('#202832');
+      targetSkyHorizon.set('#68737a');
+      targetSkyBottom.set('#899195');
+      targetSunColor.set('#c7d0d7');
+      targetExposure = 1.02;
+    } else if (this.activeWeather === 'academic-overcast') {
+      targetFogColor.set('#7a8588');
+      targetFogDensity = this.mode === 'walk' ? 0.0045 : 0.00155;
+      targetSunIntensity *= 0.45;
+      targetHemiIntensity *= 1.18;
+      targetSkyTop.set('#35414a');
+      targetSkyHorizon.set('#7a898d');
+      targetSkyBottom.set('#a5acad');
+      targetExposure = 1.1;
+    } else if (this.activeWeather === 'academic-rainy-dusk') {
+      targetFogColor.set('#39464e');
+      targetFogDensity = this.mode === 'walk' ? 0.008 : 0.0027;
+      targetSunIntensity *= 0.28;
+      targetHemiIntensity *= 0.86;
+      targetSkyTop.set('#111a25');
+      targetSkyHorizon.set('#3c4b56');
+      targetSkyBottom.set('#59646a');
+      targetExposure = 1.02;
+    } else if (this.activeWeather === 'academic-foggy-night') {
+      targetFogColor.set('#18232a');
+      targetFogDensity = this.mode === 'walk' ? 0.019 : 0.0065;
+      targetSunIntensity *= 0.1;
+      targetHemiIntensity *= 0.72;
+      targetSkyTop.set('#03070c');
+      targetSkyHorizon.set('#101b23');
+      targetSkyBottom.set('#172229');
+      targetExposure = 0.98;
+    } else if (this.activeWeather === 'fog') {
       targetFogColor.lerp(new THREE.Color('#cad5d6'), 0.8);
       targetFogDensity = this.mode === 'walk' ? 0.024 : 0.008;
       targetSunIntensity *= 0.15;
@@ -1036,6 +1151,8 @@ export class IslandWorld {
         object.rotation.y = Number(object.userData.baseRotationY) + Math.sin(this.elapsed * 0.22) * 0.18;
       } else if (object.userData.animate === 'industrial-ground-mist') {
         object.position.x = Number(object.userData.baseX) + Math.sin(this.elapsed * 0.11 + Number(object.userData.phase ?? 0)) * 0.28;
+      } else if (object.userData.animate === 'academic-tree-wind') {
+        updateAcademicTreeWind(object, this.elapsed);
       }
     });
 
@@ -1162,7 +1279,11 @@ export class IslandWorld {
     } else if (mode === 'plan') {
       this.camera.fov = 34;
       this.camera.updateProjectionMatrix();
-      this.animateCamera(new THREE.Vector3(0, 940, 0.1), new THREE.Vector3(0, 0, 0), 1050);
+      this.animateCamera(
+        new THREE.Vector3(0, 940 * MASTERPLAN_RESCALE, 0.1),
+        new THREE.Vector3(0, 0, 0),
+        1050,
+      );
     } else if (mode === 'edit') {
       this.cameraTween = null;
       if (this.selectedId) {
@@ -1585,8 +1706,16 @@ export class IslandWorld {
     this.camera.near = 0.65;
     this.camera.updateProjectionMatrix();
     this.animateCamera(
-      plan ? new THREE.Vector3(0, 940, 0.1) : new THREE.Vector3(390, 305, 420),
-      plan ? new THREE.Vector3(0, 0, 0) : new THREE.Vector3(0, 2, -18),
+      plan
+        ? new THREE.Vector3(0, 940 * MASTERPLAN_RESCALE, 0.1)
+        : new THREE.Vector3(
+            390 * MASTERPLAN_RESCALE,
+            305 * MASTERPLAN_RESCALE,
+            420 * MASTERPLAN_RESCALE,
+          ),
+      plan
+        ? new THREE.Vector3(0, 0, 0)
+        : new THREE.Vector3(0, 2, -18 * MASTERPLAN_RESCALE),
       1050,
     );
   }
@@ -1609,6 +1738,7 @@ export class IslandWorld {
   setDaylight(daylight: boolean) {
     this.dayTarget = daylight ? 1 : 0;
     this.activeTimeOfDay = daylight ? 'noon' : 'night';
+    this.syncAcademicGateForTime();
   }
 
   isDaylight() {
@@ -1618,24 +1748,290 @@ export class IslandWorld {
   setTimeOfDay(time: 'sunrise' | 'noon' | 'sunset' | 'night') {
     this.activeTimeOfDay = time;
     this.dayTarget = time === 'noon' ? 1 : 0;
+    this.syncAcademicGateForTime();
   }
 
   getTimeOfDay() {
     return this.activeTimeOfDay;
   }
 
-  setWeather(weather: 'clear' | 'rain' | 'fog' | 'storm') {
+  setWeather(weather: WeatherMode) {
     this.activeWeather = weather;
-    if (weather === 'rain' || weather === 'storm') {
+    if (weather === 'academic-autumn') {
+      this.activeTimeOfDay = 'sunset';
+      this.dayTarget = 0;
+      this.activeSeason = 'autumn';
+      this.applySeasonColors('autumn');
+    } else if (weather === 'academic-overcast') {
+      this.activeTimeOfDay = 'noon';
+      this.dayTarget = 1;
+    } else if (weather === 'academic-rainy-dusk') {
+      this.activeTimeOfDay = 'sunset';
+      this.dayTarget = 0;
+      this.activeSeason = 'autumn';
+      this.applySeasonColors('autumn');
+    } else if (weather === 'academic-foggy-night') {
+      this.activeTimeOfDay = 'night';
+      this.dayTarget = 0;
+    }
+    if (weather === 'rain' || weather === 'storm' || weather === 'academic-rainy-dusk' || weather === 'academic-autumn') {
       this.precipitation.points.visible = true;
       this.precipitation.setType(this.activeSeason === 'winter' ? 'snow' : 'rain');
     } else {
       this.precipitation.points.visible = false;
     }
+    this.academicAudio.setWeather(weather);
+    this.syncAcademicGateForTime();
   }
 
   getWeather() {
     return this.activeWeather;
+  }
+
+  getActiveAcademicHotspot() {
+    return this.activeAcademicHotspot ? { ...this.activeAcademicHotspot } : null;
+  }
+
+  isAcademicMainGateNearby() {
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    const gate = district?.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__MAIN_ENTRANCE');
+    if (!gate) return false;
+    const interactionRange = WALK_INSPECT_DISTANCE * 1.35;
+    const collider = gate.getObjectByName('ACADEMIC__MAIN_GATE_CLOSED_COLLIDER');
+    if (collider) {
+      collider.updateWorldMatrix(true, false);
+      const bounds = new THREE.Box3().setFromObject(collider, true);
+      const dx = this.camera.position.x < bounds.min.x
+        ? bounds.min.x - this.camera.position.x
+        : this.camera.position.x > bounds.max.x
+          ? this.camera.position.x - bounds.max.x
+          : 0;
+      const dz = this.camera.position.z < bounds.min.z
+        ? bounds.min.z - this.camera.position.z
+        : this.camera.position.z > bounds.max.z
+          ? this.camera.position.z - bounds.max.z
+          : 0;
+      return Math.hypot(dx, dz) <= interactionRange;
+    }
+    const gatePosition = gate.getWorldPosition(new THREE.Vector3());
+    return Math.hypot(this.camera.position.x - gatePosition.x, this.camera.position.z - gatePosition.z)
+      <= interactionRange;
+  }
+
+  private applyAcademicGateOpen(open: boolean, refreshNavigation = true) {
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!district) return false;
+    if (!open && district.userData.collisionEnabled !== false && this.walkController?.getSnapshot().active) {
+      const collider = district.getObjectByName('ACADEMIC__MAIN_GATE_CLOSED_COLLIDER');
+      if (collider) {
+        collider.updateWorldMatrix(true, false);
+        const occupiedGateBounds = new THREE.Box3().setFromObject(collider, true).expandByScalar(WALK_RADIUS);
+        if (occupiedGateBounds.containsPoint(this.camera.position)) {
+          district.userData.academicGateClosePending = true;
+          return false;
+        }
+      }
+    }
+    district.userData.academicGateOpen = open;
+    district.traverse((object) => {
+      if (object.userData.academicGateLeaf === true) {
+        object.rotation.y = Number(object.userData[open ? 'openYaw' : 'closedYaw']);
+      }
+      if (object.userData.academicGateCollider === true) {
+        object.userData.navObstacle = district.userData.collisionEnabled !== false && !open;
+      }
+    });
+    district.userData.academicGateClosePending = false;
+    if (refreshNavigation) this.walkController?.refreshNavigation();
+    return true;
+  }
+
+  private retryPendingAcademicGateClose() {
+    if (this.activeTimeOfDay !== 'night') return;
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!district?.userData.academicGateClosePending) return;
+    this.applyAcademicGateOpen(false);
+  }
+
+  private syncAcademicGateForTime(forceDefault = false) {
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!district) return;
+    const lightPhase = this.activeTimeOfDay === 'night' ? 'night' : 'day';
+    const previousPhase = district.userData.academicGateLightPhase as 'day' | 'night' | undefined;
+    if (forceDefault || lightPhase === 'day' || previousPhase !== lightPhase) {
+      this.applyAcademicGateOpen(lightPhase === 'day', false);
+    }
+    district.userData.academicGateLightPhase = lightPhase;
+    this.walkController?.refreshNavigation();
+  }
+
+  performAcademicInteraction(action: string) {
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!district) return { title: 'Academic District', message: 'The district is unavailable.' };
+    if (action === 'open main gate') {
+      if (this.activeTimeOfDay !== 'night') {
+        this.applyAcademicGateOpen(true);
+        return {
+          title: 'Main Gate Open for Daylight',
+          message: 'The porter keeps the Blackwood gate open from sunrise through the evening.',
+          state: { gateOpen: true },
+        };
+      }
+      const open = district.userData.academicGateOpen !== true;
+      const changed = this.applyAcademicGateOpen(open);
+      if (!changed && !open) {
+        return {
+          title: 'Main Gate Held Open',
+          message: 'The porter waits for the threshold to clear before closing the gate.',
+          state: { gateOpen: true },
+        };
+      }
+      return {
+        title: open ? 'Main Gate Opened' : 'Main Gate Closed',
+        message: open ? 'The wrought-iron leaves swing inward toward the porter\'s lodge.' : 'The gate leaves meet beneath the Blackwood crest.',
+        state: { gateOpen: open },
+      };
+    }
+    if (action === 'toggle reading-room lights') {
+      const on = district.userData.academicReadingLightsOn !== false;
+      district.userData.academicReadingLightsOn = !on;
+      const materials = new Set<THREE.MeshStandardMaterial>();
+      district.traverse((object) => {
+        if (!(object instanceof THREE.Mesh) || object.userData.academicReadingLights !== true) return;
+        const meshMaterials = Array.isArray(object.material) ? object.material : [object.material];
+        meshMaterials.forEach((material) => {
+          if (material instanceof THREE.MeshStandardMaterial) materials.add(material);
+        });
+      });
+      materials.forEach((material) => {
+        material.userData.academicOriginalEmissive ??= material.emissiveIntensity || 1.1;
+        material.emissiveIntensity = on ? 0.02 : Number(material.userData.academicOriginalEmissive);
+        material.needsUpdate = true;
+      });
+      return {
+        title: on ? 'Reading Rooms Dimmed' : 'Reading Rooms Lit',
+        message: on ? 'Ashcroft and Wren settle into deep shadow.' : 'Selected leaded windows regain their restrained amber glow.',
+        state: { readingLightsOn: !on },
+      };
+    }
+    if (action === 'ring chapel bell') {
+      const audible = this.academicAudio.ringBell();
+      district.userData.chapelBellRings = Number(district.userData.chapelBellRings ?? 0) + 1;
+      return {
+        title: 'St Anselm Bell',
+        message: audible ? 'A low three-tone bell rolls over the wet quadrangles.' : 'The bell moves silently while campus audio is muted.',
+        state: { rings: district.userData.chapelBellRings, audible },
+      };
+    }
+    const hotspot = this.getActiveAcademicHotspot();
+    if (action === 'inspect entrance' && hotspot) {
+      return {
+        title: `${hotspot.name} · ${hotspot.founded}`,
+        message: hotspot.history,
+        building: hotspot,
+      };
+    }
+    return {
+      title: 'Blackwood Academic District',
+      message: 'A road-bounded university district of quadrangles, libraries, old science courts, residences, gardens, and canal service edges.',
+      building: hotspot,
+    };
+  }
+
+  async setAcademicAudioMuted(muted: boolean) {
+    await this.academicAudio.setMuted(muted);
+    return this.academicAudio.isMuted();
+  }
+
+  isAcademicAudioMuted() {
+    return this.academicAudio.isMuted();
+  }
+
+  setGraphicsQuality(quality: GraphicsQuality) {
+    this.graphicsQuality = quality;
+    const pixelRatio = quality === 'low' ? 1 : quality === 'medium' ? 1.35 : 1.8;
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatio));
+    this.renderer.shadowMap.enabled = quality !== 'low';
+    this.sun.castShadow = quality === 'high';
+    const precipitationMaterial = this.precipitation.points.material as THREE.PointsMaterial;
+    precipitationMaterial.size = quality === 'low' ? 0.035 : 0.05;
+    const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (academic) configureAcademicTreeQuality(academic, quality);
+    this.resize();
+  }
+
+  getGraphicsQuality() {
+    return this.graphicsQuality;
+  }
+
+  getSceneStatistics() {
+    const geometries = new Set<string>();
+    let visibleMeshes = 0;
+    let triangles = 0;
+    this.modelRoot.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || !object.visible) return;
+      visibleMeshes += 1;
+      geometries.add(object.geometry.uuid);
+      const position = object.geometry.getAttribute('position');
+      triangles += object.geometry.index ? object.geometry.index.count / 3 : (position?.count ?? 0) / 3;
+    });
+    return {
+      visibleMeshes,
+      geometries: geometries.size,
+      triangles: Math.round(triangles),
+      drawCalls: this.renderer.info.render.calls,
+      textureCount: this.renderer.info.memory.textures,
+      quality: this.graphicsQuality,
+    };
+  }
+
+  private rebuildDebugVisualization() {
+    this.debugRoot.traverse((object) => {
+      if (object === this.debugRoot) return;
+      const geometry = (object as THREE.Mesh).geometry;
+      if (geometry) geometry.dispose();
+      const rawMaterial = (object as THREE.Mesh).material;
+      const materials = Array.isArray(rawMaterial) ? rawMaterial : rawMaterial ? [rawMaterial] : [];
+      materials.forEach((material) => material.dispose());
+    });
+    this.debugRoot.clear();
+    const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!academic) return;
+    academic.updateMatrixWorld(true);
+    let boxCount = 0;
+    academic.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || object.userData.navObstacle !== true || boxCount >= 160) return;
+      const bounds = new THREE.Box3().setFromObject(object, true);
+      if (bounds.isEmpty()) return;
+      const helper = new THREE.Box3Helper(bounds, '#76ff7a');
+      helper.name = 'DEBUG__COLLISION_BOUNDARY';
+      helper.userData.debugHelper = true;
+      this.debugRoot.add(helper);
+      boxCount += 1;
+    });
+    this.scene.traverse((object) => {
+      if (!(object instanceof THREE.Light) || object === this.hemisphere) return;
+      const position = object.getWorldPosition(new THREE.Vector3());
+      const marker = new THREE.Mesh(
+        new THREE.SphereGeometry(0.34, 8, 6),
+        new THREE.MeshBasicMaterial({ color: '#60e8ff', wireframe: true, depthTest: false }),
+      );
+      marker.name = 'DEBUG__LIGHT_POSITION';
+      marker.position.copy(position);
+      marker.renderOrder = 999;
+      this.debugRoot.add(marker);
+    });
+  }
+
+  setDebugMode(enabled: boolean) {
+    this.debugMode = enabled;
+    if (enabled) this.rebuildDebugVisualization();
+    this.debugRoot.visible = enabled;
+    return this.debugMode;
+  }
+
+  isDebugMode() {
+    return this.debugMode;
   }
 
   setSeason(season: 'spring' | 'summer' | 'autumn' | 'winter') {
@@ -1652,12 +2048,13 @@ export class IslandWorld {
 
   applySeasonColors(season: 'spring' | 'summer' | 'autumn' | 'winter') {
     const isFoliage = (material: any, name: string) => {
+      if (material?.userData?.excludeSeasonFoliage === true) return false;
       const n = name.toUpperCase();
-      if (n.includes('FOLIAGE') || n.includes('LEAF') || n.includes('VEGETATION') || n.includes('PLANT') || n.includes('TREE')) return true;
+      if (n.includes('FOLIAGE') || n.includes('LEAF_LITTER') || n.includes('FALLEN_LEAF') || n.includes('VEGETATION') || n.includes('PLANT') || n.includes('TREE')) return true;
       if (material && material.name && material.name.toUpperCase().includes('FOLIAGE')) return true;
       if (material && material.color) {
         const c = material.color;
-        if (c.g > c.r && c.g > c.b && c.r < 0.6) return true;
+        if (c.g > c.r * 1.08 && c.g > c.b * 1.08 && c.r < 0.6) return true;
       }
       return false;
     };
@@ -1671,6 +2068,30 @@ export class IslandWorld {
       return false;
     };
 
+    const stableSeasonVariant = (node: THREE.Object3D, material: THREE.Material) => {
+      if (Number.isInteger(material.userData.seasonVariant)) return Number(material.userData.seasonVariant);
+      const path: string[] = [];
+      let current: THREE.Object3D | null = node;
+      while (current) {
+        const parent: THREE.Object3D | null = current.parent;
+        if (parent === this.architectureRoot || parent === this.landscapeRoot || parent === this.transitRoot || parent === this.cityRoot) {
+          path.push(current.name);
+          break;
+        }
+        path.push(`${current.name}:${parent?.children.indexOf(current) ?? 0}`);
+        current = parent;
+      }
+      const key = `${material.name}|${path.reverse().join('/')}`;
+      let hash = 2166136261;
+      for (let index = 0; index < key.length; index += 1) {
+        hash ^= key.charCodeAt(index);
+        hash = Math.imul(hash, 16777619);
+      }
+      const variant = (hash >>> 0) % 3;
+      material.userData.seasonVariant = variant;
+      return variant;
+    };
+
     this.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         const materials = Array.isArray(child.material) ? child.material : [child.material];
@@ -1682,17 +2103,17 @@ export class IslandWorld {
 
             if (isFoliage(mat, child.name)) {
               if (season === 'spring') {
-                const idx = child.id % 3;
+                const idx = stableSeasonVariant(child, mat);
                 if (idx === 0) mat.color.set('#ffb7c5');
                 else if (idx === 1) mat.color.set('#78e08f');
                 else mat.color.set('#b8e994');
               } else if (season === 'summer') {
                 mat.color.copy(mat.userData.originalColor);
               } else if (season === 'autumn') {
-                const idx = child.id % 3;
-                if (idx === 0) mat.color.set('#e17055');
-                else if (idx === 1) mat.color.set('#fdcb6e');
-                else mat.color.set('#d63031');
+                const idx = stableSeasonVariant(child, mat);
+                if (idx === 0) mat.color.set('#7b3f2c');
+                else if (idx === 1) mat.color.set('#9a662b');
+                else mat.color.set('#642b2c');
               } else if (season === 'winter') {
                 mat.color.set('#f1f2f6');
               }
@@ -1711,6 +2132,7 @@ export class IslandWorld {
         });
       }
     });
+    applyAcademicTreeSeason(this.scene, season);
   }
 
   getDefinition(id: string) {
@@ -1725,16 +2147,22 @@ export class IslandWorld {
     const group = this.objectGroups.get(id);
     const definition = this.definitions.get(id);
     if (!group || !definition) return null;
+    const styleCustomized = definition.category === 'editor'
+      || definition.category === 'imported'
+      || group.userData.styleCustomized === true;
     return {
       position: { x: group.position.x, y: group.position.y, z: group.position.z },
       rotationY: THREE.MathUtils.radToDeg(group.rotation.y),
       scale: (group.scale.x + group.scale.y + group.scale.z) / 3,
       visible: group.visible,
       accent: definition.accent,
-      primaryColor: group.userData.primaryColor ?? (definition as any).primaryColor ?? '#ffffff',
-      secondaryColor: group.userData.secondaryColor ?? (definition as any).secondaryColor ?? '#74858a',
-      patternType: group.userData.patternType ?? (definition as any).patternType ?? 'solid',
-      patternScale: group.userData.patternScale ?? (definition as any).patternScale ?? 1.0,
+      ...(styleCustomized ? {
+        primaryColor: group.userData.primaryColor ?? (definition as any).primaryColor ?? '#ffffff',
+        secondaryColor: group.userData.secondaryColor ?? (definition as any).secondaryColor ?? '#74858a',
+        patternType: group.userData.patternType ?? (definition as any).patternType ?? 'solid',
+        patternScale: group.userData.patternScale ?? (definition as any).patternScale ?? 1.0,
+      } : {}),
+      styleCustomized,
       collisionEnabled: group.userData.collisionEnabled !== false && (definition as any).collisionEnabled !== false,
       interactions: group.userData.interactions ?? (definition as any).interactions ?? [],
     };
@@ -1778,9 +2206,11 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
     setModelAccent(group, color);
-    const primary = group.userData.primaryColor ?? '#ffffff';
-    const secondary = group.userData.secondaryColor ?? '#74858a';
-    applyCustomStyles(group, primary, secondary, color, group.userData.patternType, group.userData.patternScale);
+    if (group.userData.styleCustomized === true || definition.category === 'editor' || definition.category === 'imported') {
+      const primary = group.userData.primaryColor ?? '#ffffff';
+      const secondary = group.userData.secondaryColor ?? '#74858a';
+      applyCustomStyles(group, primary, secondary, color, group.userData.patternType, group.userData.patternScale);
+    }
     const replacement = { ...definition, accent: color } as SceneDefinition;
     this.definitions.set(id, replacement);
     const label = this.labels.get(id);
@@ -1798,6 +2228,7 @@ export class IslandWorld {
     group.userData.primaryColor = primary;
     group.userData.secondaryColor = secondary;
     group.userData.accent = accent;
+    group.userData.styleCustomized = true;
 
     applyCustomStyles(group, primary, secondary, accent, group.userData.patternType, group.userData.patternScale);
 
@@ -1823,6 +2254,7 @@ export class IslandWorld {
 
     group.userData.patternType = pattern;
     group.userData.patternScale = scale;
+    group.userData.styleCustomized = true;
 
     applyCustomStyles(group, group.userData.primaryColor ?? '#ffffff', group.userData.secondaryColor ?? '#74858a', definition.accent, pattern, scale);
 
@@ -1851,6 +2283,9 @@ export class IslandWorld {
         child.userData.navObstacle = enabled ? child.userData.originalNavObstacle : false;
       }
     });
+    if (id === 'academic-libraries-theoretical-labs') {
+      this.applyAcademicGateOpen(group.userData.academicGateOpen === true, false);
+    }
 
     const replacement = {
       ...definition,
@@ -1885,11 +2320,15 @@ export class IslandWorld {
     }));
     const payload = {
       schema: 'youtopy.lab-island/1.0',
+      masterplan: { worldExpansion: WORLD_EXPANSION },
       exportedAt: new Date().toISOString(),
       objects,
       editor: {
         workspace: this.editWorkspace,
         daylight: this.isDaylight(),
+        timeOfDay: this.activeTimeOfDay,
+        weather: this.activeWeather,
+        season: this.activeSeason,
         camera: {
           position: this.camera.position.toArray(),
           target: this.controls.target.toArray(),
@@ -1921,10 +2360,13 @@ export class IslandWorld {
     });
 
     this.createDistrictsAndBiomes();
+    this.syncAcademicGateForTime(true);
   }
 
   loadProject(payload: any): boolean {
     if (!payload || payload.schema !== 'youtopy.lab-island/1.0') return false;
+    const savedWorldExpansion = Number(payload.masterplan?.worldExpansion) || 3;
+    const savedLayoutScale = WORLD_EXPANSION / savedWorldExpansion;
 
     this.rebuildStaticDistrictsAndBiomes();
 
@@ -1975,7 +2417,12 @@ export class IslandWorld {
           group.userData.workspace = item.workspace;
 
           if (state) {
-            group.position.set(state.position.x, state.position.y, state.position.z);
+            const layoutScale = item.workspace === 'landscape' ? savedLayoutScale : 1;
+            group.position.set(
+              state.position.x * layoutScale,
+              state.position.y,
+              state.position.z * layoutScale,
+            );
             group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
             group.scale.setScalar(state.scale);
             group.visible = state.visible;
@@ -2037,30 +2484,63 @@ export class IslandWorld {
         const definition = this.definitions.get(id);
         if (group && definition) {
           if (state) {
-            group.position.set(state.position.x, state.position.y, state.position.z);
+            group.position.set(
+              state.position.x * savedLayoutScale,
+              state.position.y,
+              state.position.z * savedLayoutScale,
+            );
             group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
             group.scale.setScalar(state.scale);
             group.visible = state.visible;
           }
 
-          const primaryColor = state?.primaryColor ?? obj.primaryColor;
-          const secondaryColor = state?.secondaryColor ?? obj.secondaryColor;
-          const patternType = state?.patternType ?? obj.patternType;
-          const patternScale = state?.patternScale ?? obj.patternScale;
+          // Prior saves wrote fallback editor swatches into every untouched procedural
+          // district. Only replay styles that were explicitly customized. Top-level
+          // style fields preserve compatibility with genuinely customized legacy saves.
+          const hasLegacyStyleFields = (
+            obj.primaryColor !== undefined
+            || obj.secondaryColor !== undefined
+            || obj.patternType !== undefined
+            || obj.patternScale !== undefined
+          );
+          const legacyPrimaryColor = String(state?.primaryColor ?? obj.primaryColor ?? '#ffffff').toLowerCase();
+          const legacySecondaryColor = String(state?.secondaryColor ?? obj.secondaryColor ?? '#74858a').toLowerCase();
+          const legacyPatternType = state?.patternType ?? obj.patternType ?? 'solid';
+          const legacyPatternScale = Number(state?.patternScale ?? obj.patternScale ?? 1);
+          const syntheticLegacyFallback = legacyPrimaryColor === '#ffffff'
+            && legacySecondaryColor === '#74858a'
+            && legacyPatternType === 'solid'
+            && legacyPatternScale === 1;
+          const legacyCustomizedStyle = state?.styleCustomized === undefined
+            && hasLegacyStyleFields
+            && !syntheticLegacyFallback;
+          const styleCustomized = state?.styleCustomized === true || legacyCustomizedStyle;
+          const primaryColor = styleCustomized ? state?.primaryColor ?? obj.primaryColor : undefined;
+          const secondaryColor = styleCustomized ? state?.secondaryColor ?? obj.secondaryColor : undefined;
+          const patternType = styleCustomized ? state?.patternType ?? obj.patternType : undefined;
+          const patternScale = styleCustomized ? state?.patternScale ?? obj.patternScale : undefined;
           const collisionEnabled = state?.collisionEnabled !== false && obj.collisionEnabled !== false;
           const interactions = state?.interactions ?? obj.interactions ?? [];
 
-          group.userData.primaryColor = primaryColor;
-          group.userData.secondaryColor = secondaryColor;
-          group.userData.patternType = patternType;
-          group.userData.patternScale = patternScale;
+          if (styleCustomized) {
+            group.userData.primaryColor = primaryColor;
+            group.userData.secondaryColor = secondaryColor;
+            group.userData.patternType = patternType;
+            group.userData.patternScale = patternScale;
+          } else {
+            delete group.userData.primaryColor;
+            delete group.userData.secondaryColor;
+            delete group.userData.patternType;
+            delete group.userData.patternScale;
+          }
+          group.userData.styleCustomized = styleCustomized;
           group.userData.collisionEnabled = collisionEnabled;
           group.userData.interactions = interactions;
 
           const accent = state?.accent ?? obj.accent;
-          if (primaryColor || secondaryColor || patternType) {
+          if (styleCustomized) {
             applyCustomStyles(group, primaryColor, secondaryColor, accent, patternType, patternScale);
-          } else {
+          } else if (String(accent).toLowerCase() !== String(definition.accent).toLowerCase()) {
             setModelAccent(group, accent);
           }
 
@@ -2074,10 +2554,7 @@ export class IslandWorld {
           const replacement = {
             ...definition,
             accent,
-            primaryColor,
-            secondaryColor,
-            patternType,
-            patternScale,
+            ...(styleCustomized ? { primaryColor, secondaryColor, patternType, patternScale } : {}),
             collisionEnabled,
             interactions,
           } as SceneDefinition;
@@ -2091,21 +2568,28 @@ export class IslandWorld {
     });
 
     if (payload.editor) {
-      if (payload.editor.timeOfDay !== undefined) {
-        this.setTimeOfDay(payload.editor.timeOfDay);
-      } else if (payload.editor.daylight !== undefined) {
-        this.setDaylight(payload.editor.daylight);
-      }
       if (payload.editor.weather !== undefined) {
         this.setWeather(payload.editor.weather);
       }
       if (payload.editor.season !== undefined) {
         this.setSeason(payload.editor.season);
       }
+      // Academic weather presets can imply a time of day. Restore the user's
+      // explicit time selection last so independent weather/time combinations
+      // round-trip exactly and the gate follows that final light phase.
+      if (payload.editor.timeOfDay !== undefined) {
+        this.setTimeOfDay(payload.editor.timeOfDay);
+      } else if (payload.editor.daylight !== undefined) {
+        this.setDaylight(payload.editor.daylight);
+      }
       if (payload.editor.camera) {
         const cam = payload.editor.camera;
         this.camera.position.fromArray(cam.position);
         this.controls.target.fromArray(cam.target);
+        this.camera.position.x *= savedLayoutScale;
+        this.camera.position.z *= savedLayoutScale;
+        this.controls.target.x *= savedLayoutScale;
+        this.controls.target.z *= savedLayoutScale;
         this.controls.update();
       }
     }
@@ -2386,6 +2870,8 @@ export class IslandWorld {
         child.visible = child.userData.editorIsolationRestoreVisible;
         delete child.userData.editorIsolationRestoreVisible;
       }
+      const academicTreeLodLevel = child.userData.academicTreeLodLevel as string | undefined;
+      if (academicTreeLodLevel) child.visible = academicTreeLodLevel === 'near';
     });
     const exportSun = this.sun.clone();
     exportSun.name = 'Blender Sun';
@@ -2411,6 +2897,7 @@ export class IslandWorld {
     }));
     const payload = {
       schema: 'youtopy.lab-island/1.0',
+      masterplan: { worldExpansion: WORLD_EXPANSION },
       exportedAt: new Date().toISOString(),
       units: '10 metres per world unit',
       coordinateSystem: { x: 'east', y: 'up', z: 'south' },
@@ -2436,7 +2923,30 @@ export class IslandWorld {
 
   getTextSnapshot() {
     const selected = this.getSelectedDefinition();
+    const selectedGroup = selected ? this.objectGroups.get(selected.id) : undefined;
     const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
+    const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
+    let cellViolations = 0;
+    const boundedDistricts = districts.filter((definition) => Boolean(this.objectGroups.get(definition.id)?.userData.districtCell)).length;
+    const populatedDistricts = districts.filter((definition) => {
+      const population = this.objectGroups.get(definition.id)?.userData.population;
+      return Number(population?.realizedFacilityCount) >= 1 && Number(population?.realizedObjectCount) >= 2;
+    }).length;
+    const distinctDistricts = districts.filter((definition) => this.objectGroups.get(definition.id)?.userData.population?.distinct === true).length;
+    districts.forEach((definition) => {
+      const group = this.objectGroups.get(definition.id);
+      group?.traverse((child) => {
+        const anchor = child.userData.sectorAnchor;
+        if (!anchor) return;
+        if (
+          Number(anchor.normalizedRadial) < -0.0001
+          || Number(anchor.normalizedRadial) > 1.0001
+          || Number(anchor.normalizedAngular) < -0.0001
+          || Number(anchor.normalizedAngular) > 1.0001
+        ) cellViolations += 1;
+      });
+    });
+    const filledBiomeDomes = biomes.filter((definition) => this.objectGroups.get(definition.id)?.userData.biomeEcologyPlan?.filled === true).length;
     const visibleLabels = Array.from(this.labels.values()).filter(
       (label) => !(label.anchor.element as HTMLElement).classList.contains('label-suppressed'),
     );
@@ -2445,12 +2955,32 @@ export class IslandWorld {
       coordinateSystem: 'origin at central megabuilding; +X east, +Y up, +Z south; 1 unit = 10 metres',
       mode: this.mode,
       environment: this.isDaylight() ? 'daylight' : 'blue-hour',
+      atmosphere: {
+        timeOfDay: this.activeTimeOfDay,
+        weather: this.activeWeather,
+        season: this.activeSeason,
+        graphicsQuality: this.graphicsQuality,
+        audioMuted: this.academicAudio.isMuted(),
+        debugMode: this.debugMode,
+      },
+      masterplan: {
+        worldExpansion: WORLD_EXPANSION,
+        islandRadiusWorldUnits: ISLAND_RADIUS,
+        islandRadiusMetres: ISLAND_RADIUS * 10,
+      },
       counts: {
         districts: districts.length,
         biomes: biomes.length,
         importedAssets: this.importedRoot.children.length,
         editorAssets: Array.from(this.definitions.values()).filter((definition) => definition.category === 'editor').length,
         authoredInteriors: this.interiorGroups.size,
+      },
+      planning: {
+        boundedDistricts,
+        populatedDistricts,
+        distinctDistricts,
+        filledBiomeDomes,
+        cellViolations,
       },
       edit: {
         workspace: this.editWorkspace,
@@ -2459,12 +2989,31 @@ export class IslandWorld {
       },
       importPlacement: this.getImportPlacementState(),
       industrialDistrict,
+      academicDistrict: academicGroup ? {
+        precinct: academicGroup.userData.academicPrecinct ?? null,
+        componentHierarchy: academicGroup.userData.academicComponentHierarchy ?? null,
+        materials: academicGroup.userData.academicMaterialsProcedural ?? [],
+        optimization: academicGroup.userData.academicOptimization ?? null,
+        treePopulation: academicGroup.userData.academicTreePopulation ?? null,
+        pathNetwork: academicGroup.userData.academicPathNetwork ?? null,
+        gateOpen: academicGroup.userData.academicGateOpen === true,
+        vintageBenchCount: Number(
+          academicGroup.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__VINTAGE_CAMPUS_BENCHES')
+            ?.userData.academicVintageBenchCount ?? 0,
+        ),
+        readingLightsOn: academicGroup.userData.academicReadingLightsOn !== false,
+        chapelBellRings: Number(academicGroup.userData.chapelBellRings ?? 0),
+        activeHotspot: this.getActiveAcademicHotspot(),
+      } : null,
       selected: selected
         ? {
             id: selected.id,
             name: selected.name,
             category: selected.category,
             state: this.getObjectState(selected.id),
+            districtCell: selectedGroup?.userData.districtCell ?? null,
+            population: selectedGroup?.userData.population ?? null,
+            biomeEcologyPlan: selectedGroup?.userData.biomeEcologyPlan ?? null,
           }
         : null,
       visibleLabels: visibleLabels.map((label) => label.definition.name),
@@ -2522,6 +3071,7 @@ export class IslandWorld {
     this.controls.dispose();
     this.walkController.dispose();
     this.transformControls.dispose();
+    this.academicAudio.dispose();
     this.renderer.dispose();
     this.labelRenderer.domElement.remove();
     this.renderer.domElement.remove();

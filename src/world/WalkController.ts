@@ -4,7 +4,10 @@ import {
   WALK_EYE_HEIGHT,
   WALK_FAST_SPEED,
   WALK_GRAVITY,
+  WALK_JUMP_HOLD_HEIGHT_METRES,
   WALK_JUMP_SPEED,
+  WALK_JUMP_TAP_HEIGHT_METRES,
+  WALK_JUMP_TAP_SPEED,
   WALK_RADIUS,
   WALK_SPEED,
   WALK_STEP_HEIGHT,
@@ -22,6 +25,10 @@ export interface WalkSnapshot {
   groundY: number | null;
   speedMetresPerSecond: number;
   turboEnabled: boolean;
+  jumpState: 'grounded' | 'rising' | 'falling';
+  jumpHeld: boolean;
+  jumpHeightMetres: number;
+  jumpHeightRangeMetres: [number, number];
   movementKeys: string[];
   direction: [number, number, number];
 }
@@ -44,6 +51,14 @@ function isActuallyVisible(object: THREE.Object3D) {
   return true;
 }
 
+interface NavigationBarrierSegment {
+  start: THREE.Vector3;
+  end: THREE.Vector3;
+  radius: number;
+  minY: number;
+  maxY: number;
+}
+
 export class WalkController {
   readonly pointerControls: PointerLockControls;
   private readonly camera: THREE.PerspectiveCamera;
@@ -56,6 +71,7 @@ export class WalkController {
   private readonly walkables: THREE.Object3D[] = [];
   private readonly obstacleBounds: THREE.Box3[] = [];
   private readonly accessBounds: THREE.Box3[] = [];
+  private readonly barrierSegments: NavigationBarrierSegment[] = [];
   private readonly keys = new Set<string>();
   private readonly direction = new THREE.Vector3();
   private readonly right = new THREE.Vector3();
@@ -74,6 +90,9 @@ export class WalkController {
   private lastPointer: { x: number; y: number } | null = null;
   private velocityY = 0;
   private isJumping = false;
+  private jumpHeld = false;
+  private jumpStartY = 0;
+  private jumpPeakHeight = 0;
   public isSitting = false;
   public seatTarget = new THREE.Vector3();
 
@@ -157,6 +176,10 @@ export class WalkController {
 
     this.groundY = pt.y;
     this.grounded = true;
+    this.velocityY = 0;
+    this.isJumping = false;
+    this.jumpHeld = false;
+    this.jumpPeakHeight = 0;
     this.camera.position.set(pt.x, this.groundY + WALK_EYE_HEIGHT, pt.z);
 
     if (lookDirection && lookDirection.lengthSq() > 0.0001) {
@@ -174,6 +197,10 @@ export class WalkController {
     this.keys.clear();
     this.externalIntent = { x: 0, z: 0, sprint: false };
     this.currentSpeed = 0;
+    this.velocityY = 0;
+    this.isJumping = false;
+    this.jumpHeld = false;
+    this.jumpPeakHeight = 0;
     this.dragLookActive = false;
     this.lastPointer = null;
     if (this.pointerControls.isLocked) this.pointerControls.unlock();
@@ -217,6 +244,7 @@ export class WalkController {
     this.walkables.length = 0;
     this.obstacleBounds.length = 0;
     this.accessBounds.length = 0;
+    this.barrierSegments.length = 0;
     this.navigationRoot.updateMatrixWorld(true);
     this.navigationRoot.traverse((child) => {
       if (child.userData.navAccess && child instanceof THREE.Mesh) {
@@ -225,7 +253,38 @@ export class WalkController {
       }
       if (!isActuallyVisible(child)) return;
       if (child.userData.walkable && child instanceof THREE.Mesh) this.walkables.push(child);
-      if (child.userData.navObstacle && child instanceof THREE.Mesh) {
+      let collisionOwner: THREE.Object3D | null = child;
+      let collisionEnabled = true;
+      while (collisionOwner && collisionOwner !== this.navigationRoot) {
+        if (collisionOwner.userData.collisionEnabled === false) {
+          collisionEnabled = false;
+          break;
+        }
+        collisionOwner = collisionOwner.parent;
+      }
+      const authoredBarrierSegments = child.userData.navBarrierSegments as Array<{
+        start: [number, number, number];
+        end: [number, number, number];
+        radius: number;
+      }> | undefined;
+      if (collisionEnabled && authoredBarrierSegments?.length) {
+        const parentMatrix = child.parent?.matrixWorld ?? new THREE.Matrix4();
+        const worldScale = child.parent?.getWorldScale(new THREE.Vector3()) ?? new THREE.Vector3(1, 1, 1);
+        const radiusScale = Math.max(Math.abs(worldScale.x), Math.abs(worldScale.z));
+        authoredBarrierSegments.forEach((segment) => {
+          const start = new THREE.Vector3().fromArray(segment.start).applyMatrix4(parentMatrix);
+          const end = new THREE.Vector3().fromArray(segment.end).applyMatrix4(parentMatrix);
+          const radius = segment.radius * radiusScale;
+          this.barrierSegments.push({
+            start,
+            end,
+            radius,
+            minY: Math.min(start.y, end.y) - radius,
+            maxY: Math.max(start.y, end.y) + radius,
+          });
+        });
+      }
+      if (collisionEnabled && child.userData.navObstacle && child instanceof THREE.Mesh) {
         const bounds = new THREE.Box3().setFromObject(child, true);
         if (!bounds.isEmpty()) this.obstacleBounds.push(bounds);
       }
@@ -271,11 +330,13 @@ export class WalkController {
     if (this.isJumping) {
       this.velocityY -= WALK_GRAVITY * delta;
       this.camera.position.y += this.velocityY * delta;
+      this.jumpPeakHeight = Math.max(this.jumpPeakHeight, this.camera.position.y - this.jumpStartY);
       
       if (this.camera.position.y <= targetY) {
         this.camera.position.y = targetY;
         this.velocityY = 0;
         this.isJumping = false;
+        this.jumpHeld = false;
         this.grounded = sampledGround !== null;
         if (sampledGround !== null) this.groundY = sampledGround;
       } else {
@@ -310,6 +371,10 @@ export class WalkController {
       groundY: this.groundY === null ? null : Number(this.groundY.toFixed(3)),
       speedMetresPerSecond: Number(worldUnitsToMetres(this.currentSpeed).toFixed(1)),
       turboEnabled: this.turboEnabled,
+      jumpState: !this.isJumping ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
+      jumpHeld: this.jumpHeld,
+      jumpHeightMetres: Number(worldUnitsToMetres(this.jumpPeakHeight).toFixed(2)),
+      jumpHeightRangeMetres: [WALK_JUMP_TAP_HEIGHT_METRES, WALK_JUMP_HOLD_HEIGHT_METRES],
       movementKeys: Array.from(this.keys).sort(),
       direction: this.direction.toArray().map((value) => Number(value.toFixed(3))) as [number, number, number],
     };
@@ -349,7 +414,7 @@ export class WalkController {
         bodyTop >= bounds.min.y &&
         bodyBottom <= bounds.max.y,
     );
-    return !this.obstacleBounds.some(
+    const hitsObstacle = this.obstacleBounds.some(
       (bounds) =>
         !insideAccess &&
         x >= bounds.min.x - WALK_RADIUS &&
@@ -359,6 +424,48 @@ export class WalkController {
         bodyTop >= bounds.min.y &&
         bodyBottom <= bounds.max.y,
     );
+    return !hitsObstacle && !this.collidesWithBarrier(x, z, bodyBottom, bodyTop);
+  }
+
+  private collidesWithBarrier(x: number, z: number, bodyBottom: number, bodyTop: number) {
+    return this.findBarrierCollision(x, z, bodyBottom, bodyTop) !== null;
+  }
+
+  private findBarrierCollision(x: number, z: number, bodyBottom: number, bodyTop: number) {
+    return this.barrierSegments.find((barrier) => {
+      if (bodyTop < barrier.minY || bodyBottom > barrier.maxY) return false;
+      const abX = barrier.end.x - barrier.start.x;
+      const abZ = barrier.end.z - barrier.start.z;
+      const lengthSquared = abX * abX + abZ * abZ;
+      const along = lengthSquared > 0
+        ? THREE.MathUtils.clamp(
+          ((x - barrier.start.x) * abX + (z - barrier.start.z) * abZ) / lengthSquared,
+          0,
+          1,
+        )
+        : 0;
+      const closestX = barrier.start.x + abX * along;
+      const closestZ = barrier.start.z + abZ * along;
+      const dx = x - closestX;
+      const dz = z - closestZ;
+      const clearance = WALK_RADIUS + barrier.radius;
+      return dx * dx + dz * dz <= clearance * clearance;
+    }) ?? null;
+  }
+
+  private canTraverseGroundRise(nextGround: number) {
+    if (this.groundY === null || nextGround - this.groundY <= WALK_STEP_HEIGHT) return true;
+    if (!this.isJumping) return false;
+    const airborneFeetY = this.camera.position.y - WALK_EYE_HEIGHT;
+    return airborneFeetY + 0.002 >= nextGround;
+  }
+
+  private getMovementBodyRange(nextGround: number) {
+    if (this.isJumping) {
+      const airborneFeetY = this.camera.position.y - WALK_EYE_HEIGHT;
+      return { bodyBottom: airborneFeetY + 0.015, bodyTop: this.camera.position.y };
+    }
+    return { bodyBottom: nextGround + 0.015, bodyTop: nextGround + WALK_EYE_HEIGHT };
   }
 
   private tryAxisMove(dx: number, dz: number) {
@@ -368,9 +475,8 @@ export class WalkController {
     this.candidate.z += dz;
     const nextGround = this.sampleGround(this.candidate.x, this.candidate.z);
     if (nextGround === null) return;
-    if (this.groundY !== null && nextGround - this.groundY > WALK_STEP_HEIGHT) return;
-    const bodyBottom = nextGround + 0.015;
-    const bodyTop = nextGround + WALK_EYE_HEIGHT;
+    if (!this.canTraverseGroundRise(nextGround)) return;
+    const { bodyBottom, bodyTop } = this.getMovementBodyRange(nextGround);
     const insideAccess = this.accessBounds.some(
       (bounds) =>
         this.candidate.x >= bounds.min.x + WALK_RADIUS &&
@@ -391,6 +497,89 @@ export class WalkController {
         bodyBottom <= bounds.max.y,
     );
     if (collides) return;
+    const barrier = this.findBarrierCollision(this.candidate.x, this.candidate.z, bodyBottom, bodyTop);
+    if (barrier) {
+      this.tryBarrierSlide(dx, dz, barrier);
+      return;
+    }
+    this.camera.position.x = this.candidate.x;
+    this.camera.position.z = this.candidate.z;
+    this.groundY = nextGround;
+  }
+
+  private tryBarrierSlide(dx: number, dz: number, barrier: NavigationBarrierSegment) {
+    const tangentX = barrier.end.x - barrier.start.x;
+    const tangentZ = barrier.end.z - barrier.start.z;
+    const tangentLength = Math.hypot(tangentX, tangentZ);
+    if (tangentLength < 0.000001) return;
+    const normalizedX = tangentX / tangentLength;
+    const normalizedZ = tangentZ / tangentLength;
+    const projectedDistance = dx * normalizedX + dz * normalizedZ;
+    if (Math.abs(projectedDistance) < 0.000001) return;
+
+    this.candidate.copy(this.camera.position);
+    this.candidate.x += normalizedX * projectedDistance;
+    this.candidate.z += normalizedZ * projectedDistance;
+    let nextGround = this.sampleGround(this.candidate.x, this.candidate.z);
+    if (nextGround === null) return;
+    if (!this.canTraverseGroundRise(nextGround)) return;
+    let { bodyBottom, bodyTop } = this.getMovementBodyRange(nextGround);
+
+    const touchingBarrier = this.findBarrierCollision(this.candidate.x, this.candidate.z, bodyBottom, bodyTop);
+    if (touchingBarrier) {
+      const abX = touchingBarrier.end.x - touchingBarrier.start.x;
+      const abZ = touchingBarrier.end.z - touchingBarrier.start.z;
+      const lengthSquared = abX * abX + abZ * abZ;
+      const along = lengthSquared > 0
+        ? THREE.MathUtils.clamp(
+          ((this.candidate.x - touchingBarrier.start.x) * abX
+            + (this.candidate.z - touchingBarrier.start.z) * abZ) / lengthSquared,
+          0,
+          1,
+        )
+        : 0;
+      const closestX = touchingBarrier.start.x + abX * along;
+      const closestZ = touchingBarrier.start.z + abZ * along;
+      let normalX = this.candidate.x - closestX;
+      let normalZ = this.candidate.z - closestZ;
+      const distance = Math.hypot(normalX, normalZ);
+      if (distance < 0.000001) {
+        normalX = -normalizedZ;
+        normalZ = normalizedX;
+      } else {
+        normalX /= distance;
+        normalZ /= distance;
+      }
+      const clearance = WALK_RADIUS + touchingBarrier.radius + 0.0001;
+      const correction = Math.max(0, clearance - distance);
+      this.candidate.x += normalX * correction;
+      this.candidate.z += normalZ * correction;
+      nextGround = this.sampleGround(this.candidate.x, this.candidate.z);
+      if (nextGround === null) return;
+      if (!this.canTraverseGroundRise(nextGround)) return;
+      ({ bodyBottom, bodyTop } = this.getMovementBodyRange(nextGround));
+    }
+
+    const insideAccess = this.accessBounds.some(
+      (bounds) =>
+        this.candidate.x >= bounds.min.x + WALK_RADIUS
+        && this.candidate.x <= bounds.max.x - WALK_RADIUS
+        && this.candidate.z >= bounds.min.z + WALK_RADIUS
+        && this.candidate.z <= bounds.max.z - WALK_RADIUS
+        && bodyTop >= bounds.min.y
+        && bodyBottom <= bounds.max.y,
+    );
+    const hitsObstacle = this.obstacleBounds.some(
+      (bounds) =>
+        !insideAccess
+        && this.candidate.x >= bounds.min.x - WALK_RADIUS
+        && this.candidate.x <= bounds.max.x + WALK_RADIUS
+        && this.candidate.z >= bounds.min.z - WALK_RADIUS
+        && this.candidate.z <= bounds.max.z + WALK_RADIUS
+        && bodyTop >= bounds.min.y
+        && bodyBottom <= bounds.max.y,
+    );
+    if (hitsObstacle || this.collidesWithBarrier(this.candidate.x, this.candidate.z, bodyBottom, bodyTop)) return;
     this.camera.position.x = this.candidate.x;
     this.camera.position.z = this.candidate.z;
     this.groundY = nextGround;
@@ -439,6 +628,15 @@ export class WalkController {
     if (this.grounded && !this.isJumping) {
       this.velocityY = WALK_JUMP_SPEED;
       this.isJumping = true;
+      this.jumpStartY = this.camera.position.y;
+      this.jumpPeakHeight = 0;
+    }
+  }
+
+  private releaseJump() {
+    this.jumpHeld = false;
+    if (this.isJumping && this.velocityY > WALK_JUMP_TAP_SPEED) {
+      this.velocityY = WALK_JUMP_TAP_SPEED;
     }
   }
 
@@ -465,6 +663,7 @@ export class WalkController {
       this.keys.add(event.code);
     }
     if (event.code === 'Space' && !event.repeat) {
+      this.jumpHeld = true;
       this.triggerJump();
     }
     if (event.code === 'KeyT' && !event.repeat) this.toggleTurbo();
@@ -474,10 +673,12 @@ export class WalkController {
   private onKeyUp = (event: KeyboardEvent) => {
     if (!this.active) return;
     this.keys.delete(event.code);
+    if (event.code === 'Space') this.releaseJump();
   };
 
   private clearInput = () => {
     this.keys.clear();
+    this.releaseJump();
   };
 
   private onVisibilityChange = () => {

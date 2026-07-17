@@ -1,8 +1,26 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import type { BiomeDefinition, DistrictDefinition } from '../data/districts';
+import {
+  BIOME_ECOLOGY_PLANS,
+  DISTRICT_CAMPUS_PLANS,
+  type CampusFacilityForm,
+  type CampusObjectKind,
+} from '../data/districtCampusPlans';
 import { ISLAND_SURFACE_Y, metresToWorldUnits } from '../config/island';
 import { EDITOR_ASSET_CATALOG, createEditorAsset } from './editorAssets';
+import {
+  buildAcademicDistrictExtension,
+  enrichExistingAcademicBuildings,
+} from './academicDistrict';
+import {
+  getAcademicAshlarTextures,
+  getAcademicBrickTextures,
+  getAcademicLeafPathTextures,
+  getAcademicOakTextures,
+  getAcademicSlateTextures,
+  tileAcademicPathGeometry,
+} from './academicSurfaceTextures';
 import { buildIndustrialDistrict } from './industrialDistrict';
 
 const DEG = Math.PI / 180;
@@ -10,6 +28,7 @@ const ACCESS_APPROACH_LENGTH = metresToWorldUnits(2);
 const DISTRICT_ACCESS_RAMP_LENGTH = metresToWorldUnits(41);
 const DOME_ACCESS_RAMP_LENGTH = metresToWorldUnits(48);
 const DISTRICT_FINISHED_FLOOR_Y = 0.34;
+const ACADEMIC_FINISHED_FLOOR_Y = metresToWorldUnits(0.04);
 const DOME_FINISHED_FLOOR_Y = 0.4;
 const TROPICAL_FINISHED_FLOOR_Y = metresToWorldUnits(0.18);
 const TROPICAL_ACCESS_RAMP_LENGTH = metresToWorldUnits(2.4);
@@ -131,6 +150,49 @@ function makeGroundTexture(baseColor: string, size = 256): THREE.CanvasTexture {
   return tex;
 }
 
+function makeDarkBrickTexture(size = 256): THREE.CanvasTexture {
+  const cacheKey = `dark-academia-brick-${size}`;
+  const cached = surfaceTextureCache.get(cacheKey);
+  if (cached) return cached;
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext('2d')!;
+  const random = seededRandom(0xda4caca + size);
+  const courses = 16;
+  const courseHeight = size / courses;
+  const brickWidth = size / 8;
+  context.fillStyle = '#2a211e';
+  context.fillRect(0, 0, size, size);
+  for (let row = 0; row < courses; row += 1) {
+    const offset = row % 2 ? -brickWidth * 0.5 : 0;
+    for (let column = -1; column < 9; column += 1) {
+      const x = offset + column * brickWidth + 1.5;
+      const y = row * courseHeight + 1.5;
+      const warmth = Math.floor(random() * 18);
+      context.fillStyle = `rgb(${65 + warmth}, ${37 + Math.floor(warmth * 0.48)}, ${30 + Math.floor(warmth * 0.3)})`;
+      context.fillRect(x, y, brickWidth - 3, courseHeight - 3);
+      context.fillStyle = 'rgba(0, 0, 0, 0.13)';
+      context.fillRect(x, y + courseHeight - 5, brickWidth - 3, 2);
+    }
+  }
+  context.globalAlpha = 0.13;
+  for (let speck = 0; speck < size * 3; speck += 1) {
+    const shade = random() > 0.5 ? '#e8c69a' : '#050403';
+    context.fillStyle = shade;
+    context.fillRect(random() * size, random() * size, 1 + random() * 2, 1);
+  }
+  context.globalAlpha = 1;
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = THREE.RepeatWrapping;
+  texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(8, 5);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 8;
+  surfaceTextureCache.set(cacheKey, texture);
+  return texture;
+}
+
 function makeBrushedMetalTexture(size = 256): THREE.CanvasTexture {
   const cacheKey = `brushed-metal-${size}`;
   const cached = surfaceTextureCache.get(cacheKey);
@@ -191,7 +253,7 @@ function markAccent(material: THREE.Material) {
   return material;
 }
 
-function prepareMesh(mesh: THREE.Mesh, id: string, shadows = true) {
+function prepareMesh<T extends THREE.Mesh>(mesh: T, id: string, shadows = true): T {
   mesh.userData.selectableId = id;
   mesh.castShadow = shadows;
   mesh.receiveShadow = shadows;
@@ -533,19 +595,30 @@ function addRoofPlant(
   }
 }
 
-function addTree(group: THREE.Group, id: string, x: number, z: number, scale: number, leafColor: string, autumn = false) {
+function addTree(
+  group: THREE.Group,
+  id: string,
+  x: number,
+  z: number,
+  scale: number,
+  leafColor: string,
+  autumn = false,
+  groundY = 0.56,
+) {
   const trunk = prepareMesh(
     new THREE.Mesh(new THREE.CylinderGeometry(0.045 * scale, 0.07 * scale, 0.55 * scale, 7), standardMaterial('#3b3024', { roughness: 0.92 })),
     id,
   );
-  trunk.position.set(x, 0.56 + 0.275 * scale, z);
+  trunk.position.set(x, groundY + 0.275 * scale, z);
+  trunk.name = `${id}__${autumn ? 'DECIDUOUS' : 'LANDSCAPE'}_TREE_TRUNK`;
   const crownColor = autumn ? (Math.sin(x * 12.9898 + z * 78.233) > 0 ? '#a84f2e' : '#d58a3a') : leafColor;
   const crown = prepareMesh(
     new THREE.Mesh(new THREE.IcosahedronGeometry(0.34 * scale, 1), standardMaterial(crownColor, { roughness: 0.86 })),
     id,
   );
   crown.scale.set(1, 1.25, 1);
-  crown.position.set(x, 0.93 + 0.48 * scale, z);
+  crown.position.set(x, groundY + 0.37 + 0.48 * scale, z);
+  crown.name = `${id}__${autumn ? 'DECIDUOUS' : 'LANDSCAPE'}_TREE_CANOPY`;
   group.add(trunk, crown);
 }
 
@@ -911,33 +984,436 @@ function buildInfrastructure(group: THREE.Group, definition: DistrictDefinition,
   }
 }
 
-function buildAcademic(group: THREE.Group, definition: DistrictDefinition, height: number) {
-  const { id, footprint, accent } = definition;
-  const [width, depth] = footprint;
-  const materials = createMaterials(definition);
-  for (let index = 0; index < 4; index += 1) {
-    const slab = roundedBlock(
-      id,
-      width * (0.52 - index * 0.045),
-      height * 0.18,
-      depth * 0.44,
-      index % 2 ? materials.body : materials.dark,
-      -width * 0.12 + index * width * 0.045,
-      0.4 + index * height * 0.18,
-      0,
-      0.12,
+const academicUnitBox = new THREE.BoxGeometry(1, 1, 1);
+const academicUnitCone = new THREE.ConeGeometry(0.5, 1, 4);
+const academicUnitCrown = new THREE.IcosahedronGeometry(0.5, 1);
+const academicGableGeometry = (() => {
+  const shape = new THREE.Shape();
+  shape.moveTo(-0.5, 0);
+  shape.lineTo(0.5, 0);
+  shape.lineTo(0, 1);
+  shape.closePath();
+  const geometry = new THREE.ExtrudeGeometry(shape, { depth: 1, bevelEnabled: false });
+  geometry.translate(0, 0, -0.5);
+  return geometry;
+})();
+
+function createAcademicMaterials() {
+  const brick = getAcademicBrickTextures();
+  const stone = getAcademicAshlarTextures('medieval');
+  const limestone = getAcademicAshlarTextures('repair');
+  const slate = getAcademicSlateTextures();
+  const oak = getAcademicOakTextures();
+  const path = getAcademicLeafPathTextures();
+  return {
+    brick: standardMaterial('#d2c2b7', {
+      map: brick.albedo,
+      bumpMap: brick.height,
+      bumpScale: 0.026,
+      roughness: 0.94,
+      metalness: 0,
+    }),
+    stone: standardMaterial('#d0c9bc', {
+      map: stone.albedo,
+      bumpMap: stone.height,
+      bumpScale: 0.03,
+      roughness: 0.92,
+      metalness: 0,
+    }),
+    limestone: standardMaterial('#e0dbcf', {
+      map: limestone.albedo,
+      bumpMap: limestone.height,
+      bumpScale: 0.022,
+      roughness: 0.87,
+      metalness: 0,
+    }),
+    slate: standardMaterial('#aeb4b3', {
+      map: slate.albedo,
+      bumpMap: slate.height,
+      bumpScale: 0.026,
+      roughness: 0.88,
+      metalness: 0,
+    }),
+    wood: standardMaterial('#b29a87', {
+      map: oak.albedo,
+      bumpMap: oak.height,
+      bumpScale: 0.018,
+      roughness: 0.88,
+      metalness: 0,
+    }),
+    bronze: standardMaterial('#6f5030', { roughness: 0.48, metalness: 0.74 }),
+    window: markAccent(new THREE.MeshStandardMaterial({
+      color: '#d7b975',
+      emissive: '#c28b42',
+      emissiveIntensity: 1.25,
+      roughness: 0.22,
+      metalness: 0.18,
+    })),
+    path: standardMaterial('#d2c9b8', {
+      map: path.albedo,
+      bumpMap: path.height,
+      bumpScale: 0.025,
+      roughness: 0.96,
+      metalness: 0,
+    }),
+    grass: standardMaterial('#17251a', { roughness: 1, metalness: 0 }),
+  };
+}
+
+type AcademicBuildingKind = 'library' | 'university' | 'archive';
+
+interface AcademicBuildingSpec {
+  readonly name: string;
+  readonly kind: AcademicBuildingKind;
+  readonly width: number;
+  readonly depth: number;
+  readonly height: number;
+  readonly position: THREE.Vector3;
+  readonly yaw: number;
+  readonly floorY?: number;
+  readonly groundY?: number;
+  readonly entranceSteps?: number;
+  readonly landmark?: boolean;
+}
+
+function academicBox(
+  definition: DistrictDefinition,
+  name: string,
+  material: THREE.Material,
+  scale: THREE.Vector3,
+  position: THREE.Vector3,
+) {
+  const mesh = prepareMesh(new THREE.Mesh(academicUnitBox, material), definition.id);
+  mesh.name = name;
+  mesh.scale.copy(scale);
+  mesh.position.copy(position);
+  return mesh;
+}
+
+function setAcademicInstances(
+  mesh: THREE.InstancedMesh,
+  transforms: ReadonlyArray<{ position: THREE.Vector3; scale: THREE.Vector3 }>,
+) {
+  const matrix = new THREE.Matrix4();
+  const quaternion = new THREE.Quaternion();
+  transforms.forEach((transform, index) => {
+    matrix.compose(transform.position, quaternion, transform.scale);
+    mesh.setMatrixAt(index, matrix);
+  });
+  mesh.instanceMatrix.needsUpdate = true;
+}
+
+function createAccessibleAcademicBuilding(
+  definition: DistrictDefinition,
+  spec: AcademicBuildingSpec,
+  materials: ReturnType<typeof createAcademicMaterials>,
+) {
+  const building = new THREE.Group();
+  const key = campusFeatureKey(spec.name).toUpperCase();
+  building.name = `${definition.id}__ACADEMIC_FACILITY__${key}`;
+  building.position.copy(spec.position);
+  building.rotation.y = spec.yaw;
+
+  const floorY = spec.floorY ?? 0;
+  const groundY = spec.groundY ?? floorY;
+  const wallThickness = 0.16;
+  const doorwayWidth = THREE.MathUtils.clamp(spec.width * 0.075, 0.38, 0.56);
+  const doorwayHeight = 0.38;
+  const floorThickness = 0.025;
+  const halfDepth = spec.depth * 0.5;
+  const frontZ = spec.depth * 0.5 - wallThickness * 0.5;
+  const wallCenterY = floorY + spec.height * 0.5;
+  const floor = academicBox(
+    definition,
+    `${building.name}__WALKABLE_FLOOR`,
+    materials.stone,
+    new THREE.Vector3(spec.width - wallThickness * 1.5, floorThickness, spec.depth - wallThickness * 1.5),
+    new THREE.Vector3(0, floorY + floorThickness * 0.5, 0),
+  );
+  floor.userData.walkable = true;
+  building.add(floor);
+
+  const rearWall = academicBox(
+    definition,
+    `${building.name}__REAR_MASONRY_WALL`,
+    materials.brick,
+    new THREE.Vector3(spec.width, spec.height, wallThickness),
+    new THREE.Vector3(0, wallCenterY, -frontZ),
+  );
+  const leftWall = academicBox(
+    definition,
+    `${building.name}__LEFT_MASONRY_WALL`,
+    materials.brick,
+    new THREE.Vector3(wallThickness, spec.height, spec.depth - wallThickness * 2),
+    new THREE.Vector3(-spec.width * 0.5 + wallThickness * 0.5, wallCenterY, 0),
+  );
+  const rightWall = leftWall.clone();
+  rightWall.name = `${building.name}__RIGHT_MASONRY_WALL`;
+  rightWall.position.x *= -1;
+  const frontSegmentWidth = (spec.width - doorwayWidth) * 0.5;
+  const frontLeft = academicBox(
+    definition,
+    `${building.name}__FRONT_LEFT_MASONRY_WALL`,
+    materials.brick,
+    new THREE.Vector3(frontSegmentWidth, spec.height, wallThickness),
+    new THREE.Vector3(-(doorwayWidth + frontSegmentWidth) * 0.5, wallCenterY, frontZ),
+  );
+  const frontRight = frontLeft.clone();
+  frontRight.name = `${building.name}__FRONT_RIGHT_MASONRY_WALL`;
+  frontRight.position.x *= -1;
+  const doorLintel = academicBox(
+    definition,
+    `${building.name}__DOOR_LINTEL`,
+    materials.limestone,
+    new THREE.Vector3(doorwayWidth, spec.height - doorwayHeight, wallThickness * 1.12),
+    new THREE.Vector3(0, floorY + doorwayHeight + (spec.height - doorwayHeight) * 0.5, frontZ),
+  );
+  building.add(rearWall, leftWall, rightWall, frontLeft, frontRight, doorLintel);
+
+  const roof = prepareMesh(new THREE.Mesh(academicGableGeometry, materials.slate), definition.id);
+  roof.name = `${building.name}__STEEP_SLATE_GABLE`;
+  roof.scale.set(spec.width + 0.42, 0.95 + (spec.landmark ? 0.28 : 0), spec.depth + 0.45);
+  roof.position.y = floorY + spec.height;
+  building.add(roof);
+
+  for (const z of [-spec.depth * 0.5 - 0.04, spec.depth * 0.5 + 0.04]) {
+    const belt = academicBox(
+      definition,
+      `${building.name}__LIMESTONE_STRING_COURSE`,
+      materials.limestone,
+      new THREE.Vector3(spec.width + 0.2, 0.1, 0.1),
+      new THREE.Vector3(0, floorY + spec.height * 0.46, z),
     );
-    slab.rotation.y = (index - 1.5) * 3 * DEG;
-    group.add(slab);
+    building.add(belt);
   }
-  const rotunda = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(width * 0.17, width * 0.2, height * 0.75, 32), materials.glass), id);
-  rotunda.position.set(width * 0.27, 0.4 + height * 0.375, -depth * 0.12);
-  group.add(rotunda);
-  const crown = prepareMesh(new THREE.Mesh(new THREE.TorusGeometry(width * 0.16, 0.06, 8, 42), materials.accent), id, false);
-  crown.rotation.x = Math.PI / 2;
-  crown.position.set(width * 0.27, 0.45 + height * 0.75, -depth * 0.12);
-  group.add(crown);
-  addFacadeBands(group, id, width * 0.46, height * 0.68, depth * 0.44, -width * 0.04, 0, accent, 5);
+
+  const arch = prepareMesh(
+    new THREE.Mesh(new THREE.TorusGeometry(doorwayWidth * 0.5, 0.055, 7, 20, Math.PI), materials.limestone),
+    definition.id,
+    false,
+  );
+  arch.name = `${building.name}__OPEN_STONE_DOOR_ARCH`;
+  arch.position.set(0, floorY + doorwayHeight, spec.depth * 0.5 + 0.012);
+  building.add(arch);
+  for (const side of [-1, 1]) {
+    const openDoor = academicBox(
+      definition,
+      `${building.name}__OPEN_OAK_DOOR`,
+      materials.wood,
+      new THREE.Vector3(doorwayWidth * 0.42, doorwayHeight * 0.9, 0.045),
+      new THREE.Vector3(side * doorwayWidth * 0.41, floorY + doorwayHeight * 0.45, spec.depth * 0.5 + 0.11),
+    );
+    openDoor.rotation.y = side * 1.1;
+    building.add(openDoor);
+  }
+
+  const entranceStepCount = Math.max(0, Math.floor(spec.entranceSteps ?? 0));
+  const stairTreadDepth = entranceStepCount > 0 ? 0.15 : 0;
+  const stairRun = entranceStepCount * stairTreadDepth;
+  if (entranceStepCount > 0) {
+    const floorTopY = floorY + floorThickness;
+    const stepWidth = Math.max(1.1, doorwayWidth + 0.65);
+    for (let index = 0; index < entranceStepCount; index += 1) {
+      const stepTopY = THREE.MathUtils.lerp(groundY, floorTopY, (index + 1) / entranceStepCount);
+      const stepHeight = Math.max(0.004, stepTopY - groundY);
+      const step = prepareMesh(new THREE.Mesh(
+        new THREE.BoxGeometry(stepWidth, stepHeight, stairTreadDepth + 0.008),
+        materials.stone,
+      ), definition.id);
+      step.name = index === 0
+        ? `${definition.id}__ACCESS_STAIRS`
+        : `${building.name}__MAIN_ENTRANCE_STEP_${index + 1}`;
+      step.position.set(
+        0,
+        groundY + stepHeight * 0.5,
+        halfDepth + (entranceStepCount - index - 0.5) * stairTreadDepth,
+      );
+      step.userData.walkable = true;
+      step.userData.academicMainStep = true;
+      step.userData.stepIndex = index;
+      step.userData.stepTopY = stepTopY;
+      if (index === 0) step.userData.walkAccessRouteMarker = true;
+      building.add(step);
+    }
+
+    const approachDepth = 0.18;
+    const approach = prepareMesh(new THREE.Mesh(
+      new THREE.BoxGeometry(stepWidth, 0.006, approachDepth),
+      materials.path,
+    ), definition.id);
+    approach.name = `${definition.id}__ACCESS_APPROACH`;
+    approach.position.set(0, groundY - 0.003, halfDepth + stairRun + approachDepth * 0.5);
+    approach.userData.walkable = true;
+    approach.userData.accessibilityLanding = true;
+    approach.userData.academicMainApproach = true;
+    building.add(approach);
+
+    const accessExteriorZ = halfDepth + stairRun + approachDepth;
+    const accessInteriorZ = halfDepth - 1.25;
+    addNavigationAccessVolume(
+      building,
+      definition.id,
+      stepWidth,
+      2.2,
+      accessExteriorZ - accessInteriorZ,
+      0.85,
+      (accessExteriorZ + accessInteriorZ) * 0.5,
+      'district',
+    );
+  }
+
+  const windowTransforms: Array<{ position: THREE.Vector3; scale: THREE.Vector3 }> = [];
+  const frontColumns = THREE.MathUtils.clamp(Math.floor(spec.width / 1.35), 4, 9);
+  const sideColumns = THREE.MathUtils.clamp(Math.floor(spec.depth / 1.5), 3, 7);
+  for (let row = 0; row < 2; row += 1) {
+    const y = floorY + spec.height * (0.3 + row * 0.36);
+    for (let column = 0; column < frontColumns; column += 1) {
+      const x = THREE.MathUtils.lerp(-spec.width * 0.4, spec.width * 0.4, frontColumns === 1 ? 0.5 : column / (frontColumns - 1));
+      if (row === 0 && Math.abs(x) < doorwayWidth * 0.75) continue;
+      windowTransforms.push(
+        { position: new THREE.Vector3(x, y, spec.depth * 0.5 + 0.014), scale: new THREE.Vector3(0.5, 0.62, 0.035) },
+        { position: new THREE.Vector3(x, y, -spec.depth * 0.5 - 0.014), scale: new THREE.Vector3(0.5, 0.62, 0.035) },
+      );
+    }
+    for (let column = 0; column < sideColumns; column += 1) {
+      const z = THREE.MathUtils.lerp(-spec.depth * 0.36, spec.depth * 0.36, sideColumns === 1 ? 0.5 : column / (sideColumns - 1));
+      windowTransforms.push(
+        { position: new THREE.Vector3(spec.width * 0.5 + 0.014, y, z), scale: new THREE.Vector3(0.035, 0.62, 0.5) },
+        { position: new THREE.Vector3(-spec.width * 0.5 - 0.014, y, z), scale: new THREE.Vector3(0.035, 0.62, 0.5) },
+      );
+    }
+  }
+  const windows = prepareMesh(
+    new THREE.InstancedMesh(academicUnitBox, materials.window, windowTransforms.length),
+    definition.id,
+    false,
+  );
+  windows.name = `${building.name}__LEADED_AMBER_WINDOWS`;
+  setAcademicInstances(windows, windowTransforms);
+  building.add(windows);
+
+  const buttressTransforms: Array<{ position: THREE.Vector3; scale: THREE.Vector3 }> = [];
+  for (const side of [-1, 1]) {
+    for (const z of [-spec.depth * 0.34, 0, spec.depth * 0.34]) {
+      buttressTransforms.push({
+        position: new THREE.Vector3(side * (spec.width * 0.5 + 0.1), floorY + spec.height * 0.26, z),
+        scale: new THREE.Vector3(0.32, spec.height * 0.52, 0.42),
+      });
+    }
+  }
+  const buttresses = prepareMesh(
+    new THREE.InstancedMesh(academicUnitBox, materials.stone, buttressTransforms.length),
+    definition.id,
+  );
+  buttresses.name = `${building.name}__GOTHIC_BUTTRESSES`;
+  setAcademicInstances(buttresses, buttressTransforms);
+  building.add(buttresses);
+
+  const chimneyTransforms = [-0.32, 0.31].map((x) => ({
+    position: new THREE.Vector3(spec.width * x, floorY + spec.height + 0.75, -spec.depth * 0.22),
+    scale: new THREE.Vector3(0.32, 1.5, 0.32),
+  }));
+  const chimneys = prepareMesh(
+    new THREE.InstancedMesh(academicUnitBox, materials.brick, chimneyTransforms.length),
+    definition.id,
+  );
+  chimneys.name = `${building.name}__BRICK_CHIMNEYS`;
+  setAcademicInstances(chimneys, chimneyTransforms);
+  building.add(chimneys);
+
+  if (spec.landmark) {
+    for (const side of [-1, 1]) {
+      const towerHeight = spec.height + 1.75;
+      const tower = academicBox(
+        definition,
+        `${building.name}__COLLEGIATE_TOWER`,
+        materials.brick,
+        new THREE.Vector3(2.15, towerHeight, 2.15),
+        new THREE.Vector3(side * spec.width * 0.32, floorY + towerHeight * 0.5, -spec.depth * 0.16),
+      );
+      const towerRoof = prepareMesh(new THREE.Mesh(academicUnitCone, materials.slate), definition.id);
+      towerRoof.name = `${building.name}__TOWER_SLATE_CAP`;
+      towerRoof.scale.set(2.65, 1.4, 2.65);
+      towerRoof.position.set(side * spec.width * 0.32, floorY + towerHeight + 0.7, -spec.depth * 0.16);
+      building.add(tower, towerRoof);
+    }
+  }
+
+  const collisionGuide = new THREE.Object3D();
+  collisionGuide.name = `${building.name}__PRECISE_WALK_COLLISION`;
+  const barrierY = floorY + 0.11;
+  const halfWidth = spec.width * 0.5;
+  collisionGuide.userData.navBarrierSegments = [
+    { start: [-halfWidth, barrierY, -halfDepth], end: [halfWidth, barrierY, -halfDepth], radius: 0.055 },
+    { start: [-halfWidth, barrierY, -halfDepth], end: [-halfWidth, barrierY, halfDepth], radius: 0.055 },
+    { start: [halfWidth, barrierY, -halfDepth], end: [halfWidth, barrierY, halfDepth], radius: 0.055 },
+    { start: [-halfWidth, barrierY, halfDepth], end: [-doorwayWidth * 0.5, barrierY, halfDepth], radius: 0.055 },
+    { start: [doorwayWidth * 0.5, barrierY, halfDepth], end: [halfWidth, barrierY, halfDepth], radius: 0.055 },
+  ];
+  building.add(collisionGuide);
+
+  const frontDirection = new THREE.Vector3(Math.sin(spec.yaw), 0, Math.cos(spec.yaw));
+  const routeStart = spec.position.clone().addScaledVector(
+    frontDirection,
+    halfDepth + (entranceStepCount > 0 ? stairRun + 0.04 : 3.2),
+  );
+  const threshold = spec.position.clone().addScaledVector(frontDirection, halfDepth + 0.08);
+  const interiorTarget = spec.position.clone().addScaledVector(frontDirection, halfDepth - 1.25);
+  tagCampusFeature(building, definition, spec.name, 'building');
+  building.userData.academicFacility = true;
+  building.userData.academicFacilityType = spec.kind;
+  building.userData.accessibleInWalk = true;
+  building.userData.facilityForm = spec.kind === 'library' || spec.kind === 'archive' ? 'library' : 'administration';
+  building.userData.footprint = [spec.width, spec.depth];
+  building.userData.entrancePoint = threshold.toArray();
+  building.userData.walkAccess = {
+    accessible: true,
+    buildingKind: spec.kind,
+    coordinateSpace: 'district-local',
+    routeStart: routeStart.toArray(),
+    threshold: threshold.toArray(),
+    interiorTarget: interiorTarget.toArray(),
+    finishedFloorY: floorY + floorThickness,
+    doorwayWidth,
+    entranceStepCount,
+    stairRun,
+  };
+  building.userData.meshArchitecture = {
+    style: 'dark academia collegiate gothic',
+    elements: ['umber brick', 'limestone trim', 'slate gable', 'buttresses', 'chimneys', 'leaded windows', 'open archway'],
+  };
+  return building;
+}
+
+function buildAcademic(group: THREE.Group, definition: DistrictDefinition, _height: number, floorY: number) {
+  const [width, depth] = definition.footprint;
+  const academicMaterials = createAcademicMaterials();
+  const entryOutward = new THREE.Vector3(-definition.position[0], 0, -definition.position[2]);
+  if (entryOutward.lengthSq() < 0.0001) entryOutward.set(0, 0, 1);
+  entryOutward.normalize();
+  const greatHall = createAccessibleAcademicBuilding(definition, {
+    name: 'Blackwood University Great Hall',
+    kind: 'university',
+    width: width * 0.84,
+    depth: depth * 0.76,
+    height: 4.9,
+    position: new THREE.Vector3(),
+    yaw: Math.atan2(entryOutward.x, entryOutward.z),
+    floorY,
+    groundY: 0,
+    entranceSteps: 4,
+    landmark: true,
+  }, academicMaterials);
+  greatHall.userData.academicPrimary = true;
+  group.add(greatHall);
+  group.userData.academicMaterials = {
+    brick: '#4A3028',
+    stone: '#302C29',
+    limestone: '#A99578',
+    slate: '#171B1D',
+    bronze: '#6F5030',
+    windowGlow: '#D7B975',
+  };
 }
 
 function buildEnvironmental(group: THREE.Group, definition: DistrictDefinition, height: number) {
@@ -1077,6 +1553,632 @@ function addDistrictSignature(group: THREE.Group, definition: DistrictDefinition
   }
 }
 
+const campusFeatureKey = (name: string) => name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+function tagCampusFeature(
+  object: THREE.Object3D,
+  definition: DistrictDefinition,
+  semanticName: string,
+  role: 'building' | 'lab' | 'equipment' | 'landscape' | 'prop' | 'connector',
+) {
+  const featureTag = campusFeatureKey(semanticName);
+  object.userData.semanticName = semanticName;
+  object.userData.featureTag = featureTag;
+  object.userData.featureRole = role;
+  object.userData.districtId = definition.id;
+  object.traverse((child) => {
+    child.userData.selectableId = definition.id;
+    child.userData.featureTag = featureTag;
+    child.userData.featureRole = role;
+    child.userData.districtId = definition.id;
+  });
+}
+
+const campusUnitGeometries = {
+  box: new THREE.BoxGeometry(1, 1, 1),
+  cylinder: new THREE.CylinderGeometry(0.5, 0.5, 1, 12),
+  dome: new THREE.SphereGeometry(0.5, 16, 8, 0, Math.PI * 2, 0, Math.PI / 2),
+  sphere: new THREE.SphereGeometry(0.5, 12, 8),
+  cone: new THREE.ConeGeometry(0.5, 1, 10),
+  torus: new THREE.TorusGeometry(0.5, 0.12, 8, 24),
+  knot: new THREE.TorusKnotGeometry(0.48, 0.12, 48, 8, 2, 3),
+  octahedron: new THREE.OctahedronGeometry(0.5),
+};
+
+function createCampusFacility(
+  definition: DistrictDefinition,
+  name: string,
+  form: CampusFacilityForm,
+  width: number,
+  depth: number,
+  random: () => number,
+  materials: ReturnType<typeof createMaterials>,
+) {
+  const facility = new THREE.Group();
+  facility.name = `${definition.id}__FACILITY__${campusFeatureKey(name).toUpperCase()}`;
+  const tallForms = new Set<CampusFacilityForm>(['arcology', 'tower', 'hotel', 'library', 'hospital', 'detector-hall']);
+  const broadForms = new Set<CampusFacilityForm>(['hall', 'hangar', 'detector-hall', 'warehouse', 'transit-hub']);
+  const lowForms = new Set<CampusFacilityForm>(['pavilion', 'greenhouse', 'subterranean-bunker', 'service-building']);
+  const facilityHeight = tallForms.has(form)
+    ? 4.6 + random() * 2.6
+    : lowForms.has(form)
+      ? 1.9 + random() * 1.2
+      : 2.8 + random() * 1.8;
+  const buildingWidth = broadForms.has(form) ? width * 1.12 : width;
+  const buildingDepth = broadForms.has(form) ? depth * 1.08 : depth;
+  const geometry = form === 'observatory'
+    ? campusUnitGeometries.dome
+    : form === 'subterranean-bunker' || form === 'utility-plant'
+      ? campusUnitGeometries.cylinder
+      : campusUnitGeometries.box;
+  const material = form === 'greenhouse' || form === 'observatory'
+    ? materials.glass
+    : form === 'subterranean-bunker'
+      ? materials.dark
+      : form === 'pavilion' || form === 'studio'
+        ? materials.accent
+        : materials.body;
+  const body = prepareMesh(new THREE.Mesh(geometry, material), definition.id, false);
+  body.receiveShadow = true;
+  body.name = `${facility.name}__PRIMARY_VOLUME`;
+  body.scale.set(buildingWidth, facilityHeight, buildingDepth);
+  body.position.y = facilityHeight * 0.5;
+  body.userData.navObstacle = true;
+  facility.add(body);
+  const role = /lab|research|clinical|diagnostic|sequenc|analysis|science|biology|chemistry|forensic|accelerator/i.test(name)
+    ? 'lab'
+    : 'building';
+  tagCampusFeature(facility, definition, name, role);
+  facility.userData.facilityForm = form;
+  facility.userData.footprint = [buildingWidth, buildingDepth];
+  facility.userData.facilityHeight = facilityHeight;
+  return facility;
+}
+
+function createCampusObject(
+  definition: DistrictDefinition,
+  name: string,
+  kind: CampusObjectKind,
+  materials: ReturnType<typeof createMaterials>,
+) {
+  const object = new THREE.Group();
+  object.name = `${definition.id}__OBJECT__${campusFeatureKey(name).toUpperCase()}`;
+  let geometry: THREE.BufferGeometry = campusUnitGeometries.octahedron;
+  let material: THREE.Material = materials.accent;
+  const scale = new THREE.Vector3(1, 1, 1);
+  let height = 1;
+  let rotationX = 0;
+  if (kind === 'process-equipment' || kind === 'storage') {
+    geometry = campusUnitGeometries.cylinder;
+    material = materials.metal;
+    scale.set(1.1, 1.8, 1.1);
+    height = 1.8;
+  } else if (kind === 'robot' || kind === 'public-art') {
+    geometry = campusUnitGeometries.knot;
+    scale.setScalar(kind === 'public-art' ? 1.45 : 1.05);
+    height = kind === 'public-art' ? 1.5 : 1.15;
+  } else if (kind === 'vehicle' || kind === 'cargo') {
+    geometry = campusUnitGeometries.box;
+    material = kind === 'cargo' ? materials.metal : materials.body;
+    scale.set(1.9, 0.58, 0.95);
+    height = 0.58;
+  } else if (kind === 'gantry' || kind === 'medical-equipment') {
+    geometry = campusUnitGeometries.torus;
+    scale.set(1.7, 1.7, 1.15);
+    height = 1.75;
+  } else if (kind === 'antenna') {
+    geometry = campusUnitGeometries.cone;
+    material = materials.metal;
+    scale.set(0.55, 2.6, 0.55);
+    height = 2.6;
+  } else if (kind === 'garden' || kind === 'habitat' || kind === 'water-feature') {
+    geometry = campusUnitGeometries.cylinder;
+    material = kind === 'water-feature' ? materials.glass : materials.accent;
+    scale.set(2.35, 0.12, 2.35);
+    height = 0.12;
+  } else if (kind === 'energy-system') {
+    geometry = campusUnitGeometries.box;
+    material = materials.glass;
+    scale.set(2.4, 0.12, 1.45);
+    height = 0.42;
+    rotationX = 0.34;
+  } else if (kind === 'security' || kind === 'drone') {
+    geometry = campusUnitGeometries.octahedron;
+    material = kind === 'security' ? materials.metal : materials.accent;
+    scale.setScalar(kind === 'drone' ? 1.15 : 1.35);
+    height = kind === 'drone' ? 1.55 : 0.9;
+  } else if (kind === 'street-furniture' || kind === 'signage') {
+    geometry = campusUnitGeometries.box;
+    material = materials.accent;
+    scale.set(0.65, 1.25, 0.28);
+    height = 1.25;
+  }
+  const mesh = prepareMesh(new THREE.Mesh(geometry, material), definition.id, false);
+  mesh.receiveShadow = true;
+  mesh.name = `${object.name}__SYMBOL`;
+  mesh.scale.copy(scale);
+  mesh.position.y = height * 0.5;
+  mesh.rotation.x = rotationX;
+  mesh.userData.navObstacle = height > 0.35;
+  object.add(mesh);
+  const role = kind === 'garden' || kind === 'habitat' || kind === 'water-feature'
+    ? 'landscape'
+    : kind === 'street-furniture' || kind === 'signage'
+      ? 'prop'
+      : 'equipment';
+  tagCampusFeature(object, definition, name, role);
+  object.userData.objectKind = kind;
+  return object;
+}
+
+function addCampusRoad(
+  group: THREE.Group,
+  definition: DistrictDefinition,
+  startPosition: THREE.Vector3,
+  end: THREE.Vector3,
+  index: number,
+  material: THREE.Material,
+  startClearance = 0,
+  endClearance = 0,
+  width = 0.62,
+  thickness = 0.032,
+) {
+  const fullDelta = end.clone().sub(startPosition);
+  const fullLength = fullDelta.length();
+  if (fullLength < 1.4) return;
+  const direction = fullDelta.normalize();
+  const availableClearance = Math.max(0, fullLength - 0.6);
+  const clearanceScale = Math.min(1, availableClearance / Math.max(0.001, startClearance + endClearance));
+  const start = startPosition.clone().addScaledVector(direction, startClearance * clearanceScale);
+  const roadEnd = end.clone().addScaledVector(direction, -endClearance * clearanceScale);
+  const delta = roadEnd.clone().sub(start);
+  if (delta.length() < 0.5) return;
+  const roadGeometry = new THREE.BoxGeometry(width, thickness, delta.length());
+  if (definition.id === 'academic-libraries-theoretical-labs') {
+    tileAcademicPathGeometry(roadGeometry);
+  }
+  const connector = prepareMesh(new THREE.Mesh(
+    roadGeometry,
+    material,
+  ), definition.id, false);
+  connector.name = `${definition.id}__LOCAL_CAMPUS_ROAD_${index + 1}`;
+  connector.position.copy(start).add(roadEnd).multiplyScalar(0.5);
+  connector.position.y = thickness * 0.5;
+  connector.rotation.y = Math.atan2(delta.x, delta.z);
+  connector.userData.walkable = true;
+  connector.userData.crossDistrictConnector = false;
+  connector.userData.localCampusRoad = true;
+  connector.userData.roadEndpoints = {
+    start: start.toArray(),
+    end: roadEnd.toArray(),
+  };
+  tagCampusFeature(connector, definition, `Local campus road ${index + 1}`, 'connector');
+  group.add(connector);
+}
+
+function setSectorAnchor(
+  object: THREE.Object3D,
+  definition: DistrictDefinition,
+  worldPosition: THREE.Vector3,
+) {
+  const sector = definition.sector!;
+  const radialSpan = sector.outerRadius - sector.innerRadius;
+  const span = sector.endAngle - sector.startAngle;
+  const radius = Math.hypot(worldPosition.x, worldPosition.z);
+  const rawAngle = Math.atan2(worldPosition.z, worldPosition.x);
+  const angle = sector.centerAngle + Math.atan2(
+    Math.sin(rawAngle - sector.centerAngle),
+    Math.cos(rawAngle - sector.centerAngle),
+  );
+  object.userData.sectorAnchor = {
+    radius,
+    angle,
+    normalizedRadial: (radius - sector.innerRadius) / radialSpan,
+    normalizedAngular: (angle - sector.startAngle) / span,
+  };
+}
+
+function createAcademicLandscape(
+  definition: DistrictDefinition,
+  name: string,
+  position: THREE.Vector3,
+  radius: number,
+  variant: number,
+  materials: ReturnType<typeof createAcademicMaterials>,
+) {
+  const landscape = new THREE.Group();
+  landscape.name = `${definition.id}__ACADEMIC_PARK__${campusFeatureKey(name).toUpperCase()}`;
+  landscape.position.copy(position);
+  const planted = variant <= 2;
+  const ground = prepareMesh(
+    new THREE.Mesh(new THREE.CircleGeometry(radius, 32), planted ? materials.grass : materials.path),
+    definition.id,
+    false,
+  );
+  ground.name = `${landscape.name}__${planted ? 'PLANTED_LAWN' : 'LEAF_EARTH_COURT'}`;
+  ground.rotation.x = -Math.PI / 2;
+  ground.position.y = 0.004;
+  ground.userData.walkable = true;
+  landscape.add(ground);
+
+  // Circulation is authored once from the real building thresholds. The old
+  // pair of decorative cross strips in every circular park produced isolated
+  // paths that appeared to begin and end at random points in the lawn.
+  landscape.userData.decorativeCrossPathsRemoved = true;
+
+  if (variant === 3) {
+    const basin = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.42, radius * 0.48, 0.16, 24), materials.stone), definition.id);
+    basin.name = `${landscape.name}__BRONZE_SCHOLARS_FOUNTAIN_BASIN`;
+    basin.position.y = 0.08;
+    const figure = prepareMesh(new THREE.Mesh(academicUnitCrown, materials.bronze), definition.id);
+    figure.name = `${landscape.name}__BRONZE_SCHOLAR_FIGURE`;
+    figure.scale.set(0.75, 1.8, 0.75);
+    figure.position.y = 1.08;
+    landscape.add(basin, figure);
+  }
+
+  // The district extension consumes these anchors and renders all park and
+  // avenue benches through one human-scale vintage instancing kit. Keeping
+  // anchors here preserves the editable park layout without the old 12 m
+  // single-block benches.
+  const benchAnchorRatios = variant === 0
+    ? [[-0.54, -0.42], [-0.54, 0.42], [1.04, -0.42], [1.04, 0.42]]
+    : variant === 1
+      ? [[-0.54, -0.38], [-0.54, 0.42], [0.54, -0.42], [0.54, 0.42]]
+      : variant === 3
+        ? [[-0.46875, -0.3125], [-0.54, 0.42], [0.54, -0.68], [0.54, 0.42]]
+        : [-0.54, 0.54].flatMap((x) => [-0.42, 0.42].map((z) => [x, z]));
+  landscape.userData.academicBenchAnchors = benchAnchorRatios.map(([x, z]) => [x * radius, 0, z * radius]);
+
+  tagCampusFeature(landscape, definition, name, 'landscape');
+  landscape.userData.academicPark = true;
+  landscape.userData.treeFreeAcademicLandscape = true;
+  landscape.userData.landscapeType = variant === 3 ? 'fountain court' : variant === 4 ? 'reading court' : 'scholarly park';
+  landscape.userData.footprint = [radius * 2, radius * 2];
+  return landscape;
+}
+
+function populateAcademicPrecinct(
+  group: THREE.Group,
+  definition: DistrictDefinition,
+  plan: (typeof DISTRICT_CAMPUS_PLANS)['academic-libraries-theoretical-labs'],
+  campusCenter: THREE.Vector3,
+  radialDirection: THREE.Vector3,
+  tangentDirection: THREE.Vector3,
+  radialSpan: number,
+  tangentialSpan: number,
+) {
+  const materials = createAcademicMaterials();
+  const localHub = campusCenter.clone().sub(new THREE.Vector3(definition.position[0], 0, definition.position[2]));
+  const facilityLayout = [
+    { tangent: -0.62, radial: -0.58, width: 12.8, depth: 8.5, height: 4.8, kind: 'library' as const, landmark: true },
+    { tangent: 0.58, radial: -0.72, width: 10.4, depth: 7.2, height: 4.4, kind: 'library' as const },
+    { tangent: -0.78, radial: 0.45, width: 11.8, depth: 8, height: 5.1, kind: 'university' as const, landmark: true },
+    { tangent: 0.72, radial: 0.58, width: 13, depth: 8.8, height: 4.6, kind: 'university' as const },
+    { tangent: 0.06, radial: 0.94, width: 11, depth: 7.5, height: 3.8, kind: 'library' as const },
+  ];
+  const academicBuildings: THREE.Group[] = [];
+  plan.facilities.forEach((facilityPlan, index) => {
+    const layout = facilityLayout[index];
+    const worldPosition = campusCenter.clone()
+      .addScaledVector(tangentDirection, layout.tangent * tangentialSpan)
+      .addScaledVector(radialDirection, layout.radial * radialSpan);
+    const localPosition = worldPosition.clone().sub(new THREE.Vector3(definition.position[0], 0, definition.position[2]));
+    const facing = localHub.clone().sub(localPosition).setY(0).normalize();
+    const building = createAccessibleAcademicBuilding(definition, {
+      name: facilityPlan.name,
+      kind: layout.kind,
+      width: layout.width,
+      depth: layout.depth,
+      height: layout.height,
+      position: localPosition,
+      yaw: Math.atan2(facing.x, facing.z),
+      landmark: layout.landmark,
+    }, materials);
+    setSectorAnchor(building, definition, worldPosition);
+    group.add(building);
+    academicBuildings.push(building);
+  });
+
+  const parkLayout = [
+    { tangent: 0.02, radial: -0.05, radius: 5.3 },
+    { tangent: 0.38, radial: 0.03, radius: 4.1 },
+    { tangent: -0.39, radial: -0.02, radius: 3.8 },
+    { tangent: 0.04, radial: 0.47, radius: 3.2 },
+    { tangent: -0.02, radial: -0.5, radius: 3.4 },
+  ];
+  const academicParks: THREE.Group[] = [];
+  plan.objects.forEach((objectPlan, index) => {
+    const layout = parkLayout[index];
+    const worldPosition = campusCenter.clone()
+      .addScaledVector(tangentDirection, layout.tangent * tangentialSpan)
+      .addScaledVector(radialDirection, layout.radial * radialSpan);
+    const localPosition = worldPosition.clone().sub(new THREE.Vector3(definition.position[0], 0, definition.position[2]));
+    const park = createAcademicLandscape(definition, objectPlan.name, localPosition, layout.radius, index, materials);
+    setSectorAnchor(park, definition, worldPosition);
+    group.add(park);
+    academicParks.push(park);
+  });
+
+  const primary = group.children.find((child) => child.userData.academicPrimary) as THREE.Group | undefined;
+  let roadIndex = 0;
+
+  const primaryName = primary?.userData.semanticName ?? 'Blackwood University Great Hall';
+  const existingAcademicBuildings = primary ? [primary, ...academicBuildings] : academicBuildings;
+  enrichExistingAcademicBuildings(existingAcademicBuildings, definition.id);
+  const extension = buildAcademicDistrictExtension(
+    definition,
+    group,
+    localHub,
+    tangentDirection,
+    radialDirection,
+  );
+  extension.facilities.forEach((building) => {
+    const worldPosition = building.position.clone().add(new THREE.Vector3(definition.position[0], 0, definition.position[2]));
+    setSectorAnchor(building, definition, worldPosition);
+  });
+  roadIndex += extension.localRoads.length;
+  const allAcademicBuildings = [...existingAcademicBuildings, ...extension.facilities];
+  const buildingNames = allAcademicBuildings.map((building) => building.userData.semanticName as string);
+  const libraryNames = allAcademicBuildings
+    .filter((building) => ['library', 'archive'].includes(building.userData.academicFacilityType))
+    .map((building) => building.userData.semanticName as string);
+  const universityNames = allAcademicBuildings
+    .filter((building) => building.userData.academicFacilityType === 'university')
+    .map((building) => building.userData.semanticName as string);
+  group.userData.academicPrecinct = {
+    style: 'dark academia collegiate gothic campus',
+    primaryUniversity: primaryName,
+    buildingNames,
+    libraryNames,
+    universityNames,
+    parkNames: academicParks.map((park) => park.userData.semanticName as string),
+    accessibleBuildingCount: allAcademicBuildings.filter((building) => building.userData.accessibleInWalk).length,
+    roadCount: roadIndex,
+    architecture: ['English Gothic', 'Collegiate Gothic', 'Neo-Gothic repairs', 'medieval cloisters', 'Victorian interiors', 'restrained Baroque additions'],
+    zones: group.userData.academicComponentHierarchy,
+    hiddenDiscoveries: group.getObjectByName(`${definition.id}__ACADEMIC_ZONE__HIDDEN_DISCOVERIES`)?.userData.discoveries ?? [],
+    accessibleInteriors: ['Ashcroft Grand Library entrance hall', 'Founders Dining Hall', 'St Anselm Chapel nave'],
+  };
+  group.userData.interactions = [
+    'inspect entrance',
+    'open main gate',
+    'ring chapel bell',
+    'toggle reading-room lights',
+    'campus map',
+  ];
+  group.userData.population = {
+    plannedFacilities: buildingNames,
+    plannedObjects: plan.objects.map((object) => object.name),
+    realizedFeatureTags: [...buildingNames, ...academicParks.map((park) => park.userData.semanticName as string)].map(campusFeatureKey),
+    realizedFacilityCount: allAcademicBuildings.length,
+    realizedObjectCount: academicParks.length + extension.features.length,
+    distinct: true,
+    asymmetricCampus: true,
+    localRoadCount: roadIndex,
+    radialCoverage: 0.72,
+    angularCoverage: 0.82,
+    darkAcademia: true,
+    walkAccessibleAcademicBuildings: allAcademicBuildings.length,
+  };
+}
+
+function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDefinition, random: () => number) {
+  const sector = definition.sector;
+  const plan = DISTRICT_CAMPUS_PLANS[definition.id as keyof typeof DISTRICT_CAMPUS_PLANS];
+  if (!sector || !plan) return;
+
+  const span = sector.endAngle - sector.startAngle;
+  const radialSpan = sector.outerRadius - sector.innerRadius;
+  const integratedCore = definition.ring === 'core';
+  const boundaryIds = {
+    rings: [`RING_${sector.innerRadius.toFixed(3)}`, `RING_${sector.outerRadius.toFixed(3)}`],
+    radial: [
+      `RADIAL_${sector.startAngle.toFixed(6)}`,
+      `RADIAL_${sector.endAngle.toFixed(6)}`,
+    ],
+  };
+  group.userData.districtCell = {
+    ...sector,
+    angleSpan: span,
+    radialSpan,
+    boundaryIds,
+    integratedCore,
+    visibleBoundaryOverlay: false,
+    delimiters: 'shared concentric ring roads and six radial dome roads',
+    boundedByTwoRadialLines: true,
+    boundedByTwoConcentricCircles: true,
+  };
+
+  if (definition.id === 'industrial-labs') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('INDUSTRIAL__')) return;
+      child.userData.featureRole ??= 'building';
+      child.userData.featureTag ??= campusFeatureKey(child.name.replace(/^INDUSTRIAL__/, ''));
+      child.userData.districtId = definition.id;
+    });
+    group.userData.population = {
+      plannedFacilities: plan.facilities.map((facility) => facility.name),
+      plannedObjects: plan.objects.map((object) => object.name),
+      realizedFacilityCount: 12,
+      realizedObjectCount: 32,
+      existingRichCampus: true,
+      distinct: true,
+    };
+    return;
+  }
+
+  const materials = createMaterials(definition);
+  const campusCenter = integratedCore
+    ? new THREE.Vector3(
+        Math.cos(sector.centerAngle) * (sector.innerRadius + sector.outerRadius) * 0.5,
+        0,
+        Math.sin(sector.centerAngle) * (sector.innerRadius + sector.outerRadius) * 0.5,
+      )
+    : new THREE.Vector3(definition.position[0], 0, definition.position[2]);
+  const anchorRadius = Math.hypot(campusCenter.x, campusCenter.z);
+  const anchorAngle = anchorRadius > 0.001
+    ? Math.atan2(campusCenter.z, campusCenter.x)
+    : sector.centerAngle;
+  const radialDirection = new THREE.Vector3(Math.cos(anchorAngle), 0, Math.sin(anchorAngle));
+  const tangentDirection = new THREE.Vector3(-Math.sin(anchorAngle), 0, Math.cos(anchorAngle));
+  const clusterRadialSpan = THREE.MathUtils.clamp(radialSpan * 0.36, 12, 26);
+  const clusterTangentialSpan = THREE.MathUtils.clamp(
+    Math.max(anchorRadius, (sector.innerRadius + sector.outerRadius) * 0.5) * Math.sin(span * 0.5) * 0.58,
+    16,
+    34,
+  );
+
+  if (definition.id === 'academic-libraries-theoretical-labs') {
+    populateAcademicPrecinct(
+      group,
+      definition,
+      plan as (typeof DISTRICT_CAMPUS_PLANS)['academic-libraries-theoretical-labs'],
+      campusCenter,
+      radialDirection,
+      tangentDirection,
+      clusterRadialSpan,
+      clusterTangentialSpan,
+    );
+    return;
+  }
+
+  const facilitySlots: ReadonlyArray<readonly [number, number]> = [
+    [-0.8, -0.42],
+    [0.28, -0.86],
+    [0.86, 0.18],
+    [-0.2, 0.86],
+  ];
+  const realizedTags: string[] = [];
+  const localCampusHub = campusCenter.clone().sub(new THREE.Vector3(definition.position[0], 0, definition.position[2]));
+  const facilityAnchors: Array<{
+    name: string;
+    position: THREE.Vector3;
+    entrance: THREE.Vector3;
+    footprint: readonly [number, number];
+  }> = [];
+  plan.facilities.forEach((facilityPlan, index) => {
+    const [tangentialT, radialT] = facilitySlots[index % facilitySlots.length];
+    const worldPosition = campusCenter.clone()
+      .addScaledVector(tangentDirection, tangentialT * clusterTangentialSpan)
+      .addScaledVector(radialDirection, radialT * clusterRadialSpan);
+    const radius = Math.hypot(worldPosition.x, worldPosition.z);
+    const rawAngle = Math.atan2(worldPosition.z, worldPosition.x);
+    const angle = sector.centerAngle + Math.atan2(
+      Math.sin(rawAngle - sector.centerAngle),
+      Math.cos(rawAngle - sector.centerAngle),
+    );
+    const arcWidth = Math.max(8, Math.max(anchorRadius, radius) * span);
+    const facilityWidth = THREE.MathUtils.clamp(arcWidth * 0.105, 5.5, 12.5);
+    const facilityDepth = THREE.MathUtils.clamp(radialSpan * 0.13, 4.2, 8.2);
+    const facility = createCampusFacility(
+      definition,
+      facilityPlan.name,
+      facilityPlan.form,
+      facilityWidth,
+      facilityDepth,
+      random,
+      materials,
+    );
+    facility.position.set(
+      worldPosition.x - definition.position[0],
+      0,
+      worldPosition.z - definition.position[2],
+    );
+    const facing = localCampusHub.clone().sub(facility.position).setY(0);
+    if (facing.lengthSq() < 0.001) facing.copy(radialDirection).negate();
+    facing.normalize();
+    facility.rotation.y = Math.atan2(facing.x, facing.z);
+    facility.userData.sectorAnchor = {
+      radius,
+      angle,
+      normalizedRadial: (radius - sector.innerRadius) / radialSpan,
+      normalizedAngular: (angle - sector.startAngle) / span,
+    };
+    group.add(facility);
+    const [buildingWidth, buildingDepth] = facility.userData.footprint as [number, number];
+    const entrance = facility.position.clone().addScaledVector(facing, buildingDepth * 0.5 + 0.78);
+    facility.userData.entrancePoint = entrance.toArray();
+    facilityAnchors.push({
+      name: facilityPlan.name,
+      position: facility.position.clone(),
+      entrance,
+      footprint: [buildingWidth, buildingDepth],
+    });
+    realizedTags.push(campusFeatureKey(facilityPlan.name));
+  });
+
+  const objectSlots: ReadonlyArray<readonly [number, number]> = [
+    [-0.96, 0.28],
+    [0.54, -0.94],
+    [0.98, -0.16],
+    [-0.46, 0.96],
+    [0.14, 0.14],
+  ];
+  plan.objects.forEach((objectPlan, index) => {
+    const [tangentialT, radialT] = objectSlots[index % objectSlots.length];
+    const worldPosition = campusCenter.clone()
+      .addScaledVector(tangentDirection, tangentialT * clusterTangentialSpan * 1.08)
+      .addScaledVector(radialDirection, radialT * clusterRadialSpan * 1.08);
+    const radius = Math.hypot(worldPosition.x, worldPosition.z);
+    const rawAngle = Math.atan2(worldPosition.z, worldPosition.x);
+    const angle = sector.centerAngle + Math.atan2(
+      Math.sin(rawAngle - sector.centerAngle),
+      Math.cos(rawAngle - sector.centerAngle),
+    );
+    const object = createCampusObject(definition, objectPlan.name, objectPlan.kind, materials);
+    object.position.set(
+      worldPosition.x - definition.position[0],
+      0,
+      worldPosition.z - definition.position[2],
+    );
+    object.rotation.y = -angle - Math.PI / 2;
+    object.userData.sectorAnchor = {
+      radius,
+      angle,
+      normalizedRadial: (radius - sector.innerRadius) / radialSpan,
+      normalizedAngular: (angle - sector.startAngle) / span,
+    };
+    group.add(object);
+    realizedTags.push(campusFeatureKey(objectPlan.name));
+  });
+
+  const campusRoadMaterial = standardMaterial('#626a6c', { roughness: 0.96, metalness: 0.02 });
+  facilityAnchors.forEach((anchor, index) => {
+    const delta = anchor.entrance.clone().sub(localCampusHub);
+    const direction = delta.clone().normalize();
+    const projectedMainClearance = integratedCore
+      ? 0.4
+      : Math.min(
+          Math.abs(direction.x) > 0.001 ? definition.footprint[0] * 0.5 / Math.abs(direction.x) : Number.POSITIVE_INFINITY,
+          Math.abs(direction.z) > 0.001 ? definition.footprint[1] * 0.5 / Math.abs(direction.z) : Number.POSITIVE_INFINITY,
+        ) + 0.72;
+    addCampusRoad(
+      group,
+      definition,
+      localCampusHub,
+      anchor.entrance,
+      index,
+      campusRoadMaterial,
+      projectedMainClearance,
+      0.08,
+      0.72,
+    );
+  });
+  group.userData.population = {
+    plannedFacilities: plan.facilities.map((facility) => facility.name),
+    plannedObjects: plan.objects.map((object) => object.name),
+    realizedFeatureTags: realizedTags,
+    realizedFacilityCount: plan.facilities.length,
+    realizedObjectCount: plan.objects.length,
+    distinct: new Set(realizedTags).size === realizedTags.length,
+    asymmetricCampus: true,
+    localRoadCount: facilityAnchors.length,
+    radialCoverage: 0.64,
+    angularCoverage: 0.72,
+  };
+}
+
 export interface ProceduralModel {
   group: THREE.Group;
   labelHeight: number;
@@ -1099,16 +2201,36 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
 
   const [width, depth] = definition.footprint;
   const isIndustrialDistrict = definition.id === 'industrial-labs';
-  const finishedFloorY = isIndustrialDistrict ? metresToWorldUnits(0.18) : DISTRICT_FINISHED_FLOOR_Y;
-  const accessRampLength = isIndustrialDistrict ? metresToWorldUnits(2.4) : DISTRICT_ACCESS_RAMP_LENGTH;
+  const isAcademicDistrict = definition.id === 'academic-libraries-theoretical-labs';
+  const finishedFloorY = isIndustrialDistrict
+    ? metresToWorldUnits(0.18)
+    : isAcademicDistrict
+      ? ACADEMIC_FINISHED_FLOOR_Y
+      : DISTRICT_FINISHED_FLOOR_Y;
+  const accessRampLength = isIndustrialDistrict
+    ? metresToWorldUnits(2.4)
+    : isAcademicDistrict
+      ? metresToWorldUnits(4)
+      : DISTRICT_ACCESS_RAMP_LENGTH;
   const foundationTexture = makeConcreteTexture();
-  const plotMaterial = physicalMaterial(definition.palette[0], {
-    map: foundationTexture,
-    bumpMap: foundationTexture,
-    bumpScale: 0.014,
-    roughness: 0.7,
-    metalness: 0.12,
-  });
+  const academicGroundTexture = isAcademicDistrict ? makeGroundTexture('#303b2f') : null;
+  const plotMaterial = isAcademicDistrict
+    ? physicalMaterial('#d0d4cb', {
+      map: academicGroundTexture,
+      bumpMap: academicGroundTexture,
+      bumpScale: 0.012,
+      roughness: 0.98,
+      metalness: 0,
+      clearcoat: 0,
+    })
+    : physicalMaterial(definition.palette[0], {
+      map: foundationTexture,
+      bumpMap: foundationTexture,
+      bumpScale: 0.014,
+      roughness: 0.7,
+      metalness: 0.12,
+    });
+  if (isAcademicDistrict) plotMaterial.name = 'Academic ground-level lawn datum';
   // A shallow RoundedBoxGeometry does not retain its requested vertical
   // extent at these wide aspect ratios. Use a structural box for the plinth so
   // the visible/collision volume really runs from terrain to finished floor.
@@ -1123,19 +2245,22 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   // The industrial parcel is a curb-height paved yard, not a walled plinth.
   // Its actual buildings remain collision obstacles, while the slab can be
   // approached from every side at normal walking step height.
-  plot.userData.navObstacle = !isIndustrialDistrict;
+  plot.userData.navObstacle = !isIndustrialDistrict && !isAcademicDistrict;
   plot.userData.solidFoundation = true;
+  if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
   group.add(plot);
-  addAccessRamp(
-    group,
-    definition.id,
-    width,
-    depth,
-    finishedFloorY,
-    accessRampLength,
-    plotMaterial,
-    depth * 0.5 - 0.04,
-  );
+  if (!isAcademicDistrict) {
+    addAccessRamp(
+      group,
+      definition.id,
+      width,
+      depth,
+      finishedFloorY,
+      accessRampLength,
+      plotMaterial,
+      depth * 0.5 - 0.04,
+    );
+  }
 
   const inset = new THREE.LineSegments(
     new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
@@ -1176,15 +2301,25 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       else buildInfrastructure(group, definition, height);
       break;
     case 'academic':
-      buildAcademic(group, definition, height);
+      buildAcademic(group, definition, height, finishedFloorY);
       break;
     case 'environmental':
       buildEnvironmental(group, definition, height);
       break;
   }
 
-  addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
+  if (!isAcademicDistrict) {
+    addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
+  }
+  if (definition.id === 'academic-libraries-theoretical-labs') {
+    const academicPrimaryAccess = group.getObjectByName(`${definition.id}__DISTRICT_ACCESS_VOLUME`);
+    if (academicPrimaryAccess) {
+      academicPrimaryAccess.userData.academicAccess = true;
+      academicPrimaryAccess.userData.servesFacility = 'Blackwood University Great Hall';
+    }
+  }
   if (definition.id !== 'industrial-labs') addDistrictSignature(group, definition, height, random);
+  populateDistrictSectorCampus(group, definition, random);
   addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
@@ -1211,36 +2346,46 @@ function biomeMaterial(palette: readonly string[], index: number, overrides: THR
   return standardMaterial(palette[index % palette.length], { roughness: 0.86, metalness: 0.03, ...overrides });
 }
 
-function addConifer(group: THREE.Group, id: string, x: number, z: number, scale: number, snowy = false) {
+function addConifer(group: THREE.Group, id: string, x: number, z: number, scale: number, snowy = false, groundY = DOME_FINISHED_FLOOR_Y) {
+  const trunkHeight = 0.45 * scale;
+  const foliageHeight = 0.75 * scale;
   const trunk = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.06, 0.45 * scale, 6), standardMaterial('#3d3027')), id);
-  trunk.position.set(x, 0.55 + 0.22 * scale, z);
+  trunk.position.set(x, groundY + trunkHeight * 0.5, z);
+  trunk.name = `${id}__ALPINE_CONIFER_TRUNK`;
   const foliage = prepareMesh(
     new THREE.Mesh(new THREE.ConeGeometry(0.25 * scale, 0.75 * scale, 8), standardMaterial(snowy ? '#a7c1c0' : '#1f4b36', { roughness: 0.95 })),
     id,
   );
-  foliage.position.set(x, 0.78 + 0.48 * scale, z);
+  foliage.position.set(x, groundY + trunkHeight * 0.72 + foliageHeight * 0.5, z);
+  foliage.name = `${id}__ALPINE_CONIFER_CANOPY`;
   group.add(trunk, foliage);
 }
 
-function addCactus(group: THREE.Group, id: string, x: number, z: number, scale: number) {
+function addCactus(group: THREE.Group, id: string, x: number, z: number, scale: number, groundY = DOME_FINISHED_FLOOR_Y) {
   const material = standardMaterial('#3f7049', { roughness: 0.9 });
-  const stem = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.08 * scale, 0.11 * scale, 0.9 * scale, 8), material), id);
-  stem.position.set(x, 0.55 + 0.45 * scale, z);
+  const stemHeight = 0.9 * scale;
+  const stem = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.08 * scale, 0.11 * scale, stemHeight, 8), material), id);
+  stem.position.set(x, groundY + stemHeight * 0.5, z);
+  stem.name = `${id}__DESERT_XEROPHYTE_CACTUS`;
   group.add(stem);
   for (const direction of [-1, 1]) {
     const arm = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.045 * scale, 0.06 * scale, 0.4 * scale, 7), material), id);
-    arm.position.set(x + direction * 0.13 * scale, 0.75 + 0.45 * scale, z);
+    arm.position.set(x + direction * 0.13 * scale, groundY + stemHeight * 0.68, z);
     arm.rotation.z = direction * 55 * DEG;
+    arm.name = `${id}__DESERT_XEROPHYTE_ARM`;
     group.add(arm);
   }
 }
 
-function addAcacia(group: THREE.Group, id: string, x: number, z: number, scale: number) {
-  const trunk = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.07, 0.7 * scale, 7), standardMaterial('#493722')), id);
-  trunk.position.set(x, 0.55 + 0.35 * scale, z);
+function addAcacia(group: THREE.Group, id: string, x: number, z: number, scale: number, groundY = DOME_FINISHED_FLOOR_Y) {
+  const trunkHeight = 0.7 * scale;
+  const trunk = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.07, trunkHeight, 7), standardMaterial('#493722')), id);
+  trunk.position.set(x, groundY + trunkHeight * 0.5, z);
+  trunk.name = `${id}__SAVANNA_ACACIA_TRUNK`;
   const crown = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.38 * scale, 12, 7), standardMaterial('#4e6731', { roughness: 0.92 })), id);
   crown.scale.set(1.55, 0.35, 1);
-  crown.position.set(x, 0.92 + 0.52 * scale, z);
+  crown.position.set(x, groundY + trunkHeight + 0.24 * scale, z);
+  crown.name = `${id}__SAVANNA_ACACIA_CANOPY`;
   group.add(trunk, crown);
 }
 
@@ -1284,6 +2429,7 @@ function buildFuturisticTropicalBiodome(
     material: THREE.Material,
     name = '',
     selectable = true,
+    navBarrier = false,
   ) => {
     const delta = end.clone().sub(start);
     const mesh = prepareMesh(
@@ -1294,6 +2440,13 @@ function buildFuturisticTropicalBiodome(
     mesh.position.copy(start).add(end).multiplyScalar(0.5);
     mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), delta.normalize());
     mesh.name = name;
+    if (navBarrier) {
+      mesh.userData.navBarrierSegments = [{
+        start: start.toArray(),
+        end: end.toArray(),
+        radius: radiusValue,
+      }];
+    }
     parent.add(mesh);
     return mesh;
   };
@@ -1313,9 +2466,93 @@ function buildFuturisticTropicalBiodome(
     mesh.userData.walkwayRollLocked = true;
   };
 
+  const makeContinuousRailPath = (
+    centerline: readonly THREE.Vector3[],
+    offsetDistance: number,
+  ) => centerline.map((point, index) => {
+    const previous = centerline[Math.max(0, index - 1)];
+    const next = centerline[Math.min(centerline.length - 1, index + 1)];
+    const tangent = next.clone().sub(previous).setY(0).normalize();
+    const perpendicular = new THREE.Vector3(-tangent.z, 0, tangent.x);
+    return point.clone().addScaledVector(perpendicular, offsetDistance);
+  });
+
+  type CircularRailOpening = { centerAngle: number; halfAngle: number };
+  const normalizeAngle = (angle: number) => ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+  const circularAngleDistance = (a: number, b: number) => {
+    const difference = Math.abs(normalizeAngle(a) - normalizeAngle(b));
+    return Math.min(difference, Math.PI * 2 - difference);
+  };
+  const isInsideRailOpening = (angle: number, openings: readonly CircularRailOpening[]) => (
+    openings.some((opening) => circularAngleDistance(angle, opening.centerAngle) <= opening.halfAngle)
+  );
+  const addCircularGuardrail = (
+    parent: THREE.Object3D,
+    center: THREE.Vector3,
+    radius: number,
+    railY: number,
+    openings: readonly CircularRailOpening[],
+    name: string,
+  ) => {
+    const openingIntervals: Array<[number, number]> = [];
+    openings.forEach((opening) => {
+      const start = normalizeAngle(opening.centerAngle - opening.halfAngle);
+      const end = normalizeAngle(opening.centerAngle + opening.halfAngle);
+      if (start <= end) openingIntervals.push([start, end]);
+      else openingIntervals.push([0, end], [start, Math.PI * 2]);
+    });
+    openingIntervals.sort((a, b) => a[0] - b[0]);
+    const mergedOpenings: Array<[number, number]> = [];
+    openingIntervals.forEach(([start, end]) => {
+      const previous = mergedOpenings[mergedOpenings.length - 1];
+      if (previous && start <= previous[1] + 0.001) previous[1] = Math.max(previous[1], end);
+      else mergedOpenings.push([start, end]);
+    });
+    const railIntervals: Array<[number, number]> = [];
+    let cursor = 0;
+    mergedOpenings.forEach(([start, end]) => {
+      if (start - cursor > 0.04) railIntervals.push([cursor, start]);
+      cursor = Math.max(cursor, end);
+    });
+    if (Math.PI * 2 - cursor > 0.04) railIntervals.push([cursor, Math.PI * 2]);
+    railIntervals.forEach(([start, end], index) => {
+      const arc = end - start;
+      const pointCount = Math.max(5, Math.ceil((arc / (Math.PI * 2)) * 48));
+      const points = Array.from({ length: pointCount + 1 }, (_, pointIndex) => {
+        const angle = THREE.MathUtils.lerp(start, end, pointIndex / pointCount);
+        return new THREE.Vector3(
+          center.x + Math.cos(angle) * radius,
+          railY,
+          center.z + Math.sin(angle) * radius,
+        );
+      });
+      const curve = new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.5);
+      const rail = prepareMesh(
+        new THREE.Mesh(new THREE.TubeGeometry(curve, pointCount * 2, HUMAN_HANDRAIL_RADIUS, 8, false), railMaterial),
+        definition.id,
+        false,
+      );
+      rail.name = name;
+      rail.userData.circularRailArc = index + 1;
+      rail.userData.navBarrierSegments = points.slice(1).map((point, pointIndex) => ({
+        start: points[pointIndex].toArray(),
+        end: point.toArray(),
+        radius: HUMAN_HANDRAIL_RADIUS,
+      }));
+      parent.add(rail);
+    });
+    return railIntervals.length;
+  };
+
   // A continuous timber-and-alloy visitor route climbs from the airlock to the waterfall.
   const observationDeckCenterY = 4.35;
   const researchPlatformCenterY = 5.15;
+  const deckPosition = new THREE.Vector3(-5.3, observationDeckCenterY, -8.0);
+  const deckRadius = 1.45;
+  const deckRailRadius = 1.39;
+  const canopyDeckApproachDirection = new THREE.Vector3(-1, 0, -0.25).normalize();
+  const canopyDeckApproach = deckPosition.clone()
+    .addScaledVector(canopyDeckApproachDirection, deckRadius - 0.11);
   const canopyEntryCenterY = floorY
     + metresToWorldUnits(0.16)
     - TROPICAL_CANOPY_DECK_THICKNESS * 0.5;
@@ -1328,18 +2565,21 @@ function buildFuturisticTropicalBiodome(
     new THREE.Vector3(-10.1, 2.1, 4.2),
     new THREE.Vector3(-10.4, 3.0, -1.8),
     new THREE.Vector3(-8.4, 3.8, -6.5),
-    new THREE.Vector3(-4.1, observationDeckConnectionY, -8.1),
+    canopyDeckApproach.clone().addScaledVector(canopyDeckApproachDirection, 2.4).setY(4.12),
+    canopyDeckApproach.clone().setY(observationDeckConnectionY),
   ]);
   const routePoints = routeCurve.getPoints(38);
   const routeSamplePoints: THREE.Vector3[] = [];
   routePoints.forEach((point) => routeSamplePoints.push(point));
   const pathWidth = TROPICAL_CANOPY_PATH_WIDTH;
+  const canopyRailPaths = [-1, 1].map((side) => (
+    makeContinuousRailPath(routePoints, pathWidth * 0.48 * side)
+  ));
 
   for (let index = 0; index < routePoints.length - 1; index += 1) {
     const start = routePoints[index];
     const end = routePoints[index + 1];
     const direction = end.clone().sub(start);
-    const horizontalPerpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
     const plank = prepareMesh(
       new THREE.Mesh(
         new THREE.BoxGeometry(pathWidth, TROPICAL_CANOPY_DECK_THICKNESS, direction.length() + 0.035),
@@ -1358,16 +2598,17 @@ function buildFuturisticTropicalBiodome(
     }
     group.add(plank);
 
-    for (const side of [-1, 1]) {
-      const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
+    for (let sideIndex = 0; sideIndex < canopyRailPaths.length; sideIndex += 1) {
+      const railStart = canopyRailPaths[sideIndex][index];
+      const railEnd = canopyRailPaths[sideIndex][index + 1];
       addCylinderBetween(
         group,
-        start.clone().add(offset).add(new THREE.Vector3(
+        railStart.clone().add(new THREE.Vector3(
           0,
           TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
           0,
         )),
-        end.clone().add(offset).add(new THREE.Vector3(
+        railEnd.clone().add(new THREE.Vector3(
           0,
           TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
           0,
@@ -1376,16 +2617,17 @@ function buildFuturisticTropicalBiodome(
         railMaterial,
         'TROPICAL__CANOPY_WALK_RAIL',
         false,
+        true,
       );
     }
 
     if (index % 4 === 0) {
-      for (const side of [-1, 1]) {
-        const offset = horizontalPerpendicular.clone().multiplyScalar(pathWidth * 0.48 * side);
+      for (const railPath of canopyRailPaths) {
+        const railPoint = railPath[index];
         addCylinderBetween(
           group,
-          start.clone().add(offset).add(new THREE.Vector3(0, TROPICAL_CANOPY_DECK_THICKNESS * 0.5, 0)),
-          start.clone().add(offset).add(new THREE.Vector3(
+          railPoint.clone().add(new THREE.Vector3(0, TROPICAL_CANOPY_DECK_THICKNESS * 0.5, 0)),
+          railPoint.clone().add(new THREE.Vector3(
             0,
             TROPICAL_CANOPY_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
             0,
@@ -1415,15 +2657,24 @@ function buildFuturisticTropicalBiodome(
   const rockMaterial = standardMaterial('#414b43', { roughness: 0.96 });
   const mossMaterial = standardMaterial('#245b31', { roughness: 0.98 });
 
-  for (const side of [-1, 1]) {
+  // Keep the waterfall mass on its far/right bank. The former left stack sat
+  // directly in the visitor route's sightline and made the elevated walkway
+  // appear to tunnel through a solid cliff from WALK, even where the AABBs
+  // only narrowly missed. Removing that stack leaves an unmistakably open
+  // canopy route around the waterfall.
+  for (const side of [1]) {
     for (let tier = 0; tier < 5; tier += 1) {
       const rock = prepareMesh(
         new THREE.Mesh(new THREE.DodecahedronGeometry(1.05 + random() * 0.62, 0), tier % 2 ? mossMaterial : rockMaterial),
         definition.id,
       );
       rock.name = 'TROPICAL__WATERFALL_CLIFF';
-      rock.scale.set(1.25, 1.2 + tier * 0.16, 0.9);
-      rock.position.set(side * (1.25 + tier * 0.24), 1.2 + tier * 1.18, waterfallZ - 0.2 + random() * 0.5);
+      rock.scale.set(1.1, 1.12 + tier * 0.14, 0.86);
+      rock.position.set(
+        2.1 + tier * 0.22,
+        1.2 + tier * 1.18,
+        waterfallZ - 0.2 + random() * 0.5,
+      );
       rock.rotation.set(random() * 0.35, random() * Math.PI, random() * 0.25);
       group.add(rock);
     }
@@ -1486,9 +2737,12 @@ function buildFuturisticTropicalBiodome(
     emissive: '#063e4c',
     emissiveIntensity: 0.48,
     transparent: true,
-    opacity: 0.88,
-    depthTest: false,
-    depthWrite: false,
+    opacity: 0.82,
+    // Water must participate in the real depth buffer. The former always-on-
+    // top material made this small pond cover trees, rails, and architecture
+    // from every camera angle.
+    depthTest: true,
+    depthWrite: true,
     roughness: 0.18,
     metalness: 0.04,
     side: THREE.DoubleSide,
@@ -1505,7 +2759,7 @@ function buildFuturisticTropicalBiodome(
   // Keep a real depth separation from the basin; a near-coplanar water sheet
   // loses precision against the island-scale camera frustum and appears gray.
   pond.position.set(0.25, floorY + 0.085, -0.5);
-  pond.renderOrder = 3;
+  pond.renderOrder = 0;
   group.add(pond);
 
   for (let index = 0; index < 25; index += 1) {
@@ -1544,32 +2798,40 @@ function buildFuturisticTropicalBiodome(
   }
 
   // Lookout deck beside the waterfall and a suspension bridge to the research pod.
-  const deckPosition = new THREE.Vector3(-3.7, observationDeckCenterY, -8.0);
   const deck = prepareMesh(
-    new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, TROPICAL_PLATFORM_THICKNESS, 24), pathMaterial),
+    new THREE.Mesh(new THREE.CylinderGeometry(deckRadius, deckRadius, TROPICAL_PLATFORM_THICKNESS, 24), pathMaterial),
     definition.id,
   );
   deck.name = 'TROPICAL__OBSERVATION_DECK';
   deck.position.copy(deckPosition);
   deck.userData.walkable = true;
   group.add(deck);
-  const deckRail = prepareMesh(
-    new THREE.Mesh(new THREE.TorusGeometry(1.39, HUMAN_HANDRAIL_RADIUS, 8, 36), railMaterial),
-    definition.id,
-    false,
+  const deckBridgeApproachDirection = new THREE.Vector3(1, 0, 0.4).normalize();
+  const deckBridgeApproach = deckPosition.clone().addScaledVector(deckBridgeApproachDirection, deckRadius - 0.09);
+  const deckRailOpenings: CircularRailOpening[] = [
+    {
+      centerAngle: Math.atan2(canopyDeckApproachDirection.z, canopyDeckApproachDirection.x),
+      halfAngle: Math.asin(Math.min(0.95, pathWidth * 0.5 / deckRailRadius)) + 0.08,
+    },
+    {
+      centerAngle: Math.atan2(deckBridgeApproachDirection.z, deckBridgeApproachDirection.x),
+      halfAngle: Math.asin(Math.min(0.95, TROPICAL_SUSPENSION_PATH_WIDTH * 0.5 / deckRailRadius)) + 0.08,
+    },
+  ];
+  const deckRailArcCount = addCircularGuardrail(
+    group,
+    deckPosition,
+    deckRailRadius,
+    deckPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+    deckRailOpenings,
+    'TROPICAL__OBSERVATION_DECK_RAIL',
   );
-  deckRail.name = 'TROPICAL__OBSERVATION_DECK_RAIL';
-  deckRail.rotation.x = Math.PI / 2;
-  deckRail.position.copy(deckPosition).add(new THREE.Vector3(
-    0,
-    TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
-    0,
-  ));
-  group.add(deckRail);
+  deck.userData.guardrailOpenings = deckRailOpenings.map((opening) => ({ ...opening }));
+  deck.userData.guardrailArcCount = deckRailArcCount;
   addCylinderBetween(group, new THREE.Vector3(deckPosition.x, floorY, deckPosition.z), deckPosition, 0.13, metal, 'TROPICAL__OBSERVATION_SUPPORT');
   for (let index = 0; index < 10; index += 1) {
     const angle = (index / 10) * Math.PI * 2;
-    if (angle > 0.1 && angle < 1.1) continue;
+    if (isInsideRailOpening(angle, deckRailOpenings)) continue;
     const x = deckPosition.x + Math.cos(angle) * 1.38;
     const z = deckPosition.z + Math.sin(angle) * 1.38;
     addCylinderBetween(
@@ -1582,6 +2844,7 @@ function buildFuturisticTropicalBiodome(
       ),
       HUMAN_RAIL_POST_RADIUS,
       metal,
+      'TROPICAL__OBSERVATION_DECK_POST',
     );
   }
 
@@ -1592,19 +2855,30 @@ function buildFuturisticTropicalBiodome(
   const bridgeEndY = researchPlatformCenterY
     + TROPICAL_PLATFORM_THICKNESS * 0.5
     - TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5;
+  const podRailRadius = 1.76;
+  const bridgePodApproachDirection = new THREE.Vector3(-1.35, 0, -0.3).normalize();
+  const bridgePodEdge = podPosition.clone().addScaledVector(bridgePodApproachDirection, podRailRadius + 0.08);
+  // Carry the deck well across the circular platform edge. Previously the
+  // bridge stopped at the rim, where ground sampling jumped to the platform
+  // before the controller reached the flush bridge endpoint and treated the
+  // remaining rise as an unclimbable step.
+  const bridgePodApproach = podPosition.clone().addScaledVector(bridgePodApproachDirection, 1.28);
   const bridgeCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(-2.7, bridgeStartY, -7.6),
+    deckBridgeApproach.clone().setY(bridgeStartY),
     new THREE.Vector3(0.3, 4.12, -7.1),
     new THREE.Vector3(3.5, 4.4, -6.7),
-    new THREE.Vector3(5.8, bridgeEndY, -6.0),
+    bridgePodEdge.clone().setY(bridgeEndY),
+    bridgePodApproach.clone().setY(bridgeEndY),
   ]);
-  const bridgePoints = bridgeCurve.getPoints(24);
+  const bridgePoints = bridgeCurve.getPoints(28);
   bridgePoints.forEach((point) => routeSamplePoints.push(point));
+  const bridgeRailPaths = [-1, 1].map((side) => (
+    makeContinuousRailPath(bridgePoints, side * TROPICAL_SUSPENSION_PATH_WIDTH * 0.5)
+  ));
   for (let index = 0; index < bridgePoints.length - 1; index += 1) {
     const start = bridgePoints[index];
     const end = bridgePoints[index + 1];
     const direction = end.clone().sub(start);
-    const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
     const plank = prepareMesh(
       new THREE.Mesh(
         new THREE.BoxGeometry(
@@ -1621,16 +2895,17 @@ function buildFuturisticTropicalBiodome(
     orientWalkwaySegment(plank, direction);
     plank.userData.walkable = true;
     group.add(plank);
-    for (const side of [-1, 1]) {
-      const offset = perpendicular.clone().multiplyScalar(side * TROPICAL_SUSPENSION_PATH_WIDTH * 0.5);
+    for (const railPath of bridgeRailPaths) {
+      const railStart = railPath[index];
+      const railEnd = railPath[index + 1];
       addCylinderBetween(
         group,
-        start.clone().add(offset).add(new THREE.Vector3(
+        railStart.clone().add(new THREE.Vector3(
           0,
           TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
           0,
         )),
-        end.clone().add(offset).add(new THREE.Vector3(
+        railEnd.clone().add(new THREE.Vector3(
           0,
           TROPICAL_SUSPENSION_DECK_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
           0,
@@ -1639,6 +2914,7 @@ function buildFuturisticTropicalBiodome(
         railMaterial,
         'TROPICAL__SUSPENSION_BRIDGE_RAIL',
         false,
+        true,
       );
     }
   }
@@ -1651,21 +2927,24 @@ function buildFuturisticTropicalBiodome(
   podPlatform.position.copy(podPosition);
   podPlatform.userData.walkable = true;
   group.add(podPlatform);
-  const podRail = prepareMesh(
-    new THREE.Mesh(new THREE.TorusGeometry(1.76, HUMAN_HANDRAIL_RADIUS, 8, 40), railMaterial),
-    definition.id,
-    false,
+  const podRailOpenings: CircularRailOpening[] = [{
+    centerAngle: Math.atan2(bridgePodApproachDirection.z, bridgePodApproachDirection.x),
+    halfAngle: Math.asin(Math.min(0.95, TROPICAL_SUSPENSION_PATH_WIDTH * 0.5 / podRailRadius)) + 0.16,
+  }];
+  const podRailArcCount = addCircularGuardrail(
+    group,
+    podPosition,
+    podRailRadius,
+    podPosition.y + TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
+    podRailOpenings,
+    'TROPICAL__RESEARCH_STATION_RAIL',
   );
-  podRail.rotation.x = Math.PI / 2;
-  podRail.position.copy(podPosition).add(new THREE.Vector3(
-    0,
-    TROPICAL_PLATFORM_THICKNESS * 0.5 + HUMAN_HANDRAIL_CENTER_ABOVE_SURFACE,
-    0,
-  ));
-  group.add(podRail);
+  podPlatform.userData.guardrailOpenings = podRailOpenings.map((opening) => ({ ...opening }));
+  podPlatform.userData.guardrailArcCount = podRailArcCount;
   addCylinderBetween(group, new THREE.Vector3(podPosition.x, floorY, podPosition.z), podPosition, 0.22, metal, 'TROPICAL__RESEARCH_STATION_COLUMN');
   for (let index = 0; index < 12; index += 1) {
     const angle = (index / 12) * Math.PI * 2;
+    if (isInsideRailOpening(angle, podRailOpenings)) continue;
     const x = podPosition.x + Math.cos(angle) * 1.75;
     const z = podPosition.z + Math.sin(angle) * 1.75;
     addCylinderBetween(
@@ -1678,10 +2957,11 @@ function buildFuturisticTropicalBiodome(
       ),
       HUMAN_RAIL_POST_RADIUS,
       metal,
+      'TROPICAL__RESEARCH_STATION_POST',
     );
   }
   const stationBody = prepareMesh(
-    new THREE.Mesh(new THREE.CylinderGeometry(0.88, 0.88, 1.35, 20), physicalMaterial('#b9d8d3', {
+    new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.54, 1.05, 20), physicalMaterial('#b9d8d3', {
       roughness: 0.12,
       metalness: 0.25,
       transparent: true,
@@ -1692,10 +2972,12 @@ function buildFuturisticTropicalBiodome(
     false,
   );
   stationBody.name = 'TROPICAL__RESEARCH_LAB_POD';
-  stationBody.position.copy(podPosition).add(new THREE.Vector3(0, 0.74, 0));
+  const stationPodOffset = new THREE.Vector3(0.58, 0, 0.32);
+  stationBody.position.copy(podPosition).add(stationPodOffset).add(new THREE.Vector3(0, 0.57, 0));
+  stationBody.userData.viewpointSetback = stationPodOffset.toArray();
   group.add(stationBody);
-  const stationRoof = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.92, 20, 8, 0, Math.PI * 2, 0, Math.PI / 2), darkMetal), definition.id);
-  stationRoof.position.copy(podPosition).add(new THREE.Vector3(0, 1.4, 0));
+  const stationRoof = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.58, 20, 8, 0, Math.PI * 2, 0, Math.PI / 2), darkMetal), definition.id);
+  stationRoof.position.copy(podPosition).add(stationPodOffset).add(new THREE.Vector3(0, 1.1, 0));
   group.add(stationRoof);
 
   // Glazed propagation house with visible plant benches.
@@ -1854,6 +3136,7 @@ function buildFuturisticTropicalBiodome(
     if (Math.abs(point.x) < 4.2 && point.z > -10.2 && point.z < 9.4) continue;
     if (Math.abs(point.x) < 7.2 && point.z > 0.4) continue;
     if (distanceToRoute(point) < 1.55) continue;
+    if (Math.hypot(point.x - deckPosition.x, point.z - deckPosition.z) < deckRadius + 1.35) continue;
     if (Math.hypot(point.x - podPosition.x, point.z - podPosition.z) < 4.2) continue;
     if (Math.hypot(point.x - 7.45, point.z - 2.25) < 4.0) continue;
     if (Math.hypot(point.x - 6.2, point.z - 7.0) < 2.3) continue;
@@ -1930,8 +3213,274 @@ function buildFuturisticTropicalBiodome(
   }
 }
 
+function addBiomeEcologyExpansion(
+  group: THREE.Group,
+  definition: BiomeDefinition,
+  radius: number,
+  depth: number,
+  width: number,
+  random: () => number,
+  floorY: number,
+) {
+  if (definition.id === 'tropical-rainforest-dome') return;
+
+  const aspect = depth / width;
+  const usableRadius = radius * 0.73;
+  const featureManifest: string[] = [];
+  const dummy = new THREE.Object3D();
+  const tagFeature = (object: THREE.Object3D, feature: string, count = 1) => {
+    object.name = `${definition.id}__${feature.toUpperCase().replace(/[^A-Z0-9]+/g, '_')}`;
+    object.userData.biomeFeature = feature;
+    object.userData.featureRole = 'biome-ecology';
+    object.userData.instanceCount = count;
+    object.traverse((child) => {
+      child.userData.selectableId = definition.id;
+      child.userData.biomeFeature = feature;
+      child.userData.featureRole = 'biome-ecology';
+    });
+    featureManifest.push(feature);
+    group.add(object);
+  };
+  const safePoint = (minimumRadius = 1.2, maximumRadius = usableRadius) => {
+    for (let attempt = 0; attempt < 40; attempt += 1) {
+      const angle = random() * Math.PI * 2;
+      const distance = minimumRadius + random() * Math.max(0.1, maximumRadius - minimumRadius);
+      const x = Math.cos(angle) * distance;
+      const z = Math.sin(angle) * distance * aspect;
+      const clearOfLab = Math.hypot(x, z + radius * 0.24) > 3.2;
+      const clearOfAirlock = !(Math.abs(x) < 2.4 && z > depth * 0.18);
+      if (clearOfLab && clearOfAirlock) return new THREE.Vector3(x, floorY, z);
+    }
+    return new THREE.Vector3(usableRadius * 0.65, floorY, 0);
+  };
+
+  const mastMaterial = standardMaterial('#5c6f74', { roughness: 0.34, metalness: 0.82 });
+  const sensorMaterial = markAccent(new THREE.MeshStandardMaterial({
+    color: definition.accent,
+    emissive: definition.accent,
+    emissiveIntensity: 1.8,
+    roughness: 0.2,
+    metalness: 0.55,
+  }));
+  const addMonitoringMast = (feature: string, x: number, z: number, height = 2.4) => {
+    const mast = new THREE.Group();
+    const pole = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.055, height, 8), mastMaterial), definition.id);
+    pole.position.y = floorY + height * 0.5;
+    const sensor = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 7), sensorMaterial), definition.id, false);
+    sensor.position.y = floorY + height;
+    const crossbar = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.04, 0.04), mastMaterial), definition.id);
+    crossbar.position.y = floorY + height * 0.82;
+    mast.position.set(x, 0, z);
+    mast.add(pole, sensor, crossbar);
+    tagFeature(mast, feature);
+  };
+
+  if (definition.id === 'alpine-dome') {
+    const snowGeometry = new THREE.CircleGeometry(1, 12);
+    const snowMaterial = physicalMaterial('#eaf7fb', { roughness: 0.52, metalness: 0.02, transparent: true, opacity: 0.94 });
+    const snow = new THREE.InstancedMesh(snowGeometry, snowMaterial, 32);
+    for (let index = 0; index < 32; index += 1) {
+      const point = safePoint(0.8);
+      dummy.position.set(point.x, floorY + 0.008, point.z);
+      dummy.rotation.set(-Math.PI / 2, 0, random() * Math.PI);
+      dummy.scale.set(0.55 + random() * 1.45, 0.4 + random() * 0.9, 1);
+      dummy.updateMatrix();
+      snow.setMatrixAt(index, dummy.matrix);
+    }
+    snow.receiveShadow = true;
+    tagFeature(snow, 'layered snowfields', 32);
+
+    const ridge = new THREE.Group();
+    const ridgeMaterial = standardMaterial('#68777a', { roughness: 0.93, metalness: 0.04 });
+    for (let index = 0; index < 9; index += 1) {
+      const h = 1.5 + random() * 2.2;
+      const peak = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.7 + random() * 0.65, h, 6), ridgeMaterial), definition.id);
+      peak.position.set(-usableRadius * 0.7 + index * usableRadius * 0.18, floorY + h * 0.5, -usableRadius * aspect * (0.55 + random() * 0.18));
+      peak.rotation.y = random() * Math.PI;
+      ridge.add(peak);
+    }
+    tagFeature(ridge, 'exposed mountain ridge', 9);
+
+    const tarn = prepareMesh(new THREE.Mesh(
+      new THREE.CircleGeometry(1.35, 28),
+      physicalMaterial('#77bad0', { roughness: 0.08, metalness: 0.04, transparent: true, opacity: 0.9 }),
+    ), definition.id, false);
+    tarn.rotation.x = -Math.PI / 2;
+    tarn.scale.set(1.7, 0.72, 1);
+    tarn.position.set(usableRadius * 0.34, floorY + 0.014, usableRadius * 0.34 * aspect);
+    tagFeature(tarn, 'glacial meltwater tarn');
+    addMonitoringMast('cold climate weather station', -usableRadius * 0.48, usableRadius * 0.24 * aspect, 2.8);
+  } else if (definition.id === 'tundra-dome') {
+    const polygonGeometry = new THREE.CircleGeometry(1, 7);
+    const polygonMaterial = standardMaterial('#8d9d91', { roughness: 0.97, metalness: 0.01 });
+    const polygons = new THREE.InstancedMesh(polygonGeometry, polygonMaterial, 40);
+    for (let index = 0; index < 40; index += 1) {
+      const point = safePoint(0.5);
+      dummy.position.set(point.x, floorY + 0.006, point.z);
+      dummy.rotation.set(-Math.PI / 2, 0, random() * Math.PI);
+      dummy.scale.set(0.35 + random() * 0.85, 0.35 + random() * 0.85, 1);
+      dummy.updateMatrix();
+      polygons.setMatrixAt(index, dummy.matrix);
+    }
+    polygons.receiveShadow = true;
+    tagFeature(polygons, 'patterned permafrost terrain', 40);
+
+    const poolMaterial = physicalMaterial('#6fa9ba', { roughness: 0.08, metalness: 0.02, transparent: true, opacity: 0.84 });
+    const pools = new THREE.Group();
+    for (let index = 0; index < 7; index += 1) {
+      const point = safePoint(1.8);
+      const pool = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(0.45 + random() * 0.75, 14), poolMaterial), definition.id, false);
+      pool.rotation.x = -Math.PI / 2;
+      pool.scale.y = 0.55 + random() * 0.35;
+      pool.position.set(point.x, floorY + 0.015, point.z);
+      pools.add(pool);
+    }
+    tagFeature(pools, 'seasonal meltwater network', 7);
+
+    const stakes = new THREE.InstancedMesh(new THREE.CylinderGeometry(0.025, 0.035, 0.75, 6), mastMaterial, 16);
+    for (let index = 0; index < 16; index += 1) {
+      const angle = (index / 16) * Math.PI * 2;
+      dummy.position.set(Math.cos(angle) * usableRadius * 0.62, floorY + 0.375, Math.sin(angle) * usableRadius * 0.48 * aspect);
+      dummy.rotation.set(0, 0, 0);
+      dummy.scale.set(1, 1, 1);
+      dummy.updateMatrix();
+      stakes.setMatrixAt(index, dummy.matrix);
+    }
+    tagFeature(stakes, 'permafrost borehole array', 16);
+    addMonitoringMast('tundra climate mast', usableRadius * 0.46, -usableRadius * 0.34 * aspect, 2.35);
+  } else if (definition.id === 'desert-dome') {
+    const formation = new THREE.Group();
+    const stoneMaterial = standardMaterial('#925d39', { roughness: 0.96, metalness: 0.01 });
+    for (let index = 0; index < 11; index += 1) {
+      const point = safePoint(1.7);
+      const h = 0.75 + random() * 1.9;
+      const stone = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.38 + random() * 0.42, 0), stoneMaterial), definition.id);
+      stone.scale.set(0.65 + random() * 0.5, h, 0.55 + random() * 0.45);
+      stone.position.set(point.x, floorY + h * 0.37, point.z);
+      stone.rotation.set((random() - 0.5) * 0.2, random() * Math.PI, (random() - 0.5) * 0.2);
+      formation.add(stone);
+    }
+    tagFeature(formation, 'eroded stone formations', 11);
+
+    const solar = new THREE.Group();
+    const solarFrame = standardMaterial('#3c4648', { roughness: 0.32, metalness: 0.86 });
+    const solarCell = physicalMaterial('#09264a', { roughness: 0.1, metalness: 0.88, clearcoat: 0.92 });
+    for (let row = 0; row < 3; row += 1) {
+      for (let column = 0; column < 5; column += 1) {
+        const panel = new THREE.Group();
+        const frame = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.15, 0.07, 0.72), solarFrame), definition.id);
+        const cells = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.05, 0.075, 0.62), solarCell), definition.id, false);
+        cells.position.y = 0.03;
+        panel.position.set(-usableRadius * 0.72 + column * 1.35, floorY + 0.28 + row * 0.03, usableRadius * aspect * (0.28 + row * 0.12));
+        panel.rotation.x = 0.35;
+        panel.add(frame, cells);
+        solar.add(panel);
+      }
+    }
+    tagFeature(solar, 'integrated solar research array', 15);
+    addMonitoringMast('heat flux research tower', usableRadius * 0.34, -usableRadius * 0.5 * aspect, 3.0);
+  } else if (definition.id === 'savanna-dome') {
+    const grassGeometry = new THREE.ConeGeometry(0.055, 0.34, 4);
+    const grassMaterial = standardMaterial('#b7a64e', { roughness: 0.98, metalness: 0 });
+    const grassland = new THREE.InstancedMesh(grassGeometry, grassMaterial, 160);
+    for (let index = 0; index < 160; index += 1) {
+      const point = safePoint(0.8);
+      dummy.position.set(point.x, floorY + 0.17, point.z);
+      dummy.rotation.set((random() - 0.5) * 0.18, random() * Math.PI, (random() - 0.5) * 0.18);
+      const scale = 0.65 + random() * 1.25;
+      dummy.scale.set(scale, scale, scale);
+      dummy.updateMatrix();
+      grassland.setMatrixAt(index, dummy.matrix);
+    }
+    grassland.castShadow = true;
+    tagFeature(grassland, 'dense golden grassland', 160);
+
+    const stones = new THREE.Group();
+    const stoneMaterial = standardMaterial('#81705b', { roughness: 0.95, metalness: 0.01 });
+    for (let index = 0; index < 14; index += 1) {
+      const point = safePoint(2.2);
+      const size = 0.18 + random() * 0.35;
+      const stone = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(size, 0), stoneMaterial), definition.id);
+      stone.position.set(point.x, floorY + size * 0.68, point.z);
+      stone.rotation.set(random() * 2, random() * 2, random() * 2);
+      stones.add(stone);
+    }
+    tagFeature(stones, 'weathered savanna stone field', 14);
+
+    const hide = new THREE.Group();
+    const hideBody = roundedBlock(definition.id, 2.3, 1.2, 1.35, standardMaterial('#5c5237', { roughness: 0.88 }), 0, floorY, 0, 0.08);
+    const slit = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.55, 0.18, 0.04), sensorMaterial), definition.id, false);
+    slit.position.set(0, floorY + 0.82, 0.695);
+    hide.position.set(-usableRadius * 0.45, 0, -usableRadius * 0.43 * aspect);
+    hide.add(hideBody, slit);
+    tagFeature(hide, 'wildlife observation hide');
+    addMonitoringMast('savanna rainfall station', usableRadius * 0.52, usableRadius * 0.2 * aspect, 2.5);
+  } else if (definition.id === 'temperate-deciduous-forest-dome') {
+    const streamPoints = [
+      new THREE.Vector3(-usableRadius * 0.78, floorY + 0.025, -usableRadius * 0.42 * aspect),
+      new THREE.Vector3(-usableRadius * 0.35, floorY + 0.02, -usableRadius * 0.1 * aspect),
+      new THREE.Vector3(0, floorY + 0.018, usableRadius * 0.08 * aspect),
+      new THREE.Vector3(usableRadius * 0.3, floorY + 0.016, usableRadius * 0.34 * aspect),
+      new THREE.Vector3(usableRadius * 0.72, floorY + 0.014, usableRadius * 0.5 * aspect),
+    ];
+    const stream = prepareMesh(new THREE.Mesh(
+      new THREE.TubeGeometry(new THREE.CatmullRomCurve3(streamPoints), 64, 0.34, 8, false),
+      physicalMaterial('#4aa8b5', { roughness: 0.08, metalness: 0.03, transparent: true, opacity: 0.9 }),
+    ), definition.id, false);
+    tagFeature(stream, 'shaded woodland stream');
+
+    const plots = new THREE.Group();
+    const plotMaterial = standardMaterial('#425e2f', { roughness: 0.98, metalness: 0 });
+    const borderMaterial = standardMaterial('#7d6a4b', { roughness: 0.9, metalness: 0.05 });
+    for (let index = 0; index < 6; index += 1) {
+      const x = -usableRadius * 0.66 + (index % 3) * 1.65;
+      const z = usableRadius * aspect * 0.46 + Math.floor(index / 3) * 1.25;
+      const bed = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.35, 0.08, 0.92), plotMaterial), definition.id);
+      bed.position.set(x, floorY + 0.04, z);
+      const border = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(1.48, 0.055, 1.05), borderMaterial), definition.id);
+      border.position.set(x, floorY + 0.018, z);
+      plots.add(border, bed);
+    }
+    tagFeature(plots, 'seasonal woodland research plots', 6);
+
+    const logs = new THREE.Group();
+    const logMaterial = standardMaterial('#4b3424', { roughness: 0.96, metalness: 0 });
+    for (let index = 0; index < 10; index += 1) {
+      const point = safePoint(1.8);
+      const log = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(0.11, 0.14, 1.1 + random() * 0.8, 8), logMaterial), definition.id);
+      log.position.set(point.x, floorY + 0.13, point.z);
+      log.rotation.set(Math.PI / 2, random() * Math.PI, 0);
+      logs.add(log);
+    }
+    tagFeature(logs, 'fallen log habitat', 10);
+
+    const mushrooms = new THREE.InstancedMesh(
+      new THREE.SphereGeometry(0.09, 8, 5),
+      standardMaterial('#d58b56', { roughness: 0.86, metalness: 0 }),
+      48,
+    );
+    for (let index = 0; index < 48; index += 1) {
+      const point = safePoint(1.1);
+      dummy.position.set(point.x, floorY + 0.08, point.z);
+      dummy.rotation.set(0, random() * Math.PI, 0);
+      const scale = 0.55 + random() * 0.9;
+      dummy.scale.set(scale, 0.45 * scale, scale);
+      dummy.updateMatrix();
+      mushrooms.setMatrixAt(index, dummy.matrix);
+    }
+    tagFeature(mushrooms, 'mushroom understory', 48);
+    addMonitoringMast('forest phenology station', usableRadius * 0.42, -usableRadius * 0.5 * aspect, 2.25);
+  }
+
+  group.userData.biomeEcologyExpansion = {
+    populated: true,
+    featureManifest,
+  };
+}
+
 export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   const group = new THREE.Group();
+  const ecologyPlan = BIOME_ECOLOGY_PLANS[definition.id as keyof typeof BIOME_ECOLOGY_PLANS];
   group.name = `BIOME__${definition.id}`;
   group.position.set(definition.position[0], definition.position[1] + ISLAND_SURFACE_Y, definition.position[2]);
   group.rotation.y = Math.atan2(-definition.position[0], -definition.position[2]);
@@ -1943,13 +3492,23 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     archetype: definition.archetype,
     sourceLabel: definition.sourceLabel ?? definition.name,
     description: definition.description,
+    biomeEcologyPlan: ecologyPlan ? {
+      fieldLabName: ecologyPlan.fieldLabName,
+      plannedFeatures: [...ecologyPlan.features],
+      filled: true,
+    } : null,
   };
   const [width, depth] = definition.footprint;
   const radius = width * 0.48;
   const isTropicalRainforest = definition.id === 'tropical-rainforest-dome';
   const finishedFloorY = isTropicalRainforest ? TROPICAL_FINISHED_FLOOR_Y : DOME_FINISHED_FLOOR_Y;
-  const foundationHeight = isTropicalRainforest ? TROPICAL_FINISHED_FLOOR_Y : 0.34;
   const biomeFloorThickness = isTropicalRainforest ? metresToWorldUnits(0.08) : 0.08;
+  // The tropical foundation used to end at the exact same elevation as the
+  // visible floor top. Those coplanar faces produced severe depth flicker in
+  // WALK. End the foundation at the floor's underside instead.
+  const foundationHeight = isTropicalRainforest
+    ? TROPICAL_FINISHED_FLOOR_Y - biomeFloorThickness
+    : 0.34;
   const random = seededRandom(hashString(definition.id));
   const groundTex = makeGroundTexture(isTropicalRainforest ? '#17472f' : (definition.palette[0] as string));
   const concreteTex = makeConcreteTexture();
@@ -2047,7 +3606,8 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const distance = random() * usableRadius;
       const h = 0.7 + random() * 1.2;
       const rock = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.25 + random() * 0.35, h, 5), biomeMaterial(definition.palette, 1)), definition.id);
-      rock.position.set(Math.cos(angle) * distance, 0.38 + (h * 0.4), Math.sin(angle) * distance * (depth / width));
+      rock.name = `${definition.id}__EXPOSED_ALPINE_ROCK`;
+      rock.position.set(Math.cos(angle) * distance, finishedFloorY + h * 0.5, Math.sin(angle) * distance * (depth / width));
       rock.rotation.y = random() * Math.PI;
       rock.rotation.x = (random() - 0.5) * 0.15;
       group.add(rock);
@@ -2055,13 +3615,15 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     for (let index = 0; index < 14; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      addConifer(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.5 + random() * 0.6, true);
+      addConifer(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.5 + random() * 0.6, true, finishedFloorY);
     }
     for (let index = 0; index < 15; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.08 + random() * 0.08, 0), biomeMaterial(definition.palette, 2)), definition.id);
-      pebble.position.set(Math.cos(angle) * distance, 0.76, Math.sin(angle) * distance * (depth / width));
+      const pebbleRadius = 0.08 + random() * 0.08;
+      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(pebbleRadius, 0), biomeMaterial(definition.palette, 2)), definition.id);
+      pebble.name = `${definition.id}__ALPINE_SCREE`;
+      pebble.position.set(Math.cos(angle) * distance, finishedFloorY + pebbleRadius * 0.72, Math.sin(angle) * distance * (depth / width));
       pebble.rotation.set(random() * 3, random() * 3, random() * 3);
       group.add(pebble);
     }
@@ -2070,24 +3632,28 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
       const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + random() * 0.16, 1), biomeMaterial(definition.palette, index % 2)), definition.id);
+      shrub.name = `${definition.id}__MOSS_LICHEN_SHRUB`;
       shrub.scale.set(1.1, 0.35 + random() * 0.15, 1.1);
-      shrub.position.set(Math.cos(angle) * distance, 0.74, Math.sin(angle) * distance * (depth / width));
+      shrub.position.set(Math.cos(angle) * distance, finishedFloorY + 0.09, Math.sin(angle) * distance * (depth / width));
       group.add(shrub);
     }
     for (let index = 0; index < 12; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const stone = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.2 + random() * 0.3, 0.15 + random() * 0.25, 0.2 + random() * 0.3), biomeMaterial(definition.palette, 1)), definition.id);
-      stone.position.set(Math.cos(angle) * distance, 0.72, Math.sin(angle) * distance * (depth / width));
+      const stoneHeight = 0.15 + random() * 0.25;
+      const stone = prepareMesh(new THREE.Mesh(new THREE.BoxGeometry(0.2 + random() * 0.3, stoneHeight, 0.2 + random() * 0.3), biomeMaterial(definition.palette, 1)), definition.id);
+      stone.name = `${definition.id}__PERMAFROST_STONE`;
+      stone.position.set(Math.cos(angle) * distance, finishedFloorY + stoneHeight * 0.5, Math.sin(angle) * distance * (depth / width));
       stone.rotation.set(random() * 0.2, random() * Math.PI, random() * 0.2);
       group.add(stone);
     }
     for (let index = 0; index < 8; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const patch = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(0.3 + random() * 0.5, 8), physicalMaterial('#ffffff', { roughness: 0.1, transparent: true, opacity: 0.75 })), definition.id, false);
+      const patch = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(0.3 + random() * 0.5, 8), physicalMaterial('#6fb7c7', { roughness: 0.08, transparent: true, opacity: 0.82 })), definition.id, false);
+      patch.name = `${definition.id}__SEASONAL_MELTWATER_POOL`;
       patch.rotation.x = -Math.PI / 2;
-      patch.position.set(Math.cos(angle) * distance, 0.78, Math.sin(angle) * distance * (depth / width));
+      patch.position.set(Math.cos(angle) * distance, finishedFloorY + 0.012, Math.sin(angle) * distance * (depth / width));
       group.add(patch);
     }
   } else if (definition.id === 'desert-dome') {
@@ -2095,36 +3661,41 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
       const dune = prepareMesh(new THREE.Mesh(new THREE.SphereGeometry(0.5 + random() * 0.6, 12, 6), biomeMaterial(definition.palette, index % 2)), definition.id);
+      dune.name = `${definition.id}__LAYERED_DUNE`;
       dune.scale.set(2.0, 0.18, 0.8);
-      dune.position.set(Math.cos(angle) * distance, 0.72, Math.sin(angle) * distance * (depth / width));
+      dune.position.set(Math.cos(angle) * distance, finishedFloorY + 0.15, Math.sin(angle) * distance * (depth / width));
       dune.rotation.y = random() * Math.PI;
       group.add(dune);
     }
     for (let index = 0; index < 12; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      addCactus(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.6 + random() * 0.5);
+      addCactus(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.6 + random() * 0.5, finishedFloorY);
     }
     for (let index = 0; index < 15; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.06 + random() * 0.08, 0), standardMaterial('#c2b280', { roughness: 0.9 })), definition.id);
-      pebble.position.set(Math.cos(angle) * distance, 0.74, Math.sin(angle) * distance * (depth / width));
+      const pebbleRadius = 0.06 + random() * 0.08;
+      const pebble = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(pebbleRadius, 0), standardMaterial('#c2b280', { roughness: 0.9 })), definition.id);
+      pebble.name = `${definition.id}__DESERT_GRAVEL`;
+      pebble.position.set(Math.cos(angle) * distance, finishedFloorY + pebbleRadius * 0.72, Math.sin(angle) * distance * (depth / width));
       group.add(pebble);
     }
   } else if (definition.id === 'savanna-dome') {
     for (let index = 0; index < 10; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
-      addAcacia(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.65 + random() * 0.5);
+      addAcacia(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.65 + random() * 0.5, finishedFloorY);
     }
     const grassMat = standardMaterial('#c2b87f', { roughness: 0.95 });
     for (let index = 0; index < 25; index += 1) {
       const angle = random() * Math.PI * 2;
       const distance = random() * usableRadius;
       if (Math.cos(angle) * distance > 0.8 && Math.sin(angle) * distance * (depth / width) < -0.1) continue;
-      const tuft = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.06 + random() * 0.06, 0.25 + random() * 0.25, 4), grassMat), definition.id);
-      tuft.position.set(Math.cos(angle) * distance, 0.7 + 0.125 * tuft.scale.y, Math.sin(angle) * distance * (depth / width));
+      const tuftHeight = 0.25 + random() * 0.25;
+      const tuft = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.06 + random() * 0.06, tuftHeight, 4), grassMat), definition.id);
+      tuft.name = `${definition.id}__GOLDEN_GRASS_TUFT`;
+      tuft.position.set(Math.cos(angle) * distance, finishedFloorY + tuftHeight * 0.5, Math.sin(angle) * distance * (depth / width));
       tuft.rotation.x = (random() - 0.5) * 0.25;
       tuft.rotation.z = (random() - 0.5) * 0.25;
       group.add(tuft);
@@ -2135,13 +3706,15 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const distance = random() * usableRadius * 0.8;
       const h = 0.5 + random() * 0.5;
       const mound = prepareMesh(new THREE.Mesh(new THREE.ConeGeometry(0.18 + random() * 0.1, h, 5), clayMat), definition.id);
-      mound.position.set(Math.cos(angle) * distance, 0.7 + (h * 0.5), Math.sin(angle) * distance * (depth / width));
+      mound.name = `${definition.id}__TERMITE_MOUND`;
+      mound.position.set(Math.cos(angle) * distance, finishedFloorY + h * 0.5, Math.sin(angle) * distance * (depth / width));
       mound.rotation.y = random() * Math.PI;
       group.add(mound);
     }
     const pool = prepareMesh(new THREE.Mesh(new THREE.CircleGeometry(1.3, 24), physicalMaterial('#3e9196', { roughness: 0.08, metalness: 0.05 })), definition.id, false);
+    pool.name = `${definition.id}__WATER_HOLE`;
     pool.rotation.x = -Math.PI / 2;
-    pool.position.set(1.3, 0.81, -0.4);
+    pool.position.set(1.3, finishedFloorY + 0.015, -0.4);
     group.add(pool);
 
     const borderRockMat = standardMaterial('#8c7f70', { roughness: 0.88 });
@@ -2152,7 +3725,8 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
       const rz = -0.4 + Math.sin(theta) * rockRadius;
       const rScale = 0.08 + random() * 0.08;
       const borderRock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(rScale, 0), borderRockMat), definition.id);
-      borderRock.position.set(rx, 0.38, rz);
+      borderRock.name = `${definition.id}__WEATHERED_WATERHOLE_STONE`;
+      borderRock.position.set(rx, finishedFloorY + rScale * 0.72, rz);
       borderRock.rotation.set(random() * 3, random() * 3, random() * 3);
       group.add(borderRock);
     }
@@ -2165,34 +3739,40 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
         const angle = random() * Math.PI * 2;
         const distance = random() * usableRadius;
         const leafColor = random() > 0.4 ? '#4a6b32' : '#698a3c';
-        addTree(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.55 + random() * 0.65, leafColor, true);
+        addTree(group, definition.id, Math.cos(angle) * distance, Math.sin(angle) * distance * (depth / width), 0.55 + random() * 0.65, leafColor, true, finishedFloorY);
       }
       const shrubMat = standardMaterial('#3e5c26', { roughness: 0.92 });
       for (let index = 0; index < 12; index += 1) {
         const angle = random() * Math.PI * 2;
         const distance = random() * usableRadius;
         const shrub = prepareMesh(new THREE.Mesh(new THREE.IcosahedronGeometry(0.12 + random() * 0.12, 1), shrubMat), definition.id);
-        shrub.position.set(Math.cos(angle) * distance, 0.38, Math.sin(angle) * distance * (depth / width));
+        shrub.name = `${definition.id}__DECIDUOUS_UNDERSTORY`;
+        shrub.position.set(Math.cos(angle) * distance, finishedFloorY + 0.12, Math.sin(angle) * distance * (depth / width));
         group.add(shrub);
       }
       const rockMat = standardMaterial('#5e615b', { roughness: 0.85 });
       for (let index = 0; index < 8; index += 1) {
         const angle = random() * Math.PI * 2;
         const distance = random() * usableRadius;
-        const rock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(0.14 + random() * 0.14, 0), rockMat), definition.id);
-        rock.position.set(Math.cos(angle) * distance, 0.38, Math.sin(angle) * distance * (depth / width));
+        const rockRadius = 0.14 + random() * 0.14;
+        const rock = prepareMesh(new THREE.Mesh(new THREE.DodecahedronGeometry(rockRadius, 0), rockMat), definition.id);
+        rock.name = `${definition.id}__WOODLAND_STONE`;
+        rock.position.set(Math.cos(angle) * distance, finishedFloorY + rockRadius * 0.72, Math.sin(angle) * distance * (depth / width));
         rock.rotation.set(random() * 3, random() * 3, random() * 3);
         group.add(rock);
       }
     }
   }
 
+  addBiomeEcologyExpansion(group, definition, radius, depth, width, random, finishedFloorY);
+
   // Every biome contains a compact, visible field laboratory. It remains part
   // of the dome's editable hierarchy and is positioned clear of the airlock.
   const labCatalogItem = EDITOR_ASSET_CATALOG.find((item) => item.id === 'landscape-modular-wet-lab');
   if (labCatalogItem) {
     const laboratory = createEditorAsset(labCatalogItem, definition.id);
-    laboratory.name = `${definition.id}__BIOME_FIELD_LABORATORY`;
+    const fieldLabName = ecologyPlan?.fieldLabName ?? 'Biome Field Laboratory';
+    laboratory.name = `${definition.id}__BIOME_FIELD_LABORATORY__${campusFeatureKey(fieldLabName).toUpperCase()}`;
     laboratory.position.set(
       isTropicalRainforest ? radius * 0.43 : 0,
       isTropicalRainforest ? finishedFloorY : 0.38,
@@ -2201,11 +3781,33 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
     laboratory.rotation.y = isTropicalRainforest ? -Math.PI * 0.5 : Math.PI;
     laboratory.scale.setScalar(isTropicalRainforest ? 0.54 : 0.72);
     laboratory.userData.biomeLaboratory = true;
+    laboratory.userData.semanticName = fieldLabName;
+    laboratory.userData.labType = fieldLabName;
+    laboratory.userData.featureRole = 'lab';
+    laboratory.userData.featureTag = campusFeatureKey(fieldLabName);
     laboratory.userData.editable = true;
     laboratory.traverse((child) => {
       child.userData.selectableId = definition.id;
       child.userData.biomeLaboratory = true;
+      child.userData.labType = fieldLabName;
+      child.userData.featureRole = 'lab';
+      child.userData.featureTag = campusFeatureKey(fieldLabName);
     });
+    const identityBand = prepareMesh(new THREE.Mesh(
+      new THREE.BoxGeometry(3.2, 0.12, 0.22),
+      markAccent(new THREE.MeshStandardMaterial({
+        color: definition.accent,
+        emissive: definition.accent,
+        emissiveIntensity: 1.8,
+        roughness: 0.24,
+        metalness: 0.52,
+      })),
+    ), definition.id, false);
+    identityBand.name = `${definition.id}__BIOME_FIELD_LAB_IDENTITY_BAND`;
+    identityBand.position.set(0, 1.65, 1.05);
+    identityBand.userData.biomeLaboratory = true;
+    identityBand.userData.labType = fieldLabName;
+    laboratory.add(identityBand);
     group.add(laboratory);
   }
 

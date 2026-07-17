@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
 import type { BiomeDefinition } from '../data/districts';
-import { BIOME_PLAN_POSITIONS, COASTAL_RAIL_INSET, DISTRICT_ROAD_RADII, ISLAND_POINTS, ISLAND_RADIUS, ISLAND_SURFACE_Y, metresToWorldUnits } from '../config/island';
+import { BIOME_PLAN_POSITIONS, COASTAL_RAIL_INSET, DISTRICT_ROAD_RADII, ISLAND_POINTS, ISLAND_RADIUS, ISLAND_SURFACE_Y, MASTERPLAN_RESCALE, metresToWorldUnits } from '../config/island';
 
 const PLANTED_SURFACE_Y = ISLAND_SURFACE_Y;
 const ROAD_SURFACE_Y = PLANTED_SURFACE_Y + 0.006;
@@ -52,6 +52,40 @@ function ellipseStrip(radiusX: number, radiusZ: number, width: number, y: number
   geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
+  return geometry;
+}
+
+function annularSectorGeometry(
+  innerRadius: number,
+  outerRadius: number,
+  startAngle: number,
+  angleLength: number,
+  segments = 192,
+) {
+  const positions: number[] = [];
+  const normals: number[] = [];
+  const uvs: number[] = [];
+  const indices: number[] = [];
+  for (let index = 0; index <= segments; index += 1) {
+    const fraction = index / segments;
+    const angle = startAngle + fraction * angleLength;
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
+    positions.push(cos * innerRadius, 0, sin * innerRadius);
+    positions.push(cos * outerRadius, 0, sin * outerRadius);
+    normals.push(0, 1, 0, 0, 1, 0);
+    uvs.push(fraction, 0, fraction, 1);
+    if (index < segments) {
+      const base = index * 2;
+      indices.push(base, base + 2, base + 1, base + 2, base + 3, base + 1);
+    }
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeBoundingSphere();
   return geometry;
 }
 
@@ -141,7 +175,7 @@ function createCoastalTrain(index: number, railPath: readonly THREE.Vector3[], t
     totalPathLength,
     phaseDistance: totalPathLength * (index / 3),
     speed: metresToWorldUnits(7.5 + index * 1.2),
-    trackOffset: index % 2 ? -0.32 : 0.32,
+    trackOffset: index % 2 ? -0.21 : 0.21,
     trackY: ROAD_SURFACE_Y,
   };
   return train;
@@ -174,7 +208,10 @@ export function createIslandShell(target: THREE.Group) {
   cliffGeometry.rotateX(Math.PI / 2);
   const cliffs = new THREE.Mesh(cliffGeometry, cliffMaterial);
   cliffs.name = 'Island basalt foundation';
-  cliffs.position.y = 1.42;
+  // ExtrudeGeometry's upper bevel reaches 0.85 world units above its origin.
+  // Seat that bevel just below the canonical island surface so terrain never
+  // buries roads, railway beds, district floors, or WALK-mode access points.
+  cliffs.position.y = ISLAND_SURFACE_Y - 0.87;
   cliffs.castShadow = true;
   cliffs.receiveShadow = true;
   cliffs.userData = { exportCategory: 'terrain', editable: true };
@@ -205,7 +242,7 @@ export function createIslandShell(target: THREE.Group) {
   target.add(top);
 
   const exportOcean = new THREE.Mesh(
-    new THREE.PlaneGeometry(1800, 1800),
+    new THREE.PlaneGeometry(1800 * MASTERPLAN_RESCALE, 1800 * MASTERPLAN_RESCALE),
     new THREE.MeshPhysicalMaterial({
       color: '#0a3442',
       roughness: 0.18,
@@ -285,12 +322,18 @@ export function createIslandShell(target: THREE.Group) {
       rock.castShadow = true;
       detailGroup.add(rock);
     } else {
+      const trunkHeight = 0.62 + random() * 0.25;
+      const crownRadius = 0.3 + random() * 0.22;
+      // The east coastal edge is the Academic District's railway-side rear
+      // strip. Preserve the seeded sequence while omitting its unrelated
+      // shell vegetation so the framed precinct is genuinely tree-free.
+      if (edgeIndex === 1) continue;
       const trunk = new THREE.Mesh(
-        new THREE.CylinderGeometry(0.035, 0.055, 0.62 + random() * 0.25, 6),
+        new THREE.CylinderGeometry(0.035, 0.055, trunkHeight, 6),
         new THREE.MeshStandardMaterial({ color: '#3f3225', roughness: 0.95 }),
       );
       const crown = new THREE.Mesh(
-        new THREE.IcosahedronGeometry(0.3 + random() * 0.22, 1),
+        new THREE.IcosahedronGeometry(crownRadius, 1),
         foliageMaterials[index % foliageMaterials.length],
       );
       trunk.position.set(x, 2.1, z);
@@ -316,6 +359,14 @@ export function createIslandShell(target: THREE.Group) {
 
 export function createTransitNetwork(target: THREE.Group, biomes: readonly BiomeDefinition[]) {
   target.name = 'INFRASTRUCTURE__TRANSIT_NETWORK';
+  target.userData.masterplan = {
+    islandRadius: ISLAND_RADIUS,
+    districtRoadRadii: [...DISTRICT_ROAD_RADII],
+    biomeRingRadius: Math.hypot(...BIOME_PLAN_POSITIONS['alpine-dome']),
+    districtDelimiterModel: 'shared-ring-roads-and-six-spokes',
+    districtRingRoadCount: DISTRICT_ROAD_RADII.length,
+    radialRoadRayCount: 6,
+  };
   const roadMaterial = new THREE.MeshPhysicalMaterial({
     color: '#142429',
     emissive: '#09181b',
@@ -447,7 +498,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     sleepers.receiveShadow = true;
     const sleeperQuaternion = new THREE.Quaternion().setFromEuler(new THREE.Euler(0, Math.atan2(direction.x, direction.z), 0));
     let sleeperInstance = 0;
-    for (const trackOffset of [-0.32, 0.32]) {
+    for (const trackOffset of [-0.21, 0.21]) {
       for (let sleeperIndex = 0; sleeperIndex < sleepersPerTrack; sleeperIndex += 1) {
         const t = (sleeperIndex + 0.5) / sleepersPerTrack;
         const position = pathPoint.clone().lerp(nextPoint, t).addScaledVector(perpendicular, trackOffset);
@@ -460,7 +511,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     sleepers.instanceMatrix.needsUpdate = true;
     target.add(sleepers);
 
-    for (const trackOffset of [-0.32, 0.32]) {
+    for (const trackOffset of [-0.21, 0.21]) {
       for (const gaugeOffset of [-metresToWorldUnits(0.7175), metresToWorldUnits(0.7175)]) {
         const offset = trackOffset + gaugeOffset;
         const railStart = pathPoint.clone().addScaledVector(perpendicular, offset);
@@ -651,7 +702,7 @@ export function createIndustrialPort(target: THREE.Group) {
   const orange = new THREE.MeshStandardMaterial({ color: '#ffaa55', emissive: '#ff7b35', emissiveIntensity: 2.6, roughness: 0.22 });
   const iceBlue = new THREE.MeshStandardMaterial({ color: '#bdebff', emissive: '#5edcff', emissiveIntensity: 2.8, roughness: 0.18 });
 
-  const quayCenter = new THREE.Vector3(34, -0.35, -ISLAND_RADIUS * 0.97);
+  const quayCenter = new THREE.Vector3(34 * MASTERPLAN_RESCALE, -0.35, -ISLAND_RADIUS * 0.97);
   const quay = new THREE.Mesh(new RoundedBoxGeometry(34, 1.5, 12, 3, 0.45), deckMaterial);
   quay.name = 'Cold-chain cargo quay';
   quay.position.copy(quayCenter);
@@ -664,14 +715,14 @@ export function createIndustrialPort(target: THREE.Group) {
     pier.userData.walkable = true;
     port.add(pier);
   }
-  const accessStart = new THREE.Vector3(24, 1.83, -ISLAND_RADIUS * 0.86);
-  const accessEnd = new THREE.Vector3(34, 0.25, quayCenter.z + 5);
+  const accessStart = new THREE.Vector3(24 * MASTERPLAN_RESCALE, 1.83, -ISLAND_RADIUS * 0.86);
+  const accessEnd = new THREE.Vector3(34 * MASTERPLAN_RESCALE, 0.25, quayCenter.z + 5);
   const accessRoad = roadSegment(accessStart, accessEnd, 4.6, deckMaterial, 0.35);
   accessRoad.name = 'Logistics district port access ramp';
   accessRoad.userData.walkable = true;
   port.add(accessRoad);
   const logisticsFreightRoad = roadSegment(
-    new THREE.Vector3(62, 1.84, -179.5),
+    new THREE.Vector3(62 * MASTERPLAN_RESCALE, 1.84, -179.5 * MASTERPLAN_RESCALE),
     accessStart,
     3.4,
     deckMaterial,
@@ -681,7 +732,7 @@ export function createIndustrialPort(target: THREE.Group) {
   logisticsFreightRoad.userData.walkable = true;
   port.add(logisticsFreightRoad);
   const freightGuide = roadSegment(
-    new THREE.Vector3(62, 1.94, -179.5),
+    new THREE.Vector3(62 * MASTERPLAN_RESCALE, 1.94, -179.5 * MASTERPLAN_RESCALE),
     new THREE.Vector3(accessStart.x, 1.94, accessStart.z),
     0.12,
     orange,
@@ -717,9 +768,9 @@ export function createIndustrialPort(target: THREE.Group) {
   }
 
   const ships = [
-    { x: 20, z: -ISLAND_RADIUS - 42, rotation: 0.03, length: 23, color: '#ff8b45', name: 'Cargo vessel Asterion' },
-    { x: 49, z: -ISLAND_RADIUS - 46, rotation: -0.04, length: 27, color: '#42e7ff', name: 'Refrigerated vessel Borealis' },
-    { x: 81, z: -ISLAND_RADIUS - 34, rotation: 0.13, length: 19, color: '#ff4ecb', name: 'Autonomous feeder vessel Nyx' },
+    { x: 20 * MASTERPLAN_RESCALE, z: -ISLAND_RADIUS - 42, rotation: 0.03, length: 23, color: '#ff8b45', name: 'Cargo vessel Asterion' },
+    { x: 49 * MASTERPLAN_RESCALE, z: -ISLAND_RADIUS - 46, rotation: -0.04, length: 27, color: '#42e7ff', name: 'Refrigerated vessel Borealis' },
+    { x: 81 * MASTERPLAN_RESCALE, z: -ISLAND_RADIUS - 34, rotation: 0.13, length: 19, color: '#ff4ecb', name: 'Autonomous feeder vessel Nyx' },
   ];
   ships.forEach((specification) => {
     const ship = createCargoShip(specification.name, specification.color, specification.length);
@@ -756,7 +807,11 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     (ISLAND_POINTS[0][1] + ISLAND_POINTS[1][1]) * 0.48,
   );
   const bridgeStart = alpineTundraCoastMidpoint;
-  const bridgeEnd = new THREE.Vector3(330, 5.2, -348);
+  const bridgeEnd = new THREE.Vector3(
+    330 * MASTERPLAN_RESCALE,
+    5.2,
+    -348 * MASTERPLAN_RESCALE,
+  );
   const direction = new THREE.Vector3().subVectors(bridgeEnd, bridgeStart);
   const normal = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
   const deckMaterial = new THREE.MeshStandardMaterial({ color: '#1c282e', roughness: 0.48, metalness: 0.58 });
@@ -796,7 +851,7 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     bridgeTarget.add(strip);
   }
 
-  const pylonTs = [0.27, 0.66];
+  const pylonTs = [0.18, 0.4, 0.62, 0.84];
   pylonTs.forEach((t, pylonIndex) => {
     const center = bridgeStart.clone().lerp(bridgeEnd, t);
     const deckY = center.y;
@@ -837,10 +892,80 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   }
 
   const random = hashRandom(20260711);
-  const cityCenter = new THREE.Vector3(405, 0.12, -420);
+  const cityCenter = new THREE.Vector3(
+    405 * MASTERPLAN_RESCALE,
+    0.12,
+    -420 * MASTERPLAN_RESCALE,
+  );
   const cityRotation = -0.16;
+  const cityHorizonCenterAngle = Math.atan2(cityCenter.z, cityCenter.x);
+  const cityHorizonSpan = THREE.MathUtils.degToRad(190);
+  const cityHorizonStart = cityHorizonCenterAngle - cityHorizonSpan * 0.5;
+  const cityHorizonInnerRadius = ISLAND_RADIUS + 330;
+  // Extend beyond the ocean plane's farthest square corner so even elevated
+  // views can never reveal a second strip of water behind the city.
+  const cityHorizonOuterRadius = 2600;
+  const cityGroundY = ISLAND_SURFACE_Y - 0.15;
+
+  // The city is a literal world boundary: an opaque mainland occupies a
+  // little more than half the island's horizon and extends past the ocean
+  // mesh. Looking toward the skyline can therefore never reveal more sea
+  // behind it.
+  const worldEndMainland = new THREE.Mesh(
+    annularSectorGeometry(
+      cityHorizonInnerRadius,
+      cityHorizonOuterRadius,
+      cityHorizonStart,
+      cityHorizonSpan,
+      256,
+    ),
+    new THREE.MeshBasicMaterial({ color: '#0d1419' }),
+  );
+  worldEndMainland.name = 'WORLD_END__CYBER_CITY_MAINLAND';
+  worldEndMainland.position.y = cityGroundY;
+  worldEndMainland.receiveShadow = true;
+  worldEndMainland.userData = {
+    worldBoundary: true,
+    oceanBeyondCity: false,
+    horizonSpanDegrees: 190,
+  };
+  cityTarget.add(worldEndMainland);
+
+  const seaWallSegments = 128;
+  const seaWallArcWidth = (cityHorizonInnerRadius * cityHorizonSpan / seaWallSegments) * 1.04;
+  const seaWallHeight = cityGroundY + 2.62;
+  const seaWallGeometry = new THREE.BoxGeometry(seaWallArcWidth, seaWallHeight, 18);
+  const seaWallMaterial = new THREE.MeshStandardMaterial({ color: '#172027', roughness: 0.88, metalness: 0.18 });
+  const seaWall = new THREE.InstancedMesh(seaWallGeometry, seaWallMaterial, seaWallSegments);
+  seaWall.name = 'WORLD_END__CYBER_CITY_SEAWALL';
+  const instanceMatrix = new THREE.Matrix4();
+  const instancePosition = new THREE.Vector3();
+  const instanceQuaternion = new THREE.Quaternion();
+  const instanceScale = new THREE.Vector3(1, 1, 1);
+  const instanceEuler = new THREE.Euler();
+  for (let index = 0; index < seaWallSegments; index += 1) {
+    const angle = cityHorizonStart + ((index + 0.5) / seaWallSegments) * cityHorizonSpan;
+    instancePosition.set(
+      Math.cos(angle) * (cityHorizonInnerRadius + 9),
+      cityGroundY - seaWallHeight * 0.5,
+      Math.sin(angle) * (cityHorizonInnerRadius + 9),
+    );
+    instanceEuler.set(0, -angle - Math.PI * 0.5, 0);
+    instanceQuaternion.setFromEuler(instanceEuler);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    seaWall.setMatrixAt(index, instanceMatrix);
+  }
+  seaWall.instanceMatrix.needsUpdate = true;
+  cityTarget.add(seaWall);
+
   const cityBase = new THREE.Mesh(
-    new RoundedBoxGeometry(168, 3.2, 74, 5, 8),
+    new RoundedBoxGeometry(
+      168 * MASTERPLAN_RESCALE,
+      3.2,
+      74 * MASTERPLAN_RESCALE,
+      5,
+      8,
+    ),
     new THREE.MeshStandardMaterial({ color: '#111a22', roughness: 0.82, metalness: 0.12 }),
   );
   cityBase.name = 'Cyberpunk mainland foundation';
@@ -848,11 +973,18 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   cityBase.rotation.y = cityRotation;
   cityBase.userData.walkable = true;
   cityTarget.add(cityBase);
-  cityTarget.userData.skylineLength = 168;
-  cityTarget.userData.towerCount = 144;
+  cityTarget.userData.skylineLength = Number((cityHorizonInnerRadius * cityHorizonSpan).toFixed(1));
+  cityTarget.userData.skylineArcDegrees = 190;
+  cityTarget.userData.worldBoundaryOuterRadius = cityHorizonOuterRadius;
+  cityTarget.userData.oceanBeyondCity = false;
+  cityTarget.userData.worldBoundary = true;
   cityTarget.userData.cityCenter = cityCenter.toArray();
 
-  const cityRampOffset = new THREE.Vector3(-73, 1.78, 23).applyAxisAngle(new THREE.Vector3(0, 1, 0), cityRotation);
+  const cityRampOffset = new THREE.Vector3(
+    -73 * MASTERPLAN_RESCALE,
+    1.78,
+    23 * MASTERPLAN_RESCALE,
+  ).applyAxisAngle(new THREE.Vector3(0, 1, 0), cityRotation);
   const cityRampEnd = cityCenter.clone().add(cityRampOffset);
   const cityRamp = roadSegment(bridgeEnd, cityRampEnd, 5.1, deckMaterial, 0.3);
   cityRamp.name = 'Bridge cyber city approach ramp';
@@ -865,14 +997,15 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     new THREE.MeshStandardMaterial({ color: '#0b1118', roughness: 0.38, metalness: 0.62 }),
   ];
   const neonMaterials = [cyan, magenta, new THREE.MeshStandardMaterial({ color: '#b8f34b', emissive: '#b8f34b', emissiveIntensity: 2.3 })];
-  for (let index = 0; index < 144; index += 1) {
-    const localX = (random() * 2 - 1) * 77;
-    const localZ = (random() * 2 - 1) * 31;
+  const bridgeheadTowerCount = 144;
+  for (let index = 0; index < bridgeheadTowerCount; index += 1) {
+    const localX = (random() * 2 - 1) * 77 * MASTERPLAN_RESCALE;
+    const localZ = (random() * 2 - 1) * 31 * MASTERPLAN_RESCALE;
     const rotatedX = localX * Math.cos(cityRotation) - localZ * Math.sin(cityRotation);
     const rotatedZ = localX * Math.sin(cityRotation) + localZ * Math.cos(cityRotation);
     const x = cityCenter.x + rotatedX;
     const z = cityCenter.z + rotatedZ;
-    const centerBias = 1 - Math.min(1, Math.abs(localX) / 77);
+    const centerBias = 1 - Math.min(1, Math.abs(localX) / (77 * MASTERPLAN_RESCALE));
     const width = 1.1 + random() * 2.8;
     const depth = 1.1 + random() * 2.6;
     const height = 6 + Math.pow(random(), 1.55) * 54 + centerBias * 12;
@@ -896,6 +1029,66 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     }
   }
 
+  // Dense instanced silhouettes continue the bridgehead cluster into a
+  // 190-degree skyline. Instancing keeps the new horizon at six draw calls
+  // instead of hundreds while still giving every view a layered city edge.
+  const horizonTowerCount = 420;
+  const horizonMaterials = cityMaterials.map((material) => material.clone());
+  const horizonNeonMaterials = neonMaterials.map((material) => material.clone());
+  const countsByStyle = horizonMaterials.map((_, style) => (
+    Math.floor((horizonTowerCount + horizonMaterials.length - 1 - style) / horizonMaterials.length)
+  ));
+  const horizonTowers = horizonMaterials.map((material, style) => {
+    const instances = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), material, countsByStyle[style]);
+    instances.name = `WORLD_END__CYBER_CITY_TOWERS_${style + 1}`;
+    instances.castShadow = false;
+    instances.receiveShadow = true;
+    instances.userData.instanceCount = countsByStyle[style];
+    return instances;
+  });
+  const horizonNeon = horizonNeonMaterials.map((material, style) => {
+    const instances = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), material, countsByStyle[style]);
+    instances.name = `WORLD_END__CYBER_CITY_NEON_${style + 1}`;
+    instances.userData.instanceCount = countsByStyle[style];
+    return instances;
+  });
+  const styleIndices = [0, 0, 0];
+  for (let index = 0; index < horizonTowerCount; index += 1) {
+    const style = index % horizonMaterials.length;
+    const slot = styleIndices[style]++;
+    const angleFraction = (index + 0.5) / horizonTowerCount;
+    const angleJitter = (random() - 0.5) * (cityHorizonSpan / horizonTowerCount) * 0.72;
+    const angle = cityHorizonStart + angleFraction * cityHorizonSpan + angleJitter;
+    const depthBand = index % 4;
+    const radius = cityHorizonInnerRadius + 34 + depthBand * 48 + random() * 34;
+    const centerBias = 1 - Math.min(1, Math.abs(angle - cityHorizonCenterAngle) / (cityHorizonSpan * 0.5));
+    const width = 5 + random() * 8.5;
+    const depth = 6 + random() * 11;
+    const height = 20 + Math.pow(random(), 1.55) * 88 + centerBias * 18;
+    instancePosition.set(
+      Math.cos(angle) * radius,
+      cityGroundY + height * 0.5,
+      Math.sin(angle) * radius,
+    );
+    instanceEuler.set(0, -angle + (random() - 0.5) * 0.38, 0);
+    instanceQuaternion.setFromEuler(instanceEuler);
+    instanceScale.set(width, height, depth);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    horizonTowers[style].setMatrixAt(slot, instanceMatrix);
+
+    instancePosition.y = cityGroundY + height * (0.3 + random() * 0.5);
+    instanceScale.set(width * 1.025, Math.max(0.22, height * 0.009), depth * 1.025);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    horizonNeon[style].setMatrixAt(slot, instanceMatrix);
+  }
+  [...horizonTowers, ...horizonNeon].forEach((instances) => {
+    instances.instanceMatrix.needsUpdate = true;
+    cityTarget.add(instances);
+  });
+  cityTarget.userData.bridgeheadTowerCount = bridgeheadTowerCount;
+  cityTarget.userData.horizonTowerCount = horizonTowerCount;
+  cityTarget.userData.towerCount = bridgeheadTowerCount + horizonTowerCount;
+
   const cityHalo = new THREE.PointLight('#ff4ecb', 32, 175, 2);
   cityHalo.position.set(cityCenter.x, 10, cityCenter.z);
   cityHalo.name = 'Cyber city atmospheric glow';
@@ -914,7 +1107,12 @@ export interface WaterSurface extends THREE.Mesh {
 }
 
 export function createOcean(): WaterSurface {
-  const geometry = new THREE.PlaneGeometry(1800, 1800, 224, 224);
+  const geometry = new THREE.PlaneGeometry(
+    1800 * MASTERPLAN_RESCALE,
+    1800 * MASTERPLAN_RESCALE,
+    224,
+    224,
+  );
   const material = new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
@@ -1018,7 +1216,10 @@ export function createSkyDome(): SkyDome {
     side: THREE.BackSide,
     depthWrite: false,
   });
-  const sky = new THREE.Mesh(new THREE.SphereGeometry(1400, 44, 24), material) as SkyDome;
+  const sky = new THREE.Mesh(
+    new THREE.SphereGeometry(1400 * MASTERPLAN_RESCALE, 44, 24),
+    material,
+  ) as SkyDome;
   sky.name = 'Atmospheric sky (presentation)';
   return sky;
 }

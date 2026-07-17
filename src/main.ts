@@ -2,14 +2,20 @@ import * as THREE from 'three';
 import './style.css';
 import { biomes, districts } from './data/districts';
 import {
+  ACADEMIC_CAMPUS_BUILDINGS,
+  type AcademicCampusBuilding,
+} from './data/academicCampus';
+import {
   IslandWorld,
   type EditorAssetDefinition,
   type GizmoMode,
+  type GraphicsQuality,
   type ImportedDefinition,
   type ObjectState,
   type SceneDefinition,
   type SceneLayer,
   type ViewMode,
+  type WeatherMode,
 } from './world/IslandWorld';
 import { EDITOR_ASSET_CATALOG, type EditorWorkspace } from './world/editorAssets';
 
@@ -63,6 +69,20 @@ const undoActionButton = required<HTMLButtonElement>('#undo-action');
 const envTimeSelect = required<HTMLSelectElement>('#env-time');
 const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
 const envSeasonSelect = required<HTMLSelectElement>('#env-season');
+const envQualitySelect = required<HTMLSelectElement>('#env-quality');
+const academicAudioButton = required<HTMLButtonElement>('#academic-audio-toggle');
+const debugButton = required<HTMLButtonElement>('#debug-toggle');
+const debugStats = required<HTMLElement>('#debug-stats');
+const academicBuildingCard = required<HTMLElement>('#academic-building-card');
+const academicBuildingTitle = required<HTMLElement>('#academic-building-title');
+const academicBuildingMeta = required<HTMLElement>('#academic-building-meta');
+const academicBuildingDescription = required<HTMLElement>('#academic-building-description');
+const academicHistoryEditor = required<HTMLTextAreaElement>('#academic-history-editor');
+const academicBuildingClose = required<HTMLButtonElement>('#academic-building-close');
+const academicHistorySave = required<HTMLButtonElement>('#academic-history-save');
+const academicCampusMap = required<HTMLElement>('#academic-campus-map');
+const academicMapMarkers = required<HTMLElement>('#academic-map-markers');
+const academicMapClose = required<HTMLButtonElement>('#academic-map-close');
 const editStudioCollapseButton = required<HTMLButtonElement>('#edit-studio-collapse');
 const saveInspectorChangesButton = required<HTMLButtonElement>('#save-inspector-changes');
 const walkInteractionMenu = required<HTMLElement>('#walk-interaction-menu');
@@ -83,6 +103,8 @@ const timeToggle = required<HTMLButtonElement>('#toggle-time');
 const walkHud = required<HTMLElement>('#walk-hud');
 const walkLookButton = required<HTMLButtonElement>('#walk-look-button');
 const walkTurboButton = required<HTMLButtonElement>('#walk-turbo');
+const walkHudCollapseButton = required<HTMLButtonElement>('#walk-hud-collapse');
+const walkReadout = required<HTMLElement>('.walk-readout');
 const walkStatus = required<HTMLElement>('#walk-status');
 const editWorkspacePanel = required<HTMLElement>('#edit-workspace');
 const editLandscapeButton = required<HTMLButtonElement>('#edit-landscape');
@@ -411,13 +433,13 @@ function setMode(mode: ViewMode) {
     explore: '<span><b>Drag</b> orbit</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     plan: '<span><b>Drag</b> pan</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     edit: '<span><b>G / R / S</b> transform</span><span><b>Drag</b> gizmo</span><span><b>Click</b> select</span>',
-    walk: '<span><b>WASD</b> move</span><span><b>T</b> bike turbo</span><span><b>E</b> inspect</span>',
+    walk: '<span><b>WASD</b> move</span><span><b>Space</b> tap / hold jump</span><span><b>T</b> bike turbo</span><span><b>E</b> interact</span>',
   };
   required<HTMLElement>('#interaction-hint').innerHTML = hints[mode];
   if (mode === 'edit' && currentSelection) toast('Edit mode active', 'Use the gizmo or inspector fields; changes are included in the GLB export.');
   if (mode === 'walk') {
     sceneCardTitle.textContent = 'Human-scale campus walk';
-    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · 1.8 m/s walk · T toggles 12 m/s bike-speed turbo';
+    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · variable-height Space jump · T toggles 12 m/s bike-speed turbo';
     walkStatus.textContent = 'Human-scale exploration ready';
     walkLookButton.textContent = 'Click to look around';
   }
@@ -489,6 +511,7 @@ const world = new IslandWorld(viewport, {
     walkTurboButton.setAttribute('aria-pressed', String(enabled));
     walkTurboButton.textContent = enabled ? 'Turbo · 12 m/s' : 'Turbo · Off';
   },
+  onAcademicInteraction: (result) => toast(result.title, result.message),
   onImportPlacementChange: (state, position) => {
     const choosing = state === 'choosing';
     document.body.classList.toggle('import-placement-active', choosing);
@@ -616,6 +639,12 @@ exitInteriorButton.addEventListener('click', () => {
 
 walkLookButton.addEventListener('click', () => world.activateWalkLook());
 walkTurboButton.addEventListener('click', () => world.toggleWalkTurbo());
+walkHudCollapseButton.addEventListener('click', () => {
+  const collapsed = walkReadout.classList.toggle('collapsed');
+  walkHudCollapseButton.setAttribute('aria-expanded', String(!collapsed));
+  walkHudCollapseButton.setAttribute('aria-label', `${collapsed ? 'Expand' : 'Collapse'} WALK controls`);
+  walkHudCollapseButton.textContent = collapsed ? '‹' : '›';
+});
 
 document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) => {
   button.addEventListener('click', () => setGizmo(button.dataset.gizmo as GizmoMode));
@@ -929,6 +958,55 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Home') world.overview();
 });
 
+let currentAcademicBuilding: AcademicCampusBuilding | null = null;
+
+function editableAcademicHistory(record: AcademicCampusBuilding) {
+  return localStorage.getItem(`blackwood-history:${record.id}`) ?? record.history;
+}
+
+function showAcademicBuildingCard(record: AcademicCampusBuilding) {
+  currentAcademicBuilding = record;
+  academicBuildingTitle.textContent = record.name;
+  academicBuildingMeta.textContent = `Founded ${record.founded} · ${record.zone} · ${record.kind}`;
+  academicBuildingDescription.textContent = record.description;
+  academicHistoryEditor.value = editableAcademicHistory(record);
+  academicCampusMap.hidden = true;
+  academicBuildingCard.hidden = false;
+  academicHistoryEditor.focus();
+}
+
+function showAcademicCampusMap() {
+  academicBuildingCard.hidden = true;
+  academicCampusMap.hidden = false;
+}
+
+ACADEMIC_CAMPUS_BUILDINGS.forEach((record) => {
+  const marker = document.createElement('button');
+  marker.type = 'button';
+  marker.className = 'academic-map-marker';
+  marker.style.left = `${8 + ((record.location[0] + 55) / 110) * 84}%`;
+  marker.style.top = `${92 - ((record.location[1] + 55) / 110) * 84}%`;
+  marker.title = `${record.name} · founded ${record.founded}`;
+  marker.setAttribute('aria-label', marker.title);
+  const label = document.createElement('span');
+  label.textContent = record.name;
+  marker.appendChild(label);
+  marker.addEventListener('click', () => showAcademicBuildingCard(record));
+  academicMapMarkers.appendChild(marker);
+});
+
+academicBuildingClose.addEventListener('click', () => {
+  academicBuildingCard.hidden = true;
+});
+academicMapClose.addEventListener('click', () => {
+  academicCampusMap.hidden = true;
+});
+academicHistorySave.addEventListener('click', () => {
+  if (!currentAcademicBuilding) return;
+  localStorage.setItem(`blackwood-history:${currentAcademicBuilding.id}`, academicHistoryEditor.value.trim());
+  toast('History saved', `${currentAcademicBuilding.name}'s fictional history is stored in this browser.`);
+});
+
 function showWalkInteractionMenu(definition: SceneDefinition) {
   if (world.walkController?.pointerControls.isLocked) {
     world.walkController.pointerControls.unlock();
@@ -936,15 +1014,39 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 
   const state = world.getObjectState(definition.id);
   const rawList = state?.interactions ?? [];
-  const interactions = rawList.length ? rawList : ['examine'];
 
-  walkInteractionMenuTitle.textContent = definition.name;
+  const academicHotspot = definition.id === 'academic-libraries-theoretical-labs'
+    ? world.getActiveAcademicHotspot()
+    : null;
+  const interactions = (rawList.length ? rawList : ['examine']).filter(
+    (action) => action !== 'open main gate' || definition.id !== 'academic-libraries-theoretical-labs' || world.isAcademicMainGateNearby(),
+  );
+  const academicSnapshot = definition.id === 'academic-libraries-theoretical-labs'
+    ? world.getTextSnapshot()
+    : null;
+  const gateActionLabel = academicSnapshot?.atmosphere.timeOfDay !== 'night'
+    ? 'Main gate open for daylight'
+    : academicSnapshot?.academicDistrict?.gateOpen
+      ? 'Close main gate'
+      : 'Open main gate';
+  walkInteractionMenuTitle.textContent = academicHotspot?.name ?? definition.name;
   walkInteractionButtonsContainer.innerHTML = '';
 
   interactions.forEach((act) => {
     const btn = document.createElement('button');
     btn.className = 'interaction-menu-btn';
-    btn.textContent = act === 'sit' ? 'Sit down' : act === 'sleep' ? 'Sleep / Rest' : act === 'research' ? 'Research' : act === 'analyze' ? 'Analyze samples' : act === 'power' ? 'Power toggle' : act === 'decontaminate' ? 'Decontaminate' : act;
+    btn.textContent = act === 'sit' ? 'Sit down'
+      : act === 'sleep' ? 'Sleep / Rest'
+      : act === 'research' ? 'Research'
+      : act === 'analyze' ? 'Analyze samples'
+      : act === 'power' ? 'Power toggle'
+      : act === 'decontaminate' ? 'Decontaminate'
+      : act === 'inspect entrance' ? `Inspect ${academicHotspot?.name ?? 'nearest entrance'}`
+      : act === 'open main gate' ? gateActionLabel
+      : act === 'ring chapel bell' ? 'Ring St Anselm bell'
+      : act === 'toggle reading-room lights' ? 'Toggle reading-room lights'
+      : act === 'campus map' ? 'Open campus map'
+      : act;
     btn.addEventListener('click', () => {
       triggerWalkInteraction(definition, act);
       walkInteractionMenu.hidden = true;
@@ -959,6 +1061,17 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 function triggerWalkInteraction(definition: SceneDefinition, action: string) {
   const group = world.objectGroups.get(definition.id);
   if (!group) return;
+
+  if (definition.id === 'academic-libraries-theoretical-labs') {
+    if (action === 'campus map') {
+      showAcademicCampusMap();
+      return;
+    }
+    const result = world.performAcademicInteraction(action);
+    if (action === 'inspect entrance' && result.building) showAcademicBuildingCard(result.building);
+    else toast(result.title, result.message);
+    return;
+  }
 
   if (action === 'sit' || action === 'sleep') {
     let seatPos = new THREE.Vector3();
@@ -1105,6 +1218,7 @@ function syncEnvironmentUI() {
   envTimeSelect.value = world.getTimeOfDay();
   envWeatherSelect.value = world.getWeather();
   envSeasonSelect.value = world.getSeason();
+  envQualitySelect.value = world.getGraphicsQuality();
 }
 
 envTimeSelect.addEventListener('change', () => {
@@ -1115,7 +1229,8 @@ envTimeSelect.addEventListener('change', () => {
 
 envWeatherSelect.addEventListener('change', () => {
   world.saveUndoState();
-  world.setWeather(envWeatherSelect.value as any);
+  world.setWeather(envWeatherSelect.value as WeatherMode);
+  syncEnvironmentUI();
   toast('Weather Shifted', `Atmospheric particles and fog density adjusting to ${envWeatherSelect.options[envWeatherSelect.selectedIndex].text}.`);
 });
 
@@ -1124,6 +1239,43 @@ envSeasonSelect.addEventListener('change', () => {
   world.setSeason(envSeasonSelect.value as any);
   toast('Season Transition', `Foliage colors and ground conditions shifting to ${envSeasonSelect.options[envSeasonSelect.selectedIndex].text}.`);
 });
+
+envQualitySelect.addEventListener('change', () => {
+  world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
+  toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
+});
+
+academicAudioButton.addEventListener('click', async () => {
+  const muted = await world.setAcademicAudioMuted(!world.isAcademicAudioMuted());
+  academicAudioButton.setAttribute('aria-pressed', String(!muted));
+  const label = academicAudioButton.querySelector<HTMLElement>('.utility-label');
+  if (label) label.textContent = muted ? 'Audio muted' : 'Audio on';
+  toast(muted ? 'Campus audio muted' : 'Campus audio enabled', muted ? 'Ambient wind, rain, and bell audio are off.' : 'Quiet synthesized wind and weather ambience is active.');
+});
+
+function refreshDebugStats() {
+  const stats = world.getSceneStatistics();
+  debugStats.textContent = [
+    'ACADEMIC DEBUG',
+    `quality       ${stats.quality}`,
+    `visible mesh  ${stats.visibleMeshes.toLocaleString()}`,
+    `geometries    ${stats.geometries.toLocaleString()}`,
+    `triangles     ${stats.triangles.toLocaleString()}`,
+    `draw calls    ${stats.drawCalls.toLocaleString()}`,
+    `textures      ${stats.textureCount.toLocaleString()}`,
+    'green = collision · cyan = light',
+  ].join('\n');
+}
+
+debugButton.addEventListener('click', () => {
+  const enabled = world.setDebugMode(!world.isDebugMode());
+  debugButton.setAttribute('aria-pressed', String(enabled));
+  debugStats.hidden = !enabled;
+  if (enabled) refreshDebugStats();
+  toast(enabled ? 'Academic debug enabled' : 'Academic debug disabled', enabled ? 'Collision bounds, light positions, and scene statistics are visible.' : 'Debug helpers are hidden.');
+});
+
+world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
 
 const savedTheme = localStorage.getItem('youtopy_theme');
 if (savedTheme === 'cleantech') {

@@ -1,0 +1,1422 @@
+{
+  "audit": {
+    "populationPresent": true,
+    "arboretumPresent": true,
+    "arboretumName": "ACADEMIC__PROCEDURAL_HISTORIC_ARBORETUM",
+    "academicTreeSystem": true,
+    "treeCountMetadata": 79,
+    "speciesCountMetadata": 15,
+    "recordCount": 79,
+    "speciesCounts": {
+      "english-oak": 6,
+      "horse-chestnut": 6,
+      "linden": 6,
+      "london-plane": 7,
+      "copper-beech": 5,
+      "english-yew": 4,
+      "irish-yew": 4,
+      "holly": 3,
+      "hawthorn": 4,
+      "cedar-of-lebanon": 2,
+      "scots-pine": 5,
+      "willow": 5,
+      "alder": 8,
+      "european-beech": 8,
+      "rowan": 6
+    },
+    "missingSpecies": [],
+    "unexpectedSpecies": [],
+    "countMismatches": [],
+    "zonesBySpecies": {
+      "english-oak": [
+        "quadrangles"
+      ],
+      "horse-chestnut": [
+        "quadrangles"
+      ],
+      "linden": [
+        "ceremonial-avenue"
+      ],
+      "london-plane": [
+        "ceremonial-avenue"
+      ],
+      "copper-beech": [
+        "libraries-administration"
+      ],
+      "english-yew": [
+        "chapel-graveyard"
+      ],
+      "irish-yew": [
+        "chapel-graveyard"
+      ],
+      "holly": [
+        "chapel-graveyard"
+      ],
+      "hawthorn": [
+        "chapel-graveyard"
+      ],
+      "cedar-of-lebanon": [
+        "professors-garden"
+      ],
+      "scots-pine": [
+        "observatory"
+      ],
+      "willow": [
+        "canal-damp-ground"
+      ],
+      "alder": [
+        "canal-damp-ground"
+      ],
+      "european-beech": [
+        "boundary-secluded-walks"
+      ],
+      "rowan": [
+        "residential-courtyards"
+      ]
+    },
+    "zoneMismatches": [],
+    "declaredZonePairs": [
+      {
+        "species": "english-oak",
+        "zone": "quadrangles"
+      },
+      {
+        "species": "horse-chestnut",
+        "zone": "quadrangles"
+      },
+      {
+        "species": "linden",
+        "zone": "ceremonial-avenue"
+      },
+      {
+        "species": "london-plane",
+        "zone": "ceremonial-avenue"
+      },
+      {
+        "species": "copper-beech",
+        "zone": "libraries-administration"
+      },
+      {
+        "species": "english-yew",
+        "zone": "chapel-graveyard"
+      },
+      {
+        "species": "irish-yew",
+        "zone": "chapel-graveyard"
+      },
+      {
+        "species": "holly",
+        "zone": "chapel-graveyard"
+      },
+      {
+        "species": "hawthorn",
+        "zone": "chapel-graveyard"
+      },
+      {
+        "species": "cedar-of-lebanon",
+        "zone": "professors-garden"
+      },
+      {
+        "species": "scots-pine",
+        "zone": "observatory"
+      },
+      {
+        "species": "willow",
+        "zone": "canal-damp-ground"
+      },
+      {
+        "species": "alder",
+        "zone": "canal-damp-ground"
+      },
+      {
+        "species": "european-beech",
+        "zone": "boundary-secluded-walks"
+      },
+      {
+        "species": "rowan",
+        "zone": "residential-courtyards"
+      }
+    ],
+    "controlNames": [
+      "age",
+      "canopy-density",
+      "deadwood",
+      "ivy",
+      "leaf-retention",
+      "lean",
+      "moss",
+      "wind-exposure"
+    ],
+    "recordControlCoverage": {
+      "age": 79,
+      "canopy-density": 79,
+      "leaf-retention": 79,
+      "moss": 79,
+      "ivy": 79,
+      "deadwood": 79,
+      "lean": 79,
+      "wind-exposure": 79
+    },
+    "structuralVariantCount": 4,
+    "variants": [
+      "forked",
+      "high-crowned",
+      "open-grown",
+      "weather-leaning"
+    ],
+    "variantCountsBySpecies": {
+      "english-oak": 4,
+      "horse-chestnut": 4,
+      "linden": 4,
+      "london-plane": 4,
+      "copper-beech": 4,
+      "english-yew": 4,
+      "irish-yew": 4,
+      "holly": 3,
+      "hawthorn": 4,
+      "cedar-of-lebanon": 2,
+      "scots-pine": 4,
+      "willow": 4,
+      "alder": 4,
+      "european-beech": 4,
+      "rowan": 4
+    },
+    "canopyStates": {
+      "full": 38,
+      "thinning": 20,
+      "nearlyBare": 21
+    },
+    "ancientCount": 19,
+    "ancientIds": [
+      "english-oak-01",
+      "english-oak-02",
+      "english-oak-03",
+      "english-oak-04",
+      "english-oak-05",
+      "english-oak-06",
+      "linden-01",
+      "linden-02",
+      "linden-03",
+      "linden-04",
+      "linden-05",
+      "linden-06",
+      "english-yew-01",
+      "english-yew-02",
+      "english-yew-03",
+      "english-yew-04",
+      "hawthorn-01",
+      "hawthorn-02",
+      "hawthorn-03"
+    ],
+    "ancientDefectCoverage": {
+      "irregularTrunk": 19,
+      "asymmetricalCrown": 19,
+      "exposedRoots": 19,
+      "pruningScars": 19,
+      "hollowSections": 19,
+      "deadSecondaryBranches": 19,
+      "layeredBark": 19
+    },
+    "completeAncientSpecimens": [
+      "english-oak-01",
+      "english-oak-02",
+      "english-oak-03",
+      "english-oak-04",
+      "english-oak-05",
+      "english-oak-06",
+      "linden-01",
+      "linden-02",
+      "linden-03",
+      "linden-04",
+      "linden-05",
+      "linden-06",
+      "english-yew-01",
+      "english-yew-02",
+      "english-yew-03",
+      "english-yew-04",
+      "hawthorn-01",
+      "hawthorn-02",
+      "hawthorn-03"
+    ],
+    "paletteEntries": [
+      {
+        "category": "dark-green",
+        "color": "#26352a"
+      },
+      {
+        "category": "olive",
+        "color": "#59603a"
+      },
+      {
+        "category": "copper",
+        "color": "#8a4f32"
+      },
+      {
+        "category": "russet",
+        "color": "#6f3828"
+      },
+      {
+        "category": "ochre",
+        "color": "#9a6a2f"
+      },
+      {
+        "category": "grey-brown",
+        "color": "#615b50"
+      },
+      {
+        "category": "muted-gold",
+        "color": "#9c8244"
+      }
+    ],
+    "paletteCategories": [
+      "dark-green",
+      "olive",
+      "copper",
+      "russet",
+      "ochre",
+      "grey-brown",
+      "muted-gold"
+    ],
+    "paletteColors": [
+      "#26352a",
+      "#59603a",
+      "#8a4f32",
+      "#6f3828",
+      "#9a6a2f",
+      "#615b50",
+      "#9c8244"
+    ],
+    "actualFoliageColors": [
+      "#26352a",
+      "#59603a",
+      "#615b50",
+      "#6f3828",
+      "#8a4f32",
+      "#9a6a2f",
+      "#9c8244",
+      "#ffffff"
+    ],
+    "wetLeafEntries": [
+      {
+        "context": "walls",
+        "count": 32,
+        "wet": true
+      },
+      {
+        "context": "drains",
+        "count": 28,
+        "wet": true
+      },
+      {
+        "context": "benches",
+        "count": 160,
+        "wet": true
+      },
+      {
+        "context": "exposed-roots",
+        "count": 80,
+        "wet": true
+      },
+      {
+        "context": "cloisters",
+        "count": 36,
+        "wet": true
+      },
+      {
+        "context": "bicycle-racks",
+        "count": 35,
+        "wet": true
+      }
+    ],
+    "wetLeafContexts": [
+      "walls",
+      "drains",
+      "benches",
+      "exposed-roots",
+      "cloisters",
+      "bicycle-racks"
+    ],
+    "metadataLodTiers": [
+      "near",
+      "mid",
+      "far"
+    ],
+    "actualLodTiers": [
+      "far",
+      "mid",
+      "near"
+    ],
+    "lodObjects": 1,
+    "maximumLodLevels": 3,
+    "instancedMeshes": 52,
+    "instancedInstances": 2180,
+    "treeInstancedMeshes": 46,
+    "treeInstancedInstances": 1918,
+    "instancedRoles": [
+      "academic-exposed-root-flares-exposed-roots",
+      "academic-far-airy-canopy-lobes-far-canopy-foliage",
+      "academic-far-columnar-canopy-lobes-far-canopy-foliage",
+      "academic-far-conical-canopy-lobes-far-canopy-foliage",
+      "academic-far-drooping-canopy-lobes-far-canopy-foliage",
+      "academic-far-rounded-canopy-lobes-far-canopy-foliage",
+      "academic-far-spreading-canopy-lobes-far-canopy-foliage",
+      "academic-far-tiered-canopy-lobes-far-canopy-foliage",
+      "academic-far-trunk-silhouettes-conifer-far-trunk-silhouettes",
+      "academic-far-trunk-silhouettes-fibrous-far-trunk-silhouettes",
+      "academic-far-trunk-silhouettes-fissured-far-trunk-silhouettes",
+      "academic-far-trunk-silhouettes-mottled-far-trunk-silhouettes",
+      "academic-far-trunk-silhouettes-smooth-far-trunk-silhouettes",
+      "academic-hollows-and-pruning-scars-hollows-and-pruning-scars",
+      "academic-mid-airy-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-columnar-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-conical-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-drooping-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-rounded-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-spreading-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-tiered-canopy-lobes-mid-canopy-foliage",
+      "academic-mid-trunk-silhouettes-conifer-mid-trunk-silhouettes",
+      "academic-mid-trunk-silhouettes-fibrous-mid-trunk-silhouettes",
+      "academic-mid-trunk-silhouettes-fissured-mid-trunk-silhouettes",
+      "academic-mid-trunk-silhouettes-mottled-mid-trunk-silhouettes",
+      "academic-mid-trunk-silhouettes-smooth-mid-trunk-silhouettes",
+      "academic-near-airy-canopy-lobes-near-canopy-foliage",
+      "academic-near-columnar-canopy-lobes-near-canopy-foliage",
+      "academic-near-conical-canopy-lobes-near-canopy-foliage",
+      "academic-near-drooping-canopy-lobes-near-canopy-foliage",
+      "academic-near-irregular-trunk-segments-conifer-near-irregular-trunk-segments",
+      "academic-near-irregular-trunk-segments-fibrous-near-irregular-trunk-segments",
+      "academic-near-irregular-trunk-segments-fissured-near-irregular-trunk-segments",
+      "academic-near-irregular-trunk-segments-mottled-near-irregular-trunk-segments",
+      "academic-near-irregular-trunk-segments-smooth-near-irregular-trunk-segments",
+      "academic-near-rounded-canopy-lobes-near-canopy-foliage",
+      "academic-near-secondary-branches-conifer-near-secondary-branches",
+      "academic-near-secondary-branches-fibrous-near-secondary-branches",
+      "academic-near-secondary-branches-fissured-near-secondary-branches",
+      "academic-near-secondary-branches-mottled-near-secondary-branches",
+      "academic-near-secondary-branches-smooth-near-secondary-branches",
+      "academic-near-spreading-canopy-lobes-near-canopy-foliage",
+      "academic-near-tiered-canopy-lobes-near-canopy-foliage",
+      "academic-restrained-ivy-strands-restrained-ivy",
+      "academic-silvered-dead-secondary-branches-dead-secondary-branches",
+      "academic-veteran-tree-moss-patches-moss-patches",
+      "academic-wet-fallen-leaves-benches-wet-fallen-leaf-clusters",
+      "academic-wet-fallen-leaves-bicycle-racks-wet-fallen-leaf-clusters",
+      "academic-wet-fallen-leaves-cloisters-wet-fallen-leaf-clusters",
+      "academic-wet-fallen-leaves-drains-wet-fallen-leaf-clusters",
+      "academic-wet-fallen-leaves-exposed-roots-wet-fallen-leaf-clusters",
+      "academic-wet-fallen-leaves-walls-wet-fallen-leaf-clusters"
+    ],
+    "windProfiles": [
+      {
+        "species": "english-oak",
+        "id": "english-oak-wind",
+        "amplitude": 0.012,
+        "frequency": 0.52
+      },
+      {
+        "species": "european-beech",
+        "id": "european-beech-wind",
+        "amplitude": 0.016,
+        "frequency": 0.64
+      },
+      {
+        "species": "copper-beech",
+        "id": "copper-beech-wind",
+        "amplitude": 0.015,
+        "frequency": 0.61
+      },
+      {
+        "species": "linden",
+        "id": "linden-wind",
+        "amplitude": 0.022,
+        "frequency": 0.78
+      },
+      {
+        "species": "horse-chestnut",
+        "id": "horse-chestnut-wind",
+        "amplitude": 0.017,
+        "frequency": 0.57
+      },
+      {
+        "species": "london-plane",
+        "id": "london-plane-wind",
+        "amplitude": 0.021,
+        "frequency": 0.7
+      },
+      {
+        "species": "english-yew",
+        "id": "english-yew-wind",
+        "amplitude": 0.006,
+        "frequency": 0.42
+      },
+      {
+        "species": "irish-yew",
+        "id": "irish-yew-wind",
+        "amplitude": 0.005,
+        "frequency": 0.45
+      },
+      {
+        "species": "holly",
+        "id": "holly-wind",
+        "amplitude": 0.008,
+        "frequency": 0.58
+      },
+      {
+        "species": "cedar-of-lebanon",
+        "id": "cedar-of-lebanon-wind",
+        "amplitude": 0.007,
+        "frequency": 0.38
+      },
+      {
+        "species": "scots-pine",
+        "id": "scots-pine-wind",
+        "amplitude": 0.009,
+        "frequency": 0.5
+      },
+      {
+        "species": "hawthorn",
+        "id": "hawthorn-wind",
+        "amplitude": 0.024,
+        "frequency": 0.82
+      },
+      {
+        "species": "rowan",
+        "id": "rowan-wind",
+        "amplitude": 0.032,
+        "frequency": 1.02
+      },
+      {
+        "species": "willow",
+        "id": "willow-wind",
+        "amplitude": 0.041,
+        "frequency": 1.08
+      },
+      {
+        "species": "alder",
+        "id": "alder-wind",
+        "amplitude": 0.027,
+        "frequency": 0.86
+      }
+    ],
+    "windProfileSpecies": [
+      "english-oak",
+      "european-beech",
+      "copper-beech",
+      "linden",
+      "horse-chestnut",
+      "london-plane",
+      "english-yew",
+      "irish-yew",
+      "holly",
+      "cedar-of-lebanon",
+      "scots-pine",
+      "hawthorn",
+      "rowan",
+      "willow",
+      "alder"
+    ],
+    "windPhaseCount": 79,
+    "uniqueWindPhases": 79,
+    "collisionGuides": [
+      "ACADEMIC__TREE_TRUNK_PRECISE_WALK_COLLISION"
+    ],
+    "collisionBarrierCount": 79,
+    "preciseBarrierCountMetadata": 79,
+    "instancingMetadata": {
+      "enabled": true,
+      "structuralRoles": [
+        "trunks",
+        "roots",
+        "branches",
+        "canopy lobes",
+        "defects",
+        "moss",
+        "ivy",
+        "fallen leaves"
+      ]
+    },
+    "autumnAtmosphere": {
+      "timeOfDay": "sunset",
+      "weather": "academic-autumn",
+      "season": "autumn",
+      "graphicsQuality": "medium",
+      "audioMuted": true,
+      "debugMode": false
+    },
+    "snapshotTreePopulation": {
+      "count": 79,
+      "treeCount": 79,
+      "totalTrees": 79,
+      "speciesCount": 15,
+      "speciesIds": [
+        "english-oak",
+        "european-beech",
+        "copper-beech",
+        "linden",
+        "horse-chestnut",
+        "london-plane",
+        "english-yew",
+        "irish-yew",
+        "holly",
+        "cedar-of-lebanon",
+        "scots-pine",
+        "hawthorn",
+        "rowan",
+        "willow",
+        "alder"
+      ],
+      "speciesCounts": {
+        "english-oak": 6,
+        "european-beech": 8,
+        "copper-beech": 5,
+        "linden": 6,
+        "horse-chestnut": 6,
+        "london-plane": 7,
+        "english-yew": 4,
+        "irish-yew": 4,
+        "holly": 3,
+        "cedar-of-lebanon": 2,
+        "scots-pine": 5,
+        "hawthorn": 4,
+        "rowan": 6,
+        "willow": 5,
+        "alder": 8
+      },
+      "requiredZoneSpecies": {
+        "quadrangles": [
+          "english-oak",
+          "horse-chestnut"
+        ],
+        "ceremonial-avenue": [
+          "linden",
+          "london-plane"
+        ],
+        "libraries-administration": [
+          "copper-beech"
+        ],
+        "chapel-graveyard": [
+          "english-yew",
+          "irish-yew",
+          "holly",
+          "hawthorn"
+        ],
+        "professors-garden": [
+          "cedar-of-lebanon"
+        ],
+        "observatory": [
+          "scots-pine"
+        ],
+        "canal-damp-ground": [
+          "willow",
+          "alder"
+        ],
+        "boundary-secluded-walks": [
+          "european-beech"
+        ],
+        "residential-courtyards": [
+          "rowan"
+        ]
+      },
+      "proceduralControls": [
+        "age",
+        "canopy-density",
+        "leaf-retention",
+        "moss",
+        "ivy",
+        "deadwood",
+        "lean",
+        "wind-exposure"
+      ],
+      "structuralVariants": [
+        "open-grown",
+        "forked",
+        "weather-leaning",
+        "high-crowned"
+      ],
+      "autumnPalette": [
+        {
+          "id": "dark-green",
+          "color": "#26352a"
+        },
+        {
+          "id": "olive",
+          "color": "#59603a"
+        },
+        {
+          "id": "copper",
+          "color": "#8a4f32"
+        },
+        {
+          "id": "russet",
+          "color": "#6f3828"
+        },
+        {
+          "id": "ochre",
+          "color": "#9a6a2f"
+        },
+        {
+          "id": "grey-brown",
+          "color": "#615b50"
+        },
+        {
+          "id": "muted-gold",
+          "color": "#9c8244"
+        }
+      ],
+      "wetLeafContexts": [
+        {
+          "context": "walls",
+          "count": 32,
+          "wet": true
+        },
+        {
+          "context": "drains",
+          "count": 28,
+          "wet": true
+        },
+        {
+          "context": "benches",
+          "count": 160,
+          "wet": true
+        },
+        {
+          "context": "exposed-roots",
+          "count": 80,
+          "wet": true
+        },
+        {
+          "context": "cloisters",
+          "count": 36,
+          "wet": true
+        },
+        {
+          "context": "bicycle-racks",
+          "count": 35,
+          "wet": true
+        }
+      ],
+      "lodTiers": [
+        "near",
+        "mid",
+        "far"
+      ],
+      "windProfiles": {
+        "english-oak": {
+          "id": "english-oak-wind",
+          "species": "english-oak",
+          "speciesId": "english-oak",
+          "amplitude": 0.012,
+          "frequency": 0.52,
+          "movement": "broadleaf response"
+        },
+        "european-beech": {
+          "id": "european-beech-wind",
+          "species": "european-beech",
+          "speciesId": "european-beech",
+          "amplitude": 0.016,
+          "frequency": 0.64,
+          "movement": "broadleaf response"
+        },
+        "copper-beech": {
+          "id": "copper-beech-wind",
+          "species": "copper-beech",
+          "speciesId": "copper-beech",
+          "amplitude": 0.015,
+          "frequency": 0.61,
+          "movement": "broadleaf response"
+        },
+        "linden": {
+          "id": "linden-wind",
+          "species": "linden",
+          "speciesId": "linden",
+          "amplitude": 0.022,
+          "frequency": 0.78,
+          "movement": "broadleaf response"
+        },
+        "horse-chestnut": {
+          "id": "horse-chestnut-wind",
+          "species": "horse-chestnut",
+          "speciesId": "horse-chestnut",
+          "amplitude": 0.017,
+          "frequency": 0.57,
+          "movement": "broadleaf response"
+        },
+        "london-plane": {
+          "id": "london-plane-wind",
+          "species": "london-plane",
+          "speciesId": "london-plane",
+          "amplitude": 0.021,
+          "frequency": 0.7,
+          "movement": "broadleaf response"
+        },
+        "english-yew": {
+          "id": "english-yew-wind",
+          "species": "english-yew",
+          "speciesId": "english-yew",
+          "amplitude": 0.006,
+          "frequency": 0.42,
+          "movement": "restrained evergreen response"
+        },
+        "irish-yew": {
+          "id": "irish-yew-wind",
+          "species": "irish-yew",
+          "speciesId": "irish-yew",
+          "amplitude": 0.005,
+          "frequency": 0.45,
+          "movement": "restrained evergreen response"
+        },
+        "holly": {
+          "id": "holly-wind",
+          "species": "holly",
+          "speciesId": "holly",
+          "amplitude": 0.008,
+          "frequency": 0.58,
+          "movement": "restrained evergreen response"
+        },
+        "cedar-of-lebanon": {
+          "id": "cedar-of-lebanon-wind",
+          "species": "cedar-of-lebanon",
+          "speciesId": "cedar-of-lebanon",
+          "amplitude": 0.007,
+          "frequency": 0.38,
+          "movement": "restrained evergreen response"
+        },
+        "scots-pine": {
+          "id": "scots-pine-wind",
+          "species": "scots-pine",
+          "speciesId": "scots-pine",
+          "amplitude": 0.009,
+          "frequency": 0.5,
+          "movement": "restrained evergreen response"
+        },
+        "hawthorn": {
+          "id": "hawthorn-wind",
+          "species": "hawthorn",
+          "speciesId": "hawthorn",
+          "amplitude": 0.024,
+          "frequency": 0.82,
+          "movement": "broadleaf response"
+        },
+        "rowan": {
+          "id": "rowan-wind",
+          "species": "rowan",
+          "speciesId": "rowan",
+          "amplitude": 0.032,
+          "frequency": 1.02,
+          "movement": "broadleaf response"
+        },
+        "willow": {
+          "id": "willow-wind",
+          "species": "willow",
+          "speciesId": "willow",
+          "amplitude": 0.041,
+          "frequency": 1.08,
+          "movement": "flexible drooping response"
+        },
+        "alder": {
+          "id": "alder-wind",
+          "species": "alder",
+          "speciesId": "alder",
+          "amplitude": 0.027,
+          "frequency": 0.86,
+          "movement": "broadleaf response"
+        }
+      },
+      "windPhases": [
+        32.533239565781976,
+        22.028483779852667,
+        31.357172189467033,
+        28.68248630393267,
+        29.16706067585025,
+        25.4395219876912,
+        9.98731013630341,
+        25.760123978285613,
+        19.54888906233966,
+        12.410312166342074,
+        34.58477777936947,
+        36.59630343090382,
+        12.733984081749043,
+        13.72267765982385,
+        18.626669969780906,
+        13.589249366608804,
+        35.02104451017723,
+        6.3282684734963475,
+        28.99787220744919,
+        6.780819317029412,
+        5.294828833706614,
+        3.597161851878722,
+        9.153936185802118,
+        22.557810612288854,
+        7.7686416220577135,
+        15.144616039310225,
+        30.289402011184578,
+        23.255258664647823,
+        20.975840926453248,
+        23.12183037143278,
+        19.75263418662934,
+        18.417787957872328,
+        2.150471249585723,
+        18.551216251087375,
+        27.973249873360544,
+        28.346074537171077,
+        29.429053074294835,
+        28.138905517484474,
+        2.980534876872282,
+        5.574593466108781,
+        22.083092250093074,
+        2.1078283315670947,
+        2.480652995377627,
+        3.5636315325013834,
+        2.273483975691024,
+        36.89170882854743,
+        14.968927071015734,
+        25.1772215425866,
+        29.20198453880603,
+        13.57843359777753,
+        29.40915355849264,
+        30.49213209561639,
+        36.55274515919111,
+        26.275968373372464,
+        20.625292534635477,
+        15.765472175896349,
+        1.6165366377416657,
+        12.774427154260476,
+        29.761053748058522,
+        12.66015405290623,
+        34.95070551589369,
+        3.442318720130423,
+        1.987887891424123,
+        22.08708268099718,
+        33.611933765907764,
+        9.716906181264637,
+        34.55239519822315,
+        14.453200408650098,
+        25.23973967148645,
+        7.990713815393361,
+        25.12546657013221,
+        4.527254413429475,
+        36.24754848595072,
+        14.288610784153269,
+        35.03485897433975,
+        24.082034044153467,
+        25.294694510988894,
+        24.5794966512065,
+        28.307940897360176
+      ],
+      "instancing": {
+        "enabled": true,
+        "structuralRoles": [
+          "trunks",
+          "roots",
+          "branches",
+          "canopy lobes",
+          "defects",
+          "moss",
+          "ivy",
+          "fallen leaves"
+        ]
+      },
+      "preciseBarrierCount": 79,
+      "canopyStates": {
+        "full": 38,
+        "thinning": 20,
+        "nearlyBare": 21
+      },
+      "barkTextureFamilies": [
+        "fissured",
+        "smooth",
+        "mottled",
+        "fibrous",
+        "conifer"
+      ]
+    }
+  },
+  "windAudit": {
+    "accessible": true,
+    "updated": true,
+    "transformUpdated": false,
+    "uniformUpdated": true,
+    "transformSamples": 78,
+    "uniformSamples": 53,
+    "beforeUniforms": [
+      [
+        "f2029198-10c5-494d-866e-312f3e2a79b7:2",
+        45.8362
+      ],
+      [
+        "f2029198-10c5-494d-866e-312f3e2a79b7:4",
+        45.8362
+      ],
+      [
+        "3020cbf0-1439-48c0-abf0-a2b6ad9be981:2",
+        45.8362
+      ],
+      [
+        "3020cbf0-1439-48c0-abf0-a2b6ad9be981:4",
+        45.8362
+      ],
+      [
+        "57f320b3-46b7-40db-8c1f-02d4249e2c5d:2",
+        45.8362
+      ],
+      [
+        "57f320b3-46b7-40db-8c1f-02d4249e2c5d:4",
+        45.8362
+      ],
+      [
+        "f96d3579-8369-4cd6-a329-715804ff69d0:2",
+        45.8362
+      ],
+      [
+        "f96d3579-8369-4cd6-a329-715804ff69d0:4",
+        45.8362
+      ],
+      [
+        "9dba06c6-257b-4166-aac6-47f39bf2c801:2",
+        45.8362
+      ],
+      [
+        "9dba06c6-257b-4166-aac6-47f39bf2c801:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        45.8362
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        45.8362
+      ],
+      [
+        "root.windTime",
+        45.8362
+      ]
+    ],
+    "afterUniforms": [
+      [
+        "f2029198-10c5-494d-866e-312f3e2a79b7:2",
+        47.21953333333325
+      ],
+      [
+        "f2029198-10c5-494d-866e-312f3e2a79b7:4",
+        47.21953333333325
+      ],
+      [
+        "3020cbf0-1439-48c0-abf0-a2b6ad9be981:2",
+        47.21953333333325
+      ],
+      [
+        "3020cbf0-1439-48c0-abf0-a2b6ad9be981:4",
+        47.21953333333325
+      ],
+      [
+        "57f320b3-46b7-40db-8c1f-02d4249e2c5d:2",
+        47.21953333333325
+      ],
+      [
+        "57f320b3-46b7-40db-8c1f-02d4249e2c5d:4",
+        47.21953333333325
+      ],
+      [
+        "f96d3579-8369-4cd6-a329-715804ff69d0:2",
+        47.21953333333325
+      ],
+      [
+        "f96d3579-8369-4cd6-a329-715804ff69d0:4",
+        47.21953333333325
+      ],
+      [
+        "9dba06c6-257b-4166-aac6-47f39bf2c801:2",
+        47.21953333333325
+      ],
+      [
+        "9dba06c6-257b-4166-aac6-47f39bf2c801:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:2",
+        47.21953333333325
+      ],
+      [
+        "408729d4-e6ce-4de4-b179-87b0eb11c0f9:4",
+        47.21953333333325
+      ],
+      [
+        "root.windTime",
+        47.21953333333325
+      ]
+    ]
+  },
+  "openingAudit": [
+    {
+      "id": "main-avenue",
+      "result": {
+        "reached": true,
+        "blockedSteps": 0,
+        "groundGaps": 0,
+        "endDistance": 0
+      }
+    },
+    {
+      "id": "tundra-biodome",
+      "result": {
+        "reached": true,
+        "blockedSteps": 0,
+        "groundGaps": 0,
+        "endDistance": 0
+      }
+    },
+    {
+      "id": "desert-biodome",
+      "result": {
+        "reached": true,
+        "blockedSteps": 0,
+        "groundGaps": 0,
+        "endDistance": 0
+      }
+    },
+    {
+      "id": "coastal-railway",
+      "result": {
+        "reached": true,
+        "blockedSteps": 0,
+        "groundGaps": 0,
+        "endDistance": 0
+      }
+    }
+  ],
+  "exportBytes": 40755244,
+  "screenshots": [
+    "output/academic-arboretum/autumn-arboretum-overview.png",
+    "output/academic-arboretum/ancient-oak-horse-chestnut-quadrangle.png",
+    "output/academic-arboretum/linden-plane-ceremonial-avenue.png",
+    "output/academic-arboretum/copper-beech-library-frame.png",
+    "output/academic-arboretum/chapel-yew-holly-hawthorn.png",
+    "output/academic-arboretum/cedar-professors-garden.png",
+    "output/academic-arboretum/scots-pine-observatory.png",
+    "output/academic-arboretum/willow-alder-canal-edge.png",
+    "output/academic-arboretum/boundary-beech-secluded-walk.png",
+    "output/academic-arboretum/rowan-residential-courtyard.png"
+  ],
+  "consoleErrors": []
+}

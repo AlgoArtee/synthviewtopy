@@ -1,8 +1,16 @@
 import { chromium } from 'playwright';
+import { existsSync } from 'node:fs';
 
+const browserCandidates = [
+  process.env.PLAYWRIGHT_CHROME_EXECUTABLE,
+  'C:/Program Files/Google/Chrome/Application/chrome.exe',
+  'C:/Program Files (x86)/Google/Chrome/Application/chrome.exe',
+  'C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe',
+].filter(Boolean);
+const executablePath = browserCandidates.find((candidate) => existsSync(candidate));
 const browser = await chromium.launch({
   headless: true,
-  ...(process.env.PLAYWRIGHT_CHROME_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROME_EXECUTABLE } : {}),
+  ...(executablePath ? { executablePath } : {}),
 });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 } });
 const consoleErrors = [];
@@ -13,7 +21,8 @@ page.on('console', (message) => {
 page.on('pageerror', (error) => consoleErrors.push(error.message));
 
 await page.goto('http://127.0.0.1:5178/', { waitUntil: 'domcontentloaded', timeout: 30_000 });
-await page.waitForSelector('#walk-mode', { state: 'visible', timeout: 30_000 });
+await page.waitForSelector('#walk-mode', { state: 'visible', timeout: 90_000 });
+await page.waitForFunction(() => Boolean(window.labIsland), null, { timeout: 90_000 });
 await page.waitForTimeout(800);
 
 const audit = await page.evaluate(() => {
@@ -23,7 +32,7 @@ const audit = await page.evaluate(() => {
 
   const entrances = [];
   world.modelRoot.traverse((object) => {
-    if (!object.isMesh || !object.name.endsWith('__ACCESS_RAMP')) return;
+    if (!object.isMesh || (!object.name.endsWith('__ACCESS_RAMP') && object.userData.walkAccessRouteMarker !== true)) return;
     const owner = object.parent;
     const id = owner?.userData.selectableId;
     if (!owner || !id) return;

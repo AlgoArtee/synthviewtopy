@@ -1,4 +1,8 @@
 import { chromium } from 'playwright';
+import { mkdir } from 'node:fs/promises';
+
+const outputDirectory = process.env.TROPICAL_OUTPUT_DIRECTORY ?? 'output/tropical-dome';
+await mkdir(outputDirectory, { recursive: true });
 
 const browser = await chromium.launch({
   headless: true,
@@ -36,31 +40,31 @@ const aimAtTropicalDome = async (localCamera, localTarget) => page.evaluate(({ l
 
 await aimAtTropicalDome([0, 10.5, 30], [0, 4.4, 0]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/front.png' });
+await page.screenshot({ path: `${outputDirectory}/front.png` });
 
 await aimAtTropicalDome([0, 6.8, 24], [0, 2.3, 0.4]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/entry-and-pond.png' });
+await page.screenshot({ path: `${outputDirectory}/entry-and-pond.png` });
 
 await aimAtTropicalDome([0, 2.45, 22], [0, 0.85, 15.1]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/airlock-close.png' });
+await page.screenshot({ path: `${outputDirectory}/airlock-close.png` });
 
 await aimAtTropicalDome([0, 1.2, 13.65], [0, 0.84, 16.2]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/airlock-inside.png' });
+await page.screenshot({ path: `${outputDirectory}/airlock-inside.png` });
 
 await aimAtTropicalDome([2.2, 1.45, 13.5], [-3.8, 0.72, 10.7]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/canopy-entry.png' });
+await page.screenshot({ path: `${outputDirectory}/canopy-entry.png` });
 
 await aimAtTropicalDome([-23, 14, 20], [0, 4.2, -1]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/three-quarter.png' });
+await page.screenshot({ path: `${outputDirectory}/three-quarter.png` });
 
 await aimAtTropicalDome([3.5, 6.2, 15.5], [-8.4, 2.65, 1.1]);
 await page.waitForTimeout(400);
-await page.screenshot({ path: 'output/tropical-dome/canopy-walk-close.png' });
+await page.screenshot({ path: `${outputDirectory}/canopy-walk-close.png` });
 
 const audit = await page.evaluate(() => {
   const world = window.labIsland;
@@ -92,12 +96,27 @@ const audit = await page.evaluate(() => {
   const accessRamp = dome?.getObjectByName('tropical-rainforest-dome__ACCESS_RAMP');
   const transparentShell = dome?.getObjectByName('tropical-rainforest-dome__DOME_TRANSPARENT_SHELL');
   const domeWireframe = dome?.getObjectByName('tropical-rainforest-dome__DOME_WIREFRAME');
+  const observationDeck = dome?.getObjectByName('TROPICAL__OBSERVATION_DECK');
+  const observationDeckRails = [];
+  const waterfallCliffs = [];
+  const suspensionBridgeSegments = [];
+  dome?.traverse((child) => {
+    if (child.name === 'TROPICAL__OBSERVATION_DECK_RAIL') observationDeckRails.push(child);
+    if (child.name === 'TROPICAL__WATERFALL_CLIFF') waterfallCliffs.push(child);
+    if (child.name === 'TROPICAL__SUSPENSION_BRIDGE') suspensionBridgeSegments.push(child);
+  });
   const pondBounds = pond?.isMesh ? worldBounds(pond) : null;
   const basinBounds = pondBasin?.isMesh ? worldBounds(pondBasin) : null;
   const floorBounds = biomeFloor?.isMesh ? worldBounds(biomeFloor) : null;
   const airlockParts = [airlockFrontLeft, airlockFrontRight, airlockSideLeft, airlockSideRight, airlockRoof];
   const shellPartBounds = airlockParts.filter((part) => part?.isMesh).map(worldBounds);
   const airlockFloorBounds = airlockFloor?.isMesh ? worldBounds(airlockFloor) : null;
+  const observationDeckBounds = observationDeck?.isMesh ? worldBounds(observationDeck) : null;
+  const lastCanopySegmentBounds = canopyWalkSegments.length ? worldBounds(canopyWalkSegments[canopyWalkSegments.length - 1]) : null;
+  const firstBridgeSegmentBounds = suspensionBridgeSegments.length ? worldBounds(suspensionBridgeSegments[0]) : null;
+  const deckRockIntersections = observationDeckBounds
+    ? waterfallCliffs.filter((rock) => rock.isMesh && worldBounds(rock).intersectsBox(observationDeckBounds)).length
+    : null;
   const openingWidth = airlockFrontLeft?.isMesh && airlockFrontRight?.isMesh
     ? (airlockFrontRight.position.x - airlockFrontRight.geometry.parameters.width * 0.5)
       - (airlockFrontLeft.position.x + airlockFrontLeft.geometry.parameters.width * 0.5)
@@ -196,6 +215,50 @@ const audit = await page.evaluate(() => {
     world.setWalkIntent(0, 0);
   }
   const walkSnapshot = world.walkController.getSnapshot();
+
+  const deckApproachStartIndex = Math.max(0, segmentAudit.length - 9);
+  const deckWorldPosition = observationDeck?.getWorldPosition(world.camera.position.clone()) ?? null;
+  const deckGround = deckWorldPosition
+    ? world.walkController.sampleGround(deckWorldPosition.x, deckWorldPosition.z)
+    : null;
+  const deckTargets = [
+    ...segmentAudit.slice(deckApproachStartIndex + 1).map((segment) => segment.position),
+    ...(deckWorldPosition ? [deckWorldPosition] : []),
+  ];
+  let completedDeckTargets = 0;
+  let deckMaximumUngroundedSteps = 0;
+  let deckConsecutiveUngroundedSteps = 0;
+  const deckApproachStart = segmentAudit[deckApproachStartIndex];
+  if (deckApproachStart?.ground !== null && deckApproachStart?.ground !== undefined && deckGround !== null) {
+    world.setMode('walk');
+    world.walkController.refreshNavigation();
+    world.camera.position.set(
+      deckApproachStart.position.x,
+      deckApproachStart.ground + 0.162,
+      deckApproachStart.position.z,
+    );
+    world.walkController.groundY = deckApproachStart.ground;
+    world.walkController.grounded = true;
+    for (const target of deckTargets) {
+      for (let step = 0; step < 42; step += 1) {
+        const distance = Math.hypot(target.x - world.camera.position.x, target.z - world.camera.position.z);
+        if (distance < 0.16) break;
+        world.camera.lookAt(target.x, world.camera.position.y, target.z);
+        world.setWalkIntent(0, 1, true);
+        world.advanceTime(80);
+        if (world.walkController.getSnapshot().grounded) {
+          deckConsecutiveUngroundedSteps = 0;
+        } else {
+          deckConsecutiveUngroundedSteps += 1;
+          deckMaximumUngroundedSteps = Math.max(deckMaximumUngroundedSteps, deckConsecutiveUngroundedSteps);
+        }
+      }
+      const remaining = Math.hypot(target.x - world.camera.position.x, target.z - world.camera.position.z);
+      if (remaining < 0.22) completedDeckTargets += 1;
+    }
+    world.setWalkIntent(0, 0);
+  }
+  const deckWalkSnapshot = world.walkController.getSnapshot();
   world.setMode('explore');
 
   return {
@@ -257,10 +320,49 @@ const audit = await page.evaluate(() => {
       expectedMiddleTargets: endIndex - startIndex,
       maximumUngroundedSteps,
       finalGrounded: walkSnapshot.grounded,
+      observationDeckPresent: Boolean(observationDeckBounds),
+      observationDeckRailArcCount: observationDeckRails.length,
+      observationDeckOpeningCount: observationDeck?.userData.guardrailOpenings?.length ?? 0,
+      observationDeckTouchesCanopyWalk: Boolean(observationDeckBounds && lastCanopySegmentBounds?.intersectsBox(observationDeckBounds)),
+      observationDeckTouchesSuspensionBridge: Boolean(observationDeckBounds && firstBridgeSegmentBounds?.intersectsBox(observationDeckBounds)),
+      observationDeckRockIntersections: deckRockIntersections,
+      completedDeckTargets,
+      expectedDeckTargets: deckTargets.length,
+      deckMaximumUngroundedSteps,
+      deckFinalGrounded: deckWalkSnapshot.grounded,
+      deckGround,
     },
     textState: JSON.parse(window.render_game_to_text()),
   };
 });
+
+await page.evaluate(() => {
+  const world = window.labIsland;
+  const dome = world.scene.getObjectByName('BIOME__tropical-rainforest-dome');
+  const deck = dome?.getObjectByName('TROPICAL__OBSERVATION_DECK');
+  const segments = [];
+  dome?.traverse((child) => {
+    if (child.name === 'TROPICAL__ELEVATED_CANOPY_WALK') segments.push(child);
+  });
+  if (!dome || !deck || segments.length < 5) throw new Error('Observation-deck WALK screenshot setup failed');
+  world.setMode('walk');
+  world.walkController.refreshNavigation();
+  const viewpoint = segments[segments.length - 5].getWorldPosition(world.camera.position.clone());
+  const target = deck.getWorldPosition(world.controls.target.clone());
+  const ground = world.walkController.sampleGround(viewpoint.x, viewpoint.z);
+  if (ground === null) throw new Error('Observation-deck WALK screenshot viewpoint has no ground');
+  world.camera.position.set(viewpoint.x, ground + 0.162, viewpoint.z);
+  world.camera.lookAt(target.x, target.y + 0.15, target.z);
+  world.walkController.groundY = ground;
+  world.walkController.grounded = true;
+  document.querySelectorAll('#scene-card, .layerbar, .compass, .interaction-hint').forEach((element) => {
+    element.setAttribute('style', 'display:none');
+  });
+  world.advanceTime(250);
+});
+await page.waitForTimeout(250);
+await page.screenshot({ path: `${outputDirectory}/observation-deck-walk.png` });
+await page.evaluate(() => window.labIsland.setMode('explore'));
 
 if (process.env.TROPICAL_DIAGNOSTIC === '1') {
   await page.evaluate(() => {
@@ -288,7 +390,7 @@ if (process.env.TROPICAL_DIAGNOSTIC === '1') {
     world.advanceTime(160);
   });
   await page.waitForTimeout(300);
-  await page.screenshot({ path: 'output/tropical-dome/pond-isolation.png' });
+  await page.screenshot({ path: `${outputDirectory}/pond-isolation.png` });
 }
 
 const requiredFeatures = [
@@ -332,6 +434,14 @@ if (audit.canopyWalk.completedEntryTargets !== audit.canopyWalk.expectedEntryTar
 if (audit.canopyWalk.entryMaximumUngroundedSteps > 0 || !audit.canopyWalk.entryFinalGrounded) throw new Error('Walk controller lost grounding on the canopy-walk entry ramp');
 if (audit.canopyWalk.completedMiddleTargets !== audit.canopyWalk.expectedMiddleTargets) throw new Error('Walk controller could not traverse the canopy walk middle section');
 if (audit.canopyWalk.maximumUngroundedSteps > 0 || !audit.canopyWalk.finalGrounded) throw new Error('Walk controller lost grounding on the canopy walk');
+if (!audit.canopyWalk.observationDeckPresent) throw new Error('Observation deck is missing');
+if (audit.canopyWalk.observationDeckOpeningCount !== 2 || audit.canopyWalk.observationDeckRailArcCount < 2) throw new Error('Observation deck guardrail openings are incomplete');
+if (!audit.canopyWalk.observationDeckTouchesCanopyWalk || !audit.canopyWalk.observationDeckTouchesSuspensionBridge) throw new Error('Observation deck has a gap to an attached walkway');
+if (audit.canopyWalk.observationDeckRockIntersections !== 0) throw new Error('Waterfall cliff still intersects the observation deck');
+if (audit.canopyWalk.completedDeckTargets !== audit.canopyWalk.expectedDeckTargets) {
+  throw new Error(`Walk controller reached ${audit.canopyWalk.completedDeckTargets}/${audit.canopyWalk.expectedDeckTargets} observation-deck targets`);
+}
+if (audit.canopyWalk.deckMaximumUngroundedSteps > 0 || !audit.canopyWalk.deckFinalGrounded || audit.canopyWalk.deckGround === null) throw new Error('Walk controller lost grounding at the observation deck');
 if (consoleErrors.length) throw new Error(`Browser console errors: ${consoleErrors.join(' | ')}`);
 
 console.log(JSON.stringify({ audit, consoleErrors }, null, 2));

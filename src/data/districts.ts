@@ -1,4 +1,11 @@
-import { BIOME_PLAN_POSITIONS, PLAN_SCALE_X, PLAN_SCALE_Z } from '../config/island';
+import {
+  BIOME_PLAN_POSITIONS,
+  BIOME_RING_RADIUS,
+  DISTRICT_ROAD_RADII,
+  MASTERPLAN_RESCALE,
+  PLAN_SCALE_X,
+  PLAN_SCALE_Z,
+} from '../config/island';
 
 /**
  * Declarative plan extracted from YT_LabIsland_Ideas1.png.
@@ -33,6 +40,24 @@ export type DistrictRing =
   | "outer"
   | "perimeter";
 
+export interface DistrictSectorDefinition {
+  /** Inner/outer concentric-road boundaries in world units. */
+  innerRadius: number;
+  outerRadius: number;
+  /** Counter-clockwise polar bearings in radians; endAngle is always greater. */
+  startAngle: number;
+  endAngle: number;
+  centerAngle: number;
+  sectorIndex: number;
+  sectorCount: number;
+  /** Multiple named campuses may share one of the six road-bounded wedges. */
+  sharedCellIndex: number;
+  sharedCellCount: number;
+  /** The only visible delimiters are the shared ring roads and six dome spokes. */
+  delimiterModel: 'shared-ring-roads-and-six-spokes';
+  areaWorldUnitsSquared: number;
+}
+
 export interface DistrictDefinition {
   /** Stable key used by selection, persistence, import, and export. */
   id: string;
@@ -50,6 +75,8 @@ export interface DistrictDefinition {
   accent: string;
   palette: ColorPalette;
   description: string;
+  /** Populated on the exported, masterplan-scaled definitions. */
+  sector?: DistrictSectorDefinition;
 }
 
 export interface BiomeDefinition {
@@ -522,9 +549,9 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     footprint: [14, 10],
     height: 15,
     archetype: "library-theory-campus",
-    accent: "#8EA6FF",
-    palette: ["#151A2B", "#354066", "#D0D4E3", "#8EA6FF"],
-    description: "A monumental library anchors lecture halls, quiet cloisters, and daylight-filled institutes for theoretical research.",
+    accent: "#C6A56B",
+    palette: ["#171311", "#4A3028", "#A08D70", "#D7B975"],
+    description: "A dark-academia university precinct of umber-brick libraries, collegiate halls, slate roofs, cloisters, quadrangles, and quiet scholarly parks.",
   },
   {
     id: "industrial-labs",
@@ -641,16 +668,16 @@ const biomeBlueprints: readonly BiomeDefinition[] = [
 ];
 
 const ringTargetRadius: Partial<Record<DistrictRing, number>> = {
-  inner: 52.5,
-  middle: 75.6,
-  'outer-middle': 104.1,
-  outer: 137.1,
-  perimeter: 190,
+  inner: 52.5 * MASTERPLAN_RESCALE,
+  middle: 75.6 * MASTERPLAN_RESCALE,
+  'outer-middle': 104.1 * MASTERPLAN_RESCALE,
+  outer: 137.1 * MASTERPLAN_RESCALE,
+  perimeter: 190 * MASTERPLAN_RESCALE,
 };
 
-export const districts: readonly DistrictDefinition[] = districtBlueprints.map((definition) => {
-  let x = definition.position[0] * PLAN_SCALE_X;
-  let z = definition.position[2] * PLAN_SCALE_Z;
+const positionedDistricts: readonly DistrictDefinition[] = districtBlueprints.map((definition) => {
+  let x = definition.position[0] * PLAN_SCALE_X * MASTERPLAN_RESCALE;
+  let z = definition.position[2] * PLAN_SCALE_Z * MASTERPLAN_RESCALE;
   const targetRadius = ringTargetRadius[definition.ring];
   const currentRadius = Math.hypot(x, z);
   if (targetRadius && currentRadius > 0.001) {
@@ -658,13 +685,148 @@ export const districts: readonly DistrictDefinition[] = districtBlueprints.map((
     x *= radialScale;
     z *= radialScale;
   }
-  // The three central programs stay compact inside the new 420 m plaza.
-  if (definition.id === 'corporate-core') z = 12.8;
+  // The three central programs preserve their relative placement inside the
+  // correspondingly enlarged central plaza while retaining human-size shells.
+  if (definition.id === 'corporate-core') z = 12.8 * MASTERPLAN_RESCALE;
   return {
     ...definition,
     position: [x, definition.position[1], z] as const,
   };
 });
+
+const TAU = Math.PI * 2;
+const DISTRICT_WEDGE_COUNT = 6;
+const DISTRICT_WEDGE_SPAN = TAU / DISTRICT_WEDGE_COUNT;
+const normalizeAngle = (angle: number) => ((angle % TAU) + TAU) % TAU;
+const signedAngleDelta = (angle: number, reference: number) => Math.atan2(
+  Math.sin(angle - reference),
+  Math.cos(angle - reference),
+);
+const ringRadialBounds: Readonly<Record<DistrictRing, readonly [number, number]>> = {
+  core: [0, DISTRICT_ROAD_RADII[0]],
+  inner: [DISTRICT_ROAD_RADII[0], DISTRICT_ROAD_RADII[1]],
+  middle: [DISTRICT_ROAD_RADII[1], DISTRICT_ROAD_RADII[2]],
+  'outer-middle': [DISTRICT_ROAD_RADII[2], DISTRICT_ROAD_RADII[3]],
+  outer: [DISTRICT_ROAD_RADII[3], DISTRICT_ROAD_RADII[4]],
+  // Preserve a clear service belt between the populated perimeter and biome domes.
+  perimeter: [DISTRICT_ROAD_RADII[4], BIOME_RING_RADIUS - 40],
+};
+
+// The three central programs share one arcology, but their surrounding public,
+// research, and command campuses still occupy explicit thirds of the core.
+const coreSectorAngles: Readonly<Record<string, number>> = {
+  'synthetic-quantum-biosystems': normalizeAngle(-Math.PI / 2),
+  'dark-center-lab-megabuilding': normalizeAngle(Math.PI / 6),
+  'corporate-core': normalizeAngle((5 * Math.PI) / 6),
+};
+
+const sectorById = new Map<string, DistrictSectorDefinition>();
+const recenteredPositionById = new Map<string, WorldPosition>();
+const ringOrder: readonly DistrictRing[] = ['core', 'inner', 'middle', 'outer-middle', 'outer', 'perimeter'];
+
+ringOrder.forEach((ring) => {
+  const ringDistricts = positionedDistricts
+    .filter((definition) => definition.ring === ring)
+    .map((definition) => ({
+      definition,
+      angle: ring === 'core'
+        ? coreSectorAngles[definition.id]
+        : normalizeAngle(Math.atan2(definition.position[2], definition.position[0])),
+    }))
+    .sort((left, right) => left.angle - right.angle);
+
+  const [innerRadius, outerRadius] = ringRadialBounds[ring];
+  if (ring === 'core') {
+    ringDistricts.forEach(({ definition, angle }, index) => {
+      const previous = index === 0
+        ? ringDistricts[ringDistricts.length - 1].angle - TAU
+        : ringDistricts[index - 1].angle;
+      const next = index === ringDistricts.length - 1
+        ? ringDistricts[0].angle + TAU
+        : ringDistricts[index + 1].angle;
+      const startAngle = (previous + angle) * 0.5;
+      const endAngle = (angle + next) * 0.5;
+      sectorById.set(definition.id, {
+        innerRadius,
+        outerRadius,
+        startAngle,
+        endAngle,
+        centerAngle: (startAngle + endAngle) * 0.5,
+        sectorIndex: index,
+        sectorCount: ringDistricts.length,
+        sharedCellIndex: 0,
+        sharedCellCount: 1,
+        delimiterModel: 'shared-ring-roads-and-six-spokes',
+        areaWorldUnitsSquared: 0.5 * (outerRadius ** 2 - innerRadius ** 2) * (endAngle - startAngle),
+      });
+      recenteredPositionById.set(definition.id, definition.position);
+    });
+    return;
+  }
+
+  const wedgeGroups = new Map<number, typeof ringDistricts>();
+  const sixDistrictSequence = ringDistricts.length === DISTRICT_WEDGE_COUNT
+    ? (() => {
+        const zeroIndex = ringDistricts.reduce((bestIndex, entry, index) => (
+          Math.abs(signedAngleDelta(entry.angle, 0)) < Math.abs(signedAngleDelta(ringDistricts[bestIndex].angle, 0))
+            ? index
+            : bestIndex
+        ), 0);
+        return [...ringDistricts.slice(zeroIndex), ...ringDistricts.slice(0, zeroIndex)];
+      })()
+    : null;
+  ringDistricts.forEach((entry) => {
+    const wedgeIndex = sixDistrictSequence
+      ? sixDistrictSequence.indexOf(entry)
+      : Math.round(normalizeAngle(entry.angle) / DISTRICT_WEDGE_SPAN) % DISTRICT_WEDGE_COUNT;
+    const entries = wedgeGroups.get(wedgeIndex) ?? [];
+    entries.push(entry);
+    wedgeGroups.set(wedgeIndex, entries);
+  });
+
+  wedgeGroups.forEach((entries, wedgeIndex) => {
+    const centerAngle = wedgeIndex * DISTRICT_WEDGE_SPAN;
+    const ordered = [...entries].sort(
+      (left, right) => signedAngleDelta(left.angle, centerAngle) - signedAngleDelta(right.angle, centerAngle),
+    );
+    ordered.forEach(({ definition }, sharedCellIndex) => {
+      const sharedOffset = sharedCellIndex - (ordered.length - 1) * 0.5;
+      const campusAngle = centerAngle + sharedOffset * DISTRICT_WEDGE_SPAN * 0.18;
+      const campusRadius = (innerRadius + outerRadius) * 0.5
+        + sharedOffset * (outerRadius - innerRadius) * 0.1;
+      const startAngle = centerAngle - DISTRICT_WEDGE_SPAN * 0.5;
+      const endAngle = centerAngle + DISTRICT_WEDGE_SPAN * 0.5;
+      recenteredPositionById.set(definition.id, [
+        Math.cos(campusAngle) * campusRadius,
+        definition.position[1],
+        Math.sin(campusAngle) * campusRadius,
+      ]);
+      sectorById.set(definition.id, {
+        innerRadius,
+        outerRadius,
+        startAngle,
+        endAngle,
+        centerAngle,
+        sectorIndex: wedgeIndex,
+        sectorCount: DISTRICT_WEDGE_COUNT,
+        sharedCellIndex,
+        sharedCellCount: ordered.length,
+        delimiterModel: 'shared-ring-roads-and-six-spokes',
+        areaWorldUnitsSquared: 0.5 * (outerRadius ** 2 - innerRadius ** 2) * DISTRICT_WEDGE_SPAN,
+      });
+    });
+  });
+});
+
+export const districts: readonly DistrictDefinition[] = positionedDistricts.map((definition) => ({
+  ...definition,
+  position: recenteredPositionById.get(definition.id) ?? definition.position,
+  sector: sectorById.get(definition.id),
+}));
+
+export const districtSectors: Readonly<Record<string, DistrictSectorDefinition>> = Object.fromEntries(
+  districts.map((definition) => [definition.id, definition.sector!]),
+);
 
 export const biomes: readonly BiomeDefinition[] = biomeBlueprints.map((definition) => {
   const domeScale = 2.15;

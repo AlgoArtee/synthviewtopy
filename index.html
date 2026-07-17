@@ -90,6 +90,12 @@
                 <option value="rain">Rainy</option>
                 <option value="fog">Foggy</option>
                 <option value="storm">Stormy</option>
+                <optgroup label="Academic District">
+                  <option value="academic-autumn">Late-autumn after rain</option>
+                  <option value="academic-overcast">Overcast afternoon</option>
+                  <option value="academic-rainy-dusk">Rainy dusk</option>
+                  <option value="academic-foggy-night">Foggy night</option>
+                </optgroup>
               </select>
             </label>
             <label class="select-field">
@@ -99,6 +105,14 @@
                 <option value="spring">Spring</option>
                 <option value="autumn">Autumn</option>
                 <option value="winter">Winter</option>
+              </select>
+            </label>
+            <label class="select-field">
+              <span>Graphics</span>
+              <select id="env-quality">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
               </select>
             </label>
           </div>
@@ -409,6 +423,8 @@
         <button class="layer active" data-layer="labels"><span class="layer-icon">Aa</span>Labels</button>
         <button class="layer active" data-layer="transit"><span class="layer-icon">⌁</span>Transit</button>
         <span class="layer-divider"></span>
+        <button id="academic-audio-toggle" type="button" aria-pressed="false" title="Toggle quiet campus ambience"><span>♫</span><span class="utility-label">Audio muted</span></button>
+        <button id="debug-toggle" type="button" aria-pressed="false" title="Show Academic District collisions, lights, and scene statistics"><span>⌗</span><span class="utility-label">Debug</span></button>
         <button id="fullscreen-toggle" title="Toggle fullscreen (F)"><span>⛶</span></button>
       </div>
 
@@ -423,11 +439,14 @@
       <div class="walk-hud" id="walk-hud" hidden aria-live="polite">
         <div class="walk-crosshair" aria-hidden="true"><i></i><i></i><span></span></div>
         <div class="walk-readout glass-panel">
-          <span class="walk-scale">01.7 M PERSON / 01.62 M EYE</span>
-          <strong id="walk-status">Human-scale exploration ready</strong>
-          <span>WASD / ARROWS · MOVE &nbsp; SHIFT · JOG &nbsp; T · TURBO &nbsp; E · INSPECT</span>
-          <button class="walk-turbo-button" id="walk-turbo" type="button" aria-pressed="false">Turbo · Off</button>
-          <button class="walk-look-button" id="walk-look-button">Click to look around</button>
+          <button class="walk-hud-collapse" id="walk-hud-collapse" type="button" aria-expanded="true" aria-controls="walk-readout-content" aria-label="Collapse WALK controls">›</button>
+          <div class="walk-readout-content" id="walk-readout-content">
+            <span class="walk-scale">01.7 M PERSON / 01.62 M EYE</span>
+            <strong id="walk-status">Human-scale exploration ready</strong>
+            <span>WASD / ARROWS · MOVE &nbsp; SHIFT · JOG &nbsp; SPACE · TAP / HOLD JUMP &nbsp; T · TURBO &nbsp; E · INSPECT</span>
+            <button class="walk-turbo-button" id="walk-turbo" type="button" aria-pressed="false">Turbo · Off</button>
+            <button class="walk-look-button" id="walk-look-button">Click to look around</button>
+          </div>
         </div>
       </div>
 
@@ -439,6 +458,29 @@
         <div class="interaction-menu-body" id="interaction-menu-buttons"></div>
         <button class="interaction-menu-close" id="close-interaction-menu">Cancel</button>
       </div>
+
+      <section id="academic-building-card" class="academic-overlay glass-panel" hidden aria-labelledby="academic-building-title">
+        <button class="academic-overlay-close" id="academic-building-close" type="button" aria-label="Close building history">×</button>
+        <span class="eyebrow">Academic District entrance record</span>
+        <h2 id="academic-building-title">Campus building</h2>
+        <p class="academic-building-meta" id="academic-building-meta"></p>
+        <p id="academic-building-description"></p>
+        <label class="academic-history-field">
+          <span>Editable fictional history</span>
+          <textarea id="academic-history-editor" rows="5"></textarea>
+        </label>
+        <button class="academic-primary-button" id="academic-history-save" type="button">Save history locally</button>
+      </section>
+
+      <section id="academic-campus-map" class="academic-overlay academic-map-overlay glass-panel" hidden aria-labelledby="academic-map-title">
+        <button class="academic-overlay-close" id="academic-map-close" type="button" aria-label="Close campus map">×</button>
+        <span class="eyebrow">Blackwood University · founded 1428</span>
+        <h2 id="academic-map-title">Academic District Map</h2>
+        <p>Island centre is at the bottom; the Blackwater Canal is at the top. Select a marker to inspect its editable history.</p>
+        <div class="academic-map" id="academic-map-markers" aria-label="Stylized campus map"></div>
+      </section>
+
+      <div id="debug-stats" class="debug-stats glass-panel" hidden aria-live="polite"></div>
 
       <div class="toast-region" id="toast-region" aria-live="polite"></div>
       <div class="loading-screen" id="loading-screen">

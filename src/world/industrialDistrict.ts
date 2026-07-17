@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import type { DistrictDefinition } from '../data/districts';
-import { COASTAL_RAIL_INSET, ISLAND_POINTS, metresToWorldUnits } from '../config/island';
+import { metresToWorldUnits } from '../config/island';
+import { buildIndustrialRailway } from './industrialRailway';
 
 const m = metresToWorldUnits;
 const FLOOR_Y = m(0.18);
@@ -211,103 +212,6 @@ function addPipe(
   pipe.castShadow = true;
   parent.add(pipe);
   return pipe;
-}
-
-function addSegment(
-  parent: THREE.Object3D,
-  name: string,
-  start: THREE.Vector3,
-  end: THREE.Vector3,
-  width: number,
-  height: number,
-  mat: THREE.Material,
-) {
-  const length = start.distanceTo(end);
-  const segment = new THREE.Mesh(new THREE.BoxGeometry(width, height, length), mat);
-  segment.name = name;
-  segment.position.copy(start).lerp(end, 0.5);
-  segment.lookAt(end);
-  segment.castShadow = true;
-  segment.receiveShadow = true;
-  segment.renderOrder = 12;
-  segment.userData.navObstacle = false;
-  parent.add(segment);
-  return segment;
-}
-
-function coastalConnectionPoint(definition: DistrictDefinition, trackOffset: number) {
-  const originX = definition.position[0];
-  const originZ = definition.position[2];
-  const perimeter = ISLAND_POINTS.map(([x, z]) => new THREE.Vector2(x * COASTAL_RAIL_INSET, z * COASTAL_RAIL_INSET));
-  let nearestWest: THREE.Vector2 | null = null;
-
-  for (let index = 0; index < perimeter.length; index += 1) {
-    const start = perimeter[index];
-    const end = perimeter[(index + 1) % perimeter.length];
-    const minZ = Math.min(start.y, end.y);
-    const maxZ = Math.max(start.y, end.y);
-    if (originZ < minZ || originZ > maxZ || Math.abs(end.y - start.y) < 0.0001) continue;
-    const t = (originZ - start.y) / (end.y - start.y);
-    const intersection = start.clone().lerp(end, t);
-    if (intersection.x >= originX) continue;
-    const direction = end.clone().sub(start).normalize();
-    const perpendicular = new THREE.Vector2(-direction.y, direction.x);
-    intersection.addScaledVector(perpendicular, trackOffset);
-    if (!nearestWest || intersection.x > nearestWest.x) nearestWest = intersection;
-  }
-
-  if (!nearestWest) return null;
-  return new THREE.Vector3(nearestWest.x - originX, m(0.06), nearestWest.y - originZ);
-}
-
-function addRailTrack(
-  parent: THREE.Group,
-  name: string,
-  centerline: readonly THREE.Vector3[],
-  mats: ReturnType<typeof createIndustrialMaterials>,
-) {
-  const gaugeHalf = m(0.75);
-  const sleeperSpacing = m(1.8);
-  const sleeperCounts = centerline.slice(0, -1).map((point, index) => (
-    Math.max(1, Math.floor(point.distanceTo(centerline[index + 1]) / sleeperSpacing))
-  ));
-  const sleeperCount = sleeperCounts.reduce((sum, count) => sum + count, 0);
-  const sleepers = new THREE.InstancedMesh(
-    new THREE.BoxGeometry(m(2.7), m(0.14), m(0.22)),
-    mats.railSleeper,
-    sleeperCount,
-  );
-  sleepers.name = `${name}__SLEEPERS`;
-  sleepers.castShadow = true;
-  sleepers.receiveShadow = true;
-  sleepers.renderOrder = 12;
-  sleepers.userData.navObstacle = false;
-  const sleeper = new THREE.Object3D();
-  let sleeperIndex = 0;
-
-  centerline.slice(0, -1).forEach((start, segmentIndex) => {
-    const end = centerline[segmentIndex + 1];
-    const direction = end.clone().sub(start);
-    const horizontalDirection = new THREE.Vector3(direction.x, 0, direction.z).normalize();
-    const perpendicular = new THREE.Vector3(-horizontalDirection.z, 0, horizontalDirection.x);
-    addSegment(parent, `${name}__BALLAST_${segmentIndex + 1}`, start, end, m(3.1), m(0.12), mats.railBallast);
-    for (const gaugeOffset of [-gaugeHalf, gaugeHalf]) {
-      const railStart = start.clone().addScaledVector(perpendicular, gaugeOffset).add(new THREE.Vector3(0, m(0.14), 0));
-      const railEnd = end.clone().addScaledVector(perpendicular, gaugeOffset).add(new THREE.Vector3(0, m(0.14), 0));
-      addSegment(parent, `${name}__STEEL_RAIL`, railStart, railEnd, m(0.09), m(0.16), mats.railWet);
-    }
-    const count = sleeperCounts[segmentIndex];
-    for (let index = 0; index < count; index += 1) {
-      const t = (index + 0.5) / count;
-      sleeper.position.copy(start).lerp(end, t).add(new THREE.Vector3(0, m(0.07), 0));
-      sleeper.lookAt(sleeper.position.clone().add(horizontalDirection));
-      sleeper.updateMatrix();
-      sleepers.setMatrixAt(sleeperIndex, sleeper.matrix);
-      sleeperIndex += 1;
-    }
-  });
-  sleepers.instanceMatrix.needsUpdate = true;
-  parent.add(sleepers);
 }
 
 function addSign(
@@ -571,7 +475,6 @@ function addReferenceFactoryBlock(
 
 function addIndustrialRailCanyon(
   group: THREE.Group,
-  definition: DistrictDefinition,
   mats: ReturnType<typeof createIndustrialMaterials>,
 ) {
   const blocks: readonly ReferenceFactoryBlock[] = [
@@ -583,82 +486,6 @@ function addIndustrialRailCanyon(
     { name: 'INDUSTRIAL__SOUTH_REAR_FACTORY', x: 0.2, z: 7.55, width: 6.1, depth: 2.25, height: 3.45, bays: 10, floors: 5, tone: 'light', pipeBank: true },
   ];
   blocks.forEach((block) => addReferenceFactoryBlock(group, block, mats));
-
-  const roadHalfLength = definition.footprint[0] * 0.5 - 0.45;
-  const internalBedY = FLOOR_Y + 0.018 + m(0.06);
-  const trackDefinitions = [
-    { streetZ: -0.25, coastalOffset: -0.32 },
-    { streetZ: 0.35, coastalOffset: 0.32 },
-  ] as const;
-  const straightTrackLength = roadHalfLength * 2;
-  const straightSleeperCount = Math.floor(straightTrackLength / m(1.8));
-  trackDefinitions.forEach((track, index) => {
-    const ballast = addBox(
-      group,
-      `INDUSTRIAL__CENTRAL_TRACK_${index + 1}__BALLAST`,
-      [straightTrackLength, m(0.12), m(3.1)],
-      mats.railBallast,
-      [0, FLOOR_Y + 0.018, track.streetZ],
-      { obstacle: false, walkable: true },
-    );
-    ballast.renderOrder = 12;
-    const sleeperField = new THREE.InstancedMesh(
-      new THREE.BoxGeometry(m(0.22), m(0.14), m(2.7)),
-      mats.railSleeper,
-      straightSleeperCount,
-    );
-    sleeperField.name = `INDUSTRIAL__CENTRAL_TRACK_${index + 1}__SLEEPERS`;
-    sleeperField.renderOrder = 12;
-    sleeperField.castShadow = true;
-    sleeperField.receiveShadow = true;
-    sleeperField.userData.navObstacle = false;
-    const sleeper = new THREE.Object3D();
-    for (let sleeperIndex = 0; sleeperIndex < straightSleeperCount; sleeperIndex += 1) {
-      sleeper.position.set(
-        -roadHalfLength + (sleeperIndex + 0.5) * (straightTrackLength / straightSleeperCount),
-        FLOOR_Y + 0.018 + m(0.19),
-        track.streetZ,
-      );
-      sleeper.updateMatrix();
-      sleeperField.setMatrixAt(sleeperIndex, sleeper.matrix);
-    }
-    sleeperField.instanceMatrix.needsUpdate = true;
-    group.add(sleeperField);
-    for (const gaugeOffset of [-m(0.75), m(0.75)]) {
-      const rail = addBox(
-        group,
-        `INDUSTRIAL__CENTRAL_TRACK_${index + 1}__STEEL_RAIL`,
-        [straightTrackLength, m(0.18), m(0.1)],
-        mats.railWet,
-        [0, FLOOR_Y + 0.018 + m(0.12), track.streetZ + gaugeOffset],
-        { obstacle: false },
-      );
-      rail.renderOrder = 12;
-    }
-  });
-  const connectionPoints: number[][] = [];
-  let connectorLength = 0;
-
-  trackDefinitions.forEach((track, index) => {
-    const target = coastalConnectionPoint(definition, track.coastalOffset);
-    if (!target) return;
-    const curveStart = new THREE.Vector3(target.x + 10, m(0.06), track.streetZ);
-    const curveControl = new THREE.Vector3(target.x + 3.2, m(0.06), THREE.MathUtils.lerp(track.streetZ, target.z, 0.45));
-    const curve = new THREE.QuadraticBezierCurve3(curveStart, curveControl, target);
-    const centerline = [
-      new THREE.Vector3(-roadHalfLength, internalBedY, track.streetZ),
-      ...curve.getPoints(9),
-    ];
-    addRailTrack(group, `INDUSTRIAL__MAINLINE_CONNECTED_TRACK_${index + 1}`, centerline, mats);
-    connectorLength = Math.max(
-      connectorLength,
-      centerline.slice(0, -1).reduce((sum, point, pointIndex) => sum + point.distanceTo(centerline[pointIndex + 1]), 0),
-    );
-    connectionPoints.push([
-      Number((target.x + definition.position[0]).toFixed(3)),
-      Number((target.z + definition.position[2]).toFixed(3)),
-    ]);
-  });
 
   for (let index = 0; index < 8; index += 1) {
     const x = -12.8 + index * 3.65;
@@ -685,17 +512,11 @@ function addIndustrialRailCanyon(
   group.userData.industrialRailExtension = {
     style: 'cold blue-grey concrete factory canyon',
     addedFactoryBlocks: blocks.length,
-    trackCount: trackDefinitions.length,
-    connectorLengthMetres: Math.round(connectorLength * 10),
-    connectsTo: 'double-track coastal railway',
-    connectionPoints,
+    railwaySystem: 'spline-based hierarchy generated under INDUSTRIAL__RAILWAY',
   };
   Object.assign(group.userData.industrialDistrict, {
     referencePalette: ['#465158', '#303a3f', '#59646a', '#111b20', '#55342e'],
     addedFactoryBlocks: blocks.length,
-    centralRailTracks: trackDefinitions.length,
-    railConnectorLengthMetres: Math.round(connectorLength * 10),
-    railConnection: 'industrial street to double-track coastal railway',
   });
 }
 
@@ -973,25 +794,6 @@ function addRailMaintenance(group: THREE.Group, mats: ReturnType<typeof createIn
   addBox(rail, 'INDUSTRIAL__RAIL_SHED_RIGHT', [0.14, 1.58, depth], mats.brick, [width * 0.5, FLOOR_Y, 0]);
   addBox(rail, 'INDUSTRIAL__RAIL_SHED_ROOF', [width + 0.12, 0.15, depth + 0.16], mats.roof, [0, FLOOR_Y + 1.58, 0]);
   addSign(rail, 'INDUSTRIAL__RAIL_SHED_SIGN', 'SHED 3', 'EST. 1952', 1.05, 0.3, [0, FLOOR_Y + 1.38, depth * 0.5 + 0.04]);
-  for (let track = 0; track < 3; track += 1) {
-    const z = -0.58 + track * 0.58;
-    for (const railZ of [-0.12, 0.12]) addBox(rail, `INDUSTRIAL__FREIGHT_RAIL_${track + 1}`, [5.6, 0.045, 0.035], mats.rail, [-0.15, FLOOR_Y + 0.02, z + railZ], { obstacle: false, shadows: false });
-    for (let sleeper = 0; sleeper < 13; sleeper += 1) addBox(rail, 'INDUSTRIAL__RAIL_SLEEPER', [0.12, 0.035, 0.48], mats.wood, [-2.55 + sleeper * 0.43, FLOOR_Y + 0.005, z], { obstacle: false, shadows: false });
-  }
-  const locomotive = facility(rail, 'INDUSTRIAL__DARK_LOCOMOTIVE_PARTLY_INSIDE', 0.45, 0.0, 0);
-  addBox(locomotive, 'INDUSTRIAL__LOCOMOTIVE_BODY', [1.75, m(3.2), m(3.0)], mats.soot, [0, FLOOR_Y + m(0.9), 0]);
-  addBox(locomotive, 'INDUSTRIAL__LOCOMOTIVE_CAB', [0.62, m(4.2), m(2.9)], mats.darkMetal, [0.45, FLOOR_Y + m(0.9), 0]);
-  for (const x of [-0.64, -0.2, 0.25, 0.68]) addWheel(locomotive, 'INDUSTRIAL__LOCOMOTIVE_WHEEL', m(0.62), m(0.26), mats.rubber, x, 0);
-  for (let wagon = 0; wagon < 2; wagon += 1) {
-    const x = -2.25 - wagon * 1.35;
-    addCylinder(rail, `INDUSTRIAL__RUSTED_TANKER_WAGON_${wagon + 1}`, m(1.4), 1.05, mats.rust, [x, FLOOR_Y + m(1.4) - 1.05 * 0.5, -0.58], 16).rotation.z = Math.PI / 2;
-  }
-  addBox(rail, 'INDUSTRIAL__EMPTY_FLATBED_RAILCAR', [1.42, m(0.28), m(2.8)], mats.rust, [-2.15, FLOOR_Y + m(0.8), 0.58]);
-  for (const [name, color, x] of [['GREEN', mats.greenLight, -1.15], ['RED', mats.redLight, 1.18]] as const) {
-    const signal = addCylinder(rail, `INDUSTRIAL__${name}_RAIL_SIGNAL`, 0.09, 0.16, color, [x, FLOOR_Y + 1.02, 0.82], 12, false);
-    addCylinder(rail, 'INDUSTRIAL__RAIL_SIGNAL_POST', 0.035, 1.0, mats.darkMetal, [x, FLOOR_Y, 0.82], 8);
-    if (name === 'GREEN') signal.userData.animate = 'industrial-beacon';
-  }
   addBox(rail, 'INDUSTRIAL__TRACK_BLOCK_AHEAD', [0.55, 0.28, 0.48], mats.safetyYellow, [-0.3, FLOOR_Y, -0.58]);
   addBox(rail, 'INDUSTRIAL__NEATLY_PLACED_RAIL_TOOLS', [0.68, 0.05, 0.18], mats.metal, [-0.95, FLOOR_Y + 0.02, 0.62], { obstacle: false });
   const lantern = addCylinder(rail, 'INDUSTRIAL__WORKER_LANTERN_WITHOUT_WORKER', 0.09, 0.22, mats.amberLight, [-0.55, FLOOR_Y + 0.03, 0.72], 10, false);
@@ -1327,7 +1129,7 @@ export function buildIndustrialDistrict(group: THREE.Group, definition: District
     ],
   };
   addRoadAndYards(group, definition, mats);
-  addIndustrialRailCanyon(group, definition, mats);
+  addIndustrialRailCanyon(group, mats);
   addManufacturingHall(group, mats);
   addWarehouse(group, mats);
   addPowerStation(group, mats);
@@ -1341,4 +1143,5 @@ export function buildIndustrialDistrict(group: THREE.Group, definition: District
   addSecurityCheckpoint(group, mats);
   addMaintenanceTunnel(group, mats);
   addDistrictInfrastructure(group, mats);
+  buildIndustrialRailway(group, definition);
 }

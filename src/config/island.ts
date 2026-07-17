@@ -6,10 +6,13 @@ export const worldUnitsToMetres = (worldUnits: number) => worldUnits * WORLD_MET
 /** The planted island surface is 16.1 m above the ocean datum. */
 export const ISLAND_SURFACE_Y = metresToWorldUnits(16.1);
 /**
- * Keep architecture and walk controls at human scale while tripling the
- * distance between the masterplan's concentric roads.
+ * Keep architecture and walk controls at human scale while expanding the
+ * original masterplan horizontally. The previous production layout used 3;
+ * 6 doubles every island, road, district, biome, and coast-to-coast distance.
  */
-export const WORLD_EXPANSION = 3;
+export const WORLD_EXPANSION = 6;
+/** Migration/layout ratio relative to the former 3x production masterplan. */
+export const MASTERPLAN_RESCALE = WORLD_EXPANSION / 3;
 export const ISLAND_RADIUS = 92 * WORLD_EXPANSION;
 export const ISLAND_APOTHEM = (Math.sqrt(3) / 2) * ISLAND_RADIUS;
 
@@ -62,6 +65,18 @@ export const WALK_FAST_SPEED = metresToWorldUnits(5.5);
 export const WALK_TURBO_SPEED = metresToWorldUnits(12);
 export const WALK_STEP_HEIGHT = metresToWorldUnits(0.38);
 export const WALK_GRAVITY = metresToWorldUnits(9.81);
-export const WALK_JUMP_SPEED = metresToWorldUnits(2.8);
+/**
+ * Releasing Space immediately produces a modest human hop, while holding it
+ * preserves the launch velocity for a higher jump. Deriving both launch
+ * speeds from their apex heights keeps the behaviour tied to the world scale.
+ */
+export const WALK_JUMP_TAP_HEIGHT_METRES = 0.55;
+export const WALK_JUMP_HOLD_HEIGHT_METRES = 1.6;
+export const WALK_JUMP_TAP_SPEED = Math.sqrt(
+  2 * WALK_GRAVITY * metresToWorldUnits(WALK_JUMP_TAP_HEIGHT_METRES),
+);
+export const WALK_JUMP_SPEED = Math.sqrt(
+  2 * WALK_GRAVITY * metresToWorldUnits(WALK_JUMP_HOLD_HEIGHT_METRES),
+);
 export const WALK_INSPECT_DISTANCE = metresToWorldUnits(4.5);
 export const WALK_VERTICAL_FOV = 55;

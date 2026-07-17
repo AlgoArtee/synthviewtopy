@@ -1,0 +1,217 @@
+{
+  "audit": {
+    "forbiddenTreeNames": [],
+    "eastCoastalTrees": [],
+    "clippedHedges": 9,
+    "ivyLeaves": 48,
+    "ivyStems": 12,
+    "reeds": 34,
+    "fallenWallLeaves": 24,
+    "parkCount": 5,
+    "vintageBenchCount": 32,
+    "academicTreePopulation": {
+      "count": 79,
+      "speciesCount": 15
+    },
+    "componentCounts": {
+      "stonePiers": 2130,
+      "carvedCrests": 1420,
+      "ironBars": 6370,
+      "pointedArches": 1416,
+      "quatrefoils": 2832,
+      "botanicalMotifs": 1416
+    },
+    "boundaryRuns": 8,
+    "fenceBayCount": 708,
+    "pierCount": 716,
+    "carvedCrestCount": 716,
+    "preciseBarrierCount": 1428,
+    "heightMultiplier": 5,
+    "fenceHeightMetres": 16.5,
+    "pierHeightMetres": 24.5,
+    "visuallyPermeable": true,
+    "patterns": [
+      "pointed arches",
+      "quatrefoils",
+      "restrained botanical scrolls",
+      "carved college crests"
+    ],
+    "openings": [
+      {
+        "id": "main-avenue",
+        "destination": "inner ring road and island centre",
+        "type": "monumental existing gate",
+        "localPoint": [
+          -52.39999999999998,
+          0,
+          0
+        ],
+        "worldPoint": [
+          310.1,
+          1.61,
+          0
+        ],
+        "clearWidth": 8.3,
+        "crossingDirection": [
+          1,
+          0,
+          0
+        ],
+        "passable": true,
+        "schedule": "open by day; interactively openable at night",
+        "minimumBarrierClearance": 9.311062953110284,
+        "grounded": true
+      },
+      {
+        "id": "tundra-biodome",
+        "destination": "Tundra Biodome",
+        "type": "ivy garden entrance and dome aperture",
+        "localPoint": [
+          14.969255726987694,
+          0,
+          -216.60407078564785
+        ],
+        "worldPoint": [
+          377.4692557269877,
+          1.61,
+          -216.60407078564785
+        ],
+        "clearWidth": 1.45,
+        "crossingDirection": [
+          0.49999999999999994,
+          0,
+          0.8660254037844387
+        ],
+        "domeApertureLength": 41.5,
+        "passable": true,
+        "schedule": "always open",
+        "minimumBarrierClearance": 0.6010000000000059,
+        "grounded": true
+      },
+      {
+        "id": "desert-biodome",
+        "destination": "Desert Biodome",
+        "type": "ivy garden entrance and dome aperture",
+        "localPoint": [
+          14.969255726987694,
+          0,
+          216.60407078564785
+        ],
+        "worldPoint": [
+          377.4692557269877,
+          1.61,
+          216.60407078564785
+        ],
+        "clearWidth": 1.45,
+        "crossingDirection": [
+          0.49999999999999994,
+          0,
+          -0.8660254037844387
+        ],
+        "domeApertureLength": 41.5,
+        "passable": true,
+        "schedule": "always open",
+        "minimumBarrierClearance": 0.6010000000000059,
+        "grounded": true
+      },
+      {
+        "id": "coastal-railway",
+        "destination": "island coastal railway",
+        "type": "monumental open gate",
+        "localPoint": [
+          68.88165071455416,
+          0,
+          0
+        ],
+        "worldPoint": [
+          431.38165071455416,
+          1.61,
+          0
+        ],
+        "clearWidth": 3.6,
+        "crossingDirection": [
+          1,
+          0,
+          0
+        ],
+        "railClearance": 1.25,
+        "passable": true,
+        "schedule": "always open",
+        "minimumBarrierClearance": 1.614,
+        "grounded": true
+      }
+    ],
+    "gates": [
+      {
+        "name": "ACADEMIC__TUNDRA_DOME_GARDEN_ENTRANCE",
+        "exists": true,
+        "alwaysOpen": true,
+        "sign": "TUNDRA BIODOME",
+        "climbingIvy": true
+      },
+      {
+        "name": "ACADEMIC__DESERT_DOME_GARDEN_ENTRANCE",
+        "exists": true,
+        "alwaysOpen": true,
+        "sign": "DESERT BIODOME",
+        "climbingIvy": true
+      },
+      {
+        "name": "ACADEMIC__MONUMENTAL_COASTAL_RAIL_GATE",
+        "exists": true,
+        "alwaysOpen": true,
+        "sign": null,
+        "climbingIvy": false
+      }
+    ],
+    "existingMainGate": true
+  },
+  "crossingAudit": {
+    "openings": [
+      {
+        "id": "main-avenue",
+        "result": {
+          "reached": true,
+          "blockedSteps": 0,
+          "groundGaps": 0,
+          "endDistance": 0
+        }
+      },
+      {
+        "id": "tundra-biodome",
+        "result": {
+          "reached": true,
+          "blockedSteps": 0,
+          "groundGaps": 0,
+          "endDistance": 0
+        }
+      },
+      {
+        "id": "desert-biodome",
+        "result": {
+          "reached": true,
+          "blockedSteps": 0,
+          "groundGaps": 0,
+          "endDistance": 0
+        }
+      },
+      {
+        "id": "coastal-railway",
+        "result": {
+          "reached": true,
+          "blockedSteps": 0,
+          "groundGaps": 0,
+          "endDistance": 0
+        }
+      }
+    ],
+    "solidCrossing": {
+      "reached": false,
+      "blockedSteps": 1,
+      "groundGaps": 0,
+      "endDistance": 0.41293247080661744
+    },
+    "mainGateOpenAtNoon": true
+  },
+  "consoleErrors": []
+}

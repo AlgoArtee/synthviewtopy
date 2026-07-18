@@ -417,6 +417,91 @@
         </div>
       </div>
 
+      <aside
+        class="fountain-control-panel glass-panel"
+        id="fountain-control-panel"
+        aria-labelledby="fountain-control-title"
+        hidden
+      >
+        <header class="fountain-control-head">
+          <div>
+            <span class="eyebrow">Monument inspection / live controls</span>
+            <h2 id="fountain-control-title">Well of Infinite Knowledge</h2>
+          </div>
+          <button id="fountain-control-exit" type="button" aria-label="Exit fountain inspection">Exit</button>
+        </header>
+
+        <p class="fountain-control-summary" id="fountain-control-summary" aria-live="polite">
+          Courtyard · measured water system ready
+        </p>
+
+        <div class="fountain-control-grid">
+          <label>
+            <span>Scene</span>
+            <select id="fountain-scene-mode">
+              <option value="presentation">Museum white</option>
+              <option value="courtyard">Overcast courtyard</option>
+              <option value="night">Rainy night</option>
+            </select>
+          </label>
+          <label>
+            <span>Seshat</span>
+            <select id="fountain-statue-material">
+              <option value="bronze">Patinated bronze</option>
+              <option value="dark-stone">Dark stone</option>
+              <option value="hybrid">Stone and metal</option>
+            </select>
+          </label>
+          <label>
+            <span>Camera</span>
+            <select id="fountain-camera-preset">
+              <option value="hero">Hero view</option>
+              <option value="low-angle">Low angle</option>
+              <option value="top-down">Top down</option>
+              <option value="side-profile">Side profile</option>
+            </select>
+          </label>
+          <label>
+            <span>Quality</span>
+            <select id="fountain-quality">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </label>
+        </div>
+
+        <section class="fountain-flow-control" aria-labelledby="fountain-flow-title">
+          <div class="fountain-control-row">
+            <span id="fountain-flow-title">Hydraulic flow</span>
+            <button id="fountain-water-toggle" type="button" aria-pressed="true">Water on</button>
+          </div>
+          <div class="fountain-range-row">
+            <button type="button" data-fountain-flow="-1" aria-label="Decrease fountain water flow">−</button>
+            <input id="fountain-water-flow" type="range" min="0" max="100" step="10" value="70" aria-label="Fountain water flow" />
+            <output id="fountain-water-flow-output" for="fountain-water-flow">72%</output>
+            <button type="button" data-fountain-flow="1" aria-label="Increase fountain water flow">+</button>
+          </div>
+        </section>
+
+        <div class="fountain-toggle-grid" aria-label="Fountain display controls">
+          <button id="fountain-infinity-light" type="button" aria-pressed="true">Infinity light</button>
+          <button id="fountain-cutaway" type="button" aria-pressed="false">Hydraulic cutaway</button>
+          <button id="fountain-geometry-grid" type="button" aria-pressed="false">Construction grid</button>
+          <button id="fountain-camera-reset" type="button">Reset camera</button>
+        </div>
+
+        <div class="fountain-utility-row" aria-label="Display and sound shortcuts">
+          <button id="fountain-audio-link" type="button" aria-pressed="false">Audio muted</button>
+          <button id="fountain-fullscreen-link" type="button">Fullscreen</button>
+        </div>
+
+        <footer class="fountain-control-foot">
+          <span><i></i> Explore inspection active</span>
+          <span id="fountain-control-state">Hero · Hybrid · Flow 72%</span>
+        </footer>
+      </aside>
+
       <div class="layerbar glass-panel" aria-label="Scene layers">
         <button class="layer active" data-layer="buildings"><span class="layer-icon">▤</span>Architecture</button>
         <button class="layer active" data-layer="landscape"><span class="layer-icon">⌁</span>Landscape</button>

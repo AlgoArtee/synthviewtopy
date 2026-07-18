@@ -579,8 +579,8 @@ export const DISTRICT_CAMPUS_PLANS = {
       { name: 'Founders Quadrangle Park', kind: 'garden' },
       { name: 'Philosophers Reading Garden', kind: 'garden' },
       { name: 'Open Scholars Lawn', kind: 'garden' },
-      { name: 'Bronze Scholars Fountain', kind: 'water-feature' },
-      { name: 'Gaslight Reading Courts', kind: 'street-furniture' },
+      { name: 'Bronze Scholars Memorial Court', kind: 'street-furniture' },
+      { name: 'Gaslight Reading Courts', kind: 'water-feature' },
     ],
   },
   'industrial-labs': {

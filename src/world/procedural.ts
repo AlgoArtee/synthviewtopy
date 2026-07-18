@@ -22,6 +22,8 @@ import {
   tileAcademicPathGeometry,
 } from './academicSurfaceTextures';
 import { buildIndustrialDistrict } from './industrialDistrict';
+import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
+import { createAcademicGothicFountain } from './academicFountain';
 
 const DEG = Math.PI / 180;
 const ACCESS_APPROACH_LENGTH = metresToWorldUnits(2);
@@ -1789,9 +1791,13 @@ function createAcademicLandscape(
   const landscape = new THREE.Group();
   landscape.name = `${definition.id}__ACADEMIC_PARK__${campusFeatureKey(name).toUpperCase()}`;
   landscape.position.copy(position);
+  const isFountainCourt = name === ACADEMIC_FOUNTAIN_COURT_NAME;
   const planted = variant <= 2;
+  const groundGeometry = isFountainCourt
+    ? new THREE.RingGeometry(1.62, radius, 64)
+    : new THREE.CircleGeometry(radius, 32);
   const ground = prepareMesh(
-    new THREE.Mesh(new THREE.CircleGeometry(radius, 32), planted ? materials.grass : materials.path),
+    new THREE.Mesh(groundGeometry, planted ? materials.grass : materials.path),
     definition.id,
     false,
   );
@@ -1806,15 +1812,15 @@ function createAcademicLandscape(
   // paths that appeared to begin and end at random points in the lawn.
   landscape.userData.decorativeCrossPathsRemoved = true;
 
-  if (variant === 3) {
-    const basin = prepareMesh(new THREE.Mesh(new THREE.CylinderGeometry(radius * 0.42, radius * 0.48, 0.16, 24), materials.stone), definition.id);
-    basin.name = `${landscape.name}__BRONZE_SCHOLARS_FOUNTAIN_BASIN`;
-    basin.position.y = 0.08;
-    const figure = prepareMesh(new THREE.Mesh(academicUnitCrown, materials.bronze), definition.id);
-    figure.name = `${landscape.name}__BRONZE_SCHOLAR_FIGURE`;
-    figure.scale.set(0.75, 1.8, 0.75);
-    figure.position.y = 1.08;
-    landscape.add(basin, figure);
+  // Mount the monument by semantic identity rather than the object's array
+  // index. The photographed target is the former Gaslight Reading Court; the
+  // old variant-3 mount silently put the fountain in the adjacent brown court.
+  if (isFountainCourt) {
+    const fountain = createAcademicGothicFountain(definition.id);
+    fountain.position.y = 0.004;
+    landscape.add(fountain);
+    landscape.userData.academicFountain = fountain.userData.academicFountain;
+    landscape.userData.academicFountainState = fountain.userData.academicFountainState;
   }
 
   // The district extension consumes these anchors and renders all park and
@@ -1825,7 +1831,7 @@ function createAcademicLandscape(
     ? [[-0.54, -0.42], [-0.54, 0.42], [1.04, -0.42], [1.04, 0.42]]
     : variant === 1
       ? [[-0.54, -0.38], [-0.54, 0.42], [0.54, -0.42], [0.54, 0.42]]
-      : variant === 3
+      : isFountainCourt
         ? [[-0.46875, -0.3125], [-0.54, 0.42], [0.54, -0.68], [0.54, 0.42]]
         : [-0.54, 0.54].flatMap((x) => [-0.42, 0.42].map((z) => [x, z]));
   landscape.userData.academicBenchAnchors = benchAnchorRatios.map(([x, z]) => [x * radius, 0, z * radius]);
@@ -1833,7 +1839,7 @@ function createAcademicLandscape(
   tagCampusFeature(landscape, definition, name, 'landscape');
   landscape.userData.academicPark = true;
   landscape.userData.treeFreeAcademicLandscape = true;
-  landscape.userData.landscapeType = variant === 3 ? 'fountain court' : variant === 4 ? 'reading court' : 'scholarly park';
+  landscape.userData.landscapeType = isFountainCourt ? 'monumental fountain court' : variant >= 3 ? 'reading court' : 'scholarly park';
   landscape.userData.footprint = [radius * 2, radius * 2];
   return landscape;
 }

@@ -13,6 +13,7 @@ import {
   type AcademicCampusBuilding,
   type AcademicInteriorKind,
 } from '../data/academicCampus';
+import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import {
   getAcademicAshlarTextures,
   getAcademicLeafPathTextures,
@@ -1600,16 +1601,51 @@ function createVintageCampusBenches(
   const anchors: VintageBenchAnchor[] = [];
   districtGroup.children.forEach((park) => {
     if (park.userData.academicPark !== true) return;
-    const parkAnchors = park.userData.academicBenchAnchors as number[][] | undefined;
-    if (!parkAnchors?.length) return;
+    const authoredParkAnchors = park.userData.academicBenchAnchors as number[][] | undefined;
+    if (!authoredParkAnchors?.length) return;
+    const semanticName = String(park.userData.semanticName ?? 'academic park');
+    const parkAnchors = semanticName === ACADEMIC_FOUNTAIN_COURT_NAME
+      // The Well now fills the middle of this court. Keep its four benches on
+      // the outer paving ring, clear of both the basin and avenue bypass.
+      ? [[-0.8, 0, -3], [-0.8, 0, 3], [0.8, 0, -3], [0.8, 0, 3]]
+      : authoredParkAnchors.map((anchor) => (
+        semanticName === 'Bronze Scholars Memorial Court' && anchor[0] < 0
+          ? [anchor[0] + 0.6, anchor[1], anchor[2]]
+          : [...anchor]
+      ));
     park.updateMatrix();
     parkAnchors.forEach((anchor) => {
       const position = new THREE.Vector3().fromArray(anchor).applyMatrix4(park.matrix);
       position.y = 0.004;
       const facing = park.position.clone().sub(position).setY(0).normalize();
-      anchors.push({ position, facing, zone: String(park.userData.semanticName ?? 'academic park') });
+      anchors.push({ position, facing, zone: semanticName });
     });
   });
+
+  const primaryApproach = districtGroup.children.find(
+    (object) => object.userData.academicPathRole === 'main-processional'
+      && object.userData.processionalSegmentIndex === 0,
+  );
+  const primaryApproachEndpoints = primaryApproach?.userData.roadEndpoints as {
+    start: [number, number, number];
+    end: [number, number, number];
+  } | undefined;
+  if (primaryApproachEndpoints) {
+    const start = new THREE.Vector3().fromArray(primaryApproachEndpoints.start);
+    const end = new THREE.Vector3().fromArray(primaryApproachEndpoints.end);
+    const direction = end.clone().sub(start).setY(0).normalize();
+    const normal = new THREE.Vector3(-direction.z, 0, direction.x);
+    [0.28, 0.45, 0.64, 0.82].forEach((along, index) => {
+      const pathCenter = start.clone().lerp(end, along);
+      const position = pathCenter.clone().addScaledVector(normal, index % 2 === 0 ? 0.7 : -0.7);
+      position.y = 0;
+      anchors.push({
+        position,
+        facing: pathCenter.sub(position).setY(0).normalize(),
+        zone: 'processional avenue',
+      });
+    });
+  }
 
   const distributedAnchors: ReadonlyArray<{
     position: readonly [number, number];
@@ -1617,10 +1653,6 @@ function createVintageCampusBenches(
     zone: string;
     groundY?: number;
   }> = [
-    { position: [-0.48, -40.8], target: [0, -40.8], zone: 'processional avenue' },
-    { position: [0.48, -32.2], target: [0, -32.2], zone: 'processional avenue' },
-    { position: [-0.48, -23.6], target: [0, -23.6], zone: 'processional avenue' },
-    { position: [0.48, -15], target: [0, -15], zone: 'processional avenue', groundY: 0.004 },
     { position: [-5.6, 14.6], target: [0, 9], zone: 'Founders Quadrangle', groundY: 0.004 },
     { position: [6.4, 3.4], target: [0, 9], zone: 'Founders Quadrangle', groundY: 0.004 },
     { position: [-10, -8], target: [0, 0], zone: 'library close' },
@@ -1855,7 +1887,7 @@ function addHiddenDiscoveries(
   return secrets;
 }
 
-type AcademicPathRole = 'entrance-apron' | 'campus-spine' | 'campus-crosswalk';
+type AcademicPathRole = 'main-processional' | 'entrance-apron' | 'campus-spine' | 'campus-crosswalk';
 
 interface AcademicPathNetworkSegment {
   readonly id: string;
@@ -1875,6 +1907,7 @@ function createAcademicEntrancePathNetwork(
   tangent: THREE.Vector3,
   radial: THREE.Vector3,
   materials: AcademicMaterials,
+  processionalPaths: readonly THREE.Mesh[],
 ) {
   const secondaryWidth = 0.42;
   const paths: THREE.Mesh[] = [];
@@ -1883,6 +1916,19 @@ function createAcademicEntrancePathNetwork(
     (child): child is THREE.Group => child instanceof THREE.Group && child.userData.academicFacility === true,
   );
   const facilitiesByName = new Map(facilities.map((building) => [String(building.userData.semanticName), building]));
+  const processionalPathNames = processionalPaths.map((path) => path.name);
+  const processionalSegmentMetadata: AcademicPathNetworkSegment[] = processionalPaths.map((path, index) => {
+    const endpoints = path.userData.roadEndpoints as { start: readonly number[]; end: readonly number[] };
+    return {
+      id: `PROCESSIONAL_${String(index + 1).padStart(2, '0')}`,
+      name: path.name,
+      role: 'main-processional',
+      start: endpoints.start,
+      end: endpoints.end,
+      width: Number(path.userData.pathWidthWorldUnits ?? 0.58),
+      servesFacilities: ['Blackwood University Great Hall'],
+    };
+  });
   const servedPathNames = new Map<string, string[]>();
   const names = {
     hall: 'Blackwood University Great Hall',
@@ -2030,7 +2076,10 @@ function createAcademicEntrancePathNetwork(
   addNetworkPath('DINING_TURN', transverseDining, diningTurn, 'campus-crosswalk', [names.dining]);
   addNetworkPath('DINING_BRANCH', diningTurn, route.dining, 'campus-crosswalk', [names.dining]);
 
-  // East Canal Walk doglegs around a veteran oak and the archive bench.
+  // East Canal Walk keeps the veteran-oak dogleg, then follows one legible
+  // archive approach through the former memorial court. The monumental Well
+  // now occupies the photographed western court, so the old two-leg fountain
+  // detour would read as an arbitrary path kink here.
   const quadrangleTurn = campusXZ(10, 6.5);
   const oakDogleg = campusXZ(10, 9);
   const archiveEastWalk = campusXZ(12, 9);
@@ -2054,7 +2103,7 @@ function createAcademicEntrancePathNetwork(
       endpoint: (isGreatHall ? route.hall : threshold[key]).toArray(),
       endpointType: isGreatHall ? 'processional stair foot' : 'doorway threshold',
       pathNames: isGreatHall
-        ? [`${definition.id}__ACADEMIC_PROCESSIONAL_ROAD`]
+        ? processionalPathNames
         : servedPathNames.get(facilityName) ?? [],
       secondaryWidth,
     };
@@ -2064,14 +2113,16 @@ function createAcademicEntrancePathNetwork(
     entranceCount: facilities.length,
     connectedEntranceCount: facilities.length,
     mainPathName: `${definition.id}__ACADEMIC_PROCESSIONAL_ROAD`,
+    mainPathNames: processionalPathNames,
+    mainSegmentCount: processionalPaths.length,
     mainWidth: 0.58,
     secondaryWidth,
     surfaceMaterial: materials.earthPath.name,
     groundTop: 0.006,
     namedWalks: ['Processional Avenue', 'West Service Walk', 'Library Walk', 'Science Walk', 'South Transverse Walk', 'East Canal Walk'],
-    segmentCount: paths.length + 1,
+    segmentCount: paths.length + processionalPaths.length,
     secondarySegmentCount: paths.length,
-    segments: segmentMetadata,
+    segments: [...processionalSegmentMetadata, ...segmentMetadata],
     removedLegacySpokes: 5,
     removedDisconnectedStubs: 16,
     removedDecorativeCrossStrips: 12,
@@ -2112,23 +2163,66 @@ export function buildAcademicDistrictExtension(
   const processionalEnd = primaryRouteStart
     ? new THREE.Vector3().fromArray(primaryRouteStart)
     : campusPoint(hub, tangent, radial, [0, -5]);
-  const processional = addGroundPath(
-    districtGroup,
-    definition.id,
-    `${definition.id}__ACADEMIC_PROCESSIONAL_ROAD`,
-    processionalStart,
-    processionalEnd,
-    0.58,
-    materials.earthPath,
+  const processionalBaseName = `${definition.id}__ACADEMIC_PROCESSIONAL_ROAD`;
+  const fountainCourt = districtGroup.children.find(
+    (child) => child.userData.semanticName === ACADEMIC_FOUNTAIN_COURT_NAME,
   );
-  processional.userData.localCampusRoad = true;
-  processional.userData.academicCampusRoad = true;
-  processional.userData.academicEntrancePath = true;
-  processional.userData.academicPathNetworkSegment = true;
-  processional.userData.academicPathRole = 'main-processional';
-  processional.userData.pathWidthWorldUnits = 0.58;
-  processional.userData.servesFacility = 'Blackwood University Great Hall';
-  localRoads.push(processional);
+  const processionalDirection = processionalEnd.clone().sub(processionalStart).setY(0).normalize();
+  const courtCenter = fountainCourt?.position.clone().setY(0);
+  const courtProjection = courtCenter
+    ? THREE.MathUtils.clamp(
+      courtCenter.clone().sub(processionalStart).dot(processionalDirection),
+      0,
+      processionalStart.distanceTo(processionalEnd),
+    )
+    : 0;
+  const projectedCourtCenter = processionalStart.clone().addScaledVector(processionalDirection, courtProjection);
+  const courtOffsetFromAxis = courtCenter?.distanceTo(projectedCourtCenter) ?? Number.POSITIVE_INFINITY;
+  const courtLiesOnRoute = Boolean(courtCenter)
+    && courtProjection > 3.2
+    && courtProjection < processionalStart.distanceTo(processionalEnd) - 3.2
+    && courtOffsetFromAxis < 1.6;
+  const processionalWaypoints = [processionalStart];
+
+  if (courtCenter && courtLiesOnRoute) {
+    // The Well occupies the old straight ceremonial axis. A broad, symmetric
+    // crescent preserves that axis at both approaches while keeping the
+    // 5.8-metre avenue outside the monument's complete basin footprint.
+    const bypassNormal = new THREE.Vector3(-processionalDirection.z, 0, processionalDirection.x);
+    if (bypassNormal.dot(tangent) < 0) bypassNormal.negate();
+    processionalWaypoints.push(
+      projectedCourtCenter.clone().addScaledVector(processionalDirection, -2.3),
+      courtCenter.clone().addScaledVector(processionalDirection, -1.2).addScaledVector(bypassNormal, 2.25),
+      courtCenter.clone().addScaledVector(processionalDirection, 1.2).addScaledVector(bypassNormal, 2.25),
+      projectedCourtCenter.clone().addScaledVector(processionalDirection, 2.3),
+    );
+  }
+  processionalWaypoints.push(processionalEnd);
+
+  const processionalPaths = processionalWaypoints.slice(0, -1).map((start, index) => {
+    const path = addGroundPath(
+      districtGroup,
+      definition.id,
+      index === 0 ? processionalBaseName : `${processionalBaseName}__SEGMENT_${String(index + 1).padStart(2, '0')}`,
+      start,
+      processionalWaypoints[index + 1],
+      0.58,
+      materials.earthPath,
+    );
+    path.userData.localCampusRoad = true;
+    path.userData.academicCampusRoad = true;
+    path.userData.academicEntrancePath = true;
+    path.userData.academicPathNetworkSegment = true;
+    path.userData.academicPathRole = 'main-processional';
+    path.userData.pathWidthWorldUnits = 0.58;
+    path.userData.processionalSegmentIndex = index;
+    path.userData.processionalSegmentCount = processionalWaypoints.length - 1;
+    path.userData.processionalFountainBypass = courtLiesOnRoute;
+    path.userData.servesFacility = 'Blackwood University Great Hall';
+    path.userData.servesFacilities = ['Blackwood University Great Hall'];
+    return path;
+  });
+  localRoads.push(...processionalPaths);
 
   const entrancePaths = createAcademicEntrancePathNetwork(
     definition,
@@ -2137,6 +2231,7 @@ export function buildAcademicDistrictExtension(
     tangent,
     radial,
     materials,
+    processionalPaths,
   );
   localRoads.push(...entrancePaths);
   const leafLitter = createPathLeafLitter(definition, localRoads, materials);

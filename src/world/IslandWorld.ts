@@ -13,6 +13,20 @@ import {
   type AcademicCampusBuilding,
 } from '../data/academicCampus';
 import {
+  ACADEMIC_FOUNTAIN_CAMERA_PRESETS,
+  ACADEMIC_FOUNTAIN_CONFIG,
+  ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS,
+  ACADEMIC_FOUNTAIN_RESTORATION_MODES,
+  ACADEMIC_FOUNTAIN_ROOT_NAME,
+  ACADEMIC_FOUNTAIN_SCENE_MODES,
+  ACADEMIC_FOUNTAIN_STATUE_MATERIALS,
+  ACADEMIC_FOUNTAIN_TITLE,
+  type AcademicFountainCameraPresetId,
+  type AcademicFountainRestorationMode,
+  type AcademicFountainSceneMode,
+  type AcademicFountainStatueMaterialMode,
+} from '../data/academicFountain';
+import {
   ISLAND_POINTS,
   ISLAND_RADIUS,
   ISLAND_SURFACE_Y,
@@ -29,6 +43,32 @@ import {
   configureAcademicTreeQuality,
   updateAcademicTreeWind,
 } from './academicTrees';
+import {
+  adjustAcademicFountainWaterFlow,
+  configureAcademicFountainQuality,
+  cycleAcademicFountainCameraPreset,
+  cycleAcademicFountainRestoration,
+  cycleAcademicFountainSceneMode,
+  cycleAcademicFountainStatueMaterial,
+  disposeAcademicFountain,
+  getAcademicFountainCameraPose,
+  getAcademicFountainSeatPoint,
+  getAcademicFountainState,
+  inspectNextAcademicFountainSymbol,
+  resetAcademicFountainCameraPreset,
+  restoreAcademicFountainRuntimeSnapshot,
+  setAcademicFountainWater,
+  throwAcademicFountainCoin,
+  toggleAcademicFountainCutaway,
+  toggleAcademicFountainDebug,
+  toggleAcademicFountainEngravings,
+  toggleAcademicFountainGeometryGrid,
+  toggleAcademicFountainInfinityLight,
+  toggleAcademicFountainLanterns,
+  toggleAcademicFountainLeaves,
+  toggleAcademicFountainRingRotation,
+  updateAcademicFountain,
+} from './academicFountain';
 import { createBiomeModel, createDistrictModel, setModelAccent } from './procedural';
 import {
   EDITOR_ASSET_CATALOG,
@@ -135,6 +175,27 @@ interface CameraTween {
   positionTo: THREE.Vector3;
   targetFrom: THREE.Vector3;
   targetTo: THREE.Vector3;
+}
+
+interface SavedAcademicFountainStateV2 {
+  version: 2;
+  environmentOwned: boolean;
+  sceneMode: AcademicFountainSceneMode;
+  waterOn: boolean;
+  waterFlow: number;
+  requestedWaterFlow: number;
+  sheetFlow: number;
+  residualDrip: number;
+  infinityLightOn: boolean;
+  engravingsHighlighted: boolean;
+  cutawayVisible: boolean;
+  geometryGridVisible: boolean;
+  ringRotating: boolean;
+  ringAngle: number;
+  statueMaterial: AcademicFountainStatueMaterialMode;
+  restorationMode: AcademicFountainRestorationMode;
+  cameraPreset: AcademicFountainCameraPresetId;
+  quality: GraphicsQuality;
 }
 
 interface LabelRecord {
@@ -402,6 +463,10 @@ export class IslandWorld {
   private graphicsQuality: GraphicsQuality = 'medium';
   private debugMode = false;
   private activeAcademicHotspot: AcademicCampusBuilding | null = null;
+  private activeAcademicFountainHotspot = false;
+  private academicFountainInspectionActive = false;
+  private academicFountainEnvironmentOwned = false;
+  private applyingAcademicFountainEnvironment = false;
   private readonly academicAudio = new AcademicAudioController();
   private readonly precipitation: PrecipitationSystem;
   private lightningFlashTime = 0;
@@ -634,9 +699,7 @@ export class IslandWorld {
     });
     this.syncAcademicGateForTime(true);
 
-    this.modelRoot.traverse((child) => {
-      if (child.userData.animate) this.animatedObjects.push(child);
-    });
+    this.refreshAnimatedObjects();
 
     this.renderer.domElement.addEventListener('pointerdown', this.onPointerDown);
     this.renderer.domElement.addEventListener('pointerup', this.onPointerUp);
@@ -648,11 +711,17 @@ export class IslandWorld {
     this.resize();
     this.updateLabels(true);
     this.renderer.setAnimationLoop(this.animate);
-    try {
-      this.loadProjectFromLocalStorage();
-    } catch (e) {
-      console.error('Error loading saved project on init', e);
-    }
+    // Saved-project reconstruction can invoke UI callbacks. Defer it until the
+    // constructor has returned so main.ts has assigned the public `world`
+    // binding; a synchronous cold boot previously triggered its temporal-dead-
+    // zone and could leave one of the 41 static scene groups unregistered.
+    window.setTimeout(() => {
+      try {
+        this.loadProjectFromLocalStorage();
+      } catch (e) {
+        console.error('Error loading saved project on init', e);
+      }
+    }, 0);
     window.setTimeout(() => this.callbacks.onReady?.(), 560);
   }
 
@@ -785,6 +854,7 @@ export class IslandWorld {
 
   private inspectFromWalkView() {
     this.activeAcademicHotspot = null;
+    this.activeAcademicFountainHotspot = false;
     // The main gate is a broad threshold, so requiring the centre ray to hit a
     // thin iron bar makes the advertised E interaction unreliable. At night,
     // prioritize the gate by physical proximity and operate it with one key
@@ -798,6 +868,14 @@ export class IslandWorld {
       this.callbacks.onAcademicInteraction?.({ title: result.title, message: result.message });
       return;
     }
+    // The plaque and spouts sit on a low, broad octagon. Treat E as a nearby
+    // courtyard interaction so the user does not have to hit a thin plaque or
+    // water stream with the exact centre pixel.
+    if (this.mode === 'walk' && academicDistrict && this.isAcademicFountainNearby()) {
+      this.activeAcademicFountainHotspot = true;
+      this.select('academic-libraries-theoretical-labs', 'scene');
+      return;
+    }
     this.pointer.set(0, 0);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     this.raycaster.far = WALK_INSPECT_DISTANCE;
@@ -808,6 +886,7 @@ export class IslandWorld {
     for (const intersection of intersections) {
       let object: THREE.Object3D | null = intersection.object;
       let academicBuilding: AcademicCampusBuilding | null = null;
+      let academicFountain = false;
       let selectableId: string | null = null;
       while (object) {
         if (object.userData.academicBuildingData) {
@@ -815,11 +894,13 @@ export class IslandWorld {
         } else if (typeof object.userData.academicHotspot === 'string') {
           academicBuilding = academicCampusBuildingById.get(object.userData.academicHotspot) ?? academicBuilding;
         }
+        if (object.userData.academicFountainHotspot === true) academicFountain = true;
         if (!selectableId && typeof object.userData.selectableId === 'string') selectableId = object.userData.selectableId;
         object = object.parent;
       }
       if (selectableId) {
         this.activeAcademicHotspot = academicBuilding;
+        this.activeAcademicFountainHotspot = academicFountain;
         this.select(selectableId, 'scene');
         return;
       }
@@ -828,6 +909,7 @@ export class IslandWorld {
 
   private pick(event: MouseEvent | PointerEvent) {
     this.activeAcademicHotspot = null;
+    this.activeAcademicFountainHotspot = false;
     const rect = this.renderer.domElement.getBoundingClientRect();
     this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -840,6 +922,7 @@ export class IslandWorld {
     for (const intersection of intersections) {
       let object: THREE.Object3D | null = intersection.object;
       let academicBuilding: AcademicCampusBuilding | null = null;
+      let academicFountain = false;
       let selectableId: string | null = null;
       while (object) {
         if (object.userData.academicBuildingData) {
@@ -847,11 +930,13 @@ export class IslandWorld {
         } else if (typeof object.userData.academicHotspot === 'string') {
           academicBuilding = academicCampusBuildingById.get(object.userData.academicHotspot) ?? academicBuilding;
         }
+        if (object.userData.academicFountainHotspot === true) academicFountain = true;
         if (!selectableId && typeof object.userData.selectableId === 'string') selectableId = object.userData.selectableId;
         object = object.parent;
       }
       if (selectableId) {
         this.activeAcademicHotspot = academicBuilding;
+        this.activeAcademicFountainHotspot = academicFountain;
         return selectableId;
       }
     }
@@ -1153,6 +1238,10 @@ export class IslandWorld {
         object.position.x = Number(object.userData.baseX) + Math.sin(this.elapsed * 0.11 + Number(object.userData.phase ?? 0)) * 0.28;
       } else if (object.userData.animate === 'academic-tree-wind') {
         updateAcademicTreeWind(object, this.elapsed);
+      } else if (object.userData.animate === 'academic-fountain') {
+        const distance = object.getWorldPosition(new THREE.Vector3()).distanceTo(this.camera.position);
+        updateAcademicFountain(object, this.elapsed, delta, distance);
+        this.academicAudio.setFountain(getAcademicFountainState(object)?.waterFlow ?? 0, distance);
       }
     });
 
@@ -1248,6 +1337,11 @@ export class IslandWorld {
 
   setMode(mode: ViewMode) {
     const previousMode = this.mode;
+    // Fountain top-down inspection uses a Z-axis up vector. Every normal
+    // world mode starts from canonical Y-up so that orbit, plan, and WALK
+    // controls cannot inherit a rolled camera.
+    this.camera.up.set(0, 1, 0);
+    this.setAcademicFountainInspectionControls(false);
     if (this.activeInteriorBuildingId && mode !== 'edit') this.exitInterior(false);
     if (previousMode === 'walk' && mode !== 'walk') {
       this.walkController.exit();
@@ -1654,7 +1748,7 @@ export class IslandWorld {
     interior.updateMatrixWorld(true);
   }
 
-  private unregisterObject(id: string) {
+  private unregisterObject(id: string, notifyUi = true) {
     const definition = this.definitions.get(id);
     const group = this.objectGroups.get(id);
     if (!definition || !group) return;
@@ -1665,6 +1759,8 @@ export class IslandWorld {
       label.anchor.element.remove();
       this.labels.delete(id);
     }
+    const fountain = group.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+    if (fountain) disposeAcademicFountain(fountain);
     group.removeFromParent();
     this.objectGroups.delete(id);
     this.definitions.delete(id);
@@ -1672,11 +1768,13 @@ export class IslandWorld {
     if ('parentBuildingId' in definition && definition.parentBuildingId) {
       this.interiorAssetIds.get(definition.parentBuildingId)?.delete(id);
     }
-    this.callbacks.onObjectDeleted?.(id);
+    if (notifyUi) this.callbacks.onObjectDeleted?.(id);
   }
 
   focus(id: string) {
     if (this.mode === 'walk') return;
+    this.setAcademicFountainInspectionControls(false);
+    this.camera.up.set(0, 1, 0);
     const object = this.objectGroups.get(id);
     if (!object) return;
     const box = new THREE.Box3().setFromObject(object, true);
@@ -1699,6 +1797,8 @@ export class IslandWorld {
   }
 
   overview() {
+    this.setAcademicFountainInspectionControls(false);
+    this.camera.up.set(0, 1, 0);
     const plan = this.mode === 'plan';
     if (!plan) this.setMode('explore');
     this.cameraTween = null;
@@ -1736,6 +1836,7 @@ export class IslandWorld {
   }
 
   setDaylight(daylight: boolean) {
+    if (!this.applyingAcademicFountainEnvironment) this.academicFountainEnvironmentOwned = false;
     this.dayTarget = daylight ? 1 : 0;
     this.activeTimeOfDay = daylight ? 'noon' : 'night';
     this.syncAcademicGateForTime();
@@ -1746,6 +1847,7 @@ export class IslandWorld {
   }
 
   setTimeOfDay(time: 'sunrise' | 'noon' | 'sunset' | 'night') {
+    if (!this.applyingAcademicFountainEnvironment) this.academicFountainEnvironmentOwned = false;
     this.activeTimeOfDay = time;
     this.dayTarget = time === 'noon' ? 1 : 0;
     this.syncAcademicGateForTime();
@@ -1756,6 +1858,7 @@ export class IslandWorld {
   }
 
   setWeather(weather: WeatherMode) {
+    if (!this.applyingAcademicFountainEnvironment) this.academicFountainEnvironmentOwned = false;
     this.activeWeather = weather;
     if (weather === 'academic-autumn') {
       this.activeTimeOfDay = 'sunset';
@@ -1784,12 +1887,245 @@ export class IslandWorld {
     this.syncAcademicGateForTime();
   }
 
+  private refreshAnimatedObjects() {
+    this.animatedObjects.length = 0;
+    this.modelRoot.traverse((child) => {
+      if (child.userData.animate) this.animatedObjects.push(child);
+    });
+  }
+
   getWeather() {
     return this.activeWeather;
   }
 
   getActiveAcademicHotspot() {
     return this.activeAcademicHotspot ? { ...this.activeAcademicHotspot } : null;
+  }
+
+  private getAcademicFountainRoot() {
+    return this.objectGroups
+      .get('academic-libraries-theoretical-labs')
+      ?.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME) ?? null;
+  }
+
+  private applyAcademicFountainSceneEnvironment(sceneMode: AcademicFountainSceneMode) {
+    this.applyingAcademicFountainEnvironment = true;
+    try {
+      if (sceneMode === 'night') {
+        this.setWeather('academic-rainy-dusk');
+        this.setTimeOfDay('night');
+      } else {
+        this.setWeather('academic-overcast');
+        this.setTimeOfDay('noon');
+      }
+      this.academicFountainEnvironmentOwned = true;
+    } finally {
+      this.applyingAcademicFountainEnvironment = false;
+    }
+  }
+
+  private serializeAcademicFountainState(): SavedAcademicFountainStateV2 | null {
+    const fountain = this.getAcademicFountainRoot();
+    const state = fountain ? getAcademicFountainState(fountain) : null;
+    if (!state) return null;
+
+    const restorationMode = ACADEMIC_FOUNTAIN_RESTORATION_MODES.some(
+      (mode) => mode.id === state.restorationMode,
+    )
+      ? state.restorationMode as AcademicFountainRestorationMode
+      : ACADEMIC_FOUNTAIN_RESTORATION_MODES[0].id;
+
+    return {
+      version: 2,
+      environmentOwned: this.academicFountainEnvironmentOwned,
+      sceneMode: state.sceneMode,
+      waterOn: state.waterOn,
+      waterFlow: THREE.MathUtils.clamp(state.waterFlow, 0, 1),
+      requestedWaterFlow: THREE.MathUtils.clamp(state.requestedWaterFlow, 0, 1),
+      sheetFlow: THREE.MathUtils.clamp(state.sheetFlow, 0, 1),
+      residualDrip: THREE.MathUtils.clamp(state.residualDrip, 0, 1),
+      infinityLightOn: state.infinityLightOn,
+      engravingsHighlighted: state.engravingsHighlighted,
+      cutawayVisible: state.cutawayVisible,
+      geometryGridVisible: state.geometryGridVisible,
+      ringRotating: state.ringRotating,
+      ringAngle: state.ringAngle,
+      statueMaterial: state.statueMaterial,
+      restorationMode,
+      cameraPreset: state.cameraPreset,
+      quality: state.quality,
+    };
+  }
+
+  private serializeCameraState() {
+    return {
+      position: this.camera.position.toArray(),
+      target: this.controls.target.toArray(),
+      up: this.camera.up.toArray(),
+      fieldOfView: this.camera.fov,
+      near: this.camera.near,
+    };
+  }
+
+  private restoreAcademicFountainState(savedValue: unknown) {
+    if (!savedValue || typeof savedValue !== 'object') return false;
+    const saved = savedValue as Partial<SavedAcademicFountainStateV2>;
+    if (saved.version !== 2) return false;
+
+    const fountain = this.getAcademicFountainRoot();
+    const initialState = fountain ? getAcademicFountainState(fountain) : null;
+    if (!fountain || !initialState) return false;
+
+    const sceneMode = ACADEMIC_FOUNTAIN_SCENE_MODES.some((mode) => mode.id === saved.sceneMode)
+      ? saved.sceneMode as AcademicFountainSceneMode
+      : initialState.sceneMode;
+    const statueMaterial = ACADEMIC_FOUNTAIN_STATUE_MATERIALS.some((mode) => mode.id === saved.statueMaterial)
+      ? saved.statueMaterial as AcademicFountainStatueMaterialMode
+      : initialState.statueMaterial;
+    const restorationMode = ACADEMIC_FOUNTAIN_RESTORATION_MODES.some((mode) => mode.id === saved.restorationMode)
+      ? saved.restorationMode as AcademicFountainRestorationMode
+      : initialState.restorationMode === 'off'
+        ? ACADEMIC_FOUNTAIN_RESTORATION_MODES[0].id
+        : initialState.restorationMode;
+    const cameraPreset = ACADEMIC_FOUNTAIN_CAMERA_PRESETS.some((preset) => preset.id === saved.cameraPreset)
+      ? saved.cameraPreset as AcademicFountainCameraPresetId
+      : initialState.cameraPreset;
+    const requestedWaterFlow = typeof saved.requestedWaterFlow === 'number'
+      && Number.isFinite(saved.requestedWaterFlow)
+      ? THREE.MathUtils.clamp(saved.requestedWaterFlow, 0, 1)
+      : initialState.requestedWaterFlow;
+    const waterOn = typeof saved.waterOn === 'boolean' ? saved.waterOn : initialState.waterOn;
+    const savedFlow = (value: unknown, fallback: number) => (
+      typeof value === 'number' && Number.isFinite(value)
+        ? THREE.MathUtils.clamp(value, 0, 1)
+        : fallback
+    );
+    // Version-2 saves created before these visual fields existed restore to a
+    // stable settled state instead of replaying the default 72% startup flow.
+    const waterFlow = savedFlow(saved.waterFlow, waterOn ? requestedWaterFlow : 0);
+    const sheetFlow = savedFlow(saved.sheetFlow, waterFlow);
+    const residualDrip = savedFlow(saved.residualDrip, 0);
+    const ringRotating = typeof saved.ringRotating === 'boolean'
+      ? saved.ringRotating
+      : initialState.ringRotating;
+    const ringAngle = typeof saved.ringAngle === 'number' && Number.isFinite(saved.ringAngle)
+      ? saved.ringAngle
+      : 0;
+    const quality: GraphicsQuality = saved.quality === 'low'
+      || saved.quality === 'medium'
+      || saved.quality === 'high'
+      ? saved.quality
+      : this.graphicsQuality;
+
+    for (let attempts = 0; attempts < ACADEMIC_FOUNTAIN_SCENE_MODES.length; attempts += 1) {
+      const state = getAcademicFountainState(fountain);
+      if (!state || state.sceneMode === sceneMode) break;
+      cycleAcademicFountainSceneMode(fountain);
+    }
+    for (let attempts = 0; attempts < ACADEMIC_FOUNTAIN_STATUE_MATERIALS.length; attempts += 1) {
+      const state = getAcademicFountainState(fountain);
+      if (!state || state.statueMaterial === statueMaterial) break;
+      cycleAcademicFountainStatueMaterial(fountain);
+    }
+    for (let attempts = 0; attempts < ACADEMIC_FOUNTAIN_RESTORATION_MODES.length; attempts += 1) {
+      const state = getAcademicFountainState(fountain);
+      if (!state || state.restorationMode === restorationMode) break;
+      cycleAcademicFountainRestoration(fountain);
+    }
+    resetAcademicFountainCameraPreset(fountain);
+    for (let attempts = 0; attempts < ACADEMIC_FOUNTAIN_CAMERA_PRESETS.length; attempts += 1) {
+      const state = getAcademicFountainState(fountain);
+      if (!state || state.cameraPreset === cameraPreset) break;
+      cycleAcademicFountainCameraPreset(fountain);
+    }
+
+    let state = getAcademicFountainState(fountain)!;
+    if (typeof saved.infinityLightOn === 'boolean' && state.infinityLightOn !== saved.infinityLightOn) {
+      toggleAcademicFountainInfinityLight(fountain);
+    }
+    state = getAcademicFountainState(fountain)!;
+    if (typeof saved.engravingsHighlighted === 'boolean'
+      && state.engravingsHighlighted !== saved.engravingsHighlighted) {
+      toggleAcademicFountainEngravings(fountain);
+    }
+    state = getAcademicFountainState(fountain)!;
+    if (typeof saved.cutawayVisible === 'boolean' && state.cutawayVisible !== saved.cutawayVisible) {
+      toggleAcademicFountainCutaway(fountain);
+    }
+    state = getAcademicFountainState(fountain)!;
+    if (typeof saved.geometryGridVisible === 'boolean'
+      && state.geometryGridVisible !== saved.geometryGridVisible) {
+      toggleAcademicFountainGeometryGrid(fountain);
+    }
+    this.setGraphicsQuality(quality);
+    restoreAcademicFountainRuntimeSnapshot(fountain, {
+      waterOn,
+      waterFlow,
+      requestedWaterFlow,
+      sheetFlow,
+      residualDrip,
+      ringRotating,
+      ringAngle,
+    });
+
+    const restoredState = getAcademicFountainState(fountain)!;
+    if (saved.environmentOwned === true) {
+      this.applyAcademicFountainSceneEnvironment(restoredState.sceneMode);
+    } else {
+      this.academicFountainEnvironmentOwned = false;
+    }
+    return true;
+  }
+
+  getActiveAcademicFountainHotspot() {
+    return this.activeAcademicFountainHotspot && this.isAcademicFountainNearby();
+  }
+
+  isAcademicFountainNearby() {
+    const fountain = this.getAcademicFountainRoot();
+    if (!fountain) return false;
+    const center = fountain.getWorldPosition(new THREE.Vector3());
+    const interactionRange = WALK_INSPECT_DISTANCE + 0.5;
+    return Math.hypot(this.camera.position.x - center.x, this.camera.position.z - center.z) <= interactionRange;
+  }
+
+  private setAcademicFountainInspectionControls(active: boolean, presetId?: AcademicFountainCameraPresetId) {
+    this.academicFountainInspectionActive = active;
+    if (active) {
+      this.controls.minDistance = ACADEMIC_FOUNTAIN_CONFIG.orbit.minimumDistanceMetres * 0.1;
+      this.controls.maxDistance = ACADEMIC_FOUNTAIN_CONFIG.orbit.maximumDistanceMetres * 0.1;
+      const topDown = presetId === 'top-down';
+      // The authored plan view uses Z-up while looking almost exactly down the
+      // world's Y axis. Normal courtyard polar limits would push it into an
+      // unwanted oblique view on the next OrbitControls update.
+      this.controls.minPolarAngle = topDown ? 0 : ACADEMIC_FOUNTAIN_CONFIG.orbit.minimumPolarAngle;
+      this.controls.maxPolarAngle = topDown ? Math.PI : ACADEMIC_FOUNTAIN_CONFIG.orbit.maximumPolarAngle;
+      this.controls.enableRotate = !topDown;
+      return;
+    }
+    if (this.activeInteriorBuildingId) return;
+    this.controls.minDistance = 8;
+    this.controls.maxDistance = 980 * MASTERPLAN_RESCALE;
+    this.controls.minPolarAngle = 0;
+    this.controls.maxPolarAngle = Math.PI * 0.485;
+    this.controls.enableRotate = this.mode !== 'plan' && this.mode !== 'walk';
+  }
+
+  isAcademicFountainInspectionActive() {
+    return this.academicFountainInspectionActive;
+  }
+
+  focusAcademicFountain(presetId?: AcademicFountainCameraPresetId) {
+    const fountain = this.getAcademicFountainRoot();
+    if (!fountain || this.mode === 'walk') return false;
+    const pose = getAcademicFountainCameraPose(fountain, presetId);
+    this.setAcademicFountainInspectionControls(true, pose.id);
+    this.camera.up.copy(pose.up);
+    this.camera.fov = pose.fieldOfView;
+    this.camera.near = 0.02;
+    this.camera.updateProjectionMatrix();
+    this.animateCamera(pose.position, pose.target, 820);
+    return true;
   }
 
   isAcademicMainGateNearby() {
@@ -1865,9 +2201,229 @@ export class IslandWorld {
     this.walkController?.refreshNavigation();
   }
 
+  private performWellOfInfiniteKnowledgeInteraction(action: string) {
+    const fountain = this.getAcademicFountainRoot();
+    if (!fountain || (!this.isAcademicFountainNearby() && !this.academicFountainInspectionActive)) {
+      return {
+        title: 'Fountain Out of Reach',
+        message: `Stand beside ${ACADEMIC_FOUNTAIN_TITLE} to use its architectural control panel.`,
+        state: { available: false },
+      };
+    }
+    const metadata = fountain.userData.academicFountain as {
+      name: string;
+      dedication: string;
+      history: string;
+    };
+    const current = getAcademicFountainState(fountain)!;
+
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.readPlaque) {
+      return { title: metadata.name, message: `${metadata.dedication} ${metadata.history}`, state: { ...current } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleWater) {
+      const state = setAcademicFountainWater(fountain, !current.waterOn)!;
+      return {
+        title: state.waterOn ? 'Measured Water System Starting' : 'Measured Water System Stopping',
+        message: state.waterOn
+          ? 'Thin sheets and radial channels strengthen gradually toward the selected flow.'
+          : 'Sheets weaken before the channels settle; residual drops and dark wet stone remain.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.increaseWaterFlow
+      || action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.decreaseWaterFlow) {
+      const amount = action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.increaseWaterFlow ? 0.1 : -0.1;
+      const state = adjustAcademicFountainWaterFlow(fountain, amount)!;
+      return {
+        title: `Water Flow ${Math.round(state.requestedWaterFlow * 100)}%`,
+        message: 'The hydraulic system adjusts channel and sheet flow progressively rather than changing abruptly.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleInfinityLight) {
+      const state = toggleAcademicFountainInfinityLight(fountain)!;
+      return {
+        title: state.infinityLightOn ? 'Infinity Inlay Lit' : 'Infinity Inlay Dark',
+        message: state.infinityLightOn
+          ? 'A restrained amber architectural line reveals the faceted loop.'
+          : 'The structural blackened-bronze loop remains legible without its internal inlay.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.highlightEngravings) {
+      const state = toggleAcademicFountainEngravings(fountain)!;
+      return {
+        title: state.engravingsHighlighted ? 'Scientific Engravings Highlighted' : 'Engraving Highlight Removed',
+        message: 'Coordinate axes, solstice markers, network pins, and measured orbital ticks remain integrated into the architecture.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.describeNextSymbol) {
+      const symbol = inspectNextAcademicFountainSymbol(fountain)!;
+      return { title: symbol.name, message: `${symbol.description} Placement: ${symbol.placement}.`, state: { ...current, symbol: symbol.name } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleCutaway) {
+      const state = toggleAcademicFountainCutaway(fountain)!;
+      return {
+        title: state.cutawayVisible ? 'Hydraulic Cutaway Shown' : 'Hydraulic Cutaway Hidden',
+        message: state.cutawayVisible
+          ? 'The reservoir, pressure riser, return pipes, channels, and hidden drainage are exposed as a technical diagram.'
+          : 'The subsurface system is concealed again.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleGeometryGrid) {
+      const state = toggleAcademicFountainGeometryGrid(fountain)!;
+      return {
+        title: state.geometryGridVisible ? 'Construction Grid Shown' : 'Construction Grid Hidden',
+        message: 'The composition resolves into coordinate axes, measured circles, offsets, and architectural alignments.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleRingRotation) {
+      const state = toggleAcademicFountainRingRotation(fountain)!;
+      return {
+        title: state.ringRotating ? 'Orbital Ring Inspection Running' : 'Orbital Ring Inspection Paused',
+        message: 'The structurally supported ring rotates only for slow design inspection.',
+        state: { ...state },
+      };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.cycleStatueMaterial) {
+      const state = cycleAcademicFountainStatueMaterial(fountain)!;
+      const mode = ACADEMIC_FOUNTAIN_STATUE_MATERIALS.find((entry) => entry.id === state.statueMaterial)!;
+      return { title: mode.label, message: mode.description, state: { ...state } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.cycleRestorationView) {
+      const state = cycleAcademicFountainRestoration(fountain)!;
+      const mode = ACADEMIC_FOUNTAIN_RESTORATION_MODES.find((entry) => entry.id === state.restorationMode)
+        ?? ACADEMIC_FOUNTAIN_RESTORATION_MODES[0];
+      return { title: mode.label, message: mode.description, state: { ...state } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.cycleSceneMode) {
+      const state = cycleAcademicFountainSceneMode(fountain)!;
+      const sceneMode = ACADEMIC_FOUNTAIN_SCENE_MODES.find((entry) => entry.id === state.sceneMode)!;
+      this.applyAcademicFountainSceneEnvironment(state.sceneMode);
+      return { title: sceneMode.label, message: sceneMode.description, state: { ...state } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.cycleCameraPreset) {
+      const state = cycleAcademicFountainCameraPreset(fountain)!;
+      const preset = ACADEMIC_FOUNTAIN_CAMERA_PRESETS.find((entry) => entry.id === state.cameraPreset)!;
+      return { title: preset.label, message: preset.description, state: { ...state, cameraRequested: state.cameraPreset } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.resetCamera) {
+      const state = resetAcademicFountainCameraPreset(fountain)!;
+      return { title: 'Hero Camera Restored', message: 'The camera returns to the complete ceremonial composition.', state: { ...state, cameraRequested: 'hero' } };
+    }
+    if (action === ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleDebug) {
+      const state = toggleAcademicFountainDebug(fountain)!;
+      return {
+        title: state.debugVisible ? 'Fountain Debug View Shown' : 'Fountain Debug View Hidden',
+        message: 'Collision boundaries, water paths, construction geometry, lights, and live scene statistics are exposed for inspection.',
+        state: { ...state },
+      };
+    }
+    return {
+      title: 'Orbit Inspection Ready',
+      message: 'Explore mode frames Seshat, the infinity sculpture, orbital ring, platforms, and basin in the selected camera view.',
+      state: { ...current, orbitRequested: true, cameraRequested: current.cameraPreset },
+    };
+  }
+
   performAcademicInteraction(action: string) {
     const district = this.objectGroups.get('academic-libraries-theoretical-labs');
     if (!district) return { title: 'Academic District', message: 'The district is unavailable.' };
+    const legacyFountainActionMap: Record<string, string> = {
+      'throw fountain coin': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.describeNextSymbol,
+      'sit on fountain rim': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.orbit,
+      'toggle fountain lanterns': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleInfinityLight,
+      'inspect fountain symbols': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.describeNextSymbol,
+      'cycle fountain restoration': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.cycleRestorationView,
+      'toggle fountain leaves': ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS.toggleGeometryGrid,
+    };
+    const normalizedAction = legacyFountainActionMap[action] ?? action;
+    const contemporaryFountainActions = new Set<string>(Object.values(ACADEMIC_FOUNTAIN_INTERACTION_ACTIONS));
+    if (contemporaryFountainActions.has(normalizedAction)) {
+      return this.performWellOfInfiniteKnowledgeInteraction(normalizedAction);
+    }
+    const fountainActions = new Set([
+      'read fountain plaque',
+      'toggle fountain water',
+      'throw fountain coin',
+      'sit on fountain rim',
+      'toggle fountain lanterns',
+      'inspect fountain symbols',
+      'cycle fountain restoration',
+      'toggle fountain cutaway',
+      'toggle fountain leaves',
+      'orbit fountain',
+    ]);
+    if (fountainActions.has(action)) {
+      const fountain = this.getAcademicFountainRoot();
+      if (!fountain || !this.isAcademicFountainNearby()) {
+        return {
+          title: 'Fountain Out of Reach',
+          message: `Stand beside ${ACADEMIC_FOUNTAIN_TITLE} to use its architectural control panel.`,
+          state: { available: false },
+        };
+      }
+      const metadata = fountain.userData.academicFountain as {
+        name: string;
+        dedication: string;
+        history: string;
+        eras: Record<string, string>;
+      };
+      const current = getAcademicFountainState(fountain)!;
+      if (action === 'read fountain plaque') {
+        return { title: `${metadata.name} · 1486`, message: `${metadata.dedication}. ${metadata.history}`, state: { ...current } };
+      }
+      if (action === 'toggle fountain water') {
+        const state = setAcademicFountainWater(fountain, !current.waterOn)!;
+        return {
+          title: state.waterOn ? 'Fountain Flow Restored' : 'Maintenance Valve Closing',
+          message: state.waterOn
+            ? 'The four raven spouts resume their quiet fall into the dark basin.'
+            : 'The streams weaken gradually; residual drops and wet mineral channels remain.',
+          state: { ...state },
+        };
+      }
+      if (action === 'throw fountain coin') {
+        const state = throwAcademicFountainCoin(fountain)!;
+        return { title: 'Coin Cast', message: 'A small localized splash opens into a fading ring beneath the scholar.', state: { ...state } };
+      }
+      if (action === 'sit on fountain rim') {
+        const seat = getAcademicFountainSeatPoint(fountain, this.camera.position);
+        if (seat) {
+          this.walkController.seatTarget.copy(seat).add(new THREE.Vector3(0, 0.12, 0));
+          this.walkController.isSitting = true;
+        }
+        return { title: 'Seated at the Basin', message: 'The polished rim is cold and damp. Move with WASD or the arrow keys to stand.', state: { seated: Boolean(seat) } };
+      }
+      if (action === 'toggle fountain lanterns') {
+        const state = toggleAcademicFountainLanterns(fountain)!;
+        return { title: state.lanternsOn ? 'Court Lanterns Lit' : 'Court Lanterns Extinguished', message: state.lanternsOn ? 'Restrained amber light returns to the wet stones.' : 'The court settles back into blue-grey shadow.', state: { ...state } };
+      }
+      if (action === 'inspect fountain symbols') {
+        const symbol = inspectNextAcademicFountainSymbol(fountain)!;
+        return { title: symbol.name, message: symbol.description, state: { symbol: symbol.name } };
+      }
+      if (action === 'cycle fountain restoration') {
+        const state = cycleAcademicFountainRestoration(fountain)!;
+        return {
+          title: state.restorationMode === 'off' ? 'Restoration Overlay Off' : `${state.restorationMode[0].toUpperCase()}${state.restorationMode.slice(1)} Fabric Highlighted`,
+          message: state.restorationMode === 'off' ? 'The fountain returns to its normal weathered appearance.' : metadata.eras[state.restorationMode],
+          state: { ...state },
+        };
+      }
+      if (action === 'toggle fountain cutaway') {
+        const state = toggleAcademicFountainCutaway(fountain)!;
+        return { title: state.cutawayVisible ? 'Hydraulic Cutaway Shown' : 'Hydraulic Cutaway Hidden', message: state.cutawayVisible ? 'The basin, central riser, overflow pipe, drain, and underground cistern are visible as a conservation diagram.' : 'The subsurface conservation diagram is closed.', state: { ...state } };
+      }
+      if (action === 'toggle fountain leaves') {
+        const state = toggleAcademicFountainLeaves(fountain)!;
+        return { title: state.floatingLeavesVisible ? 'Autumn Leaves Added' : 'Basin Leaves Cleared', message: state.floatingLeavesVisible ? 'Wet copper and olive leaves drift back across the dark water.' : 'The floating leaves have been removed from the basin.', state: { ...state } };
+      }
+      return { title: 'Orbit Inspection Ready', message: 'Explore mode now frames the fountain for close orbit inspection.', state: { orbitRequested: true } };
+    }
     if (action === 'open main gate') {
       if (this.activeTimeOfDay !== 'night') {
         this.applyAcademicGateOpen(true);
@@ -1938,6 +2494,29 @@ export class IslandWorld {
     };
   }
 
+  setAcademicFountainWaterFlow(requestedFlow: number) {
+    const fountain = this.getAcademicFountainRoot();
+    if (!fountain || (!this.isAcademicFountainNearby() && !this.academicFountainInspectionActive)) {
+      return {
+        title: 'Fountain Out of Reach',
+        message: `Stand beside ${ACADEMIC_FOUNTAIN_TITLE} to calibrate its hydraulic system.`,
+        state: { available: false },
+      };
+    }
+    const target = THREE.MathUtils.clamp(requestedFlow, 0, 1);
+    let state = getAcademicFountainState(fountain)!;
+    if (target > 0 && !state.waterOn) state = setAcademicFountainWater(fountain, true)!;
+    state = adjustAcademicFountainWaterFlow(fountain, target - state.requestedWaterFlow)!;
+    if (target === 0 && state.waterOn) state = setAcademicFountainWater(fountain, false)!;
+    return {
+      title: target === 0 ? 'Measured Water System Stopping' : `Water Flow ${Math.round(target * 100)}%`,
+      message: target === 0
+        ? 'Sheets weaken before the channels settle; residual drops and dark wet stone remain.'
+        : 'The hydraulic system moves progressively toward the exact selected channel and sheet flow.',
+      state: { ...state },
+    };
+  }
+
   async setAcademicAudioMuted(muted: boolean) {
     await this.academicAudio.setMuted(muted);
     return this.academicAudio.isMuted();
@@ -1956,7 +2535,11 @@ export class IslandWorld {
     const precipitationMaterial = this.precipitation.points.material as THREE.PointsMaterial;
     precipitationMaterial.size = quality === 'low' ? 0.035 : 0.05;
     const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
-    if (academic) configureAcademicTreeQuality(academic, quality);
+    if (academic) {
+      configureAcademicTreeQuality(academic, quality);
+      const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+      if (fountain) configureAcademicFountainQuality(fountain, quality);
+    }
     this.resize();
   }
 
@@ -2329,10 +2912,8 @@ export class IslandWorld {
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
         season: this.activeSeason,
-        camera: {
-          position: this.camera.position.toArray(),
-          target: this.controls.target.toArray(),
-        },
+        academicFountain: this.serializeAcademicFountainState(),
+        camera: this.serializeCameraState(),
       },
     };
     localStorage.setItem('youtopy_saved_project', JSON.stringify(payload));
@@ -2356,11 +2937,21 @@ export class IslandWorld {
     biomes.forEach((b) => toRemove.push(b.id));
 
     toRemove.forEach((id) => {
-      this.unregisterObject(id);
+      // Static reconstruction replaces the same canonical 41 definitions.
+      // Do not report them as user deletions or the Atlas will splice every
+      // district/biome from its own definition list during Save/Refresh.
+      this.unregisterObject(id, false);
     });
 
     this.createDistrictsAndBiomes();
     this.syncAcademicGateForTime(true);
+    this.refreshAnimatedObjects();
+    const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (academic) {
+      configureAcademicTreeQuality(academic, this.graphicsQuality);
+      const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+      if (fountain) configureAcademicFountainQuality(fountain, this.graphicsQuality);
+    }
   }
 
   loadProject(payload: any): boolean {
@@ -2590,8 +3181,36 @@ export class IslandWorld {
         this.camera.position.z *= savedLayoutScale;
         this.controls.target.x *= savedLayoutScale;
         this.controls.target.z *= savedLayoutScale;
+        const fountain = this.getAcademicFountainRoot();
+        if (fountain) {
+          const center = fountain.getWorldPosition(new THREE.Vector3());
+          const closeToFountain = this.camera.position.distanceTo(center)
+            <= ACADEMIC_FOUNTAIN_CONFIG.orbit.maximumDistanceMetres * 0.1 + 0.35
+            && this.controls.target.distanceTo(center) <= 1.25;
+          if (closeToFountain) {
+            const savedPreset = payload.editor.academicFountain?.cameraPreset;
+            const presetId = ACADEMIC_FOUNTAIN_CAMERA_PRESETS.some((preset) => preset.id === savedPreset)
+              ? savedPreset as AcademicFountainCameraPresetId
+              : undefined;
+            const pose = getAcademicFountainCameraPose(fountain, presetId);
+            this.setAcademicFountainInspectionControls(true, pose.id);
+            // Legacy saves persisted position and target only. Infer the
+            // inspection projection so a top-down preset does not reload with
+            // Y-up and the global overview clipping plane.
+            if (!Array.isArray(cam.up)) this.camera.up.copy(pose.up);
+            if (!Number.isFinite(Number(cam.fieldOfView))) this.camera.fov = pose.fieldOfView;
+            if (!Number.isFinite(Number(cam.near))) this.camera.near = 0.02;
+          } else {
+            this.setAcademicFountainInspectionControls(false);
+          }
+        }
+        if (Array.isArray(cam.up) && cam.up.length >= 3) this.camera.up.fromArray(cam.up);
+        if (Number.isFinite(Number(cam.fieldOfView))) this.camera.fov = Number(cam.fieldOfView);
+        if (Number.isFinite(Number(cam.near))) this.camera.near = Math.max(0.001, Number(cam.near));
+        this.camera.updateProjectionMatrix();
         this.controls.update();
       }
+      this.restoreAcademicFountainState(payload.editor.academicFountain);
     }
 
     this.applySeasonColors(this.activeSeason);
@@ -2603,6 +3222,7 @@ export class IslandWorld {
   takeSnapshotPayload() {
     return {
       schema: 'youtopy.lab-island/1.0',
+      masterplan: { worldExpansion: WORLD_EXPANSION },
       exportedAt: new Date().toISOString(),
       objects: Array.from(this.definitions.values()).map((definition) => ({
         ...definition,
@@ -2614,10 +3234,8 @@ export class IslandWorld {
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
         season: this.activeSeason,
-        camera: {
-          position: this.camera.position.toArray(),
-          target: this.controls.target.toArray(),
-        },
+        academicFountain: this.serializeAcademicFountainState(),
+        camera: this.serializeCameraState(),
       },
     };
   }
@@ -2872,6 +3490,33 @@ export class IslandWorld {
       }
       const academicTreeLodLevel = child.userData.academicTreeLodLevel as string | undefined;
       if (academicTreeLodLevel) child.visible = academicTreeLodLevel === 'near';
+      if (child.name === 'WELL__NEAR_DETAIL_LOD') child.visible = true;
+      if (child.name === 'WELL__ORBITAL_RING_ENGRAVED_TICKS') child.visible = true;
+      if (child.name === 'WELL__SESHAT_HIGH_DETAIL_ORIGINAL_SCULPTURE') child.visible = true;
+      if (child.name === 'WELL__SESHAT_MEDIUM_DETAIL_SCULPTURE' || child.name === 'WELL__SESHAT_LONG_DISTANCE_SILHOUETTE') {
+        child.visible = false;
+      }
+      if (
+        child.name === 'WELL__MUSEUM_WHITE_PRESENTATION_ENVIRONMENT'
+        || child.name === 'WELL__DEBUG_LIGHTS_COLLISIONS_WATER_PATHS_AND_STATS'
+        || child.name === 'WELL__INTERNAL_WATER_SYSTEM_CUTAWAY'
+        || child.name === 'WELL__CLEAN_WEATHERED_RESTORATION_COMPARISON'
+      ) child.visible = false;
+      if (child instanceof THREE.Mesh && child.name === 'WELL__DARK_REFLECTIVE_POLYGONAL_WATER') {
+        // GLTFExporter deliberately skips ShaderMaterial. Give the Blender
+        // clone an equivalent bounded PBR water surface while the live scene
+        // retains its efficient animated shader.
+        child.material = new THREE.MeshPhysicalMaterial({
+          name: 'Well export green-black reflective water',
+          color: '#152826',
+          roughness: 0.12,
+          metalness: 0,
+          transmission: 0.18,
+          transparent: true,
+          opacity: 0.9,
+          clearcoat: 0.28,
+        });
+      }
     });
     const exportSun = this.sun.clone();
     exportSun.name = 'Blender Sun';
@@ -2908,10 +3553,11 @@ export class IslandWorld {
         workspace: this.editWorkspace,
         activeInteriorBuildingId: this.activeInteriorBuildingId,
         daylight: this.isDaylight(),
-        camera: {
-          position: this.camera.position.toArray(),
-          target: this.controls.target.toArray(),
-        },
+        timeOfDay: this.activeTimeOfDay,
+        weather: this.activeWeather,
+        season: this.activeSeason,
+        academicFountain: this.serializeAcademicFountainState(),
+        camera: this.serializeCameraState(),
       },
       blender: {
         import: 'File > Import > glTF 2.0',
@@ -2996,6 +3642,22 @@ export class IslandWorld {
         optimization: academicGroup.userData.academicOptimization ?? null,
         treePopulation: academicGroup.userData.academicTreePopulation ?? null,
         pathNetwork: academicGroup.userData.academicPathNetwork ?? null,
+        fountain: (() => {
+          const fountain = academicGroup.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+          return fountain ? {
+            mounted: fountain.parent !== null && fountain.userData.fountainMounted === true,
+            visible: fountain.visible && fountain.parent?.visible !== false,
+            rootName: fountain.name,
+            version: Number(fountain.userData.fountainVersion ?? 0),
+            worldPosition: fountain.getWorldPosition(new THREE.Vector3()).toArray().map((value) => Number(value.toFixed(3))),
+            parentCourt: fountain.parent?.name ?? null,
+            childCount: fountain.children.length,
+            debugStats: fountain.userData.fountainDebugStats ?? null,
+            metadata: fountain.userData.academicFountain ?? null,
+            state: getAcademicFountainState(fountain),
+            nearby: this.isAcademicFountainNearby(),
+          } : null;
+        })(),
         gateOpen: academicGroup.userData.academicGateOpen === true,
         vintageBenchCount: Number(
           academicGroup.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__VINTAGE_CAMPUS_BENCHES')
@@ -3063,6 +3725,8 @@ export class IslandWorld {
   dispose() {
     this.disposed = true;
     this.renderer.setAnimationLoop(null);
+    const fountain = this.getAcademicFountainRoot();
+    if (fountain) disposeAcademicFountain(fountain);
     this.resizeObserver.disconnect();
     this.renderer.domElement.removeEventListener('pointerdown', this.onPointerDown);
     this.renderer.domElement.removeEventListener('pointerup', this.onPointerUp);

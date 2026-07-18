@@ -33,6 +33,36 @@ const required = <T extends HTMLElement>(selector: string) => {
   return element;
 };
 
+const app = required<HTMLElement>('#app');
+
+const syncAppToVisualViewport = () => {
+  const visualViewport = window.visualViewport;
+  const magnification = Math.max(1, visualViewport?.scale ?? 1);
+  const width = visualViewport ? visualViewport.width * magnification : window.innerWidth;
+  const height = visualViewport ? visualViewport.height * magnification : window.innerHeight;
+
+  app.style.setProperty('--app-viewport-left', `${visualViewport?.offsetLeft ?? 0}px`);
+  app.style.setProperty('--app-viewport-top', `${visualViewport?.offsetTop ?? 0}px`);
+  app.style.setProperty('--app-viewport-width', `${width}px`);
+  app.style.setProperty('--app-viewport-height', `${height}px`);
+  app.style.setProperty('--app-viewport-scale', `${1 / magnification}`);
+  app.dataset.viewportMagnification = magnification.toFixed(4);
+};
+
+let viewportSyncFrame = 0;
+const scheduleAppViewportSync = () => {
+  if (viewportSyncFrame) return;
+  viewportSyncFrame = window.requestAnimationFrame(() => {
+    viewportSyncFrame = 0;
+    syncAppToVisualViewport();
+  });
+};
+
+syncAppToVisualViewport();
+window.addEventListener('resize', scheduleAppViewportSync, { passive: true });
+window.visualViewport?.addEventListener('resize', scheduleAppViewportSync, { passive: true });
+window.visualViewport?.addEventListener('scroll', scheduleAppViewportSync, { passive: true });
+
 const viewport = required<HTMLElement>('#viewport');
 const districtList = required<HTMLElement>('#district-list');
 const districtSearch = required<HTMLInputElement>('#district-search');
@@ -73,6 +103,23 @@ const envQualitySelect = required<HTMLSelectElement>('#env-quality');
 const academicAudioButton = required<HTMLButtonElement>('#academic-audio-toggle');
 const debugButton = required<HTMLButtonElement>('#debug-toggle');
 const debugStats = required<HTMLElement>('#debug-stats');
+const fountainControlPanel = required<HTMLElement>('#fountain-control-panel');
+const fountainControlExit = required<HTMLButtonElement>('#fountain-control-exit');
+const fountainControlSummary = required<HTMLElement>('#fountain-control-summary');
+const fountainControlState = required<HTMLElement>('#fountain-control-state');
+const fountainSceneModeSelect = required<HTMLSelectElement>('#fountain-scene-mode');
+const fountainStatueMaterialSelect = required<HTMLSelectElement>('#fountain-statue-material');
+const fountainCameraPresetSelect = required<HTMLSelectElement>('#fountain-camera-preset');
+const fountainQualitySelect = required<HTMLSelectElement>('#fountain-quality');
+const fountainWaterToggle = required<HTMLButtonElement>('#fountain-water-toggle');
+const fountainWaterFlow = required<HTMLInputElement>('#fountain-water-flow');
+const fountainWaterFlowOutput = required<HTMLOutputElement>('#fountain-water-flow-output');
+const fountainInfinityLight = required<HTMLButtonElement>('#fountain-infinity-light');
+const fountainCutaway = required<HTMLButtonElement>('#fountain-cutaway');
+const fountainGeometryGrid = required<HTMLButtonElement>('#fountain-geometry-grid');
+const fountainCameraReset = required<HTMLButtonElement>('#fountain-camera-reset');
+const fountainAudioLink = required<HTMLButtonElement>('#fountain-audio-link');
+const fountainFullscreenLink = required<HTMLButtonElement>('#fountain-fullscreen-link');
 const academicBuildingCard = required<HTMLElement>('#academic-building-card');
 const academicBuildingTitle = required<HTMLElement>('#academic-building-title');
 const academicBuildingMeta = required<HTMLElement>('#academic-building-meta');
@@ -129,6 +176,21 @@ let selectedCatalogAssetId: string | null = null;
 let assetSourceFilter = 'all';
 let dragDepth = 0;
 let queuedImportFiles: File[] | null = null;
+
+type FountainSceneMode = 'presentation' | 'courtyard' | 'night';
+type FountainStatueMaterial = 'bronze' | 'dark-stone' | 'hybrid';
+type FountainCameraPreset = 'hero' | 'low-angle' | 'top-down' | 'side-profile';
+type FountainPanelState = {
+  sceneMode: FountainSceneMode;
+  statueMaterial: FountainStatueMaterial;
+  cameraPreset: FountainCameraPreset;
+  waterOn: boolean;
+  requestedWaterFlow: number;
+  waterFlow: number;
+  infinityLightOn: boolean;
+  cutawayVisible: boolean;
+  geometryGridVisible: boolean;
+};
 
 const categoryNames: Record<string, string> = {
   core: 'Central landmark',
@@ -210,9 +272,15 @@ function createAtlasButton(definition: SceneDefinition, index: number) {
   `;
   button.addEventListener('click', () => {
     world.select(definition.id, 'ui');
-    if (currentMode === 'explore') world.focus(definition.id);
+    if (currentMode === 'explore') {
+      world.focus(definition.id);
+      syncFountainControlPanel();
+    }
   });
-  button.addEventListener('dblclick', () => world.focus(definition.id));
+  button.addEventListener('dblclick', () => {
+    world.focus(definition.id);
+    syncFountainControlPanel();
+  });
   return button;
 }
 
@@ -412,6 +480,104 @@ function toast(title: string, message: string, kind: 'normal' | 'error' = 'norma
   }, duration);
 }
 
+function getFountainPanelState() {
+  const snapshot = world.getTextSnapshot();
+  return (snapshot.academicDistrict?.fountain?.state ?? null) as FountainPanelState | null;
+}
+
+function setFountainToggleState(button: HTMLButtonElement, active: boolean, onLabel: string, offLabel: string) {
+  button.setAttribute('aria-pressed', String(active));
+  button.textContent = active ? onLabel : offLabel;
+}
+
+function syncFountainControlPanel() {
+  const inspectionActive = currentMode === 'explore' && world.isAcademicFountainInspectionActive();
+  fountainControlPanel.hidden = !inspectionActive;
+  document.body.classList.toggle('fountain-inspection-mode', inspectionActive);
+  if (!inspectionActive) return;
+
+  const state = getFountainPanelState();
+  if (!state) {
+    fountainControlPanel.hidden = true;
+    document.body.classList.remove('fountain-inspection-mode');
+    return;
+  }
+
+  const sceneLabels: Record<FountainSceneMode, string> = {
+    presentation: 'Museum white',
+    courtyard: 'Overcast courtyard',
+    night: 'Rainy night',
+  };
+  const materialLabels: Record<FountainStatueMaterial, string> = {
+    bronze: 'Bronze',
+    'dark-stone': 'Dark stone',
+    hybrid: 'Hybrid',
+  };
+  const cameraLabels: Record<FountainCameraPreset, string> = {
+    hero: 'Hero',
+    'low-angle': 'Low angle',
+    'top-down': 'Top down',
+    'side-profile': 'Side profile',
+  };
+  const targetFlow = Math.round((state.requestedWaterFlow ?? state.waterFlow) * 100);
+
+  fountainSceneModeSelect.value = state.sceneMode;
+  fountainStatueMaterialSelect.value = state.statueMaterial;
+  fountainCameraPresetSelect.value = state.cameraPreset;
+  fountainQualitySelect.value = world.getGraphicsQuality();
+  fountainWaterFlow.value = String(targetFlow);
+  fountainWaterFlowOutput.value = `${targetFlow}%`;
+  fountainWaterFlowOutput.textContent = `${targetFlow}%`;
+  setFountainToggleState(fountainWaterToggle, state.waterOn, 'Water on', 'Water off');
+  setFountainToggleState(fountainInfinityLight, state.infinityLightOn, 'Infinity light on', 'Infinity light off');
+  setFountainToggleState(fountainCutaway, state.cutawayVisible, 'Cutaway shown', 'Hydraulic cutaway');
+  setFountainToggleState(fountainGeometryGrid, state.geometryGridVisible, 'Grid shown', 'Construction grid');
+
+  const audioOn = !world.isAcademicAudioMuted();
+  fountainAudioLink.setAttribute('aria-pressed', String(audioOn));
+  fountainAudioLink.textContent = audioOn ? 'Audio on' : 'Audio muted';
+  fountainFullscreenLink.textContent = document.fullscreenElement ? 'Exit fullscreen' : 'Fullscreen';
+  fountainControlSummary.textContent = `${sceneLabels[state.sceneMode]} · water ${state.waterOn ? `${targetFlow}%` : 'stopped'} · infinity ${state.infinityLightOn ? 'lit' : 'dark'}`;
+  fountainControlState.textContent = `${cameraLabels[state.cameraPreset]} · ${materialLabels[state.statueMaterial]} · Flow ${targetFlow}%`;
+}
+
+function fountainResultState(result: ReturnType<IslandWorld['performAcademicInteraction']>) {
+  if (!('state' in result) || !result.state || typeof result.state !== 'object') return null;
+  return result.state as Record<string, unknown>;
+}
+
+function runFountainPanelAction(action: string, announce = true) {
+  const result = world.performAcademicInteraction(action);
+  const state = fountainResultState(result);
+  const cameraRequested = state?.cameraRequested;
+  if (typeof cameraRequested === 'string') {
+    world.focusAcademicFountain(cameraRequested as FountainCameraPreset);
+  }
+  syncEnvironmentUI();
+  syncFountainControlPanel();
+  if (announce) toast(result.title, result.message);
+  return result;
+}
+
+function cycleFountainStateTo(
+  key: 'sceneMode' | 'statueMaterial' | 'cameraPreset',
+  target: string,
+  action: string,
+  maximumCycles: number,
+) {
+  let lastResult: ReturnType<IslandWorld['performAcademicInteraction']> | null = null;
+  for (let index = 0; index < maximumCycles; index += 1) {
+    const current = getFountainPanelState();
+    if (!current || current[key] === target) break;
+    lastResult = world.performAcademicInteraction(action);
+    syncEnvironmentUI();
+    syncFountainControlPanel();
+  }
+  if (key === 'cameraPreset') world.focusAcademicFountain(target as FountainCameraPreset);
+  syncFountainControlPanel();
+  if (lastResult) toast(lastResult.title, lastResult.message);
+}
+
 function setMode(mode: ViewMode) {
   currentMode = mode;
   document.querySelectorAll<HTMLButtonElement>('.mode').forEach((button) => {
@@ -444,6 +610,7 @@ function setMode(mode: ViewMode) {
     walkLookButton.textContent = 'Click to look around';
   }
   refreshEditWorkspaceUI();
+  syncFountainControlPanel();
 }
 
 function setGizmo(mode: GizmoMode) {
@@ -486,6 +653,12 @@ const world = new IslandWorld(viewport, {
     undoActionButton.disabled = !canUndo;
   },
   onReady: () => {
+    // LocalStorage reconstruction is intentionally deferred until after the
+    // IslandWorld constructor returns. Synchronize controls here so a saved
+    // fountain inspection (including a cold-loaded camera) immediately shows
+    // its panel and exact environment state without requiring another click.
+    syncEnvironmentUI();
+    syncFountainControlPanel();
     loadingStatus.textContent = 'Spatial twin ready';
     window.setTimeout(() => loadingScreen.classList.add('done'), 220);
   },
@@ -744,6 +917,7 @@ refreshProjectButton.addEventListener('click', () => {
       updateInspector(null);
     }
     syncEnvironmentUI();
+    syncFountainControlPanel();
     toast('Project Reloaded', 'Successfully loaded from the last saved state.');
   } else {
     toast('Load Failed', 'No saved project found in LocalStorage.', 'error');
@@ -758,6 +932,7 @@ undoActionButton.addEventListener('click', () => {
       updateInspector(null);
     }
     syncEnvironmentUI();
+    syncFountainControlPanel();
     toast('Action Undone', 'The last customization or transformation step has been reverted.');
   } else {
     toast('Cannot Undo', 'No remaining history steps in the undo stack.', 'error');
@@ -775,7 +950,10 @@ saveInspectorChangesButton.addEventListener('click', () => {
 });
 
 required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => {
-  if (currentSelection) world.focus(currentSelection.id);
+  if (currentSelection) {
+    world.focus(currentSelection.id);
+    syncFountainControlPanel();
+  }
 });
 
 required<HTMLButtonElement>('#reset-selection').addEventListener('click', () => {
@@ -816,6 +994,7 @@ timeToggle.addEventListener('click', () => {
 required<HTMLButtonElement>('#home-view').addEventListener('click', () => {
   world.overview();
   world.clearSelection('ui');
+  syncFountainControlPanel();
 });
 
 required<HTMLButtonElement>('#atlas-collapse').addEventListener('click', () => {
@@ -927,6 +1106,7 @@ async function toggleFullscreen() {
 }
 
 required<HTMLButtonElement>('#fullscreen-toggle').addEventListener('click', () => void toggleFullscreen());
+document.addEventListener('fullscreenchange', syncFountainControlPanel);
 
 document.addEventListener('keydown', (event) => {
   const target = event.target as HTMLElement;
@@ -953,9 +1133,17 @@ document.addEventListener('keydown', (event) => {
       toast('Import cancelled', 'No building was added.');
       return;
     }
+    if (world.isAcademicFountainInspectionActive()) {
+      world.overview();
+      syncFountainControlPanel();
+      return;
+    }
     world.clearSelection('ui');
   }
-  if (event.key === 'Home') world.overview();
+  if (event.key === 'Home') {
+    world.overview();
+    syncFountainControlPanel();
+  }
 });
 
 let currentAcademicBuilding: AcademicCampusBuilding | null = null;
@@ -1018,18 +1206,25 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
   const academicHotspot = definition.id === 'academic-libraries-theoretical-labs'
     ? world.getActiveAcademicHotspot()
     : null;
-  const interactions = (rawList.length ? rawList : ['examine']).filter(
-    (action) => action !== 'open main gate' || definition.id !== 'academic-libraries-theoretical-labs' || world.isAcademicMainGateNearby(),
-  );
+  const academicFountainHotspot = definition.id === 'academic-libraries-theoretical-labs'
+    && world.getActiveAcademicFountainHotspot();
   const academicSnapshot = definition.id === 'academic-libraries-theoretical-labs'
     ? world.getTextSnapshot()
     : null;
+  const fountainInteractions: string[] = academicSnapshot?.academicDistrict?.fountain?.metadata?.interactions ?? [];
+  const interactions: string[] = (academicFountainHotspot
+    ? fountainInteractions
+    : rawList.length ? rawList : ['examine']).filter(
+    (action) => action !== 'open main gate' || definition.id !== 'academic-libraries-theoretical-labs' || world.isAcademicMainGateNearby(),
+  );
   const gateActionLabel = academicSnapshot?.atmosphere.timeOfDay !== 'night'
     ? 'Main gate open for daylight'
     : academicSnapshot?.academicDistrict?.gateOpen
       ? 'Close main gate'
       : 'Open main gate';
-  walkInteractionMenuTitle.textContent = academicHotspot?.name ?? definition.name;
+  walkInteractionMenuTitle.textContent = academicFountainHotspot
+    ? academicSnapshot?.academicDistrict?.fountain?.metadata?.name ?? 'The Well of Infinite Knowledge'
+    : academicHotspot?.name ?? definition.name;
   walkInteractionButtonsContainer.innerHTML = '';
 
   interactions.forEach((act) => {
@@ -1046,6 +1241,23 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
       : act === 'ring chapel bell' ? 'Ring St Anselm bell'
       : act === 'toggle reading-room lights' ? 'Toggle reading-room lights'
       : act === 'campus map' ? 'Open campus map'
+      : act === 'read fountain plaque' ? 'Read monument dedication'
+      : act === 'toggle fountain water' ? (academicSnapshot?.academicDistrict?.fountain?.state?.waterOn ? 'Stop measured water system' : 'Start measured water system')
+      : act === 'increase fountain water flow' ? 'Increase water flow'
+      : act === 'decrease fountain water flow' ? 'Decrease water flow'
+      : act === 'toggle infinity lighting' ? 'Toggle infinity-loop light'
+      : act === 'highlight scientific engravings' ? 'Highlight scientific engravings'
+      : act === 'describe next scientific symbol' ? 'Describe next scientific symbol'
+      : act === 'toggle fountain cutaway' ? 'Toggle hydraulic cutaway'
+      : act === 'toggle fountain geometry grid' ? 'Toggle construction grid'
+      : act === 'toggle orbital ring rotation' ? 'Start / pause ring inspection'
+      : act === 'cycle Seshat material' ? 'Cycle Seshat material'
+      : act === 'cycle fountain restoration view' ? 'Cycle restoration comparison'
+      : act === 'cycle fountain scene mode' ? 'Cycle presentation / courtyard / night'
+      : act === 'cycle fountain camera preset' ? 'Next camera preset'
+      : act === 'reset fountain camera' ? 'Reset hero camera'
+      : act === 'toggle fountain debug view' ? 'Toggle fountain debug view'
+      : act === 'orbit fountain' ? 'Open orbit inspection'
       : act;
     btn.addEventListener('click', () => {
       triggerWalkInteraction(definition, act);
@@ -1068,7 +1280,13 @@ function triggerWalkInteraction(definition: SceneDefinition, action: string) {
       return;
     }
     const result = world.performAcademicInteraction(action);
-    if (action === 'inspect entrance' && result.building) showAcademicBuildingCard(result.building);
+    if (result.state && 'cameraRequested' in result.state && typeof result.state.cameraRequested === 'string') {
+      setMode('explore');
+      world.focusAcademicFountain(result.state.cameraRequested as 'hero' | 'low-angle' | 'top-down' | 'side-profile');
+    }
+    syncEnvironmentUI();
+    syncFountainControlPanel();
+    if (action === 'inspect entrance' && 'building' in result && result.building) showAcademicBuildingCard(result.building);
     else toast(result.title, result.message);
     return;
   }
@@ -1221,6 +1439,78 @@ function syncEnvironmentUI() {
   envQualitySelect.value = world.getGraphicsQuality();
 }
 
+fountainSceneModeSelect.addEventListener('change', () => {
+  cycleFountainStateTo('sceneMode', fountainSceneModeSelect.value, 'cycle fountain scene mode', 3);
+});
+
+fountainStatueMaterialSelect.addEventListener('change', () => {
+  cycleFountainStateTo('statueMaterial', fountainStatueMaterialSelect.value, 'cycle Seshat material', 3);
+});
+
+fountainCameraPresetSelect.addEventListener('change', () => {
+  cycleFountainStateTo('cameraPreset', fountainCameraPresetSelect.value, 'cycle fountain camera preset', 4);
+});
+
+fountainWaterToggle.addEventListener('click', () => {
+  runFountainPanelAction('toggle fountain water');
+});
+
+document.querySelectorAll<HTMLButtonElement>('[data-fountain-flow]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const increase = button.dataset.fountainFlow === '1';
+    runFountainPanelAction(increase ? 'increase fountain water flow' : 'decrease fountain water flow');
+  });
+});
+
+fountainWaterFlow.addEventListener('input', () => {
+  fountainWaterFlowOutput.value = `${fountainWaterFlow.value}%`;
+  fountainWaterFlowOutput.textContent = `${fountainWaterFlow.value}%`;
+});
+
+fountainWaterFlow.addEventListener('change', () => {
+  const target = Number(fountainWaterFlow.value) / 100;
+  const result = world.setAcademicFountainWaterFlow(target);
+  syncEnvironmentUI();
+  syncFountainControlPanel();
+  toast(result.title, result.message);
+});
+
+fountainInfinityLight.addEventListener('click', () => {
+  runFountainPanelAction('toggle infinity lighting');
+});
+
+fountainCutaway.addEventListener('click', () => {
+  runFountainPanelAction('toggle fountain cutaway');
+});
+
+fountainGeometryGrid.addEventListener('click', () => {
+  runFountainPanelAction('toggle fountain geometry grid');
+});
+
+fountainCameraReset.addEventListener('click', () => {
+  runFountainPanelAction('reset fountain camera');
+});
+
+fountainQualitySelect.addEventListener('change', () => {
+  envQualitySelect.value = fountainQualitySelect.value;
+  envQualitySelect.dispatchEvent(new Event('change'));
+  syncFountainControlPanel();
+});
+
+fountainAudioLink.addEventListener('click', () => {
+  academicAudioButton.click();
+  window.setTimeout(syncFountainControlPanel, 0);
+});
+
+fountainFullscreenLink.addEventListener('click', () => {
+  required<HTMLButtonElement>('#fullscreen-toggle').click();
+});
+
+fountainControlExit.addEventListener('click', () => {
+  world.overview();
+  syncFountainControlPanel();
+});
+
 envTimeSelect.addEventListener('change', () => {
   world.saveUndoState();
   world.setTimeOfDay(envTimeSelect.value as any);
@@ -1242,6 +1532,7 @@ envSeasonSelect.addEventListener('change', () => {
 
 envQualitySelect.addEventListener('change', () => {
   world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
+  syncFountainControlPanel();
   toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
 });
 
@@ -1250,6 +1541,7 @@ academicAudioButton.addEventListener('click', async () => {
   academicAudioButton.setAttribute('aria-pressed', String(!muted));
   const label = academicAudioButton.querySelector<HTMLElement>('.utility-label');
   if (label) label.textContent = muted ? 'Audio muted' : 'Audio on';
+  syncFountainControlPanel();
   toast(muted ? 'Campus audio muted' : 'Campus audio enabled', muted ? 'Ambient wind, rain, and bell audio are off.' : 'Quiet synthesized wind and weather ambience is active.');
 });
 

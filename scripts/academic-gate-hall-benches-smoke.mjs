@@ -34,9 +34,10 @@ try {
     district.updateMatrixWorld(true);
     const gate = district.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__MAIN_ENTRANCE');
     const hall = district.children.find((child) => child.userData.semanticName === 'Blackwood University Great Hall');
-    const path = district.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_PROCESSIONAL_ROAD');
+    const processionalPathNames = district.userData.academicPathNetwork?.mainPathNames ?? [];
+    const processionalPaths = processionalPathNames.map((name) => district.getObjectByName(name)).filter(Boolean);
     const benches = district.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__VINTAGE_CAMPUS_BENCHES');
-    if (!gate || !hall || !path || !benches) throw new Error('Gate, Great Hall, path, or vintage benches missing');
+    if (!gate || !hall || !processionalPaths.length || !benches) throw new Error('Gate, Great Hall, path, or vintage benches missing');
 
     const leaves = [];
     const closedColliders = [];
@@ -57,11 +58,20 @@ try {
       if (object.userData.academicMainStep === true) steps.push(object);
     });
     const route = hall.userData.walkAccess;
-    const pathStart = world.camera.position.clone().fromArray(path.userData.roadEndpoints.start);
-    const pathEnd = world.camera.position.clone().fromArray(path.userData.roadEndpoints.end);
+    const processionalEndpoints = processionalPaths.map((path) => path.userData.roadEndpoints);
+    const pathStart = world.camera.position.clone().fromArray(processionalEndpoints[0].start);
+    const pathEnd = world.camera.position.clone().fromArray(processionalEndpoints.at(-1).end);
     const routeStart = world.camera.position.clone().fromArray(route.routeStart);
     const threshold = world.camera.position.clone().fromArray(route.threshold);
-    const pathDirection = pathEnd.clone().sub(pathStart).setY(0).normalize();
+    const pathDirection = world.camera.position.clone()
+      .fromArray(processionalEndpoints.at(-1).end)
+      .sub(world.camera.position.clone().fromArray(processionalEndpoints.at(-1).start))
+      .setY(0)
+      .normalize();
+    const processionalMaximumGapMetres = Math.max(0, ...processionalEndpoints.slice(0, -1).map((endpoints, index) => (
+      world.camera.position.clone().fromArray(endpoints.end)
+        .distanceTo(world.camera.position.clone().fromArray(processionalEndpoints[index + 1].start)) * 10
+    )));
     const hallOutward = world.camera.position.clone().set(0, 0, 1).applyQuaternion(hall.quaternion).setY(0).normalize();
     const arch = hall.children.find((child) => child.name.endsWith('__OPEN_STONE_DOOR_ARCH'));
     const archPosition = arch.getWorldPosition(world.camera.position.clone());
@@ -172,6 +182,9 @@ try {
       gateColliderCount: closedColliders.length,
       gateColliderBlocking: closedColliders.some((collider) => collider.userData.navObstacle === true),
       hallYaw: hall.rotation.y,
+      processionalSegmentCount: processionalPaths.length,
+      processionalDeclaredSegmentCount: Number(district.userData.academicPathNetwork?.mainSegmentCount ?? 0),
+      processionalMaximumGapMetres,
       pathToEntranceDot: pathDirection.dot(hallOutward),
       pathEndToRouteStartMetres: Number((pathEnd.distanceTo(routeStart) * 10).toFixed(3)),
       archToThresholdMetres: Number((Math.hypot(archPosition.x - thresholdWorld.x, archPosition.z - thresholdWorld.z) * 10).toFixed(3)),
@@ -282,10 +295,16 @@ try {
     const district = world.objectGroups.get('academic-libraries-theoretical-labs');
     const gate = district.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__MAIN_ENTRANCE');
     const hall = district.children.find((child) => child.userData.semanticName === 'Blackwood University Great Hall');
-    const path = district.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_PROCESSIONAL_ROAD');
+    const processionalPaths = (district.userData.academicPathNetwork?.mainPathNames ?? [])
+      .map((name) => district.getObjectByName(name))
+      .filter(Boolean);
     const controller = world.walkController;
     const route = hall.userData.walkAccess;
-    const pathStart = district.localToWorld(world.camera.position.clone().fromArray(path.userData.roadEndpoints.start));
+    const processionalPoints = [
+      processionalPaths[0].userData.roadEndpoints.start,
+      ...processionalPaths.map((path) => path.userData.roadEndpoints.end),
+    ].map((point) => district.localToWorld(world.camera.position.clone().fromArray(point)));
+    const pathStart = processionalPoints[0];
     const interior = district.localToWorld(world.camera.position.clone().fromArray(route.interiorTarget));
     const gatePosition = gate.getWorldPosition(world.camera.position.clone());
     const direction = interior.clone().sub(pathStart).setY(0).normalize();
@@ -325,9 +344,25 @@ try {
       return { reached: endDistance < 0.1, blockedSteps, groundGaps, endDistance };
     };
 
+    const walkPolyline = (points) => {
+      const segmentResults = [];
+      let blockedSteps = 0;
+      let groundGaps = 0;
+      for (let index = 0; index < points.length - 1; index += 1) {
+        const segment = walkLine(points[index], points[index + 1], 0.025, index === 0);
+        segmentResults.push(segment);
+        blockedSteps += segment.blockedSteps;
+        groundGaps += segment.groundGaps;
+        if (!segment.reached || segment.blockedSteps || segment.groundGaps) break;
+      }
+      const end = points.at(-1);
+      const endDistance = Math.hypot(end.x - world.camera.position.x, end.z - world.camera.position.z);
+      return { reached: endDistance < 0.1, blockedSteps, groundGaps, endDistance, segmentResults };
+    };
+
     world.setTimeOfDay('noon');
     const dayGateOpen = district.userData.academicGateOpen === true;
-    const fullDayRoute = walkLine(pathStart, interior);
+    const fullDayRoute = walkPolyline([...processionalPoints, interior]);
 
     world.setTimeOfDay('night');
     const nightGateClosed = district.userData.academicGateOpen !== true;
@@ -537,7 +572,10 @@ try {
   if (staticAudit.leafCount !== 2 || staticAudit.leafCollisionSegmentCount !== 2 || staticAudit.gateColliderCount !== 1) {
     throw new Error(`Gate structure invalid: ${JSON.stringify(staticAudit)}`);
   }
-  if (staticAudit.pathToEntranceDot > -0.995 || staticAudit.pathEndToRouteStartMetres > 0.05 || staticAudit.archToThresholdMetres > 1.5) {
+  if (staticAudit.processionalSegmentCount < 2
+    || staticAudit.processionalSegmentCount !== staticAudit.processionalDeclaredSegmentCount
+    || staticAudit.processionalMaximumGapMetres > 0.001
+    || staticAudit.pathToEntranceDot > -0.995 || staticAudit.pathEndToRouteStartMetres > 0.05 || staticAudit.archToThresholdMetres > 1.5) {
     throw new Error(`Great Hall axis is misaligned: ${JSON.stringify(staticAudit)}`);
   }
   if (staticAudit.stepCount !== 4 || staticAudit.routeEntranceStepCount !== 4 || staticAudit.stepIndices.join(',') !== '0,1,2,3'
@@ -552,7 +590,7 @@ try {
     'Founders Quadrangle Park': 4,
     'Philosophers Reading Garden': 4,
     'Open Scholars Lawn': 4,
-    'Bronze Scholars Fountain': 4,
+    'Bronze Scholars Memorial Court': 4,
     'Gaslight Reading Courts': 4,
     'processional avenue': 4,
     'Founders Quadrangle': 2,

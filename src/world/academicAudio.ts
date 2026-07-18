@@ -4,11 +4,14 @@ export class AcademicAudioController {
   private master: GainNode | null = null;
   private wind: GainNode | null = null;
   private rain: GainNode | null = null;
+  private fountain: GainNode | null = null;
+  private fountainHum: GainNode | null = null;
+  private ringResonance: GainNode | null = null;
   private muted = true;
   private weather = 'clear';
 
   private ensureGraph() {
-    if (this.context && this.master && this.wind && this.rain) return;
+    if (this.context && this.master && this.wind && this.rain && this.fountain && this.fountainHum && this.ringResonance) return;
     const context = new AudioContext();
     const master = context.createGain();
     master.gain.value = 0;
@@ -35,11 +38,24 @@ export class AcademicAudioController {
       source.start();
       return gain;
     };
+    const makeTone = (frequency: number, gainValue: number, type: OscillatorType) => {
+      const source = context.createOscillator();
+      const gain = context.createGain();
+      source.type = type;
+      source.frequency.value = frequency;
+      gain.gain.value = gainValue;
+      source.connect(gain).connect(master);
+      source.start();
+      return gain;
+    };
 
     this.context = context;
     this.master = master;
     this.wind = makeNoise(520, 0.42);
     this.rain = makeNoise(4600, 0);
+    this.fountain = makeNoise(1850, 0.12);
+    this.fountainHum = makeTone(54, 0, 'sine');
+    this.ringResonance = makeTone(311, 0, 'sine');
     this.applyWeather();
   }
 
@@ -69,6 +85,23 @@ export class AcademicAudioController {
     this.applyWeather();
   }
 
+  setFountain(flow: number, distanceWorldUnits: number) {
+    if (!this.context || !this.fountain || !this.fountainHum || !this.ringResonance || this.muted) return;
+    const proximity = Math.max(0, Math.min(1, 1 - distanceWorldUnits / 7));
+    const enclosedBoost = distanceWorldUnits < 2.2 ? 1.18 : 1;
+    this.fountain.gain.setTargetAtTime(
+      (0.012 + Math.max(0, flow) * 0.2) * proximity * enclosedBoost,
+      this.context.currentTime,
+      0.22,
+    );
+    this.fountainHum.gain.setTargetAtTime(0.025 * proximity * Math.max(0.15, flow), this.context.currentTime, 0.38);
+    this.ringResonance.gain.setTargetAtTime(
+      distanceWorldUnits < 1.8 ? 0.0028 * proximity : 0,
+      this.context.currentTime,
+      0.6,
+    );
+  }
+
   ringBell() {
     if (this.muted) return false;
     this.ensureGraph();
@@ -95,5 +128,8 @@ export class AcademicAudioController {
     this.master = null;
     this.wind = null;
     this.rain = null;
+    this.fountain = null;
+    this.fountainHum = null;
+    this.ringResonance = null;
   }
 }

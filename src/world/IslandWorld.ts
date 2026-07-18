@@ -7,8 +7,15 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { SAOPass } from 'three/addons/postprocessing/SAOPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
 import { biomes, districts, type BiomeDefinition, type DistrictDefinition } from '../data/districts';
 import {
+  ACADEMIC_CAMPUS_BUILDINGS,
+  academicBuildingSelectableId,
   academicCampusBuildingById,
   type AcademicCampusBuilding,
 } from '../data/academicCampus';
@@ -39,10 +46,34 @@ import {
 import { WalkController } from './WalkController';
 import { AcademicAudioController } from './academicAudio';
 import {
+  CEREBRUM_LIBRARY_ROOT_NAME,
+  configureCerebrumLibraryQuality,
+  createCerebrumLibraryInterior,
+  disposeCerebrumLibrary,
+  getCerebrumLibraryOrbitPreset,
+  getCerebrumLibraryRoomAt,
+  getCerebrumLibrarySnapshot,
+  getCerebrumLibraryState,
+  isPointInsideCerebrumLibrary,
+  performCerebrumLibraryInteraction,
+  resolveCerebrumLibraryHotspot,
+  restoreCerebrumLibraryState,
+  setCerebrumLibraryCutaway,
+  setCerebrumLibraryMuted,
+  setCerebrumLibraryOrbitMode,
+  setCerebrumLibraryQuietMode,
+  updateCerebrumLibrary,
+  type CerebrumLibraryHotspot,
+  type CerebrumLibraryBuildOptions,
+  type CerebrumLibraryInteractionResult,
+  type CerebrumLibraryState,
+} from './cerebrumLibrary';
+import {
   applyAcademicTreeSeason,
   configureAcademicTreeQuality,
   updateAcademicTreeWind,
 } from './academicTrees';
+import { updateAcademicBuildingInscription } from './academicDistrict';
 import {
   adjustAcademicFountainWaterFlow,
   configureAcademicFountainQuality,
@@ -88,6 +119,16 @@ import {
   type SkyDome,
   type WaterSurface,
 } from './environment';
+import { WorldStreamingManager, isEffectivelyVisible } from './worldStreaming';
+import {
+  UNREAL_DATA_LAYERS,
+  UNREAL_WORLD_MANIFEST_SCHEMA,
+  stableUnrealName,
+  webMatrixToUnrealRowMajor,
+  webPointToUnrealCentimetres,
+  type UnrealDataLayerName,
+  type UnrealWorldManifest,
+} from '../migration/worldManifest';
 
 export type ViewMode = 'explore' | 'plan' | 'edit' | 'walk';
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
@@ -151,7 +192,78 @@ export interface ImportedDefinition {
   interactions?: string[];
 }
 
-export type SceneDefinition = DistrictDefinition | BiomeDefinition | ImportedDefinition | EditorAssetDefinition;
+export interface AcademicBuildingDefinition {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  category: 'academic-building';
+  ring: 'academic-district';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: 'landscape';
+  assetKind: 'building';
+  parentDistrictId: string;
+  academicRecordId: string;
+  founded: number;
+  zone: string;
+  collisionEnabled: boolean;
+  interactions: string[];
+  inscription?: string;
+}
+
+type SceneDefinitionBase =
+  | DistrictDefinition
+  | BiomeDefinition
+  | ImportedDefinition
+  | EditorAssetDefinition
+  | AcademicBuildingDefinition;
+
+export type SceneDefinition = SceneDefinitionBase & {
+  /** User-editable text shown by the floating scene label. */
+  label?: string;
+};
+
+export interface ObjectMetadata {
+  name: string;
+  label: string;
+  description: string;
+  inscription?: string;
+}
+
+export function createAcademicBuildingDefinition(
+  record: AcademicCampusBuilding,
+  district: DistrictDefinition,
+  position: readonly [number, number, number] = [record.location[0], 0, record.location[1]],
+): AcademicBuildingDefinition {
+  return {
+    id: academicBuildingSelectableId(record.id),
+    name: record.name,
+    sourceLabel: `${record.zone} / founded ${record.founded}`,
+    category: 'academic-building',
+    ring: 'academic-district',
+    position,
+    footprint: record.footprint,
+    height: record.height,
+    archetype: `editable-${record.kind}-facility`,
+    accent: district.accent,
+    palette: district.palette,
+    description: `${record.description} Founded in ${record.founded}; ${record.zone}.`,
+    workspace: 'landscape',
+    assetKind: 'building',
+    parentDistrictId: district.id,
+    academicRecordId: record.id,
+    founded: record.founded,
+    zone: record.zone,
+    collisionEnabled: true,
+    interactions: ['inspect entrance'],
+    ...(record.inscription !== undefined ? { inscription: record.inscription } : {}),
+  };
+}
 
 export interface ObjectState {
   position: { x: number; y: number; z: number };
@@ -220,6 +332,7 @@ interface InteriorReturnState {
 export interface IslandWorldCallbacks {
   onSelection?: (definition: SceneDefinition | null, source: 'scene' | 'ui' | 'system') => void;
   onTransform?: (definition: SceneDefinition, state: ObjectState) => void;
+  onMetadataChange?: (definition: SceneDefinition) => void;
   onImport?: (definition: ImportedDefinition) => void;
   onObjectAdded?: (definition: EditorAssetDefinition) => void;
   onObjectDeleted?: (id: string) => void;
@@ -229,6 +342,7 @@ export interface IslandWorldCallbacks {
   onWalkLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
   onWalkTurboChange?: (enabled: boolean) => void;
   onAcademicInteraction?: (result: { title: string; message: string }) => void;
+  onCerebrumPresenceChange?: (inside: boolean) => void;
   onImportPlacementChange?: (
     state: 'choosing' | 'chosen' | 'cancelled' | 'cleared',
     position?: readonly [number, number, number],
@@ -237,6 +351,28 @@ export interface IslandWorldCallbacks {
 }
 
 const CATEGORY_PRIORITY = new Set(['core', 'biome', 'perimeter', 'commercial']);
+
+function sceneLabel(definition: SceneDefinition) {
+  return definition.label?.trim() || definition.name;
+}
+
+type CerebrumStreamingPhase = 'unloaded' | 'preloading' | 'loaded' | 'active' | 'retention';
+
+interface CerebrumStreamingConfig extends CerebrumLibraryBuildOptions {
+  preloadDistanceMetres: number;
+  unloadDistanceMetres: number;
+  retentionSeconds: number;
+}
+
+interface CerebrumStreamingLifecycle {
+  phase: CerebrumStreamingPhase;
+  distanceMetres: number;
+  mounted: boolean;
+  scheduled: boolean;
+  lastActiveAt: number;
+  mountedAt: number | null;
+  unloadCount: number;
+}
 
 function slugify(value: string) {
   return value
@@ -411,6 +547,11 @@ export class IslandWorld {
   readonly controls: OrbitControls;
   readonly transformControls: TransformControls;
   readonly walkController: WalkController;
+  private readonly composer: EffectComposer;
+  private readonly renderPass: RenderPass;
+  private readonly saoPass: SAOPass;
+  private readonly bloomPass: UnrealBloomPass;
+  private readonly outputPass: OutputPass;
   readonly modelRoot = new THREE.Group();
   readonly architectureRoot = new THREE.Group();
   readonly landscapeRoot = new THREE.Group();
@@ -420,6 +561,7 @@ export class IslandWorld {
   readonly interiorsRoot = new THREE.Group();
   readonly presentationRoot = new THREE.Group();
   readonly debugRoot = new THREE.Group();
+  private readonly worldStreaming = new WorldStreamingManager();
 
   private readonly container: HTMLElement;
   private readonly callbacks: IslandWorldCallbacks;
@@ -443,6 +585,8 @@ export class IslandWorld {
   private readonly sun: THREE.DirectionalLight;
   private readonly pointerDown = new THREE.Vector2();
   private readonly animatedObjects: THREE.Object3D[] = [];
+  private readonly academicInteriorIsolation = new Map<THREE.Object3D, boolean>();
+  private readonly exteriorHighDetailIsolation = new Map<THREE.Object3D, boolean>();
   private readonly interiorGroups = new Map<string, THREE.Group>();
   private readonly interiorAssetIds = new Map<string, Set<string>>();
   private readonly importPlacementMarker = createImportPlacementMarker();
@@ -464,6 +608,20 @@ export class IslandWorld {
   private debugMode = false;
   private activeAcademicHotspot: AcademicCampusBuilding | null = null;
   private activeAcademicFountainHotspot = false;
+  private activeCerebrumHotspot: CerebrumLibraryHotspot | null = null;
+  private cachedCerebrumLibraryState: CerebrumLibraryState | null = null;
+  private cancelScheduledCerebrumLoad: (() => void) | null = null;
+  private cerebrumStreaming: CerebrumStreamingLifecycle = {
+    phase: 'unloaded',
+    distanceMetres: Number.POSITIVE_INFINITY,
+    mounted: false,
+    scheduled: false,
+    lastActiveAt: 0,
+    mountedAt: null,
+    unloadCount: 0,
+  };
+  private cerebrumLibraryInspectionActive = false;
+  private cerebrumLibraryPresence = false;
   private academicFountainInspectionActive = false;
   private academicFountainEnvironmentOwned = false;
   private applyingAcademicFountainEnvironment = false;
@@ -525,6 +683,25 @@ export class IslandWorld {
     this.controls.screenSpacePanning = false;
     this.controls.zoomToCursor = true;
 
+    this.composer = new EffectComposer(this.renderer);
+    this.renderPass = new RenderPass(this.scene, this.camera);
+    this.saoPass = new SAOPass(this.scene, this.camera, new THREE.Vector2(960, 540));
+    this.saoPass.params.saoBias = 0.28;
+    this.saoPass.params.saoIntensity = 0.075;
+    this.saoPass.params.saoScale = 1.1;
+    this.saoPass.params.saoKernelRadius = 22;
+    this.saoPass.params.saoMinResolution = 0.001;
+    this.saoPass.params.saoBlur = true;
+    this.saoPass.params.saoBlurRadius = 5;
+    this.saoPass.params.saoBlurStdDev = 2.2;
+    this.saoPass.params.saoBlurDepthCutoff = 0.018;
+    this.bloomPass = new UnrealBloomPass(new THREE.Vector2(960, 540), 0.055, 0.22, 1.08);
+    this.outputPass = new OutputPass();
+    this.composer.addPass(this.renderPass);
+    this.composer.addPass(this.saoPass);
+    this.composer.addPass(this.bloomPass);
+    this.composer.addPass(this.outputPass);
+
     this.transformControls = new TransformControls(this.camera, this.renderer.domElement);
     const transformHelper = this.transformControls.getHelper();
     transformHelper.name = 'EDITOR__TRANSFORM_GIZMO';
@@ -575,12 +752,17 @@ export class IslandWorld {
           const parent = group.parent;
           if (parent) {
             const selectedBox = new THREE.Box3().setFromObject(group);
+            const parentSelectableId = group.userData.parentSelectableId as string | undefined;
             let intersects = false;
             for (const child of parent.children) {
               if (child === group || child.name === 'EDITOR__TRANSFORM_GIZMO' || child.name === 'EDITOR__SELECTION_BOUNDS') continue;
               
               // Only check objects that have collisions enabled
               const childId = child.userData.selectableId;
+              // Academic buildings are nested inside the selectable district.
+              // Ignore roads, lawns, and other parent-owned dressing while still
+              // preventing one individually editable facility crossing another.
+              if (parentSelectableId && childId === parentSelectableId) continue;
               if (childId) {
                 const childDef = this.definitions.get(childId);
                 if (childDef && (childDef as any).collisionEnabled === false) continue;
@@ -649,7 +831,7 @@ export class IslandWorld {
       this.importedRoot,
       this.interiorsRoot,
     );
-    this.presentationRoot.add(this.debugRoot);
+    this.presentationRoot.add(this.worldStreaming.vistaRoot, this.debugRoot);
     this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
 
     this.precipitation = new PrecipitationSystem();
@@ -699,6 +881,7 @@ export class IslandWorld {
     });
     this.syncAcademicGateForTime(true);
 
+    this.updateWorldStreaming(false, true);
     this.refreshAnimatedObjects();
 
     this.renderer.domElement.addEventListener('pointerdown', this.onPointerDown);
@@ -731,16 +914,52 @@ export class IslandWorld {
       group.traverse((child) => {
         if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
       });
-      this.architectureRoot.add(group);
+      this.worldStreaming.register(definition, 'district', group, this.architectureRoot);
       this.registerSelectable(definition, group, labelHeight, false);
+      if (definition.id === 'academic-libraries-theoretical-labs') {
+        this.registerAcademicBuildingSelectables(definition, group);
+      }
     });
     biomes.forEach((definition) => {
       const { group, labelHeight } = createBiomeModel(definition);
       group.traverse((child) => {
         if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
       });
-      this.landscapeRoot.add(group);
+      this.worldStreaming.register(definition, 'biome', group, this.landscapeRoot);
       this.registerSelectable(definition, group, labelHeight, true);
+    });
+  }
+
+  private registerAcademicBuildingSelectables(definition: DistrictDefinition, districtGroup: THREE.Group) {
+    const facilities = new Map<string, THREE.Group>();
+    districtGroup.traverse((object) => {
+      if (!(object instanceof THREE.Group) || object.userData.academicFacility !== true) return;
+      const record = object.userData.academicBuildingData as AcademicCampusBuilding | undefined;
+      if (record) facilities.set(record.id, object);
+    });
+
+    ACADEMIC_CAMPUS_BUILDINGS.forEach((record) => {
+      const facility = facilities.get(record.id);
+      if (!facility) {
+        console.warn(`Academic facility is not editable because its scene group is missing: ${record.name}`);
+        return;
+      }
+      const selectableId = academicBuildingSelectableId(record.id);
+      facility.userData.selectableId = selectableId;
+      facility.userData.parentSelectableId = definition.id;
+      facility.userData.editable = true;
+      facility.userData.workspace = 'landscape';
+      facility.userData.collisionEnabled = true;
+      facility.userData.interactions ??= ['inspect entrance'];
+      facility.traverse((child) => {
+        child.userData.selectableId = selectableId;
+      });
+      const facilityDefinition = createAcademicBuildingDefinition(
+        record,
+        definition,
+        [facility.position.x, facility.position.y, facility.position.z],
+      );
+      this.registerSelectable(facilityDefinition, facility, record.height + 2.5, false);
     });
   }
 
@@ -753,6 +972,9 @@ export class IslandWorld {
   ) {
     this.definitions.set(definition.id, definition);
     this.objectGroups.set(definition.id, group);
+    group.userData.displayName = definition.name;
+    group.userData.displayLabel = sceneLabel(definition);
+    group.userData.description = definition.description;
     this.initialTransforms.set(definition.id, {
       position: group.position.clone(),
       quaternion: group.quaternion.clone(),
@@ -762,8 +984,8 @@ export class IslandWorld {
     });
     if (!showLabel) return;
     const element = document.createElement('div');
-    element.className = `district-label${biome ? ' biome-label' : ''}`;
-    element.textContent = definition.name;
+    element.className = `district-label${biome ? ' biome-label' : ''}${definition.category === 'academic-building' ? ' academic-building-label' : ''}`;
+    element.textContent = sceneLabel(definition);
     element.dataset.labelId = definition.id;
     element.style.setProperty('--label-accent', definition.accent);
     const anchor = new CSS2DObject(element);
@@ -792,7 +1014,9 @@ export class IslandWorld {
         record.definition.id === this.selectedId ||
         (this.mode !== 'walk' && (record.definition.category === 'core' || record.definition.category === 'biome'));
       const distanceThreshold = this.mode === 'walk' ? 10 : this.mode === 'edit' ? 52 : 42;
-      const visible = this.mode === 'plan' || priority || distance < distanceThreshold;
+      const visible = record.definition.category === 'academic-building'
+        ? this.mode === 'edit' && (priority || distance < distanceThreshold)
+        : this.mode === 'plan' || priority || distance < distanceThreshold;
       element.classList.toggle('label-suppressed', !visible);
       if (force || visible) {
         const distanceOpacity = THREE.MathUtils.clamp(1.25 - distance / 150, 0.38, 1);
@@ -855,6 +1079,7 @@ export class IslandWorld {
   private inspectFromWalkView() {
     this.activeAcademicHotspot = null;
     this.activeAcademicFountainHotspot = false;
+    this.activeCerebrumHotspot = null;
     // The main gate is a broad threshold, so requiring the centre ray to hit a
     // thin iron bar makes the advertised E interaction unreliable. At night,
     // prioritize the gate by physical proximity and operate it with one key
@@ -879,16 +1104,25 @@ export class IslandWorld {
     this.pointer.set(0, 0);
     this.raycaster.setFromCamera(this.pointer, this.camera);
     this.raycaster.far = WALK_INSPECT_DISTANCE;
+    const cerebrumRoot = this.getCerebrumLibraryRoot();
+    const insideCerebrum = Boolean(
+      cerebrumRoot && isPointInsideCerebrumLibrary(cerebrumRoot, this.camera.position, 'world'),
+    );
+    const cerebrumExteriorEnvelopePattern = /MASONRY_WALL|STEEP_SLATE_GABLE|LIMESTONE_STRING_COURSE|OPEN_STONE_DOOR_ARCH|OPEN_OAK_DOOR|LEADED_AMBER_WINDOWS|GOTHIC_BUTTRESSES|BRICK_CHIMNEYS|COLLEGIATE_TOWER|TOWER_SLATE_CAP|ASHCROFT_REFERENCE_GOTHIC_FACADE/;
     const intersections = this.raycaster.intersectObjects(
       [this.architectureRoot, this.landscapeRoot, this.importedRoot, this.interiorsRoot],
       true,
     );
     for (const intersection of intersections) {
+      if (!isEffectivelyVisible(intersection.object)) continue;
+      const cerebrumHotspot = resolveCerebrumLibraryHotspot(intersection.object);
       let object: THREE.Object3D | null = intersection.object;
       let academicBuilding: AcademicCampusBuilding | null = null;
       let academicFountain = false;
       let selectableId: string | null = null;
+      let cerebrumExteriorEnvelope = false;
       while (object) {
+        if (cerebrumExteriorEnvelopePattern.test(object.name)) cerebrumExteriorEnvelope = true;
         if (object.userData.academicBuildingData) {
           academicBuilding = object.userData.academicBuildingData as AcademicCampusBuilding;
         } else if (typeof object.userData.academicHotspot === 'string') {
@@ -899,9 +1133,24 @@ export class IslandWorld {
         object = object.parent;
       }
       if (selectableId) {
+        if (cerebrumHotspot) {
+          this.activeCerebrumHotspot = cerebrumHotspot;
+          this.activeAcademicHotspot = academicCampusBuildingById.get('ashcroft-grand-library') ?? academicBuilding;
+          this.select(academicBuildingSelectableId('ashcroft-grand-library'), 'scene');
+          return;
+        }
+        // The legacy exterior facade overlaps the authored walkable volume in
+        // a few places. From inside Cerebrum, skip only those envelope hits so
+        // the next interior hotspot can resolve; authored interior walls still
+        // stop inspection and prevent through-wall interactions.
+        if (insideCerebrum && cerebrumExteriorEnvelope) continue;
         this.activeAcademicHotspot = academicBuilding;
         this.activeAcademicFountainHotspot = academicFountain;
-        this.select(selectableId, 'scene');
+        // Academic facilities are individual editor targets, but WALK entrance
+        // inspection is still coordinated by the district interaction menu so
+        // plaques, histories, the gate, chapel bell, and campus map retain the
+        // established context-sensitive flow.
+        this.select(academicBuilding ? 'academic-libraries-theoretical-labs' : selectableId, 'scene');
         return;
       }
     }
@@ -910,16 +1159,24 @@ export class IslandWorld {
   private pick(event: MouseEvent | PointerEvent) {
     this.activeAcademicHotspot = null;
     this.activeAcademicFountainHotspot = false;
+    this.activeCerebrumHotspot = null;
     const rect = this.renderer.domElement.getBoundingClientRect();
     this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     this.raycaster.far = Infinity;
     this.raycaster.setFromCamera(this.pointer, this.camera);
     const intersections = this.raycaster.intersectObjects(
-      [this.architectureRoot, this.landscapeRoot, this.importedRoot, this.interiorsRoot],
+      [
+        this.architectureRoot,
+        this.landscapeRoot,
+        this.importedRoot,
+        this.interiorsRoot,
+        this.worldStreaming.vistaRoot,
+      ],
       true,
     );
     for (const intersection of intersections) {
+      if (!isEffectivelyVisible(intersection.object)) continue;
       let object: THREE.Object3D | null = intersection.object;
       let academicBuilding: AcademicCampusBuilding | null = null;
       let academicFountain = false;
@@ -954,7 +1211,7 @@ export class IslandWorld {
       true,
     );
     const surface = intersections.find(
-      (intersection) => intersection.object.visible && intersection.object.userData.walkable,
+      (intersection) => isEffectivelyVisible(intersection.object) && intersection.object.userData.walkable,
     );
     if (surface) return surface.point;
     const islandPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -ISLAND_SURFACE_Y);
@@ -966,6 +1223,266 @@ export class IslandWorld {
     this.importPlacementMarker.position.copy(position);
     this.importPlacementMarker.position.y += 0.08;
     this.importPlacementMarker.visible = true;
+  }
+
+  private getCerebrumLibraryHost() {
+    return this.objectGroups.get(academicBuildingSelectableId('ashcroft-grand-library')) ?? null;
+  }
+
+  private getCerebrumStreamingConfig(): CerebrumStreamingConfig | null {
+    const value = this.getCerebrumLibraryHost()?.userData.cerebrumStreamingConfig as
+      | Partial<CerebrumStreamingConfig>
+      | undefined;
+    if (!value) return null;
+    return {
+      ...value,
+      selectableId: value.selectableId ?? academicBuildingSelectableId('ashcroft-grand-library'),
+      width: Number(value.width) || 10.8,
+      depth: Number(value.depth) || 7.2,
+      quality: value.quality === 'low' || value.quality === 'medium' || value.quality === 'high'
+        ? value.quality
+        : this.graphicsQuality,
+      muted: true,
+      hideLegacyShell: value.hideLegacyShell !== false,
+      preloadDistanceMetres: Number(value.preloadDistanceMetres) || 60,
+      unloadDistanceMetres: Number(value.unloadDistanceMetres) || 90,
+      retentionSeconds: Number(value.retentionSeconds) || 15,
+    };
+  }
+
+  private getCerebrumEntranceWorldPosition(target = new THREE.Vector3()) {
+    const host = this.getCerebrumLibraryHost();
+    const config = this.getCerebrumStreamingConfig();
+    if (!host || !config) return null;
+    host.updateWorldMatrix(true, false);
+    return target.set(0, 0.18, (config.depth ?? 7.2) * 0.5 + 0.2).applyMatrix4(host.matrixWorld);
+  }
+
+  private cloneCerebrumState(state: CerebrumLibraryState): CerebrumLibraryState {
+    return {
+      ...state,
+      doors: { ...state.doors },
+      drawers: { ...state.drawers },
+      lamps: { ...state.lamps },
+    };
+  }
+
+  private ensureCerebrumLibraryMounted(reason: 'proximity' | 'walk' | 'orbit' | 'interaction' | 'editing') {
+    const existing = this.getCerebrumLibraryRoot();
+    if (existing) {
+      this.cerebrumStreaming.mounted = true;
+      this.cerebrumStreaming.scheduled = false;
+      this.cerebrumStreaming.phase = this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive
+        ? 'active'
+        : 'loaded';
+      return existing;
+    }
+    const host = this.getCerebrumLibraryHost();
+    const config = this.getCerebrumStreamingConfig();
+    if (!host || !config) return null;
+    this.cancelScheduledCerebrumLoad?.();
+    this.cancelScheduledCerebrumLoad = null;
+    this.cerebrumStreaming.scheduled = false;
+
+    const root = createCerebrumLibraryInterior(host, {
+      selectableId: config.selectableId,
+      width: config.width,
+      depth: config.depth,
+      quality: this.graphicsQuality,
+      muted: true,
+      hideLegacyShell: config.hideLegacyShell,
+    });
+    root.userData.streamingPackage = 'cerebrum-externum';
+    root.userData.streamingLoadReason = reason;
+    root.userData.streamingLoadedAt = this.elapsed;
+    if (this.cachedCerebrumLibraryState) {
+      restoreCerebrumLibraryState(root, this.cachedCerebrumLibraryState);
+    }
+    configureCerebrumLibraryQuality(root, this.graphicsQuality);
+    setCerebrumLibraryMuted(root, true);
+    const mountedState = getCerebrumLibraryState(root);
+    if (mountedState) this.cachedCerebrumLibraryState = this.cloneCerebrumState(mountedState);
+    this.cerebrumStreaming = {
+      ...this.cerebrumStreaming,
+      phase: reason === 'walk' || reason === 'orbit' ? 'active' : 'loaded',
+      mounted: true,
+      scheduled: false,
+      mountedAt: this.elapsed,
+    };
+    this.refreshAnimatedObjects();
+    this.walkController?.refreshNavigation();
+    return root;
+  }
+
+  private scheduleCerebrumLibraryLoad() {
+    if (this.cancelScheduledCerebrumLoad || this.getCerebrumLibraryRoot()) return;
+    this.cerebrumStreaming.phase = 'preloading';
+    this.cerebrumStreaming.scheduled = true;
+    let cancelled = false;
+    const load = () => {
+      if (cancelled) return;
+      this.cancelScheduledCerebrumLoad = null;
+      this.cerebrumStreaming.scheduled = false;
+      const config = this.getCerebrumStreamingConfig();
+      if (config && this.cerebrumStreaming.distanceMetres <= config.unloadDistanceMetres) {
+        this.ensureCerebrumLibraryMounted('proximity');
+      } else {
+        this.cerebrumStreaming.phase = 'unloaded';
+      }
+    };
+    if ('requestIdleCallback' in window) {
+      const handle = window.requestIdleCallback(load, { timeout: 650 });
+      this.cancelScheduledCerebrumLoad = () => {
+        cancelled = true;
+        window.cancelIdleCallback(handle);
+        this.cancelScheduledCerebrumLoad = null;
+        this.cerebrumStreaming.scheduled = false;
+      };
+    } else {
+      const handle = globalThis.setTimeout(load, 0);
+      this.cancelScheduledCerebrumLoad = () => {
+        cancelled = true;
+        globalThis.clearTimeout(handle);
+        this.cancelScheduledCerebrumLoad = null;
+        this.cerebrumStreaming.scheduled = false;
+      };
+    }
+  }
+
+  private unmountCerebrumLibrary() {
+    const root = this.getCerebrumLibraryRoot();
+    if (!root || this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive) return false;
+    const state = getCerebrumLibraryState(root);
+    if (state) this.cachedCerebrumLibraryState = this.cloneCerebrumState(state);
+    this.activeCerebrumHotspot = null;
+    disposeCerebrumLibrary(root);
+    this.cerebrumStreaming = {
+      ...this.cerebrumStreaming,
+      phase: 'unloaded',
+      mounted: false,
+      scheduled: false,
+      mountedAt: null,
+      unloadCount: this.cerebrumStreaming.unloadCount + 1,
+    };
+    this.restoreAcademicExteriorAfterInterior();
+    this.refreshAnimatedObjects();
+    this.walkController.refreshNavigation();
+    this.callbacks.onCerebrumPresenceChange?.(false);
+    return true;
+  }
+
+  private updateCerebrumStreamingLifecycle() {
+    const entrance = this.getCerebrumEntranceWorldPosition();
+    const config = this.getCerebrumStreamingConfig();
+    if (!entrance || !config) return;
+    this.cerebrumStreaming.distanceMetres = this.camera.position.distanceTo(entrance) * 10;
+    const root = this.getCerebrumLibraryRoot();
+    if (!root) {
+      if (this.cerebrumStreaming.distanceMetres <= config.preloadDistanceMetres) {
+        this.scheduleCerebrumLibraryLoad();
+      } else if (this.cerebrumStreaming.scheduled
+        && this.cerebrumStreaming.distanceMetres > config.unloadDistanceMetres) {
+        this.cancelScheduledCerebrumLoad?.();
+        this.cerebrumStreaming.phase = 'unloaded';
+      }
+      return;
+    }
+
+    this.cerebrumStreaming.mounted = true;
+    const active = this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive;
+    if (active) {
+      this.cerebrumStreaming.phase = 'active';
+      this.cerebrumStreaming.lastActiveAt = this.elapsed;
+      return;
+    }
+    const retainedFor = this.elapsed - this.cerebrumStreaming.lastActiveAt;
+    const shouldRetain = retainedFor < config.retentionSeconds;
+    this.cerebrumStreaming.phase = shouldRetain ? 'retention' : 'loaded';
+    if (!shouldRetain && this.cerebrumStreaming.distanceMetres > config.unloadDistanceMetres) {
+      this.unmountCerebrumLibrary();
+    }
+  }
+
+  private isolateAcademicExteriorForInterior() {
+    if (this.academicInteriorIsolation.size) return false;
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    const libraryHost = this.getCerebrumLibraryHost();
+    if (!district || !libraryHost) return false;
+    const retainedPath = new Set<THREE.Object3D>();
+    let cursor: THREE.Object3D | null = libraryHost;
+    while (cursor && cursor !== district) {
+      retainedPath.add(cursor);
+      cursor = cursor.parent;
+    }
+    retainedPath.add(district);
+
+    const isolate = (parent: THREE.Object3D) => {
+      if (parent === libraryHost) return;
+      parent.children.forEach((child) => {
+        if (retainedPath.has(child)) isolate(child);
+        else {
+          this.academicInteriorIsolation.set(child, child.visible);
+          child.visible = false;
+        }
+      });
+    };
+    isolate(district);
+    return this.academicInteriorIsolation.size > 0;
+  }
+
+  private restoreAcademicExteriorAfterInterior() {
+    if (!this.academicInteriorIsolation.size) return false;
+    this.academicInteriorIsolation.forEach((visible, object) => {
+      object.visible = visible;
+    });
+    this.academicInteriorIsolation.clear();
+    return true;
+  }
+
+  private isolateExteriorHighDetailRoots() {
+    if (this.exteriorHighDetailIsolation.size) return false;
+    [this.landscapeRoot, this.transitRoot, this.cityRoot, this.importedRoot, this.interiorsRoot]
+      .forEach((root) => {
+        this.exteriorHighDetailIsolation.set(root, root.visible);
+        root.visible = false;
+      });
+    return true;
+  }
+
+  private restoreExteriorHighDetailRoots() {
+    if (!this.exteriorHighDetailIsolation.size) return false;
+    this.exteriorHighDetailIsolation.forEach((visible, root) => {
+      root.visible = visible;
+    });
+    this.exteriorHighDetailIsolation.clear();
+    return true;
+  }
+
+  private updateWorldStreaming(interiorActive: boolean, force = false) {
+    // Medium's local amber pools do not need a second shadow-map render of the
+    // entire authored library. High retains the optional shadow treatment;
+    // exterior Medium keeps the established global policy.
+    this.renderer.shadowMap.enabled = interiorActive
+      ? this.graphicsQuality === 'high'
+      : this.graphicsQuality !== 'low';
+    const selectedObject = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+    const selectedPackageId = this.worldStreaming.findPackageId(selectedObject);
+    const changed = this.worldStreaming.update({
+      cameraPosition: this.camera.position,
+      mode: this.mode,
+      selectedPackageId,
+      interiorPackageId: interiorActive ? 'academic-libraries-theoretical-labs' : null,
+      force,
+    });
+    const isolationChanged = interiorActive
+      ? this.isolateAcademicExteriorForInterior()
+      : this.restoreAcademicExteriorAfterInterior();
+    const exteriorIsolationChanged = interiorActive
+      ? this.isolateExteriorHighDetailRoots()
+      : this.restoreExteriorHighDetailRoots();
+    if ((changed || isolationChanged || exteriorIsolationChanged) && this.walkController) {
+      this.walkController.refreshNavigation();
+    }
   }
 
   private animate = (time: number) => {
@@ -982,6 +1499,16 @@ export class IslandWorld {
   private update(delta: number) {
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
+    this.updateCerebrumStreamingLifecycle();
+    const cerebrumRoot = this.getCerebrumLibraryRoot();
+    const insideCerebrum = Boolean(
+      cerebrumRoot && isPointInsideCerebrumLibrary(cerebrumRoot, this.camera.position, 'world'),
+    );
+    if (insideCerebrum !== this.cerebrumLibraryPresence) {
+      this.cerebrumLibraryPresence = insideCerebrum;
+      this.callbacks.onCerebrumPresenceChange?.(insideCerebrum);
+    }
+    this.updateWorldStreaming(insideCerebrum || this.cerebrumLibraryInspectionActive);
     this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
     let targetDayMix = 0;
@@ -1114,6 +1641,13 @@ export class IslandWorld {
       targetSkyBottom.lerp(new THREE.Color('#242c38'), 0.9);
     }
 
+    if (insideCerebrum || this.cerebrumLibraryInspectionActive) {
+      targetSunIntensity *= 0.12;
+      targetHemiIntensity *= 0.24;
+      targetExposure = this.getCerebrumLibraryState()?.quietMode ? 0.92 : 1.02;
+      targetFogDensity = Math.min(targetFogDensity, 0.00045);
+    }
+
     const rate = 3.6;
     this.dayMix = THREE.MathUtils.damp(this.dayMix, targetDayMix, rate, delta);
     this.sky.material.uniforms.uDayMix.value = this.dayMix;
@@ -1156,10 +1690,21 @@ export class IslandWorld {
     }
     this.renderer.toneMappingExposure = exposure;
 
+    const precipitationWeather = this.activeWeather === 'rain'
+      || this.activeWeather === 'storm'
+      || this.activeWeather === 'academic-rainy-dusk'
+      || this.activeWeather === 'academic-autumn';
+    this.precipitation.points.visible = precipitationWeather && !insideCerebrum;
     const playerPos = this.mode === 'walk' ? this.camera.position : this.controls.target;
     this.precipitation.update(delta, playerPos, this.elapsed);
 
     this.animatedObjects.forEach((object) => {
+      if (!isEffectivelyVisible(object)) {
+        if (object.userData.animate === 'academic-fountain') {
+          this.academicAudio.setFountain(0, Number.POSITIVE_INFINITY);
+        }
+        return;
+      }
       if (object.userData.animate === 'ring-pod') {
         const angle = this.elapsed * Number(object.userData.speed) + Number(object.userData.phase);
         const rx = Number(object.userData.ringX);
@@ -1245,6 +1790,26 @@ export class IslandWorld {
       }
     });
 
+    if (cerebrumRoot) {
+      updateCerebrumLibrary(cerebrumRoot, delta, this.camera);
+      const roomId = getCerebrumLibraryRoomAt(cerebrumRoot, this.camera.position, 'world');
+      const walkState = this.walkController.getSnapshot();
+      const roomName = roomId ?? (insideCerebrum ? walkState.roomId : null);
+      this.walkController.setRoomContext(insideCerebrum ? roomName : null);
+      const windowProximity = roomName && /vestibule|reading|stair|catalogue|office/i.test(roomName) ? 0.72 : 0.16;
+      this.academicAudio.setLibraryContext({
+        inside: insideCerebrum,
+        roomId: roomName,
+        windowProximity,
+        surface: walkState.surfaceKind,
+        speed: this.mode === 'walk' ? walkState.speedMetresPerSecond / 10 : 0,
+        quiet: getCerebrumLibraryState(cerebrumRoot)?.quietMode ?? false,
+      });
+    } else {
+      this.walkController.setRoomContext(null);
+      this.academicAudio.setLibraryContext({ inside: false, speed: 0 });
+    }
+
     if (this.cameraTween && this.mode !== 'walk') {
       const now = performance.now();
       const linear = THREE.MathUtils.clamp((now - this.cameraTween.startedAt) / this.cameraTween.duration, 0, 1);
@@ -1258,7 +1823,17 @@ export class IslandWorld {
   }
 
   private render() {
-    this.renderer.render(this.scene, this.camera);
+    const library = this.getCerebrumLibraryRoot();
+    const libraryView = Boolean(
+      library
+      && (this.cerebrumLibraryInspectionActive
+        || isPointInsideCerebrumLibrary(library, this.camera.position, 'world')),
+    );
+    // Full-scene SAO/bloom is intentionally a High-quality feature. The
+    // default Medium tier keeps the large island responsive while local
+    // emissive lamps still provide the library's restrained glow.
+    if (libraryView && this.graphicsQuality === 'high') this.composer.render();
+    else this.renderer.render(this.scene, this.camera);
     this.labelRenderer.render(this.scene, this.camera);
   }
 
@@ -1266,6 +1841,7 @@ export class IslandWorld {
     const width = Math.max(1, this.container.clientWidth);
     const height = Math.max(1, this.container.clientHeight);
     this.renderer.setSize(width, height, false);
+    this.composer.setSize(width, height);
     this.labelRenderer.setSize(width, height);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
@@ -1316,6 +1892,7 @@ export class IslandWorld {
       previousLabel?.classList.remove('selected');
     }
     this.selectedId = id;
+    this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
     const label = this.labels.get(id)?.anchor.element;
     label?.classList.add('selected');
     this.refreshSelectionBounds();
@@ -1332,6 +1909,7 @@ export class IslandWorld {
     this.selectionBox.visible = false;
     this.transformControls.detach();
     this.transformControls.getHelper().visible = false;
+    this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
     this.callbacks.onSelection?.(null, source);
   }
 
@@ -1342,6 +1920,7 @@ export class IslandWorld {
     // controls cannot inherit a rolled camera.
     this.camera.up.set(0, 1, 0);
     this.setAcademicFountainInspectionControls(false);
+    this.setCerebrumLibraryInspectionControls(false);
     if (this.activeInteriorBuildingId && mode !== 'edit') this.exitInterior(false);
     if (previousMode === 'walk' && mode !== 'walk') {
       this.walkController.exit();
@@ -1761,6 +2340,8 @@ export class IslandWorld {
     }
     const fountain = group.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
     if (fountain) disposeAcademicFountain(fountain);
+    const library = group.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME);
+    if (library) disposeCerebrumLibrary(library);
     group.removeFromParent();
     this.objectGroups.delete(id);
     this.definitions.delete(id);
@@ -1774,6 +2355,7 @@ export class IslandWorld {
   focus(id: string) {
     if (this.mode === 'walk') return;
     this.setAcademicFountainInspectionControls(false);
+    this.setCerebrumLibraryInspectionControls(false);
     this.camera.up.set(0, 1, 0);
     const object = this.objectGroups.get(id);
     if (!object) return;
@@ -1798,6 +2380,7 @@ export class IslandWorld {
 
   overview() {
     this.setAcademicFountainInspectionControls(false);
+    this.setCerebrumLibraryInspectionControls(false);
     this.camera.up.set(0, 1, 0);
     const plan = this.mode === 'plan';
     if (!plan) this.setMode('explore');
@@ -1822,8 +2405,14 @@ export class IslandWorld {
 
   setLayer(layer: SceneLayer, visible: boolean) {
     let affectedRoot: THREE.Object3D | null = null;
-    if (layer === 'buildings') affectedRoot = this.architectureRoot;
-    if (layer === 'landscape') affectedRoot = this.landscapeRoot;
+    if (layer === 'buildings') {
+      affectedRoot = this.architectureRoot;
+      this.worldStreaming.setLayerEnabled('district', visible);
+    }
+    if (layer === 'landscape') {
+      affectedRoot = this.landscapeRoot;
+      this.worldStreaming.setLayerEnabled('biome', visible);
+    }
     if (layer === 'transit') affectedRoot = this.transitRoot;
     if (affectedRoot) affectedRoot.visible = visible;
     if (layer === 'labels') this.labelRoot.visible = visible;
@@ -1899,7 +2488,87 @@ export class IslandWorld {
   }
 
   getActiveAcademicHotspot() {
-    return this.activeAcademicHotspot ? { ...this.activeAcademicHotspot } : null;
+    if (!this.activeAcademicHotspot) return null;
+    const record = this.activeAcademicHotspot;
+    const definition = this.definitions.get(academicBuildingSelectableId(record.id));
+    const defaultDescription = `${record.description} Founded in ${record.founded}; ${record.zone}.`;
+    return {
+      ...record,
+      name: definition?.name ?? record.name,
+      description: definition?.description === defaultDescription
+        ? record.description
+        : definition?.description ?? record.description,
+    };
+  }
+
+  private getCerebrumLibraryRoot() {
+    return this.objectGroups
+      .get(academicBuildingSelectableId('ashcroft-grand-library'))
+      ?.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME) ?? null;
+  }
+
+  getCerebrumLibraryState(): CerebrumLibraryState | null {
+    const root = this.getCerebrumLibraryRoot();
+    const mounted = root ? getCerebrumLibraryState(root) : null;
+    if (mounted) {
+      this.cachedCerebrumLibraryState = this.cloneCerebrumState(mounted);
+      return mounted;
+    }
+    return this.cachedCerebrumLibraryState
+      ? this.cloneCerebrumState(this.cachedCerebrumLibraryState)
+      : null;
+  }
+
+  getActiveCerebrumLibraryHotspot() {
+    return this.activeCerebrumHotspot ? { ...this.activeCerebrumHotspot } : null;
+  }
+
+  isInsideCerebrumLibrary() {
+    const root = this.getCerebrumLibraryRoot();
+    return Boolean(root && isPointInsideCerebrumLibrary(root, this.camera.position, 'world'));
+  }
+
+  isCerebrumLibraryInspectionActive() {
+    return this.cerebrumLibraryInspectionActive;
+  }
+
+  setCerebrumQuietMode(enabled: boolean) {
+    const root = this.ensureCerebrumLibraryMounted('interaction');
+    if (!root) return false;
+    setCerebrumLibraryQuietMode(root, enabled);
+    this.academicAudio.setQuietMode(enabled);
+    return getCerebrumLibraryState(root)?.quietMode === enabled;
+  }
+
+  performCerebrumLibraryInteraction(hotspotId: string): CerebrumLibraryInteractionResult {
+    const root = this.ensureCerebrumLibraryMounted('interaction');
+    if (!root) {
+      return {
+        handled: false,
+        message: 'Cerebrum Externum is not currently mounted in the Academic District.',
+        state: {
+          quality: this.graphicsQuality,
+          navigationLevel: 'ground',
+          quietMode: false,
+          muted: true,
+          orbitCamera: false,
+          cutawayVisible: false,
+          doors: {},
+          drawers: {},
+          lamps: {},
+          ladderStop: 0,
+          inspectedBookId: null,
+          catalogueRevealed: false,
+          rareBookDoorUnlocked: false,
+          rareBookLocation: null,
+        },
+      };
+    }
+    const result = performCerebrumLibraryInteraction(root, hotspotId);
+    if (result.navigationChanged) this.walkController.refreshNavigation();
+    if (result.action === 'toggle-quiet-mode') this.academicAudio.setQuietMode(result.state.quietMode);
+    if (result.action === 'toggle-mute') void this.setAcademicAudioMuted(result.state.muted);
+    return result;
   }
 
   private getAcademicFountainRoot() {
@@ -1955,6 +2624,72 @@ export class IslandWorld {
       cameraPreset: state.cameraPreset,
       quality: state.quality,
     };
+  }
+
+  private serializeCerebrumLibraryState(): CerebrumLibraryState | null {
+    const state = this.getCerebrumLibraryState();
+    if (!state) return null;
+    return {
+      ...state,
+      muted: true,
+      doors: { ...state.doors },
+      drawers: { ...state.drawers },
+      lamps: { ...state.lamps },
+    };
+  }
+
+  private restoreCerebrumLibraryRuntime(savedValue: unknown) {
+    if (!savedValue || typeof savedValue !== 'object') return false;
+    const root = this.getCerebrumLibraryRoot();
+    const initial = root ? getCerebrumLibraryState(root) : this.cachedCerebrumLibraryState;
+    const saved = savedValue as Partial<CerebrumLibraryState>;
+    const quality: GraphicsQuality = saved.quality === 'low' || saved.quality === 'medium' || saved.quality === 'high'
+      ? saved.quality
+      : this.graphicsQuality;
+    if (!initial) {
+      this.cachedCerebrumLibraryState = {
+        quality,
+        navigationLevel: saved.navigationLevel === 'upper-gallery' || saved.navigationLevel === 'occultum'
+          ? saved.navigationLevel
+          : 'ground',
+        quietMode: saved.quietMode === true,
+        muted: true,
+        orbitCamera: false,
+        cutawayVisible: false,
+        doors: { ...(saved.doors ?? {}) },
+        drawers: { ...(saved.drawers ?? {}) },
+        lamps: { ...(saved.lamps ?? {}) },
+        ladderStop: THREE.MathUtils.clamp(Math.round(saved.ladderStop ?? 0), 0, 2),
+        inspectedBookId: typeof saved.inspectedBookId === 'string' ? saved.inspectedBookId : null,
+        catalogueRevealed: saved.catalogueRevealed === true,
+        rareBookDoorUnlocked: saved.rareBookDoorUnlocked === true || saved.catalogueRevealed === true,
+        rareBookLocation: typeof saved.rareBookLocation === 'string' ? saved.rareBookLocation : null,
+      };
+      this.academicAudio.setQuietMode(this.cachedCerebrumLibraryState.quietMode);
+      void this.academicAudio.setMuted(true);
+      return true;
+    }
+    const restored: CerebrumLibraryState = {
+      ...initial,
+      ...saved,
+      quality,
+      muted: true,
+      orbitCamera: false,
+      cutawayVisible: false,
+      doors: { ...initial.doors, ...(saved.doors ?? {}) },
+      drawers: { ...initial.drawers, ...(saved.drawers ?? {}) },
+      lamps: { ...initial.lamps, ...(saved.lamps ?? {}) },
+    };
+    this.cachedCerebrumLibraryState = this.cloneCerebrumState(restored);
+    if (root) {
+      restoreCerebrumLibraryState(root, restored);
+      configureCerebrumLibraryQuality(root, quality);
+    }
+    this.academicAudio.setQuietMode(restored.quietMode);
+    void this.academicAudio.setMuted(true);
+    if (root) setCerebrumLibraryMuted(root, true);
+    this.walkController.refreshNavigation();
+    return true;
   }
 
   private serializeCameraState() {
@@ -2128,6 +2863,71 @@ export class IslandWorld {
     return true;
   }
 
+  private setCerebrumLibraryInspectionControls(active: boolean) {
+    const root = this.getCerebrumLibraryRoot();
+    this.cerebrumLibraryInspectionActive = active && Boolean(root);
+    if (root) {
+      setCerebrumLibraryCutaway(root, this.cerebrumLibraryInspectionActive);
+      setCerebrumLibraryOrbitMode(root, this.cerebrumLibraryInspectionActive);
+    }
+    if (this.cerebrumLibraryInspectionActive && root) {
+      const preset = getCerebrumLibraryOrbitPreset(root);
+      this.controls.minDistance = preset.minDistance;
+      this.controls.maxDistance = preset.maxDistance;
+      this.controls.minPolarAngle = 0.06;
+      this.controls.maxPolarAngle = Math.PI * 0.49;
+      this.controls.enableRotate = true;
+      return;
+    }
+    if (this.activeInteriorBuildingId || this.academicFountainInspectionActive) return;
+    this.controls.minDistance = 8;
+    this.controls.maxDistance = 980 * MASTERPLAN_RESCALE;
+    this.controls.minPolarAngle = 0;
+    this.controls.maxPolarAngle = Math.PI * 0.485;
+    this.controls.enableRotate = this.mode !== 'plan' && this.mode !== 'walk';
+    this.updateWorldStreaming(this.cerebrumLibraryPresence, true);
+  }
+
+  focusCerebrumLibrary() {
+    const root = this.ensureCerebrumLibraryMounted('orbit');
+    if (!root || this.mode === 'walk') return false;
+    const preset = getCerebrumLibraryOrbitPreset(root);
+    this.setAcademicFountainInspectionControls(false);
+    this.setCerebrumLibraryInspectionControls(true);
+    this.cerebrumStreaming.lastActiveAt = this.elapsed;
+    this.updateWorldStreaming(true, true);
+    this.camera.up.set(0, 1, 0);
+    this.camera.fov = preset.fov;
+    this.camera.near = 0.015;
+    this.camera.updateProjectionMatrix();
+    this.animateCamera(
+      new THREE.Vector3().fromArray(preset.position),
+      new THREE.Vector3().fromArray(preset.target),
+      820,
+    );
+    return true;
+  }
+
+  enterCerebrumLibraryWalk() {
+    const root = this.ensureCerebrumLibraryMounted('walk');
+    if (!root) return false;
+    if (this.mode !== 'walk') this.setMode('walk');
+    this.setCerebrumLibraryInspectionControls(false);
+    root.updateWorldMatrix(true, false);
+    const snapshot = getCerebrumLibrarySnapshot(root);
+    const depth = snapshot.dimensionsMetres.depth * 0.1;
+    const spawn = root.localToWorld(new THREE.Vector3(0, 0.035, depth * 0.5 - 0.72));
+    const direction = new THREE.Vector3(0, -0.035, -1).transformDirection(root.matrixWorld).normalize();
+    this.walkController.refreshNavigation();
+    this.walkController.enter(spawn, direction, spawn);
+    this.cerebrumLibraryPresence = true;
+    this.cerebrumStreaming.phase = 'active';
+    this.cerebrumStreaming.lastActiveAt = this.elapsed;
+    this.updateWorldStreaming(true, true);
+    this.callbacks.onCerebrumPresenceChange?.(true);
+    return true;
+  }
+
   isAcademicMainGateNearby() {
     const district = this.objectGroups.get('academic-libraries-theoretical-labs');
     const gate = district?.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__MAIN_ENTRANCE');
@@ -2198,7 +2998,35 @@ export class IslandWorld {
       this.applyAcademicGateOpen(lightPhase === 'day', false);
     }
     district.userData.academicGateLightPhase = lightPhase;
+    this.syncAcademicNightLighting();
     this.walkController?.refreshNavigation();
+  }
+
+  private syncAcademicNightLighting() {
+    const district = this.objectGroups.get('academic-libraries-theoretical-labs');
+    if (!district) return;
+    const enabled = this.activeTimeOfDay === 'night' && district.userData.academicReadingLightsOn !== false;
+    const materials = new Set<THREE.MeshStandardMaterial>();
+    district.traverse((object) => {
+      if (object.userData.academicNightOrangeLight !== true) return;
+      if (object instanceof THREE.Light) {
+        object.visible = enabled;
+        object.intensity = enabled ? Number(object.userData.academicNightLightIntensity ?? 0.8) : 0;
+        return;
+      }
+      if (!(object instanceof THREE.Mesh)) return;
+      const meshMaterials = Array.isArray(object.material) ? object.material : [object.material];
+      meshMaterials.forEach((material) => {
+        if (material instanceof THREE.MeshStandardMaterial) materials.add(material);
+      });
+    });
+    materials.forEach((material) => {
+      const target = Number(material.userData.academicNightEmissiveIntensity ?? 2.2);
+      material.emissiveIntensity = enabled ? target : 0.035;
+      material.needsUpdate = true;
+    });
+    district.userData.ashcroftNightLightsOn = enabled;
+    district.userData.cerebrumNightLightsOn = enabled;
   }
 
   private performWellOfInfiniteKnowledgeInteraction(action: string) {
@@ -2464,9 +3292,10 @@ export class IslandWorld {
         material.emissiveIntensity = on ? 0.02 : Number(material.userData.academicOriginalEmissive);
         material.needsUpdate = true;
       });
+      this.syncAcademicNightLighting();
       return {
         title: on ? 'Reading Rooms Dimmed' : 'Reading Rooms Lit',
-        message: on ? 'Ashcroft and Wren settle into deep shadow.' : 'Selected leaded windows regain their restrained amber glow.',
+        message: on ? 'Cerebrum Externum and Wren settle into deep shadow.' : 'Selected leaded windows regain their restrained amber glow.',
         state: { readingLightsOn: !on },
       };
     }
@@ -2519,6 +3348,8 @@ export class IslandWorld {
 
   async setAcademicAudioMuted(muted: boolean) {
     await this.academicAudio.setMuted(muted);
+    const root = this.getCerebrumLibraryRoot();
+    if (root) setCerebrumLibraryMuted(root, muted);
     return this.academicAudio.isMuted();
   }
 
@@ -2529,16 +3360,29 @@ export class IslandWorld {
   setGraphicsQuality(quality: GraphicsQuality) {
     this.graphicsQuality = quality;
     const pixelRatio = quality === 'low' ? 1 : quality === 'medium' ? 1.35 : 1.8;
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, pixelRatio));
+    const effectivePixelRatio = Math.min(window.devicePixelRatio, pixelRatio);
+    this.renderer.setPixelRatio(effectivePixelRatio);
+    // Post effects are softly blurred by design, so a sub-native target keeps
+    // High quality usable even in this very large procedural scene.
+    this.composer.setPixelRatio(quality === 'high' ? Math.min(window.devicePixelRatio, 0.75) : 0.5);
     this.renderer.shadowMap.enabled = quality !== 'low';
     this.sun.castShadow = quality === 'high';
     const precipitationMaterial = this.precipitation.points.material as THREE.PointsMaterial;
     precipitationMaterial.size = quality === 'low' ? 0.035 : 0.05;
+    this.saoPass.enabled = quality === 'high';
+    this.saoPass.params.saoIntensity = 0.095;
+    this.saoPass.params.saoKernelRadius = 14;
+    this.bloomPass.enabled = quality === 'high';
+    this.bloomPass.strength = 0.075;
+    this.bloomPass.radius = 0.24;
+    this.bloomPass.threshold = 1.02;
     const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
     if (academic) {
       configureAcademicTreeQuality(academic, quality);
       const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
       if (fountain) configureAcademicFountainQuality(fountain, quality);
+      const library = academic.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME);
+      if (library) configureCerebrumLibraryQuality(library, quality);
     }
     this.resize();
   }
@@ -2547,16 +3391,178 @@ export class IslandWorld {
     return this.graphicsQuality;
   }
 
+  getStreamingSnapshot() {
+    return {
+      ...this.worldStreaming.getSnapshot(),
+      cerebrumExternum: {
+        ...this.cerebrumStreaming,
+        distanceMetres: Number.isFinite(this.cerebrumStreaming.distanceMetres)
+          ? Number(this.cerebrumStreaming.distanceMetres.toFixed(1))
+          : -1,
+        preloadDistanceMetres: this.getCerebrumStreamingConfig()?.preloadDistanceMetres ?? 60,
+        unloadDistanceMetres: this.getCerebrumStreamingConfig()?.unloadDistanceMetres ?? 90,
+        retentionSeconds: this.getCerebrumStreamingConfig()?.retentionSeconds ?? 15,
+        stateCached: this.cachedCerebrumLibraryState !== null,
+      },
+    };
+  }
+
+  /**
+   * One-way bootstrap contract for the staged Unreal migration. This is not a
+   * production publish path: Unreal Editor becomes authoritative after import,
+   * and browser sandbox edits are never merged back into that world.
+   */
+  createUnrealBootstrapManifest(): UnrealWorldManifest {
+    this.modelRoot.updateWorldMatrix(true, true);
+    const packages = this.worldStreaming.getSnapshot().packages.map((pkg) => ({
+      id: pkg.id,
+      kind: pkg.kind,
+      exteriorHighLayer: 'ExteriorHigh' as const,
+      exteriorHlodLayer: 'ExteriorHLOD' as const,
+    }));
+    const entities = Array.from(this.definitions.values())
+      .filter((definition) => definition.category !== 'editor' && definition.category !== 'imported')
+      .flatMap((definition) => {
+        const group = this.objectGroups.get(definition.id);
+        if (!group) return [];
+        group.updateWorldMatrix(true, true);
+        const bounds = new THREE.Box3().setFromObject(group, true);
+        if (bounds.isEmpty()) bounds.setFromCenterAndSize(group.getWorldPosition(new THREE.Vector3()), new THREE.Vector3());
+        const packageId = this.worldStreaming.findPackageId(group);
+        const cerebrum = definition.category === 'academic-building'
+          && definition.academicRecordId === 'ashcroft-grand-library';
+        const dataLayers: UnrealDataLayerName[] = cerebrum
+          ? [...UNREAL_DATA_LAYERS]
+          : ['ExteriorHigh', 'ExteriorHLOD'];
+        const interactionArchetypes = cerebrum
+          ? ['door', 'drawer', 'lamp', 'book', 'catalogue', 'rolling-ladder', 'editable-inscription']
+          : 'interactions' in definition
+            ? [...(definition.interactions ?? [])]
+            : [];
+        return [{
+          id: definition.id,
+          name: definition.name,
+          label: sceneLabel(definition),
+          description: definition.description,
+          ...('inscription' in definition && typeof definition.inscription === 'string'
+            ? { inscription: definition.inscription }
+            : {}),
+          entityType: definition.category,
+          parentPackageId: packageId,
+          source: {
+            authority: 'web-sandbox' as const,
+            disposition: 'bootstrap-placeholder-only' as const,
+          },
+          transform: {
+            webMatrixColumnMajor: group.matrixWorld.elements.map((value) => Number(value.toFixed(6))),
+            unrealMatrixRowMajorCentimetres: webMatrixToUnrealRowMajor(group.matrixWorld),
+          },
+          bounds: {
+            webMin: bounds.min.toArray() as [number, number, number],
+            webMax: bounds.max.toArray() as [number, number, number],
+            unrealMinCentimetres: webPointToUnrealCentimetres(bounds.min),
+            unrealMaxCentimetres: webPointToUnrealCentimetres(bounds.max),
+          },
+          asset: {
+            placeholderGlb: `Assets/Placeholders/${definition.id}.glb`,
+            stableActorName: stableUnrealName(definition.id),
+          },
+          streaming: {
+            dataLayers,
+            ...(cerebrum ? {
+              levelInstance: 'LI_CerebrumExternum',
+              preloadDistanceMetres: 60,
+              unloadDistanceMetres: 90,
+              retentionSeconds: 15,
+            } : {}),
+          },
+          interactionArchetypes,
+          persistentStateKey: `entity:${definition.id}`,
+        }];
+      });
+    return {
+      schema: UNREAL_WORLD_MANIFEST_SCHEMA,
+      generatedAt: new Date().toISOString(),
+      productionAuthority: 'unreal-editor',
+      sourceAuthority: 'web-sandbox',
+      importPolicy: 'bootstrap-only-no-roundtrip',
+      coordinateSystem: {
+        web: '+X east, +Y up, +Z south; 1 unit = 10 metres',
+        unreal: '+X east, +Y south, +Z up; centimetres',
+        mapping: 'Unreal X = Web X * 1000; Unreal Y = Web Z * 1000; Unreal Z = Web Y * 1000',
+      },
+      dataLayers: UNREAL_DATA_LAYERS,
+      packages,
+      entities,
+    };
+  }
+
+  downloadUnrealBootstrapManifest(filename = 'world.manifest.json') {
+    const manifest = this.createUnrealBootstrapManifest();
+    downloadBlob(
+      new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' }),
+      filename,
+    );
+  }
+
+  async createUnrealPlaceholderGlb(entityId: string) {
+    if (entityId === academicBuildingSelectableId('ashcroft-grand-library')) {
+      this.ensureCerebrumLibraryMounted('editing');
+    }
+    const source = this.objectGroups.get(entityId);
+    if (!source) throw new Error(`Cannot export unknown bootstrap entity: ${entityId}`);
+    source.updateWorldMatrix(true, true);
+    const clone = source.clone(true);
+    clone.name = stableUnrealName(entityId);
+    // Geometry stays entity-local; the manifest owns authoritative world
+    // placement so Unreal never applies the source transform twice.
+    clone.position.set(0, 0, 0);
+    clone.quaternion.identity();
+    clone.scale.set(1, 1, 1);
+    clone.updateMatrixWorld(true);
+    clone.userData.stableEntityId = entityId;
+    clone.userData.sourceAuthority = 'web-sandbox';
+    clone.userData.sourceDisposition = 'bootstrap-placeholder-only';
+    clone.traverse((object) => {
+      if (object.userData.exportAlways || object.userData.exportFallback) object.visible = true;
+      if (object.userData.editorCutawayCeiling) object.visible = true;
+      if (object.userData.academicTreeLodLevel) {
+        object.visible = object.userData.academicTreeLodLevel === 'near';
+      }
+      if (object.userData.streamingProxy) object.visible = false;
+    });
+    const exporter = new GLTFExporter();
+    const result = await exporter.parseAsync(clone, {
+      binary: true,
+      onlyVisible: true,
+      trs: true,
+      maxTextureSize: 2048,
+      includeCustomExtensions: true,
+    });
+    if (!(result instanceof ArrayBuffer)) throw new Error('Bootstrap GLB exporter returned text instead of binary data.');
+    return result;
+  }
+
+  async downloadUnrealPlaceholderGlb(entityId: string) {
+    const result = await this.createUnrealPlaceholderGlb(entityId);
+    downloadBlob(
+      new Blob([result], { type: 'model/gltf-binary' }),
+      `${entityId}.glb`,
+    );
+  }
+
   getSceneStatistics() {
     const geometries = new Set<string>();
     let visibleMeshes = 0;
     let triangles = 0;
-    this.modelRoot.traverse((object) => {
-      if (!(object instanceof THREE.Mesh) || !object.visible) return;
+    this.scene.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || !isEffectivelyVisible(object)) return;
       visibleMeshes += 1;
       geometries.add(object.geometry.uuid);
       const position = object.geometry.getAttribute('position');
-      triangles += object.geometry.index ? object.geometry.index.count / 3 : (position?.count ?? 0) / 3;
+      const instanceMultiplier = object instanceof THREE.InstancedMesh ? object.count : 1;
+      triangles += (object.geometry.index ? object.geometry.index.count / 3 : (position?.count ?? 0) / 3)
+        * instanceMultiplier;
     });
     return {
       visibleMeshes,
@@ -2565,6 +3571,13 @@ export class IslandWorld {
       drawCalls: this.renderer.info.render.calls,
       textureCount: this.renderer.info.memory.textures,
       quality: this.graphicsQuality,
+      streaming: this.getStreamingSnapshot(),
+      migration: {
+        manifestSchema: UNREAL_WORLD_MANIFEST_SCHEMA,
+        productionAuthority: 'unreal-editor',
+        browserEdits: 'sandbox-only; no production roundtrip',
+        coordinateMapping: 'UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000',
+      },
     };
   }
 
@@ -2726,6 +3739,44 @@ export class IslandWorld {
     return this.selectedId ? this.definitions.get(this.selectedId) ?? null : null;
   }
 
+  setObjectMetadata(id: string, metadata: ObjectMetadata) {
+    const definition = this.definitions.get(id);
+    const group = this.objectGroups.get(id);
+    if (!definition || !group) return null;
+
+    const name = metadata.name.trim().slice(0, 120);
+    const labelText = metadata.label.trim().slice(0, 120);
+    const description = metadata.description.trim().slice(0, 800);
+    const inscription = definition.category === 'academic-building' && typeof definition.inscription === 'string'
+      ? (metadata.inscription ?? definition.inscription).trim().slice(0, 96)
+      : undefined;
+    if (!name || !labelText) return null;
+
+    const replacement = {
+      ...definition,
+      name,
+      label: labelText,
+      description,
+      ...(inscription !== undefined ? { inscription } : {}),
+    } as SceneDefinition;
+    this.definitions.set(id, replacement);
+
+    // Preserve the stable technical name and selectable ID while making the
+    // edited display metadata available to JSON and GLB exports.
+    group.userData.displayName = name;
+    group.userData.displayLabel = labelText;
+    group.userData.description = description;
+    if (inscription !== undefined) updateAcademicBuildingInscription(group, inscription);
+
+    const label = this.labels.get(id);
+    if (label) {
+      label.definition = replacement;
+      label.anchor.element.textContent = labelText;
+    }
+    this.callbacks.onMetadataChange?.(replacement);
+    return replacement;
+  }
+
   getObjectState(id: string): ObjectState | null {
     const group = this.objectGroups.get(id);
     const definition = this.definitions.get(id);
@@ -2784,10 +3835,33 @@ export class IslandWorld {
     this.updateLabels(true);
   }
 
+  private isolateAcademicAccentMaterials(definition: SceneDefinition, group: THREE.Group) {
+    if (definition.category === 'academic-building' && group.userData.academicAccentMaterialsIsolated !== true) {
+      const replacements = new Map<THREE.Material, THREE.Material>();
+      group.traverse((child) => {
+        if (!(child instanceof THREE.Mesh || child instanceof THREE.LineSegments)) return;
+        const replace = (material: THREE.Material) => {
+          if (!material.userData.isDistrictAccent) return material;
+          let replacement = replacements.get(material);
+          if (!replacement) {
+            replacement = material.clone();
+            replacements.set(material, replacement);
+          }
+          return replacement;
+        };
+        child.material = Array.isArray(child.material)
+          ? child.material.map(replace)
+          : replace(child.material);
+      });
+      group.userData.academicAccentMaterialsIsolated = true;
+    }
+  }
+
   setObjectAccent(id: string, color: string) {
     const group = this.objectGroups.get(id);
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
+    this.isolateAcademicAccentMaterials(definition, group);
     setModelAccent(group, color);
     if (group.userData.styleCustomized === true || definition.category === 'editor' || definition.category === 'imported') {
       const primary = group.userData.primaryColor ?? '#ffffff';
@@ -2913,6 +3987,7 @@ export class IslandWorld {
         weather: this.activeWeather,
         season: this.activeSeason,
         academicFountain: this.serializeAcademicFountainState(),
+        cerebrumLibrary: this.serializeCerebrumLibraryState(),
         camera: this.serializeCameraState(),
       },
     };
@@ -2932,7 +4007,14 @@ export class IslandWorld {
   }
 
   rebuildStaticDistrictsAndBiomes() {
-    const toRemove: string[] = [];
+    const mountedLibrary = this.getCerebrumLibraryRoot();
+    const mountedLibraryState = mountedLibrary ? getCerebrumLibraryState(mountedLibrary) : null;
+    if (mountedLibraryState) this.cachedCerebrumLibraryState = this.cloneCerebrumState(mountedLibraryState);
+    this.cancelScheduledCerebrumLoad?.();
+    this.cancelScheduledCerebrumLoad = null;
+    this.restoreAcademicExteriorAfterInterior();
+    this.restoreExteriorHighDetailRoots();
+    const toRemove = ACADEMIC_CAMPUS_BUILDINGS.map((record) => academicBuildingSelectableId(record.id));
     districts.forEach((d) => toRemove.push(d.id));
     biomes.forEach((b) => toRemove.push(b.id));
 
@@ -2944,6 +4026,14 @@ export class IslandWorld {
     });
 
     this.createDistrictsAndBiomes();
+    this.cerebrumStreaming = {
+      ...this.cerebrumStreaming,
+      phase: 'unloaded',
+      mounted: false,
+      scheduled: false,
+      mountedAt: null,
+    };
+    this.updateWorldStreaming(false, true);
     this.syncAcademicGateForTime(true);
     this.refreshAnimatedObjects();
     const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -2951,6 +4041,8 @@ export class IslandWorld {
       configureAcademicTreeQuality(academic, this.graphicsQuality);
       const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
       if (fountain) configureAcademicFountainQuality(fountain, this.graphicsQuality);
+      const library = academic.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME);
+      if (library) configureCerebrumLibraryQuality(library, this.graphicsQuality);
     }
   }
 
@@ -3132,6 +4224,7 @@ export class IslandWorld {
           if (styleCustomized) {
             applyCustomStyles(group, primaryColor, secondaryColor, accent, patternType, patternScale);
           } else if (String(accent).toLowerCase() !== String(definition.accent).toLowerCase()) {
+            this.isolateAcademicAccentMaterials(definition, group);
             setModelAccent(group, accent);
           }
 
@@ -3142,8 +4235,24 @@ export class IslandWorld {
             }
           });
 
+          const savedName = typeof obj.name === 'string' && obj.name.trim()
+            ? obj.name.trim().slice(0, 120)
+            : definition.name;
+          const savedLabel = typeof obj.label === 'string' && obj.label.trim()
+            ? obj.label.trim().slice(0, 120)
+            : undefined;
+          const savedDescription = typeof obj.description === 'string'
+            ? obj.description.trim().slice(0, 800)
+            : definition.description;
+          const savedInscription = definition.category === 'academic-building' && typeof definition.inscription === 'string'
+            ? (typeof obj.inscription === 'string' ? obj.inscription : definition.inscription).trim().slice(0, 96)
+            : undefined;
           const replacement = {
             ...definition,
+            name: savedName,
+            label: savedLabel,
+            description: savedDescription,
+            ...(savedInscription !== undefined ? { inscription: savedInscription } : {}),
             accent,
             ...(styleCustomized ? { primaryColor, secondaryColor, patternType, patternScale } : {}),
             collisionEnabled,
@@ -3153,7 +4262,14 @@ export class IslandWorld {
 
           const label = this.labels.get(id);
           label?.anchor.element.style.setProperty('--label-accent', accent);
-          if (label) label.definition = replacement;
+          if (label) {
+            label.definition = replacement;
+            label.anchor.element.textContent = sceneLabel(replacement);
+          }
+          group.userData.displayName = savedName;
+          group.userData.displayLabel = sceneLabel(replacement);
+          group.userData.description = savedDescription;
+          if (savedInscription !== undefined) updateAcademicBuildingInscription(group, savedInscription);
         }
       }
     });
@@ -3211,6 +4327,7 @@ export class IslandWorld {
         this.controls.update();
       }
       this.restoreAcademicFountainState(payload.editor.academicFountain);
+      this.restoreCerebrumLibraryRuntime(payload.editor.cerebrumLibrary);
     }
 
     this.applySeasonColors(this.activeSeason);
@@ -3235,6 +4352,7 @@ export class IslandWorld {
         weather: this.activeWeather,
         season: this.activeSeason,
         academicFountain: this.serializeAcademicFountainState(),
+        cerebrumLibrary: this.serializeCerebrumLibraryState(),
         camera: this.serializeCameraState(),
       },
     };
@@ -3557,6 +4675,7 @@ export class IslandWorld {
         weather: this.activeWeather,
         season: this.activeSeason,
         academicFountain: this.serializeAcademicFountainState(),
+        cerebrumLibrary: this.serializeCerebrumLibraryState(),
         camera: this.serializeCameraState(),
       },
       blender: {
@@ -3598,6 +4717,7 @@ export class IslandWorld {
     );
     return {
       application: 'YouTopy Lab Island spatial editor',
+      contentAuthority: 'web-sandbox; Unreal Editor owns production content',
       coordinateSystem: 'origin at central megabuilding; +X east, +Y up, +Z south; 1 unit = 10 metres',
       mode: this.mode,
       environment: this.isDaylight() ? 'daylight' : 'blue-hour',
@@ -3614,6 +4734,7 @@ export class IslandWorld {
         islandRadiusWorldUnits: ISLAND_RADIUS,
         islandRadiusMetres: ISLAND_RADIUS * 10,
       },
+      streaming: this.getStreamingSnapshot(),
       counts: {
         districts: districts.length,
         biomes: biomes.length,
@@ -3642,6 +4763,7 @@ export class IslandWorld {
         optimization: academicGroup.userData.academicOptimization ?? null,
         treePopulation: academicGroup.userData.academicTreePopulation ?? null,
         pathNetwork: academicGroup.userData.academicPathNetwork ?? null,
+        canal: academicGroup.userData.academicCanal ?? null,
         fountain: (() => {
           const fountain = academicGroup.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
           return fountain ? {
@@ -3658,12 +4780,40 @@ export class IslandWorld {
             nearby: this.isAcademicFountainNearby(),
           } : null;
         })(),
+        cerebrumExternum: (() => {
+          const library = this.getCerebrumLibraryRoot();
+          const streaming = this.getStreamingSnapshot().cerebrumExternum;
+          if (!library) {
+            return {
+              name: 'Cerebrum Externum',
+              undergroundName: 'Cerebrum Occultum',
+              mounted: false,
+              streaming,
+              state: this.getCerebrumLibraryState(),
+              inside: false,
+              architecturalOrbitActive: false,
+              activeHotspot: null,
+              ambience: this.academicAudio.getLibrarySnapshot(),
+            };
+          }
+          return {
+            ...getCerebrumLibrarySnapshot(library),
+            mounted: true,
+            streaming,
+            inside: this.isInsideCerebrumLibrary(),
+            architecturalOrbitActive: this.cerebrumLibraryInspectionActive,
+            activeHotspot: this.getActiveCerebrumLibraryHotspot(),
+            ambience: this.academicAudio.getLibrarySnapshot(),
+          };
+        })(),
         gateOpen: academicGroup.userData.academicGateOpen === true,
         vintageBenchCount: Number(
           academicGroup.getObjectByName('academic-libraries-theoretical-labs__ACADEMIC_ZONE__VINTAGE_CAMPUS_BENCHES')
             ?.userData.academicVintageBenchCount ?? 0,
         ),
         readingLightsOn: academicGroup.userData.academicReadingLightsOn !== false,
+        ashcroftNightLightsOn: academicGroup.userData.ashcroftNightLightsOn === true,
+        cerebrumNightLightsOn: academicGroup.userData.cerebrumNightLightsOn === true,
         chapelBellRings: Number(academicGroup.userData.chapelBellRings ?? 0),
         activeHotspot: this.getActiveAcademicHotspot(),
       } : null,
@@ -3671,6 +4821,11 @@ export class IslandWorld {
         ? {
             id: selected.id,
             name: selected.name,
+            label: sceneLabel(selected),
+            description: selected.description,
+            ...(selected.category === 'academic-building' && typeof selected.inscription === 'string'
+              ? { inscription: selected.inscription, referenceStyle: selectedGroup?.userData.ashcroftReferenceStyle ?? null }
+              : {}),
             category: selected.category,
             state: this.getObjectState(selected.id),
             districtCell: selectedGroup?.userData.districtCell ?? null,
@@ -3678,7 +4833,7 @@ export class IslandWorld {
             biomeEcologyPlan: selectedGroup?.userData.biomeEcologyPlan ?? null,
           }
         : null,
-      visibleLabels: visibleLabels.map((label) => label.definition.name),
+      visibleLabels: visibleLabels.map((label) => sceneLabel(label.definition)),
       camera: {
         position: this.camera.position.toArray().map((value) => Number(value.toFixed(2))),
         target: this.controls.target.toArray().map((value) => Number(value.toFixed(2))),
@@ -3725,8 +4880,14 @@ export class IslandWorld {
   dispose() {
     this.disposed = true;
     this.renderer.setAnimationLoop(null);
+    this.cancelScheduledCerebrumLoad?.();
+    this.cancelScheduledCerebrumLoad = null;
+    this.restoreAcademicExteriorAfterInterior();
+    this.restoreExteriorHighDetailRoots();
     const fountain = this.getAcademicFountainRoot();
     if (fountain) disposeAcademicFountain(fountain);
+    const library = this.getCerebrumLibraryRoot();
+    if (library) disposeCerebrumLibrary(library);
     this.resizeObserver.disconnect();
     this.renderer.domElement.removeEventListener('pointerdown', this.onPointerDown);
     this.renderer.domElement.removeEventListener('pointerup', this.onPointerUp);
@@ -3736,6 +4897,10 @@ export class IslandWorld {
     this.walkController.dispose();
     this.transformControls.dispose();
     this.academicAudio.dispose();
+    this.saoPass.dispose();
+    this.bloomPass.dispose();
+    this.composer.dispose();
+    this.worldStreaming.dispose();
     this.renderer.dispose();
     this.labelRenderer.domElement.remove();
     this.renderer.domElement.remove();

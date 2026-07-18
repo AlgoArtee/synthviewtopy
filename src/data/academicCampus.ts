@@ -13,12 +13,20 @@ export interface AcademicCampusBuilding {
   readonly kind: string;
   readonly description: string;
   readonly history: string;
+  /** Optional editable stone inscription mounted on the building facade. */
+  readonly inscription?: string;
   readonly location: readonly [tangent: number, radial: number];
   readonly footprint: readonly [width: number, depth: number];
   readonly height: number;
   readonly interior?: AcademicInteriorKind;
   readonly existing?: boolean;
   readonly landmark?: boolean;
+}
+
+export const ACADEMIC_BUILDING_SELECTABLE_PREFIX = 'academic-building-';
+
+export function academicBuildingSelectableId(recordId: string) {
+  return `${ACADEMIC_BUILDING_SELECTABLE_PREFIX}${recordId}`;
 }
 
 export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
@@ -38,12 +46,13 @@ export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
   },
   {
     id: 'ashcroft-grand-library',
-    name: 'Ashcroft Grand Library',
+    name: 'Cerebrum Externum',
     founded: 1512,
     zone: 'Library Court',
     kind: 'library',
-    description: 'A monumental library of lancet windows, deep buttresses, and amber reading rooms.',
-    history: 'Ashcroft was built around the bequest of jurist Eleanor Vale and enlarged during the Victorian catalogue reforms. Its north stair was deliberately worn into a shallow central channel by generations of readers.',
+    description: 'Blackwood University’s monumental external brain: lancet-lit reading halls above the restricted Cerebrum Occultum archive.',
+    history: 'Cerebrum Externum was founded in 1512 around the Ashcroft bequest of jurist Eleanor Vale and enlarged during the Victorian catalogue reforms. Its stair halls, reading rooms, and increasingly labyrinthine stacks record five centuries of additions, while the controlled underground archive retains the older institutional name Cerebrum Occultum.',
+    inscription: 'CEREBRUM EXTERNUM · FOUNDED MDXII',
     location: [-21, -15],
     footprint: [12.8, 8.5],
     height: 4.8,
@@ -57,7 +66,7 @@ export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
     founded: 1664,
     zone: 'Library Court',
     kind: 'library',
-    description: 'A guarded rare-books range linked to Ashcroft by an upper stone bridge.',
+    description: 'A guarded rare-books range linked to Cerebrum Externum by an upper stone bridge.',
     history: 'The Wren range was added after the Restoration to house manuscripts removed from damp college cellars. Its narrow archive windows and copper fire doors reflect a cautious 1911 renovation.',
     location: [20, -18],
     footprint: [10.4, 7.2],

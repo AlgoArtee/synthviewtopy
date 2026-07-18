@@ -23,6 +23,8 @@ export interface WalkSnapshot {
   positionWorld: [number, number, number];
   positionMetres: [number, number, number];
   groundY: number | null;
+  surfaceKind: string;
+  roomId: string;
   speedMetresPerSecond: number;
   turboEnabled: boolean;
   jumpState: 'grounded' | 'rising' | 'falling';
@@ -84,6 +86,8 @@ export class WalkController {
   private active = false;
   private grounded = false;
   private groundY: number | null = null;
+  private surfaceKind = 'stone';
+  private roomId = 'outside';
   private currentSpeed = 0;
   private turboEnabled = false;
   private dragLookActive = false;
@@ -126,7 +130,7 @@ export class WalkController {
   }
 
   private findNearestWalkable(x: number, z: number): { x: number; y: number; z: number } | null {
-    const gy = this.sampleGround(x, z);
+    const gy = this.sampleGround(x, z, { spawnSearch: true });
     if (gy !== null && this.isSpawnClear(x, z, gy)) {
       return { x, y: gy, z };
     }
@@ -139,7 +143,7 @@ export class WalkController {
         const angle = (a / angleSteps) * Math.PI * 2;
         const cx = x + Math.cos(angle) * radius;
         const cz = z + Math.sin(angle) * radius;
-        const cy = this.sampleGround(cx, cz);
+        const cy = this.sampleGround(cx, cz, { spawnSearch: true });
         if (cy !== null && this.isSpawnClear(cx, cz, cy)) {
           return { x: cx, y: cy, z: cz };
         }
@@ -147,7 +151,7 @@ export class WalkController {
     }
 
     const bridgeSpawn = new THREE.Vector3(0, 1.82, 44);
-    const bgy = this.sampleGround(bridgeSpawn.x, bridgeSpawn.z);
+    const bgy = this.sampleGround(bridgeSpawn.x, bridgeSpawn.z, { spawnSearch: true });
     if (bgy !== null) {
       return { x: bridgeSpawn.x, y: bgy, z: bridgeSpawn.z };
     }
@@ -175,6 +179,7 @@ export class WalkController {
     }
 
     this.groundY = pt.y;
+    this.sampleGround(pt.x, pt.z, { spawnSearch: true, trackSurface: true });
     this.grounded = true;
     this.velocityY = 0;
     this.isJumping = false;
@@ -324,7 +329,7 @@ export class WalkController {
       }
     }
 
-    const sampledGround = this.sampleGround(this.camera.position.x, this.camera.position.z);
+    const sampledGround = this.sampleGround(this.camera.position.x, this.camera.position.z, { trackSurface: true });
     const targetY = (sampledGround !== null ? sampledGround : (this.groundY !== null ? this.groundY : 0)) + WALK_EYE_HEIGHT;
     
     if (this.isJumping) {
@@ -358,6 +363,10 @@ export class WalkController {
     }
   }
 
+  setRoomContext(roomId: string | null) {
+    this.roomId = roomId?.trim() || 'outside';
+  }
+
   getSnapshot(): WalkSnapshot {
     this.camera.getWorldDirection(this.direction);
     const position = this.camera.position.toArray() as [number, number, number];
@@ -369,6 +378,8 @@ export class WalkController {
       positionWorld: position.map((value) => Number(value.toFixed(3))) as [number, number, number],
       positionMetres: position.map((value) => Number(worldUnitsToMetres(value).toFixed(1))) as [number, number, number],
       groundY: this.groundY === null ? null : Number(this.groundY.toFixed(3)),
+      surfaceKind: this.surfaceKind,
+      roomId: this.roomId,
       speedMetresPerSecond: Number(worldUnitsToMetres(this.currentSpeed).toFixed(1)),
       turboEnabled: this.turboEnabled,
       jumpState: !this.isJumping ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
@@ -393,13 +404,37 @@ export class WalkController {
     document.removeEventListener('pointerlockerror', this.onPointerLockError, { capture: true });
   }
 
-  private sampleGround(x: number, z: number) {
-    this.rayOrigin.set(x, 40, z);
+  private sampleGround(
+    x: number,
+    z: number,
+    options: { spawnSearch?: boolean; trackSurface?: boolean } = {},
+  ) {
+    const feetY = this.camera.position.y - WALK_EYE_HEIGHT;
+    const originY = options.spawnSearch || this.groundY === null
+      ? 40
+      : Math.max(feetY, this.groundY) + WALK_STEP_HEIGHT + 0.012;
+    this.rayOrigin.set(x, originY, z);
     this.raycaster.set(this.rayOrigin, this.down);
     this.raycaster.near = 0;
     this.raycaster.far = 80;
     const intersections = this.raycaster.intersectObjects(this.walkables, false);
-    return intersections.length ? intersections[0].point.y : null;
+    const hit = intersections[0];
+    if (!hit) return null;
+    if (options.trackSurface) {
+      this.surfaceKind = 'stone';
+      this.roomId = 'outside';
+      let cursor: THREE.Object3D | null = hit.object;
+      while (cursor) {
+        const kind = cursor.userData.surfaceKind;
+        if (typeof kind === 'string' && kind.length) {
+          this.surfaceKind = kind;
+        }
+        const roomId = cursor.userData.libraryRoom;
+        if (typeof roomId === 'string' && roomId.length) this.roomId = roomId;
+        cursor = cursor.parent;
+      }
+    }
+    return hit.point.y;
   }
 
   private isSpawnClear(x: number, z: number, ground: number) {

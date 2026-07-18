@@ -6,6 +6,7 @@ import {
   type AcademicCampusBuilding,
 } from './data/academicCampus';
 import {
+  createAcademicBuildingDefinition,
   IslandWorld,
   type EditorAssetDefinition,
   type GizmoMode,
@@ -72,6 +73,11 @@ const emptyInspector = required<HTMLElement>('#empty-inspector');
 const inspectorContent = required<HTMLElement>('#inspector-content');
 const selectionKind = required<HTMLElement>('#selection-kind');
 const selectionDescription = required<HTMLElement>('#selection-description');
+const objectNameInput = required<HTMLInputElement>('#object-name');
+const objectLabelInput = required<HTMLInputElement>('#object-label');
+const objectDescriptionInput = required<HTMLTextAreaElement>('#object-description');
+const objectInscriptionField = required<HTMLElement>('#object-inscription-field');
+const objectInscriptionInput = required<HTMLInputElement>('#object-inscription');
 const selectionRing = required<HTMLElement>('#selection-ring');
 const selectionArchetype = required<HTMLElement>('#selection-archetype');
 const positionInputs = {
@@ -101,6 +107,17 @@ const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
 const envSeasonSelect = required<HTMLSelectElement>('#env-season');
 const envQualitySelect = required<HTMLSelectElement>('#env-quality');
 const academicAudioButton = required<HTMLButtonElement>('#academic-audio-toggle');
+const cerebrumQuietButton = required<HTMLButtonElement>('#cerebrum-quiet-toggle');
+const cerebrumPersistentControls = required<HTMLElement>('#cerebrum-sound-controls');
+const cerebrumPersistentQuiet = required<HTMLButtonElement>('#cerebrum-persistent-quiet');
+const cerebrumPersistentMute = required<HTMLButtonElement>('#cerebrum-persistent-mute');
+const cerebrumWalkButton = required<HTMLButtonElement>('#cerebrum-walk-button');
+const cerebrumOrbitButton = required<HTMLButtonElement>('#cerebrum-orbit-button');
+const cerebrumTitleCard = required<HTMLElement>('#cerebrum-title-card');
+const cerebrumTitleCardTitle = required<HTMLElement>('#cerebrum-title-card-title');
+const cerebrumTitleCardSubtitle = required<HTMLElement>('#cerebrum-title-card-subtitle');
+const cerebrumTitleCardBody = required<HTMLElement>('#cerebrum-title-card-body');
+const cerebrumTitleCardClose = required<HTMLButtonElement>('#cerebrum-title-card-close');
 const debugButton = required<HTMLButtonElement>('#debug-toggle');
 const debugStats = required<HTMLElement>('#debug-stats');
 const fountainControlPanel = required<HTMLElement>('#fountain-control-panel');
@@ -165,7 +182,15 @@ const enterInteriorButton = required<HTMLButtonElement>('#enter-interior');
 const exitInteriorButton = required<HTMLButtonElement>('#exit-interior');
 const editWorkspaceHint = required<HTMLElement>('[data-workspace-hint]');
 
-const allDefinitions: SceneDefinition[] = [...districts, ...biomes];
+const academicDistrictDefinition = districts.find(
+  (definition) => definition.id === 'academic-libraries-theoretical-labs',
+);
+if (!academicDistrictDefinition) throw new Error('Academic District definition is missing');
+const academicBuildingDefinitions = ACADEMIC_CAMPUS_BUILDINGS.map((record) => (
+  createAcademicBuildingDefinition(record, academicDistrictDefinition)
+));
+const allDefinitions: SceneDefinition[] = [...districts, ...academicBuildingDefinitions, ...biomes];
+const staticEditableGroupCount = allDefinitions.length;
 const definitionIndex = new Map<string, number>();
 const listButtons = new Map<string, HTMLButtonElement>();
 let currentSelection: SceneDefinition | null = null;
@@ -201,6 +226,7 @@ const categoryNames: Record<string, string> = {
   civic: 'Civic & residential',
   commercial: 'Commercial',
   academic: 'Academic',
+  'academic-building': 'Academic building',
   security: 'Restricted research',
   environmental: 'Environmental science',
   infrastructure: 'Operations',
@@ -224,7 +250,7 @@ function getAtlasGroup(definition: SceneDefinition) {
   if (definition.category === 'core') return 'Core systems';
   if (definition.category === 'bioscience') return 'Life sciences';
   if (['engineering', 'chemistry', 'physics'].includes(definition.category)) return 'Applied research';
-  if (['civic', 'commercial', 'academic'].includes(definition.category)) return 'Civic campus';
+  if (['civic', 'commercial', 'academic', 'academic-building'].includes(definition.category)) return 'Civic campus';
   if (['security', 'environmental', 'infrastructure'].includes(definition.category)) return 'Operations & edge';
   if (definition.category === 'biome') return 'Biome domes';
   if (definition.category === 'editor') return 'Design studio assets';
@@ -241,6 +267,7 @@ function symbolFor(definition: SceneDefinition) {
     civic: 'H',
     commercial: 'M',
     academic: 'A',
+    'academic-building': 'B',
     security: 'S',
     environmental: 'N',
     infrastructure: 'I',
@@ -289,7 +316,7 @@ function renderAtlas(query = '') {
   const grouped = new Map<string, SceneDefinition[]>();
   groupOrder.forEach((group) => grouped.set(group, []));
   allDefinitions.forEach((definition) => {
-    const haystack = `${definition.name} ${definition.sourceLabel ?? ''} ${definition.category} ${definition.archetype}`.toLowerCase();
+    const haystack = `${definition.name} ${definition.label ?? ''} ${definition.sourceLabel ?? ''} ${definition.description} ${definition.category} ${definition.archetype}`.toLowerCase();
     if (normalizedQuery && !haystack.includes(normalizedQuery)) return;
     grouped.get(getAtlasGroup(definition))!.push(definition);
   });
@@ -408,8 +435,31 @@ function unregisterDynamicDefinition(id: string) {
   refreshEditWorkspaceUI();
 }
 
+function cacheLiveDefinition(definition: SceneDefinition) {
+  const index = allDefinitions.findIndex((entry) => entry.id === definition.id);
+  if (index >= 0) allDefinitions[index] = definition;
+  if (currentSelection?.id === definition.id) currentSelection = definition;
+}
+
+function syncDefinitionCacheFromWorld() {
+  allDefinitions.forEach((definition, index) => {
+    allDefinitions[index] = world.getDefinition(definition.id) ?? definition;
+  });
+  if (currentSelection) currentSelection = world.getDefinition(currentSelection.id);
+  renderAtlas(districtSearch.value);
+  refreshAcademicCampusMapMetadata();
+}
+
+function isCerebrumDefinition(definition: SceneDefinition | null | undefined) {
+  return definition?.category === 'academic-building'
+    && definition.academicRecordId === 'ashcroft-grand-library';
+}
+
 function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
   currentSelection = definition;
+  const cerebrumSelected = isCerebrumDefinition(definition);
+  cerebrumWalkButton.hidden = !cerebrumSelected;
+  cerebrumOrbitButton.hidden = !cerebrumSelected;
   document.body.classList.toggle('has-selection', Boolean(definition));
   listButtons.forEach((button, id) => button.classList.toggle('active', id === definition?.id));
   if (!definition) {
@@ -418,7 +468,7 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
     emptyInspector.hidden = false;
     inspectorContent.hidden = true;
     sceneCardTitle.textContent = 'Central research campus';
-    sceneCardCopy.textContent = '41 editable zones · procedural architecture · Blender-ready GLB';
+    sceneCardCopy.textContent = `${staticEditableGroupCount} editable scene groups · procedural architecture · Blender-ready GLB`;
     refreshEditWorkspaceUI();
     return;
   }
@@ -427,6 +477,12 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
   selectionIndex.textContent = `#${String(definitionIndex.get(definition.id) ?? allDefinitions.indexOf(definition) + 1).padStart(2, '0')}`;
   selectionKind.textContent = categoryNames[definition.category] ?? definition.category;
   selectionDescription.textContent = definition.description;
+  objectNameInput.value = definition.name;
+  objectLabelInput.value = definition.label?.trim() || definition.name;
+  objectDescriptionInput.value = definition.description;
+  const supportsInscription = definition.category === 'academic-building' && typeof definition.inscription === 'string';
+  objectInscriptionField.hidden = !supportsInscription;
+  objectInscriptionInput.value = supportsInscription ? definition.inscription ?? '' : '';
   selectionRing.textContent = definition.ring.replace('-', ' ');
   selectionArchetype.textContent = definition.archetype.replaceAll('-', ' ');
   emptyInspector.hidden = true;
@@ -478,6 +534,52 @@ function toast(title: string, message: string, kind: 'normal' | 'error' = 'norma
     element.style.transform = 'translateY(-6px)';
     window.setTimeout(() => element.remove(), 220);
   }, duration);
+}
+
+function showCerebrumTitleCard(card: { title: string; subtitle: string; body: string }) {
+  cerebrumTitleCardTitle.textContent = card.title;
+  cerebrumTitleCardSubtitle.textContent = card.subtitle;
+  cerebrumTitleCardBody.textContent = card.body;
+  cerebrumTitleCard.hidden = false;
+}
+
+function syncAcademicAudioButtons() {
+  const muted = world.isAcademicAudioMuted();
+  academicAudioButton.setAttribute('aria-pressed', String(!muted));
+  const label = academicAudioButton.querySelector<HTMLElement>('.utility-label');
+  if (label) label.textContent = muted ? 'Audio muted' : 'Audio on';
+  cerebrumPersistentMute.setAttribute('aria-pressed', String(!muted));
+  cerebrumPersistentMute.textContent = muted ? 'Audio muted' : 'Audio · On';
+}
+
+function syncCerebrumControls(forceVisible = false) {
+  const state = world.getCerebrumLibraryState();
+  const quiet = state?.quietMode === true;
+  const relevant = forceVisible
+    || isCerebrumDefinition(currentSelection)
+    || world.isInsideCerebrumLibrary()
+    || world.isCerebrumLibraryInspectionActive();
+  document.body.classList.toggle('library-quiet-mode', quiet);
+  cerebrumPersistentControls.hidden = !relevant && !quiet;
+  cerebrumQuietButton.setAttribute('aria-pressed', String(quiet));
+  cerebrumPersistentQuiet.setAttribute('aria-pressed', String(quiet));
+  cerebrumPersistentQuiet.textContent = quiet ? 'Quiet · On' : 'Quiet · Off';
+  const quietLabel = cerebrumQuietButton.querySelector<HTMLElement>('.utility-label');
+  if (quietLabel) quietLabel.textContent = quiet ? 'Exit quiet' : 'Quiet mode';
+  syncAcademicAudioButtons();
+}
+
+function toggleCerebrumQuietMode() {
+  const enabled = !world.getCerebrumLibraryState()?.quietMode;
+  world.setCerebrumQuietMode(enabled);
+  if (enabled) cerebrumTitleCard.hidden = true;
+  syncCerebrumControls(true);
+  toast(
+    enabled ? 'Quiet mode enabled' : 'Quiet mode disabled',
+    enabled
+      ? 'Interface hidden and Cerebrum Externum ambience reduced. Q or the Quiet control restores the interface.'
+      : 'The library interface and normal restrained ambience are restored.',
+  );
 }
 
 function getFountainPanelState() {
@@ -572,6 +674,7 @@ function cycleFountainStateTo(
     lastResult = world.performAcademicInteraction(action);
     syncEnvironmentUI();
     syncFountainControlPanel();
+    syncCerebrumControls();
   }
   if (key === 'cameraPreset') world.focusAcademicFountain(target as FountainCameraPreset);
   syncFountainControlPanel();
@@ -611,6 +714,7 @@ function setMode(mode: ViewMode) {
   }
   refreshEditWorkspaceUI();
   syncFountainControlPanel();
+  syncCerebrumControls();
 }
 
 function setGizmo(mode: GizmoMode) {
@@ -630,12 +734,19 @@ function refreshSelectedState(definition: SceneDefinition, state: ObjectState) {
 const world = new IslandWorld(viewport, {
   onSelection: (definition) => {
     updateInspector(definition);
+    syncCerebrumControls();
     inspector.classList.toggle('hidden-panel', currentMode === 'walk' || (!definition && currentMode !== 'edit'));
     if (currentMode === 'walk' && definition) {
       showWalkInteractionMenu(definition);
     }
   },
   onTransform: refreshSelectedState,
+  onMetadataChange: (definition) => {
+    cacheLiveDefinition(definition);
+    renderAtlas(districtSearch.value);
+    updateInspector(definition, world.getObjectState(definition.id));
+    refreshAcademicCampusMapMetadata();
+  },
   onImport: (definition: ImportedDefinition) => {
     registerDynamicDefinition(definition);
   },
@@ -659,6 +770,7 @@ const world = new IslandWorld(viewport, {
     // its panel and exact environment state without requiring another click.
     syncEnvironmentUI();
     syncFountainControlPanel();
+    syncDefinitionCacheFromWorld();
     loadingStatus.textContent = 'Spatial twin ready';
     window.setTimeout(() => loadingScreen.classList.add('done'), 220);
   },
@@ -685,6 +797,7 @@ const world = new IslandWorld(viewport, {
     walkTurboButton.textContent = enabled ? 'Turbo · 12 m/s' : 'Turbo · Off';
   },
   onAcademicInteraction: (result) => toast(result.title, result.message),
+  onCerebrumPresenceChange: (inside) => syncCerebrumControls(inside),
   onImportPlacementChange: (state, position) => {
     const choosing = state === 'choosing';
     document.body.classList.toggle('import-placement-active', choosing);
@@ -724,7 +837,7 @@ const world = new IslandWorld(viewport, {
       sceneCardTitle.textContent = currentSelection?.name ?? 'Central research campus';
       sceneCardCopy.textContent = currentSelection
         ? `${categoryNames[currentSelection.category] ?? currentSelection.category} · editable object group`
-        : '41 editable zones · procedural architecture · Blender-ready GLB';
+        : `${staticEditableGroupCount} editable scene groups · procedural architecture · Blender-ready GLB`;
     }
   },
 });
@@ -834,6 +947,43 @@ Object.entries(positionInputs).forEach(([axis, input]) => {
 const undoOnFocus = () => {
   world.saveUndoState();
 };
+const metadataInputs = [objectNameInput, objectLabelInput, objectDescriptionInput, objectInscriptionInput] as const;
+metadataInputs.forEach((input) => {
+  input.addEventListener('focus', undoOnFocus);
+  input.addEventListener('input', () => input.setCustomValidity(''));
+});
+
+function applyInspectorMetadata() {
+  if (!currentSelection) return false;
+  const name = objectNameInput.value.trim();
+  const label = objectLabelInput.value.trim();
+  if (!name) {
+    objectNameInput.setCustomValidity('Enter an object name.');
+    objectNameInput.reportValidity();
+    return false;
+  }
+  if (!label) {
+    objectLabelInput.setCustomValidity('Enter a scene label.');
+    objectLabelInput.reportValidity();
+    return false;
+  }
+
+  const liveDefinition = world.getDefinition(currentSelection.id);
+  const description = objectDescriptionInput.value.trim();
+  const inscription = liveDefinition?.category === 'academic-building' && typeof liveDefinition.inscription === 'string'
+    ? objectInscriptionInput.value.trim()
+    : undefined;
+  if (liveDefinition
+    && liveDefinition.name === name
+    && (liveDefinition.label?.trim() || liveDefinition.name) === label
+    && liveDefinition.description === description
+    && (inscription === undefined || ('inscription' in liveDefinition && liveDefinition.inscription === inscription))) {
+    return true;
+  }
+  return Boolean(world.setObjectMetadata(currentSelection.id, { name, label, description, inscription }));
+}
+
+metadataInputs.forEach((input) => input.addEventListener('change', applyInspectorMetadata));
 rotationInput.addEventListener('focus', undoOnFocus);
 scaleInput.addEventListener('focus', undoOnFocus);
 accentInput.addEventListener('focus', undoOnFocus);
@@ -905,12 +1055,14 @@ interactionOptionsContainer.querySelectorAll<HTMLInputElement>('input[type="chec
 });
 
 saveProjectButton.addEventListener('click', () => {
+  if (currentSelection && !applyInspectorMetadata()) return;
   world.saveProjectToLocalStorage();
-  toast('Project Saved', 'Changes to layout, colors, patterns, and behaviors saved to LocalStorage.');
+  toast('Project Saved', 'Names, labels, descriptions, layout, appearance, and behaviors saved to LocalStorage.');
 });
 
 refreshProjectButton.addEventListener('click', () => {
   if (world.loadProjectFromLocalStorage()) {
+    syncDefinitionCacheFromWorld();
     if (currentSelection) {
       updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
     } else {
@@ -918,6 +1070,7 @@ refreshProjectButton.addEventListener('click', () => {
     }
     syncEnvironmentUI();
     syncFountainControlPanel();
+    syncCerebrumControls();
     toast('Project Reloaded', 'Successfully loaded from the last saved state.');
   } else {
     toast('Load Failed', 'No saved project found in LocalStorage.', 'error');
@@ -926,6 +1079,7 @@ refreshProjectButton.addEventListener('click', () => {
 
 undoActionButton.addEventListener('click', () => {
   if (world.undo()) {
+    syncDefinitionCacheFromWorld();
     if (currentSelection) {
       updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
     } else {
@@ -933,6 +1087,7 @@ undoActionButton.addEventListener('click', () => {
     }
     syncEnvironmentUI();
     syncFountainControlPanel();
+    syncCerebrumControls();
     toast('Action Undone', 'The last customization or transformation step has been reverted.');
   } else {
     toast('Cannot Undo', 'No remaining history steps in the undo stack.', 'error');
@@ -945,8 +1100,9 @@ editStudioCollapseButton.addEventListener('click', () => {
 });
 
 saveInspectorChangesButton.addEventListener('click', () => {
+  if (!applyInspectorMetadata()) return;
   world.saveProjectToLocalStorage();
-  toast('Changes Saved', 'Object customizations and placement saved to LocalStorage.');
+  toast('Changes Saved', 'Object name, scene label, description, inscription, customizations, and placement saved to LocalStorage.');
 });
 
 required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => {
@@ -955,6 +1111,29 @@ required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => 
     syncFountainControlPanel();
   }
 });
+
+cerebrumWalkButton.addEventListener('click', () => {
+  setMode('walk');
+  if (world.enterCerebrumLibraryWalk()) {
+    syncCerebrumControls(true);
+    toast('Cerebrum Externum', 'Entered through the porter vestibule. Use E on selected doors, drawers, lamps, ladders, books, and the card catalogue.');
+  }
+});
+
+cerebrumOrbitButton.addEventListener('click', () => {
+  setMode('explore');
+  if (world.focusCerebrumLibrary()) {
+    syncCerebrumControls(true);
+    toast('Architectural orbit', 'Cutaway orbit view reveals the connected reading halls, upper gallery, and Cerebrum Occultum below.');
+  }
+});
+
+cerebrumTitleCardClose.addEventListener('click', () => {
+  cerebrumTitleCard.hidden = true;
+});
+
+cerebrumQuietButton.addEventListener('click', toggleCerebrumQuietMode);
+cerebrumPersistentQuiet.addEventListener('click', toggleCerebrumQuietMode);
 
 required<HTMLButtonElement>('#reset-selection').addEventListener('click', () => {
   if (!currentSelection) return;
@@ -1117,6 +1296,20 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (editingText) return;
+  if (event.key.toLowerCase() === 'q'
+    && (world.getCerebrumLibraryState()?.quietMode
+      || world.isInsideCerebrumLibrary()
+      || world.isCerebrumLibraryInspectionActive()
+      || isCerebrumDefinition(currentSelection))) {
+    event.preventDefault();
+    toggleCerebrumQuietMode();
+    return;
+  }
+  if (event.key.toLowerCase() === 'm') {
+    event.preventDefault();
+    void toggleAcademicAudio();
+    return;
+  }
   if (event.key.toLowerCase() === 'f') void toggleFullscreen();
   if (event.key === '1') setMode('explore');
   if (event.key === '2') setMode('plan');
@@ -1128,6 +1321,14 @@ document.addEventListener('keydown', (event) => {
   if (event.key.toLowerCase() === 'a' && currentMode === 'edit' && !addAssetButton.disabled) addAssetButton.click();
   if (event.key === 'Delete' && currentMode === 'edit' && !deleteObjectButton.disabled) deleteObjectButton.click();
   if (event.key === 'Escape') {
+    if (world.getCerebrumLibraryState()?.quietMode) {
+      toggleCerebrumQuietMode();
+      return;
+    }
+    if (!cerebrumTitleCard.hidden) {
+      cerebrumTitleCard.hidden = true;
+      return;
+    }
     if (world.cancelImportPlacement()) {
       queuedImportFiles = null;
       toast('Import cancelled', 'No building was added.');
@@ -1136,6 +1337,11 @@ document.addEventListener('keydown', (event) => {
     if (world.isAcademicFountainInspectionActive()) {
       world.overview();
       syncFountainControlPanel();
+      return;
+    }
+    if (world.isCerebrumLibraryInspectionActive()) {
+      world.overview();
+      syncCerebrumControls();
       return;
     }
     world.clearSelection('ui');
@@ -1152,11 +1358,23 @@ function editableAcademicHistory(record: AcademicCampusBuilding) {
   return localStorage.getItem(`blackwood-history:${record.id}`) ?? record.history;
 }
 
+function academicBuildingDisplayContent(record: AcademicCampusBuilding) {
+  const definition = world.getDefinition(`academic-building-${record.id}`);
+  const defaultDescription = `${record.description} Founded in ${record.founded}; ${record.zone}.`;
+  return {
+    name: definition?.name ?? record.name,
+    description: definition?.description === defaultDescription
+      ? record.description
+      : definition?.description ?? record.description,
+  };
+}
+
 function showAcademicBuildingCard(record: AcademicCampusBuilding) {
   currentAcademicBuilding = record;
-  academicBuildingTitle.textContent = record.name;
+  const display = academicBuildingDisplayContent(record);
+  academicBuildingTitle.textContent = display.name;
   academicBuildingMeta.textContent = `Founded ${record.founded} · ${record.zone} · ${record.kind}`;
-  academicBuildingDescription.textContent = record.description;
+  academicBuildingDescription.textContent = display.description;
   academicHistoryEditor.value = editableAcademicHistory(record);
   academicCampusMap.hidden = true;
   academicBuildingCard.hidden = false;
@@ -1172,6 +1390,7 @@ ACADEMIC_CAMPUS_BUILDINGS.forEach((record) => {
   const marker = document.createElement('button');
   marker.type = 'button';
   marker.className = 'academic-map-marker';
+  marker.dataset.academicBuildingId = record.id;
   marker.style.left = `${8 + ((record.location[0] + 55) / 110) * 84}%`;
   marker.style.top = `${92 - ((record.location[1] + 55) / 110) * 84}%`;
   marker.title = `${record.name} · founded ${record.founded}`;
@@ -1183,6 +1402,18 @@ ACADEMIC_CAMPUS_BUILDINGS.forEach((record) => {
   academicMapMarkers.appendChild(marker);
 });
 
+function refreshAcademicCampusMapMetadata() {
+  ACADEMIC_CAMPUS_BUILDINGS.forEach((record) => {
+    const marker = academicMapMarkers.querySelector<HTMLButtonElement>(`[data-academic-building-id="${record.id}"]`);
+    if (!marker) return;
+    const display = academicBuildingDisplayContent(record);
+    marker.title = `${display.name} · founded ${record.founded}`;
+    marker.setAttribute('aria-label', marker.title);
+    const label = marker.querySelector('span');
+    if (label) label.textContent = display.name;
+  });
+}
+
 academicBuildingClose.addEventListener('click', () => {
   academicBuildingCard.hidden = true;
 });
@@ -1192,7 +1423,8 @@ academicMapClose.addEventListener('click', () => {
 academicHistorySave.addEventListener('click', () => {
   if (!currentAcademicBuilding) return;
   localStorage.setItem(`blackwood-history:${currentAcademicBuilding.id}`, academicHistoryEditor.value.trim());
-  toast('History saved', `${currentAcademicBuilding.name}'s fictional history is stored in this browser.`);
+  const display = academicBuildingDisplayContent(currentAcademicBuilding);
+  toast('History saved', `${display.name}'s fictional history is stored in this browser.`);
 });
 
 function showWalkInteractionMenu(definition: SceneDefinition) {
@@ -1202,6 +1434,9 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 
   const state = world.getObjectState(definition.id);
   const rawList = state?.interactions ?? [];
+  const cerebrumHotspot = isCerebrumDefinition(definition)
+    ? world.getActiveCerebrumLibraryHotspot()
+    : null;
 
   const academicHotspot = definition.id === 'academic-libraries-theoretical-labs'
     ? world.getActiveAcademicHotspot()
@@ -1212,9 +1447,11 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
     ? world.getTextSnapshot()
     : null;
   const fountainInteractions: string[] = academicSnapshot?.academicDistrict?.fountain?.metadata?.interactions ?? [];
-  const interactions: string[] = (academicFountainHotspot
-    ? fountainInteractions
-    : rawList.length ? rawList : ['examine']).filter(
+  const interactions: string[] = (cerebrumHotspot
+    ? [cerebrumHotspot.action]
+    : academicFountainHotspot
+      ? fountainInteractions
+      : rawList.length ? rawList : ['examine']).filter(
     (action) => action !== 'open main gate' || definition.id !== 'academic-libraries-theoretical-labs' || world.isAcademicMainGateNearby(),
   );
   const gateActionLabel = academicSnapshot?.atmosphere.timeOfDay !== 'night'
@@ -1222,15 +1459,18 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
     : academicSnapshot?.academicDistrict?.gateOpen
       ? 'Close main gate'
       : 'Open main gate';
-  walkInteractionMenuTitle.textContent = academicFountainHotspot
+  walkInteractionMenuTitle.textContent = cerebrumHotspot?.title
+    ?? (cerebrumHotspot ? cerebrumHotspot.label : null)
+    ?? (academicFountainHotspot
     ? academicSnapshot?.academicDistrict?.fountain?.metadata?.name ?? 'The Well of Infinite Knowledge'
-    : academicHotspot?.name ?? definition.name;
+    : academicHotspot?.name ?? definition.name);
   walkInteractionButtonsContainer.innerHTML = '';
 
   interactions.forEach((act) => {
     const btn = document.createElement('button');
     btn.className = 'interaction-menu-btn';
-    btn.textContent = act === 'sit' ? 'Sit down'
+    btn.textContent = cerebrumHotspot?.action === act ? cerebrumHotspot.label
+      : act === 'sit' ? 'Sit down'
       : act === 'sleep' ? 'Sleep / Rest'
       : act === 'research' ? 'Research'
       : act === 'analyze' ? 'Analyze samples'
@@ -1273,6 +1513,24 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 function triggerWalkInteraction(definition: SceneDefinition, action: string) {
   const group = world.objectGroups.get(definition.id);
   if (!group) return;
+
+  if (isCerebrumDefinition(definition)) {
+    const hotspot = world.getActiveCerebrumLibraryHotspot();
+    if (!hotspot) return;
+    const result = world.performCerebrumLibraryInteraction(hotspot.id);
+    if (!result.handled) {
+      toast('Cerebrum Externum', result.message, 'error');
+      return;
+    }
+    if (result.titleCard) showCerebrumTitleCard(result.titleCard);
+    if (action === 'toggle-orbit-camera' || result.state.orbitCamera) {
+      setMode('explore');
+      world.focusCerebrumLibrary();
+    }
+    syncCerebrumControls(true);
+    toast(hotspot.title ?? 'Cerebrum Externum', result.message);
+    return;
+  }
 
   if (definition.id === 'academic-libraries-theoretical-labs') {
     if (action === 'campus map') {
@@ -1536,14 +1794,20 @@ envQualitySelect.addEventListener('change', () => {
   toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
 });
 
-academicAudioButton.addEventListener('click', async () => {
+async function toggleAcademicAudio() {
   const muted = await world.setAcademicAudioMuted(!world.isAcademicAudioMuted());
-  academicAudioButton.setAttribute('aria-pressed', String(!muted));
-  const label = academicAudioButton.querySelector<HTMLElement>('.utility-label');
-  if (label) label.textContent = muted ? 'Audio muted' : 'Audio on';
+  syncAcademicAudioButtons();
   syncFountainControlPanel();
-  toast(muted ? 'Campus audio muted' : 'Campus audio enabled', muted ? 'Ambient wind, rain, and bell audio are off.' : 'Quiet synthesized wind and weather ambience is active.');
-});
+  toast(
+    muted ? 'Campus audio muted' : 'Campus audio enabled',
+    muted
+      ? 'Ambient wind, window rain, page turns, clocks, footsteps, and bells are off.'
+      : 'Restrained campus and Cerebrum Externum ambience is active.',
+  );
+}
+
+academicAudioButton.addEventListener('click', () => void toggleAcademicAudio());
+cerebrumPersistentMute.addEventListener('click', () => void toggleAcademicAudio());
 
 function refreshDebugStats() {
   const stats = world.getSceneStatistics();
@@ -1555,6 +1819,9 @@ function refreshDebugStats() {
     `triangles     ${stats.triangles.toLocaleString()}`,
     `draw calls    ${stats.drawCalls.toLocaleString()}`,
     `textures      ${stats.textureCount.toLocaleString()}`,
+    `stream detail ${stats.streaming.residentDetailPackages.length}`,
+    `stream proxy  ${stats.streaming.proxyPackageCount}`,
+    `interior      ${stats.streaming.cerebrumExternum.phase}`,
     'green = collision · cyan = light',
   ].join('\n');
 }
@@ -1583,6 +1850,9 @@ if (savedTheme === 'cleantech') {
   world.setTimeOfDay('night');
 }
 syncEnvironmentUI();
+// Apply a restored Cerebrum quiet/audio state on cold boot as well as after
+// explicit Load and Undo actions.
+syncCerebrumControls();
 
 window.addEventListener('beforeunload', () => world.dispose(), { once: true });
 setGizmo(activeGizmo);

@@ -245,7 +245,7 @@ try {
     const district = world.objectGroups.get('academic-libraries-theoretical-labs');
     world.setMode('walk');
     world.camera.up.set(0, 1, 0);
-    const ashcroft = district.children.find((child) => child.userData.semanticName === 'Ashcroft Grand Library');
+    const ashcroft = district.children.find((child) => child.userData.semanticName === 'Cerebrum Externum');
     const threshold = district.localToWorld(world.controls.target.clone().fromArray(ashcroft.userData.walkAccess.threshold));
     const routeStart = district.localToWorld(world.camera.position.clone().fromArray(ashcroft.userData.walkAccess.routeStart));
     const outward = routeStart.clone().sub(threshold).setY(0).normalize();

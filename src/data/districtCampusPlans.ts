@@ -569,7 +569,7 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'academic-libraries-theoretical-labs': {
     facilities: [
-      { name: 'Ashcroft Grand Library', form: 'library' },
+      { name: 'Cerebrum Externum', form: 'library' },
       { name: 'Wren Rare Books Library', form: 'library' },
       { name: 'Institute for Theoretical Sciences', form: 'administration' },
       { name: 'Blackwood Collegiate Lecture Hall', form: 'hall' },

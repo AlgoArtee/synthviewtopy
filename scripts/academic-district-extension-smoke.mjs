@@ -124,7 +124,7 @@ try {
   await page.getByRole('button', { name: 'Open campus map' }).click();
   await page.waitForSelector('#academic-campus-map:not([hidden])');
   await page.screenshot({ path: `${outputDirectory}/campus-map.png` });
-  await page.getByRole('button', { name: /Ashcroft Grand Library/ }).click();
+  await page.getByRole('button', { name: /Cerebrum Externum/ }).click();
   await page.waitForSelector('#academic-building-card:not([hidden])');
   const historyEditor = page.locator('#academic-history-editor');
   const originalHistory = await historyEditor.inputValue();

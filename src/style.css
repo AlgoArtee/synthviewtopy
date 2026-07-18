@@ -695,6 +695,60 @@ kbd {
   display: none;
 }
 
+.metadata-fields {
+  display: grid;
+  gap: 10px;
+}
+
+.metadata-field {
+  display: grid;
+  gap: 5px;
+  color: var(--muted);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.metadata-field input,
+.metadata-field textarea {
+  width: 100%;
+  border: 1px solid var(--line-strong);
+  border-radius: 3px;
+  outline: 0;
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--ink);
+  font: 400 9px/1.45 'DM Mono', monospace;
+  text-transform: none;
+}
+
+.metadata-field input {
+  height: 31px;
+  padding: 0 8px;
+}
+
+.metadata-field textarea {
+  min-height: 76px;
+  padding: 7px 8px;
+  resize: vertical;
+}
+
+.metadata-field input:focus,
+.metadata-field textarea:focus {
+  border-color: var(--acid);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--acid) 25%, transparent);
+}
+
+.metadata-field input:invalid,
+.metadata-field textarea:invalid {
+  border-color: #ff7676;
+}
+
+.metadata-hint {
+  margin: -2px 0 0;
+  color: var(--dim);
+  font: 400 7px/1.5 'DM Mono', monospace;
+}
+
 .segmented {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2695,6 +2749,137 @@ body.theme-cleantech .atlas-metrics {
 body.theme-cleantech .inspector-actions button:first-child {
   border-color: var(--acid);
   color: var(--acid);
+}
+
+.inspector-actions #cerebrum-walk-button,
+.inspector-actions #cerebrum-orbit-button {
+  border-color: rgba(212, 161, 77, 0.72);
+  color: #f0c77f;
+  background: linear-gradient(180deg, rgba(82, 56, 28, 0.36), rgba(26, 18, 12, 0.22));
+}
+
+.cerebrum-sound-controls {
+  position: absolute;
+  z-index: 64;
+  right: 18px;
+  bottom: 70px;
+  display: flex;
+  gap: 5px;
+  padding: 5px;
+  border-color: rgba(199, 147, 68, 0.36);
+}
+
+.cerebrum-sound-controls[hidden],
+.cerebrum-title-card[hidden] {
+  display: none !important;
+}
+
+.cerebrum-sound-controls button {
+  min-height: 29px;
+  padding: 0 10px;
+  border: 1px solid rgba(199, 147, 68, 0.34);
+  border-radius: 2px;
+  background: rgba(16, 13, 10, 0.78);
+  color: #d6b77a;
+  font: 600 8px/1 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.cerebrum-sound-controls button[aria-pressed="true"] {
+  border-color: #f0b34f;
+  color: #ffe2a4;
+  box-shadow: inset 0 0 12px rgba(240, 179, 79, 0.12), 0 0 10px rgba(240, 143, 45, 0.08);
+}
+
+.cerebrum-title-card {
+  position: absolute;
+  z-index: 71;
+  right: 22px;
+  top: 116px;
+  width: min(330px, calc(100% - 44px));
+  padding: 21px 22px 19px;
+  border-color: rgba(192, 144, 73, 0.5);
+  background:
+    linear-gradient(135deg, rgba(57, 39, 23, 0.28), transparent 55%),
+    rgba(8, 12, 13, 0.94);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.46), inset 0 0 38px rgba(135, 86, 34, 0.08);
+}
+
+.cerebrum-title-card h2 {
+  margin: 9px 22px 5px 0;
+  color: #f2d6a1;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 21px;
+  font-weight: 500;
+}
+
+.cerebrum-title-card p {
+  margin: 5px 0 0;
+  color: #aeb4ae;
+  font-size: 10px;
+  line-height: 1.65;
+}
+
+#cerebrum-title-card-subtitle {
+  color: #c28d49;
+  font: 600 8px/1.4 var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#cerebrum-title-card-close {
+  position: absolute;
+  top: 9px;
+  right: 10px;
+  width: 27px;
+  height: 27px;
+  border: 0;
+  background: transparent;
+  color: #b9a581;
+  cursor: pointer;
+}
+
+body.library-quiet-mode .topbar,
+body.library-quiet-mode .atlas,
+body.library-quiet-mode .inspector,
+body.library-quiet-mode .scene-card,
+body.library-quiet-mode .layerbar,
+body.library-quiet-mode .compass,
+body.library-quiet-mode .interaction-hint,
+body.library-quiet-mode .walk-readout,
+body.library-quiet-mode .walk-crosshair,
+body.library-quiet-mode .edit-workspace,
+body.library-quiet-mode .fountain-control-panel,
+body.library-quiet-mode .walk-interaction-menu,
+body.library-quiet-mode .cerebrum-title-card {
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 220ms ease;
+}
+
+body.library-quiet-mode .cerebrum-sound-controls {
+  display: flex !important;
+  opacity: 0.72;
+}
+
+body.library-quiet-mode .cerebrum-sound-controls:hover,
+body.library-quiet-mode .cerebrum-sound-controls:focus-within {
+  opacity: 1;
+}
+
+@media (max-width: 760px) {
+  .cerebrum-sound-controls {
+    right: 10px;
+    bottom: 58px;
+  }
+
+  .cerebrum-title-card {
+    right: 12px;
+    top: 92px;
+    width: min(310px, calc(100% - 24px));
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

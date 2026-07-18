@@ -1944,7 +1944,7 @@ function populateAcademicPrecinct(
     architecture: ['English Gothic', 'Collegiate Gothic', 'Neo-Gothic repairs', 'medieval cloisters', 'Victorian interiors', 'restrained Baroque additions'],
     zones: group.userData.academicComponentHierarchy,
     hiddenDiscoveries: group.getObjectByName(`${definition.id}__ACADEMIC_ZONE__HIDDEN_DISCOVERIES`)?.userData.discoveries ?? [],
-    accessibleInteriors: ['Ashcroft Grand Library entrance hall', 'Founders Dining Hall', 'St Anselm Chapel nave'],
+    accessibleInteriors: ['Cerebrum Externum reading halls and Cerebrum Occultum archive', 'Founders Dining Hall', 'St Anselm Chapel nave'],
   };
   group.userData.interactions = [
     'inspect entrance',

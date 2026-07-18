@@ -30,7 +30,26 @@ Open [http://127.0.0.1:5178](http://127.0.0.1:5178). The fixed local-only port a
 ```bash
 npm run build     # Type-check and create the production bundle in dist/
 npm run preview   # Preview the production bundle locally
+npm run test:streaming          # Verify proxy overview + Cerebrum mount/dispose/remount
+npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
+
+## Streamed browser preview and Unreal migration
+
+The browser is now explicitly a **sandbox editor and lightweight preview**.
+All 35 districts and six biomes use selectable silhouette proxies at island
+overview scale; detailed roots become resident only near the camera or while
+editing. Cerebrum Externum is not constructed at boot: it preloads within 60 m,
+isolates the active interior and exterior vista, retains state for 15 seconds,
+and disposes beyond 90 m. The Debug panel reports resident packages and the
+interior lifecycle.
+
+Production content is owned exclusively by Unreal Editor. The browser exposes
+a one-way, bootstrap-only manifest/GLB interface for the initial staged
+migration; browser changes never merge back into production. The native C++
+project, importer, streaming entrance component, SaveGame/interaction contract,
+quality configuration, and Cerebrum vertical-slice definition are documented in
+[`../YouTopiaProgrammabilis/README.md`](../YouTopiaProgrammabilis/README.md).
 
 ## Editor modes and controls
 
@@ -45,7 +64,7 @@ Additional controls:
 
 - Click a district in the Atlas to select it; double-click a model or Atlas item to focus the camera.
 - In Edit mode, use `G` for Move, `R` for Rotate, and `S` for Scale.
-- The Inspector also exposes numeric XYZ position, Y rotation, uniform scale, accent color, visibility, Focus, and Reset controls.
+- The Inspector exposes editable object names, independent floating scene labels, descriptions, numeric XYZ position, Y rotation, uniform scale, accent color, visibility, Focus, and Reset controls. Identity edits update the Atlas, search, labels, Academic building cards, project JSON, and GLB metadata while retaining each object's stable selection ID.
 - Press `/` to focus Atlas search, `Escape` to clear selection, `Home` to return to the overview, and `F` to toggle fullscreen.
 - Toggle the Architecture, Landscape, Labels, and Transit layer buttons independently.
 - Switch between Blue hour and Daylight from the top bar.
@@ -67,11 +86,13 @@ Additional controls:
 - Press `Escape` to release pointer lock and return the mouse to the interface.
 - WALK is calibrated to a 1.7 m adult: the camera eye level is 0.162 world units (1.62 m), the normal pace is 1.8 m/s, and the dedicated 55° vertical field of view is restored to the overview lens when WALK ends.
 - Terrain, roads, district plots, bridge approaches, and city ramps expose semantic walkable surfaces. Buildings, biome structures, and imported meshes participate in collision/obstacle checks, while ramps keep traversal grounded across elevation changes.
-- Every district has a lit entry door and a walkable foyer linked to its approach ramp. All 14 Academic District facilities have their own open arched doorway, walkable ground floor, and exterior path; the Ashcroft Grand Library entrance hall, Founders Dining Hall, and St Anselm Chapel nave are furnished in-place rather than loaded as disconnected scenes. Each climate dome has a glazed airlock corridor: follow its ramp, cross the glowing threshold, and continue onto the dome's interior ground.
+- Every district has a lit entry door and a walkable foyer linked to its approach ramp. All 14 Academic District facilities have their own open arched doorway, walkable ground floor, and exterior path; Cerebrum Externum, Founders Dining Hall, and St Anselm Chapel are furnished in-place rather than loaded as disconnected scenes. Cerebrum Externum includes connected reading halls, stacks, an upper gallery, and the underground Cerebrum Occultum archive. Each climate dome has a glazed airlock corridor: follow its ramp, cross the glowing threshold, and continue onto the dome's interior ground.
 
 ## Academic District instructions
 
 Select **Academic District — Libraries & Theoretical Labs** in the Atlas, then use Explore or Walk to follow the leaf-strewn processional path through the Blackwood gate. Academic paths are rough earth/gravel dressings only 6 cm above terrain, with consistent 4.2 m secondary walks and a 5.8 m ceremonial avenue; the former raised steel-grey slabs and 3.4 m Great Hall plinth are gone. One connected network links the live thresholds of all fourteen facilities through six named routes: Processional Avenue, West Service Walk, Library Walk, Science Walk, South Transverse Walk, and East Canal Walk. Disconnected entrance stubs, the central five-spoke starburst, decorative lawn crosses, and the long diagonal chapel strip have been removed. The Processional Avenue now makes a broad symmetrical crescent around the monumental fountain before returning to the Great Hall axis. The gate is laid out to frame the central clock tower; Old Science Court, Chapel Close, Marlowe Courts, and the Blackwater Canal branch from the central quadrangles.
+
+- In **Edit**, all fourteen named facilities appear as individual **Academic building** entries in the Atlas. Select a façade or its Atlas entry to identify the building and attach its own gizmo; name, scene label, description, position, rotation, scale, visibility, collision, colors, patterns, reset, Undo, save/reload, interior design, and GLB export operate on that facility without selecting the whole district. Nearby facility labels appear only in Edit to keep Explore and Walk uncluttered.
 
 - In **Walk**, stand within 4.5 m of an entrance plaque and press `E`. **Inspect entrance** opens the configured name, founding date, zone, description, and editable two-sentence fictional history. Saved edits stay in this browser.
 - The interaction menu rings the St Anselm bell, toggles selected library reading-room lights, opens the stylized campus map, and exposes the manual close action for an already-open night gate. The campus is physically walkable while these overlays are open; closing an overlay restores the scene.
@@ -99,7 +120,7 @@ Academic District
 ├─ Main Entrance — gatehouses, porter lodge, notice board, iron leaves, open avenue
 ├─ Gothic Boundary — crested stone piers, permeable iron tracery, biodome gardens, railway gate
 ├─ Central Quadrangles — old lawn, entrance-linked walks, cloisters, scholar statue, reading courts
-├─ Scholarship — Ashcroft, Wren, Humanities, Theoretical Sciences, lecture hall, archive
+├─ Scholarship — Cerebrum Externum, Wren, Humanities, Theoretical Sciences, lecture hall, archive
 ├─ Ceremonial — clock-towered Great Hall, chapel/graveyard, dining hall/kitchen chimneys
 ├─ Old Science Court — Halley Observatory, Faraday building, instruments and inscriptions
 ├─ Residential — Marlowe ranges, small courts, bicycles and secluded laundry

@@ -1,0 +1,2263 @@
+{
+  "overview": {
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "detail envelopes with selectable exterior vista proxies",
+      "totalPackages": 41,
+      "residentDetailPackages": [],
+      "proxyPackageCount": 41,
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11556
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11423
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11277
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12489
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11815
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10776
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10442
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11199
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12202
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12944
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11997
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10491
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 9992
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11112
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12543
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13489
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13502
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12972
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11031
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12240
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10160
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 9442
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14152
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13482
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10973
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12548
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 9804
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 8808
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15019
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13248
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12730
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14181
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 9380
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 10958
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 7970
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15126
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 11353
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 7231
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 8694
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13247
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15878
+        }
+      ],
+      "cerebrumExternum": {
+        "phase": "unloaded",
+        "distanceMetres": 11361,
+        "mounted": false,
+        "scheduled": false,
+        "lastActiveAt": 0,
+        "mountedAt": null,
+        "unloadCount": 0,
+        "preloadDistanceMetres": 60,
+        "unloadDistanceMetres": 90,
+        "retentionSeconds": 15,
+        "stateCached": false
+      }
+    },
+    "manifest": {
+      "schema": "youtopy.unreal-world/1.0",
+      "productionAuthority": "unreal-editor",
+      "sourceAuthority": "web-sandbox",
+      "importPolicy": "bootstrap-only-no-roundtrip",
+      "packageCount": 41,
+      "entityCount": 55,
+      "dynamicEntityCount": 0,
+      "libraryDataLayers": [
+        "ExteriorHigh",
+        "ExteriorHLOD",
+        "Interior",
+        "InteriorVista",
+        "InteriorLighting",
+        "InteriorAudio"
+      ],
+      "libraryLevelInstance": "LI_CerebrumExternum",
+      "libraryStableActorName": "YT_academic_building_ashcroft_grand_library",
+      "libraryTransformLength": 16
+    },
+    "libraryMounted": false,
+    "renderer": {
+      "visibleMeshes": 976,
+      "geometries": 937,
+      "triangles": 375988,
+      "drawCalls": 676,
+      "textureCount": 1,
+      "quality": "medium",
+      "streaming": {
+        "authority": "web-sandbox",
+        "strategy": "detail envelopes with selectable exterior vista proxies",
+        "totalPackages": 41,
+        "residentDetailPackages": [],
+        "proxyPackageCount": 41,
+        "packages": [
+          {
+            "id": "synthetic-quantum-biosystems",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11556
+          },
+          {
+            "id": "dark-center-lab-megabuilding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11423
+          },
+          {
+            "id": "corporate-core",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11277
+          },
+          {
+            "id": "toxicology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12489
+          },
+          {
+            "id": "pharmacology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11815
+          },
+          {
+            "id": "microbiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10776
+          },
+          {
+            "id": "genomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10442
+          },
+          {
+            "id": "proteomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11199
+          },
+          {
+            "id": "omics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12202
+          },
+          {
+            "id": "electronics-microelectronics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12944
+          },
+          {
+            "id": "medical-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11997
+          },
+          {
+            "id": "molecular-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10491
+          },
+          {
+            "id": "biochemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 9992
+          },
+          {
+            "id": "computational-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11112
+          },
+          {
+            "id": "robotics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12543
+          },
+          {
+            "id": "marketing",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13489
+          },
+          {
+            "id": "scientific-art-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13502
+          },
+          {
+            "id": "even-hour-hotel",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12972
+          },
+          {
+            "id": "astronomy-astrobiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11031
+          },
+          {
+            "id": "secret-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12240
+          },
+          {
+            "id": "bioanalytics-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10160
+          },
+          {
+            "id": "organic-chemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 9442
+          },
+          {
+            "id": "luxury-entertainment",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14152
+          },
+          {
+            "id": "scientist-residential",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13482
+          },
+          {
+            "id": "materials-science-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10973
+          },
+          {
+            "id": "security",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12548
+          },
+          {
+            "id": "forensic-cyberforensic-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 9804
+          },
+          {
+            "id": "inorganic-chemistry",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 8808
+          },
+          {
+            "id": "financial-funding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15019
+          },
+          {
+            "id": "logistics",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13248
+          },
+          {
+            "id": "entry-commercial",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12730
+          },
+          {
+            "id": "environmental-science-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14181
+          },
+          {
+            "id": "academic-libraries-theoretical-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 9380
+          },
+          {
+            "id": "industrial-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 10958
+          },
+          {
+            "id": "particle-physics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 7970
+          },
+          {
+            "id": "alpine-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15126
+          },
+          {
+            "id": "tundra-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 11353
+          },
+          {
+            "id": "desert-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 7231
+          },
+          {
+            "id": "savanna-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 8694
+          },
+          {
+            "id": "temperate-deciduous-forest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13247
+          },
+          {
+            "id": "tropical-rainforest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15878
+          }
+        ],
+        "cerebrumExternum": {
+          "phase": "unloaded",
+          "distanceMetres": 11361,
+          "mounted": false,
+          "scheduled": false,
+          "lastActiveAt": 0,
+          "mountedAt": null,
+          "unloadCount": 0,
+          "preloadDistanceMetres": 60,
+          "unloadDistanceMetres": 90,
+          "retentionSeconds": 15,
+          "stateCached": false
+        }
+      },
+      "migration": {
+        "manifestSchema": "youtopy.unreal-world/1.0",
+        "productionAuthority": "unreal-editor",
+        "browserEdits": "sandbox-only; no production roundtrip",
+        "coordinateMapping": "UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000"
+      }
+    },
+    "memory": {
+      "geometries": 631,
+      "textures": 1
+    }
+  },
+  "mount": {
+    "rootMounted": true,
+    "before": true,
+    "after": false,
+    "interactionHandled": true,
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "detail envelopes with selectable exterior vista proxies",
+      "totalPackages": 41,
+      "residentDetailPackages": [
+        "academic-libraries-theoretical-labs"
+      ],
+      "proxyPackageCount": 40,
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 611
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 554
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 557
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1504
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1057
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 525
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 763
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1315
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1603
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1957
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1474
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 980
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1184
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1748
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2066
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2515
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2516
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2635
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2297
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2015
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1546
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1731
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3171
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3294
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2942
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2656
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2204
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2378
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4045
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3522
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3522
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4174
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "detailResident": true,
+          "proxyVisible": false,
+          "distanceMetres": 3082
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3810
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3249
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4739
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4180
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4016
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4447
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4976
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 5109
+        }
+      ],
+      "cerebrumExternum": {
+        "phase": "active",
+        "distanceMetres": 2972.3,
+        "mounted": true,
+        "scheduled": false,
+        "lastActiveAt": 7.9031666666666665,
+        "mountedAt": 7.7865,
+        "unloadCount": 0,
+        "preloadDistanceMetres": 60,
+        "unloadDistanceMetres": 90,
+        "retentionSeconds": 15,
+        "stateCached": true
+      }
+    },
+    "renderer": {
+      "visibleMeshes": 487,
+      "geometries": 449,
+      "triangles": 357686,
+      "drawCalls": 278,
+      "textureCount": 22,
+      "quality": "medium",
+      "streaming": {
+        "authority": "web-sandbox",
+        "strategy": "detail envelopes with selectable exterior vista proxies",
+        "totalPackages": 41,
+        "residentDetailPackages": [
+          "academic-libraries-theoretical-labs"
+        ],
+        "proxyPackageCount": 40,
+        "packages": [
+          {
+            "id": "synthetic-quantum-biosystems",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 611
+          },
+          {
+            "id": "dark-center-lab-megabuilding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 554
+          },
+          {
+            "id": "corporate-core",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 557
+          },
+          {
+            "id": "toxicology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1504
+          },
+          {
+            "id": "pharmacology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1057
+          },
+          {
+            "id": "microbiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 525
+          },
+          {
+            "id": "genomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 763
+          },
+          {
+            "id": "proteomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1315
+          },
+          {
+            "id": "omics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1603
+          },
+          {
+            "id": "electronics-microelectronics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1957
+          },
+          {
+            "id": "medical-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1474
+          },
+          {
+            "id": "molecular-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 980
+          },
+          {
+            "id": "biochemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1184
+          },
+          {
+            "id": "computational-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1748
+          },
+          {
+            "id": "robotics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2066
+          },
+          {
+            "id": "marketing",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2515
+          },
+          {
+            "id": "scientific-art-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2516
+          },
+          {
+            "id": "even-hour-hotel",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2635
+          },
+          {
+            "id": "astronomy-astrobiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2297
+          },
+          {
+            "id": "secret-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2015
+          },
+          {
+            "id": "bioanalytics-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1546
+          },
+          {
+            "id": "organic-chemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 1731
+          },
+          {
+            "id": "luxury-entertainment",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3171
+          },
+          {
+            "id": "scientist-residential",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3294
+          },
+          {
+            "id": "materials-science-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2942
+          },
+          {
+            "id": "security",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2656
+          },
+          {
+            "id": "forensic-cyberforensic-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2204
+          },
+          {
+            "id": "inorganic-chemistry",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 2378
+          },
+          {
+            "id": "financial-funding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4045
+          },
+          {
+            "id": "logistics",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3522
+          },
+          {
+            "id": "entry-commercial",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3522
+          },
+          {
+            "id": "environmental-science-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4174
+          },
+          {
+            "id": "academic-libraries-theoretical-labs",
+            "kind": "district",
+            "detailResident": true,
+            "proxyVisible": false,
+            "distanceMetres": 3082
+          },
+          {
+            "id": "industrial-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3810
+          },
+          {
+            "id": "particle-physics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 3249
+          },
+          {
+            "id": "alpine-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4739
+          },
+          {
+            "id": "tundra-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4180
+          },
+          {
+            "id": "desert-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4016
+          },
+          {
+            "id": "savanna-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4447
+          },
+          {
+            "id": "temperate-deciduous-forest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 4976
+          },
+          {
+            "id": "tropical-rainforest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 5109
+          }
+        ],
+        "cerebrumExternum": {
+          "phase": "active",
+          "distanceMetres": 2972.3,
+          "mounted": true,
+          "scheduled": false,
+          "lastActiveAt": 7.9031666666666665,
+          "mountedAt": 7.7865,
+          "unloadCount": 0,
+          "preloadDistanceMetres": 60,
+          "unloadDistanceMetres": 90,
+          "retentionSeconds": 15,
+          "stateCached": true
+        }
+      },
+      "migration": {
+        "manifestSchema": "youtopy.unreal-world/1.0",
+        "productionAuthority": "unreal-editor",
+        "browserEdits": "sandbox-only; no production roundtrip",
+        "coordinateMapping": "UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000"
+      }
+    },
+    "memory": {
+      "geometries": 1080,
+      "textures": 22
+    }
+  },
+  "unloaded": {
+    "rootMounted": false,
+    "cachedLampState": false,
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "detail envelopes with selectable exterior vista proxies",
+      "totalPackages": 41,
+      "residentDetailPackages": [],
+      "proxyPackageCount": 41,
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17090
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16958
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16811
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18023
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17336
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16301
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15976
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16719
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17729
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18477
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17503
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16005
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15524
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16615
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18063
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 19019
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 19035
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18480
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16505
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17723
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15653
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14972
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 19683
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18973
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16401
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 17997
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 15262
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14335
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 20547
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18659
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18106
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 19645
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14771
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16304
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 13488
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 20574
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 16587
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 12710
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 14005
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 18555
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 21398
+        }
+      ],
+      "cerebrumExternum": {
+        "phase": "unloaded",
+        "distanceMetres": 17498.8,
+        "mounted": false,
+        "scheduled": false,
+        "lastActiveAt": 19.069,
+        "mountedAt": null,
+        "unloadCount": 1,
+        "preloadDistanceMetres": 60,
+        "unloadDistanceMetres": 90,
+        "retentionSeconds": 15,
+        "stateCached": true
+      }
+    },
+    "renderer": {
+      "visibleMeshes": 976,
+      "geometries": 937,
+      "triangles": 375988,
+      "drawCalls": 984,
+      "textureCount": 4,
+      "quality": "medium",
+      "streaming": {
+        "authority": "web-sandbox",
+        "strategy": "detail envelopes with selectable exterior vista proxies",
+        "totalPackages": 41,
+        "residentDetailPackages": [],
+        "proxyPackageCount": 41,
+        "packages": [
+          {
+            "id": "synthetic-quantum-biosystems",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17090
+          },
+          {
+            "id": "dark-center-lab-megabuilding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16958
+          },
+          {
+            "id": "corporate-core",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16811
+          },
+          {
+            "id": "toxicology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18023
+          },
+          {
+            "id": "pharmacology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17336
+          },
+          {
+            "id": "microbiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16301
+          },
+          {
+            "id": "genomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15976
+          },
+          {
+            "id": "proteomics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16719
+          },
+          {
+            "id": "omics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17729
+          },
+          {
+            "id": "electronics-microelectronics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18477
+          },
+          {
+            "id": "medical-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17503
+          },
+          {
+            "id": "molecular-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16005
+          },
+          {
+            "id": "biochemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15524
+          },
+          {
+            "id": "computational-biology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16615
+          },
+          {
+            "id": "robotics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18063
+          },
+          {
+            "id": "marketing",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 19019
+          },
+          {
+            "id": "scientific-art-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 19035
+          },
+          {
+            "id": "even-hour-hotel",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18480
+          },
+          {
+            "id": "astronomy-astrobiology-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16505
+          },
+          {
+            "id": "secret-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17723
+          },
+          {
+            "id": "bioanalytics-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15653
+          },
+          {
+            "id": "organic-chemistry-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14972
+          },
+          {
+            "id": "luxury-entertainment",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 19683
+          },
+          {
+            "id": "scientist-residential",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18973
+          },
+          {
+            "id": "materials-science-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16401
+          },
+          {
+            "id": "security",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 17997
+          },
+          {
+            "id": "forensic-cyberforensic-lab",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 15262
+          },
+          {
+            "id": "inorganic-chemistry",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14335
+          },
+          {
+            "id": "financial-funding",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 20547
+          },
+          {
+            "id": "logistics",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18659
+          },
+          {
+            "id": "entry-commercial",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18106
+          },
+          {
+            "id": "environmental-science-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 19645
+          },
+          {
+            "id": "academic-libraries-theoretical-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14771
+          },
+          {
+            "id": "industrial-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16304
+          },
+          {
+            "id": "particle-physics-labs",
+            "kind": "district",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 13488
+          },
+          {
+            "id": "alpine-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 20574
+          },
+          {
+            "id": "tundra-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 16587
+          },
+          {
+            "id": "desert-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 12710
+          },
+          {
+            "id": "savanna-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 14005
+          },
+          {
+            "id": "temperate-deciduous-forest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 18555
+          },
+          {
+            "id": "tropical-rainforest-dome",
+            "kind": "biome",
+            "detailResident": false,
+            "proxyVisible": true,
+            "distanceMetres": 21398
+          }
+        ],
+        "cerebrumExternum": {
+          "phase": "unloaded",
+          "distanceMetres": 17498.8,
+          "mounted": false,
+          "scheduled": false,
+          "lastActiveAt": 19.069,
+          "mountedAt": null,
+          "unloadCount": 1,
+          "preloadDistanceMetres": 60,
+          "unloadDistanceMetres": 90,
+          "retentionSeconds": 15,
+          "stateCached": true
+        }
+      },
+      "migration": {
+        "manifestSchema": "youtopy.unreal-world/1.0",
+        "productionAuthority": "unreal-editor",
+        "browserEdits": "sandbox-only; no production roundtrip",
+        "coordinateMapping": "UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000"
+      }
+    },
+    "memory": {
+      "geometries": 941,
+      "textures": 4
+    }
+  },
+  "remounted": {
+    "rootMounted": true,
+    "restoredLampState": false,
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "detail envelopes with selectable exterior vista proxies",
+      "totalPackages": 41,
+      "residentDetailPackages": [
+        "academic-libraries-theoretical-labs"
+      ],
+      "proxyPackageCount": 40,
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 446
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 556
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 714
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1075
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 582
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 744
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1260
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1551
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1480
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1501
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1037
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1177
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1696
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2014
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1935
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2028
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2065
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2498
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2582
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1602
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 1730
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2246
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2691
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3153
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3241
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2259
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2381
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 2893
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3559
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3105
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3176
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4029
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "detailResident": true,
+          "proxyVisible": false,
+          "distanceMetres": 3254
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4120
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 3762
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4235
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4053
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4422
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4919
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 5070
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "detailResident": false,
+          "proxyVisible": true,
+          "distanceMetres": 4751
+        }
+      ],
+      "cerebrumExternum": {
+        "phase": "active",
+        "distanceMetres": 3115.6,
+        "mounted": true,
+        "scheduled": false,
+        "lastActiveAt": 19.20233333333333,
+        "mountedAt": 19.119,
+        "unloadCount": 1,
+        "preloadDistanceMetres": 60,
+        "unloadDistanceMetres": 90,
+        "retentionSeconds": 15,
+        "stateCached": true
+      }
+    }
+  },
+  "errors": []
+}

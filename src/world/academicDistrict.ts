@@ -9,6 +9,7 @@ import type { DistrictDefinition } from '../data/districts';
 import {
   ACADEMIC_CAMPUS_BUILDINGS,
   ACADEMIC_CAMPUS_HIDDEN_DETAILS,
+  academicBuildingSelectableId,
   academicCampusBuildingByName,
   type AcademicCampusBuilding,
   type AcademicInteriorKind,
@@ -84,6 +85,36 @@ function makeNoiseTexture(colors: readonly [string, string], size = 192) {
   return texture;
 }
 
+function makeCanalRippleTexture(size = 192) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size;
+  canvas.height = size;
+  const context = canvas.getContext('2d');
+  if (!context) return null;
+  const image = context.createImageData(size, size);
+  let seed = 0x31a7c0de;
+  for (let y = 0; y < size; y += 1) {
+    for (let x = 0; x < size; x += 1) {
+      seed = (seed * 1664525 + 1013904223) >>> 0;
+      const noise = ((seed >>> 16) / 0xffff - 0.5) * 8;
+      const broad = Math.sin(y * 0.24 + Math.sin(x * 0.07) * 1.8) * 17;
+      const cross = Math.sin(y * 0.47 - x * 0.105) * 7;
+      const value = Math.round(THREE.MathUtils.clamp(128 + broad + cross + noise, 76, 180));
+      const offset = (y * size + x) * 4;
+      image.data[offset] = value;
+      image.data[offset + 1] = value;
+      image.data[offset + 2] = value;
+      image.data[offset + 3] = 255;
+    }
+  }
+  context.putImageData(image, 0, 0);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+  texture.repeat.set(1.6, 1);
+  texture.anisotropy = 4;
+  return texture;
+}
+
 function createMaterials(): AcademicMaterials {
   const limestone = getAcademicAshlarTextures('medieval');
   const repairedStone = getAcademicAshlarTextures('repair');
@@ -91,6 +122,7 @@ function createMaterials(): AcademicMaterials {
   const oak = getAcademicOakTextures();
   const earthPath = getAcademicLeafPathTextures();
   const cobbleNoise = makeNoiseTexture(['#252a2b', '#555752']);
+  const canalRipples = makeCanalRippleTexture();
   const materials: AcademicMaterials = {
     limestone: new THREE.MeshPhysicalMaterial({
       color: '#d8d2c5',
@@ -148,8 +180,10 @@ function createMaterials(): AcademicMaterials {
     moss: new THREE.MeshStandardMaterial({ color: '#263226', roughness: 1 }),
     plaster: new THREE.MeshStandardMaterial({ color: '#81796b', roughness: 0.92 }),
     water: new THREE.MeshPhysicalMaterial({
-      color: '#172d32', emissive: '#0c1d22', emissiveIntensity: 0.28, roughness: 0.16, metalness: 0.1,
-      clearcoat: 0.78, clearcoatRoughness: 0.12, transparent: true, opacity: 0.86,
+      color: '#15343b', emissive: '#081f25', emissiveIntensity: 0.2, roughness: 0.36, metalness: 0.03,
+      bumpMap: canalRipples, bumpScale: 0.022,
+      clearcoat: 0.52, clearcoatRoughness: 0.28, transparent: true, opacity: 0.93,
+      side: THREE.DoubleSide,
     }),
     foliage: new THREE.MeshStandardMaterial({ color: '#283324', roughness: 1 }),
     yew: new THREE.MeshStandardMaterial({ color: '#16221b', roughness: 1 }),
@@ -1468,6 +1502,44 @@ function createProfessorsGarden(
   return garden;
 }
 
+function createCanalStripGeometry(
+  curve: THREE.CatmullRomCurve3,
+  leftOffset: number,
+  rightOffset: number,
+  leftY: number,
+  rightY: number,
+  segments = 72,
+) {
+  const positions: number[] = [];
+  const uvs: number[] = [];
+  const indices: number[] = [];
+  const lateral = new THREE.Vector3();
+  const curveLength = curve.getLength();
+  for (let index = 0; index <= segments; index += 1) {
+    const alpha = index / segments;
+    const point = curve.getPointAt(alpha);
+    const direction = curve.getTangentAt(alpha).setY(0).normalize();
+    lateral.set(-direction.z, 0, direction.x).normalize();
+    const left = point.clone().addScaledVector(lateral, leftOffset);
+    const right = point.clone().addScaledVector(lateral, rightOffset);
+    positions.push(left.x, leftY, left.z, right.x, rightY, right.z);
+    const longitudinal = alpha * curveLength / 4;
+    uvs.push(0, longitudinal, 1, longitudinal);
+    if (index === segments) continue;
+    const current = index * 2;
+    const next = current + 2;
+    indices.push(current, current + 1, next, current + 1, next + 1, next);
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.computeBoundingBox();
+  geometry.computeBoundingSphere();
+  return geometry;
+}
+
 function createCanalEdge(
   definition: DistrictDefinition,
   hub: THREE.Vector3,
@@ -1478,41 +1550,372 @@ function createCanalEdge(
   const canal = new THREE.Group();
   canal.name = `${definition.id}__ACADEMIC_ZONE__BLACKWATER_CANAL_EDGE`;
   canal.userData.semanticName = 'Blackwater Canal Edge';
-  canal.userData.academicFeatureType = 'canal, embankment, bridge and reeds';
-  const center = campusPoint(hub, tangent, radial, [0, 54]);
-  const start = center.clone().addScaledVector(tangent, -48);
-  const end = center.clone().addScaledVector(tangent, 48);
-  const water = addSegment(canal, definition.id, 'ACADEMIC__BLACKWATER_CANAL', start, end, 7.5, 0.16, materials.water, -0.05);
+  canal.userData.academicFeatureType = 'meandering canal, sloped embankment, arched bridge and riparian planting';
+
+  // The original straight channel clipped the rotated Rowing House. This
+  // restrained outward meander stays between the historic willow/alder rows
+  // and leaves a dry maintenance margin beside the complete facade.
+  const centerlineControls = [
+    [-50, 52.55], [-35, 53.05], [-20, 54.05], [-8, 55.75],
+    [6, 56.35], [21, 55.15], [36, 53.55], [50, 52.65],
+  ] as const;
+  const centerline = centerlineControls.map((point) => campusPoint(hub, tangent, radial, point));
+  const curve = new THREE.CatmullRomCurve3(centerline, false, 'centripetal', 0.38);
+  const waterWidth = 5.4;
+  const waterHalfWidth = waterWidth * 0.5;
+  const bankOuterHalfWidth = 3.35;
+  const stripSegments = 80;
+
+  const riverbed = prepare(new THREE.Mesh(
+    createCanalStripGeometry(curve, -waterHalfWidth - 0.1, waterHalfWidth + 0.1, 0.007, 0.007, stripSegments),
+    materials.wetCobble,
+  ), definition.id, 'riverbed');
+  riverbed.name = 'ACADEMIC__BLACKWATER_RIVERBED';
+  riverbed.castShadow = false;
+  riverbed.userData.naturalRiverbed = true;
+  canal.add(riverbed);
+
+  const water = prepare(new THREE.Mesh(
+    createCanalStripGeometry(curve, -waterHalfWidth, waterHalfWidth, 0.021, 0.021, stripSegments),
+    materials.water,
+  ), definition.id, 'flowing water');
+  water.name = 'ACADEMIC__BLACKWATER_CANAL';
+  water.castShadow = false;
+  water.renderOrder = 2;
   water.userData.academicWaterReflection = true;
-  for (const side of [-1, 1]) {
-    const edgeStart = start.clone().addScaledVector(radial, side * 4.25);
-    const edgeEnd = end.clone().addScaledVector(radial, side * 4.25);
-    const embankment = addSegment(canal, definition.id, 'ACADEMIC__MOSSY_STONE_EMBANKMENT', edgeStart, edgeEnd, 1.05, 1.4, materials.limestone, 0.36);
-    embankment.userData.navObstacle = true;
+  water.userData.meanderingWaterRibbon = true;
+  water.userData.flowDirection = 'west to east along the Blackwater centerline';
+  water.userData.waterWidthWorldUnits = waterWidth;
+  water.onBeforeRender = () => {
+    const rippleMap = materials.water.bumpMap;
+    if (rippleMap) rippleMap.offset.y = -((performance.now() * 0.000018) % 1);
+  };
+  canal.add(water);
+
+  for (const side of [-1, 1] as const) {
+    const leftOffset = side < 0 ? -bankOuterHalfWidth : waterHalfWidth - 0.04;
+    const rightOffset = side < 0 ? -waterHalfWidth + 0.04 : bankOuterHalfWidth;
+    const leftY = side < 0 ? 0.155 : 0.026;
+    const rightY = side < 0 ? 0.026 : 0.155;
+    const bank = prepare(new THREE.Mesh(
+      createCanalStripGeometry(curve, leftOffset, rightOffset, leftY, rightY, stripSegments),
+      materials.limestone,
+    ), definition.id, 'sloped stone river bank');
+    bank.name = 'ACADEMIC__MOSSY_STONE_EMBANKMENT';
+    bank.userData.slopedRiverBank = true;
+    bank.userData.navObstacle = false;
+    canal.add(bank);
+
+    const copingInner = side < 0 ? -waterHalfWidth - 0.02 : waterHalfWidth - 0.22;
+    const copingOuter = side < 0 ? -waterHalfWidth + 0.22 : waterHalfWidth + 0.02;
+    const coping = prepare(new THREE.Mesh(
+      createCanalStripGeometry(curve, copingInner, copingOuter, 0.04, 0.04, stripSegments),
+      materials.repairedStone,
+    ), definition.id, 'stone waterline coping');
+    coping.name = 'ACADEMIC__BLACKWATER_STONE_COPING';
+    coping.userData.waterlineCoping = true;
+    canal.add(coping);
+
+    const mossInner = side < 0 ? -waterHalfWidth - 0.13 : waterHalfWidth + 0.02;
+    const mossOuter = side < 0 ? -waterHalfWidth - 0.02 : waterHalfWidth + 0.13;
+    const waterlineMoss = prepare(new THREE.Mesh(
+      createCanalStripGeometry(curve, mossInner, mossOuter, 0.043, 0.043, stripSegments),
+      materials.moss,
+    ), definition.id, 'moss and river sediment at the waterline');
+    waterlineMoss.name = 'ACADEMIC__BLACKWATER_WATERLINE_MOSS';
+    waterlineMoss.userData.naturalWaterlineDetail = true;
+    waterlineMoss.castShadow = false;
+    canal.add(waterlineMoss);
   }
 
-  const bridgeStart = center.clone().addScaledVector(radial, -5.2);
-  const bridgeEnd = center.clone().addScaledVector(radial, 5.2);
-  const bridge = addSegment(canal, definition.id, 'ACADEMIC__ARCHED_PEDESTRIAN_BRIDGE', bridgeStart, bridgeEnd, 2.4, 0.22, materials.limestone, 0.64, { walkable: true });
-  bridge.userData.walkable = true;
-  for (const side of [-1, 1]) {
-    const railStart = bridgeStart.clone().addScaledVector(tangent, side * 1.12).setY(1.2);
-    const railEnd = bridgeEnd.clone().addScaledVector(tangent, side * 1.12).setY(1.2);
-    const rail = addSegment(canal, definition.id, 'ACADEMIC__BRIDGE_IRON_RAIL', railStart, railEnd, 0.09, 0.82, materials.iron, 1.05);
-    rail.userData.navObstacle = true;
+  const bridgeTangentCoordinate = -10.5;
+  let bridgeParameter = 0;
+  let bridgeCoordinateError = Number.POSITIVE_INFINITY;
+  for (let sample = 0; sample <= 240; sample += 1) {
+    const alpha = sample / 240;
+    const point = curve.getPointAt(alpha);
+    const coordinate = point.clone().sub(hub).dot(tangent);
+    const error = Math.abs(coordinate - bridgeTangentCoordinate);
+    if (error >= bridgeCoordinateError) continue;
+    bridgeCoordinateError = error;
+    bridgeParameter = alpha;
   }
+  const bridgeCenter = curve.getPointAt(bridgeParameter);
+  const riverDirection = curve.getTangentAt(bridgeParameter).setY(0).normalize();
+  const crossingDirection = new THREE.Vector3(-riverDirection.z, 0, riverDirection.x).normalize();
+  if (crossingDirection.dot(radial) < 0) crossingDirection.negate();
+  const crossingHalfLength = bankOuterHalfWidth + 0.9;
+  const bridgeStart = bridgeCenter.clone().addScaledVector(crossingDirection, -crossingHalfLength);
+  const bridgeEnd = bridgeCenter.clone().addScaledVector(crossingDirection, crossingHalfLength);
+  const bridge = new THREE.Group();
+  bridge.name = 'ACADEMIC__ARCHED_PEDESTRIAN_BRIDGE';
+  bridge.userData.districtId = definition.id;
+  bridge.userData.academicBridge = true;
+  bridge.userData.relocatedFromRowingHouse = true;
+  bridge.userData.bridgeCenterlineParameter = bridgeParameter;
+  const deckSegments = 24;
+  const bridgeWidth = 1.5;
+  const railOffsetDistance = bridgeWidth * 0.46;
+  const bridgeArchRise = 0.06;
+  const deckTargets: number[][] = [];
+  const railBarriers: Array<{ start: [number, number, number]; end: [number, number, number]; radius: number }> = [];
+  const deckTopAt = (alpha: number) => 0.035 + Math.sin(alpha * Math.PI) * bridgeArchRise;
+  for (let index = 0; index < deckSegments; index += 1) {
+    const startAlpha = index / deckSegments;
+    const endAlpha = (index + 1) / deckSegments;
+    const midpointAlpha = (startAlpha + endAlpha) * 0.5;
+    const deckStart = bridgeStart.clone().lerp(bridgeEnd, startAlpha);
+    const deckEnd = bridgeStart.clone().lerp(bridgeEnd, endAlpha);
+    const deckTop = deckTopAt(midpointAlpha);
+    const slab = addSegment(
+      bridge,
+      definition.id,
+      `ACADEMIC__BRIDGE_STONE_DECK_${String(index + 1).padStart(2, '0')}`,
+      deckStart,
+      deckEnd,
+      bridgeWidth,
+      0.035,
+      index % 4 === 0 ? materials.repairedStone : materials.limestone,
+      deckTop - 0.0175,
+      { walkable: true },
+    );
+    slab.userData.academicBridgeDeck = true;
+    slab.userData.walkable = false;
+    slab.userData.bridgeDeckTop = deckTop;
+    deckTargets.push(deckStart.clone().lerp(deckEnd, 0.5).setY(deckTop).toArray());
+    for (const side of [-1, 1] as const) {
+      const railOffset = riverDirection.clone().multiplyScalar(side * railOffsetDistance);
+      const railStart = deckStart.clone().add(railOffset);
+      const railEnd = deckEnd.clone().add(railOffset);
+      const railY = deckTop + 0.14;
+      const handrail = addSegment(bridge, definition.id, 'ACADEMIC__BRIDGE_IRON_RAIL', railStart, railEnd, 0.035, 0.035, materials.iron, railY);
+      handrail.userData.academicBridgeHandrail = true;
+      const lowerRail = addSegment(bridge, definition.id, 'ACADEMIC__BRIDGE_IRON_LOWER_RAIL', railStart, railEnd, 0.025, 0.025, materials.iron, deckTop + 0.075);
+      lowerRail.userData.academicBridgeHandrail = true;
+      railBarriers.push({
+        start: railStart.clone().setY(deckTop + 0.08).toArray() as [number, number, number],
+        end: railEnd.clone().setY(deckTop + 0.08).toArray() as [number, number, number],
+        radius: 0.035,
+      });
+    }
+  }
+  for (let index = 0; index <= deckSegments; index += 1) {
+    const alpha = index / deckSegments;
+    const deckPoint = bridgeStart.clone().lerp(bridgeEnd, alpha);
+    const deckTop = deckTopAt(alpha);
+    for (const side of [-1, 1] as const) {
+      const postPosition = deckPoint.clone().addScaledVector(riverDirection, side * railOffsetDistance);
+      addBox(bridge, definition.id, 'ACADEMIC__BRIDGE_IRON_POST', [0.045, 0.15, 0.045], materials.iron, [postPosition.x, deckTop + 0.075, postPosition.z]);
+    }
+  }
+  const walkVertices: number[] = [];
+  const walkIndices: number[] = [];
+  for (let index = 0; index <= deckSegments; index += 1) {
+    const alpha = index / deckSegments;
+    const center = bridgeStart.clone().lerp(bridgeEnd, alpha).setY(deckTopAt(alpha) + 0.002);
+    const left = center.clone().addScaledVector(riverDirection, -bridgeWidth * 0.42);
+    const right = center.clone().addScaledVector(riverDirection, bridgeWidth * 0.42);
+    walkVertices.push(left.x, left.y, left.z, right.x, right.y, right.z);
+    if (index === deckSegments) continue;
+    const base = index * 2;
+    walkIndices.push(base, base + 2, base + 1, base + 1, base + 2, base + 3);
+  }
+  const walkGeometry = new THREE.BufferGeometry();
+  walkGeometry.setAttribute('position', new THREE.Float32BufferAttribute(walkVertices, 3));
+  walkGeometry.setIndex(walkIndices);
+  walkGeometry.computeVertexNormals();
+  const walkMaterial = new THREE.MeshBasicMaterial({
+    color: '#000000', colorWrite: false, depthWrite: false, side: THREE.DoubleSide,
+  });
+  walkMaterial.name = 'Academic invisible continuous bridge walk surface';
+  const walkSurface = prepare(new THREE.Mesh(walkGeometry, walkMaterial), definition.id, 'continuous bridge walking surface');
+  walkSurface.name = 'ACADEMIC__BRIDGE_CONTINUOUS_WALK_SURFACE';
+  walkSurface.userData.walkable = true;
+  walkSurface.userData.academicBridgeWalkSurface = true;
+  walkSurface.castShadow = false;
+  bridge.add(walkSurface);
+  bridge.userData.navBarrierSegments = railBarriers;
+  bridge.userData.walkCrossing = {
+    start: bridgeStart.toArray(), end: bridgeEnd.toArray(), deckTargets, width: bridgeWidth, archRise: bridgeArchRise,
+  };
+  canal.add(bridge);
 
-  for (let index = 0; index < 34; index += 1) {
-    const sign = index % 2 ? -1 : 1;
-    const reed = prepare(new THREE.Mesh(unitCylinder, materials.moss), definition.id);
-    reed.name = 'ACADEMIC__CANAL_REED';
-    reed.scale.set(0.04, 0.7 + (index % 5) * 0.13, 0.04);
-    reed.position.copy(center)
-      .addScaledVector(tangent, -44 + index * 2.65)
-      .addScaledVector(radial, sign * (2.6 + (index % 3) * 0.35));
-    reed.position.y = reed.scale.y * 0.5;
-    canal.add(reed);
+  const bankBarriers: Array<{ start: [number, number, number]; end: [number, number, number]; radius: number }> = [];
+  const bankBarrierSegments = 56;
+  for (const side of [-1, 1] as const) {
+    for (let index = 0; index < bankBarrierSegments; index += 1) {
+      const startAlpha = index / bankBarrierSegments;
+      const endAlpha = (index + 1) / bankBarrierSegments;
+      // Keep the collision opening wider than the visible bridge so WALK's
+      // player radius cannot catch the final bank segment on a curved reach.
+      if (Math.abs((startAlpha + endAlpha) * 0.5 - bridgeParameter) < 0.052) continue;
+      const barrierPoint = (alpha: number) => {
+        const point = curve.getPointAt(alpha);
+        const direction = curve.getTangentAt(alpha).setY(0).normalize();
+        const lateral = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+        return point.addScaledVector(lateral, side * (waterHalfWidth + 0.18)).setY(0.17);
+      };
+      bankBarriers.push({
+        start: barrierPoint(startAlpha).toArray() as [number, number, number],
+        end: barrierPoint(endAlpha).toArray() as [number, number, number],
+        radius: 0.17,
+      });
+    }
   }
+  const bankCollisionGuide = new THREE.Object3D();
+  bankCollisionGuide.name = 'ACADEMIC__BLACKWATER_PRECISE_BANK_COLLISION';
+  bankCollisionGuide.userData.districtId = definition.id;
+  bankCollisionGuide.userData.navBarrierSegments = bankBarriers;
+  bankCollisionGuide.userData.academicCanalCollision = true;
+  canal.add(bankCollisionGuide);
+
+  const flowGlintCount = 64;
+  const flowGeometry = new THREE.PlaneGeometry(0.22, 0.018);
+  flowGeometry.rotateX(-Math.PI * 0.5);
+  const flowMaterial = new THREE.MeshBasicMaterial({
+    color: '#b4d7d2', transparent: true, opacity: 0.13, depthWrite: false, side: THREE.DoubleSide,
+  });
+  flowMaterial.name = 'Academic canal flow glints';
+  flowMaterial.userData.excludeSeasonFoliage = true;
+  const flowGlints = prepare(new THREE.InstancedMesh(flowGeometry, flowMaterial, flowGlintCount), definition.id, 'water flow detail');
+  flowGlints.name = 'ACADEMIC__BLACKWATER_FLOW_GLINTS';
+  flowGlints.castShadow = false;
+  flowGlints.renderOrder = 3;
+  const matrix = new THREE.Matrix4();
+  const quaternion = new THREE.Quaternion();
+  const scale = new THREE.Vector3();
+  for (let index = 0; index < flowGlintCount; index += 1) {
+    const alpha = THREE.MathUtils.clamp((index + 0.35 + Math.sin(index * 2.71) * 0.28) / flowGlintCount, 0.002, 0.998);
+    const point = curve.getPointAt(alpha);
+    const direction = curve.getTangentAt(alpha).setY(0).normalize();
+    const lateral = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    point.addScaledVector(lateral, Math.sin(index * 4.37) * waterHalfWidth * 0.76).setY(0.025);
+    quaternion.setFromAxisAngle(up, Math.atan2(direction.x, direction.z));
+    scale.set(0.55 + (index % 5) * 0.22, 1, 0.65 + (index % 4) * 0.14);
+    matrix.compose(point, quaternion, scale);
+    flowGlints.setMatrixAt(index, matrix);
+  }
+  flowGlints.instanceMatrix.needsUpdate = true;
+  canal.add(flowGlints);
+
+  const reedRecords: Array<{ position: THREE.Vector3; height: number; width: number }> = [];
+  for (let cluster = 0; cluster < 36; cluster += 1) {
+    const alpha = (cluster + 0.7) / 36;
+    if (Math.abs(alpha - bridgeParameter) < 0.052) continue;
+    const point = curve.getPointAt(alpha);
+    const direction = curve.getTangentAt(alpha).setY(0).normalize();
+    const lateral = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    const side = cluster % 2 ? -1 : 1;
+    for (let stem = 0; stem < 3; stem += 1) {
+      const position = point.clone()
+        .addScaledVector(lateral, side * (waterHalfWidth - 0.1 + stem * 0.16))
+        .addScaledVector(direction, (stem - 1) * 0.12);
+      reedRecords.push({
+        position,
+        height: 0.48 + ((cluster * 7 + stem * 3) % 9) * 0.045,
+        width: 0.022 + ((cluster + stem) % 3) * 0.005,
+      });
+    }
+  }
+  const reeds = prepare(new THREE.InstancedMesh(unitCylinder, materials.foliage, reedRecords.length), definition.id, 'riparian reeds');
+  reeds.name = 'ACADEMIC__CANAL_REED';
+  reeds.userData.riparianPlanting = true;
+  reeds.userData.reedStemCount = reedRecords.length;
+  reedRecords.forEach((record, index) => {
+    quaternion.identity();
+    scale.set(record.width, record.height, record.width);
+    const position = record.position.clone().setY(record.height * 0.5 + 0.018);
+    matrix.compose(position, quaternion, scale);
+    reeds.setMatrixAt(index, matrix);
+  });
+  reeds.instanceMatrix.needsUpdate = true;
+  canal.add(reeds);
+
+  const cattailGeometry = new THREE.CapsuleGeometry(0.5, 1.1, 2, 6);
+  const cattailRecords = reedRecords.filter((_, index) => index % 2 === 0);
+  const cattails = prepare(new THREE.InstancedMesh(cattailGeometry, materials.leaf, cattailRecords.length), definition.id, 'riparian cattail heads');
+  cattails.name = 'ACADEMIC__CANAL_CATTAIL_HEAD';
+  cattails.userData.riparianPlanting = true;
+  cattails.userData.cattailHeadCount = cattailRecords.length;
+  cattailRecords.forEach((record, index) => {
+    quaternion.identity();
+    scale.set(record.width * 1.5, 0.07 + (index % 3) * 0.008, record.width * 1.5);
+    const position = record.position.clone().setY(record.height + 0.07);
+    matrix.compose(position, quaternion, scale);
+    cattails.setMatrixAt(index, matrix);
+  });
+  cattails.instanceMatrix.needsUpdate = true;
+  canal.add(cattails);
+
+  const bankRockCount = 44;
+  const bankRocks = prepare(new THREE.InstancedMesh(lowPolyCrown, materials.wetCobble, bankRockCount), definition.id, 'irregular wet river-edge stones');
+  bankRocks.name = 'ACADEMIC__BLACKWATER_EDGE_STONE';
+  bankRocks.userData.naturalWaterlineDetail = true;
+  bankRocks.userData.bankRockCount = bankRockCount;
+  for (let index = 0; index < bankRockCount; index += 1) {
+    const alpha = (index + 0.45) / bankRockCount;
+    if (Math.abs(alpha - bridgeParameter) < 0.045) {
+      matrix.makeScale(0, 0, 0);
+      bankRocks.setMatrixAt(index, matrix);
+      continue;
+    }
+    const point = curve.getPointAt(alpha);
+    const direction = curve.getTangentAt(alpha).setY(0).normalize();
+    const lateral = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    const side = index % 2 === 0 ? -1 : 1;
+    point
+      .addScaledVector(lateral, side * (waterHalfWidth + 0.02 + (index % 4) * 0.035))
+      .addScaledVector(direction, Math.sin(index * 3.1) * 0.12)
+      .setY(0.052);
+    quaternion.setFromAxisAngle(up, index * 1.91);
+    const rockSize = 0.1 + (index % 5) * 0.018;
+    scale.set(rockSize * (1.1 + (index % 3) * 0.14), 0.07 + (index % 4) * 0.012, rockSize);
+    matrix.compose(point, quaternion, scale);
+    bankRocks.setMatrixAt(index, matrix);
+  }
+  bankRocks.instanceMatrix.needsUpdate = true;
+  canal.add(bankRocks);
+
+  const leafGeometry = new THREE.CircleGeometry(0.055, 6);
+  leafGeometry.rotateX(-Math.PI * 0.5);
+  const floatingLeaves = prepare(new THREE.InstancedMesh(leafGeometry, materials.leaf, 24), definition.id, 'floating leaves');
+  floatingLeaves.name = 'ACADEMIC__BLACKWATER_FLOATING_LEAVES';
+  floatingLeaves.castShadow = false;
+  floatingLeaves.renderOrder = 4;
+  for (let index = 0; index < 24; index += 1) {
+    const alpha = (index + 0.6) / 24;
+    const point = curve.getPointAt(alpha);
+    const direction = curve.getTangentAt(alpha).setY(0).normalize();
+    const lateral = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
+    point.addScaledVector(lateral, Math.sin(index * 4.71) * waterHalfWidth * 0.72).setY(0.028);
+    quaternion.setFromAxisAngle(up, index * 1.73);
+    const size = 0.6 + (index % 5) * 0.14;
+    scale.set(size, size, size);
+    matrix.compose(point, quaternion, scale);
+    floatingLeaves.setMatrixAt(index, matrix);
+  }
+  floatingLeaves.instanceMatrix.needsUpdate = true;
+  canal.add(floatingLeaves);
+
+  canal.userData.academicCanal = {
+    style: 'historic semi-natural university river with maintained stone edges',
+    centerline: Array.from({ length: 33 }, (_, index) => curve.getPointAt(index / 32).toArray()),
+    centerlineControlCount: centerlineControls.length,
+    waterWidth,
+    bankOuterWidth: bankOuterHalfWidth * 2,
+    bridgeTangentCoordinate,
+    bridgeParameter,
+    bridgeRelocatedFromRowingHouse: true,
+    slopedBankCount: 2,
+    preciseBankBarrierCount: bankBarriers.length,
+    flowGlintCount,
+    floatingLeafCount: 24,
+    reedStemCount: reedRecords.length,
+    cattailHeadCount: cattailRecords.length,
+    waterlineMossStripCount: 2,
+    bankRockCount,
+    animatedRippleTexture: true,
+  };
   return canal;
 }
 
@@ -1818,7 +2221,7 @@ function createCampusConnectorsAndTraces(
   }
 
   const humanities = districtGroup.children.find((child) => child.userData.semanticName === 'Erasmus Humanities Hall');
-  const library = districtGroup.children.find((child) => child.userData.semanticName === 'Ashcroft Grand Library');
+  const library = districtGroup.children.find((child) => child.userData.semanticName === 'Cerebrum Externum');
   if (humanities && library) {
     const start = humanities.position.clone();
     const end = library.position.clone();
@@ -1932,7 +2335,7 @@ function createAcademicEntrancePathNetwork(
   const servedPathNames = new Map<string, string[]>();
   const names = {
     hall: 'Blackwood University Great Hall',
-    ashcroft: 'Ashcroft Grand Library',
+    ashcroft: 'Cerebrum Externum',
     wren: 'Wren Rare Books Library',
     theoretical: 'Institute for Theoretical Sciences',
     lecture: 'Blackwood Collegiate Lecture Hall',
@@ -2245,6 +2648,8 @@ export function buildAcademicDistrictExtension(
   academicTrees.traverse((object) => {
     object.userData.districtId = definition.id;
   });
+  const canalEdge = createCanalEdge(definition, hub, tangent, radial, materials);
+  districtGroup.userData.academicCanal = canalEdge.userData.academicCanal;
   districtGroup.userData.academicGateOpen = true;
   districtGroup.userData.academicGateLightPhase = 'day';
   mainGate.traverse((object) => {
@@ -2257,7 +2662,7 @@ export function buildAcademicDistrictExtension(
     gothicBoundary,
     createCentralQuadrangle(definition, hub, tangent, radial, materials),
     createProfessorsGarden(definition, hub, tangent, radial, materials),
-    createCanalEdge(definition, hub, tangent, radial, materials),
+    canalEdge,
     createScienceCourtInstruments(definition, hub, tangent, radial, materials),
     createServiceDetails(definition, hub, tangent, radial, materials),
     createCampusConnectorsAndTraces(definition, districtGroup, hub, tangent, radial, materials),
@@ -2299,6 +2704,325 @@ export function buildAcademicDistrictExtension(
   return { facilities, features, localRoads };
 }
 
+const ASHCROFT_INSCRIPTION_SURFACE = 'ACADEMIC__ASHCROFT_EDITABLE_DOOR_INSCRIPTION';
+
+interface AshcroftReferenceMaterials {
+  weatheredAshlar: THREE.MeshStandardMaterial;
+  repairedAshlar: THREE.MeshStandardMaterial;
+  wetPlinth: THREE.MeshStandardMaterial;
+  slate: THREE.MeshStandardMaterial;
+  oak: THREE.MeshStandardMaterial;
+  tracery: THREE.MeshStandardMaterial;
+  copper: THREE.MeshStandardMaterial;
+  amberGlass: THREE.MeshStandardMaterial;
+}
+
+function createAshcroftReferenceMaterials(): AshcroftReferenceMaterials {
+  const ashlar = getAcademicAshlarTextures('medieval');
+  const repair = getAcademicAshlarTextures('repair');
+  const slate = getAcademicSlateTextures();
+  const oak = getAcademicOakTextures();
+  const weatheredAshlar = new THREE.MeshStandardMaterial({
+    color: '#817568', map: ashlar.albedo, bumpMap: ashlar.height, bumpScale: 0.048,
+    roughness: 0.94, metalness: 0,
+  });
+  const repairedAshlar = new THREE.MeshStandardMaterial({
+    color: '#a69783', map: repair.albedo, bumpMap: repair.height, bumpScale: 0.033,
+    roughness: 0.91, metalness: 0,
+  });
+  const wetPlinth = new THREE.MeshStandardMaterial({
+    color: '#4d4842', map: ashlar.albedo, bumpMap: ashlar.height, bumpScale: 0.055,
+    roughness: 0.62, metalness: 0.02,
+  });
+  const slateMaterial = new THREE.MeshStandardMaterial({
+    color: '#3c474d', map: slate.albedo, bumpMap: slate.height, bumpScale: 0.045,
+    roughness: 0.88, metalness: 0.03,
+  });
+  const oakMaterial = new THREE.MeshStandardMaterial({
+    color: '#38241b', map: oak.albedo, bumpMap: oak.height, bumpScale: 0.028,
+    roughness: 0.85, metalness: 0,
+  });
+  const tracery = new THREE.MeshStandardMaterial({ color: '#171817', roughness: 0.72, metalness: 0.32 });
+  const copper = new THREE.MeshStandardMaterial({ color: '#356a62', roughness: 0.68, metalness: 0.7 });
+  const amberGlass = new THREE.MeshStandardMaterial({
+    color: '#3d1a0b', emissive: '#ff5908', emissiveIntensity: 0.035,
+    roughness: 0.24, metalness: 0.08, transparent: true, opacity: 0.92,
+  });
+  weatheredAshlar.name = 'Ashcroft rain-darkened honey ashlar';
+  repairedAshlar.name = 'Ashcroft carved repair stone';
+  wetPlinth.name = 'Ashcroft wet lower courses';
+  slateMaterial.name = 'Ashcroft charcoal blue slate';
+  oakMaterial.name = 'Ashcroft dark carved oak';
+  tracery.name = 'Ashcroft black lead tracery';
+  copper.name = 'Ashcroft oxidized copper gutters';
+  amberGlass.name = 'Ashcroft automatic amber night glass';
+  Object.values({ weatheredAshlar, repairedAshlar, wetPlinth, slateMaterial, oakMaterial, tracery, copper, amberGlass })
+    .forEach((material) => { material.userData.excludeSeasonFoliage = true; });
+  // Preserve the existing object-editor accent contract after replacing the
+  // generic academic facade materials with the bespoke reference palette.
+  // Accent edits intentionally recolor the library's leaded/illuminated glass.
+  amberGlass.userData.isDistrictAccent = true;
+  amberGlass.userData.academicNightEmissiveIntensity = 2.2;
+  return {
+    weatheredAshlar,
+    repairedAshlar,
+    wetPlinth,
+    slate: slateMaterial,
+    oak: oakMaterial,
+    tracery,
+    copper,
+    amberGlass,
+  };
+}
+
+function createLancetGeometry(width: number, height: number) {
+  const shoulderY = height * 0.72;
+  const shape = new THREE.Shape();
+  shape.moveTo(-width * 0.5, 0);
+  shape.lineTo(width * 0.5, 0);
+  shape.lineTo(width * 0.5, shoulderY);
+  shape.quadraticCurveTo(width * 0.46, height * 0.9, 0, height);
+  shape.quadraticCurveTo(-width * 0.46, height * 0.9, -width * 0.5, shoulderY);
+  shape.closePath();
+  return new THREE.ShapeGeometry(shape, 12);
+}
+
+function addLancetWindow(
+  parent: THREE.Object3D,
+  districtId: string,
+  x: number,
+  bottomY: number,
+  z: number,
+  width: number,
+  height: number,
+  materials: AshcroftReferenceMaterials,
+) {
+  const frame = prepare(new THREE.Mesh(createLancetGeometry(width + 0.3, height + 0.28), materials.repairedAshlar), districtId, 'Ashcroft lancet frame');
+  frame.name = 'ACADEMIC__ASHCROFT_CARVED_LANCET_FRAME';
+  frame.position.set(x, bottomY - 0.13, z);
+  parent.add(frame);
+
+  const glass = prepare(new THREE.Mesh(createLancetGeometry(width, height), materials.amberGlass), districtId, 'Ashcroft amber reading-room window');
+  glass.name = 'ACADEMIC__ASHCROFT_TRACERIED_AMBER_WINDOW';
+  glass.position.set(x, bottomY, z + 0.014);
+  glass.userData.academicReadingLights = true;
+  glass.userData.academicNightOrangeLight = true;
+  glass.userData.academicNightEmissiveIntensity = 2.2;
+  parent.add(glass);
+
+  for (const mullionX of [-width * 0.24, 0, width * 0.24]) {
+    addBox(parent, districtId, 'ACADEMIC__ASHCROFT_LEAD_MULLION', [0.035, height * 0.73, 0.026], materials.tracery, [x + mullionX, bottomY + height * 0.365, z + 0.035]);
+  }
+  addBox(parent, districtId, 'ACADEMIC__ASHCROFT_LEAD_TRANSOM', [width * 0.9, 0.035, 0.026], materials.tracery, [x, bottomY + height * 0.46, z + 0.035]);
+  const rose = prepare(new THREE.Mesh(new THREE.TorusGeometry(width * 0.17, 0.025, 6, 18), materials.tracery), districtId, 'Ashcroft tracery rose');
+  rose.name = 'ACADEMIC__ASHCROFT_WINDOW_ROSE_TRACERY';
+  rose.position.set(x, bottomY + height * 0.76, z + 0.04);
+  parent.add(rose);
+}
+
+function addPointedPortalFrame(
+  parent: THREE.Object3D,
+  districtId: string,
+  width: number,
+  height: number,
+  bottomY: number,
+  z: number,
+  radius: number,
+  material: THREE.Material,
+) {
+  const points = [
+    new THREE.Vector3(-width * 0.5, 0, 0),
+    new THREE.Vector3(-width * 0.5, height * 0.62, 0),
+    new THREE.Vector3(-width * 0.42, height * 0.78, 0),
+    new THREE.Vector3(0, height, 0),
+    new THREE.Vector3(width * 0.42, height * 0.78, 0),
+    new THREE.Vector3(width * 0.5, height * 0.62, 0),
+    new THREE.Vector3(width * 0.5, 0, 0),
+  ];
+  const curve = new THREE.CatmullRomCurve3(points, false, 'centripetal', 0.2);
+  const frame = prepare(new THREE.Mesh(new THREE.TubeGeometry(curve, 40, radius, 7, false), material), districtId, 'Ashcroft recessed portal archivolt');
+  frame.name = 'ACADEMIC__ASHCROFT_RECESSED_POINTED_PORTAL';
+  frame.position.set(0, bottomY, z);
+  parent.add(frame);
+}
+
+function makeAshcroftInscriptionTexture(text: string) {
+  const canvas = document.createElement('canvas');
+  canvas.width = 1536;
+  canvas.height = 192;
+  const context = canvas.getContext('2d');
+  if (!context) return null;
+  context.fillStyle = '#a69783';
+  context.fillRect(0, 0, canvas.width, canvas.height);
+  let seed = 1512;
+  for (let index = 0; index < 950; index += 1) {
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    const x = seed % canvas.width;
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    const y = seed % canvas.height;
+    context.fillStyle = index % 4 === 0 ? 'rgba(55,45,37,.12)' : 'rgba(230,217,194,.11)';
+    context.fillRect(x, y, 1 + (seed % 4), 1);
+  }
+  context.strokeStyle = 'rgba(62,48,37,.58)';
+  context.lineWidth = 6;
+  context.strokeRect(14, 14, canvas.width - 28, canvas.height - 28);
+  const inscription = text.toLocaleUpperCase();
+  let fontSize = 76;
+  context.font = `600 ${fontSize}px Georgia, 'Times New Roman', serif`;
+  while (fontSize > 36 && context.measureText(inscription).width > canvas.width - 92) {
+    fontSize -= 3;
+    context.font = `600 ${fontSize}px Georgia, 'Times New Roman', serif`;
+  }
+  context.fillStyle = '#342920';
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(inscription, canvas.width * 0.5, canvas.height * 0.52, canvas.width - 82);
+  const texture = new THREE.CanvasTexture(canvas);
+  texture.colorSpace = THREE.SRGBColorSpace;
+  texture.anisotropy = 4;
+  return texture;
+}
+
+export function updateAcademicBuildingInscription(building: THREE.Object3D, value: string) {
+  const inscription = value.trim().slice(0, 96);
+  building.userData.academicInscription = inscription;
+  building.traverse((object) => {
+    if (!(object instanceof THREE.Mesh) || object.userData.academicInscriptionSurface !== true) return;
+    const material = Array.isArray(object.material) ? object.material[0] : object.material;
+    if (!(material instanceof THREE.MeshStandardMaterial)) return;
+    material.map?.dispose();
+    material.map = makeAshcroftInscriptionTexture(inscription);
+    material.needsUpdate = true;
+    object.userData.academicInscription = inscription;
+  });
+  return inscription;
+}
+
+function buildAshcroftReferenceFacade(
+  building: THREE.Group,
+  districtId: string,
+  width: number,
+  depth: number,
+  inscription: string,
+) {
+  const materials = createAshcroftReferenceMaterials();
+  const frontZ = depth * 0.5;
+
+  building.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)) return;
+    if (/MASONRY_WALL|BRICK_CHIMNEYS|COLLEGIATE_TOWER/.test(object.name)) object.material = materials.weatheredAshlar;
+    if (/STEEP_SLATE_GABLE|TOWER_SLATE_CAP/.test(object.name)) object.material = materials.slate;
+    if (/LIMESTONE_STRING_COURSE|DOOR_LINTEL|GOTHIC_BUTTRESSES/.test(object.name)) object.material = materials.repairedAshlar;
+    if (/OPEN_OAK_DOOR/.test(object.name)) object.material = materials.oak;
+    if (object.name.includes('LEADED_AMBER_WINDOWS')) {
+      object.material = materials.amberGlass;
+      object.userData.academicReadingLights = true;
+      object.userData.academicNightOrangeLight = true;
+      object.userData.academicNightEmissiveIntensity = 2.2;
+    }
+  });
+
+  const facade = new THREE.Group();
+  facade.name = 'ACADEMIC__ASHCROFT_REFERENCE_GOTHIC_FACADE';
+  facade.userData.academicReferenceFacade = true;
+  facade.userData.referenceImages = ['Oxford Gothic library daylight', 'Oxford Gothic library amber night'];
+  building.add(facade);
+
+  addBox(facade, districtId, 'ACADEMIC__ASHCROFT_WET_ASHLAR_PLINTH', [width + 0.26, 0.62, 0.24], materials.wetPlinth, [0, 0.31, frontZ + 0.01]);
+  addBox(facade, districtId, 'ACADEMIC__ASHCROFT_COPPER_GUTTER', [width + 0.68, 0.08, 0.11], materials.copper, [0, 4.69, frontZ + 0.06]);
+
+  for (const x of [-4.45, -2.75, 2.75, 4.45]) {
+    addLancetWindow(facade, districtId, x, 1.34, frontZ + 0.105, 1.12, 2.52, materials);
+  }
+
+  for (const x of [-5.2, -2, 2, 5.2]) {
+    addBox(facade, districtId, 'ACADEMIC__ASHCROFT_DEEP_FRONT_BUTTRESS', [0.42, 3.9, 0.62], materials.weatheredAshlar, [x, 1.95, frontZ + 0.26]);
+    addBox(facade, districtId, 'ACADEMIC__ASHCROFT_BUTTRESS_REPAIR_BAND', [0.5, 0.18, 0.7], materials.repairedAshlar, [x, 1.35, frontZ + 0.27]);
+    const pinnacle = prepare(new THREE.Mesh(new THREE.ConeGeometry(0.25, 1.05, 6), materials.repairedAshlar), districtId, 'Ashcroft carved pinnacle');
+    pinnacle.name = 'ACADEMIC__ASHCROFT_BUTTRESS_PINNACLE';
+    pinnacle.position.set(x, 4.43, frontZ + 0.26);
+    facade.add(pinnacle);
+  }
+
+  for (let index = 0; index < 13; index += 1) {
+    const x = THREE.MathUtils.lerp(-width * 0.46, width * 0.46, index / 12);
+    if (Math.abs(x) < 0.95) continue;
+    addBox(facade, districtId, 'ACADEMIC__ASHCROFT_CRENELLATED_EAVE', [0.42, index % 2 === 0 ? 0.42 : 0.24, 0.34], materials.weatheredAshlar, [x, 4.86 + (index % 2 === 0 ? 0.09 : 0), frontZ + 0.055]);
+  }
+
+  for (const side of [-1, 1]) {
+    const turretX = side * (width * 0.5 - 0.34);
+    const shaft = prepare(new THREE.Mesh(new THREE.CylinderGeometry(0.7, 0.78, 6.15, 8), materials.weatheredAshlar), districtId, 'Ashcroft corner stair turret');
+    shaft.name = 'ACADEMIC__ASHCROFT_OCTAGONAL_STAIR_TURRET';
+    shaft.position.set(turretX, 3.08, frontZ - 0.1);
+    facade.add(shaft);
+    for (const y of [1.12, 3.16, 5.18]) {
+      const band = prepare(new THREE.Mesh(new THREE.CylinderGeometry(0.76, 0.76, 0.13, 8), materials.repairedAshlar), districtId, 'Ashcroft turret string course');
+      band.name = 'ACADEMIC__ASHCROFT_TURRET_STONE_BAND';
+      band.position.set(turretX, y, frontZ - 0.1);
+      facade.add(band);
+    }
+    const spire = prepare(new THREE.Mesh(new THREE.ConeGeometry(0.95, 2.35, 8), materials.slate), districtId, 'Ashcroft turret slate spire');
+    spire.name = 'ACADEMIC__ASHCROFT_CROCKETED_TURRET_SPIRE';
+    spire.position.set(turretX, 7.3, frontZ - 0.1);
+    facade.add(spire);
+    const finial = prepare(new THREE.Mesh(new THREE.ConeGeometry(0.12, 0.62, 6), materials.repairedAshlar), districtId, 'Ashcroft spire finial');
+    finial.name = 'ACADEMIC__ASHCROFT_SPIRE_FINIAL';
+    finial.position.set(turretX, 8.78, frontZ - 0.1);
+    facade.add(finial);
+  }
+
+  const portalShadow = prepare(new THREE.Mesh(createLancetGeometry(2.18, 2.76), new THREE.MeshBasicMaterial({ color: '#090705' })), districtId, 'Ashcroft portal shadow');
+  portalShadow.name = 'ACADEMIC__ASHCROFT_DEEP_PORTAL_SHADOW';
+  portalShadow.position.set(0, 0.08, frontZ + 0.12);
+  facade.add(portalShadow);
+  addPointedPortalFrame(facade, districtId, 2.42, 2.95, 0.02, frontZ + 0.19, 0.12, materials.weatheredAshlar);
+  addPointedPortalFrame(facade, districtId, 2.09, 2.68, 0.08, frontZ + 0.215, 0.075, materials.repairedAshlar);
+  addPointedPortalFrame(facade, districtId, 1.78, 2.4, 0.13, frontZ + 0.24, 0.045, materials.tracery);
+  addBox(facade, districtId, 'ACADEMIC__ASHCROFT_CARVED_OAK_LEFT_DOOR', [0.63, 1.72, 0.08], materials.oak, [-0.35, 0.88, frontZ + 0.265]);
+  addBox(facade, districtId, 'ACADEMIC__ASHCROFT_CARVED_OAK_RIGHT_DOOR', [0.63, 1.72, 0.08], materials.oak, [0.35, 0.88, frontZ + 0.265]);
+  for (const x of [-0.42, -0.18, 0.18, 0.42]) {
+    const doorGlow = addBox(facade, districtId, 'ACADEMIC__ASHCROFT_AMBER_DOOR_LIGHT', [0.06, 0.94, 0.028], materials.amberGlass, [x, 0.92, frontZ + 0.312]);
+    doorGlow.userData.academicReadingLights = true;
+    doorGlow.userData.academicNightOrangeLight = true;
+    doorGlow.userData.academicNightEmissiveIntensity = 2.35;
+  }
+
+  const inscriptionMaterial = new THREE.MeshStandardMaterial({
+    color: '#ffffff', map: makeAshcroftInscriptionTexture(inscription), roughness: 0.88, metalness: 0,
+  });
+  inscriptionMaterial.name = 'Ashcroft editable carved inscription';
+  inscriptionMaterial.userData.excludeSeasonFoliage = true;
+  const inscriptionSurface = prepare(new THREE.Mesh(new THREE.PlaneGeometry(3.45, 0.44), inscriptionMaterial), districtId, 'Ashcroft editable inscription');
+  inscriptionSurface.name = ASHCROFT_INSCRIPTION_SURFACE;
+  inscriptionSurface.position.set(0, 3.18, frontZ + 0.322);
+  inscriptionSurface.userData.academicInscriptionSurface = true;
+  inscriptionSurface.userData.academicInscription = inscription;
+  facade.add(inscriptionSurface);
+
+  for (const [index, x] of [-3.55, 0, 3.55].entries()) {
+    const light = new THREE.PointLight('#ff7a18', 0, index === 1 ? 8.5 : 6.5, 2.05);
+    light.name = index === 1 ? 'ACADEMIC__ASHCROFT_ORANGE_ENTRANCE_LIGHT' : 'ACADEMIC__ASHCROFT_ORANGE_READING_LIGHT';
+    light.position.set(x, index === 1 ? 1.38 : 2.45, frontZ + (index === 1 ? 0.85 : 0.18));
+    light.visible = false;
+    light.userData.academicNightOrangeLight = true;
+    light.userData.academicNightLightIntensity = index === 1 ? 1.15 : 0.72;
+    facade.add(light);
+  }
+
+  building.userData.academicInscription = inscription;
+  building.userData.ashcroftReferenceStyle = {
+    inspiration: 'weathered Oxford collegiate Gothic library in rain',
+    palette: {
+      ashlar: '#817568', repairedStone: '#a69783', wetPlinth: '#4d4842',
+      slate: '#3c474d', oxidizedCopper: '#356a62', oak: '#38241b', nightAmber: '#ff5908',
+    },
+    elements: ['broad steep slate roof', 'crenellated eaves', 'octagonal stair turrets', 'crocketed spires', 'deep front buttresses', 'traceried lancet bays', 'recessed pointed portal', 'editable carved inscription'],
+    lancetWindowCount: 4,
+    automaticNightLighting: true,
+  };
+}
+
 export function enrichExistingAcademicBuildings(buildings: readonly THREE.Group[], districtId: string) {
   const materials = createMaterials();
   buildings.forEach((building) => {
@@ -2316,9 +3040,27 @@ export function enrichExistingAcademicBuildings(buildings: readonly THREE.Group[
       });
     }
     const [width, depth] = (building.userData.footprint ?? record.footprint) as [number, number];
+    if (record.id === 'ashcroft-grand-library') {
+      buildAshcroftReferenceFacade(building, districtId, width, depth, record.inscription ?? 'CEREBRUM EXTERNUM · FOUNDED MDXII');
+      // IslandWorld mounts this expensive authored interior as a streamed
+      // package near the entrance instead of constructing it during boot.
+      building.userData.cerebrumStreamingConfig = {
+        selectableId: academicBuildingSelectableId(record.id),
+        width: Math.max(10.8, width - 0.8),
+        depth: Math.max(7.2, depth - 0.7),
+        quality: 'medium',
+        muted: true,
+        hideLegacyShell: true,
+        preloadDistanceMetres: 60,
+        unloadDistanceMetres: 90,
+        retentionSeconds: 15,
+      };
+    }
     const plaque = addBox(building, districtId, `${record.id}__CONFIGURED_BRASS_PLAQUE`, [0.66, 0.3, 0.035], materials.brass, [width * 0.12, 0.68, depth * 0.5 + 0.035]);
     plaque.userData.academicHotspot = record.id;
-    if (record.interior) addInterior(building, { ...record, footprint: [width, depth] }, materials, districtId);
+    if (record.interior && record.id !== 'ashcroft-grand-library') {
+      addInterior(building, { ...record, footprint: [width, depth] }, materials, districtId);
+    }
 
     if (record.id === 'blackwood-great-hall') {
       const clockTower = addBox(building, districtId, 'ACADEMIC__PRIMARY_CLOCK_TOWER', [2.8, 7.8, 2.8], materials.limestone, [0, 3.9, -depth * 0.22], { obstacle: true });

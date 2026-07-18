@@ -1,0 +1,312 @@
+{
+  "structuralAudit": {
+    "definitionName": "Cerebrum Externum",
+    "definitionDescription": "Blackwood University’s monumental external brain: lancet-lit reading halls above the restricted Cerebrum Occultum archive. Founded in 1512; Library Court.",
+    "inscription": "CEREBRUM EXTERNUM · FOUNDED MDXII",
+    "missingFeatures": [],
+    "rooms": [
+      "entrance-vestibule",
+      "grand-stair-hall",
+      "main-reading-room",
+      "stacks",
+      "card-catalogue-room",
+      "librarian-office",
+      "restricted-archive",
+      "rare-book-room"
+    ],
+    "counts": {
+      "hotspots": 22,
+      "books": 16241,
+      "shelves": 3968,
+      "lamps": 435,
+      "chairs": 956,
+      "windows": 9,
+      "pointLights": 6,
+      "shadowCastingLights": 0
+    },
+    "navigation": {
+      "maximumStepRiseWorldUnits": 0.034,
+      "maximumStepRiseMetres": 0.34,
+      "controllerStepLimitWorldUnits": 0.038,
+      "grandStairTreads": 20,
+      "occultumStairTreads": 22
+    },
+    "performance": {
+      "quality": "medium",
+      "instancedMeshes": 30,
+      "visibleInstances": 19723,
+      "fullInstances": 29880,
+      "distantShelfContentsSimplified": true
+    },
+    "navGroupsAllVisible": true,
+    "navGroupCount": 3,
+    "legacyFloorDisabled": true,
+    "pointLightCount": 6,
+    "shadowLightCount": 0,
+    "mutedByDefault": true,
+    "roomAtOverview": "ground"
+  },
+  "orbitAudit": {
+    "active": true,
+    "cutaway": true,
+    "camera": {
+      "position": [
+        357.7,
+        7.37,
+        -21.15
+      ],
+      "target": [
+        347.24,
+        1.77,
+        -21.33
+      ]
+    },
+    "allCutawayTargetsHidden": true,
+    "persistentSoundVisible": true
+  },
+  "uiDispatchMs": {
+    "orbit": 44.900000005960464,
+    "walk": 76.80000000447035
+  },
+  "readingAudit": {
+    "inside": true,
+    "roomId": "main-reading-room",
+    "surface": "rug",
+    "grounded": true,
+    "soundControlsVisible": true
+  },
+  "realEInteraction": {
+    "hotspot": "reading-lamp-1",
+    "ray": [
+      {
+        "name": "academic-libraries-theoretical-labs__ACADEMIC_FACILITY__CEREBRUM-EXTERNUM__COLLEGIATE_TOWER",
+        "distance": 0.2439,
+        "hotspot": null
+      },
+      {
+        "name": "CEREBRUM__HOTSPOT__READING-LAMP-1",
+        "distance": 0.271,
+        "hotspot": "reading-lamp-1"
+      },
+      {
+        "name": "CEREBRUM__GREEN_SHADED_TABLE_LAMPS",
+        "distance": 0.3186,
+        "hotspot": null
+      },
+      {
+        "name": "CEREBRUM__INDIVIDUAL_LAMP_GLOW__READING-LAMP-1",
+        "distance": 0.3321,
+        "hotspot": "reading-lamp-1"
+      }
+    ],
+    "before": true,
+    "after": false
+  },
+  "interactionAudit": {
+    "lockedMessage": "The inner door remains locked. Its brass plate asks for an authorized shelfmark; the card catalogue may provide one.",
+    "drawerOpened": true,
+    "ladderStop": 1,
+    "bookTitle": "Memory and Measure",
+    "catalogueLocation": "Cerebrum Occultum · Rare Book Room · Cabinet R-7 · Shelf 3",
+    "catalogueUnlocked": true,
+    "innerDoorOpened": true,
+    "occultumGateOpened": true,
+    "highShadowLights": 0,
+    "highInstances": 29880,
+    "lowShadowLights": 0,
+    "lowInstances": 9812
+  },
+  "navigationAudit": {
+    "grandTreadCount": 20,
+    "occultumTreadCount": 22,
+    "grandUp": {
+      "completed": 19,
+      "expected": 19,
+      "maximumRemainingMetres": 0.425,
+      "ungroundedFrames": 0,
+      "snapshot": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          347.965,
+          2.428,
+          -20.318
+        ],
+        "positionMetres": [
+          3479.7,
+          24.3,
+          -203.2
+        ],
+        "groundY": 2.281,
+        "surfaceKind": "wood",
+        "roomId": "outside",
+        "speedMetresPerSecond": 5.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          -0.582,
+          0,
+          -0.813
+        ]
+      }
+    },
+    "grandDown": {
+      "completed": 19,
+      "expected": 19,
+      "maximumRemainingMetres": 0.425,
+      "ungroundedFrames": 0,
+      "snapshot": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          348.768,
+          1.812,
+          -19.195
+        ],
+        "positionMetres": [
+          3487.7,
+          18.1,
+          -192
+        ],
+        "groundY": 1.635,
+        "surfaceKind": "wood",
+        "roomId": "outside",
+        "speedMetresPerSecond": 5.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.582,
+          0,
+          0.813
+        ]
+      }
+    },
+    "occultumUp": {
+      "completed": 21,
+      "expected": 21,
+      "maximumRemainingMetres": 0.449,
+      "ungroundedFrames": 0,
+      "snapshot": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          350.199,
+          1.779,
+          -24.723
+        ],
+        "positionMetres": [
+          3502,
+          17.8,
+          -247.2
+        ],
+        "groundY": 1.626,
+        "surfaceKind": "stone",
+        "roomId": "outside",
+        "speedMetresPerSecond": 5.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.582,
+          0,
+          0.813
+        ]
+      }
+    },
+    "occultumDown": {
+      "completed": 21,
+      "expected": 21,
+      "maximumRemainingMetres": 0.449,
+      "ungroundedFrames": 0,
+      "snapshot": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          349.011,
+          1.091,
+          -26.384
+        ],
+        "positionMetres": [
+          3490.1,
+          10.9,
+          -263.8
+        ],
+        "groundY": 0.916,
+        "surfaceKind": "stone",
+        "roomId": "outside",
+        "speedMetresPerSecond": 5.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          -0.582,
+          0,
+          -0.813
+        ]
+      }
+    }
+  },
+  "quietAudit": {
+    "state": true,
+    "bodyClass": true,
+    "controlsVisible": true,
+    "ambience": {
+      "inside": true,
+      "roomId": "restricted-archive",
+      "windowProximity": 0.16,
+      "surface": "stone",
+      "speed": 0,
+      "quiet": true,
+      "pageTurns": 0,
+      "clockTicks": 0,
+      "footsteps": 0
+    }
+  },
+  "persistenceAudit": {
+    "loaded": true,
+    "expectedLamp": true,
+    "restoredLamp": true,
+    "expectedDrawer": true,
+    "restoredDrawer": true,
+    "expectedLadder": 1,
+    "restoredLadder": 1,
+    "expectedLocation": "Cerebrum Occultum · Rare Book Room · Cabinet R-7 · Shelf 3",
+    "restoredLocation": "Cerebrum Occultum · Rare Book Room · Cabinet R-7 · Shelf 3",
+    "restoredMuted": true
+  },
+  "consoleErrors": []
+}

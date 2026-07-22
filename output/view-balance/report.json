@@ -1,0 +1,61 @@
+{
+  "explore": {
+    "residentDetailPackages": 41,
+    "proxyPackageCount": 0,
+    "runtimePolicies": {
+      "objectInteractionsEnabled": false,
+      "interiorRendering": "walk-inside-building-only",
+      "authoredInteriorGroups": 2,
+      "visibleAuthoredInteriorGroups": 0,
+      "cerebrumInteriorRendered": false
+    }
+  },
+  "walk": {
+    "residentDetailPackages": 3,
+    "proxyPackageCount": 38,
+    "configuredSpeedKilometresPerHour": 18,
+    "measuredDistanceMetresInTwoSeconds": 10
+  },
+  "diningInterior": {
+    "objectInteractionsEnabled": false,
+    "interiorRendering": "walk-inside-building-only",
+    "authoredInteriorGroups": 2,
+    "visibleAuthoredInteriorGroups": 1,
+    "cerebrumInteriorRendered": false
+  },
+  "cerebrum": {
+    "phase": "active",
+    "rendered": true
+  },
+  "disabledActions": {
+    "academic": {
+      "title": "Interactions paused",
+      "message": "Special object interactions are temporarily disabled.",
+      "state": {
+        "available": false,
+        "interactionsEnabled": false
+      }
+    },
+    "cerebrum": {
+      "handled": false,
+      "message": "Special object interactions are temporarily disabled.",
+      "state": {
+        "quality": "medium",
+        "navigationLevel": "ground",
+        "quietMode": false,
+        "muted": true,
+        "orbitCamera": false,
+        "cutawayVisible": false,
+        "doors": {},
+        "drawers": {},
+        "lamps": {},
+        "ladderStop": 0,
+        "inspectedBookId": null,
+        "catalogueRevealed": false,
+        "rareBookDoorUnlocked": false,
+        "rareBookLocation": null
+      }
+    }
+  },
+  "errors": []
+}

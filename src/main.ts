@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import './style.css';
+import { Zip, ZipPassThrough } from 'fflate';
 import { biomes, districts } from './data/districts';
 import {
   ACADEMIC_CAMPUS_BUILDINGS,
@@ -8,6 +9,7 @@ import {
 import {
   createAcademicBuildingDefinition,
   IslandWorld,
+  OBJECT_INTERACTIONS_ENABLED,
   type EditorAssetDefinition,
   type GizmoMode,
   type GraphicsQuality,
@@ -33,6 +35,94 @@ const required = <T extends HTMLElement>(selector: string) => {
   if (!element) throw new Error(`Missing required UI element: ${selector}`);
   return element;
 };
+
+interface ProductionOutputSink {
+  mode: 'directory' | 'zip';
+  packageName: string;
+  write: (path: string, data: Blob) => Promise<void>;
+  finalize: () => Promise<void>;
+}
+
+function downloadBrowserFile(blob: Blob, filename: string) {
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement('a');
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.appendChild(anchor);
+  anchor.click();
+  anchor.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1200);
+}
+
+function productionPackageName() {
+  const timestamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}Z$/, 'Z').replace('T', '_');
+  return `YouTopy_Production_${timestamp}`;
+}
+
+async function createProductionOutputSink(): Promise<ProductionOutputSink> {
+  const packageName = productionPackageName();
+  const showDirectoryPicker = (window as Window & {
+    showDirectoryPicker?: (options?: Record<string, unknown>) => Promise<any>;
+  }).showDirectoryPicker;
+
+  if (typeof showDirectoryPicker === 'function') {
+    const parent = await showDirectoryPicker.call(window, {
+      id: 'youtopy-production-export',
+      mode: 'readwrite',
+      startIn: 'downloads',
+    });
+    const packageDirectory = await parent.getDirectoryHandle(packageName, { create: true });
+    return {
+      mode: 'directory',
+      packageName,
+      write: async (path, data) => {
+        const parts = path.split('/').filter(Boolean);
+        const filename = parts.pop();
+        if (!filename) throw new Error(`Invalid Production export path: ${path}`);
+        let directory = packageDirectory;
+        for (const part of parts) {
+          directory = await directory.getDirectoryHandle(part, { create: true });
+        }
+        const file = await directory.getFileHandle(filename, { create: true });
+        const writable = await file.createWritable();
+        await writable.write(data);
+        await writable.close();
+      },
+      finalize: async () => undefined,
+    };
+  }
+
+  // Firefox/Safari fallback: stream entries into one ZIP so the browser only
+  // needs to approve a single download while all GLBs stay separate inside it.
+  const chunks: ArrayBuffer[] = [];
+  let archive!: Zip;
+  const completed = new Promise<Blob>((resolve, reject) => {
+    archive = new Zip((error, data, final) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+      const chunk = new Uint8Array(data.byteLength);
+      chunk.set(data);
+      chunks.push(chunk.buffer);
+      if (final) resolve(new Blob(chunks, { type: 'application/zip' }));
+    });
+  });
+  return {
+    mode: 'zip',
+    packageName,
+    write: async (path, data) => {
+      const entry = new ZipPassThrough(`${packageName}/${path}`);
+      archive.add(entry);
+      entry.push(new Uint8Array(await data.arrayBuffer()), true);
+    },
+    finalize: async () => {
+      archive.end();
+      const blob = await completed;
+      downloadBrowserFile(blob, `${packageName}.zip`);
+    },
+  };
+}
 
 const app = required<HTMLElement>('#app');
 
@@ -167,6 +257,7 @@ const timeToggle = required<HTMLButtonElement>('#toggle-time');
 const walkHud = required<HTMLElement>('#walk-hud');
 const walkLookButton = required<HTMLButtonElement>('#walk-look-button');
 const walkTurboButton = required<HTMLButtonElement>('#walk-turbo');
+const walkSpeedInput = required<HTMLInputElement>('#walk-speed-kmh');
 const walkHudCollapseButton = required<HTMLButtonElement>('#walk-hud-collapse');
 const walkReadout = required<HTMLElement>('.walk-readout');
 const walkStatus = required<HTMLElement>('#walk-status');
@@ -458,8 +549,8 @@ function isCerebrumDefinition(definition: SceneDefinition | null | undefined) {
 function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
   currentSelection = definition;
   const cerebrumSelected = isCerebrumDefinition(definition);
-  cerebrumWalkButton.hidden = !cerebrumSelected;
-  cerebrumOrbitButton.hidden = !cerebrumSelected;
+  cerebrumWalkButton.hidden = !OBJECT_INTERACTIONS_ENABLED || !cerebrumSelected;
+  cerebrumOrbitButton.hidden = !OBJECT_INTERACTIONS_ENABLED || !cerebrumSelected;
   document.body.classList.toggle('has-selection', Boolean(definition));
   listButtons.forEach((button, id) => button.classList.toggle('active', id === definition?.id));
   if (!definition) {
@@ -553,6 +644,12 @@ function syncAcademicAudioButtons() {
 }
 
 function syncCerebrumControls(forceVisible = false) {
+  if (!OBJECT_INTERACTIONS_ENABLED) {
+    document.body.classList.remove('library-quiet-mode');
+    cerebrumPersistentControls.hidden = true;
+    cerebrumQuietButton.hidden = true;
+    return;
+  }
   const state = world.getCerebrumLibraryState();
   const quiet = state?.quietMode === true;
   const relevant = forceVisible
@@ -593,6 +690,11 @@ function setFountainToggleState(button: HTMLButtonElement, active: boolean, onLa
 }
 
 function syncFountainControlPanel() {
+  if (!OBJECT_INTERACTIONS_ENABLED) {
+    fountainControlPanel.hidden = true;
+    document.body.classList.remove('fountain-inspection-mode');
+    return;
+  }
   const inspectionActive = currentMode === 'explore' && world.isAcademicFountainInspectionActive();
   fountainControlPanel.hidden = !inspectionActive;
   document.body.classList.toggle('fountain-inspection-mode', inspectionActive);
@@ -702,13 +804,13 @@ function setMode(mode: ViewMode) {
     explore: '<span><b>Drag</b> orbit</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     plan: '<span><b>Drag</b> pan</span><span><b>Scroll</b> zoom</span><span><b>Click</b> inspect</span>',
     edit: '<span><b>G / R / S</b> transform</span><span><b>Drag</b> gizmo</span><span><b>Click</b> select</span>',
-    walk: '<span><b>WASD</b> move</span><span><b>Space</b> tap / hold jump</span><span><b>T</b> bike turbo</span><span><b>E</b> interact</span>',
+    walk: '<span><b>WASD</b> move</span><span><b>Space</b> tap / hold jump</span><span><b>Speed</b> set in km/h</span>',
   };
   required<HTMLElement>('#interaction-hint').innerHTML = hints[mode];
   if (mode === 'edit' && currentSelection) toast('Edit mode active', 'Use the gizmo or inspector fields; changes are included in the GLB export.');
   if (mode === 'walk') {
     sceneCardTitle.textContent = 'Human-scale campus walk';
-    sceneCardCopy.textContent = '1.62 m eye level for a 1.7 m adult · variable-height Space jump · T toggles 12 m/s bike-speed turbo';
+    sceneCardCopy.textContent = '1.62 m eye level · exact user-set walking speed · interiors stream only after entry';
     walkStatus.textContent = 'Human-scale exploration ready';
     walkLookButton.textContent = 'Click to look around';
   }
@@ -736,7 +838,7 @@ const world = new IslandWorld(viewport, {
     updateInspector(definition);
     syncCerebrumControls();
     inspector.classList.toggle('hidden-panel', currentMode === 'walk' || (!definition && currentMode !== 'edit'));
-    if (currentMode === 'walk' && definition) {
+    if (OBJECT_INTERACTIONS_ENABLED && currentMode === 'walk' && definition) {
       showWalkInteractionMenu(definition);
     }
   },
@@ -845,6 +947,17 @@ const world = new IslandWorld(viewport, {
 window.labIsland = world;
 window.render_game_to_text = () => JSON.stringify(world.getTextSnapshot());
 window.advanceTime = (milliseconds: number) => world.advanceTime(milliseconds);
+document.body.classList.toggle('object-interactions-disabled', !OBJECT_INTERACTIONS_ENABLED);
+
+const walkSpeedStorageKey = 'youtopy_walk_speed_kmh';
+function applyWalkSpeed(value: number, persist = true) {
+  const applied = world.setWalkSpeedKilometresPerHour(value);
+  walkSpeedInput.value = applied.toFixed(1);
+  walkSpeedInput.setAttribute('aria-valuetext', `${applied.toFixed(1)} kilometres per hour`);
+  if (persist) localStorage.setItem(walkSpeedStorageKey, String(applied));
+  return applied;
+}
+applyWalkSpeed(Number(localStorage.getItem(walkSpeedStorageKey) ?? walkSpeedInput.value), false);
 
 allDefinitions.forEach((definition, index) => definitionIndex.set(definition.id, index + 1));
 required<HTMLElement>('#district-count').textContent = String(districts.length).padStart(2, '0');
@@ -924,7 +1037,10 @@ exitInteriorButton.addEventListener('click', () => {
 });
 
 walkLookButton.addEventListener('click', () => world.activateWalkLook());
-walkTurboButton.addEventListener('click', () => world.toggleWalkTurbo());
+walkSpeedInput.addEventListener('change', () => {
+  world.setWalkTurbo(false);
+  applyWalkSpeed(Number(walkSpeedInput.value));
+});
 walkHudCollapseButton.addEventListener('click', () => {
   const collapsed = walkReadout.classList.toggle('collapsed');
   walkHudCollapseButton.setAttribute('aria-expanded', String(!collapsed));
@@ -1253,7 +1369,10 @@ document.addEventListener('drop', (event) => {
   toast('Asset ready to place', 'Click a walkable island surface to place the dropped building.');
 });
 
-required<HTMLButtonElement>('#export-trigger').addEventListener('click', async (event) => {
+const sceneExportButton = required<HTMLButtonElement>('#export-trigger');
+const productionExportButton = required<HTMLButtonElement>('#production-export-trigger');
+
+sceneExportButton.addEventListener('click', async (event) => {
   const button = event.currentTarget as HTMLButtonElement;
   if (event.shiftKey) {
     world.exportProject();
@@ -1296,7 +1415,8 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (editingText) return;
-  if (event.key.toLowerCase() === 'q'
+  if (OBJECT_INTERACTIONS_ENABLED
+    && event.key.toLowerCase() === 'q'
     && (world.getCerebrumLibraryState()?.quietMode
       || world.isInsideCerebrumLibrary()
       || world.isCerebrumLibraryInspectionActive()
@@ -1349,6 +1469,61 @@ document.addEventListener('keydown', (event) => {
   if (event.key === 'Home') {
     world.overview();
     syncFountainControlPanel();
+  }
+});
+
+productionExportButton.addEventListener('click', async () => {
+  const label = productionExportButton.querySelector('span');
+  const previousText = label?.textContent ?? 'Production';
+  productionExportButton.dataset.exportStatus = 'working';
+  productionExportButton.disabled = true;
+  sceneExportButton.disabled = true;
+  if (label) label.textContent = 'Choose folder…';
+
+  try {
+    // Chromium writes directly to a chosen folder. Other browsers receive one
+    // ZIP containing the same directory tree and separate GLBs.
+    const sink = await createProductionOutputSink();
+    if (label) label.textContent = 'Loading world…';
+    const summary = await world.exportProductionPackage(sink.write, (progress) => {
+      if (!label) return;
+      if (progress.phase === 'loading') {
+        label.textContent = 'Loading world…';
+      } else if (progress.phase === 'finalizing') {
+        label.textContent = 'Writing manifest…';
+      } else {
+        label.textContent = `${progress.completed}/${progress.total} GLBs`;
+      }
+    });
+    await sink.finalize();
+    productionExportButton.dataset.exportStatus = 'success';
+    const destination = sink.mode === 'directory'
+      ? `Saved in ${sink.packageName}.`
+      : `Downloaded ${sink.packageName}.zip.`;
+    toast(
+      'Production package exported',
+      `${summary.assetCount} world-positioned Blender GLBs plus manifest and batch importer. ${destination}`,
+      'normal',
+      7200,
+    );
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'AbortError') {
+      productionExportButton.dataset.exportStatus = 'idle';
+      toast('Production export cancelled', 'No export folder was written.');
+    } else {
+      productionExportButton.dataset.exportStatus = 'error';
+      console.error(error);
+      toast(
+        'Production export failed',
+        error instanceof Error ? error.message : 'The Production package could not be serialized.',
+        'error',
+        7200,
+      );
+    }
+  } finally {
+    productionExportButton.disabled = false;
+    sceneExportButton.disabled = false;
+    if (label) label.textContent = previousText;
   }
 });
 
@@ -1428,6 +1603,10 @@ academicHistorySave.addEventListener('click', () => {
 });
 
 function showWalkInteractionMenu(definition: SceneDefinition) {
+  if (!OBJECT_INTERACTIONS_ENABLED) {
+    walkInteractionMenu.hidden = true;
+    return;
+  }
   if (world.walkController?.pointerControls.isLocked) {
     world.walkController.pointerControls.unlock();
   }
@@ -1511,6 +1690,7 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 }
 
 function triggerWalkInteraction(definition: SceneDefinition, action: string) {
+  if (!OBJECT_INTERACTIONS_ENABLED) return;
   const group = world.objectGroups.get(definition.id);
   if (!group) return;
 

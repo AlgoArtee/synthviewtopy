@@ -30,19 +30,20 @@ Open [http://127.0.0.1:5178](http://127.0.0.1:5178). The fixed local-only port a
 ```bash
 npm run build     # Type-check and create the production bundle in dist/
 npm run preview   # Preview the production bundle locally
-npm run test:streaming          # Verify proxy overview + Cerebrum mount/dispose/remount
+npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
 
 ## Streamed browser preview and Unreal migration
 
 The browser is now explicitly a **sandbox editor and lightweight preview**.
-All 35 districts and six biomes use selectable silhouette proxies at island
-overview scale; detailed roots become resident only near the camera or while
-editing. Cerebrum Externum is not constructed at boot: it preloads within 60 m,
-isolates the active interior and exterior vista, retains state for 15 seconds,
-and disposes beyond 90 m. The Debug panel reports resident packages and the
-interior lifecycle.
+Explore renders all 35 district and six biome exterior packages, with interiors
+hidden, so the island remains a complete atmospheric 3D map. Walk keeps nearby
+exteriors at full detail and replaces distant packages with atmospheric HLODs;
+an authored interior is rendered only while the walker is inside its building.
+Cerebrum Externum follows the same inside-only policy and is disposed as soon as
+the walker leaves. The Debug panel reports resident packages and the interior
+lifecycle.
 
 Production content is owned exclusively by Unreal Editor. The browser exposes
 a one-way, bootstrap-only manifest/GLB interface for the initial staged
@@ -55,7 +56,7 @@ quality configuration, and Cerebrum vertical-slice definition are documented in
 
 | Mode | Purpose | Mouse controls | Shortcut |
 | --- | --- | --- | --- |
-| Explore | Orbit around the island and inspect districts | Drag to orbit, scroll to zoom, click to select | `1` |
+| Explore | Orbit around the complete exterior 3D map and inspect districts | Drag to orbit, scroll to zoom, click to select | `1` |
 | Plan | Read the sketch as a north-up overhead masterplan | Drag to pan, scroll to zoom, click to select | `2` |
 | Edit | Move, rotate, and scale the selected district, dome, or imported mesh | Click to select, then drag the transform gizmo | `3` |
 | Walk | Explore the island at human eye level with collision-aware movement | Click the viewport for mouse-look; use movement keys to walk | `4` |
@@ -80,11 +81,11 @@ Additional controls:
 ### Walk mode
 
 - Press `4` or choose **Walk**, then click the 3D viewport to capture the pointer for mouse-look. If pointer lock is unavailable or denied, Walk automatically switches to drag-based mouse look; move or drag on the viewport to turn the camera.
-- Move with `W`, `A`, `S`, `D` or the arrow keys. Hold `Shift` to move faster.
+- Move with `W`, `A`, `S`, `D` or the arrow keys. Set the exact walking speed in km/h from the WALK panel.
 - Press `Space` for a 0.55 m hop or hold it for a 1.6 m traversal jump. Airborne collision uses the character's actual feet height, so a sufficiently high jump can clear low walls and props while full-height architecture remains solid.
-- Press `E` to interact with the object or entrance in reach.
+- Special object and entrance interactions are temporarily disabled; `E` does not open an interaction menu.
 - Press `Escape` to release pointer lock and return the mouse to the interface.
-- WALK is calibrated to a 1.7 m adult: the camera eye level is 0.162 world units (1.62 m), the normal pace is 1.8 m/s, and the dedicated 55° vertical field of view is restored to the overview lens when WALK ends.
+- WALK is calibrated to a 1.7 m adult: the camera eye level is 0.162 world units (1.62 m), the configured km/h speed is converted exactly to world motion, and the dedicated 55° vertical field of view is restored to the overview lens when WALK ends.
 - Terrain, roads, district plots, bridge approaches, and city ramps expose semantic walkable surfaces. Buildings, biome structures, and imported meshes participate in collision/obstacle checks, while ramps keep traversal grounded across elevation changes.
 - Every district has a lit entry door and a walkable foyer linked to its approach ramp. All 14 Academic District facilities have their own open arched doorway, walkable ground floor, and exterior path; Cerebrum Externum, Founders Dining Hall, and St Anselm Chapel are furnished in-place rather than loaded as disconnected scenes. Cerebrum Externum includes connected reading halls, stacks, an upper gallery, and the underground Cerebrum Occultum archive. Each climate dome has a glazed airlock corridor: follow its ramp, cross the glowing threshold, and continue onto the dome's interior ground.
 
@@ -94,12 +95,11 @@ Select **Academic District — Libraries & Theoretical Labs** in the Atlas, then
 
 - In **Edit**, all fourteen named facilities appear as individual **Academic building** entries in the Atlas. Select a façade or its Atlas entry to identify the building and attach its own gizmo; name, scene label, description, position, rotation, scale, visibility, collision, colors, patterns, reset, Undo, save/reload, interior design, and GLB export operate on that facility without selecting the whole district. Nearby facility labels appear only in Edit to keep Explore and Walk uncluttered.
 
-- In **Walk**, stand within 4.5 m of an entrance plaque and press `E`. **Inspect entrance** opens the configured name, founding date, zone, description, and editable two-sentence fictional history. Saved edits stay in this browser.
-- The interaction menu rings the St Anselm bell, toggles selected library reading-room lights, opens the stylized campus map, and exposes the manual close action for an already-open night gate. The campus is physically walkable while these overlays are open; closing an overlay restores the scene.
-- The main gate is automatically open at sunrise, noon, and sunset. At night it closes and blocks WALK until the player stands within roughly 6 m of any part of the broad gate and presses `E` once; opening no longer requires precise crosshair aim or a menu click. It will wait rather than close on a player standing in the threshold.
+- Academic entrance cards, bells, reading-room light toggles, campus-map actions, gate controls, and other special object interactions are temporarily disabled in Walk. Ordinary movement, collision, exterior exploration, and automatic inside-building interior visibility remain active.
+- The main gate still follows its time-of-day presentation, but its manual interaction is disabled with the other special object actions.
 - The processional avenue connects the gate to four broad worn-stone Great Hall steps, an open Gothic arch, and a continuous walkable interior. Its fountain-safe crescent, tree rows, and deliberate canopy gaps retain the clock-tower sightline while keeping the gate, steps, entrances, and monument clear. Thirty-two human-scale vintage benches with aged-oak slats and cast-iron scroll ends are distributed through parks, courts, the canal edge, and the open avenue.
 - The former **Gaslight Reading Courts** plaza now contains **The Well of Infinite Knowledge**: a 14 × 11.6 m asymmetrical polygonal basin and 10.8 m vertical composition of black stone, cantilevered planes, radial measurement channels, floating ceremonial platforms, an original standing Seshat, a structural infinity loop with restrained amber inlay, and a broken astrolabe-like ring. Dark mirror water, thin controlled sheets, drainage, scientific engravings, patina, mineral traces, moss, and rain-darkened materials keep its contemporary geometry tied to the historic campus.
-- In **Walk**, stand beside the Well and press `E` for its archival control set: read the dedication; start, stop, or set exact water flow; toggle the infinity light; highlight and describe scientific symbols; expose the hydraulic cutaway or construction grid; rotate the orbital ring; cycle Seshat's bronze/dark-stone/hybrid material; compare weathered and clean restoration states; choose hero, low-angle, top-down, or side-profile inspection cameras; switch among overcast courtyard, rainy night, and museum-white presentation scenes; or show fountain-specific collision/light/water/statistics debug helpers. Opening orbit inspection keeps a compact instrument-style control panel available in Explore; fountain actions remain unavailable remotely.
+- The Well's archival controls and inspection cameras remain authored but are hidden and inactive while special interactions are disabled.
 - Save/Refresh preserves the Well's scene, water, light, engraving, material, restoration, cutaway, grid, ring, exact camera projection, and quality choices. Three fountain quality tiers share instanced channels, markers, platforms, engraved details, and water elements with close-detail culling and three statue LODs; generated resources and quality-specific shadow targets are disposed or reallocated before a static scene rebuild.
 - A tall, visually permeable Collegiate Gothic boundary follows the complete Academic sector: the inner ring-road arc, both biodome avenues, and the coastal railway edge. Its 708 instanced bays use crested carved-stone piers, blackened iron bars, pointed arches, quatrefoils, and botanical motifs. The existing Blackwood gate remains the main inward entrance; ivy-clad brass-signed garden openings face the Tundra and Desert biodomes, and an always-open monumental gate continues the canal bridge path to the rear railway.
 - The 79-tree historic arboretum uses all 15 requested species in setting-specific groups: ancient English oaks and horse chestnuts occupy quadrangles; lindens and London planes line the ceremonial avenue; copper beeches frame libraries and administration; English yews, Irish yews, holly, and hawthorn shelter the chapel and graveyard; cedars of Lebanon stand inside the professors' garden; Scots pines surround Halley Observatory; willows and alders follow the canal and damp ground; European beeches form boundary groves and secluded walks; and rowans soften the Marlowe residential courts.
@@ -147,6 +147,31 @@ Choose **Import**, select the island location where the building should stand, a
 An imported asset is centered on X/Z and grounded from the bottom of its bounding box. In Landscape it is fitted to roughly 8 world units and added near the current selection; inside Interior Design it is fitted to furniture scale and parented to the active building. Imported assets can be selected, transformed, hidden, reset, deleted, included in the next GLB export, and treated as obstacles in Walk mode. Importing is local to the browser; files are not uploaded.
 
 ## Export GLB and open it in Blender
+
+### Production export (complete island, separate GLBs)
+
+Click **Production** for the Blender handoff. Choose a parent folder when the
+browser asks; SynthViewTopy creates a timestamped `YouTopy_Production_*` folder.
+On browsers without folder-write support, the same folder tree is delivered as
+one ZIP download.
+
+Production export temporarily forces all 35 district and six biome detail
+packages resident, mounts the complete Cerebrum Externum interior, selects the
+highest authored export detail, and writes separate GLBs for:
+
+- island terrain and the Blender PBR ocean;
+- transit/coastal railway, Alpine logistics port, cyber-city bridge, and city;
+- every district (one GLB per district) and every climate dome (one GLB per dome);
+- imported/Design Studio assets, editable interiors, and global lighting when present.
+
+The package also contains `00_PRODUCTION_MANIFEST.json`, the matching editable
+project state, `README_BLENDER.txt`, and `import_youtopy_production.py`. Run the
+Python script with `blender --python import_youtopy_production.py`, or import all
+GLBs through **File > Import > glTF 2.0**. Component roots are already baked to
+metres and world-positioned, so do not recenter or apply an additional scale in
+Blender. Runtime streaming visibility is restored when export finishes or fails.
+
+### Quick single-file export
 
 1. Click **Export scene**. The browser downloads `YouTopy_Lab_Island.glb`.
 2. In Blender, choose **File > Import > glTF 2.0** and select that file.

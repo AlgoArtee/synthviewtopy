@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import {
   WALK_EYE_HEIGHT,
-  WALK_FAST_SPEED,
   WALK_GRAVITY,
   WALK_JUMP_HOLD_HEIGHT_METRES,
   WALK_JUMP_SPEED,
@@ -12,6 +11,7 @@ import {
   WALK_SPEED,
   WALK_STEP_HEIGHT,
   WALK_TURBO_SPEED,
+  metresToWorldUnits,
   worldUnitsToMetres,
 } from '../config/island';
 
@@ -26,6 +26,8 @@ export interface WalkSnapshot {
   surfaceKind: string;
   roomId: string;
   speedMetresPerSecond: number;
+  speedKilometresPerHour: number;
+  configuredWalkSpeedKilometresPerHour: number;
   turboEnabled: boolean;
   jumpState: 'grounded' | 'rising' | 'falling';
   jumpHeld: boolean;
@@ -89,6 +91,7 @@ export class WalkController {
   private surfaceKind = 'stone';
   private roomId = 'outside';
   private currentSpeed = 0;
+  private walkSpeed = WALK_SPEED;
   private turboEnabled = false;
   private dragLookActive = false;
   private lastPointer: { x: number; y: number } | null = null;
@@ -245,6 +248,20 @@ export class WalkController {
     return this.turboEnabled;
   }
 
+  setWalkSpeedKilometresPerHour(kilometresPerHour: number) {
+    const safeKilometresPerHour = THREE.MathUtils.clamp(
+      Number.isFinite(kilometresPerHour) ? kilometresPerHour : 6.5,
+      0.5,
+      120,
+    );
+    this.walkSpeed = metresToWorldUnits(safeKilometresPerHour / 3.6);
+    return this.getWalkSpeedKilometresPerHour();
+  }
+
+  getWalkSpeedKilometresPerHour() {
+    return Number((worldUnitsToMetres(this.walkSpeed) * 3.6).toFixed(1));
+  }
+
   refreshNavigation() {
     this.walkables.length = 0;
     this.obstacleBounds.length = 0;
@@ -311,8 +328,10 @@ export class WalkController {
       this.currentSpeed = 0;
       this.camera.position.copy(this.seatTarget);
     } else {
-      const sprinting = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') || this.externalIntent.sprint;
-      const speed = this.turboEnabled ? WALK_TURBO_SPEED : sprinting ? WALK_FAST_SPEED : WALK_SPEED;
+      // The WALK speed field is authoritative for ordinary movement. Keeping
+      // it independent of keyboard modifiers makes an entered km/h value
+      // predictable and suitable for accessibility or scale checks.
+      const speed = this.turboEnabled ? WALK_TURBO_SPEED : this.walkSpeed;
       this.currentSpeed = Math.hypot(inputX, inputZ) > 0 ? speed : 0;
 
       if (this.currentSpeed > 0) {
@@ -381,6 +400,8 @@ export class WalkController {
       surfaceKind: this.surfaceKind,
       roomId: this.roomId,
       speedMetresPerSecond: Number(worldUnitsToMetres(this.currentSpeed).toFixed(1)),
+      speedKilometresPerHour: Number((worldUnitsToMetres(this.currentSpeed) * 3.6).toFixed(1)),
+      configuredWalkSpeedKilometresPerHour: this.getWalkSpeedKilometresPerHour(),
       turboEnabled: this.turboEnabled,
       jumpState: !this.isJumping ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
       jumpHeld: this.jumpHeld,
@@ -688,10 +709,7 @@ export class WalkController {
       'ArrowDown',
       'ArrowLeft',
       'ArrowRight',
-      'ShiftLeft',
-      'ShiftRight',
       'Space',
-      'KeyT',
     ]);
     if (movementCodes.has(event.code)) {
       event.preventDefault();
@@ -701,7 +719,6 @@ export class WalkController {
       this.jumpHeld = true;
       this.triggerJump();
     }
-    if (event.code === 'KeyT' && !event.repeat) this.toggleTurbo();
     if (event.code === 'KeyE' && !event.repeat) this.onInteract?.();
   };
 

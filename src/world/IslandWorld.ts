@@ -34,6 +34,7 @@ import {
   type AcademicFountainStatueMaterialMode,
 } from '../data/academicFountain';
 import {
+  DISTRICT_ROAD_RADII,
   ISLAND_POINTS,
   ISLAND_RADIUS,
   ISLAND_SURFACE_Y,
@@ -134,6 +135,7 @@ export type ViewMode = 'explore' | 'plan' | 'edit' | 'walk';
 export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
+export const OBJECT_INTERACTIONS_ENABLED = false;
 export type WeatherMode =
   | 'clear'
   | 'rain'
@@ -233,6 +235,46 @@ export interface ObjectMetadata {
   label: string;
   description: string;
   inscription?: string;
+}
+
+export type ProductionExportAssetKind =
+  | 'island'
+  | 'transit'
+  | 'port'
+  | 'bridge'
+  | 'city'
+  | 'district'
+  | 'dome'
+  | 'imported-assets'
+  | 'editable-interiors'
+  | 'lighting';
+
+export interface ProductionExportPlanEntry {
+  id: string;
+  name: string;
+  kind: ProductionExportAssetKind;
+  path: string;
+  blenderCollection: string;
+}
+
+export interface ProductionExportProgress {
+  completed: number;
+  total: number;
+  current: ProductionExportPlanEntry | null;
+  phase: 'loading' | 'serializing' | 'writing' | 'finalizing';
+}
+
+export interface ProductionExportSummary {
+  schema: 'youtopy.blender-production/1.0';
+  assetCount: number;
+  totalBytes: number;
+  files: readonly string[];
+}
+
+export type ProductionExportWriter = (path: string, data: Blob) => Promise<void>;
+
+interface InternalProductionExportEntry extends ProductionExportPlanEntry {
+  source: THREE.Object3D;
 }
 
 export function createAcademicBuildingDefinition(
@@ -555,7 +597,11 @@ export class IslandWorld {
   readonly modelRoot = new THREE.Group();
   readonly architectureRoot = new THREE.Group();
   readonly landscapeRoot = new THREE.Group();
+  readonly islandShellRoot = new THREE.Group();
   readonly transitRoot = new THREE.Group();
+  readonly transitNetworkRoot = new THREE.Group();
+  readonly industrialPortRoot = new THREE.Group();
+  readonly bridgeRoot = new THREE.Group();
   readonly cityRoot = new THREE.Group();
   readonly importedRoot = new THREE.Group();
   readonly interiorsRoot = new THREE.Group();
@@ -587,6 +633,8 @@ export class IslandWorld {
   private readonly animatedObjects: THREE.Object3D[] = [];
   private readonly academicInteriorIsolation = new Map<THREE.Object3D, boolean>();
   private readonly exteriorHighDetailIsolation = new Map<THREE.Object3D, boolean>();
+  private readonly authoredRuntimeInteriors: THREE.Group[] = [];
+  private readonly runtimeInteriorLocalPoint = new THREE.Vector3();
   private readonly interiorGroups = new Map<string, THREE.Group>();
   private readonly interiorAssetIds = new Map<string, Set<string>>();
   private readonly importPlacementMarker = createImportPlacementMarker();
@@ -632,6 +680,7 @@ export class IslandWorld {
   private cameraTween: CameraTween | null = null;
   private draggingGizmo = false;
   private disposed = false;
+  private productionExportActive = false;
   private resizeObserver: ResizeObserver;
 
   constructor(container: HTMLElement, callbacks: IslandWorldCallbacks = {}) {
@@ -804,7 +853,11 @@ export class IslandWorld {
     this.modelRoot.name = 'LAB_ISLAND__EXPORT_ROOT';
     this.architectureRoot.name = 'COLLECTION__DISTRICT_ARCHITECTURE';
     this.landscapeRoot.name = 'COLLECTION__TERRAIN_AND_BIOMES';
+    this.islandShellRoot.name = 'PRODUCTION__ISLAND_TERRAIN_AND_OCEAN';
     this.transitRoot.name = 'COLLECTION__TRANSIT_AND_BRIDGE';
+    this.transitNetworkRoot.name = 'PRODUCTION__TRANSIT_AND_COASTAL_RAIL';
+    this.industrialPortRoot.name = 'PRODUCTION__ALPINE_LOGISTICS_PORT';
+    this.bridgeRoot.name = 'PRODUCTION__CYBER_CITY_BRIDGE';
     this.cityRoot.name = 'COLLECTION__DISTANT_CYBERPUNK_CITY';
     this.importedRoot.name = 'COLLECTION__IMPORTED_ASSETS';
     this.interiorsRoot.name = 'COLLECTION__EDITABLE_INTERIORS';
@@ -831,6 +884,8 @@ export class IslandWorld {
       this.importedRoot,
       this.interiorsRoot,
     );
+    this.landscapeRoot.add(this.islandShellRoot);
+    this.transitRoot.add(this.transitNetworkRoot, this.industrialPortRoot, this.bridgeRoot);
     this.presentationRoot.add(this.worldStreaming.vistaRoot, this.debugRoot);
     this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
 
@@ -860,11 +915,19 @@ export class IslandWorld {
     rimLight.name = 'Cyber city rim light';
     this.scene.add(rimLight);
 
-    createIslandShell(this.landscapeRoot);
-    createTransitNetwork(this.transitRoot, biomes);
-    createIndustrialPort(this.transitRoot);
-    createBridgeAndCity(this.transitRoot, this.cityRoot);
+    createIslandShell(this.islandShellRoot);
+    createTransitNetwork(this.transitNetworkRoot, biomes);
+    createIndustrialPort(this.industrialPortRoot);
+    createBridgeAndCity(this.bridgeRoot, this.cityRoot);
+    // Preserve the public collection-level metadata used by diagnostics and
+    // saved automation while keeping Production export components separable.
+    Object.assign(
+      this.transitRoot.userData,
+      this.transitNetworkRoot.userData,
+      this.bridgeRoot.userData,
+    );
     this.createDistrictsAndBiomes();
+    this.refreshAuthoredRuntimeInteriors();
 
     this.selectionBox = new THREE.Box3Helper(this.selectionBounds, new THREE.Color('#b7f34b'));
     this.selectionBox.name = 'EDITOR__SELECTION_BOUNDS';
@@ -928,6 +991,16 @@ export class IslandWorld {
       this.worldStreaming.register(definition, 'biome', group, this.landscapeRoot);
       this.registerSelectable(definition, group, labelHeight, true);
     });
+  }
+
+  private refreshAuthoredRuntimeInteriors() {
+    this.authoredRuntimeInteriors.length = 0;
+    this.architectureRoot.traverse((object) => {
+      if (object instanceof THREE.Group && object.userData.runtimeInterior === true) {
+        this.authoredRuntimeInteriors.push(object);
+      }
+    });
+    this.syncAuthoredRuntimeInteriorVisibility();
   }
 
   private registerAcademicBuildingSelectables(definition: DistrictDefinition, districtGroup: THREE.Group) {
@@ -1080,6 +1153,7 @@ export class IslandWorld {
     this.activeAcademicHotspot = null;
     this.activeAcademicFountainHotspot = false;
     this.activeCerebrumHotspot = null;
+    if (!OBJECT_INTERACTIONS_ENABLED) return;
     // The main gate is a broad threshold, so requiring the centre ray to hit a
     // thin iron bar makes the advertised E interaction unreliable. At night,
     // prioritize the gate by physical proximity and operate it with one key
@@ -1258,6 +1332,42 @@ export class IslandWorld {
     return target.set(0, 0.18, (config.depth ?? 7.2) * 0.5 + 0.2).applyMatrix4(host.matrixWorld);
   }
 
+  private isCameraInsideBuildingHost(host: THREE.Object3D, width: number, depth: number, height: number) {
+    host.updateWorldMatrix(true, false);
+    this.runtimeInteriorLocalPoint.copy(this.camera.position);
+    host.worldToLocal(this.runtimeInteriorLocalPoint);
+    return Math.abs(this.runtimeInteriorLocalPoint.x) <= width * 0.5 + 0.12
+      && Math.abs(this.runtimeInteriorLocalPoint.z) <= depth * 0.5 + 0.12
+      && this.runtimeInteriorLocalPoint.y >= -0.75
+      && this.runtimeInteriorLocalPoint.y <= height + 0.58;
+  }
+
+  private isCameraInsideCerebrumHost() {
+    const host = this.getCerebrumLibraryHost();
+    const config = this.getCerebrumStreamingConfig();
+    if (!host || !config || this.mode !== 'walk') return false;
+    return this.isCameraInsideBuildingHost(host, config.width ?? 10.8, config.depth ?? 7.2, 1.38);
+  }
+
+  private syncAuthoredRuntimeInteriorVisibility() {
+    let changed = false;
+    this.authoredRuntimeInteriors.forEach((interior) => {
+      const host = interior.parent;
+      const footprint = host?.userData.footprint as [number, number] | undefined;
+      const record = host?.userData.academicBuildingData as AcademicCampusBuilding | undefined;
+      const shouldRender = Boolean(
+        this.mode === 'walk'
+        && host
+        && footprint
+        && this.isCameraInsideBuildingHost(host, footprint[0], footprint[1], Number(record?.height) || 2.4),
+      );
+      if (interior.visible === shouldRender) return;
+      interior.visible = shouldRender;
+      changed = true;
+    });
+    return changed;
+  }
+
   private cloneCerebrumState(state: CerebrumLibraryState): CerebrumLibraryState {
     return {
       ...state,
@@ -1292,6 +1402,7 @@ export class IslandWorld {
       muted: true,
       hideLegacyShell: config.hideLegacyShell,
     });
+    root.visible = this.productionExportActive || (reason === 'walk' && this.isCameraInsideCerebrumHost());
     root.userData.streamingPackage = 'cerebrum-externum';
     root.userData.streamingLoadReason = reason;
     root.userData.streamingLoadedAt = this.elapsed;
@@ -1376,31 +1487,37 @@ export class IslandWorld {
     const config = this.getCerebrumStreamingConfig();
     if (!entrance || !config) return;
     this.cerebrumStreaming.distanceMetres = this.camera.position.distanceTo(entrance) * 10;
-    const root = this.getCerebrumLibraryRoot();
+    this.cancelScheduledCerebrumLoad?.();
+    this.cancelScheduledCerebrumLoad = null;
+    this.cerebrumStreaming.scheduled = false;
+
+    const shouldRenderInterior = this.isCameraInsideCerebrumHost();
+    let root = this.getCerebrumLibraryRoot();
+    if (!root && shouldRenderInterior) root = this.ensureCerebrumLibraryMounted('walk');
     if (!root) {
-      if (this.cerebrumStreaming.distanceMetres <= config.preloadDistanceMetres) {
-        this.scheduleCerebrumLibraryLoad();
-      } else if (this.cerebrumStreaming.scheduled
-        && this.cerebrumStreaming.distanceMetres > config.unloadDistanceMetres) {
-        this.cancelScheduledCerebrumLoad?.();
-        this.cerebrumStreaming.phase = 'unloaded';
-      }
+      this.cerebrumStreaming.phase = 'unloaded';
+      this.cerebrumStreaming.mounted = false;
       return;
     }
 
+    // Export may mount the complete package off-screen. Runtime rendering is
+    // stricter: the authored interior is visible only after the walker has
+    // crossed the building envelope.
+    root.visible = this.productionExportActive || shouldRenderInterior;
     this.cerebrumStreaming.mounted = true;
-    const active = this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive;
-    if (active) {
+    if (this.productionExportActive) {
+      this.cerebrumStreaming.phase = 'loaded';
+      return;
+    }
+    if (shouldRenderInterior) {
       this.cerebrumStreaming.phase = 'active';
       this.cerebrumStreaming.lastActiveAt = this.elapsed;
       return;
     }
-    const retainedFor = this.elapsed - this.cerebrumStreaming.lastActiveAt;
-    const shouldRetain = retainedFor < config.retentionSeconds;
-    this.cerebrumStreaming.phase = shouldRetain ? 'retention' : 'loaded';
-    if (!shouldRetain && this.cerebrumStreaming.distanceMetres > config.unloadDistanceMetres) {
-      this.unmountCerebrumLibrary();
-    }
+
+    this.cerebrumLibraryPresence = false;
+    this.cerebrumLibraryInspectionActive = false;
+    this.unmountCerebrumLibrary();
   }
 
   private isolateAcademicExteriorForInterior() {
@@ -1500,6 +1617,7 @@ export class IslandWorld {
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
     this.updateCerebrumStreamingLifecycle();
+    const authoredInteriorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
     const cerebrumRoot = this.getCerebrumLibraryRoot();
     const insideCerebrum = Boolean(
       cerebrumRoot && isPointInsideCerebrumLibrary(cerebrumRoot, this.camera.position, 'world'),
@@ -1509,6 +1627,7 @@ export class IslandWorld {
       this.callbacks.onCerebrumPresenceChange?.(insideCerebrum);
     }
     this.updateWorldStreaming(insideCerebrum || this.cerebrumLibraryInspectionActive);
+    if (authoredInteriorVisibilityChanged) this.walkController.refreshNavigation();
     this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
     let targetDayMix = 0;
@@ -1940,14 +2059,22 @@ export class IslandWorld {
     this.transformControls.getHelper().visible = false;
     if (mode === 'walk') {
       this.cameraTween = null;
-      this.clearSelection('system');
+      const selectedWalkTarget = this.selectedId;
       const preservedDirection = this.camera.getWorldDirection(new THREE.Vector3());
-      const preferredSpawn = this.camera.position.clone();
-      const focusedSpawn = this.controls.target.clone();
+      const enteringFromOverview = !selectedWalkTarget
+        && this.camera.position.y - ISLAND_SURFACE_Y > 80;
+      const preferredSpawn = enteringFromOverview
+        ? new THREE.Vector3(0, ISLAND_SURFACE_Y, DISTRICT_ROAD_RADII[0])
+        : this.camera.position.clone();
+      const focusedSpawn = enteringFromOverview ? undefined : this.controls.target.clone();
+      const entryDirection = enteringFromOverview
+        ? new THREE.Vector3(0, -0.025, -1)
+        : preservedDirection;
+      this.clearSelection('system');
       this.camera.fov = WALK_VERTICAL_FOV;
       this.camera.near = 0.015;
       this.camera.updateProjectionMatrix();
-      this.walkController.enter(preferredSpawn, preservedDirection, focusedSpawn);
+      this.walkController.enter(preferredSpawn, entryDirection, focusedSpawn);
       this.renderer.domElement.style.cursor = 'crosshair';
     } else if (mode === 'plan') {
       this.camera.fov = 34;
@@ -1969,6 +2096,18 @@ export class IslandWorld {
     } else {
       this.cameraTween = null;
     }
+    if (mode !== 'walk' && !this.productionExportActive) {
+      this.cerebrumLibraryPresence = false;
+      this.cerebrumLibraryInspectionActive = false;
+      const library = this.getCerebrumLibraryRoot();
+      if (library) {
+        library.visible = false;
+        this.unmountCerebrumLibrary();
+      }
+    }
+    const interiorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
+    this.updateWorldStreaming(false, true);
+    if (interiorVisibilityChanged) this.walkController.refreshNavigation();
     this.updateLabels(true);
   }
 
@@ -1989,6 +2128,10 @@ export class IslandWorld {
 
   getMode() {
     return this.mode;
+  }
+
+  areObjectInteractionsEnabled() {
+    return OBJECT_INTERACTIONS_ENABLED;
   }
 
   setGizmoMode(mode: GizmoMode) {
@@ -2533,6 +2676,7 @@ export class IslandWorld {
   }
 
   setCerebrumQuietMode(enabled: boolean) {
+    if (!OBJECT_INTERACTIONS_ENABLED) return false;
     const root = this.ensureCerebrumLibraryMounted('interaction');
     if (!root) return false;
     setCerebrumLibraryQuietMode(root, enabled);
@@ -2541,6 +2685,28 @@ export class IslandWorld {
   }
 
   performCerebrumLibraryInteraction(hotspotId: string): CerebrumLibraryInteractionResult {
+    if (!OBJECT_INTERACTIONS_ENABLED) {
+      return {
+        handled: false,
+        message: 'Special object interactions are temporarily disabled.',
+        state: this.getCerebrumLibraryState() ?? {
+          quality: this.graphicsQuality,
+          navigationLevel: 'ground',
+          quietMode: false,
+          muted: true,
+          orbitCamera: false,
+          cutawayVisible: false,
+          doors: {},
+          drawers: {},
+          lamps: {},
+          ladderStop: 0,
+          inspectedBookId: null,
+          catalogueRevealed: false,
+          rareBookDoorUnlocked: false,
+          rareBookLocation: null,
+        },
+      };
+    }
     const root = this.ensureCerebrumLibraryMounted('interaction');
     if (!root) {
       return {
@@ -2825,6 +2991,7 @@ export class IslandWorld {
   }
 
   private setAcademicFountainInspectionControls(active: boolean, presetId?: AcademicFountainCameraPresetId) {
+    active = active && OBJECT_INTERACTIONS_ENABLED;
     this.academicFountainInspectionActive = active;
     if (active) {
       this.controls.minDistance = ACADEMIC_FOUNTAIN_CONFIG.orbit.minimumDistanceMetres * 0.1;
@@ -2851,6 +3018,7 @@ export class IslandWorld {
   }
 
   focusAcademicFountain(presetId?: AcademicFountainCameraPresetId) {
+    if (!OBJECT_INTERACTIONS_ENABLED) return false;
     const fountain = this.getAcademicFountainRoot();
     if (!fountain || this.mode === 'walk') return false;
     const pose = getAcademicFountainCameraPose(fountain, presetId);
@@ -2864,6 +3032,7 @@ export class IslandWorld {
   }
 
   private setCerebrumLibraryInspectionControls(active: boolean) {
+    active = active && OBJECT_INTERACTIONS_ENABLED;
     const root = this.getCerebrumLibraryRoot();
     this.cerebrumLibraryInspectionActive = active && Boolean(root);
     if (root) {
@@ -2889,6 +3058,7 @@ export class IslandWorld {
   }
 
   focusCerebrumLibrary() {
+    if (!OBJECT_INTERACTIONS_ENABLED) return false;
     const root = this.ensureCerebrumLibraryMounted('orbit');
     if (!root || this.mode === 'walk') return false;
     const preset = getCerebrumLibraryOrbitPreset(root);
@@ -2909,6 +3079,7 @@ export class IslandWorld {
   }
 
   enterCerebrumLibraryWalk() {
+    if (!OBJECT_INTERACTIONS_ENABLED) return false;
     const root = this.ensureCerebrumLibraryMounted('walk');
     if (!root) return false;
     if (this.mode !== 'walk') this.setMode('walk');
@@ -3158,6 +3329,13 @@ export class IslandWorld {
   }
 
   performAcademicInteraction(action: string) {
+    if (!OBJECT_INTERACTIONS_ENABLED) {
+      return {
+        title: 'Interactions paused',
+        message: 'Special object interactions are temporarily disabled.',
+        state: { available: false, interactionsEnabled: false },
+      };
+    }
     const district = this.objectGroups.get('academic-libraries-theoretical-labs');
     if (!district) return { title: 'Academic District', message: 'The district is unavailable.' };
     const legacyFountainActionMap: Record<string, string> = {
@@ -3324,6 +3502,13 @@ export class IslandWorld {
   }
 
   setAcademicFountainWaterFlow(requestedFlow: number) {
+    if (!OBJECT_INTERACTIONS_ENABLED) {
+      return {
+        title: 'Interactions paused',
+        message: 'Special object interactions are temporarily disabled.',
+        state: { available: false, interactionsEnabled: false },
+      };
+    }
     const fountain = this.getAcademicFountainRoot();
     if (!fountain || (!this.isAcademicFountainNearby() && !this.academicFountainInspectionActive)) {
       return {
@@ -3396,12 +3581,13 @@ export class IslandWorld {
       ...this.worldStreaming.getSnapshot(),
       cerebrumExternum: {
         ...this.cerebrumStreaming,
+        renderPolicy: 'walk-inside-building-only',
         distanceMetres: Number.isFinite(this.cerebrumStreaming.distanceMetres)
           ? Number(this.cerebrumStreaming.distanceMetres.toFixed(1))
           : -1,
-        preloadDistanceMetres: this.getCerebrumStreamingConfig()?.preloadDistanceMetres ?? 60,
-        unloadDistanceMetres: this.getCerebrumStreamingConfig()?.unloadDistanceMetres ?? 90,
-        retentionSeconds: this.getCerebrumStreamingConfig()?.retentionSeconds ?? 15,
+        preloadDistanceMetres: 0,
+        unloadDistanceMetres: 0,
+        retentionSeconds: 0,
         stateCached: this.cachedCerebrumLibraryState !== null,
       },
     };
@@ -4026,6 +4212,7 @@ export class IslandWorld {
     });
 
     this.createDistrictsAndBiomes();
+    this.refreshAuthoredRuntimeInteriors();
     this.cerebrumStreaming = {
       ...this.cerebrumStreaming,
       phase: 'unloaded',
@@ -4593,12 +4780,11 @@ export class IslandWorld {
     return definition;
   }
 
-  async exportGLB(filename = 'YouTopy_Lab_Island.glb') {
-    this.modelRoot.updateMatrixWorld(true);
-    const exporter = new GLTFExporter();
-    const exportRoot = this.modelRoot.clone(true);
-    exportRoot.name = 'LAB_ISLAND__BLENDER_EXPORT';
-    exportRoot.traverse((child) => {
+  private normalizeBlenderExportClone(root: THREE.Object3D) {
+    root.traverse((child) => {
+      if (child.userData.exportExcluded || child.userData.streamingProxy || child.userData.debugHelper) {
+        child.visible = false;
+      }
       if (child.userData.exportFallback) child.visible = true;
       if (child.userData.exportAlways) child.visible = true;
       if (child.userData.editorCutawayCeiling) child.visible = true;
@@ -4621,9 +4807,8 @@ export class IslandWorld {
         || child.name === 'WELL__CLEAN_WEATHERED_RESTORATION_COMPARISON'
       ) child.visible = false;
       if (child instanceof THREE.Mesh && child.name === 'WELL__DARK_REFLECTIVE_POLYGONAL_WATER') {
-        // GLTFExporter deliberately skips ShaderMaterial. Give the Blender
-        // clone an equivalent bounded PBR water surface while the live scene
-        // retains its efficient animated shader.
+        // GLTFExporter deliberately skips ShaderMaterial. Give Blender an
+        // equivalent bounded PBR surface while the live scene keeps animation.
         child.material = new THREE.MeshPhysicalMaterial({
           name: 'Well export green-black reflective water',
           color: '#152826',
@@ -4636,11 +4821,387 @@ export class IslandWorld {
         });
       }
     });
+  }
+
+  private createBlenderSun(name: string) {
+    this.sun.updateWorldMatrix(true, false);
+    this.sun.target.updateWorldMatrix(true, false);
     const exportSun = this.sun.clone();
-    exportSun.name = 'Blender Sun';
+    exportSun.name = name;
     exportSun.castShadow = true;
-    exportSun.target.position.set(0, 0, -1);
-    exportSun.add(exportSun.target);
+    exportSun.position.copy(this.sun.getWorldPosition(new THREE.Vector3()));
+    const direction = this.sun.target.getWorldPosition(new THREE.Vector3()).sub(exportSun.position).normalize();
+    // glTF directional lights point down their local -Z axis. Bake Three's
+    // target-based light direction into the exported node rotation.
+    exportSun.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), direction);
+    return exportSun;
+  }
+
+  private createProductionLightingRoot() {
+    const root = new THREE.Group();
+    root.name = 'PRODUCTION__GLOBAL_LIGHTING';
+    const exportSun = this.createBlenderSun('YouTopy Production Sun');
+    root.add(exportSun);
+    root.userData = {
+      timeOfDay: this.activeTimeOfDay,
+      weather: this.activeWeather,
+      note: 'Directional key light; Blender World ambient lighting remains artist-controlled.',
+    };
+    return root;
+  }
+
+  private createInternalProductionExportPlan(): InternalProductionExportEntry[] {
+    const plan: InternalProductionExportEntry[] = [
+      {
+        id: 'island-terrain-ocean',
+        name: 'Island terrain and Blender PBR ocean',
+        kind: 'island',
+        path: '01_island/YouTopy_Island_Terrain_Ocean.glb',
+        blenderCollection: '01 Island Terrain and Ocean',
+        source: this.islandShellRoot,
+      },
+      {
+        id: 'transit-coastal-rail',
+        name: 'Transit network and coastal railway',
+        kind: 'transit',
+        path: '02_infrastructure/YouTopy_Transit_Coastal_Rail.glb',
+        blenderCollection: '02 Transit and Coastal Rail',
+        source: this.transitNetworkRoot,
+      },
+      {
+        id: 'alpine-logistics-port',
+        name: 'Alpine logistics port',
+        kind: 'port',
+        path: '02_infrastructure/YouTopy_Alpine_Logistics_Port.glb',
+        blenderCollection: '02 Alpine Logistics Port',
+        source: this.industrialPortRoot,
+      },
+      {
+        id: 'cyber-city-bridge',
+        name: 'Cyber city bridge and approaches',
+        kind: 'bridge',
+        path: '02_infrastructure/YouTopy_Cyber_City_Bridge.glb',
+        blenderCollection: '02 Cyber City Bridge',
+        source: this.bridgeRoot,
+      },
+      {
+        id: 'cyberpunk-city',
+        name: 'Cyberpunk city and mainland world boundary',
+        kind: 'city',
+        path: '03_city/YouTopy_Cyberpunk_City.glb',
+        blenderCollection: '03 Cyberpunk City',
+        source: this.cityRoot,
+      },
+    ];
+
+    districts.forEach((definition, index) => {
+      const source = this.objectGroups.get(definition.id);
+      if (!source) throw new Error(`Production export cannot find district ${definition.id}.`);
+      const currentDefinition = this.definitions.get(definition.id) ?? definition;
+      plan.push({
+        id: definition.id,
+        name: sceneLabel(currentDefinition),
+        kind: 'district',
+        path: `04_districts/${String(index + 1).padStart(2, '0')}_${slugify(sceneLabel(currentDefinition))}.glb`,
+        blenderCollection: `04 District - ${sceneLabel(currentDefinition)}`,
+        source,
+      });
+    });
+
+    biomes.forEach((definition, index) => {
+      const source = this.objectGroups.get(definition.id);
+      if (!source) throw new Error(`Production export cannot find dome ${definition.id}.`);
+      const currentDefinition = this.definitions.get(definition.id) ?? definition;
+      plan.push({
+        id: definition.id,
+        name: sceneLabel(currentDefinition),
+        kind: 'dome',
+        path: `05_domes/${String(index + 1).padStart(2, '0')}_${slugify(sceneLabel(currentDefinition))}.glb`,
+        blenderCollection: `05 Dome - ${sceneLabel(currentDefinition)}`,
+        source,
+      });
+    });
+
+    if (this.importedRoot.children.length) {
+      plan.push({
+        id: 'imported-assets',
+        name: 'Imported and Design Studio exterior assets',
+        kind: 'imported-assets',
+        path: '06_authored_assets/YouTopy_Imported_Assets.glb',
+        blenderCollection: '06 Imported Assets',
+        source: this.importedRoot,
+      });
+    }
+    if (this.interiorsRoot.children.length) {
+      plan.push({
+        id: 'editable-interiors',
+        name: 'Editable interior rooms and fixtures',
+        kind: 'editable-interiors',
+        path: '06_authored_assets/YouTopy_Editable_Interiors.glb',
+        blenderCollection: '06 Editable Interiors',
+        source: this.interiorsRoot,
+      });
+    }
+    plan.push({
+      id: 'global-lighting',
+      name: 'Global directional lighting',
+      kind: 'lighting',
+      path: '07_lighting/YouTopy_Global_Lighting.glb',
+      blenderCollection: '07 Global Lighting',
+      source: this.createProductionLightingRoot(),
+    });
+    return plan;
+  }
+
+  getProductionExportPlan(): ProductionExportPlanEntry[] {
+    return this.createInternalProductionExportPlan().map(({ source: _source, ...entry }) => entry);
+  }
+
+  private async createProductionGlb(entry: InternalProductionExportEntry) {
+    entry.source.updateWorldMatrix(true, true);
+    const clone = entry.source.clone(true);
+    entry.source.matrixWorld.decompose(clone.position, clone.quaternion, clone.scale);
+    // Production GLBs are baked to metres. Every file therefore imports at the
+    // correct Blender size and world location without a manual root-scale step.
+    clone.position.multiplyScalar(10);
+    clone.scale.multiplyScalar(10);
+    clone.visible = true;
+    clone.name = `YOUTOPY_PRODUCTION__${entry.id.toUpperCase().replaceAll('-', '_')}`;
+    clone.userData = {
+      ...clone.userData,
+      productionAssetId: entry.id,
+      productionAssetKind: entry.kind,
+      blenderCollection: entry.blenderCollection,
+      worldPositioned: true,
+      exportedUnits: 'metres',
+      sourceWorldUnitsPerMetre: 0.1,
+    };
+    this.normalizeBlenderExportClone(clone);
+    clone.traverse((child) => {
+      if (child instanceof THREE.PointLight || child instanceof THREE.SpotLight) {
+        child.distance *= 10;
+      }
+    });
+    clone.updateMatrixWorld(true);
+    const exporter = new GLTFExporter();
+    const result = await exporter.parseAsync(clone, {
+      binary: true,
+      onlyVisible: true,
+      trs: true,
+      maxTextureSize: 4096,
+      includeCustomExtensions: true,
+    });
+    if (!(result instanceof ArrayBuffer)) {
+      throw new Error(`Production GLB exporter returned text for ${entry.path}.`);
+    }
+    return result;
+  }
+
+  private createProductionBlenderScript() {
+    return `# YouTopy / SynthViewTopy Production batch importer
+# Run with: blender --python import_youtopy_production.py
+# Or save a .blend in this folder, open this file in Blender's Scripting tab,
+# and press Run Script.
+import bpy
+import json
+from pathlib import Path
+
+try:
+    PACKAGE_DIR = Path(__file__).resolve().parent
+except NameError:
+    PACKAGE_DIR = Path(bpy.path.abspath("//")).resolve()
+
+manifest_path = PACKAGE_DIR / "00_PRODUCTION_MANIFEST.json"
+if not manifest_path.exists():
+    raise FileNotFoundError(
+        f"{manifest_path} was not found. Save the .blend in the Production export folder "
+        "or run this script from that folder."
+    )
+
+manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+master_collection = bpy.data.collections.new("YOUTOPY_PRODUCTION")
+bpy.context.scene.collection.children.link(master_collection)
+before_all = set(bpy.data.objects)
+for index, asset in enumerate(manifest["assets"], start=1):
+    asset_path = PACKAGE_DIR / Path(asset["path"])
+    if not asset_path.exists():
+        raise FileNotFoundError(asset_path)
+    before = set(bpy.data.objects)
+    bpy.ops.import_scene.gltf(filepath=str(asset_path))
+    imported = set(bpy.data.objects) - before
+    component_collection = bpy.data.collections.new(asset["blenderCollection"])
+    component_collection["productionAssetId"] = asset["id"]
+    component_collection["sourceGlb"] = asset["path"]
+    master_collection.children.link(component_collection)
+    for obj in imported:
+        for source_collection in list(obj.users_collection):
+            source_collection.objects.unlink(obj)
+        component_collection.objects.link(obj)
+    print(f"[{index}/{len(manifest['assets'])}] {asset['name']}: {len(imported)} objects")
+
+bpy.context.view_layer.update()
+print(f"YouTopy Production import complete: {len(set(bpy.data.objects) - before_all)} objects")
+`;
+  }
+
+  private createProductionReadme(assetCount: number) {
+    return `YOUTOPY / SYNTHVIEWTOPY - BLENDER PRODUCTION EXPORT
+====================================================
+
+This package contains ${assetCount} separate, Blender-ready GLBs. Every detailed
+district and climate dome was forced resident before serialization. Island
+terrain/ocean, transit/coastal rail, logistics port, bridge, city, authored
+assets, interiors, and lighting are separate files.
+
+FASTEST IMPORT
+1. Keep this folder structure intact.
+2. Run: blender --python import_youtopy_production.py
+   Alternatively, save a .blend in this folder and run the script from
+   Blender's Scripting workspace.
+
+MANUAL IMPORT
+Import every .glb with File > Import > glTF 2.0. The files contain world-space
+placement, so do not recenter individual roots. They are already converted from
+SynthViewTopy's design scale to metres: 1 exported unit = 1 metre.
+
+The GLBs use named hierarchies and PBR materials. Runtime-only labels, selection
+bounds, debug helpers, streaming proxies, shader sky, and transform gizmos are
+excluded. A Blender-compatible PBR ocean fallback and directional sun are
+included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
+`;
+  }
+
+  async exportProductionPackage(
+    writeFile: ProductionExportWriter,
+    onProgress?: (progress: ProductionExportProgress) => void,
+  ): Promise<ProductionExportSummary> {
+    if (this.productionExportActive) throw new Error('A Production export is already running.');
+    this.productionExportActive = true;
+    const libraryWasMounted = Boolean(this.getCerebrumLibraryRoot());
+    let restoreStreaming: (() => void) | null = null;
+    let libraryQualityBefore: GraphicsQuality | null = null;
+    let fountainQualityBefore: GraphicsQuality | null = null;
+
+    try {
+      restoreStreaming = this.worldStreaming.beginProductionExport();
+      this.cancelScheduledCerebrumLoad?.();
+      this.cancelScheduledCerebrumLoad = null;
+      onProgress?.({ completed: 0, total: districts.length + biomes.length + 6, current: null, phase: 'loading' });
+      const library = this.ensureCerebrumLibraryMounted('editing');
+      if (!library) throw new Error('Production export could not load the complete Cerebrum Externum library.');
+      libraryQualityBefore = getCerebrumLibraryState(library)?.quality ?? this.graphicsQuality;
+      configureCerebrumLibraryQuality(library, 'high');
+      const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
+      if (academic) {
+        configureAcademicTreeQuality(academic, 'high');
+        const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+        if (fountain) {
+          fountainQualityBefore = getAcademicFountainState(fountain)?.quality ?? this.graphicsQuality;
+          configureAcademicFountainQuality(fountain, 'high');
+        }
+      }
+      this.modelRoot.updateWorldMatrix(true, true);
+      const plan = this.createInternalProductionExportPlan();
+      const exportedAssets: Array<ProductionExportPlanEntry & { bytes: number; rootName: string }> = [];
+      const files: string[] = [];
+      let totalBytes = 0;
+
+      for (let index = 0; index < plan.length; index += 1) {
+        const entry = plan[index];
+        onProgress?.({ completed: index, total: plan.length, current: entry, phase: 'serializing' });
+        // Let the browser paint progress between the large procedural packages.
+        await new Promise<void>((resolve) => window.requestAnimationFrame(() => resolve()));
+        const result = await this.createProductionGlb(entry);
+        const blob = new Blob([result], { type: 'model/gltf-binary' });
+        onProgress?.({ completed: index, total: plan.length, current: entry, phase: 'writing' });
+        await writeFile(entry.path, blob);
+        totalBytes += blob.size;
+        files.push(entry.path);
+        exportedAssets.push({
+          id: entry.id,
+          name: entry.name,
+          kind: entry.kind,
+          path: entry.path,
+          blenderCollection: entry.blenderCollection,
+          bytes: blob.size,
+          rootName: `YOUTOPY_PRODUCTION__${entry.id.toUpperCase().replaceAll('-', '_')}`,
+        });
+        onProgress?.({ completed: index + 1, total: plan.length, current: entry, phase: 'writing' });
+      }
+
+      onProgress?.({ completed: plan.length, total: plan.length, current: null, phase: 'finalizing' });
+      const generatedAt = new Date().toISOString();
+      const manifest = {
+        schema: 'youtopy.blender-production/1.0' as const,
+        generatedAt,
+        project: 'YouTopy Lab Island / SynthViewTopy',
+        sourceSketch: 'YT_LabIsland_Ideas1.png',
+        assetCount: exportedAssets.length,
+        totalBytes,
+        completeness: {
+          districts: { expected: districts.length, exported: exportedAssets.filter((asset) => asset.kind === 'district').length },
+          domes: { expected: biomes.length, exported: exportedAssets.filter((asset) => asset.kind === 'dome').length },
+          cerebrumExternumLoaded: true,
+          streamedDetailPackagesLoaded: districts.length + biomes.length,
+        },
+        coordinates: {
+          source: '+X east, +Y up, +Z south',
+          exchange: 'glTF 2.0 right-handed Y-up; Blender importer converts to Z-up',
+          placement: 'world-positioned component roots',
+        },
+        units: {
+          exported: 'metres',
+          blenderScale: 1,
+          sourceDesignRule: '1 SynthViewTopy world unit = 10 metres',
+          bakedScaleFactor: 10,
+        },
+        import: {
+          blenderMenu: 'File > Import > glTF 2.0',
+          batchScript: 'import_youtopy_production.py',
+          instruction: 'Import all assets without recentering their world-positioned roots.',
+        },
+        assets: exportedAssets,
+      };
+      const auxiliaries: Array<[string, Blob]> = [
+        ['00_PRODUCTION_MANIFEST.json', new Blob([JSON.stringify(manifest, null, 2)], { type: 'application/json' })],
+        ['00_PROJECT_STATE.project.json', new Blob([JSON.stringify(this.takeSnapshotPayload(), null, 2)], { type: 'application/json' })],
+        ['README_BLENDER.txt', new Blob([this.createProductionReadme(plan.length)], { type: 'text/plain' })],
+        ['import_youtopy_production.py', new Blob([this.createProductionBlenderScript()], { type: 'text/x-python' })],
+      ];
+      for (const [path, blob] of auxiliaries) {
+        await writeFile(path, blob);
+        files.push(path);
+        totalBytes += blob.size;
+      }
+      return {
+        schema: manifest.schema,
+        assetCount: plan.length,
+        totalBytes,
+        files,
+      };
+    } finally {
+      const academic = this.objectGroups.get('academic-libraries-theoretical-labs');
+      if (academic) {
+        configureAcademicTreeQuality(academic, this.graphicsQuality);
+        const fountain = academic.getObjectByName(ACADEMIC_FOUNTAIN_ROOT_NAME);
+        if (fountain && fountainQualityBefore) configureAcademicFountainQuality(fountain, fountainQualityBefore);
+      }
+      const library = this.getCerebrumLibraryRoot();
+      if (library && libraryQualityBefore) configureCerebrumLibraryQuality(library, libraryQualityBefore);
+      restoreStreaming?.();
+      this.productionExportActive = false;
+      if (!libraryWasMounted) this.unmountCerebrumLibrary();
+      this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
+    }
+  }
+
+  async exportGLB(filename = 'YouTopy_Lab_Island.glb') {
+    this.modelRoot.updateMatrixWorld(true);
+    const exporter = new GLTFExporter();
+    const exportRoot = this.modelRoot.clone(true);
+    exportRoot.name = 'LAB_ISLAND__BLENDER_EXPORT';
+    this.normalizeBlenderExportClone(exportRoot);
+    const exportSun = this.createBlenderSun('Blender Sun');
     exportRoot.add(exportSun);
     const result = await exporter.parseAsync(exportRoot, {
       binary: true,
@@ -4728,6 +5289,18 @@ export class IslandWorld {
         graphicsQuality: this.graphicsQuality,
         audioMuted: this.academicAudio.isMuted(),
         debugMode: this.debugMode,
+      },
+      runtimePolicies: {
+        objectInteractionsEnabled: OBJECT_INTERACTIONS_ENABLED,
+        interiorRendering: 'walk-inside-building-only',
+        authoredInteriorGroups: this.authoredRuntimeInteriors.length,
+        visibleAuthoredInteriorGroups: this.authoredRuntimeInteriors.filter((interior) => (
+          isEffectivelyVisible(interior)
+        )).length,
+        cerebrumInteriorRendered: Boolean(
+          this.getCerebrumLibraryRoot()
+          && isEffectivelyVisible(this.getCerebrumLibraryRoot()!),
+        ),
       },
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
@@ -4854,6 +5427,14 @@ export class IslandWorld {
 
   setWalkIntent(x: number, z: number, sprint = false) {
     this.walkController.setMoveIntent(x, z, sprint);
+  }
+
+  setWalkSpeedKilometresPerHour(kilometresPerHour: number) {
+    return this.walkController.setWalkSpeedKilometresPerHour(kilometresPerHour);
+  }
+
+  getWalkSpeedKilometresPerHour() {
+    return this.walkController.getWalkSpeedKilometresPerHour();
   }
 
   setWalkTurbo(enabled: boolean) {

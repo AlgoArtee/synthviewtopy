@@ -394,6 +394,9 @@ function addInterior(
   const interior = new THREE.Group();
   interior.name = `${record.id.toUpperCase()}__${record.interior.toUpperCase().replace('-', '_')}`;
   interior.userData.academicInterior = record.interior;
+  interior.userData.runtimeInterior = true;
+  interior.userData.runtimeVisibilityPolicy = 'walk-inside-building-only';
+  interior.visible = false;
   building.add(interior);
 
   const addColumn = (x: number, z: number) => {

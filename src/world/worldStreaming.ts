@@ -33,40 +33,115 @@ interface StreamingPackage {
   distanceMetres: number;
 }
 
+interface ProductionVisibilityState {
+  detailResident: boolean;
+  detailEnvelopeVisible: boolean;
+  proxyVisible: boolean;
+}
+
 const districtProxyGeometry = new THREE.BoxGeometry(1, 1, 1);
+const districtRoofGeometry = new THREE.ConeGeometry(0.72, 1, 4);
 const biomeProxyGeometry = new THREE.SphereGeometry(0.5, 12, 7, 0, Math.PI * 2, 0, Math.PI * 0.52);
 
 function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKind) {
-  const material = new THREE.MeshBasicMaterial({
-    name: `Streamed ${kind} silhouette · ${definition.name}`,
-    color: new THREE.Color(definition.palette[0]).lerp(new THREE.Color(definition.accent), 0.16),
-    transparent: true,
-    opacity: kind === 'biome' ? 0.72 : 0.88,
+  const root = new THREE.Group();
+  root.name = `STREAMING_HLOD__${definition.id.toUpperCase().replaceAll('-', '_')}`;
+  root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
+  root.userData.selectableId = definition.id;
+  root.userData.streamingProxy = true;
+  root.userData.streamingHlod = true;
+  root.userData.exportExcluded = true;
+
+  const baseColor = new THREE.Color(definition.palette[0]).lerp(new THREE.Color(definition.accent), 0.14);
+  const material = new THREE.MeshStandardMaterial({
+    name: `Streamed ${kind} exterior HLOD · ${definition.name}`,
+    color: baseColor,
+    roughness: kind === 'biome' ? 0.28 : 0.7,
+    metalness: kind === 'biome' ? 0.14 : 0.08,
+    transparent: kind === 'biome',
+    opacity: kind === 'biome' ? 0.68 : 1,
     depthWrite: true,
     fog: true,
   });
   const mesh = new THREE.Mesh(kind === 'biome' ? biomeProxyGeometry : districtProxyGeometry, material);
-  mesh.name = `STREAMING_PROXY__${definition.id.toUpperCase().replaceAll('-', '_')}`;
-  mesh.position.set(
-    definition.position[0],
-    ISLAND_SURFACE_Y + definition.height * (kind === 'biome' ? 0.25 : 0.34),
-    definition.position[2],
-  );
+  mesh.name = `${root.name}__PRIMARY_MASS`;
   if (kind === 'biome') {
+    mesh.position.y = definition.height * 0.25;
     mesh.scale.set(definition.footprint[0], definition.height * 1.9, definition.footprint[1]);
   } else {
+    const visibleHeight = Math.max(1.2, definition.height * 0.68);
+    mesh.position.y = visibleHeight * 0.5;
     mesh.scale.set(
       Math.max(1.6, definition.footprint[0] * 0.72),
-      Math.max(1.2, definition.height * 0.68),
+      visibleHeight,
       Math.max(1.6, definition.footprint[1] * 0.72),
     );
   }
   mesh.userData.selectableId = definition.id;
   mesh.userData.streamingProxy = true;
+  mesh.userData.streamingHlod = true;
   mesh.userData.exportExcluded = true;
   mesh.castShadow = false;
   mesh.receiveShadow = false;
-  return mesh;
+  root.add(mesh);
+
+  if (kind === 'district') {
+    // A stepped upper volume, roof profile, and restrained luminous window
+    // band preserve a believable skyline in WALK without submitting the
+    // district's thousands of near-detail objects.
+    const upperMaterial = material.clone();
+    upperMaterial.name = `${material.name} · upper volume`;
+    upperMaterial.color.copy(baseColor).offsetHSL(0, -0.03, 0.07);
+    const upper = new THREE.Mesh(districtProxyGeometry, upperMaterial);
+    upper.name = `${root.name}__UPPER_MASS`;
+    upper.position.y = Math.max(1.2, definition.height * 0.68) + definition.height * 0.1;
+    upper.scale.set(
+      Math.max(0.8, definition.footprint[0] * 0.38),
+      Math.max(0.35, definition.height * 0.2),
+      Math.max(0.8, definition.footprint[1] * 0.4),
+    );
+    const roofMaterial = new THREE.MeshStandardMaterial({
+      name: `${material.name} · roof`,
+      color: new THREE.Color(definition.palette[1] ?? definition.palette[0]).multiplyScalar(0.62),
+      roughness: 0.82,
+      metalness: 0.12,
+      fog: true,
+    });
+    const roof = new THREE.Mesh(districtRoofGeometry, roofMaterial);
+    roof.name = `${root.name}__ROOF_PROFILE`;
+    roof.rotation.y = Math.PI * 0.25;
+    roof.position.y = upper.position.y + upper.scale.y * 0.72;
+    roof.scale.set(
+      Math.max(0.7, definition.footprint[0] * 0.34),
+      Math.max(0.22, definition.height * 0.14),
+      Math.max(0.7, definition.footprint[1] * 0.36),
+    );
+    const windowMaterial = new THREE.MeshBasicMaterial({
+      name: `${material.name} · atmosphere band`,
+      color: new THREE.Color(definition.accent).lerp(new THREE.Color('#ffd7a1'), 0.34),
+      transparent: true,
+      opacity: 0.38,
+      fog: true,
+    });
+    const windows = new THREE.Mesh(districtProxyGeometry, windowMaterial);
+    windows.name = `${root.name}__WINDOW_BAND`;
+    windows.position.set(0, Math.max(0.55, definition.height * 0.31), definition.footprint[1] * 0.365);
+    windows.scale.set(
+      Math.max(0.7, definition.footprint[0] * 0.52),
+      Math.max(0.04, definition.height * 0.055),
+      0.025,
+    );
+    [upper, roof, windows].forEach((part) => {
+      part.userData.selectableId = definition.id;
+      part.userData.streamingProxy = true;
+      part.userData.streamingHlod = true;
+      part.userData.exportExcluded = true;
+      part.castShadow = false;
+      part.receiveShadow = false;
+    });
+    root.add(upper, roof, windows);
+  }
+  return root;
 }
 
 /**
@@ -85,6 +160,7 @@ export class WorldStreamingManager {
   private lastMode: StreamingViewMode | null = null;
   private lastSelectedPackageId: string | null = null;
   private lastInteriorPackageId: string | null = null;
+  private productionVisibilityState: Map<string, ProductionVisibilityState> | null = null;
 
   constructor() {
     this.vistaRoot.name = 'STREAMING__EXTERIOR_VISTA_PROXIES';
@@ -102,12 +178,11 @@ export class WorldStreamingManager {
     if (previous) {
       previous.detailEnvelope.removeFromParent();
       previous.proxy.removeFromParent();
-      if (previous.proxy instanceof THREE.Mesh) {
-        const previousMaterials = Array.isArray(previous.proxy.material)
-          ? previous.proxy.material
-          : [previous.proxy.material];
+      previous.proxy.traverse((object) => {
+        if (!(object instanceof THREE.Mesh)) return;
+        const previousMaterials = Array.isArray(object.material) ? object.material : [object.material];
         previousMaterials.forEach((material) => material.dispose());
-      }
+      });
       this.packages.delete(definition.id);
     }
     const detailEnvelope = new THREE.Group();
@@ -160,6 +235,10 @@ export class WorldStreamingManager {
   }
 
   update(context: StreamingUpdateContext) {
+    // Production export serializes every high-detail package. Hold the detail
+    // envelopes resident while it runs so the live animation loop cannot swap
+    // them back to overview proxies between individual GLB writes.
+    if (this.productionVisibilityState) return false;
     const movedEnough = this.lastCameraPosition.distanceToSquared(context.cameraPosition) > 0.25;
     const contextChanged = context.force
       || movedEnough
@@ -175,7 +254,7 @@ export class WorldStreamingManager {
 
     const altitude = Math.max(0, context.cameraPosition.y - ISLAND_SURFACE_Y);
     const detailRadius = context.mode === 'walk'
-      ? 72
+      ? 65
       : context.mode === 'edit'
         ? 96
         : 82;
@@ -196,7 +275,9 @@ export class WorldStreamingManager {
       const shouldShowDetail = this.packageLayerEnabled(pkg)
         && (context.interiorPackageId
           ? interiorOwner
-          : selected || (!overview && closeEnough));
+          : context.mode === 'explore'
+            ? true
+            : selected || (!overview && closeEnough));
 
       if (pkg.detailResident !== shouldShowDetail) {
         pkg.detailResident = shouldShowDetail;
@@ -208,11 +289,43 @@ export class WorldStreamingManager {
     return changed;
   }
 
+  beginProductionExport() {
+    if (this.productionVisibilityState) {
+      throw new Error('A Production export is already preparing streamed world packages.');
+    }
+    this.productionVisibilityState = new Map();
+    this.packages.forEach((pkg) => {
+      this.productionVisibilityState!.set(pkg.id, {
+        detailResident: pkg.detailResident,
+        detailEnvelopeVisible: pkg.detailEnvelope.visible,
+        proxyVisible: pkg.proxy.visible,
+      });
+      pkg.detailResident = true;
+      pkg.detailEnvelope.visible = true;
+      pkg.proxy.visible = false;
+    });
+
+    let restored = false;
+    return () => {
+      if (restored) return;
+      restored = true;
+      const states = this.productionVisibilityState;
+      this.productionVisibilityState = null;
+      states?.forEach((state, id) => {
+        const pkg = this.packages.get(id);
+        if (!pkg) return;
+        pkg.detailResident = state.detailResident;
+        pkg.detailEnvelope.visible = state.detailEnvelopeVisible;
+        pkg.proxy.visible = state.proxyVisible;
+      });
+    };
+  }
+
   getSnapshot() {
     const packages = Array.from(this.packages.values());
     return {
       authority: 'web-sandbox' as const,
-      strategy: 'detail envelopes with selectable exterior vista proxies',
+      strategy: 'all exterior packages in Explore; near detail plus atmospheric exterior HLODs in Walk',
       totalPackages: packages.length,
       residentDetailPackages: packages.filter((pkg) => pkg.detailResident).map((pkg) => pkg.id),
       proxyPackageCount: packages.filter((pkg) => pkg.proxy.visible).length,

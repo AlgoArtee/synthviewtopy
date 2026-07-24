@@ -29,6 +29,7 @@ interface StreamingPackage {
   detailRoot: THREE.Group;
   proxy: THREE.Object3D;
   anchor: THREE.Vector3;
+  detailAnchorObjects: THREE.Object3D[];
   detailResident: boolean;
   distanceMetres: number;
 }
@@ -42,6 +43,13 @@ interface ProductionVisibilityState {
 const districtProxyGeometry = new THREE.BoxGeometry(1, 1, 1);
 const districtRoofGeometry = new THREE.ConeGeometry(0.72, 1, 4);
 const biomeProxyGeometry = new THREE.SphereGeometry(0.5, 12, 7, 0, Math.PI * 2, 0, Math.PI * 0.52);
+const DISTRICT_SILHOUETTE_PROFILES = [
+  { x: -0.29, z: -0.08, width: 0.27, depth: 0.46, height: 0.68 },
+  { x: 0.02, z: 0.08, width: 0.3, depth: 0.35, height: 1 },
+  { x: 0.31, z: -0.1, width: 0.2, depth: 0.4, height: 0.58 },
+  { x: -0.08, z: -0.32, width: 0.24, depth: 0.2, height: 0.45 },
+  { x: 0.06, z: 0.32, width: 0.42, depth: 0.17, height: 0.36 },
+] as const;
 
 function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKind) {
   const root = new THREE.Group();
@@ -51,8 +59,14 @@ function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKin
   root.userData.streamingProxy = true;
   root.userData.streamingHlod = true;
   root.userData.exportExcluded = true;
+  root.userData.streamingSilhouetteProfile = kind === 'district'
+    ? 'multi-mass-building-silhouette'
+    : 'atmospheric-biome-shell';
 
-  const baseColor = new THREE.Color(definition.palette[0]).lerp(new THREE.Color(definition.accent), 0.14);
+  const authoredPalette = definition.palette.map((color) => new THREE.Color(color));
+  const baseColor = authoredPalette[0].clone();
+  root.userData.streamingPaletteSource = 'authored-definition-palette';
+  root.userData.streamingPalette = authoredPalette.map((color) => color.getHexString());
   const material = new THREE.MeshStandardMaterial({
     name: `Streamed ${kind} exterior HLOD · ${definition.name}`,
     color: baseColor,
@@ -64,17 +78,18 @@ function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKin
     fog: true,
   });
   const mesh = new THREE.Mesh(kind === 'biome' ? biomeProxyGeometry : districtProxyGeometry, material);
-  mesh.name = `${root.name}__PRIMARY_MASS`;
+  mesh.name = `${root.name}__${kind === 'biome' ? 'PRIMARY_SHELL' : 'LOW_PODIUM'}`;
   if (kind === 'biome') {
     mesh.position.y = definition.height * 0.25;
     mesh.scale.set(definition.footprint[0], definition.height * 1.9, definition.footprint[1]);
   } else {
     const visibleHeight = Math.max(1.2, definition.height * 0.68);
-    mesh.position.y = visibleHeight * 0.5;
+    const podiumHeight = Math.max(0.22, visibleHeight * 0.14);
+    mesh.position.y = podiumHeight * 0.5;
     mesh.scale.set(
-      Math.max(1.6, definition.footprint[0] * 0.72),
-      visibleHeight,
-      Math.max(1.6, definition.footprint[1] * 0.72),
+      Math.max(1.6, definition.footprint[0] * 0.78),
+      podiumHeight,
+      Math.max(1.6, definition.footprint[1] * 0.76),
     );
   }
   mesh.userData.selectableId = definition.id;
@@ -86,52 +101,108 @@ function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKin
   root.add(mesh);
 
   if (kind === 'district') {
-    // A stepped upper volume, roof profile, and restrained luminous window
-    // band preserve a believable skyline in WALK without submitting the
-    // district's thousands of near-detail objects.
-    const upperMaterial = material.clone();
-    upperMaterial.name = `${material.name} · upper volume`;
-    upperMaterial.color.copy(baseColor).offsetHSL(0, -0.03, 0.07);
-    const upper = new THREE.Mesh(districtProxyGeometry, upperMaterial);
-    upper.name = `${root.name}__UPPER_MASS`;
-    upper.position.y = Math.max(1.2, definition.height * 0.68) + definition.height * 0.1;
-    upper.scale.set(
-      Math.max(0.8, definition.footprint[0] * 0.38),
-      Math.max(0.35, definition.height * 0.2),
-      Math.max(0.8, definition.footprint[1] * 0.4),
-    );
+    // A low podium plus five offset volumes reads as a district skyline from
+    // WALK. The former single full-height box saved draw calls but made even
+    // nearby laboratories look like colored cubes.
+    const visibleHeight = Math.max(1.2, definition.height * 0.68);
+    const podiumHeight = Math.max(0.22, visibleHeight * 0.14);
+    const silhouetteMasses = DISTRICT_SILHOUETTE_PROFILES.map((profile, index) => {
+      const massMaterial = material.clone();
+      massMaterial.name = `${material.name} · silhouette mass ${index + 1}`;
+      massMaterial.color.copy(authoredPalette[[1, 2, 1, 0, 2][index] ?? 1] ?? baseColor);
+      const mass = new THREE.Mesh(districtProxyGeometry, massMaterial);
+      const totalHeight = Math.max(0.52, visibleHeight * profile.height);
+      const lowerHeight = totalHeight * 0.66;
+      mass.name = `${root.name}__SILHOUETTE_LOWER_MASS_${index + 1}`;
+      mass.position.set(
+        definition.footprint[0] * profile.x,
+        podiumHeight + lowerHeight * 0.5,
+        definition.footprint[1] * profile.z,
+      );
+      mass.scale.set(
+        Math.max(0.55, definition.footprint[0] * profile.width),
+        lowerHeight,
+        Math.max(0.55, definition.footprint[1] * profile.depth),
+      );
+      mass.userData.silhouetteTotalHeight = totalHeight;
+      return mass;
+    });
+    const silhouetteSetbacks = silhouetteMasses.map((mass, index) => {
+      const setbackMaterial = material.clone();
+      setbackMaterial.name = `${material.name} · silhouette setback ${index + 1}`;
+      setbackMaterial.color.copy(authoredPalette[[2, 1, 3, 2, 1][index] ?? 2] ?? baseColor);
+      const setback = new THREE.Mesh(districtProxyGeometry, setbackMaterial);
+      const totalHeight = Number(mass.userData.silhouetteTotalHeight);
+      const upperHeight = totalHeight - mass.scale.y;
+      setback.name = `${root.name}__SILHOUETTE_UPPER_SETBACK_${index + 1}`;
+      setback.position.set(
+        mass.position.x + definition.footprint[0] * (index % 2 ? 0.012 : -0.009),
+        podiumHeight + mass.scale.y + upperHeight * 0.5,
+        mass.position.z + definition.footprint[1] * (index % 2 ? -0.01 : 0.012),
+      );
+      setback.scale.set(
+        mass.scale.x * (0.66 + (index % 3) * 0.05),
+        upperHeight,
+        mass.scale.z * (0.68 + ((index + 1) % 3) * 0.045),
+      );
+      return setback;
+    });
     const roofMaterial = new THREE.MeshStandardMaterial({
       name: `${material.name} · roof`,
-      color: new THREE.Color(definition.palette[1] ?? definition.palette[0]).multiplyScalar(0.62),
+      color: authoredPalette[0],
       roughness: 0.82,
       metalness: 0.12,
       fog: true,
     });
+    const roofCaps = silhouetteSetbacks.map((setback, index) => {
+      const cap = new THREE.Mesh(districtProxyGeometry, roofMaterial);
+      cap.name = `${root.name}__ROOF_CAP_${index + 1}`;
+      cap.position.set(
+        setback.position.x,
+        setback.position.y + setback.scale.y * 0.5 + 0.035,
+        setback.position.z,
+      );
+      cap.scale.set(setback.scale.x * 1.08, 0.07, setback.scale.z * 1.08);
+      return cap;
+    });
     const roof = new THREE.Mesh(districtRoofGeometry, roofMaterial);
     roof.name = `${root.name}__ROOF_PROFILE`;
     roof.rotation.y = Math.PI * 0.25;
-    roof.position.y = upper.position.y + upper.scale.y * 0.72;
+    const crownMass = silhouetteSetbacks[1];
+    const roofHeight = Math.max(0.18, definition.height * 0.11);
+    roof.position.set(
+      crownMass.position.x,
+      crownMass.position.y + crownMass.scale.y * 0.5 + roofHeight * 0.5,
+      crownMass.position.z,
+    );
     roof.scale.set(
-      Math.max(0.7, definition.footprint[0] * 0.34),
-      Math.max(0.22, definition.height * 0.14),
-      Math.max(0.7, definition.footprint[1] * 0.36),
+      Math.max(0.45, definition.footprint[0] * 0.19),
+      roofHeight,
+      Math.max(0.45, definition.footprint[1] * 0.22),
     );
     const windowMaterial = new THREE.MeshBasicMaterial({
       name: `${material.name} · atmosphere band`,
-      color: new THREE.Color(definition.accent).lerp(new THREE.Color('#ffd7a1'), 0.34),
+      color: authoredPalette[3] ?? new THREE.Color(definition.accent),
       transparent: true,
       opacity: 0.38,
       fog: true,
     });
-    const windows = new THREE.Mesh(districtProxyGeometry, windowMaterial);
-    windows.name = `${root.name}__WINDOW_BAND`;
-    windows.position.set(0, Math.max(0.55, definition.height * 0.31), definition.footprint[1] * 0.365);
-    windows.scale.set(
-      Math.max(0.7, definition.footprint[0] * 0.52),
-      Math.max(0.04, definition.height * 0.055),
-      0.025,
-    );
-    [upper, roof, windows].forEach((part) => {
+    const windowBands = silhouetteMasses.slice(0, 3).map((mass, index) => {
+      const windows = new THREE.Mesh(districtProxyGeometry, windowMaterial);
+      windows.name = `${root.name}__WINDOW_BAND_${index + 1}`;
+      windows.position.set(
+        mass.position.x,
+        podiumHeight + mass.scale.y * (0.3 + index * 0.12),
+        mass.position.z + mass.scale.z * 0.5 + 0.018,
+      );
+      windows.scale.set(
+        Math.max(0.25, mass.scale.x * 0.66),
+        Math.max(0.035, mass.scale.y * 0.045),
+        0.025,
+      );
+      return windows;
+    });
+    [...silhouetteMasses, ...silhouetteSetbacks, ...roofCaps, roof, ...windowBands].forEach((part) => {
       part.userData.selectableId = definition.id;
       part.userData.streamingProxy = true;
       part.userData.streamingHlod = true;
@@ -139,7 +210,8 @@ function makeProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKin
       part.castShadow = false;
       part.receiveShadow = false;
     });
-    root.add(upper, roof, windows);
+    root.userData.streamingSilhouetteMassCount = silhouetteMasses.length + silhouetteSetbacks.length;
+    root.add(...silhouetteMasses, ...silhouetteSetbacks, ...roofCaps, roof, ...windowBands);
   }
   return root;
 }
@@ -161,6 +233,7 @@ export class WorldStreamingManager {
   private lastSelectedPackageId: string | null = null;
   private lastInteriorPackageId: string | null = null;
   private productionVisibilityState: Map<string, ProductionVisibilityState> | null = null;
+  private readonly detailAnchorWorld = new THREE.Vector3();
 
   constructor() {
     this.vistaRoot.name = 'STREAMING__EXTERIOR_VISTA_PROXIES';
@@ -194,13 +267,22 @@ export class WorldStreamingManager {
 
     const proxy = makeProxy(definition, kind);
     this.vistaRoot.add(proxy);
+    detailRoot.updateMatrixWorld(true);
+    const packageAnchor = new THREE.Vector3(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
+    const detailAnchorObjects: THREE.Object3D[] = [];
+    detailRoot.traverse((object) => {
+      if (!(object instanceof THREE.Group)) return;
+      if (object.userData.exteriorProgram !== true && object.userData.academicFacility !== true) return;
+      detailAnchorObjects.push(object);
+    });
     this.packages.set(definition.id, {
       id: definition.id,
       kind,
       detailEnvelope,
       detailRoot,
       proxy,
-      anchor: new THREE.Vector3(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]),
+      anchor: packageAnchor,
+      detailAnchorObjects,
       detailResident: true,
       distanceMetres: Number.POSITIVE_INFINITY,
     });
@@ -254,17 +336,27 @@ export class WorldStreamingManager {
 
     const altitude = Math.max(0, context.cameraPosition.y - ISLAND_SURFACE_Y);
     const detailRadius = context.mode === 'walk'
-      ? 65
+      ? 90
       : context.mode === 'edit'
         ? 96
         : 82;
     let changed = false;
 
     this.packages.forEach((pkg) => {
-      const horizontalWorldUnits = Math.hypot(
+      let horizontalWorldUnits = Math.hypot(
         context.cameraPosition.x - pkg.anchor.x,
         context.cameraPosition.z - pkg.anchor.z,
       );
+      pkg.detailAnchorObjects.forEach((object) => {
+        object.getWorldPosition(this.detailAnchorWorld);
+        horizontalWorldUnits = Math.min(
+          horizontalWorldUnits,
+          Math.hypot(
+            context.cameraPosition.x - this.detailAnchorWorld.x,
+            context.cameraPosition.z - this.detailAnchorWorld.z,
+          ),
+        );
+      });
       pkg.distanceMetres = horizontalWorldUnits * 10;
       const selected = context.mode === 'edit' && context.selectedPackageId === pkg.id;
       const interiorOwner = context.interiorPackageId === pkg.id;

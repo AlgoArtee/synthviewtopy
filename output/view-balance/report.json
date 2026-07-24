@@ -5,21 +5,37 @@
     "runtimePolicies": {
       "objectInteractionsEnabled": false,
       "interiorRendering": "walk-inside-building-only",
-      "authoredInteriorGroups": 2,
+      "authoredInteriorGroups": 21,
       "visibleAuthoredInteriorGroups": 0,
       "cerebrumInteriorRendered": false
     }
   },
   "walk": {
-    "residentDetailPackages": 3,
-    "proxyPackageCount": 38,
+    "residentDetailPackages": 6,
+    "proxyPackageCount": 35,
     "configuredSpeedKilometresPerHour": 18,
-    "measuredDistanceMetresInTwoSeconds": 10
+    "measuredDistanceMetresInTwoSeconds": 10,
+    "visibleSilhouettePackages": 29,
+    "silhouetteMassesPerPackage": 10,
+    "detailedTower": {
+      "profile": "tiered-tower",
+      "massCount": 6,
+      "visible": true,
+      "childNames": [
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__PRIMARY_VOLUME",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__SETBACK_SHAFT",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__SETBACK_CROWN",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__PODIUM_CAP",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__LUMINOUS_FACADE_SPINE",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__REAR_LUMINOUS_FACADE_SPINE",
+        "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS__ROOF_BEACON"
+      ]
+    }
   },
   "diningInterior": {
     "objectInteractionsEnabled": false,
     "interiorRendering": "walk-inside-building-only",
-    "authoredInteriorGroups": 2,
+    "authoredInteriorGroups": 21,
     "visibleAuthoredInteriorGroups": 1,
     "cerebrumInteriorRendered": false
   },

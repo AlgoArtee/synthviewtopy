@@ -22,6 +22,7 @@ import {
   tileAcademicPathGeometry,
 } from './academicSurfaceTextures';
 import { buildIndustrialDistrict } from './industrialDistrict';
+import { buildEntryCommercialDistrict, buildLogisticsDistrict } from './entryLogisticsDistrict';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
 
@@ -1623,10 +1624,84 @@ function createCampusFacility(
   const body = prepareMesh(new THREE.Mesh(geometry, material), definition.id, false);
   body.receiveShadow = true;
   body.name = `${facility.name}__PRIMARY_VOLUME`;
-  body.scale.set(buildingWidth, facilityHeight, buildingDepth);
-  body.position.y = facilityHeight * 0.5;
+  const tieredForm = form === 'arcology' || form === 'tower' || form === 'hotel';
+  const primaryHeight = tieredForm ? facilityHeight * 0.27 : facilityHeight;
+  body.scale.set(buildingWidth, primaryHeight, buildingDepth);
+  body.position.y = primaryHeight * 0.5;
   body.userData.navObstacle = true;
   facility.add(body);
+
+  if (tieredForm) {
+    const shaftHeight = facilityHeight * 0.53;
+    const crownHeight = facilityHeight - primaryHeight - shaftHeight;
+    const shaft = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.body), definition.id, false);
+    shaft.name = `${facility.name}__SETBACK_SHAFT`;
+    shaft.scale.set(buildingWidth * 0.68, shaftHeight, buildingDepth * 0.66);
+    shaft.position.y = primaryHeight + shaftHeight * 0.5;
+    shaft.userData.navObstacle = false;
+    facility.add(shaft);
+
+    const crown = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.metal), definition.id, false);
+    crown.name = `${facility.name}__SETBACK_CROWN`;
+    crown.scale.set(buildingWidth * 0.46, crownHeight, buildingDepth * 0.44);
+    crown.position.y = primaryHeight + shaftHeight + crownHeight * 0.5;
+    crown.rotation.y = form === 'tower' ? Math.PI * 0.25 : 0;
+    crown.userData.navObstacle = false;
+    facility.add(crown);
+
+    const podiumCap = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.metal), definition.id, false);
+    podiumCap.name = `${facility.name}__PODIUM_CAP`;
+    podiumCap.scale.set(buildingWidth * 1.035, 0.09, buildingDepth * 1.035);
+    podiumCap.position.y = primaryHeight + 0.045;
+    podiumCap.userData.navObstacle = false;
+    facility.add(podiumCap);
+
+    const facadeSpine = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.glass), definition.id, false);
+    facadeSpine.name = `${facility.name}__LUMINOUS_FACADE_SPINE`;
+    facadeSpine.scale.set(
+      Math.max(0.42, buildingWidth * 0.09),
+      shaftHeight * 0.84,
+      0.08,
+    );
+    facadeSpine.position.set(
+      0,
+      primaryHeight + shaftHeight * 0.5,
+      buildingDepth * 0.33 + 0.045,
+    );
+    facadeSpine.userData.navObstacle = false;
+    facility.add(facadeSpine);
+
+    const rearFacadeSpine = facadeSpine.clone();
+    rearFacadeSpine.name = `${facility.name}__REAR_LUMINOUS_FACADE_SPINE`;
+    rearFacadeSpine.position.z = -buildingDepth * 0.33 - 0.045;
+    rearFacadeSpine.userData.navObstacle = false;
+    facility.add(rearFacadeSpine);
+
+    const roofCap = prepareMesh(new THREE.Mesh(campusUnitGeometries.cylinder, materials.accent), definition.id, false);
+    roofCap.name = `${facility.name}__ROOF_BEACON`;
+    roofCap.scale.set(buildingWidth * 0.22, 0.16, buildingDepth * 0.22);
+    roofCap.position.y = facilityHeight + 0.08;
+    roofCap.userData.navObstacle = false;
+    facility.add(roofCap);
+    facility.userData.architecturalMassCount = 6;
+    facility.userData.architecturalProfile = 'tiered-tower';
+  } else if (geometry === campusUnitGeometries.box) {
+    const roofMonitor = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.dark), definition.id, false);
+    roofMonitor.name = `${facility.name}__ROOF_MONITOR`;
+    roofMonitor.scale.set(buildingWidth * 0.56, 0.22, buildingDepth * 0.38);
+    roofMonitor.position.y = facilityHeight + 0.11;
+    roofMonitor.userData.navObstacle = false;
+    facility.add(roofMonitor);
+
+    const facadeBand = prepareMesh(new THREE.Mesh(campusUnitGeometries.box, materials.glass), definition.id, false);
+    facadeBand.name = `${facility.name}__FACADE_BAND`;
+    facadeBand.scale.set(buildingWidth * 0.74, 0.18, 0.07);
+    facadeBand.position.set(0, facilityHeight * 0.63, buildingDepth * 0.5 + 0.04);
+    facadeBand.userData.navObstacle = false;
+    facility.add(facadeBand);
+    facility.userData.architecturalMassCount = 2;
+    facility.userData.architecturalProfile = 'roofed-campus-building';
+  }
   const role = /lab|research|clinical|diagnostic|sequenc|analysis|science|biology|chemistry|forensic|accelerator/i.test(name)
     ? 'lab'
     : 'building';
@@ -2014,6 +2089,32 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     return;
   }
 
+  if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
+    const program = group.userData.entryLogisticsProgram as {
+      plannedBuildings?: string[];
+      realizedBuildingCount?: number;
+    } | undefined;
+    group.traverse((child) => {
+      if (!child.name.startsWith(definition.id === 'entry-commercial' ? 'ENTRY__' : 'LOGISTICS__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    group.userData.population = {
+      plannedFacilities: program?.plannedBuildings ?? plan.facilities.map((facility) => facility.name),
+      plannedObjects: definition.id === 'entry-commercial'
+        ? ['Welcome oval plaza', 'reflecting pool', 'public arrival road', 'Alpine view corridor']
+        : ['Northfield runway', 'controlled freight spine', 'acoustic berm', 'translucent security wall'],
+      realizedFacilityCount: program?.realizedBuildingCount ?? 0,
+      realizedObjectCount: definition.id === 'entry-commercial' ? 4 : 4,
+      existingRichCampus: true,
+      distinct: true,
+      exteriorOnly: true,
+      redLineBoundaryCompliant: true,
+    };
+    return;
+  }
+
   const materials = createMaterials(definition);
   const campusCenter = integratedCore
     ? new THREE.Vector3(
@@ -2208,10 +2309,13 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const [width, depth] = definition.footprint;
   const isIndustrialDistrict = definition.id === 'industrial-labs';
   const isAcademicDistrict = definition.id === 'academic-libraries-theoretical-labs';
+  const isEntryLogisticsDistrict = definition.id === 'entry-commercial' || definition.id === 'logistics';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
       ? ACADEMIC_FINISHED_FLOOR_Y
+      : isEntryLogisticsDistrict
+        ? metresToWorldUnits(0.08)
       : DISTRICT_FINISHED_FLOOR_Y;
   const accessRampLength = isIndustrialDistrict
     ? metresToWorldUnits(2.4)
@@ -2251,11 +2355,11 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   // The industrial parcel is a curb-height paved yard, not a walled plinth.
   // Its actual buildings remain collision obstacles, while the slab can be
   // approached from every side at normal walking step height.
-  plot.userData.navObstacle = !isIndustrialDistrict && !isAcademicDistrict;
+  plot.userData.navObstacle = !isIndustrialDistrict && !isAcademicDistrict && !isEntryLogisticsDistrict;
   plot.userData.solidFoundation = true;
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
   group.add(plot);
-  if (!isAcademicDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict) {
     addAccessRamp(
       group,
       definition.id,
@@ -2300,10 +2404,12 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
     case 'civic':
     case 'commercial':
-      buildCivic(group, definition, height, random);
+      if (definition.id === 'entry-commercial') buildEntryCommercialDistrict(group, definition);
+      else buildCivic(group, definition, height, random);
       break;
     case 'infrastructure':
-      if (definition.id === 'industrial-labs') buildIndustrialDistrict(group, definition);
+      if (definition.id === 'logistics') buildLogisticsDistrict(group, definition);
+      else if (definition.id === 'industrial-labs') buildIndustrialDistrict(group, definition);
       else buildInfrastructure(group, definition, height);
       break;
     case 'academic':
@@ -2314,7 +2420,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  if (!isAcademicDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict) {
     addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
   }
   if (definition.id === 'academic-libraries-theoretical-labs') {
@@ -2324,25 +2430,29 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       academicPrimaryAccess.userData.servesFacility = 'Blackwood University Great Hall';
     }
   }
-  if (definition.id !== 'industrial-labs') addDistrictSignature(group, definition, height, random);
-  populateDistrictSectorCampus(group, definition, random);
-  addCyberpunkDistrictLife(group, definition, height);
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict) addDistrictSignature(group, definition, height, random);
+  if (!isEntryLogisticsDistrict) populateDistrictSectorCampus(group, definition, random);
+  if (!isEntryLogisticsDistrict) addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
     new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 3 }),
   );
-  if (definition.id !== 'industrial-labs') {
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict) {
     addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }
 
   group.traverse((child) => {
-    child.userData.selectableId = definition.id;
+    if (!child.userData.individualSelectableId) child.userData.selectableId = definition.id;
   });
 
   return {
     group,
-    labelHeight: definition.id === 'industrial-labs'
+    labelHeight: definition.id === 'entry-commercial'
+      ? 9.5
+      : definition.id === 'logistics'
+        ? 10.5
+      : definition.id === 'industrial-labs'
       ? 8.15
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };

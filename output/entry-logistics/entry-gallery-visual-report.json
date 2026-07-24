@@ -1,0 +1,2698 @@
+{
+  "e4Terrace": {
+    "facility": "ENTRY__E4__CLEARLINE_GLASSFRONT_CAFE",
+    "ground": 1.6099999999999859,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        262.38,
+        1.792,
+        -239.826
+      ],
+      "positionMetres": [
+        2623.8,
+        17.9,
+        -2398.3
+      ],
+      "groundY": 1.63,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.332,
+        -0.138,
+        -0.933
+      ]
+    },
+    "visibleRuntimeInteriors": [],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        56.34703462724258,
+        0.008,
+        61.75850957989212
+      ],
+      "routeStart": [
+        52.06054762906609,
+        0.008,
+        65.59107128382647
+      ],
+      "interiorTarget": [
+        57.972172306551215,
+        0.01977999999999991,
+        60.30546879474829
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 2.4,
+      "exteriorOnly": false
+    }
+  },
+  "e4Facade": {
+    "facility": "ENTRY__E4__CLEARLINE_GLASSFRONT_CAFE",
+    "ground": 1.6099999999999859,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        263.302,
+        1.772,
+        -235.419
+      ],
+      "positionMetres": [
+        2633,
+        17.7,
+        -2354.2
+      ],
+      "groundY": 1.61,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.742,
+        0.1,
+        -0.663
+      ]
+    },
+    "visibleRuntimeInteriors": [],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        56.34703462724258,
+        0.008,
+        61.75850957989212
+      ],
+      "routeStart": [
+        52.06054762906609,
+        0.008,
+        65.59107128382647
+      ],
+      "interiorTarget": [
+        57.972172306551215,
+        0.01977999999999991,
+        60.30546879474829
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 2.4,
+      "exteriorOnly": false
+    }
+  },
+  "e4KeyboardApproaches": [
+    {
+      "label": "front",
+      "startLocal": [
+        2.1000000000000227,
+        0.42608696053857376,
+        7.7999999999999545
+      ],
+      "endLocal": [
+        2.10000000000349,
+        0.4201739248862406,
+        -0.033333333334951476
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          271.287,
+          1.803,
+          -239.741
+        ],
+        "positionMetres": [
+          2712.9,
+          18,
+          -2397.4
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "terrazzo",
+        "roomId": "entry-e4-cafe-pavilion",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.745,
+          0,
+          -0.667
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "label": "west-angle",
+      "startLocal": [
+        0.5,
+        0.42608696053857376,
+        7.199999999999989
+      ],
+      "endLocal": [
+        2.2531303610410873,
+        0.42017396560431797,
+        -0.393245876270214
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          271.657,
+          1.803,
+          -239.867
+        ],
+        "positionMetres": [
+          2716.6,
+          18,
+          -2398.7
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "terrazzo",
+        "roomId": "entry-e4-cafe-pavilion",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.876,
+          0,
+          -0.482
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "label": "east-angle",
+      "startLocal": [
+        3.6999999999999886,
+        0.42608696053857376,
+        7.199999999999989
+      ],
+      "endLocal": [
+        1.9395208740132261,
+        0.42017391429261863,
+        -0.4250752144251919
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          271.472,
+          1.803,
+          -240.122
+        ],
+        "positionMetres": [
+          2714.7,
+          18,
+          -2401.2
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "terrazzo",
+        "roomId": "entry-e4-cafe-pavilion",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.576,
+          0,
+          -0.817
+        ]
+      },
+      "interiorVisible": true
+    }
+  ],
+  "e6KeyboardApproaches": [
+    {
+      "label": "front",
+      "startLocal": [
+        2.471452993948167e-15,
+        0.4260869605385743,
+        7.800000000000013
+      ],
+      "endLocal": [
+        -1.7880962411215046e-12,
+        0.43217391121167303,
+        -0.017666666705736137
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          268.726,
+          1.809,
+          -209.951
+        ],
+        "positionMetres": [
+          2687.3,
+          18.1,
+          -2099.5
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e6-runway-club-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.788,
+          0,
+          -0.616
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "label": "west-angle",
+      "startLocal": [
+        -1.4999999999999978,
+        0.4260869605385743,
+        7.19999999999999
+      ],
+      "endLocal": [
+        0.17315554458247356,
+        0.43217391305445363,
+        -0.4184349130001125
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          269.148,
+          1.809,
+          -210.062
+        ],
+        "positionMetres": [
+          2691.5,
+          18.1,
+          -2100.6
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e6-runway-club-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.902,
+          0,
+          -0.432
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "label": "east-angle",
+      "startLocal": [
+        1.5000000000000313,
+        0.4260869605385743,
+        7.19999999999999
+      ],
+      "endLocal": [
+        -0.17408507542807894,
+        0.43217391307268127,
+        -0.42266737678033917
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          268.938,
+          1.809,
+          -210.338
+        ],
+        "positionMetres": [
+          2689.4,
+          18.1,
+          -2103.4
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e6-runway-club-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.638,
+          0,
+          -0.77
+        ]
+      },
+      "interiorVisible": true
+    }
+  ],
+  "remainingEntryKeyboardApproaches": [
+    {
+      "code": "E3",
+      "label": "front",
+      "startLocal": [
+        2.3478803442507662e-14,
+        0.4260869605385733,
+        4.399999999999977
+      ],
+      "durationMilliseconds": 1489.0000000000002,
+      "expectedRoomId": "entry-e3-transit-concourse",
+      "endLocal": [
+        5.066478637593758e-13,
+        0.4321739116747274,
+        -0.802111111149145
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          204.823,
+          1.809,
+          -279.856
+        ],
+        "positionMetres": [
+          2048.2,
+          18.1,
+          -2798.6
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e3-transit-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.591,
+          0,
+          -0.807
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E3",
+      "label": "west-angle",
+      "startLocal": [
+        -1.7599999999999674,
+        0.4260869605385733,
+        4.399999999999977
+      ],
+      "durationMilliseconds": 1594.4617128170537,
+      "expectedRoomId": "entry-e3-transit-concourse",
+      "endLocal": [
+        0.39533977585969143,
+        0.43217391283285966,
+        -0.7801632113015557
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          205.129,
+          1.809,
+          -279.604
+        ],
+        "positionMetres": [
+          2051.3,
+          18.1,
+          -2796
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e3-transit-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.855,
+          0,
+          -0.518
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E3",
+      "label": "east-angle",
+      "startLocal": [
+        1.7600000000000429,
+        0.4260869605385733,
+        4.400000000000034
+      ],
+      "durationMilliseconds": 1594.461712817062,
+      "expectedRoomId": "entry-e3-transit-concourse",
+      "endLocal": [
+        -0.39905322958055006,
+        0.43217391277056283,
+        -0.7890881597267025
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          204.494,
+          1.809,
+          -280.081
+        ],
+        "positionMetres": [
+          2044.9,
+          18.1,
+          -2800.8
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e3-transit-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.235,
+          0,
+          -0.972
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E5",
+      "label": "front",
+      "startLocal": [
+        2.8421709430404014e-14,
+        0.426086960538573,
+        7.699999999999934
+      ],
+      "durationMilliseconds": 2253.999999999989,
+      "expectedRoomId": "entry-e5-galleria-concourse",
+      "endLocal": [
+        -1.904254531837069e-12,
+        0.4324914594298518,
+        -0.13333333333292788
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          227.369,
+          1.809,
+          -233.808
+        ],
+        "positionMetres": [
+          2273.7,
+          18.1,
+          -2338.1
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e5-galleria-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.697,
+          0,
+          -0.717
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E5",
+      "label": "west-angle",
+      "startLocal": [
+        -1.8699999999999481,
+        0.426086960538573,
+        7.699999999999877
+      ],
+      "durationMilliseconds": 2329.9471557363518,
+      "expectedRoomId": "entry-e5-galleria-concourse",
+      "endLocal": [
+        0.2866100937453951,
+        0.43247261540785653,
+        -0.11915317412029938
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          227.564,
+          1.809,
+          -233.598
+        ],
+        "positionMetres": [
+          2275.6,
+          18.1,
+          -2336
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e5-galleria-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.863,
+          0,
+          -0.506
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E5",
+      "label": "east-angle",
+      "startLocal": [
+        1.8700000000000334,
+        0.426086960538573,
+        7.699999999999934
+      ],
+      "durationMilliseconds": 2329.947155736362,
+      "expectedRoomId": "entry-e5-galleria-concourse",
+      "endLocal": [
+        -0.28448302625184857,
+        0.4326288072967369,
+        -0.11144113261178748
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          227.15,
+          1.809,
+          -233.991
+        ],
+        "positionMetres": [
+          2271.5,
+          18.1,
+          -2339.9
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e5-galleria-concourse",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.481,
+          0,
+          -0.876
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E7",
+      "label": "front",
+      "startLocal": [
+        5.437196586685984e-14,
+        0.4260869605385742,
+        6.099999999999966
+      ],
+      "durationMilliseconds": 1908.9999999999982,
+      "expectedRoomId": "entry-e7-arcade-hall",
+      "endLocal": [
+        1.105975214791808e-12,
+        0.43217391322911736,
+        -0.5418888889077493
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          290.8,
+          1.809,
+          -209.732
+        ],
+        "positionMetres": [
+          2908,
+          18.1,
+          -2097.3
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e7-arcade-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.811,
+          0,
+          -0.585
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E7",
+      "label": "west-angle",
+      "startLocal": [
+        -1.539999999999966,
+        0.4260869605385742,
+        6.099999999999909
+      ],
+      "durationMilliseconds": 1971.0468297564037,
+      "expectedRoomId": "entry-e7-arcade-hall",
+      "endLocal": [
+        0.2695761991224092,
+        0.4321739132295148,
+        -0.5155285721150449
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          290.937,
+          1.809,
+          -209.498
+        ],
+        "positionMetres": [
+          2909.4,
+          18.1,
+          -2095
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e7-arcade-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.937,
+          0,
+          -0.35
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E7",
+      "label": "east-angle",
+      "startLocal": [
+        1.5400000000000749,
+        0.4260869605385742,
+        6.099999999999909
+      ],
+      "durationMilliseconds": 1971.0468297564157,
+      "expectedRoomId": "entry-e7-arcade-hall",
+      "endLocal": [
+        -0.2750289373455271,
+        0.43217391322951837,
+        -0.5354629332879881
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          290.634,
+          1.809,
+          -209.951
+        ],
+        "positionMetres": [
+          2906.3,
+          18.1,
+          -2099.5
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e7-arcade-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.628,
+          0,
+          -0.778
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E8",
+      "label": "front",
+      "startLocal": [
+        2.8421709430404014e-14,
+        0.42608696053857387,
+        8.399999999999979
+      ],
+      "durationMilliseconds": 2373.999999999991,
+      "expectedRoomId": "entry-e8-hotel-arrival-lobby",
+      "endLocal": [
+        5.684341886080803e-14,
+        0.4321739132296699,
+        0.21077777779737522
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          279.444,
+          1.809,
+          -274.609
+        ],
+        "positionMetres": [
+          2794.4,
+          18.1,
+          -2746.1
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e8-hotel-arrival-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.713,
+          0,
+          -0.701
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E8",
+      "label": "west-angle",
+      "startLocal": [
+        -1.9250000000000118,
+        0.42608696053857387,
+        8.399999999999979
+      ],
+      "durationMilliseconds": 2450.0722521927246,
+      "expectedRoomId": "entry-e8-hotel-arrival-lobby",
+      "endLocal": [
+        0.26658033790434393,
+        0.432173913229713,
+        0.2256899604403771
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          279.62,
+          1.809,
+          -274.408
+        ],
+        "positionMetres": [
+          2796.2,
+          18.1,
+          -2744.1
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e8-hotel-arrival-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.87,
+          0,
+          -0.492
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E8",
+      "label": "east-angle",
+      "startLocal": [
+        1.9250000000000118,
+        0.42608696053857387,
+        8.399999999999979
+      ],
+      "durationMilliseconds": 2450.072252192726,
+      "expectedRoomId": "entry-e8-hotel-arrival-lobby",
+      "endLocal": [
+        -0.26580345723610327,
+        0.43217391322971654,
+        0.22858762442217545
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          279.245,
+          1.809,
+          -274.786
+        ],
+        "positionMetres": [
+          2792.4,
+          18.1,
+          -2747.9
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e8-hotel-arrival-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.507,
+          0,
+          -0.862
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E9",
+      "label": "front",
+      "startLocal": [
+        -7.414358981844531e-15,
+        0.4260869605385742,
+        7.300000000000125
+      ],
+      "durationMilliseconds": 2254.0000000000373,
+      "expectedRoomId": "entry-e9-covered-market-hall",
+      "endLocal": [
+        -2.7643201737310332e-12,
+        0.43217391322974175,
+        -0.5330000000175232
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          274.475,
+          1.809,
+          -182.361
+        ],
+        "positionMetres": [
+          2744.8,
+          18.1,
+          -1823.6
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e9-covered-market-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.833,
+          0,
+          -0.553
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E9",
+      "label": "west-angle",
+      "startLocal": [
+        -1.7599999999999982,
+        0.4260869605385742,
+        7.300000000000182
+      ],
+      "durationMilliseconds": 2321.4138097957193,
+      "expectedRoomId": "entry-e9-covered-market-hall",
+      "endLocal": [
+        0.25038239761024494,
+        0.4321739132297422,
+        -0.44454128171094
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          274.54,
+          1.809,
+          -182.103
+        ],
+        "positionMetres": [
+          2745.4,
+          18.1,
+          -1821
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e9-covered-market-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.945,
+          0,
+          -0.326
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E9",
+      "label": "east-angle",
+      "startLocal": [
+        1.7599999999999836,
+        0.4260869605385742,
+        7.300000000000182
+      ],
+      "durationMilliseconds": 2321.4138097957166,
+      "expectedRoomId": "entry-e9-covered-market-hall",
+      "endLocal": [
+        -0.2640341590573104,
+        0.4321739132297422,
+        -0.4971315899879869
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          274.299,
+          1.809,
+          -182.561
+        ],
+        "positionMetres": [
+          2743,
+          18.1,
+          -1825.6
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e9-covered-market-hall",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.667,
+          0,
+          -0.745
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E10",
+      "label": "front",
+      "startLocal": [
+        -2.471452993948167e-15,
+        0.4260869605385743,
+        9.249999999999945
+      ],
+      "durationMilliseconds": 2539,
+      "expectedRoomId": "entry-e10-showcase-gallery",
+      "endLocal": [
+        1.6459876939694846e-12,
+        0.4201739132297432,
+        0.5032222222623092
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          239.254,
+          1.803,
+          -262.936
+        ],
+        "positionMetres": [
+          2392.5,
+          18,
+          -2629.4
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "charcoal terrazzo",
+        "roomId": "entry-e10-showcase-gallery",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.673,
+          0,
+          -0.74
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E10",
+      "label": "west-angle",
+      "startLocal": [
+        -1.650000000000037,
+        0.4260869605385743,
+        9.249999999999945
+      ],
+      "durationMilliseconds": 2591.2414470061826,
+      "expectedRoomId": "entry-e10-showcase-gallery",
+      "endLocal": [
+        0.20846743087122135,
+        0.4201739132297432,
+        0.5433616723269098
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          239.381,
+          1.803,
+          -262.766
+        ],
+        "positionMetres": [
+          2393.8,
+          18,
+          -2627.7
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "charcoal terrazzo",
+        "roomId": "entry-e10-showcase-gallery",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.813,
+          0,
+          -0.583
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E10",
+      "label": "east-angle",
+      "startLocal": [
+        1.6499999999999753,
+        0.4260869605385743,
+        9.249999999999945
+      ],
+      "durationMilliseconds": 2591.2414470061813,
+      "expectedRoomId": "entry-e10-showcase-gallery",
+      "endLocal": [
+        -0.2134774647726115,
+        0.4201739132297432,
+        0.5198904226122637
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          239.085,
+          1.803,
+          -263.068
+        ],
+        "positionMetres": [
+          2390.8,
+          18,
+          -2630.7
+        ],
+        "groundY": 1.641,
+        "surfaceKind": "charcoal terrazzo",
+        "roomId": "entry-e10-showcase-gallery",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.504,
+          0,
+          -0.864
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E11",
+      "label": "front",
+      "startLocal": [
+        2.5950256436455847e-14,
+        0.42608696053857165,
+        6.399999999999979
+      ],
+      "durationMilliseconds": 1984.0000000000002,
+      "expectedRoomId": "entry-e11-picture-house-foyer",
+      "endLocal": [
+        1.9648051301887994e-13,
+        0.4321739132290717,
+        -0.5134444444072984
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          291.449,
+          1.809,
+          -189.269
+        ],
+        "positionMetres": [
+          2914.5,
+          18.1,
+          -1892.7
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e11-picture-house-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.839,
+          0,
+          -0.545
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E11",
+      "label": "west-angle",
+      "startLocal": [
+        -1.5399999999999665,
+        0.426086960538573,
+        6.400000000000036
+      ],
+      "durationMilliseconds": 2043.4966410717684,
+      "expectedRoomId": "entry-e11-picture-house-foyer",
+      "endLocal": [
+        0.2740532455571245,
+        0.4321739132294421,
+        -0.5263851193997199
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          291.609,
+          1.809,
+          -189.047
+        ],
+        "positionMetres": [
+          2916.1,
+          18.1,
+          -1890.5
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e11-picture-house-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.949,
+          0,
+          -0.314
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E11",
+      "label": "east-angle",
+      "startLocal": [
+        1.5400000000000469,
+        0.42608696053857165,
+        6.399999999999979
+      ],
+      "durationMilliseconds": 2043.496641071762,
+      "expectedRoomId": "entry-e11-picture-house-foyer",
+      "endLocal": [
+        -0.27574230817316703,
+        0.4321739132295189,
+        -0.5328342675562682
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          291.315,
+          1.809,
+          -189.511
+        ],
+        "positionMetres": [
+          2913.2,
+          18.1,
+          -1895.1
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e11-picture-house-foyer",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.673,
+          0,
+          -0.739
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E12",
+      "label": "front",
+      "startLocal": [
+        -8.773658128516021e-14,
+        0.4260869605385742,
+        7.7000000000000455
+      ],
+      "durationMilliseconds": 2419.000000000013,
+      "expectedRoomId": "entry-e12-water-taxi-waiting-room",
+      "endLocal": [
+        3.0954948749200888e-12,
+        0.43217391208396405,
+        -0.6348888889308455
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          336.911,
+          1.809,
+          -220.468
+        ],
+        "positionMetres": [
+          3369.1,
+          18.1,
+          -2204.7
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e12-water-taxi-waiting-room",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.837,
+          0,
+          -0.548
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E12",
+      "label": "west-angle",
+      "startLocal": [
+        -1.760000000000107,
+        0.4260869605385742,
+        7.700000000000102
+      ],
+      "durationMilliseconds": 2481.5006080034777,
+      "expectedRoomId": "entry-e12-water-taxi-waiting-room",
+      "endLocal": [
+        0.2504644900733101,
+        0.4321739127392359,
+        -0.6731276774008847
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          337.08,
+          1.809,
+          -220.279
+        ],
+        "positionMetres": [
+          3370.8,
+          18.1,
+          -2202.8
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e12-water-taxi-waiting-room",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.941,
+          0,
+          -0.337
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E12",
+      "label": "east-angle",
+      "startLocal": [
+        1.7599999999998748,
+        0.4260869605385742,
+        7.700000000000102
+      ],
+      "durationMilliseconds": 2481.50060800347,
+      "expectedRoomId": "entry-e12-water-taxi-waiting-room",
+      "endLocal": [
+        -0.24704021506335286,
+        0.4321739126929045,
+        -0.6588663502445797
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          336.795,
+          1.809,
+          -220.688
+        ],
+        "positionMetres": [
+          3368,
+          18.1,
+          -2206.9
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e12-water-taxi-waiting-room",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.686,
+          0,
+          -0.728
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E13",
+      "label": "front",
+      "startLocal": [
+        -3.583606841224854e-14,
+        0.4260869605385733,
+        5.9500000000000455
+      ],
+      "durationMilliseconds": 1594.0000000000168,
+      "expectedRoomId": "entry-e13-orientation-tower-lobby",
+      "endLocal": [
+        -6.611136758811367e-13,
+        0.43217391310421815,
+        0.32833333333360315
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          315.591,
+          1.809,
+          -212.869
+        ],
+        "positionMetres": [
+          3155.9,
+          18.1,
+          -2128.7
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e13-orientation-tower-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.829,
+          0,
+          -0.559
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E13",
+      "label": "west-angle",
+      "startLocal": [
+        -1.10000000000003,
+        0.4260869605385733,
+        5.950000000000102
+      ],
+      "durationMilliseconds": 1633.0732465092021,
+      "expectedRoomId": "entry-e13-orientation-tower-lobby",
+      "endLocal": [
+        0.2450234595841249,
+        0.4321739131403852,
+        0.34981141372895763
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          315.71,
+          1.809,
+          -212.654
+        ],
+        "positionMetres": [
+          3157.1,
+          18.1,
+          -2126.5
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e13-orientation-tower-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.937,
+          0,
+          -0.35
+        ]
+      },
+      "interiorVisible": true
+    },
+    {
+      "code": "E13",
+      "label": "east-angle",
+      "startLocal": [
+        1.0999999999999586,
+        0.4260869605385733,
+        5.950000000000159
+      ],
+      "durationMilliseconds": 1633.0732465091994,
+      "expectedRoomId": "entry-e13-orientation-tower-lobby",
+      "endLocal": [
+        -0.2493049078504231,
+        0.43217391314807596,
+        0.3319850200398946
+      ],
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          315.449,
+          1.809,
+          -213.074
+        ],
+        "positionMetres": [
+          3154.5,
+          18.1,
+          -2130.7
+        ],
+        "groundY": 1.647,
+        "surfaceKind": "light terrazzo",
+        "roomId": "entry-e13-orientation-tower-lobby",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 120,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.676,
+          0,
+          -0.737
+        ]
+      },
+      "interiorVisible": true
+    }
+  ],
+  "e10Exterior": {
+    "facility": "ENTRY__E10__ISLAND_SHOWCASE_PAVILION",
+    "ground": 1.644000001847744,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        232.055,
+        1.806,
+        -255.025
+      ],
+      "positionMetres": [
+        2320.5,
+        18.1,
+        -2550.2
+      ],
+      "groundY": 1.644,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.673,
+        0,
+        -0.74
+      ]
+    },
+    "visibleRuntimeInteriors": [],
+    "visibleExteriorOnlyObjects": [
+      "ENTRY__E10__LOW_CIRCULAR_SHOWCASE_SHELL",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_1",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_2",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_3",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_4",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_5",
+      "ENTRY__E10__OVERLAPPING_MOLECULAR_ARC_6",
+      "ENTRY__E10__CENTRAL_GLASS_LANTERN",
+      "ENTRY__E10__C_SHAPED_WATER_CHANNEL"
+    ],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        21.893739845683086,
+        0.008,
+        41.6025628469672
+      ],
+      "routeStart": [
+        21.11977545514685,
+        0.008,
+        42.453138606192624
+      ],
+      "interiorTarget": [
+        25.480896542690175,
+        0.01977999999999991,
+        37.6603291107312
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3,
+      "exteriorOnly": false
+    }
+  },
+  "e10Interior": {
+    "facility": "ENTRY__E10__ISLAND_SHOWCASE_PAVILION",
+    "ground": 1.6099999999999859,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        237.944,
+        1.803,
+        -261.497
+      ],
+      "positionMetres": [
+        2379.4,
+        18,
+        -2615
+      ],
+      "groundY": 1.641,
+      "surfaceKind": "charcoal terrazzo",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.673,
+        0.003,
+        -0.74
+      ]
+    },
+    "visibleRuntimeInteriors": [
+      "ENTRY__E10__AUTHORED_WALK_INTERIOR"
+    ],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        21.893739845683086,
+        0.008,
+        41.6025628469672
+      ],
+      "routeStart": [
+        21.11977545514685,
+        0.008,
+        42.453138606192624
+      ],
+      "interiorTarget": [
+        25.480896542690175,
+        0.01977999999999991,
+        37.6603291107312
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3,
+      "exteriorOnly": false
+    }
+  },
+  "e10EntranceWall": {
+    "facility": "ENTRY__E10__ISLAND_SHOWCASE_PAVILION",
+    "ground": 1.6412800000856818,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        239.155,
+        1.803,
+        -262.828
+      ],
+      "positionMetres": [
+        2391.5,
+        18,
+        -2628.3
+      ],
+      "groundY": 1.641,
+      "surfaceKind": "charcoal terrazzo",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        -0.673,
+        0.003,
+        0.74
+      ]
+    },
+    "visibleRuntimeInteriors": [
+      "ENTRY__E10__AUTHORED_WALK_INTERIOR"
+    ],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        21.893739845683086,
+        0.008,
+        41.6025628469672
+      ],
+      "routeStart": [
+        21.11977545514685,
+        0.008,
+        42.453138606192624
+      ],
+      "interiorTarget": [
+        25.480896542690175,
+        0.01977999999999991,
+        37.6603291107312
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3,
+      "exteriorOnly": false
+    }
+  },
+  "e5Interior": {
+    "facility": "ENTRY__E5__RINGWALK_GALLERIA_MALL",
+    "ground": 1.6099999999999859,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        219.25,
+        1.812,
+        -240.234
+      ],
+      "positionMetres": [
+        2192.5,
+        18.1,
+        -2402.3
+      ],
+      "groundY": 1.65,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.717,
+        0.001,
+        0.697
+      ]
+    },
+    "visibleRuntimeInteriors": [
+      "ENTRY__E5__AUTHORED_WALK_INTERIOR"
+    ],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        10.49226923920449,
+        0.008,
+        69.9315277852389
+      ],
+      "routeStart": [
+        9.167655543780796,
+        0.008,
+        71.29365793977482
+      ],
+      "interiorTarget": [
+        13.545852389707477,
+        0.01977999999999991,
+        66.79145932372978
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3.4,
+      "exteriorOnly": false
+    }
+  },
+  "e5EntranceWall": {
+    "facility": "ENTRY__E5__RINGWALK_GALLERIA_MALL",
+    "ground": 1.6495600000856816,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        226.704,
+        1.812,
+        -233.125
+      ],
+      "positionMetres": [
+        2267,
+        18.1,
+        -2331.2
+      ],
+      "groundY": 1.65,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        -0.697,
+        0.004,
+        0.717
+      ]
+    },
+    "visibleRuntimeInteriors": [
+      "ENTRY__E5__AUTHORED_WALK_INTERIOR"
+    ],
+    "visibleExteriorOnlyObjects": [],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        10.49226923920449,
+        0.008,
+        69.9315277852389
+      ],
+      "routeStart": [
+        9.167655543780796,
+        0.008,
+        71.29365793977482
+      ],
+      "interiorTarget": [
+        13.545852389707477,
+        0.01977999999999991,
+        66.79145932372978
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3.4,
+      "exteriorOnly": false
+    }
+  },
+  "e8Exterior": {
+    "facility": "ENTRY__E8__BRIDGEVIEW_ARRIVAL_HOTEL",
+    "ground": 1.644000001847744,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        272.747,
+        1.806,
+        -268.028
+      ],
+      "positionMetres": [
+        2727.5,
+        18.1,
+        -2680.3
+      ],
+      "groundY": 1.644,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.713,
+        0,
+        -0.701
+      ]
+    },
+    "visibleRuntimeInteriors": [],
+    "visibleExteriorOnlyObjects": [
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_1",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_2",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_3",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_4",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_5",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_6",
+      "ENTRY__E8__BRIDGEVIEW_CRESCENT__SEGMENT_7",
+      "ENTRY__E8__PALE_STONE_BASE_WEST_WING",
+      "ENTRY__E8__PALE_STONE_BASE_EAST_WING"
+    ],
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        63.010669621329384,
+        0.008,
+        28.522783448276527
+      ],
+      "routeStart": [
+        60.51429304928973,
+        0.008,
+        30.975965873326004
+      ],
+      "interiorTarget": [
+        65.63543127421678,
+        0.01977999999999991,
+        25.94343735565309
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 3.5,
+      "exteriorOnly": false
+    }
+  },
+  "e8Interior": {
+    "endLocal": [
+      0,
+      0.43215724363266894,
+      3.7333333333332357
+    ],
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        276.931,
+        1.809,
+        -272.14
+      ],
+      "positionMetres": [
+        2769.3,
+        18.1,
+        -2721.4
+      ],
+      "groundY": 1.647,
+      "surfaceKind": "light terrazzo",
+      "roomId": "entry-e8-hotel-arrival-lobby",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 120,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.713,
+        0,
+        -0.701
+      ]
+    },
+    "interiorVisible": true,
+    "visibleExteriorOnlyObjects": []
+  },
+  "geometry": {
+    "e4": {
+      "tableSetCount": 6,
+      "chairCount": 24,
+      "chairsPerTable": [
+        4,
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "humanScaleMetres": [
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": 2.35,
+          "umbrellaDiameter": 2.5
+        },
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": null,
+          "umbrellaDiameter": null
+        },
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": null,
+          "umbrellaDiameter": null
+        },
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": 2.35,
+          "umbrellaDiameter": 2.5
+        },
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": 2.35,
+          "umbrellaDiameter": 2.5
+        },
+        {
+          "tableHeight": 0.75,
+          "tableDiameter": 0.9,
+          "chairCount": 4,
+          "chairSeatHeight": 0.46,
+          "chairOverallHeight": 0.94,
+          "umbrellaHeight": null,
+          "umbrellaDiameter": null
+        }
+      ],
+      "tabletopSizes": [
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ],
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ],
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ],
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ],
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ],
+        [
+          0.08985966976331383,
+          0.005999999940395462,
+          0.08985966976337068
+        ]
+      ],
+      "chairSizes": [
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ],
+        [
+          0.06361932458412412,
+          0.09399999953806382,
+          0.06346143749937028
+        ],
+        [
+          0.06346143749942712,
+          0.09399999953806382,
+          0.06361932458412412
+        ]
+      ],
+      "tableSetPositions": [
+        [
+          -3.7,
+          0,
+          3.75
+        ],
+        [
+          3.7,
+          0,
+          3.75
+        ],
+        [
+          -3.7,
+          0,
+          5.15
+        ],
+        [
+          3.7,
+          0,
+          5.15
+        ],
+        [
+          -3.7,
+          0,
+          6.55
+        ],
+        [
+          3.7,
+          0,
+          6.55
+        ]
+      ],
+      "planterCount": 8,
+      "herbClusterCount": 24,
+      "planterSizes": [
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ],
+        [
+          0.11372410489173035,
+          0.04600000068545329,
+          0.10796122703374067
+        ]
+      ],
+      "planterNavigationBlockers": [],
+      "centralAisleBlockers": [],
+      "wordmark": {
+        "localPosition": [
+          -2.7,
+          2.008,
+          2.48
+        ],
+        "width": 2.6,
+        "rightEdge": -1.4000000000000001,
+        "doorwayWestEdge": -1.2,
+        "clearOfDoor": true
+      },
+      "collision": {
+        "aggregateShells": [
+          {
+            "name": "ENTRY__E4__FLUTED_CERAMIC_SERVICE_WALL",
+            "obstacle": false,
+            "aggregateCollisionDisabled": true
+          },
+          {
+            "name": "ENTRY__E4__LOW_IRON_GLASS_PAVILION",
+            "obstacle": false,
+            "aggregateCollisionDisabled": true
+          },
+          {
+            "name": "ENTRY__E4__HOVERING_BRONZE_ROOF",
+            "obstacle": false,
+            "aggregateCollisionDisabled": true
+          }
+        ],
+        "preciseBarrierCount": 10,
+        "doorwayGapWidth": 2.4
+      }
+    },
+    "e6": {
+      "collision": {
+        "aggregateShells": [
+          {
+            "name": "ENTRY__E6__BLACK_STAINLESS_CLUB_VOLUME",
+            "obstacle": false,
+            "aggregateCollisionDisabled": true
+          },
+          {
+            "name": "ENTRY__E6__LIGHTING_TRUSS_CANOPY",
+            "obstacle": false,
+            "aggregateCollisionDisabled": true
+          }
+        ],
+        "preciseBarrierCount": 10,
+        "doorwayGapWidth": 2.8
+      }
+    },
+    "e10": {
+      "entranceGapDegrees": 64,
+      "entranceGapWidth": 7.842805110651433,
+      "whiteAislePresent": false,
+      "frontWallCount": 5
+    },
+    "e5": {
+      "galleryZones": [
+        "west gallery",
+        "central gallery",
+        "east gallery"
+      ],
+      "internalDoorCount": 2,
+      "connectedInternalRoute": true,
+      "frontWallCount": 5
+    },
+    "e8": {
+      "splitBaseWingCount": 2,
+      "obsoleteSolidBasePresent": false,
+      "canopyCollisionDisabled": true
+    }
+  },
+  "errors": []
+}

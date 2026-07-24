@@ -10,6 +10,7 @@
     "test:production-export": "node scripts/production-export-smoke.mjs",
     "test:streaming": "node scripts/view-balance-smoke.mjs",
     "test:view-balance": "node scripts/view-balance-smoke.mjs",
+    "test:entry-logistics": "node scripts/entry-logistics-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",
     "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs"
   },

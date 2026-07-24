@@ -54,15 +54,40 @@ try {
   await page.locator('#walk-speed-kmh').blur();
   await page.evaluate(() => window.advanceTime(80));
   const walkBefore = await readState();
+  const walkSilhouettes = await page.evaluate(() => window.labIsland.worldStreaming.vistaRoot.children
+    .filter((proxy) => proxy.visible && proxy.userData.streamingSilhouetteProfile === 'multi-mass-building-silhouette')
+    .map((proxy) => {
+      const definition = window.labIsland.definitions.get(proxy.userData.selectableId);
+      const expectedPalette = definition?.palette.map((color) => color.replace('#', '').toLowerCase()) ?? [];
+      const visibleMassColors = Array.from(new Set(proxy.children
+        .filter((child) => child.name.includes('__SILHOUETTE_'))
+        .map((child) => child.material?.color?.getHexString?.())
+        .filter(Boolean)));
+      return {
+        name: proxy.name,
+        massCount: proxy.userData.streamingSilhouetteMassCount ?? 0,
+        hasLegacyPrimaryCube: proxy.children.some((child) => child.name.endsWith('__PRIMARY_MASS')),
+        paletteSource: proxy.userData.streamingPaletteSource ?? null,
+        expectedPalette,
+        visibleMassColors,
+        preservesAuthoredPalette: expectedPalette.every((color) => visibleMassColors.includes(color)),
+      };
+    }));
   if (walkBefore.walk.configuredWalkSpeedKilometresPerHour !== 18
     || walkBefore.streaming.proxyPackageCount <= 0
     || walkBefore.streaming.residentDetailPackages.length <= 0
     || walkBefore.streaming.residentDetailPackages.length >= 41
-    || walkBefore.runtimePolicies.visibleAuthoredInteriorGroups !== 0) {
+    || walkBefore.runtimePolicies.visibleAuthoredInteriorGroups !== 0
+    || walkSilhouettes.length < 1
+    || walkSilhouettes.some((proxy) => proxy.massCount < 5
+      || proxy.hasLegacyPrimaryCube
+      || proxy.paletteSource !== 'authored-definition-palette'
+      || !proxy.preservesAuthoredPalette)) {
     throw new Error(`WALK exterior LOD audit failed: ${JSON.stringify({
       walk: walkBefore.walk,
       streaming: walkBefore.streaming,
       policies: walkBefore.runtimePolicies,
+      silhouettes: walkSilhouettes,
     }, null, 2)}`);
   }
 
@@ -80,6 +105,26 @@ try {
   if (distance.metres < 9.4 || distance.metres > 10.6 || distance.state.speedKilometresPerHour !== 18) {
     throw new Error(`Configured WALK speed audit failed: ${JSON.stringify(distance, null, 2)}`);
   }
+  const detailedTower = await page.evaluate(() => {
+    const tower = window.labIsland.scene.getObjectByName(
+      'corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS',
+    );
+    return tower
+      ? {
+          profile: tower.userData.architecturalProfile ?? null,
+          massCount: tower.userData.architecturalMassCount ?? 0,
+          visible: tower.visible,
+          childNames: tower.children.map((child) => child.name),
+        }
+      : null;
+  });
+  if (!detailedTower
+    || detailedTower.profile !== 'tiered-tower'
+    || detailedTower.massCount < 5
+    || !detailedTower.visible
+    || !detailedTower.childNames.some((name) => name.endsWith('__SETBACK_CROWN'))) {
+    throw new Error(`Detailed WALK tower profile audit failed: ${JSON.stringify(detailedTower, null, 2)}`);
+  }
 
   await page.keyboard.press('e');
   await page.waitForTimeout(50);
@@ -94,6 +139,11 @@ try {
     throw new Error(`Disabled interaction audit failed: ${JSON.stringify(disabledActions, null, 2)}`);
   }
   await page.screenshot({ path: `${OUTPUT}/walk-speed-and-distant-hlod.png`, fullPage: true });
+  await page.evaluate(() => {
+    window.labIsland.setTimeOfDay('noon');
+    window.advanceTime(4_000);
+  });
+  await page.screenshot({ path: `${OUTPUT}/walk-distant-authored-colors.png`, fullPage: true });
 
   const diningInterior = await page.evaluate(() => {
     const world = window.labIsland;
@@ -166,6 +216,9 @@ try {
       proxyPackageCount: walkBefore.streaming.proxyPackageCount,
       configuredSpeedKilometresPerHour: walkBefore.walk.configuredWalkSpeedKilometresPerHour,
       measuredDistanceMetresInTwoSeconds: Number(distance.metres.toFixed(2)),
+      visibleSilhouettePackages: walkSilhouettes.length,
+      silhouetteMassesPerPackage: Math.min(...walkSilhouettes.map((proxy) => proxy.massCount)),
+      detailedTower,
     },
     diningInterior,
     cerebrum: {

@@ -99,6 +99,132 @@ function roadSegment(start: THREE.Vector3, end: THREE.Vector3, width: number, ma
   return mesh;
 }
 
+function smoothTaperedRoadTransition(
+  start: THREE.Vector3,
+  end: THREE.Vector3,
+  startWidth: number,
+  endWidth: number,
+  material: THREE.Material,
+  height = 0.3,
+  segments = 24,
+) {
+  const direction = end.clone().sub(start).setY(0).normalize();
+  const normal = new THREE.Vector3(-direction.z, 0, direction.x);
+  const positions: number[] = [];
+  const uvs: number[] = [];
+  const indices: number[] = [];
+  const sections: Array<{
+    topLeft: THREE.Vector3;
+    topRight: THREE.Vector3;
+    bottomLeft: THREE.Vector3;
+    bottomRight: THREE.Vector3;
+    t: number;
+  }> = [];
+
+  for (let index = 0; index <= segments; index += 1) {
+    const t = index / segments;
+    const eased = t * t * (3 - 2 * t);
+    const centre = start.clone().lerp(end, t);
+    centre.y = THREE.MathUtils.lerp(start.y, end.y, eased);
+    const halfWidth = THREE.MathUtils.lerp(startWidth, endWidth, eased) * 0.5;
+    const left = centre.clone().addScaledVector(normal, halfWidth);
+    const right = centre.clone().addScaledVector(normal, -halfWidth);
+    sections.push({
+      topLeft: left.clone().setY(left.y + height * 0.5),
+      topRight: right.clone().setY(right.y + height * 0.5),
+      bottomLeft: left.clone().setY(left.y - height * 0.5),
+      bottomRight: right.clone().setY(right.y - height * 0.5),
+      t,
+    });
+  }
+
+  const addVertex = (point: THREE.Vector3, u: number, v: number) => {
+    positions.push(point.x, point.y, point.z);
+    uvs.push(u, v);
+    return positions.length / 3 - 1;
+  };
+
+  // Each surface owns its edge vertices. The top can therefore smooth along
+  // the grade without sharing normals with the underside or vertical skirts.
+  const top = sections.map((section) => [
+    addVertex(section.topLeft, 0, section.t),
+    addVertex(section.topRight, 1, section.t),
+  ] as const);
+  const bottom = sections.map((section) => [
+    addVertex(section.bottomLeft, 0, section.t),
+    addVertex(section.bottomRight, 1, section.t),
+  ] as const);
+  const leftSide = sections.map((section) => [
+    addVertex(section.topLeft, 0, section.t),
+    addVertex(section.bottomLeft, 1, section.t),
+  ] as const);
+  const rightSide = sections.map((section) => [
+    addVertex(section.topRight, 0, section.t),
+    addVertex(section.bottomRight, 1, section.t),
+  ] as const);
+
+  for (let index = 0; index < segments; index += 1) {
+    const [topLeft, topRight] = top[index];
+    const [nextTopLeft, nextTopRight] = top[index + 1];
+    const [bottomLeft, bottomRight] = bottom[index];
+    const [nextBottomLeft, nextBottomRight] = bottom[index + 1];
+    const [leftTop, leftBottom] = leftSide[index];
+    const [nextLeftTop, nextLeftBottom] = leftSide[index + 1];
+    const [rightTop, rightBottom] = rightSide[index];
+    const [nextRightTop, nextRightBottom] = rightSide[index + 1];
+    indices.push(
+      topLeft, nextTopLeft, topRight,
+      nextTopLeft, nextTopRight, topRight,
+      bottomLeft, bottomRight, nextBottomLeft,
+      nextBottomLeft, bottomRight, nextBottomRight,
+      leftTop, leftBottom, nextLeftTop,
+      nextLeftTop, leftBottom, nextLeftBottom,
+      rightTop, nextRightTop, rightBottom,
+      nextRightTop, nextRightBottom, rightBottom,
+    );
+  }
+
+  const startSection = sections[0];
+  const startCap = [
+    addVertex(startSection.topLeft, 0, 0),
+    addVertex(startSection.topRight, 1, 0),
+    addVertex(startSection.bottomLeft, 0, 1),
+    addVertex(startSection.bottomRight, 1, 1),
+  ];
+  const endSection = sections[segments];
+  const endCap = [
+    addVertex(endSection.topLeft, 0, 0),
+    addVertex(endSection.topRight, 1, 0),
+    addVertex(endSection.bottomLeft, 0, 1),
+    addVertex(endSection.bottomRight, 1, 1),
+  ];
+  indices.push(
+    startCap[0], startCap[1], startCap[2],
+    startCap[1], startCap[3], startCap[2],
+    endCap[0], endCap[2], endCap[1],
+    endCap[1], endCap[2], endCap[3],
+  );
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.computeBoundingSphere();
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData.walkable = true;
+  mesh.userData.smoothRoadTransition = true;
+  mesh.userData.transitionProfile = 'smoothstep-width-and-grade';
+  mesh.userData.startWidth = startWidth;
+  mesh.userData.endWidth = endWidth;
+  mesh.userData.segmentCount = segments;
+  mesh.userData.startTopY = start.y + height * 0.5;
+  mesh.userData.endTopY = end.y + height * 0.5;
+  return mesh;
+}
+
 function beamBetween(start: THREE.Vector3, end: THREE.Vector3, radius: number, material: THREE.Material, segments = 8) {
   const direction = new THREE.Vector3().subVectors(end, start);
   const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, direction.length(), segments), material);
@@ -294,6 +420,17 @@ export function createIslandShell(target: THREE.Group) {
   const tropicalEntryEnd = tropicalCenter.clone().addScaledVector(tropicalInward, 8.4);
   const entrySegment = tropicalEntryEnd.clone().sub(tropicalEntryStart);
   const entryLengthSquared = entrySegment.lengthSq();
+  const entryBridgeAlignment = getCyberCityBridgeAlignment();
+  const entryArrivalClearanceStart = new THREE.Vector2(
+    entryBridgeAlignment.islandRampStart.x,
+    entryBridgeAlignment.islandRampStart.z,
+  );
+  const entryArrivalClearanceEnd = entryArrivalClearanceStart.clone().add(
+    new THREE.Vector2(entryBridgeAlignment.direction.x, entryBridgeAlignment.direction.z)
+      .multiplyScalar(-70),
+  );
+  const entryArrivalClearanceSegment = entryArrivalClearanceEnd.clone().sub(entryArrivalClearanceStart);
+  const entryArrivalClearanceLengthSquared = entryArrivalClearanceSegment.lengthSq();
   const distanceToTropicalEntry = (x: number, z: number) => {
     const candidate = new THREE.Vector2(x, z);
     const t = THREE.MathUtils.clamp(
@@ -302,6 +439,18 @@ export function createIslandShell(target: THREE.Group) {
       1,
     );
     return candidate.distanceTo(tropicalEntryStart.clone().addScaledVector(entrySegment, t));
+  };
+  const distanceToEntryArrival = (x: number, z: number) => {
+    const candidate = new THREE.Vector2(x, z);
+    const t = THREE.MathUtils.clamp(
+      candidate.clone().sub(entryArrivalClearanceStart).dot(entryArrivalClearanceSegment)
+        / entryArrivalClearanceLengthSquared,
+      0,
+      1,
+    );
+    return candidate.distanceTo(
+      entryArrivalClearanceStart.clone().addScaledVector(entryArrivalClearanceSegment, t),
+    );
   };
   for (let index = 0; index < 120; index += 1) {
     const edgeIndex = Math.floor(random() * ISLAND_POINTS.length);
@@ -314,6 +463,10 @@ export function createIslandShell(target: THREE.Group) {
     // Keep the Tropical airlock and short human-scale approach free of the
     // deterministic coastal rocks that previously pierced its long ramp.
     if (distanceToTropicalEntry(x, z) < 1.5) continue;
+    // The Entry bridge, E1 road tunnel, and the boulevard leading to the
+    // Welcome fork must remain an unobstructed civic threshold. Coastal
+    // scatter used to place an unnamed low-poly tree inside the tunnel shell.
+    if (distanceToEntryArrival(x, z) < 9.5) continue;
     if (index % 3 === 0) {
       const rock = new THREE.Mesh(new THREE.DodecahedronGeometry(0.28 + random() * 0.45, 0), rockMaterial);
       rock.position.set(x, 1.8, z);
@@ -339,6 +492,8 @@ export function createIslandShell(target: THREE.Group) {
       trunk.position.set(x, 2.1, z);
       crown.position.set(x, 2.65, z);
       crown.scale.y = 1.35;
+      trunk.name = `COASTAL__LANDSCAPE_TREE_TRUNK_${index + 1}`;
+      crown.name = `COASTAL__LANDSCAPE_TREE_CANOPY_${index + 1}`;
       trunk.castShadow = crown.castShadow = true;
       detailGroup.add(trunk, crown);
     }
@@ -721,26 +876,6 @@ export function createIndustrialPort(target: THREE.Group) {
   accessRoad.name = 'Logistics district port access ramp';
   accessRoad.userData.walkable = true;
   port.add(accessRoad);
-  const logisticsFreightRoad = roadSegment(
-    new THREE.Vector3(62 * MASTERPLAN_RESCALE, 1.84, -179.5 * MASTERPLAN_RESCALE),
-    accessStart,
-    3.4,
-    deckMaterial,
-    0.16,
-  );
-  logisticsFreightRoad.name = 'Dedicated logistics-to-port freight road';
-  logisticsFreightRoad.userData.walkable = true;
-  port.add(logisticsFreightRoad);
-  const freightGuide = roadSegment(
-    new THREE.Vector3(62 * MASTERPLAN_RESCALE, 1.94, -179.5 * MASTERPLAN_RESCALE),
-    new THREE.Vector3(accessStart.x, 1.94, accessStart.z),
-    0.12,
-    orange,
-    0.03,
-  );
-  freightGuide.name = 'Automated cold-chain freight guide';
-  port.add(freightGuide);
-
   for (const x of [-10, 0, 10]) {
     const crane = new THREE.Group();
     crane.name = `Autonomous gantry crane ${x / 10 + 2}`;
@@ -797,22 +932,47 @@ function createBridgeCable(
   target.add(cable);
 }
 
-export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE.Group) {
-  bridgeTarget.name = 'INFRASTRUCTURE__CYBER_CITY_BRIDGE';
-  cityTarget.name = 'HORIZON__CYBERPUNK_CITY';
-  // Exact midpoint of the northeast hex side, between Alpine and Tundra.
-  const alpineTundraCoastMidpoint = new THREE.Vector3(
+export interface CyberCityBridgeAlignment {
+  bridgeStart: THREE.Vector3;
+  bridgeEnd: THREE.Vector3;
+  direction: THREE.Vector3;
+  islandRampStart: THREE.Vector3;
+}
+
+/**
+ * One shared source of truth for the city bridge and the Entry District gate.
+ * The island ramp's top surface is flush with the authored E1 tunnel road.
+ */
+export function getCyberCityBridgeAlignment(): CyberCityBridgeAlignment {
+  const bridgeStart = new THREE.Vector3(
     (ISLAND_POINTS[0][0] + ISLAND_POINTS[1][0]) * 0.48,
     3.05,
     (ISLAND_POINTS[0][1] + ISLAND_POINTS[1][1]) * 0.48,
   );
-  const bridgeStart = alpineTundraCoastMidpoint;
-  const bridgeEnd = new THREE.Vector3(
-    330 * MASTERPLAN_RESCALE,
-    5.2,
-    -348 * MASTERPLAN_RESCALE,
+  const coastEdge = new THREE.Vector3(
+    ISLAND_POINTS[1][0] - ISLAND_POINTS[0][0],
+    0,
+    ISLAND_POINTS[1][1] - ISLAND_POINTS[0][1],
   );
-  const direction = new THREE.Vector3().subVectors(bridgeEnd, bridgeStart);
+  const direction = new THREE.Vector3(coastEdge.z, 0, -coastEdge.x).normalize();
+  if (direction.dot(bridgeStart) < 0) direction.multiplyScalar(-1);
+  // The red reference crosses the water perpendicular to the north-east
+  // island edge and lands just inside the Cyber City seawall. Keeping this
+  // as a radial shoreline normal prevents the former long diagonal crossing.
+  const citySeawallLandingRadius = ISLAND_RADIUS + 348;
+  const bridgeEnd = direction.clone().multiplyScalar(citySeawallLandingRadius);
+  bridgeEnd.y = 5.2;
+  const e1RoadTopY = ISLAND_SURFACE_Y + metresToWorldUnits(0.34);
+  const islandRampStart = bridgeStart.clone().addScaledVector(direction, -9);
+  islandRampStart.y = e1RoadTopY - 0.15;
+  return { bridgeStart, bridgeEnd, direction, islandRampStart };
+}
+
+export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE.Group) {
+  bridgeTarget.name = 'INFRASTRUCTURE__CYBER_CITY_BRIDGE';
+  cityTarget.name = 'HORIZON__CYBERPUNK_CITY';
+  // Exact midpoint of the northeast hex side, between Alpine and Tundra.
+  const { bridgeStart, bridgeEnd, direction, islandRampStart } = getCyberCityBridgeAlignment();
   const normal = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
   const deckMaterial = new THREE.MeshStandardMaterial({ color: '#1c282e', roughness: 0.48, metalness: 0.58 });
   const metalMaterial = new THREE.MeshStandardMaterial({ color: '#4b6068', roughness: 0.34, metalness: 0.76 });
@@ -820,7 +980,10 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   const magenta = new THREE.MeshStandardMaterial({ color: '#ff4ecb', emissive: '#ff4ecb', emissiveIntensity: 2.5, roughness: 0.2 });
   bridgeTarget.userData.bridgeStart = bridgeStart.toArray();
   bridgeTarget.userData.bridgeEnd = bridgeEnd.toArray();
-  bridgeTarget.userData.bridgePlacement = 'Alpine-Tundra coastal midpoint';
+  bridgeTarget.userData.islandRampStart = islandRampStart.toArray();
+  bridgeTarget.userData.entryTunnelAlignment = 'shared exact centerline';
+  bridgeTarget.userData.bridgePlacement = 'perpendicular E1-to-western-city-seawall crossing';
+  bridgeTarget.userData.referenceAlignment = 'direct red-marked crossing';
 
   const leftStart = bridgeStart.clone().addScaledVector(normal, 1.2);
   const leftEnd = bridgeEnd.clone().addScaledVector(normal, 1.2);
@@ -834,12 +997,27 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   rightDeck.userData.walkable = true;
   bridgeTarget.add(leftDeck, rightDeck);
 
-  const islandRampStart = bridgeStart.clone().addScaledVector(direction.clone().normalize(), -9);
-  islandRampStart.y = 1.84;
-  const islandRamp = roadSegment(islandRampStart, bridgeStart, 5.1, deckMaterial, 0.3);
-  islandRamp.name = 'Bridge island approach ramp';
-  islandRamp.userData.walkable = true;
+  const islandRampBridgeEnd = bridgeStart.clone();
+  islandRampBridgeEnd.y += 0.02;
+  const islandRamp = smoothTaperedRoadTransition(
+    islandRampStart,
+    islandRampBridgeEnd,
+    6.8,
+    5.1,
+    deckMaterial,
+    0.3,
+    24,
+  );
+  islandRamp.name = 'Bridge island approach smooth transition';
   bridgeTarget.add(islandRamp);
+  bridgeTarget.userData.islandRoadTransition = {
+    profile: 'smoothstep-width-and-grade',
+    tunnelWidth: 6.8,
+    bridgeWidth: 5.1,
+    segmentCount: 24,
+    tunnelTopY: islandRamp.userData.startTopY,
+    bridgeTopY: islandRamp.userData.endTopY,
+  };
 
   for (const offset of [-2.35, 0, 2.35]) {
     const laneStart = bridgeStart.clone().addScaledVector(normal, offset);

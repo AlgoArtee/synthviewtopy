@@ -76,6 +76,15 @@ import {
 } from './academicTrees';
 import { updateAcademicBuildingInscription } from './academicDistrict';
 import {
+  ENTRY_LOGISTICS_BUILDING_PROGRAM,
+  ENTRY_LOGISTICS_LAYOUT_REVISION,
+  WELCOME_POOL_GROUP_NAME,
+  WELCOME_POOL_SELECTABLE_ID,
+  entryLogisticsBuildingSelectableId,
+  refreshEntryLogisticsRoadNetwork,
+  type EntryLogisticsBuildingProgramRecord,
+} from './entryLogisticsDistrict';
+import {
   adjustAcademicFountainWaterFlow,
   configureAcademicFountainQuality,
   cycleAcademicFountainCameraPreset,
@@ -218,12 +227,56 @@ export interface AcademicBuildingDefinition {
   inscription?: string;
 }
 
+export interface EntryLogisticsBuildingDefinition {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  category: 'entry-logistics-building';
+  ring: 'entry-logistics-district';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: 'landscape';
+  assetKind: 'building';
+  parentDistrictId: 'entry-commercial' | 'logistics';
+  buildingCode: string;
+  collisionEnabled: boolean;
+  interactions: string[];
+}
+
+export interface EntryLogisticsLandscapeDefinition {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  category: 'entry-logistics-landscape';
+  ring: 'entry-logistics-district';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: 'landscape';
+  assetKind: 'prop';
+  parentDistrictId: 'entry-commercial';
+  featureCode: 'WELCOME-POOL';
+  collisionEnabled: boolean;
+  interactions: string[];
+}
+
 type SceneDefinitionBase =
   | DistrictDefinition
   | BiomeDefinition
   | ImportedDefinition
   | EditorAssetDefinition
-  | AcademicBuildingDefinition;
+  | AcademicBuildingDefinition
+  | EntryLogisticsBuildingDefinition
+  | EntryLogisticsLandscapeDefinition;
 
 export type SceneDefinition = SceneDefinitionBase & {
   /** User-editable text shown by the floating scene label. */
@@ -307,10 +360,64 @@ export function createAcademicBuildingDefinition(
   };
 }
 
+export function createEntryLogisticsBuildingDefinition(
+  record: EntryLogisticsBuildingProgramRecord,
+  district: DistrictDefinition,
+  position: readonly [number, number, number] = [0, 0, 0],
+): EntryLogisticsBuildingDefinition {
+  return {
+    id: entryLogisticsBuildingSelectableId(record.code),
+    name: record.name,
+    sourceLabel: `${record.code} / ${record.districtId === 'entry-commercial' ? 'public district' : 'controlled logistics district'}`,
+    category: 'entry-logistics-building',
+    ring: 'entry-logistics-district',
+    position,
+    footprint: record.footprint,
+    height: record.height,
+    archetype: record.districtId === 'entry-commercial' ? 'editable-public-facility' : 'editable-logistics-facility',
+    accent: district.accent,
+    palette: district.palette,
+    description: record.description,
+    workspace: 'landscape',
+    assetKind: 'building',
+    parentDistrictId: record.districtId,
+    buildingCode: record.code,
+    collisionEnabled: true,
+    interactions: [],
+  };
+}
+
+export function createWelcomePoolDefinition(
+  district: DistrictDefinition,
+  position: readonly [number, number, number] = [0, 0, 0],
+): EntryLogisticsLandscapeDefinition {
+  return {
+    id: WELCOME_POOL_SELECTABLE_ID,
+    name: 'Welcome Half-Covered Pool',
+    sourceLabel: 'Registration Hall landscape / half-covered pool',
+    category: 'entry-logistics-landscape',
+    ring: 'entry-logistics-district',
+    position,
+    footprint: [3.4, 2.8],
+    height: 0.43,
+    archetype: 'editable-half-covered-pool',
+    accent: district.accent,
+    palette: district.palette,
+    description: 'An enlarged turquoise arrival pool with a white half-roof, terrace deck, supports, tables, and chairs.',
+    workspace: 'landscape',
+    assetKind: 'prop',
+    parentDistrictId: 'entry-commercial',
+    featureCode: 'WELCOME-POOL',
+    collisionEnabled: true,
+    interactions: [],
+  };
+}
+
 export interface ObjectState {
   position: { x: number; y: number; z: number };
   rotationY: number;
   scale: number;
+  scale3D?: { x: number; y: number; z: number };
   visible: boolean;
   accent: string;
   primaryColor?: string;
@@ -837,6 +944,7 @@ export class IslandWorld {
         }
 
         this.syncInteriorTransform(definition.id);
+        this.refreshEntryLogisticsRoads(definition);
         this.callbacks.onTransform?.(definition, this.getObjectState(definition.id)!);
       }
       this.refreshSelectionBounds();
@@ -982,6 +1090,9 @@ export class IslandWorld {
       if (definition.id === 'academic-libraries-theoretical-labs') {
         this.registerAcademicBuildingSelectables(definition, group);
       }
+      if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
+        this.registerEntryLogisticsBuildingSelectables(definition, group);
+      }
     });
     biomes.forEach((definition) => {
       const { group, labelHeight } = createBiomeModel(definition);
@@ -1036,6 +1147,67 @@ export class IslandWorld {
     });
   }
 
+  private registerEntryLogisticsBuildingSelectables(definition: DistrictDefinition, districtGroup: THREE.Group) {
+    const facilities = new Map<string, THREE.Group>();
+    districtGroup.traverse((object) => {
+      if (!(object instanceof THREE.Group) || object.userData.exteriorProgram !== true) return;
+      facilities.set(String(object.userData.buildingCode), object);
+    });
+
+    ENTRY_LOGISTICS_BUILDING_PROGRAM
+      .filter((record) => record.districtId === definition.id)
+      .forEach((record) => {
+        const facility = facilities.get(record.code);
+        if (!facility) {
+          console.warn(`Entry/Logistics facility is not editable because its scene group is missing: ${record.name}`);
+          return;
+        }
+        const selectableId = entryLogisticsBuildingSelectableId(record.code);
+        facility.userData.selectableId = selectableId;
+        facility.userData.individualSelectableId = selectableId;
+        facility.userData.parentSelectableId = definition.id;
+        facility.userData.editable = true;
+        facility.userData.workspace = 'landscape';
+        facility.userData.collisionEnabled = true;
+        facility.userData.interactions = [];
+        facility.traverse((child) => {
+          child.userData.selectableId = selectableId;
+          child.userData.individualSelectableId = selectableId;
+          child.userData.parentSelectableId = definition.id;
+        });
+        const facilityDefinition = createEntryLogisticsBuildingDefinition(
+          record,
+          definition,
+          [facility.position.x, facility.position.y, facility.position.z],
+        );
+        this.registerSelectable(facilityDefinition, facility, record.height + 2, false);
+      });
+
+    if (definition.id !== 'entry-commercial') return;
+    const poolFeature = districtGroup.getObjectByName(WELCOME_POOL_GROUP_NAME);
+    if (!(poolFeature instanceof THREE.Group)) {
+      console.warn('The Welcome pool is not editable because its scene group is missing.');
+      return;
+    }
+    poolFeature.userData.selectableId = WELCOME_POOL_SELECTABLE_ID;
+    poolFeature.userData.individualSelectableId = WELCOME_POOL_SELECTABLE_ID;
+    poolFeature.userData.parentSelectableId = definition.id;
+    poolFeature.userData.editable = true;
+    poolFeature.userData.workspace = 'landscape';
+    poolFeature.userData.collisionEnabled = true;
+    poolFeature.userData.interactions = [];
+    poolFeature.traverse((child) => {
+      child.userData.selectableId = WELCOME_POOL_SELECTABLE_ID;
+      child.userData.individualSelectableId = WELCOME_POOL_SELECTABLE_ID;
+      child.userData.parentSelectableId = definition.id;
+    });
+    const poolDefinition = createWelcomePoolDefinition(
+      definition,
+      [poolFeature.position.x, poolFeature.position.y, poolFeature.position.z],
+    );
+    this.registerSelectable(poolDefinition, poolFeature, 0.46, false);
+  }
+
   private registerSelectable(
     definition: SceneDefinition,
     group: THREE.Group,
@@ -1057,7 +1229,10 @@ export class IslandWorld {
     });
     if (!showLabel) return;
     const element = document.createElement('div');
-    element.className = `district-label${biome ? ' biome-label' : ''}${definition.category === 'academic-building' ? ' academic-building-label' : ''}`;
+    const individualEditable = definition.category === 'academic-building'
+      || definition.category === 'entry-logistics-building'
+      || definition.category === 'entry-logistics-landscape';
+    element.className = `district-label${biome ? ' biome-label' : ''}${individualEditable ? ' academic-building-label' : ''}`;
     element.textContent = sceneLabel(definition);
     element.dataset.labelId = definition.id;
     element.style.setProperty('--label-accent', definition.accent);
@@ -1087,7 +1262,10 @@ export class IslandWorld {
         record.definition.id === this.selectedId ||
         (this.mode !== 'walk' && (record.definition.category === 'core' || record.definition.category === 'biome'));
       const distanceThreshold = this.mode === 'walk' ? 10 : this.mode === 'edit' ? 52 : 42;
-      const visible = record.definition.category === 'academic-building'
+      const individualEditable = record.definition.category === 'academic-building'
+        || record.definition.category === 'entry-logistics-building'
+        || record.definition.category === 'entry-logistics-landscape';
+      const visible = individualEditable
         ? this.mode === 'edit' && (priority || distance < distanceThreshold)
         : this.mode === 'plan' || priority || distance < distanceThreshold;
       element.classList.toggle('label-suppressed', !visible);
@@ -1332,12 +1510,18 @@ export class IslandWorld {
     return target.set(0, 0.18, (config.depth ?? 7.2) * 0.5 + 0.2).applyMatrix4(host.matrixWorld);
   }
 
-  private isCameraInsideBuildingHost(host: THREE.Object3D, width: number, depth: number, height: number) {
+  private isCameraInsideBuildingHost(
+    host: THREE.Object3D,
+    width: number,
+    depth: number,
+    height: number,
+    center: readonly [number, number] = [0, 0],
+  ) {
     host.updateWorldMatrix(true, false);
     this.runtimeInteriorLocalPoint.copy(this.camera.position);
     host.worldToLocal(this.runtimeInteriorLocalPoint);
-    return Math.abs(this.runtimeInteriorLocalPoint.x) <= width * 0.5 + 0.12
-      && Math.abs(this.runtimeInteriorLocalPoint.z) <= depth * 0.5 + 0.12
+    return Math.abs(this.runtimeInteriorLocalPoint.x - center[0]) <= width * 0.5 + 0.12
+      && Math.abs(this.runtimeInteriorLocalPoint.z - center[1]) <= depth * 0.5 + 0.12
       && this.runtimeInteriorLocalPoint.y >= -0.75
       && this.runtimeInteriorLocalPoint.y <= height + 0.58;
   }
@@ -1355,15 +1539,31 @@ export class IslandWorld {
       const host = interior.parent;
       const footprint = host?.userData.footprint as [number, number] | undefined;
       const record = host?.userData.academicBuildingData as AcademicCampusBuilding | undefined;
+      const interiorCenter = host?.userData.runtimeInteriorCenter as [number, number] | undefined;
+      const interiorHeight = Number(host?.userData.runtimeInteriorHeight) || Number(record?.height) || 2.4;
       const shouldRender = Boolean(
         this.mode === 'walk'
         && host
         && footprint
-        && this.isCameraInsideBuildingHost(host, footprint[0], footprint[1], Number(record?.height) || 2.4),
+        && this.isCameraInsideBuildingHost(
+          host,
+          footprint[0],
+          footprint[1],
+          interiorHeight,
+          interiorCenter,
+        ),
       );
-      if (interior.visible === shouldRender) return;
-      interior.visible = shouldRender;
-      changed = true;
+      if (interior.visible !== shouldRender) {
+        interior.visible = shouldRender;
+        changed = true;
+      }
+      host?.traverse((object) => {
+        if (object.userData.hideWhenRuntimeInteriorVisible !== true) return;
+        const shouldShowExteriorObject = !shouldRender;
+        if (object.visible === shouldShowExteriorObject) return;
+        object.visible = shouldShowExteriorObject;
+        changed = true;
+      });
     });
     return changed;
   }
@@ -1871,6 +2071,30 @@ export class IslandWorld {
         object.position.y = Number(object.userData.baseY) + Math.sin(this.elapsed * 4.2) * 0.006;
       } else if (object.userData.animate === 'industrial-water') {
         object.position.y += Math.sin(this.elapsed * 0.9 + Number(object.userData.phase ?? 0)) * delta * 0.0012;
+      } else if (object.userData.animate === 'welcome-pool-water') {
+        if (object instanceof THREE.Mesh && object.geometry instanceof THREE.BufferGeometry) {
+          const position = object.geometry.getAttribute('position');
+          const amplitude = Number(object.userData.waveAmplitude ?? 0.045);
+          const radius = Number(object.userData.waveRadius ?? 2.76);
+          for (let index = 0; index < position.count; index += 1) {
+            const x = position.getX(index);
+            const y = position.getY(index);
+            const edgeFade = 1 - THREE.MathUtils.smoothstep(
+              Math.hypot(x, y),
+              radius * 0.72,
+              radius,
+            );
+            const wave = (
+              Math.sin(x * 18 + this.elapsed * 1.7)
+              + Math.sin(y * 22 - this.elapsed * 1.25)
+              + Math.sin((x + y) * 14 + this.elapsed * 0.9)
+            ) / 3;
+            position.setZ(index, wave * amplitude * edgeFade);
+          }
+          position.needsUpdate = true;
+          object.geometry.computeVertexNormals();
+          object.userData.waveTime = this.elapsed;
+        }
       } else if (object.userData.animate === 'industrial-moving-light') {
         object.position.x = Math.sin(this.elapsed * 0.26) * 0.72;
         if (object instanceof THREE.Light) object.intensity = 1.45 + Math.sin(this.elapsed * 0.43) * 0.55;
@@ -2160,6 +2384,12 @@ export class IslandWorld {
     if (!id) return false;
     const definition = this.definitions.get(id);
     if (!definition) return false;
+    if (definition.category === 'entry-logistics-landscape') return false;
+    if (definition.category === 'entry-logistics-building') {
+      const host = this.objectGroups.get(id);
+      const walkAccess = host?.userData.walkAccess as { accessible?: boolean } | undefined;
+      return walkAccess?.accessible === true || host?.userData.authoredInterior === true;
+    }
     if (definition.category === 'biome') return true;
     if (definition.category === 'editor') return definition.assetKind === 'building';
     if (definition.category === 'imported') {
@@ -3970,10 +4200,19 @@ export class IslandWorld {
     const styleCustomized = definition.category === 'editor'
       || definition.category === 'imported'
       || group.userData.styleCustomized === true;
+    const baseScale = group.userData.editorBaseScale as readonly [number, number, number] | undefined;
+    const relativeScale = baseScale ? {
+      x: group.scale.x / Math.max(0.001, baseScale[0]),
+      y: group.scale.y / Math.max(0.001, baseScale[1]),
+      z: group.scale.z / Math.max(0.001, baseScale[2]),
+    } : null;
     return {
       position: { x: group.position.x, y: group.position.y, z: group.position.z },
       rotationY: THREE.MathUtils.radToDeg(group.rotation.y),
-      scale: (group.scale.x + group.scale.y + group.scale.z) / 3,
+      scale: relativeScale
+        ? (relativeScale.x + relativeScale.y + relativeScale.z) / 3
+        : (group.scale.x + group.scale.y + group.scale.z) / 3,
+      ...(relativeScale ? { scale3D: relativeScale } : {}),
       visible: group.visible,
       accent: definition.accent,
       ...(styleCustomized ? {
@@ -4007,8 +4246,19 @@ export class IslandWorld {
   setObjectScale(id: string, scale: number) {
     const group = this.objectGroups.get(id);
     if (!group || !Number.isFinite(scale)) return;
-    group.scale.setScalar(scale);
+    const baseScale = group.userData.editorBaseScale as readonly [number, number, number] | undefined;
+    if (baseScale) group.scale.set(baseScale[0] * scale, baseScale[1] * scale, baseScale[2] * scale);
+    else group.scale.setScalar(scale);
     this.walkController.refreshNavigation();
+    this.notifyTransform(id);
+  }
+
+  setObjectAxisScale(id: string, axis: 'x' | 'y' | 'z', scale: number) {
+    const group = this.objectGroups.get(id);
+    const baseScale = group?.userData.editorBaseScale as readonly [number, number, number] | undefined;
+    if (!group || !baseScale || !Number.isFinite(scale)) return;
+    const axisIndex = axis === 'x' ? 0 : axis === 'y' ? 1 : 2;
+    group.scale[axis] = baseScale[axisIndex] * THREE.MathUtils.clamp(scale, 0.25, 4);
     this.notifyTransform(id);
   }
 
@@ -4163,7 +4413,10 @@ export class IslandWorld {
     }));
     const payload = {
       schema: 'youtopy.lab-island/1.0',
-      masterplan: { worldExpansion: WORLD_EXPANSION },
+      masterplan: {
+        worldExpansion: WORLD_EXPANSION,
+        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+      },
       exportedAt: new Date().toISOString(),
       objects,
       editor: {
@@ -4201,6 +4454,8 @@ export class IslandWorld {
     this.restoreAcademicExteriorAfterInterior();
     this.restoreExteriorHighDetailRoots();
     const toRemove = ACADEMIC_CAMPUS_BUILDINGS.map((record) => academicBuildingSelectableId(record.id));
+    ENTRY_LOGISTICS_BUILDING_PROGRAM.forEach((record) => toRemove.push(entryLogisticsBuildingSelectableId(record.code)));
+    toRemove.push(WELCOME_POOL_SELECTABLE_ID);
     districts.forEach((d) => toRemove.push(d.id));
     biomes.forEach((b) => toRemove.push(b.id));
 
@@ -4237,6 +4492,7 @@ export class IslandWorld {
     if (!payload || payload.schema !== 'youtopy.lab-island/1.0') return false;
     const savedWorldExpansion = Number(payload.masterplan?.worldExpansion) || 3;
     const savedLayoutScale = WORLD_EXPANSION / savedWorldExpansion;
+    const savedEntryLogisticsLayoutRevision = Number(payload.masterplan?.entryLogisticsLayoutRevision) || 0;
 
     this.rebuildStaticDistrictsAndBiomes();
 
@@ -4354,13 +4610,34 @@ export class IslandWorld {
         const definition = this.definitions.get(id);
         if (group && definition) {
           if (state) {
-            group.position.set(
-              state.position.x * savedLayoutScale,
-              state.position.y,
-              state.position.z * savedLayoutScale,
-            );
-            group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
-            group.scale.setScalar(state.scale);
+            const migrateWelcomeGeometry = id === entryLogisticsBuildingSelectableId('E2')
+              && savedEntryLogisticsLayoutRevision < ENTRY_LOGISTICS_LAYOUT_REVISION;
+            if (!migrateWelcomeGeometry) {
+              group.position.set(
+                state.position.x * savedLayoutScale,
+                state.position.y,
+                state.position.z * savedLayoutScale,
+              );
+              group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
+            }
+            const baseScale = group.userData.editorBaseScale as readonly [number, number, number] | undefined;
+            if (migrateWelcomeGeometry && baseScale) {
+              // Revision 5 follows a live-edit overlap during the Welcome Hall
+              // geometry pass. Older saved per-axis values can enlarge its
+              // finished floor and precise wall barriers over the approach
+              // road, so normalize the complete authored assembly together.
+              group.scale.set(baseScale[0], baseScale[1], baseScale[2]);
+            } else if (baseScale && state.scale3D) {
+              group.scale.set(
+                baseScale[0] * Number(state.scale3D.x ?? 1),
+                baseScale[1] * Number(state.scale3D.y ?? 1),
+                baseScale[2] * Number(state.scale3D.z ?? 1),
+              );
+            } else if (baseScale) {
+              group.scale.set(baseScale[0] * state.scale, baseScale[1] * state.scale, baseScale[2] * state.scale);
+            } else {
+              group.scale.setScalar(state.scale);
+            }
             group.visible = state.visible;
           }
 
@@ -4461,6 +4738,11 @@ export class IslandWorld {
       }
     });
 
+    for (const districtId of ['entry-commercial', 'logistics']) {
+      const districtGroup = this.objectGroups.get(districtId);
+      if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
+    }
+
     if (payload.editor) {
       if (payload.editor.weather !== undefined) {
         this.setWeather(payload.editor.weather);
@@ -4526,7 +4808,10 @@ export class IslandWorld {
   takeSnapshotPayload() {
     return {
       schema: 'youtopy.lab-island/1.0',
-      masterplan: { worldExpansion: WORLD_EXPANSION },
+      masterplan: {
+        worldExpansion: WORLD_EXPANSION,
+        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+      },
       exportedAt: new Date().toISOString(),
       objects: Array.from(this.definitions.values()).map((definition) => ({
         ...definition,
@@ -4595,11 +4880,19 @@ export class IslandWorld {
 
   private notifyTransform(id: string) {
     this.syncInteriorTransform(id);
+    const definition = this.definitions.get(id);
+    if (definition) this.refreshEntryLogisticsRoads(definition);
     this.refreshSelectionBounds();
     this.updateLabels(true);
-    const definition = this.definitions.get(id);
+    this.walkController.refreshNavigation();
     const state = this.getObjectState(id);
     if (definition && state) this.callbacks.onTransform?.(definition, state);
+  }
+
+  private refreshEntryLogisticsRoads(definition: SceneDefinition) {
+    if (definition.category !== 'entry-logistics-building') return;
+    const districtGroup = this.objectGroups.get(definition.parentDistrictId);
+    if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
   }
 
   beginImportPlacement() {
@@ -5221,7 +5514,10 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     }));
     const payload = {
       schema: 'youtopy.lab-island/1.0',
-      masterplan: { worldExpansion: WORLD_EXPANSION },
+      masterplan: {
+        worldExpansion: WORLD_EXPANSION,
+        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+      },
       exportedAt: new Date().toISOString(),
       units: '10 metres per world unit',
       coordinateSystem: { x: 'east', y: 'up', z: 'south' },
@@ -5251,6 +5547,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selected = this.getSelectedDefinition();
     const selectedGroup = selected ? this.objectGroups.get(selected.id) : undefined;
     const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
+    const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
+    const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
     let cellViolations = 0;
     const boundedDistricts = districts.filter((definition) => Boolean(this.objectGroups.get(definition.id)?.userData.districtCell)).length;
@@ -5304,6 +5602,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       },
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
+        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
         islandRadiusWorldUnits: ISLAND_RADIUS,
         islandRadiusMetres: ISLAND_RADIUS * 10,
       },
@@ -5329,6 +5628,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       },
       importPlacement: this.getImportPlacementState(),
       industrialDistrict,
+      entryDistrict,
+      logisticsDistrict,
       academicDistrict: academicGroup ? {
         precinct: academicGroup.userData.academicPrecinct ?? null,
         componentHierarchy: academicGroup.userData.academicComponentHierarchy ?? null,

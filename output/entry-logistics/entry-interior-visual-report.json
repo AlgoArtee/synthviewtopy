@@ -1,0 +1,91 @@
+{
+  "cityline": {
+    "state": {
+      "position": {
+        "x": 116.77473589721666,
+        "y": 0,
+        "z": 77.79226343639434
+      },
+      "rotationY": -401,
+      "scale": 1.0333333333333334,
+      "scale3D": {
+        "x": 1.25,
+        "y": 1,
+        "z": 0.85
+      },
+      "visible": true,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "roadSegmentCount": 24,
+    "routeStartGap": 0,
+    "walkAccess": {
+      "accessible": true,
+      "coordinateSpace": "district-local",
+      "threshold": [
+        114.7950777772378,
+        0.008,
+        80.06959959471655
+      ],
+      "routeStart": [
+        114.32107512879219,
+        0.008,
+        80.6148772664275
+      ],
+      "interiorTarget": [
+        116.01075515795719,
+        0.01977999999999991,
+        78.67112274256377
+      ],
+      "finishedFloorY": 0.043000000000000003,
+      "doorwayWidth": 2,
+      "exteriorOnly": false
+    }
+  },
+  "interior": {
+    "ground": 1.6468000000856817,
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        328.497,
+        1.809,
+        -220.481
+      ],
+      "positionMetres": [
+        3285,
+        18.1,
+        -2204.8
+      ],
+      "groundY": 1.647,
+      "surfaceKind": "light terrazzo",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.656,
+        0.038,
+        -0.754
+      ]
+    },
+    "visibleInteriors": [
+      "ENTRY__E13__AUTHORED_WALK_INTERIOR"
+    ],
+    "runtimeInteriorVisible": true
+  },
+  "errors": []
+}

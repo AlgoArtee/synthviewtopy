@@ -510,7 +510,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "automated-logistics-hub",
     accent: "#FFAA55",
     palette: ["#272019", "#5D4832", "#BFB6A9", "#FFAA55"],
-    description: "Automated warehouses, cargo drones, loading gantries, and freight lanes feed the bridge and island service network.",
+    description: "A controlled northern freight and airfield belt links parking, passenger aviation, tower operations, aircraft maintenance, cargo inspection, cold-chain distribution, and ground-fleet service without crossing the public arrival plaza.",
   },
   {
     id: "entry-commercial",
@@ -524,7 +524,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "arrival-commercial-transit-hub",
     accent: "#FF5ACD",
     palette: ["#221527", "#56345F", "#D9C5DD", "#FF5ACD"],
-    description: "The bridgehead combines customs, transit, retail, and an illuminated arrival concourse facing the cyberpunk city.",
+    description: "A city-facing bridgehead sequences visitors through the island gate, Welcome Hall, transit pavilion, commercial galleria, evening quarter, hotel, market, science showcase, water taxi, and orientation landmark.",
   },
   {
     id: "environmental-science-labs",

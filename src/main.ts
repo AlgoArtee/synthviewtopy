@@ -8,6 +8,8 @@ import {
 } from './data/academicCampus';
 import {
   createAcademicBuildingDefinition,
+  createEntryLogisticsBuildingDefinition,
+  createWelcomePoolDefinition,
   IslandWorld,
   OBJECT_INTERACTIONS_ENABLED,
   type EditorAssetDefinition,
@@ -21,6 +23,7 @@ import {
   type WeatherMode,
 } from './world/IslandWorld';
 import { EDITOR_ASSET_CATALOG, type EditorWorkspace } from './world/editorAssets';
+import { ENTRY_LOGISTICS_BUILDING_PROGRAM } from './world/entryLogisticsDistrict';
 
 declare global {
   interface Window {
@@ -179,6 +182,12 @@ const rotationInput = required<HTMLInputElement>('#rot-y');
 const rotationOutput = required<HTMLOutputElement>('#rot-output');
 const scaleInput = required<HTMLInputElement>('#scale-uniform');
 const scaleOutput = required<HTMLElement>('#scale-output');
+const buildingAxisScaleField = required<HTMLElement>('#building-axis-scale');
+const axisScaleInputs = {
+  x: required<HTMLInputElement>('#scale-x'),
+  y: required<HTMLInputElement>('#scale-y'),
+  z: required<HTMLInputElement>('#scale-z'),
+};
 const primaryColorInput = required<HTMLInputElement>('#primary-color');
 const secondaryColorInput = required<HTMLInputElement>('#secondary-color');
 const accentInput = required<HTMLInputElement>('#accent-color');
@@ -280,7 +289,21 @@ if (!academicDistrictDefinition) throw new Error('Academic District definition i
 const academicBuildingDefinitions = ACADEMIC_CAMPUS_BUILDINGS.map((record) => (
   createAcademicBuildingDefinition(record, academicDistrictDefinition)
 ));
-const allDefinitions: SceneDefinition[] = [...districts, ...academicBuildingDefinitions, ...biomes];
+const entryLogisticsBuildingDefinitions = ENTRY_LOGISTICS_BUILDING_PROGRAM.map((record) => {
+  const district = districts.find((definition) => definition.id === record.districtId);
+  if (!district) throw new Error(`Entry/Logistics parent district is missing: ${record.districtId}`);
+  return createEntryLogisticsBuildingDefinition(record, district);
+});
+const entryCommercialDefinition = districts.find((definition) => definition.id === 'entry-commercial');
+if (!entryCommercialDefinition) throw new Error('Entry / Commercial District definition is missing');
+const welcomePoolDefinition = createWelcomePoolDefinition(entryCommercialDefinition);
+const allDefinitions: SceneDefinition[] = [
+  ...districts,
+  ...academicBuildingDefinitions,
+  ...entryLogisticsBuildingDefinitions,
+  welcomePoolDefinition,
+  ...biomes,
+];
 const staticEditableGroupCount = allDefinitions.length;
 const definitionIndex = new Map<string, number>();
 const listButtons = new Map<string, HTMLButtonElement>();
@@ -318,6 +341,8 @@ const categoryNames: Record<string, string> = {
   commercial: 'Commercial',
   academic: 'Academic',
   'academic-building': 'Academic building',
+  'entry-logistics-building': 'Entry / logistics building',
+  'entry-logistics-landscape': 'Entry landscape object',
   security: 'Restricted research',
   environmental: 'Environmental science',
   infrastructure: 'Operations',
@@ -341,8 +366,8 @@ function getAtlasGroup(definition: SceneDefinition) {
   if (definition.category === 'core') return 'Core systems';
   if (definition.category === 'bioscience') return 'Life sciences';
   if (['engineering', 'chemistry', 'physics'].includes(definition.category)) return 'Applied research';
-  if (['civic', 'commercial', 'academic', 'academic-building'].includes(definition.category)) return 'Civic campus';
-  if (['security', 'environmental', 'infrastructure'].includes(definition.category)) return 'Operations & edge';
+  if (['civic', 'commercial', 'academic', 'academic-building', 'entry-logistics-landscape'].includes(definition.category)) return 'Civic campus';
+  if (['security', 'environmental', 'infrastructure', 'entry-logistics-building'].includes(definition.category)) return 'Operations & edge';
   if (definition.category === 'biome') return 'Biome domes';
   if (definition.category === 'editor') return 'Design studio assets';
   return 'Imported assets';
@@ -359,6 +384,8 @@ function symbolFor(definition: SceneDefinition) {
     commercial: 'M',
     academic: 'A',
     'academic-building': 'B',
+    'entry-logistics-building': 'L',
+    'entry-logistics-landscape': 'P',
     security: 'S',
     environmental: 'N',
     infrastructure: 'I',
@@ -558,6 +585,7 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
     selectionIndex.textContent = '—';
     emptyInspector.hidden = false;
     inspectorContent.hidden = true;
+    buildingAxisScaleField.hidden = true;
     sceneCardTitle.textContent = 'Central research campus';
     sceneCardCopy.textContent = `${staticEditableGroupCount} editable scene groups · procedural architecture · Blender-ready GLB`;
     refreshEditWorkspaceUI();
@@ -579,6 +607,8 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
   emptyInspector.hidden = true;
   inspectorContent.hidden = false;
   sceneCardTitle.textContent = definition.name;
+  buildingAxisScaleField.hidden = definition.category !== 'entry-logistics-building'
+    && definition.category !== 'entry-logistics-landscape';
   sceneCardCopy.textContent = `${categoryNames[definition.category] ?? definition.category} · ${definition.ring.replace('-', ' ')} · editable object group`;
   if (objectState) {
     updateTransformFields(objectState);
@@ -598,6 +628,9 @@ function updateTransformFields(state: ObjectState) {
   rotationOutput.value = `${Math.round(state.rotationY)}°`;
   scaleInput.value = state.scale.toFixed(2);
   scaleOutput.textContent = `${Math.round(state.scale * 100)}%`;
+  axisScaleInputs.x.value = (state.scale3D?.x ?? 1).toFixed(2);
+  axisScaleInputs.y.value = (state.scale3D?.y ?? 1).toFixed(2);
+  axisScaleInputs.z.value = (state.scale3D?.z ?? 1).toFixed(2);
   visibilityInput.checked = state.visible;
 }
 
@@ -1102,6 +1135,7 @@ function applyInspectorMetadata() {
 metadataInputs.forEach((input) => input.addEventListener('change', applyInspectorMetadata));
 rotationInput.addEventListener('focus', undoOnFocus);
 scaleInput.addEventListener('focus', undoOnFocus);
+Object.values(axisScaleInputs).forEach((input) => input.addEventListener('focus', undoOnFocus));
 accentInput.addEventListener('focus', undoOnFocus);
 primaryColorInput.addEventListener('focus', undoOnFocus);
 secondaryColorInput.addEventListener('focus', undoOnFocus);
@@ -1115,6 +1149,17 @@ rotationInput.addEventListener('input', () => {
 scaleInput.addEventListener('input', () => {
   scaleOutput.textContent = `${Math.round(Number(scaleInput.value) * 100)}%`;
   if (currentSelection) world.setObjectScale(currentSelection.id, Number(scaleInput.value));
+});
+
+Object.entries(axisScaleInputs).forEach(([axis, input]) => {
+  input.addEventListener('change', () => {
+    if (!currentSelection
+      || (currentSelection.category !== 'entry-logistics-building'
+        && currentSelection.category !== 'entry-logistics-landscape')) return;
+    const value = THREE.MathUtils.clamp(Number(input.value), 0.25, 4);
+    input.value = value.toFixed(2);
+    world.setObjectAxisScale(currentSelection.id, axis as 'x' | 'y' | 'z', value);
+  });
 });
 
 accentInput.addEventListener('input', () => {

@@ -10,12 +10,28 @@ const source = fs
     'headless: args.headless, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",',
   )
   .replace(
+    'args: ["--use-gl=angle", "--use-angle=swiftshader"],',
+    'args: ["--enable-gpu", "--ignore-gpu-blocklist"],',
+  )
+  .replace(
+    'const page = await browser.newPage();',
+    'const page = await browser.newPage({ viewport: { width: 1024, height: 640 } });',
+  )
+  .replace(
     'await captureScreenshot(page, canvas, shotPath);',
     'const directDataUrl = await page.evaluate(() => { const world = window.labIsland; world.renderer.render(world.scene, world.camera); return world.renderer.domElement.toDataURL("image/png"); }); fs.writeFileSync(shotPath, Buffer.from(directDataUrl.split(",")[1], "base64"));',
   )
   .replace(
     'await page.goto(args.url, { waitUntil: "domcontentloaded" });',
     'console.log("bundled-client: goto"); await page.goto(args.url, { waitUntil: "domcontentloaded" }); console.log("bundled-client: loaded");',
+  )
+  .replace(
+    'await page.waitForTimeout(500);',
+    'await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot), null, { timeout: 180000 }); await page.waitForTimeout(500);',
+  )
+  .replace(
+    'await page.click(args.clickSelector, { timeout: 5000 });',
+    'await page.evaluate((selector) => document.querySelector(selector)?.click(), args.clickSelector);',
   )
   .replace(
     'await doChoreography(page, canvas, steps);',

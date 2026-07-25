@@ -62,6 +62,7 @@ const WELCOME_ENTRY_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.01);
 const WELCOME_LOGISTICS_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.04);
 const WELCOME_APRON_SURFACE_OFFSET = metresToWorldUnits(0.03);
 const WELCOME_JUNCTION_SURFACE_OFFSET = metresToWorldUnits(0.046);
+const ROAD_MARKING_LIFT = metresToWorldUnits(0.005);
 const FACILITY_VERTICAL_SCALE = 0.46;
 export const ENTRY_LOGISTICS_LAYOUT_REVISION = 5;
 export const WELCOME_POOL_SELECTABLE_ID = 'entry-logistics-landscape-welcome-pool';
@@ -938,16 +939,16 @@ function buildLogisticsRoutes(districtGroup: THREE.Group, access: ReadonlyMap<st
 
 function roadStyle(kind: RoadKind, mats: RoadMaterials) {
   switch (kind) {
-    case 'public-vehicle': return { width: 6.8, surface: mats.asphalt, marking: mats.whitePaint, line: 'centre' as const };
-    case 'public-white': return { width: 5.2, surface: mats.paleStone, marking: mats.paving, line: 'edge' as const };
-    case 'freight': return { width: 7.2, surface: mats.darkConcrete, marking: mats.yellowPaint, line: 'centre' as const };
-    case 'logistics-landside': return { width: 6.4, surface: mats.logisticsConcrete, marking: mats.whitePaint, line: 'edge' as const };
-    case 'service-yard': return { width: 8.4, surface: mats.logisticsConcrete, marking: mats.yellowPaint, line: 'centre' as const };
-    case 'airside': return { width: 6.0, surface: mats.darkConcrete, marking: mats.yellowPaint, line: 'edge' as const };
-    case 'logistics-platform': return { width: 8.0, surface: mats.logisticsConcrete, marking: mats.yellowPaint, line: 'centre' as const };
+    case 'public-vehicle': return { width: 6.8, surface: mats.asphalt, marking: mats.whitePaint, line: 'dashed-centre' as const };
+    case 'public-white': return { width: 5.2, surface: mats.paleStone, marking: mats.paving, line: 'none' as const };
+    case 'freight': return { width: 7.2, surface: mats.darkConcrete, marking: mats.yellowPaint, line: 'dashed-centre' as const };
+    case 'logistics-landside': return { width: 6.4, surface: mats.logisticsConcrete, marking: mats.whitePaint, line: 'dashed-centre' as const };
+    case 'service-yard': return { width: 8.4, surface: mats.logisticsConcrete, marking: mats.yellowPaint, line: 'dashed-centre' as const };
+    case 'airside': return { width: 6.0, surface: mats.darkConcrete, marking: mats.yellowPaint, line: 'dashed-centre' as const };
+    case 'logistics-platform': return { width: 8.0, surface: mats.logisticsConcrete, marking: mats.yellowPaint, line: 'none' as const };
     case 'district-link': return { width: 1.55, surface: mats.darkConcrete, marking: mats.paving, line: 'none' as const };
-    case 'promenade': return { width: 4.2, surface: mats.whitePaint, marking: mats.paving, line: 'edge' as const };
-    default: return { width: 3.6, surface: mats.paleStone, marking: mats.paving, line: 'edge' as const };
+    case 'promenade': return { width: 4.2, surface: mats.whitePaint, marking: mats.paving, line: 'none' as const };
+    default: return { width: 3.6, surface: mats.paleStone, marking: mats.paving, line: 'none' as const };
   }
 }
 
@@ -1006,36 +1007,70 @@ function roadRibbonGeometry(
   return geometry;
 }
 
-function offsetRoadPoints(
+function dashedRoadMarkingGeometry(
   points: readonly RoadPoint[],
-  widthStart: number,
-  widthEnd: number,
-  side: -1 | 1,
+  width: number,
+  elevation: number,
+  trimStart: number,
+  trimEnd: number,
+  dashLength = 0.38,
+  gapLength = 0.26,
 ) {
-  return points.map((point, index) => {
-    const current = point.position;
-    const previous = points[Math.max(0, index - 1)].position;
-    const next = points[Math.min(points.length - 1, index + 1)].position;
-    const incoming = current.clone().sub(previous).setY(0);
-    const outgoing = next.clone().sub(current).setY(0);
-    if (incoming.lengthSq() < 0.000001) incoming.copy(outgoing);
-    if (outgoing.lengthSq() < 0.000001) outgoing.copy(incoming);
-    incoming.normalize();
-    outgoing.normalize();
-    const incomingNormal = new THREE.Vector3(incoming.z, 0, -incoming.x);
-    const outgoingNormal = new THREE.Vector3(outgoing.z, 0, -outgoing.x);
-    const miter = incomingNormal.clone().add(outgoingNormal);
-    if (miter.lengthSq() < 0.000001) miter.copy(outgoingNormal);
-    miter.normalize();
-    const t = points.length <= 1 ? 0 : index / (points.length - 1);
-    const markingOffset = THREE.MathUtils.lerp(widthStart, widthEnd, t) * 0.36;
-    const miterScale = markingOffset / Math.max(0.45, Math.abs(miter.dot(outgoingNormal)));
-    return roadPoint(
-      `${point.id}-edge-${side < 0 ? 'a' : 'b'}`,
-      current.clone().addScaledVector(miter, miterScale * side),
-      'street-junction',
+  const positions: number[] = [];
+  const indices: number[] = [];
+  const cumulative = [0];
+  for (let index = 1; index < points.length; index += 1) {
+    cumulative.push(cumulative[index - 1] + points[index].position.distanceTo(points[index - 1].position));
+  }
+  const totalLength = cumulative.at(-1) ?? 0;
+  const sampleAt = (distance: number) => {
+    const clamped = THREE.MathUtils.clamp(distance, 0, totalLength);
+    let segmentIndex = 0;
+    while (segmentIndex < cumulative.length - 2 && cumulative[segmentIndex + 1] < clamped) {
+      segmentIndex += 1;
+    }
+    const segmentStart = cumulative[segmentIndex];
+    const segmentEnd = cumulative[segmentIndex + 1] ?? segmentStart;
+    const progress = segmentEnd - segmentStart < 0.000001
+      ? 0
+      : (clamped - segmentStart) / (segmentEnd - segmentStart);
+    return points[segmentIndex].position.clone().lerp(points[segmentIndex + 1].position, progress);
+  };
+  const usableStart = Math.min(trimStart, totalLength);
+  const usableEnd = Math.max(usableStart, totalLength - trimEnd);
+  let dashCount = 0;
+  for (let cursor = usableStart; cursor < usableEnd - 0.05; cursor += dashLength + gapLength) {
+    const dashEnd = Math.min(cursor + dashLength, usableEnd);
+    const start = sampleAt(cursor);
+    const end = sampleAt(dashEnd);
+    const direction = end.clone().sub(start).setY(0);
+    if (direction.lengthSq() < 0.000001) continue;
+    direction.normalize();
+    const normal = new THREE.Vector3(direction.z, 0, -direction.x).multiplyScalar(width * 0.5);
+    const vertex = positions.length / 3;
+    positions.push(
+      start.x + normal.x, elevation, start.z + normal.z,
+      start.x - normal.x, elevation, start.z - normal.z,
+      end.x + normal.x, elevation, end.z + normal.z,
+      end.x - normal.x, elevation, end.z - normal.z,
     );
-  });
+    indices.push(vertex, vertex + 1, vertex + 2, vertex + 1, vertex + 3, vertex + 2);
+    dashCount += 1;
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setIndex(indices);
+  geometry.computeVertexNormals();
+  geometry.userData.dashCount = dashCount;
+  geometry.userData.dashLengthMetres = dashLength * 10;
+  geometry.userData.gapLengthMetres = gapLength * 10;
+  return geometry;
+}
+
+function roadMarkingClearance(route: RoadRoute) {
+  if (route.id === 'arrival') return { start: 0.55, end: 4.75 };
+  if (route.id === 'arrival-logistics-branch') return { start: 4.75, end: 0.75 };
+  return { start: 0.75, end: 0.75 };
 }
 
 function addContinuousRoadRibbon(
@@ -1074,44 +1109,41 @@ function addContinuousRoadRibbon(
   };
   network.add(surface);
 
-  if (style.line === 'centre') {
+  if (style.line === 'dashed-centre' && route.id !== 'e2-door-apron') {
+    const clearance = roadMarkingClearance(route);
+    const markingGeometry = dashedRoadMarkingGeometry(
+      route.points,
+      0.04,
+      roadTop + ROAD_MARKING_LIFT,
+      clearance.start,
+      clearance.end,
+    );
     const marking = new THREE.Mesh(
-      roadRibbonGeometry(route.points, 0.035, roadTop + (route.underBuildingPodium ? 0.014 : 0.018)),
+      markingGeometry,
       roadDecalMaterial(style.marking, depthPriority + 1),
     );
-    marking.name = `${surface.name}__CENTRELINE`;
+    marking.name = `${surface.name}__DASHED_CENTRELINE`;
     marking.renderOrder = 2;
     marking.userData = {
       selectableId: districtId,
       continuousRoadMarking: true,
       roadMarking: true,
+      routeId: route.id,
+      routeKind: route.kind,
+      roadMarkingPattern: 'dashed-centreline',
+      dashCount: markingGeometry.userData.dashCount,
+      dashLengthMetres: markingGeometry.userData.dashLengthMetres,
+      gapLengthMetres: markingGeometry.userData.gapLengthMetres,
+      markingElevation: roadTop + ROAD_MARKING_LIFT,
+      markingLiftMetres: ROAD_MARKING_LIFT * 10,
+      occlusionSafeSurfaceDecal: true,
+      startClearanceMetres: clearance.start * 10,
+      endClearanceMetres: clearance.end * 10,
       ownedRoadMaterial: true,
       terrainDepthBias: true,
       navObstacle: false,
     };
     network.add(marking);
-  } else if (style.line === 'edge') {
-    for (const side of [-1, 1] as const) {
-      const marking = new THREE.Mesh(
-        roadRibbonGeometry(
-          offsetRoadPoints(route.points, widthStart, widthEnd, side),
-          0.025,
-          roadTop + 0.018,
-        ),
-        roadDecalMaterial(style.marking, depthPriority + 1),
-      );
-      marking.name = `${surface.name}__EDGE_${side < 0 ? 'A' : 'B'}`;
-      marking.renderOrder = 2;
-      marking.userData = {
-        selectableId: districtId,
-        continuousRoadMarking: true,
-        roadMarking: true,
-        ownedRoadMaterial: true,
-        terrainDepthBias: true,
-        navObstacle: false,
-      };
-      network.add(marking);
-    }
   }
 }
 

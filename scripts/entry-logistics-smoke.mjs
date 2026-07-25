@@ -157,8 +157,25 @@ try {
       const network = district.getObjectByName('ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK');
       const roads = [];
       const continuousSurfaces = [];
+      const roadMarkings = [];
       network?.traverse((object) => {
         if (object.userData.entranceLinkedRoad === true) roads.push(object);
+        if (object.userData.roadMarking === true) {
+          roadMarkings.push({
+            name: object.name,
+            routeId: object.userData.routeId,
+            routeKind: object.userData.routeKind,
+            pattern: object.userData.roadMarkingPattern,
+            dashCount: object.userData.dashCount,
+            dashLengthMetres: object.userData.dashLengthMetres,
+            gapLengthMetres: object.userData.gapLengthMetres,
+            markingElevation: object.userData.markingElevation,
+            markingLiftMetres: object.userData.markingLiftMetres,
+            occlusionSafeSurfaceDecal: object.userData.occlusionSafeSurfaceDecal === true,
+            startClearanceMetres: object.userData.startClearanceMetres,
+            endClearanceMetres: object.userData.endClearanceMetres,
+          });
+        }
         if (object.userData.continuousRoadSurface === true) {
           continuousSurfaces.push({
             name: object.name,
@@ -197,6 +214,7 @@ try {
           road.userData.fromEndpointType === 'building-threshold' ? road.userData.fromBuilding : null,
           road.userData.toEndpointType === 'building-threshold' ? road.userData.toBuilding : null,
         ].filter(Boolean)))).sort(),
+        roadMarkings,
         continuousSurfaces,
         roads: roads.map((road) => ({
           name: road.name,
@@ -1546,6 +1564,32 @@ try {
     || JSON.stringify(audit.roads.logistics.thresholdCodes) !== JSON.stringify(expectedLogisticsCodes)
     || audit.roads.logistics.directBuildingLinks.length) {
     throw new Error(`Road hierarchy failed: ${JSON.stringify(audit.roads, null, 2)}`);
+  }
+  const roadMarkings = [...audit.roads.entry.roadMarkings, ...audit.roads.logistics.roadMarkings];
+  const arrivalMarking = audit.roads.entry.roadMarkings.find((marking) => marking.routeId === 'arrival');
+  const logisticsBranchMarking = audit.roads.entry.roadMarkings
+    .find((marking) => marking.routeId === 'arrival-logistics-branch');
+  if (!arrivalMarking
+    || !logisticsBranchMarking
+    || roadMarkings.some((marking) => marking.pattern !== 'dashed-centreline'
+      || marking.name.includes('__EDGE_')
+      || Math.abs(marking.dashLengthMetres - 3.8) > 0.001
+      || Math.abs(marking.gapLengthMetres - 2.6) > 0.001
+      || Math.abs(marking.markingLiftMetres - 0.005) > 0.0001
+      || !marking.occlusionSafeSurfaceDecal)
+    || audit.roads.entry.roadMarkings.some((marking) => [
+      'arrival-entry-branch',
+      'e2-door-apron',
+      'inner-retail-collector',
+      'central-commercial-collector',
+      'quay-promenade',
+    ].includes(marking.routeId))
+    || arrivalMarking.endClearanceMetres < 47.4
+    || logisticsBranchMarking.startClearanceMetres < 47.4) {
+    throw new Error(`Road marking pattern failed: ${JSON.stringify({
+      entry: audit.roads.entry.roadMarkings,
+      logistics: audit.roads.logistics.roadMarkings,
+    }, null, 2)}`);
   }
   const entryCivicSurfaces = audit.roads.entry.continuousSurfaces
     .filter((surface) => ['public-white', 'pedestrian', 'promenade'].includes(surface.routeKind));

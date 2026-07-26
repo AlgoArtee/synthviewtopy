@@ -514,6 +514,8 @@
           "z": 1
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -533,6 +535,8 @@
           "z": 1.45
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -552,6 +556,8 @@
           "z": 1.45
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -571,6 +577,8 @@
           "z": 1
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -593,7 +601,7 @@
             "y": 1.04,
             "z": 0.8
           },
-          "visible": true,
+          "visibilityIntent": "visible",
           "accent": "#FF5ACD",
           "styleCustomized": false,
           "collisionEnabled": true,
@@ -613,12 +621,83 @@
             "z": 0.8
           },
           "visible": true,
+          "visibilityIntent": "visible",
+          "effectiveVisible": true,
           "accent": "#FF5ACD",
           "styleCustomized": false,
           "collisionEnabled": true,
           "interactions": []
         },
         "roadStartGap": 0
+      },
+      "poolPersistence": {
+        "snapshotRecordPresent": true,
+        "beforeEdit": {
+          "position": {
+            "x": -27.717813431758366,
+            "y": 0,
+            "z": 7.573175030089935
+          },
+          "rotationY": -210.00000000000003,
+          "scale": 1,
+          "scale3D": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          },
+          "visible": true,
+          "visibilityIntent": "visible",
+          "effectiveVisible": true,
+          "accent": "#FF5ACD",
+          "styleCustomized": false,
+          "collisionEnabled": true,
+          "interactions": []
+        },
+        "afterEdit": {
+          "position": {
+            "x": -27.067813431758367,
+            "y": 0,
+            "z": 7.573175030089935
+          },
+          "rotationY": -199.00000000000003,
+          "scale": 1.1666666666666667,
+          "scale3D": {
+            "x": 1.32,
+            "y": 1,
+            "z": 1.18
+          },
+          "visible": true,
+          "visibilityIntent": "visible",
+          "effectiveVisible": true,
+          "accent": "#FF5ACD",
+          "styleCustomized": false,
+          "collisionEnabled": true,
+          "interactions": []
+        },
+        "afterReload": {
+          "position": {
+            "x": -27.067813431758367,
+            "y": 0,
+            "z": 7.573175030089935
+          },
+          "rotationY": -199.00000000000003,
+          "scale": 1.1666666666666667,
+          "scale3D": {
+            "x": 1.32,
+            "y": 1,
+            "z": 1.18
+          },
+          "visible": true,
+          "visibilityIntent": "visible",
+          "effectiveVisible": true,
+          "accent": "#FF5ACD",
+          "styleCustomized": false,
+          "collisionEnabled": true,
+          "interactions": []
+        },
+        "reloaded": true,
+        "roadsUnaffected": true,
+        "featurePresentAfterReload": true
       }
     },
     "roads": {
@@ -938,6 +1017,64 @@
           "E8",
           "E9"
         ],
+        "roadMarkings": [
+          {
+            "name": "ENTRY-COMMERCIAL__BRIDGE-TO-TUNNEL__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "bridge-to-tunnel",
+            "routeKind": "public-vehicle",
+            "pattern": "dashed-centreline",
+            "dashCount": 0,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "ENTRY-COMMERCIAL__E1-TUNNEL-THROUGH-ROAD__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "e1-tunnel-through-road",
+            "routeKind": "public-vehicle",
+            "pattern": "dashed-centreline",
+            "dashCount": 43,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "ENTRY-COMMERCIAL__ARRIVAL__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "arrival",
+            "routeKind": "public-vehicle",
+            "pattern": "dashed-centreline",
+            "dashCount": 78,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 5.5,
+            "endClearanceMetres": 47.5
+          },
+          {
+            "name": "ENTRY-COMMERCIAL__ARRIVAL-LOGISTICS-BRANCH__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "arrival-logistics-branch",
+            "routeKind": "public-vehicle",
+            "pattern": "dashed-centreline",
+            "dashCount": 86,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.038500000000000006,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 47.5,
+            "endClearanceMetres": 7.5
+          }
+        ],
         "continuousSurfaces": [
           {
             "name": "ENTRY-COMMERCIAL__E3-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -947,7 +1084,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -500,
+            "polygonOffsetUnits": -500
           },
           {
             "name": "ENTRY-COMMERCIAL__E4-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -957,7 +1098,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -502,
+            "polygonOffsetUnits": -502
           },
           {
             "name": "ENTRY-COMMERCIAL__E5-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -967,7 +1112,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -504,
+            "polygonOffsetUnits": -504
           },
           {
             "name": "ENTRY-COMMERCIAL__E6-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -977,7 +1126,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -506,
+            "polygonOffsetUnits": -506
           },
           {
             "name": "ENTRY-COMMERCIAL__E7-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -987,7 +1140,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -508,
+            "polygonOffsetUnits": -508
           },
           {
             "name": "ENTRY-COMMERCIAL__E8-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -997,7 +1154,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -510,
+            "polygonOffsetUnits": -510
           },
           {
             "name": "ENTRY-COMMERCIAL__E9-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1007,7 +1168,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -512,
+            "polygonOffsetUnits": -512
           },
           {
             "name": "ENTRY-COMMERCIAL__E10-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1017,7 +1182,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -514,
+            "polygonOffsetUnits": -514
           },
           {
             "name": "ENTRY-COMMERCIAL__E11-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1027,7 +1196,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -516,
+            "polygonOffsetUnits": -516
           },
           {
             "name": "ENTRY-COMMERCIAL__E12-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1037,7 +1210,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -518,
+            "polygonOffsetUnits": -518
           },
           {
             "name": "ENTRY-COMMERCIAL__E13-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1047,7 +1224,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -520,
+            "polygonOffsetUnits": -520
           },
           {
             "name": "ENTRY-COMMERCIAL__BRIDGE-TO-TUNNEL__CONTINUOUS_SURFACE",
@@ -1057,7 +1238,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "252b2e"
+            "color": "252b2e",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -522,
+            "polygonOffsetUnits": -522
           },
           {
             "name": "ENTRY-COMMERCIAL__E1-TUNNEL-THROUGH-ROAD__CONTINUOUS_SURFACE",
@@ -1067,7 +1252,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "252b2e"
+            "color": "252b2e",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -524,
+            "polygonOffsetUnits": -524
           },
           {
             "name": "ENTRY-COMMERCIAL__ARRIVAL__CONTINUOUS_SURFACE",
@@ -1077,7 +1266,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "252b2e"
+            "color": "252b2e",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -526,
+            "polygonOffsetUnits": -526
           },
           {
             "name": "ENTRY-COMMERCIAL__ARRIVAL-ENTRY-BRANCH__CONTINUOUS_SURFACE",
@@ -1087,7 +1280,11 @@
             "widthEnd": 5.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -528,
+            "polygonOffsetUnits": -528
           },
           {
             "name": "ENTRY-COMMERCIAL__ARRIVAL-LOGISTICS-BRANCH__CONTINUOUS_SURFACE",
@@ -1097,7 +1294,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "252b2e"
+            "color": "252b2e",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -530,
+            "polygonOffsetUnits": -530
           },
           {
             "name": "ENTRY-COMMERCIAL__E2-DOOR-APRON__CONTINUOUS_SURFACE",
@@ -1107,7 +1308,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "252b2e"
+            "color": "252b2e",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -532,
+            "polygonOffsetUnits": -532
           },
           {
             "name": "ENTRY-COMMERCIAL__INNER-RETAIL-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1117,7 +1322,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -534,
+            "polygonOffsetUnits": -534
           },
           {
             "name": "ENTRY-COMMERCIAL__CENTRAL-COMMERCIAL-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1127,7 +1336,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -536,
+            "polygonOffsetUnits": -536
           },
           {
             "name": "ENTRY-COMMERCIAL__QUAY-PROMENADE__CONTINUOUS_SURFACE",
@@ -1137,7 +1350,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -538,
+            "polygonOffsetUnits": -538
           },
           {
             "name": "ENTRY-COMMERCIAL__E3-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1147,7 +1364,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -540,
+            "polygonOffsetUnits": -540
           },
           {
             "name": "ENTRY-COMMERCIAL__E10-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1157,7 +1378,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -542,
+            "polygonOffsetUnits": -542
           },
           {
             "name": "ENTRY-COMMERCIAL__E4-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1167,7 +1392,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -544,
+            "polygonOffsetUnits": -544
           },
           {
             "name": "ENTRY-COMMERCIAL__E7-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1177,7 +1406,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -546,
+            "polygonOffsetUnits": -546
           },
           {
             "name": "ENTRY-COMMERCIAL__E11-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1187,7 +1420,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -548,
+            "polygonOffsetUnits": -548
           },
           {
             "name": "ENTRY-COMMERCIAL__E5-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1197,7 +1434,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -550,
+            "polygonOffsetUnits": -550
           },
           {
             "name": "ENTRY-COMMERCIAL__E6-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1207,7 +1448,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -552,
+            "polygonOffsetUnits": -552
           },
           {
             "name": "ENTRY-COMMERCIAL__E9-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1217,7 +1462,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -554,
+            "polygonOffsetUnits": -554
           },
           {
             "name": "ENTRY-COMMERCIAL__E8-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1227,7 +1476,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -556,
+            "polygonOffsetUnits": -556
           },
           {
             "name": "ENTRY-COMMERCIAL__E12-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1237,7 +1490,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -558,
+            "polygonOffsetUnits": -558
           },
           {
             "name": "ENTRY-COMMERCIAL__E13-TO-COLLECTOR__CONTINUOUS_SURFACE",
@@ -1247,7 +1504,11 @@
             "widthEnd": 4.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "e2e1d6"
+            "color": "e2e1d6",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -560,
+            "polygonOffsetUnits": -560
           },
           {
             "name": "ENTRY-COMMERCIAL__INNER-CENTRAL-CROSS-329__CONTINUOUS_SURFACE",
@@ -1257,7 +1518,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -562,
+            "polygonOffsetUnits": -562
           },
           {
             "name": "ENTRY-COMMERCIAL__CENTRAL-QUAY-CROSS-329__CONTINUOUS_SURFACE",
@@ -1267,7 +1532,11 @@
             "widthEnd": 3.6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "d7d0bf"
+            "color": "d7d0bf",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -564,
+            "polygonOffsetUnits": -564
           },
           {
             "name": "ENTRY-COMMERCIAL__ENTRY-RING-TRANSITION-313__CONTINUOUS_SURFACE",
@@ -1277,7 +1546,11 @@
             "widthEnd": 1.55,
             "logisticsPlatform": false,
             "districtTransition": true,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -566,
+            "polygonOffsetUnits": -566
           },
           {
             "name": "ENTRY-COMMERCIAL__ENTRY-RING-TRANSITION-330__CONTINUOUS_SURFACE",
@@ -1287,7 +1560,11 @@
             "widthEnd": 1.55,
             "logisticsPlatform": false,
             "districtTransition": true,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -568,
+            "polygonOffsetUnits": -568
           }
         ],
         "roads": [
@@ -2640,7 +2917,7 @@
               -16.361063892286875
             ],
             "segmentIndex": 1,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2661,7 +2938,7 @@
               -15.811293439870928
             ],
             "segmentIndex": 2,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2682,7 +2959,7 @@
               -15.234912398996094
             ],
             "segmentIndex": 3,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2703,7 +2980,7 @@
               -14.641144402039574
             ],
             "segmentIndex": 4,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2724,7 +3001,7 @@
               -13.977828580756311
             ],
             "segmentIndex": 5,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2745,7 +3022,7 @@
               -13.192804066901246
             ],
             "segmentIndex": 6,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2766,7 +3043,7 @@
               -12.23390999222932
             ],
             "segmentIndex": 7,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2787,7 +3064,7 @@
               -11.048985488495475
             ],
             "segmentIndex": 8,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2808,7 +3085,7 @@
               -9.098543905399787
             ],
             "segmentIndex": 9,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2829,7 +3106,7 @@
               -6.771174507105336
             ],
             "segmentIndex": 10,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2850,7 +3127,7 @@
               -4.147824799928589
             ],
             "segmentIndex": 11,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2871,7 +3148,7 @@
               -1.3094422901860137
             ],
             "segmentIndex": 12,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2892,7 +3169,7 @@
               1.6630255158059268
             ],
             "segmentIndex": 13,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2913,7 +3190,7 @@
               4.688631111730763
             ],
             "segmentIndex": 14,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2934,7 +3211,7 @@
               7.686426991272033
             ],
             "segmentIndex": 15,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2955,7 +3232,7 @@
               10.575465648113266
             ],
             "segmentIndex": 16,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2976,7 +3253,7 @@
               13.668620032418172
             ],
             "segmentIndex": 17,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -2997,7 +3274,7 @@
               16.889529500591863
             ],
             "segmentIndex": 18,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3018,7 +3295,7 @@
               20.179574225714703
             ],
             "segmentIndex": 19,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3039,7 +3316,7 @@
               23.48013438086705
             ],
             "segmentIndex": 20,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3060,7 +3337,7 @@
               26.73259013912926
             ],
             "segmentIndex": 21,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3081,7 +3358,7 @@
               29.878321673581702
             ],
             "segmentIndex": 22,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3102,7 +3379,7 @@
               32.85870915730473
             ],
             "segmentIndex": 23,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3123,7 +3400,7 @@
               35.61513276337871
             ],
             "segmentIndex": 24,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3144,7 +3421,7 @@
               37.42537258451549
             ],
             "segmentIndex": 25,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3165,7 +3442,7 @@
               39.131441157984945
             ],
             "segmentIndex": 26,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3186,7 +3463,7 @@
               40.75737800247954
             ],
             "segmentIndex": 27,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3207,7 +3484,7 @@
               42.32722263669174
             ],
             "segmentIndex": 28,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3228,7 +3505,7 @@
               43.86501457931398
             ],
             "segmentIndex": 29,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3249,7 +3526,7 @@
               45.39479334903874
             ],
             "segmentIndex": 30,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3270,7 +3547,7 @@
               46.94059846455848
             ],
             "segmentIndex": 31,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3291,7 +3568,7 @@
               48.526469444565635
             ],
             "segmentIndex": 32,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -3312,7 +3589,7 @@
               -18.075454636734015
             ],
             "segmentIndex": 1,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3333,7 +3610,7 @@
               -19.345585789576464
             ],
             "segmentIndex": 2,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3354,7 +3631,7 @@
               -20.60093795200901
             ],
             "segmentIndex": 3,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3375,7 +3652,7 @@
               -21.824550485369954
             ],
             "segmentIndex": 4,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3396,7 +3673,7 @@
               -22.921204502444496
             ],
             "segmentIndex": 5,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3417,7 +3694,7 @@
               -23.79568111601785
             ],
             "segmentIndex": 6,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3438,7 +3715,7 @@
               -24.352761438875202
             ],
             "segmentIndex": 7,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3459,7 +3736,7 @@
               -24.497226583801762
             ],
             "segmentIndex": 8,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3480,7 +3757,7 @@
               -24.091427330324503
             ],
             "segmentIndex": 9,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3501,7 +3778,7 @@
               -23.163132205420414
             ],
             "segmentIndex": 10,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3522,7 +3799,7 @@
               -21.81840064915132
             ],
             "segmentIndex": 11,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3543,7 +3820,7 @@
               -20.163292101579074
             ],
             "segmentIndex": 12,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3564,7 +3841,7 @@
               -18.303866002765496
             ],
             "segmentIndex": 13,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3585,7 +3862,7 @@
               -16.346181792772423
             ],
             "segmentIndex": 14,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3606,7 +3883,7 @@
               -14.396298911661685
             ],
             "segmentIndex": 15,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3627,7 +3904,7 @@
               -12.560276799495114
             ],
             "segmentIndex": 16,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3648,7 +3925,7 @@
               -10.859776671439462
             ],
             "segmentIndex": 17,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3669,7 +3946,7 @@
               -9.04423524746126
             ],
             "segmentIndex": 18,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3690,7 +3967,7 @@
               -7.149657883470286
             ],
             "segmentIndex": 19,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3711,7 +3988,7 @@
               -5.212049935376316
             ],
             "segmentIndex": 20,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3732,7 +4009,7 @@
               -3.267416759089134
             ],
             "segmentIndex": 21,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3753,7 +4030,7 @@
               -1.3517637105185143
             ],
             "segmentIndex": 22,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3774,7 +4051,7 @@
               0.49890385442576024
             ],
             "segmentIndex": 23,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3795,7 +4072,7 @@
               2.248580579833913
             ],
             "segmentIndex": 24,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3816,7 +4093,7 @@
               3.67895991372274
             ],
             "segmentIndex": 25,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3837,7 +4114,7 @@
               5.059530916228644
             ],
             "segmentIndex": 26,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3858,7 +4135,7 @@
               6.40178781767076
             ],
             "segmentIndex": 27,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3879,7 +4156,7 @@
               7.7172248483682235
             ],
             "segmentIndex": 28,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3900,7 +4177,7 @@
               9.017336238640173
             ],
             "segmentIndex": 29,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3921,7 +4198,7 @@
               10.313616218805745
             ],
             "segmentIndex": 30,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3942,7 +4219,7 @@
               11.617559019184075
             ],
             "segmentIndex": 31,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3963,7 +4240,7 @@
               12.940658870094296
             ],
             "segmentIndex": 32,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.004,
             "underBuildingPodium": false
           },
           {
@@ -3985,7 +4262,7 @@
               -6.814835821320912
             ],
             "segmentIndex": 1,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.003,
             "underBuildingPodium": false
           },
           {
@@ -7480,6 +7757,274 @@
           "L6",
           "L7"
         ],
+        "roadMarkings": [
+          {
+            "name": "LOGISTICS__L1-SOUTH-LOBBY-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l1-south-lobby-to-corridor",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 28,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L2-LANDSIDE-ARRIVALS-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l2-landside-arrivals-to-corridor",
+            "routeKind": "logistics-landside",
+            "pattern": "dashed-centreline",
+            "dashCount": 11,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L2-AIRSIDE-GATES-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l2-airside-gates-to-corridor",
+            "routeKind": "airside",
+            "pattern": "dashed-centreline",
+            "dashCount": 4,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L3-AIRSIDE-REAR-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l3-airside-rear-to-corridor",
+            "routeKind": "airside",
+            "pattern": "dashed-centreline",
+            "dashCount": 15,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L4-SERVICE-RECEPTION-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l4-service-reception-to-corridor",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 68,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L4-AIRCRAFT-DOOR-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l4-aircraft-door-to-corridor",
+            "routeKind": "airside",
+            "pattern": "dashed-centreline",
+            "dashCount": 7,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L5-INSPECTION-ENTRY-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l5-inspection-entry-to-corridor",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 3,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L5-NORTH-CROSS-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l5-north-cross-dock-to-corridor",
+            "routeKind": "service-yard",
+            "pattern": "dashed-centreline",
+            "dashCount": 4,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L6-SOUTH-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l6-south-dock-to-corridor",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 17,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L6-NORTH-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l6-north-dock-to-corridor",
+            "routeKind": "service-yard",
+            "pattern": "dashed-centreline",
+            "dashCount": 1,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L7-WORKSHOP-FRONT-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l7-workshop-front-to-corridor",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 6,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__L7-REAR-YARD-TO-CORRIDOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "l7-rear-yard-to-corridor",
+            "routeKind": "service-yard",
+            "pattern": "dashed-centreline",
+            "dashCount": 1,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__FREIGHT-SPINE__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "freight-spine",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 209,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__SECURE-YARD-COLLECTOR__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "secure-yard-collector",
+            "routeKind": "service-yard",
+            "pattern": "dashed-centreline",
+            "dashCount": 177,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__TERMINAL-ARRIVALS-LOOP__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "terminal-arrivals-loop",
+            "routeKind": "logistics-landside",
+            "pattern": "dashed-centreline",
+            "dashCount": 129,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__AIRSIDE-SERVICE-LANE__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "airside-service-lane",
+            "routeKind": "airside",
+            "pattern": "dashed-centreline",
+            "dashCount": 170,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.0345,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__FREIGHT-YARD-CHECKPOINT__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "freight-yard-checkpoint",
+            "routeKind": "freight",
+            "pattern": "dashed-centreline",
+            "dashCount": 50,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__SECURE-AIRSIDE-CHECKPOINT__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "secure-airside-checkpoint",
+            "routeKind": "airside",
+            "pattern": "dashed-centreline",
+            "dashCount": 61,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.036500000000000005,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          },
+          {
+            "name": "LOGISTICS__PARKING-PASSENGER-GATEWAY__CONTINUOUS_SURFACE__DASHED_CENTRELINE",
+            "routeId": "parking-passenger-gateway",
+            "routeKind": "logistics-landside",
+            "pattern": "dashed-centreline",
+            "dashCount": 73,
+            "dashLengthMetres": 3.8,
+            "gapLengthMetres": 2.6,
+            "markingElevation": 0.035500000000000004,
+            "markingLiftMetres": 0.005,
+            "occlusionSafeSurfaceDecal": true,
+            "startClearanceMetres": 7.5,
+            "endClearanceMetres": 7.5
+          }
+        ],
         "continuousSurfaces": [
           {
             "name": "LOGISTICS__L1-SOUTH-LOBBY-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7489,7 +8034,11 @@
             "widthEnd": 5.8,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -100,
+            "polygonOffsetUnits": -100
           },
           {
             "name": "LOGISTICS__L1-SOUTH-LOBBY-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7499,7 +8048,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -102,
+            "polygonOffsetUnits": -102
           },
           {
             "name": "LOGISTICS__L1-NORTH-STAIR-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7509,7 +8062,11 @@
             "widthEnd": 3.0999999999999996,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -104,
+            "polygonOffsetUnits": -104
           },
           {
             "name": "LOGISTICS__L2-LANDSIDE-ARRIVALS-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7519,7 +8076,11 @@
             "widthEnd": 8.2,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -106,
+            "polygonOffsetUnits": -106
           },
           {
             "name": "LOGISTICS__L2-LANDSIDE-ARRIVALS-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7529,7 +8090,11 @@
             "widthEnd": 6.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -108,
+            "polygonOffsetUnits": -108
           },
           {
             "name": "LOGISTICS__L2-AIRSIDE-GATES-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7539,7 +8104,11 @@
             "widthEnd": 6,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -110,
+            "polygonOffsetUnits": -110
           },
           {
             "name": "LOGISTICS__L2-AIRSIDE-GATES-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7549,7 +8118,11 @@
             "widthEnd": 6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -112,
+            "polygonOffsetUnits": -112
           },
           {
             "name": "LOGISTICS__L2-EAST-STAFF-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7559,7 +8132,11 @@
             "widthEnd": 3.0999999999999996,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -114,
+            "polygonOffsetUnits": -114
           },
           {
             "name": "LOGISTICS__L3-OPERATIONS-FRONT-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7569,7 +8146,11 @@
             "widthEnd": 4.6,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -116,
+            "polygonOffsetUnits": -116
           },
           {
             "name": "LOGISTICS__L3-AIRSIDE-REAR-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7579,7 +8160,11 @@
             "widthEnd": 4,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -118,
+            "polygonOffsetUnits": -118
           },
           {
             "name": "LOGISTICS__L3-AIRSIDE-REAR-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7589,7 +8174,11 @@
             "widthEnd": 3.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -120,
+            "polygonOffsetUnits": -120
           },
           {
             "name": "LOGISTICS__L3-WEST-SERVICE-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7599,7 +8188,11 @@
             "widthEnd": 2.7,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -122,
+            "polygonOffsetUnits": -122
           },
           {
             "name": "LOGISTICS__L4-SERVICE-RECEPTION-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7609,7 +8202,11 @@
             "widthEnd": 11.5,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -124,
+            "polygonOffsetUnits": -124
           },
           {
             "name": "LOGISTICS__L4-SERVICE-RECEPTION-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7619,7 +8216,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -126,
+            "polygonOffsetUnits": -126
           },
           {
             "name": "LOGISTICS__L4-AIRCRAFT-DOOR-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7629,7 +8230,11 @@
             "widthEnd": 15.3,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -128,
+            "polygonOffsetUnits": -128
           },
           {
             "name": "LOGISTICS__L4-AIRCRAFT-DOOR-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7639,7 +8244,11 @@
             "widthEnd": 6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -130,
+            "polygonOffsetUnits": -130
           },
           {
             "name": "LOGISTICS__L4-EAST-PERSONNEL-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7649,7 +8258,11 @@
             "widthEnd": 3.2,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -132,
+            "polygonOffsetUnits": -132
           },
           {
             "name": "LOGISTICS__L5-INSPECTION-ENTRY-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7659,7 +8272,11 @@
             "widthEnd": 6.8,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -134,
+            "polygonOffsetUnits": -134
           },
           {
             "name": "LOGISTICS__L5-INSPECTION-ENTRY-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7669,7 +8286,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -136,
+            "polygonOffsetUnits": -136
           },
           {
             "name": "LOGISTICS__L5-NORTH-CROSS-DOCK-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7679,7 +8300,11 @@
             "widthEnd": 5,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -138,
+            "polygonOffsetUnits": -138
           },
           {
             "name": "LOGISTICS__L5-NORTH-CROSS-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7689,7 +8314,11 @@
             "widthEnd": 8.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -140,
+            "polygonOffsetUnits": -140
           },
           {
             "name": "LOGISTICS__L5-WEST-STAFF-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7699,7 +8328,11 @@
             "widthEnd": 3.0999999999999996,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -142,
+            "polygonOffsetUnits": -142
           },
           {
             "name": "LOGISTICS__L6-SOUTH-DOCK-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7709,7 +8342,11 @@
             "widthEnd": 6.5,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -144,
+            "polygonOffsetUnits": -144
           },
           {
             "name": "LOGISTICS__L6-SOUTH-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7719,7 +8356,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -146,
+            "polygonOffsetUnits": -146
           },
           {
             "name": "LOGISTICS__L6-NORTH-DOCK-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7729,7 +8370,11 @@
             "widthEnd": 5,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -148,
+            "polygonOffsetUnits": -148
           },
           {
             "name": "LOGISTICS__L6-NORTH-DOCK-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7739,7 +8384,11 @@
             "widthEnd": 8.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -150,
+            "polygonOffsetUnits": -150
           },
           {
             "name": "LOGISTICS__L6-WEST-STAFF-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7749,7 +8398,11 @@
             "widthEnd": 3.0999999999999996,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -152,
+            "polygonOffsetUnits": -152
           },
           {
             "name": "LOGISTICS__L7-WORKSHOP-FRONT-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7759,7 +8412,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -154,
+            "polygonOffsetUnits": -154
           },
           {
             "name": "LOGISTICS__L7-WORKSHOP-FRONT-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7769,7 +8426,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -156,
+            "polygonOffsetUnits": -156
           },
           {
             "name": "LOGISTICS__L7-REAR-YARD-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7779,7 +8440,11 @@
             "widthEnd": 5.184,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -158,
+            "polygonOffsetUnits": -158
           },
           {
             "name": "LOGISTICS__L7-REAR-YARD-TO-CORRIDOR__CONTINUOUS_SURFACE",
@@ -7789,7 +8454,11 @@
             "widthEnd": 8.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -160,
+            "polygonOffsetUnits": -160
           },
           {
             "name": "LOGISTICS__L7-WEST-PERSONNEL-HARDSTAND__CONTINUOUS_SURFACE",
@@ -7799,7 +8468,11 @@
             "widthEnd": 3.0999999999999996,
             "logisticsPlatform": true,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -162,
+            "polygonOffsetUnits": -162
           },
           {
             "name": "LOGISTICS__FREIGHT-SPINE__CONTINUOUS_SURFACE",
@@ -7809,7 +8482,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -164,
+            "polygonOffsetUnits": -164
           },
           {
             "name": "LOGISTICS__SECURE-YARD-COLLECTOR__CONTINUOUS_SURFACE",
@@ -7819,7 +8496,11 @@
             "widthEnd": 8.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -166,
+            "polygonOffsetUnits": -166
           },
           {
             "name": "LOGISTICS__TERMINAL-ARRIVALS-LOOP__CONTINUOUS_SURFACE",
@@ -7829,7 +8510,11 @@
             "widthEnd": 6.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -168,
+            "polygonOffsetUnits": -168
           },
           {
             "name": "LOGISTICS__AIRSIDE-SERVICE-LANE__CONTINUOUS_SURFACE",
@@ -7839,7 +8524,11 @@
             "widthEnd": 6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -170,
+            "polygonOffsetUnits": -170
           },
           {
             "name": "LOGISTICS__FREIGHT-YARD-CHECKPOINT__CONTINUOUS_SURFACE",
@@ -7849,7 +8538,11 @@
             "widthEnd": 7.2,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -172,
+            "polygonOffsetUnits": -172
           },
           {
             "name": "LOGISTICS__SECURE-AIRSIDE-CHECKPOINT__CONTINUOUS_SURFACE",
@@ -7859,7 +8552,11 @@
             "widthEnd": 6,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -174,
+            "polygonOffsetUnits": -174
           },
           {
             "name": "LOGISTICS__PARKING-PASSENGER-GATEWAY__CONTINUOUS_SURFACE",
@@ -7869,7 +8566,11 @@
             "widthEnd": 6.4,
             "logisticsPlatform": false,
             "districtTransition": false,
-            "color": "656d70"
+            "color": "656d70",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -176,
+            "polygonOffsetUnits": -176
           },
           {
             "name": "LOGISTICS__LOGISTICS-RING-TRANSITION-276__CONTINUOUS_SURFACE",
@@ -7879,7 +8580,11 @@
             "widthEnd": 1.55,
             "logisticsPlatform": false,
             "districtTransition": true,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -178,
+            "polygonOffsetUnits": -178
           },
           {
             "name": "LOGISTICS__LOGISTICS-RING-TRANSITION-300__CONTINUOUS_SURFACE",
@@ -7889,7 +8594,11 @@
             "widthEnd": 1.55,
             "logisticsPlatform": false,
             "districtTransition": true,
-            "color": "383f42"
+            "color": "383f42",
+            "terrainDepthBias": true,
+            "polygonOffset": true,
+            "polygonOffsetFactor": -180,
+            "polygonOffsetUnits": -180
           }
         ],
         "roads": [
@@ -11680,7 +12389,7 @@
               43.94782092594002
             ],
             "segmentIndex": 1,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11701,7 +12410,7 @@
               42.891180909622605
             ],
             "segmentIndex": 2,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11722,7 +12431,7 @@
               41.83336349970896
             ],
             "segmentIndex": 3,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11743,7 +12452,7 @@
               40.78189523616757
             ],
             "segmentIndex": 4,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11764,7 +12473,7 @@
               39.73465973687436
             ],
             "segmentIndex": 5,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11785,7 +12494,7 @@
               38.689540619705234
             ],
             "segmentIndex": 6,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11806,7 +12515,7 @@
               37.6444215025361
             ],
             "segmentIndex": 7,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11827,7 +12536,7 @@
               36.597186003242896
             ],
             "segmentIndex": 8,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11848,7 +12557,7 @@
               35.5457177397015
             ],
             "segmentIndex": 9,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11869,7 +12578,7 @@
               34.487900329787855
             ],
             "segmentIndex": 10,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11890,7 +12599,7 @@
               33.421617391377865
             ],
             "segmentIndex": 11,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11911,7 +12620,7 @@
               32.34475254234744
             ],
             "segmentIndex": 12,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11932,7 +12641,7 @@
               31.255189400572494
             ],
             "segmentIndex": 13,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11953,7 +12662,7 @@
               30.15081158392896
             ],
             "segmentIndex": 14,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11974,7 +12683,7 @@
               29.029502710292718
             ],
             "segmentIndex": 15,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -11995,7 +12704,7 @@
               27.889146397539704
             ],
             "segmentIndex": 16,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12016,7 +12725,7 @@
               26.727626263545822
             ],
             "segmentIndex": 17,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12037,7 +12746,7 @@
               25.542825926186993
             ],
             "segmentIndex": 18,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12058,7 +12767,7 @@
               24.348380253176543
             ],
             "segmentIndex": 19,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12079,7 +12788,7 @@
               23.131224265354355
             ],
             "segmentIndex": 20,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12100,7 +12809,7 @@
               21.89342253679422
             ],
             "segmentIndex": 21,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12121,7 +12830,7 @@
               20.637039641569928
             ],
             "segmentIndex": 22,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12142,7 +12851,7 @@
               19.364140153755283
             ],
             "segmentIndex": 23,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12163,7 +12872,7 @@
               18.076788647424074
             ],
             "segmentIndex": 24,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12184,7 +12893,7 @@
               16.7770496966501
             ],
             "segmentIndex": 25,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12205,7 +12914,7 @@
               15.466987875507149
             ],
             "segmentIndex": 26,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12226,7 +12935,7 @@
               14.148667758069019
             ],
             "segmentIndex": 27,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12247,7 +12956,7 @@
               12.824153918409506
             ],
             "segmentIndex": 28,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12268,7 +12977,7 @@
               11.4955109306024
             ],
             "segmentIndex": 29,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12289,7 +12998,7 @@
               10.164803368721502
             ],
             "segmentIndex": 30,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12310,7 +13019,7 @@
               8.834095806840605
             ],
             "segmentIndex": 31,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12331,7 +13040,7 @@
               7.505452819033508
             ],
             "segmentIndex": 32,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12352,7 +13061,7 @@
               6.180938979373995
             ],
             "segmentIndex": 33,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12373,7 +13082,7 @@
               4.862618861935862
             ],
             "segmentIndex": 34,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12394,7 +13103,7 @@
               3.552557040792911
             ],
             "segmentIndex": 35,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12415,7 +13124,7 @@
               2.252818090018934
             ],
             "segmentIndex": 36,
-            "surfaceOffset": 0,
+            "surfaceOffset": 0.001,
             "underBuildingPodium": false
           },
           {
@@ -12471,8 +13180,8 @@
       ],
       "clearOfBuildingPodium": true,
       "e2ApronCount": 1,
-      "e2ApronSurfaceOffset": 0,
-      "e2ApronTopY": 1.6440000001862647,
+      "e2ApronSurfaceOffset": 0.003,
+      "e2ApronTopY": 1.6470000001862646,
       "welcomePlazaTopY": 1.6329999997764826,
       "e2BaseTopY": 1.9816800027418138,
       "innerCollectorMinimumRadius": 317.99999999999994,
@@ -12505,6 +13214,45 @@
       "welcomeForkLandscapeClearance": 16.000000000000036,
       "welcomeLoopAccessPointCount": 4,
       "welcomeLoopArcCount": 4,
+      "welcomeForkCap": {
+        "present": true,
+        "coversCoplanarOverlap": true,
+        "connectedRoutes": [
+          "arrival",
+          "arrival-entry-branch",
+          "arrival-logistics-branch",
+          "e2-door-apron"
+        ],
+        "surfaceOffset": 0.0046,
+        "surfaceElevation": 0.0386,
+        "radius": 4.35,
+        "walkable": true,
+        "terrainDepthBias": true,
+        "polygonOffset": true,
+        "polygonOffsetFactor": -1000
+      },
+      "welcomeForkSurfaceElevations": [
+        {
+          "routeId": "arrival",
+          "surfaceOffset": 0,
+          "surfaceElevation": 0.034
+        },
+        {
+          "routeId": "arrival-entry-branch",
+          "surfaceOffset": 0.001,
+          "surfaceElevation": 0.035
+        },
+        {
+          "routeId": "arrival-logistics-branch",
+          "surfaceOffset": 0.004,
+          "surfaceElevation": 0.038000000000000006
+        },
+        {
+          "routeId": "e2-door-apron",
+          "surfaceOffset": 0.003,
+          "surfaceElevation": 0.037000000000000005
+        }
+      ],
       "welcomeForkMedian": true,
       "welcomeForkBranches": [
         "Entry and Commercial",
@@ -12528,7 +13276,11 @@
         "widthEnd": 4.2,
         "logisticsPlatform": false,
         "districtTransition": false,
-        "color": "e2e1d6"
+        "color": "e2e1d6",
+        "terrainDepthBias": true,
+        "polygonOffset": true,
+        "polygonOffsetFactor": -560,
+        "polygonOffsetUnits": -560
       }
     },
     "bridge": {
@@ -12629,7 +13381,7 @@
       "ringAccessPoints": [
         {
           "name": "ENTRY__WELCOME_LOOP_ACCESS_FRONT",
-          "ground": 1.7053963624936885,
+          "ground": 1.7078509087149665,
           "clear": true
         },
         {
@@ -12652,12 +13404,12 @@
       "blockedWalkSteps": 0,
       "maximumWalkTargetError": 0,
       "minimumGround": 1.6510000001862646,
-      "maximumGround": 2.0092799996915462,
+      "maximumGround": 1.9931800000856819,
       "maximumGroundDrop": 0,
       "eyeHeightWorld": 0.16199999999999992,
       "endLocal": [
         0,
-        1.2201739123729265,
+        1.1851739132297432,
         0
       ],
       "interiorVisible": true,
@@ -12676,9 +13428,9 @@
           -8.979899330782018
         ],
         "interiorTarget": [
-          -38.088579246254284,
+          -42.213579246254284,
           0.37168,
-          -3.2641316658047117
+          3.880577915416893
         ],
         "finishedFloorY": 0.808,
         "doorwayWidth": 4.5,
@@ -12690,8 +13442,8 @@
       "staircaseMetadata": {
         "walkableStaircase": true,
         "stepCount": 11,
-        "worldRiserHeight": 0.030698181818181822,
-        "startsAtRoadTop": 0.034,
+        "worldRiserHeight": 0.030425454545454554,
+        "startsAtRoadTop": 0.037000000000000005,
         "endsAtFinishedFloor": 0.37168000000000007,
         "selectableId": "entry-logistics-building-e2",
         "individualSelectableId": "entry-logistics-building-e2",
@@ -12702,7 +13454,7 @@
         "featureRole": "building"
       },
       "continuousNavigationSurface": true,
-      "podiumCollisionSegmentCount": 68,
+      "podiumCollisionSegmentCount": 72,
       "preventsUnderPodiumAccess": true,
       "missingStepGround": 0,
       "maximumStepGroundRise": 0,
@@ -12796,14 +13548,41 @@
           -4.199999999999932
         ],
         "side": "left",
+        "selectableRegistration": {
+          "registered": true,
+          "category": "entry-logistics-landscape",
+          "name": "Welcome Half-Covered Pool",
+          "parentDistrictId": "entry-commercial",
+          "editable": true,
+          "selectableId": "entry-logistics-landscape-welcome-pool",
+          "mistaggedDescendants": 0,
+          "canEnterInterior": false,
+          "scale3D": {
+            "x": 1,
+            "y": 1,
+            "z": 1
+          }
+        },
+        "halfCovered": true,
+        "roofCoverageRatio": 0.5,
+        "roofPresent": true,
+        "roofThetaLength": 3.141592653589793,
+        "roofSizeWorld": [
+          1.9482062071568578,
+          0.054999999701976776,
+          1.4029922745090744
+        ],
+        "roofSupportCount": 4,
+        "roofSupportsGrounded": true,
+        "deckWalkable": true,
         "smallWaves": true,
         "physicalWaterMaterial": true,
-        "animationAdvance": 2.799999999999841,
-        "animatedVertexCount": 702,
+        "animationAdvance": 2.0999999999998806,
+        "animatedVertexCount": 705,
         "sizeWorld": [
-          0.8966806290976024,
-          0.011403520125895739,
-          0.7543769579307309
+          1.6743879460917697,
+          0.011672962456941605,
+          1.3903567129300427
         ]
       },
       "poolTableCount": 3,
@@ -12895,8 +13674,8 @@
     },
     "welcomeRoadEdge": {
       "shoulderGround": 1.6099999999999859,
-      "apronGround": 1.644000001847744,
-      "rise": 0.0340000018477582,
+      "apronGround": 1.6470000004768373,
+      "rise": 0.03700000047685137,
       "blockedSteps": 0,
       "endOffset": 0
     },
@@ -12916,13 +13695,11 @@
         "doorwayEndGap": 0,
         "endLocal": [
           0,
-          1.1757248240444014,
-          0
+          1.155173913229742,
+          4.819999999999993
         ],
-        "visibleInteriors": [
-          "ENTRY__E2__WELCOME_REGISTRATION_INTERIOR"
-        ],
-        "roomId": "welcome-registration-hall",
+        "visibleInteriors": [],
+        "roomId": "outside",
         "disabledAggregateObjectCount": 0,
         "disabledAggregateObjectsValid": true
       },
@@ -13856,6 +14633,8 @@
           "z": 1
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -13875,6 +14654,8 @@
           "z": 1
         },
         "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
         "accent": "#FF5ACD",
         "styleCustomized": false,
         "collisionEnabled": true,
@@ -14256,7 +15037,8 @@
           -0.5,
           0,
           0.866
-        ]
+        ],
+        "safetyRecoveries": 1
       }
     },
     "welcomeKeyboard": {
@@ -14267,7 +15049,7 @@
       ],
       "endLocal": [
         -1.3197558987683253e-12,
-        1.220173912372925,
+        1.1851739132297407,
         -0.30000000001666655
       ],
       "interiorVisible": true,

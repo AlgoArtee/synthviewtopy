@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import type { DistrictDefinition } from '../data/districts';
-import { metresToWorldUnits } from '../config/island';
+import { metresToWorldUnits, WALK_RADIUS } from '../config/island';
 import { getCyberCityBridgeAlignment } from './environment';
+import { buildWelcomeRegistrationInterior } from './welcomeRegistrationInterior';
 
 const FLOOR_Y = metresToWorldUnits(0.08);
 const DEG = Math.PI / 180;
@@ -2277,6 +2278,7 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
   base.scale.z = 0.68;
   base.userData.navObstacle = false;
   base.userData.walkable = true;
+  base.userData.preventUnderwalk = true;
   base.userData.surfaceKind = 'stone';
   base.userData.libraryRoom = 'welcome-registration-hall';
 
@@ -2403,6 +2405,32 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
   ) * FACILITY_VERTICAL_SCALE;
   staircase.add(stairNavigationSurface);
 
+  // This invisible volume is not a collider. It identifies the one deliberate
+  // route through the raised podium so the global under-walk guard can reject
+  // every other lower-layer position beneath the Hall without blocking the
+  // visible staircase or its continuous navigation surface.
+  const stairAccessDepth = navigationOuterEdge - navigationInnerEdge;
+  const stairAccess = addBox(
+    staircase,
+    'ENTRY__E2__STAIRCASE_NAVIGATION_ACCESS',
+    [
+      stairWidth + WALK_RADIUS * 2,
+      2.8,
+      stairAccessDepth + WALK_RADIUS * 2,
+    ],
+    mats.paleStone,
+    [
+      0,
+      roadTopLocal - 0.05,
+      (navigationOuterEdge + navigationInnerEdge) * 0.5,
+    ],
+    { obstacle: false, castShadow: false },
+  );
+  stairAccess.visible = false;
+  stairAccess.userData.navAccess = true;
+  stairAccess.userData.allowUnderwalk = true;
+  stairAccess.userData.accessKind = 'welcome-hall-staircase';
+
   for (const side of [-1, 1]) {
     const leaf = addBox(
       facility,
@@ -2474,14 +2502,23 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
   }> = [];
   const podiumRadiusX = 6.45;
   const podiumRadiusZ = 4.38;
+  const stairOpeningRightAngle = Math.acos((stairWidth * 0.5) / podiumRadiusX);
+  const stairOpeningLeftAngle = Math.PI - stairOpeningRightAngle;
+  const podiumAngles = Array.from(
+    new Set([
+      ...Array.from({ length: glassPanelCount }, (_, index) => index * glassPanelStep),
+      stairOpeningRightAngle,
+      stairOpeningLeftAngle,
+    ].map((angle) => Number(angle.toFixed(12)))),
+  ).sort((a, b) => a - b);
   for (const barrierY of [FLOOR_Y + 0.23, FLOOR_Y + 0.5]) {
-    for (let index = 0; index < glassPanelCount; index += 1) {
-      const angle = index * glassPanelStep;
-      const nextAngle = (index + 1) * glassPanelStep;
-      const midpoint = angle + glassPanelStep * 0.5;
-      const midpointX = Math.cos(midpoint) * podiumRadiusX;
-      const midpointZ = Math.sin(midpoint) * podiumRadiusZ;
-      if (midpointZ > podiumRadiusZ * 0.68 && Math.abs(midpointX) < stairWidth * 0.5 + 0.2) continue;
+    for (let index = 0; index < podiumAngles.length; index += 1) {
+      const angle = podiumAngles[index];
+      const nextAngle = index === podiumAngles.length - 1
+        ? podiumAngles[0] + Math.PI * 2
+        : podiumAngles[index + 1];
+      const midpoint = (angle + nextAngle) * 0.5;
+      if (midpoint > stairOpeningRightAngle && midpoint < stairOpeningLeftAngle) continue;
       podiumBarrierSegments.push({
         start: [Math.cos(angle) * podiumRadiusX, barrierY, Math.sin(angle) * podiumRadiusZ],
         end: [Math.cos(nextAngle) * podiumRadiusX, barrierY, Math.sin(nextAngle) * podiumRadiusZ],
@@ -2494,53 +2531,12 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
   podiumCollision.userData.preventsUnderPodiumAccess = true;
   facility.add(podiumCollision);
 
-  const interior = new THREE.Group();
-  interior.name = 'ENTRY__E2__WELCOME_REGISTRATION_INTERIOR';
-  interior.userData.runtimeInterior = true;
-  interior.userData.roomId = 'welcome-registration-hall';
-  interior.visible = false;
-  facility.add(interior);
-  const interiorFloor = addCylinder(
-    interior,
-    'ENTRY__E2__INTERIOR_TERRAZZO_FLOOR',
-    5.78,
-    0.06,
-    mats.whiteMetal,
-    [0, FLOOR_Y + 0.8, 0],
-    48,
-    false,
-  );
-  interiorFloor.scale.z = 0.64;
-  interiorFloor.userData.walkable = true;
-  interiorFloor.userData.surfaceKind = 'stone';
-  interiorFloor.userData.libraryRoom = 'welcome-registration-hall';
-  addBox(
-    interior,
-    'ENTRY__E2__CURVED_REGISTRATION_DESK',
-    [3.4, 0.22, 0.34],
-    mats.bronze,
-    [0, FLOOR_Y + 0.86, -1.75],
-    { obstacle: true },
-  );
-  for (const x of [-3.6, 3.6]) {
-    addBox(
-      interior,
-      `ENTRY__E2__SELF_REGISTRATION_KIOSK_${x < 0 ? 'WEST' : 'EAST'}`,
-      [0.32, 0.38, 0.22],
-      mats.darkBronze,
-      [x, FLOOR_Y + 0.86, 0.2],
-      { obstacle: true },
-    );
-    addBox(
-      interior,
-      `ENTRY__E2__KIOSK_SCREEN_${x < 0 ? 'WEST' : 'EAST'}`,
-      [0.27, 0.14, 0.025],
-      mats.coolLight,
-      [x, FLOOR_Y + 1.08, 0.32],
-      { obstacle: false, castShadow: false },
-    );
-  }
-  addSign(
+  const interior = buildWelcomeRegistrationInterior(facility, {
+    floorY: FLOOR_Y + 0.8,
+    verticalScale: FACILITY_VERTICAL_SCALE,
+    frontDoorZ: glassRadiusZ,
+  });
+  const legacyInteriorDirectory = addSign(
     interior,
     'ENTRY__E2__INTERIOR_WELCOME_DIRECTORY',
     'WELCOME',
@@ -2549,11 +2545,12 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
     [0, FLOOR_Y + 1.42, -3.55],
     true,
   );
+  legacyInteriorDirectory.visible = false;
+  legacyInteriorDirectory.removeFromParent();
   facility.userData.footprint = [13.0, 8.4];
   facility.userData.accessibleInWalk = true;
   facility.userData.authoredInterior = true;
   facility.userData.welcomeDoorCount = 1;
-  facility.userData.welcomeInteriorRoomCount = 1;
   facility.userData.welcomeDnaColumnCount = dnaColumnAngles.length;
   facility.userData.welcomeEntryStairCount = stairCount;
 }

@@ -1,0 +1,198 @@
+{
+  "authored": {
+    "id": "imported-bundle-interior-test-ms1yullh-1",
+    "parentBuildingId": "entry-logistics-building-e2",
+    "state": {
+      "position": {
+        "x": 1.234,
+        "y": 0.8325,
+        "z": -13.908
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#b7f34b",
+      "primaryColor": "#ffffff",
+      "secondaryColor": "#74858a",
+      "patternType": "solid",
+      "patternScale": 1,
+      "styleCustomized": true,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 1,
+      "savedAt": "2026-07-26T15:41:56.366Z",
+      "source": "current",
+      "recoveryRevisionCount": 1,
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    }
+  },
+  "restored": {
+    "definition": {
+      "id": "imported-bundle-interior-test-ms1yullh-1",
+      "name": "bundle-interior-test",
+      "sourceLabel": "bundle-interior-test.glb",
+      "category": "imported",
+      "ring": "custom",
+      "position": [
+        -4.56,
+        0.8325,
+        -13.908
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "height": 1.15,
+      "archetype": "Imported GLB asset",
+      "accent": "#b7f34b",
+      "palette": [
+        "#11181a",
+        "#344246",
+        "#c9d3d0",
+        "#b7f34b"
+      ],
+      "description": "Editable mesh imported from bundle-interior-test.glb; its hierarchy and PBR materials are preserved for re-export inside this building.",
+      "workspace": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "assetId": "sha256-edc230fd4850f54e05902c6c1d615d4d4b34ef4c46998e788d22cc99ead70a47",
+      "assetSha256": "edc230fd4850f54e05902c6c1d615d4d4b34ef4c46998e788d22cc99ead70a47",
+      "assetFilename": "bundle-interior-test.glb",
+      "assetFormat": "glb",
+      "assetDependencies": [
+        {
+          "assetId": "sha256-edc230fd4850f54e05902c6c1d615d4d4b34ef4c46998e788d22cc99ead70a47",
+          "sha256": "edc230fd4850f54e05902c6c1d615d4d4b34ef4c46998e788d22cc99ead70a47",
+          "filename": "bundle-interior-test.glb",
+          "extension": "glb",
+          "mimeType": "model/gltf-binary",
+          "byteLength": 488
+        }
+      ],
+      "state": {
+        "position": {
+          "x": 1.234,
+          "y": 0.8325,
+          "z": -13.908
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "scale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "visibilityIntent": "visible",
+        "accent": "#b7f34b",
+        "primaryColor": "#ffffff",
+        "secondaryColor": "#74858a",
+        "patternType": "solid",
+        "patternScale": 1,
+        "styleCustomized": true,
+        "collisionEnabled": true,
+        "interactions": []
+      }
+    },
+    "parentIsWelcomeInterior": true,
+    "state": {
+      "position": {
+        "x": 1.234,
+        "y": 0.8325,
+        "z": -13.908
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#b7f34b",
+      "primaryColor": "#ffffff",
+      "secondaryColor": "#74858a",
+      "patternType": "solid",
+      "patternScale": 1,
+      "styleCustomized": true,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "xRestored": true,
+    "integrity": {
+      "entry": {
+        "expected": 13,
+        "present": 13,
+        "userHiddenIds": [],
+        "effectivelyVisibleIds": [
+          "entry-logistics-building-e1",
+          "entry-logistics-building-e2",
+          "entry-logistics-building-e3",
+          "entry-logistics-building-e4",
+          "entry-logistics-building-e5",
+          "entry-logistics-building-e6",
+          "entry-logistics-building-e7",
+          "entry-logistics-building-e8",
+          "entry-logistics-building-e9",
+          "entry-logistics-building-e10",
+          "entry-logistics-building-e11",
+          "entry-logistics-building-e12",
+          "entry-logistics-building-e13"
+        ]
+      },
+      "logistics": {
+        "expected": 7,
+        "present": 7,
+        "userHiddenIds": [],
+        "effectivelyVisibleIds": [
+          "entry-logistics-building-l1",
+          "entry-logistics-building-l2",
+          "entry-logistics-building-l3",
+          "entry-logistics-building-l4",
+          "entry-logistics-building-l5",
+          "entry-logistics-building-l6",
+          "entry-logistics-building-l7"
+        ]
+      },
+      "welcomePool": {
+        "expected": true,
+        "present": true,
+        "visibilityIntent": "visible",
+        "effectivelyVisible": true
+      }
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 4,
+      "savedAt": "2026-07-26T15:42:15.290Z",
+      "source": "current",
+      "recoveryRevisionCount": 4,
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    }
+  },
+  "corruption": {
+    "rejected": true,
+    "message": "The project bundle manifest or project checksum is invalid."
+  },
+  "errors": []
+}

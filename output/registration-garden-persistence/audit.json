@@ -1,0 +1,418 @@
+{
+  "lazyBeforeEntry": {
+    "interiorVisible": false,
+    "state": "unloaded",
+    "hasLoadedModel": false,
+    "selectableId": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1"
+  },
+  "firstLoad": {
+    "selectableId": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+    "definition": {
+      "id": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+      "name": "E2 Living Index Scientific Garden",
+      "sourceLabel": "Welcome and Registration Hall / authored interior",
+      "category": "authored-interior",
+      "ring": "building-interior",
+      "position": [
+        0.75,
+        0,
+        -12.4
+      ],
+      "footprint": [
+        2.100474067593666,
+        2.422643034999396
+      ],
+      "height": 0.4954839725376319,
+      "archetype": "Authored interior component",
+      "accent": "#43624d",
+      "palette": [
+        "#10191b",
+        "#74858a",
+        "#f3efe3",
+        "#43624d"
+      ],
+      "description": "Editable authored component inside Welcome and Registration Hall. Its transform is shared by Edit and WALK modes.",
+      "workspace": "interior",
+      "assetKind": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "authoredObjectName": "ENTRY__E2__LIVING_INDEX_SCIENTIFIC_GARDEN",
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "state": {
+      "position": {
+        "x": 0.75,
+        "y": 0,
+        "z": -12.4
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#43624d",
+      "styleCustomized": false,
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "assetUrl": "/assets/interiors/registration-hall/garden.glb",
+    "sha256": "19b639141178cf50726c8fc515caea5b83cd8a661f97552db969fd1e6d591144",
+    "projectAssetState": "loaded",
+    "sourceSize": [
+      18.58199918270111,
+      4.8245000801980495,
+      13.316000163555145
+    ],
+    "fittedSize": [
+      2.0994051876572826,
+      0.4850000000000001,
+      2.2892159531649554
+    ],
+    "targetSize": [
+      1.34,
+      1.0543478260869565,
+      1.88
+    ],
+    "rotatedToGardenAxis": true,
+    "fallbackHidden": true,
+    "visibleFallbackCount": 0,
+    "meshCount": 6389,
+    "materialCount": 25,
+    "navObstacleCount": 0,
+    "walkableCount": 0,
+    "visibleMeshCount": 6389,
+    "effectivelyVisible": true,
+    "interiorVisible": true,
+    "modelChildCount": 6389
+  },
+  "edited": {
+    "before": {
+      "position": {
+        "x": 0.75,
+        "y": 0,
+        "z": -12.4
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#43624d",
+      "styleCustomized": false,
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "after": {
+      "position": {
+        "x": 0.83,
+        "y": 0,
+        "z": -12.4
+      },
+      "rotationY": 5.5,
+      "scale": 0.94,
+      "scale3D": {
+        "x": 0.94,
+        "y": 0.94,
+        "z": 0.94
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#43624d",
+      "styleCustomized": false,
+      "collisionEnabled": false,
+      "interactions": []
+    }
+  },
+  "savedPayload": {
+    "object": {
+      "id": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+      "name": "E2 Living Index Scientific Garden",
+      "sourceLabel": "Welcome and Registration Hall / authored interior",
+      "category": "authored-interior",
+      "ring": "building-interior",
+      "position": [
+        0.75,
+        0,
+        -12.4
+      ],
+      "footprint": [
+        2.100474067593666,
+        2.422643034999396
+      ],
+      "height": 0.4954839725376319,
+      "archetype": "Authored interior component",
+      "accent": "#43624d",
+      "palette": [
+        "#10191b",
+        "#74858a",
+        "#f3efe3",
+        "#43624d"
+      ],
+      "description": "Editable authored component inside Welcome and Registration Hall. Its transform is shared by Edit and WALK modes.",
+      "workspace": "interior",
+      "assetKind": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "authoredObjectName": "ENTRY__E2__LIVING_INDEX_SCIENTIFIC_GARDEN",
+      "collisionEnabled": false,
+      "interactions": [],
+      "state": {
+        "position": {
+          "x": 0.83,
+          "y": 0,
+          "z": -12.4
+        },
+        "rotationY": 5.5,
+        "scale": 0.94,
+        "scale3D": {
+          "x": 0.94,
+          "y": 0.94,
+          "z": 0.94
+        },
+        "visibilityIntent": "visible",
+        "accent": "#43624d",
+        "styleCustomized": false,
+        "collisionEnabled": false,
+        "interactions": []
+      }
+    },
+    "gardenImports": []
+  },
+  "restoredBeforeLoad": {
+    "state": "unloaded",
+    "transform": {
+      "position": {
+        "x": 0.83,
+        "y": 0,
+        "z": -12.4
+      },
+      "rotationY": 5.5,
+      "scale": 0.94,
+      "scale3D": {
+        "x": 0.94,
+        "y": 0.94,
+        "z": 0.94
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#43624d",
+      "styleCustomized": false,
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "definition": {
+      "id": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+      "name": "E2 Living Index Scientific Garden",
+      "sourceLabel": "Welcome and Registration Hall / authored interior",
+      "category": "authored-interior",
+      "ring": "building-interior",
+      "position": [
+        0.75,
+        0,
+        -12.4
+      ],
+      "footprint": [
+        2.100474067593666,
+        2.422643034999396
+      ],
+      "height": 0.4954839725376319,
+      "archetype": "Authored interior component",
+      "accent": "#43624d",
+      "palette": [
+        "#10191b",
+        "#74858a",
+        "#f3efe3",
+        "#43624d"
+      ],
+      "description": "Editable authored component inside Welcome and Registration Hall. Its transform is shared by Edit and WALK modes.",
+      "workspace": "interior",
+      "assetKind": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "authoredObjectName": "ENTRY__E2__LIVING_INDEX_SCIENTIFIC_GARDEN",
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "interiorVisible": false
+  },
+  "restored": {
+    "selectableId": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+    "definition": {
+      "id": "authored-interior-entry-logistics-building-e2-entry-e2-living-index-scientific-garden-1",
+      "name": "E2 Living Index Scientific Garden",
+      "sourceLabel": "Welcome and Registration Hall / authored interior",
+      "category": "authored-interior",
+      "ring": "building-interior",
+      "position": [
+        0.75,
+        0,
+        -12.4
+      ],
+      "footprint": [
+        2.100474067593666,
+        2.422643034999396
+      ],
+      "height": 0.4954839725376319,
+      "archetype": "Authored interior component",
+      "accent": "#43624d",
+      "palette": [
+        "#10191b",
+        "#74858a",
+        "#f3efe3",
+        "#43624d"
+      ],
+      "description": "Editable authored component inside Welcome and Registration Hall. Its transform is shared by Edit and WALK modes.",
+      "workspace": "interior",
+      "assetKind": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "authoredObjectName": "ENTRY__E2__LIVING_INDEX_SCIENTIFIC_GARDEN",
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "state": {
+      "position": {
+        "x": 0.83,
+        "y": 0,
+        "z": -12.4
+      },
+      "rotationY": 5.5,
+      "scale": 0.94,
+      "scale3D": {
+        "x": 0.94,
+        "y": 0.94,
+        "z": 0.94
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#43624d",
+      "styleCustomized": false,
+      "collisionEnabled": false,
+      "interactions": []
+    },
+    "assetUrl": "/assets/interiors/registration-hall/garden.glb",
+    "sha256": "19b639141178cf50726c8fc515caea5b83cd8a661f97552db969fd1e6d591144",
+    "projectAssetState": "loaded",
+    "sourceSize": [
+      18.58199918270111,
+      4.8245000801980495,
+      13.316000163555145
+    ],
+    "fittedSize": [
+      1.8794865530439608,
+      0.45589999999999997,
+      2.1209093561022314
+    ],
+    "targetSize": [
+      1.34,
+      1.0543478260869565,
+      1.88
+    ],
+    "rotatedToGardenAxis": true,
+    "fallbackHidden": true,
+    "visibleFallbackCount": 0,
+    "meshCount": 6389,
+    "materialCount": 25,
+    "navObstacleCount": 0,
+    "walkableCount": 0,
+    "visibleMeshCount": 6389,
+    "effectivelyVisible": true,
+    "interiorVisible": true,
+    "modelChildCount": 6389
+  },
+  "assetRequestCount": 2,
+  "finalWalk": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      166.089,
+      2.155,
+      -293.935
+    ],
+    "positionMetres": [
+      1660.9,
+      21.6,
+      -2939.4
+    ],
+    "groundY": 1.993,
+    "surfaceKind": "terrazzo",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0.866,
+      0.013,
+      0.5
+    ],
+    "safetyRecoveries": 0,
+    "nearbyDistricts": [
+      "E2 Central Scientific Installation",
+      "E2 Credential Lab Modular Workbenches",
+      "E2 Credential Lab Badge Printers And Small Machines",
+      "E2 Credential Lab Robotic Storage",
+      "E2 Interactive Orientation Table",
+      "E2 Interactive Orientation Table",
+      "E2 Interactive Orientation Table",
+      "E2 Interactive Orientation Table",
+      "E2 Living Index Scientific Garden",
+      "E2 Low Security Console West",
+      "E2 Low Security Console East",
+      "E2 Transit Concourse Directory",
+      "E2 Upper Level Directory",
+      "E2 Upper Science Gallery Transparent Bioreactor Plinth",
+      "E2 Upper Science Gallery Robotic Mechanisms Plinth",
+      "E2 Upper Science Gallery Geological Cores Plinth",
+      "E2 Upper Science Gallery Environmental Sensors Plinth",
+      "E2 Upper Institutional Meeting Room 1 Collaboration Table",
+      "E2 Upper Institutional Meeting Room 1 Collaboration Table Pedestal",
+      "E2 Upper Institutional Meeting Room 1 Shared Display",
+      "E2 Upper Institutional Meeting Room 2 Collaboration Table",
+      "E2 Upper Institutional Meeting Room 2 Collaboration Table Pedestal",
+      "E2 Upper Institutional Meeting Room 2 Shared Display",
+      "E2 Upper Quiet Low Stimulation Arrival Suite Low Stimulation Lounge",
+      "E2 Upper Quiet Low Stimulation Arrival Suite Low Stimulation Lounge 1 Back",
+      "E2 Upper Quiet Low Stimulation Arrival Suite Low Stimulation Lounge",
+      "E2 Upper Quiet Low Stimulation Arrival Suite Low Stimulation Lounge 2 Back",
+      "E2 Upper Quiet Low Stimulation Arrival Suite Low Stimulation Side Table"
+    ]
+  },
+  "runtimePolicies": {
+    "objectInteractionsEnabled": false,
+    "interiorRendering": "walk-inside-building-only",
+    "isolatedWalkInteriorActive": true,
+    "isolatedWalkInteriorName": "ENTRY__E2__WELCOME_REGISTRATION_INTERIOR",
+    "isolatedExteriorObjectCount": 113,
+    "exteriorProjectionCount": 6,
+    "authoredInteriorGroups": 21,
+    "visibleAuthoredInteriorGroups": 1,
+    "cerebrumInteriorRendered": false,
+    "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
+    "activeViewPolicy": "walk-exterior",
+    "userHiddenIds": [],
+    "runtimeHiddenCount": 139
+  },
+  "errors": [],
+  "warnings": []
+}

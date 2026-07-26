@@ -199,6 +199,11 @@ const collisionInput = required<HTMLInputElement>('#object-collision');
 const interactionOptionsContainer = required<HTMLElement>('#interaction-options');
 const saveProjectButton = required<HTMLButtonElement>('#save-project');
 const refreshProjectButton = required<HTMLButtonElement>('#refresh-project');
+const restoreWelcomeDistrictButton = required<HTMLButtonElement>('#restore-welcome-district');
+const projectBundleExportButton = required<HTMLButtonElement>('#project-bundle-export');
+const projectBundleImportButton = required<HTMLButtonElement>('#project-bundle-import');
+const projectBundleInput = required<HTMLInputElement>('#project-bundle-file');
+const relinkMissingAssetsButton = required<HTMLButtonElement>('#relink-missing-assets');
 const themeToggleButton = required<HTMLButtonElement>('#toggle-theme');
 const undoActionButton = required<HTMLButtonElement>('#undo-action');
 const envTimeSelect = required<HTMLSelectElement>('#env-time');
@@ -349,6 +354,7 @@ const categoryNames: Record<string, string> = {
   biome: 'Climate biome',
   imported: 'Imported asset',
   editor: 'Design studio asset',
+  'authored-interior': 'Authored interior component',
 };
 
 const groupOrder = [
@@ -532,9 +538,9 @@ function refreshEditWorkspaceUI() {
   deleteObjectButton.disabled = !currentSelection;
   addAssetButton.disabled = !selectedCatalogAssetId || (currentEditWorkspace === 'interior' && !insideInterior);
   editWorkspaceHint.textContent = insideInterior
-    ? 'Inside building — add, select, move, rotate, scale, import, or delete furnishings.'
+    ? 'Inside the real building interior — select, move, rotate, elongate, import, add, or delete furnishings.'
     : currentEditWorkspace === 'interior'
-      ? 'Select a building, choose Enter Interior, then furnish its editable room.'
+      ? 'Select a building and choose Enter Interior. Authored interiors open directly; other buildings use an editable fallback room.'
       : 'Choose an asset, then add and position it anywhere on the island.';
 }
 
@@ -608,7 +614,10 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
   inspectorContent.hidden = false;
   sceneCardTitle.textContent = definition.name;
   buildingAxisScaleField.hidden = definition.category !== 'entry-logistics-building'
-    && definition.category !== 'entry-logistics-landscape';
+    && definition.category !== 'entry-logistics-landscape'
+    && definition.category !== 'authored-interior'
+    && !(definition.category === 'editor' && definition.workspace === 'interior')
+    && !(definition.category === 'imported' && definition.workspace === 'interior');
   sceneCardCopy.textContent = `${categoryNames[definition.category] ?? definition.category} · ${definition.ring.replace('-', ' ')} · editable object group`;
   if (objectState) {
     updateTransformFields(objectState);
@@ -892,11 +901,24 @@ const world = new IslandWorld(viewport, {
     renderAssetLibrary();
     if (buildingId) {
       sceneCardTitle.textContent = world.getDefinition(buildingId)?.name ?? 'Building interior';
-      sceneCardCopy.textContent = 'Interior Design · isolated editable room · GLB-ready hierarchy';
+      sceneCardCopy.textContent = 'Interior Design · authored WALK geometry · isolated editable hierarchy';
     }
   },
   onUndoStackChange: (canUndo) => {
     undoActionButton.disabled = !canUndo;
+  },
+  onPersistenceChange: (snapshot) => {
+    const label = saveProjectButton.querySelector<HTMLElement>('.action-label');
+    if (label) label.textContent = snapshot.revision > 0 ? `Save · ${snapshot.revision}` : 'Save';
+    saveProjectButton.title = snapshot.savedAt
+      ? `Latest verified revision ${snapshot.revision} · ${new Date(snapshot.savedAt).toLocaleString()}`
+      : 'Save an atomic project revision';
+    saveProjectButton.dataset.persistenceStatus = snapshot.lastError ? 'warning' : 'ready';
+    const missingCount = snapshot.missingAssetIds.length + Number(snapshot.missingLegacyImportCount ?? 0);
+    relinkMissingAssetsButton.hidden = missingCount === 0;
+    relinkMissingAssetsButton.title = missingCount
+      ? `Relink ${missingCount} missing imported source asset${missingCount === 1 ? '' : 's'}`
+      : 'Relink source files that were not stored by an older project';
   },
   onReady: () => {
     // LocalStorage reconstruction is intentionally deferred until after the
@@ -1059,7 +1081,7 @@ enterInteriorButton.addEventListener('click', () => {
   if (world.enterInterior(currentSelection.id)) {
     currentEditWorkspace = 'interior';
     renderAssetLibrary();
-    toast('Interior Design active', `${buildingName} is open as an isolated, editable interior.`);
+    toast('Interior Design active', `${buildingName} is open as an isolated, editable interior shared with WALK mode.`);
   }
 });
 
@@ -1155,7 +1177,10 @@ Object.entries(axisScaleInputs).forEach(([axis, input]) => {
   input.addEventListener('change', () => {
     if (!currentSelection
       || (currentSelection.category !== 'entry-logistics-building'
-        && currentSelection.category !== 'entry-logistics-landscape')) return;
+        && currentSelection.category !== 'entry-logistics-landscape'
+        && currentSelection.category !== 'authored-interior'
+        && !(currentSelection.category === 'editor' && currentSelection.workspace === 'interior')
+        && !(currentSelection.category === 'imported' && currentSelection.workspace === 'interior'))) return;
     const value = THREE.MathUtils.clamp(Number(input.value), 0.25, 4);
     input.value = value.toFixed(2);
     world.setObjectAxisScale(currentSelection.id, axis as 'x' | 'y' | 'z', value);
@@ -1215,26 +1240,60 @@ interactionOptionsContainer.querySelectorAll<HTMLInputElement>('input[type="chec
   });
 });
 
-saveProjectButton.addEventListener('click', () => {
+saveProjectButton.addEventListener('click', async () => {
   if (currentSelection && !applyInspectorMetadata()) return;
-  world.saveProjectToLocalStorage();
-  toast('Project Saved', 'Names, labels, descriptions, layout, appearance, and behaviors saved to LocalStorage.');
+  saveProjectButton.disabled = true;
+  try {
+    const snapshot = await world.saveProjectToLocalStorage(true);
+    toast(
+      'Project Saved',
+      `Revision ${snapshot.revision} is verified. Scene state and imported assets are independent from view-mode visibility.`,
+    );
+  } catch (error) {
+    toast('Save failed', error instanceof Error ? error.message : 'The previous recovery revision remains available.', 'error', 5600);
+  } finally {
+    saveProjectButton.disabled = false;
+  }
 });
 
-refreshProjectButton.addEventListener('click', () => {
-  if (world.loadProjectFromLocalStorage()) {
-    syncDefinitionCacheFromWorld();
-    if (currentSelection) {
-      updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
+refreshProjectButton.addEventListener('click', async () => {
+  refreshProjectButton.disabled = true;
+  try {
+    if (await world.loadProjectFromPersistentStorage()) {
+      syncDefinitionCacheFromWorld();
+      if (currentSelection) {
+        updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
+      } else {
+        updateInspector(null);
+      }
+      syncEnvironmentUI();
+      syncFountainControlPanel();
+      syncCerebrumControls();
+      toast('Project Reloaded', 'The latest verified revision and imported assets were restored.');
     } else {
-      updateInspector(null);
+      toast('Load Failed', 'No verified project revision is available.', 'error');
     }
-    syncEnvironmentUI();
-    syncFountainControlPanel();
-    syncCerebrumControls();
-    toast('Project Reloaded', 'Successfully loaded from the last saved state.');
-  } else {
-    toast('Load Failed', 'No saved project found in LocalStorage.', 'error');
+  } catch (error) {
+    toast('Refresh failed', error instanceof Error ? error.message : 'The project could not be restored.', 'error', 5600);
+  } finally {
+    refreshProjectButton.disabled = false;
+  }
+});
+
+restoreWelcomeDistrictButton.addEventListener('click', async () => {
+  restoreWelcomeDistrictButton.disabled = true;
+  try {
+    const integrity = await world.restoreWelcomeDistrictDefaults();
+    syncDefinitionCacheFromWorld();
+    updateInspector(null);
+    toast(
+      'Welcome District Restored',
+      `${integrity.entry.present}/${integrity.entry.expected} buildings and the half-covered pool were rebuilt.`,
+    );
+  } catch (error) {
+    toast('Restore failed', error instanceof Error ? error.message : 'The Welcome District could not be restored.', 'error', 5600);
+  } finally {
+    restoreWelcomeDistrictButton.disabled = false;
   }
 });
 
@@ -1260,10 +1319,14 @@ editStudioCollapseButton.addEventListener('click', () => {
   editStudioCollapseButton.textContent = collapsed ? '▲' : '▼';
 });
 
-saveInspectorChangesButton.addEventListener('click', () => {
+saveInspectorChangesButton.addEventListener('click', async () => {
   if (!applyInspectorMetadata()) return;
-  world.saveProjectToLocalStorage();
-  toast('Changes Saved', 'Object name, scene label, description, inscription, customizations, and placement saved to LocalStorage.');
+  try {
+    const snapshot = await world.saveProjectToLocalStorage(true);
+    toast('Changes Saved', `Object changes are stored in verified revision ${snapshot.revision}.`);
+  } catch (error) {
+    toast('Save failed', error instanceof Error ? error.message : 'Changes could not be persisted.', 'error', 5600);
+  }
 });
 
 required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => {
@@ -1349,7 +1412,16 @@ required<HTMLButtonElement>('#atlas-collapse').addEventListener('click', () => {
 });
 
 importTrigger.addEventListener('click', () => {
-  if (world.getActiveInteriorBuildingId()) {
+  const interiorBuildingId = world.getCurrentInteriorBuildingId();
+  if (interiorBuildingId) {
+    queuedImportFiles = null;
+    if (currentMode !== 'edit') setMode('edit');
+    if (!world.enterInterior(interiorBuildingId, true)) {
+      toast('Interior import unavailable', 'This building interior could not be opened for editing.', 'error');
+      return;
+    }
+    currentEditWorkspace = 'interior';
+    renderAssetLibrary();
     importInput.click();
     return;
   }
@@ -1368,12 +1440,59 @@ importInput.addEventListener('change', async () => {
 });
 importInput.addEventListener('cancel', () => world.cancelImportPlacement());
 
+projectBundleExportButton.addEventListener('click', async () => {
+  projectBundleExportButton.disabled = true;
+  try {
+    await world.saveProjectToLocalStorage(true);
+    await world.exportProjectBundle();
+    toast('Project Backup Ready', 'The ZIP contains project state and every persisted imported source asset.');
+  } catch (error) {
+    toast('Backup failed', error instanceof Error ? error.message : 'The project bundle could not be created.', 'error', 5600);
+  } finally {
+    projectBundleExportButton.disabled = false;
+  }
+});
+
+projectBundleImportButton.addEventListener('click', () => projectBundleInput.click());
+relinkMissingAssetsButton.addEventListener('click', () => {
+  queuedImportFiles = null;
+  world.cancelImportPlacement();
+  importInput.click();
+  toast(
+    'Relink Missing Assets',
+    'Choose the original files. Matching filenames restore their stable IDs, transforms, building parent, and collision settings.',
+  );
+});
+projectBundleInput.addEventListener('change', async () => {
+  const file = projectBundleInput.files?.[0];
+  projectBundleInput.value = '';
+  if (!file) return;
+  projectBundleImportButton.disabled = true;
+  loadingStatus.textContent = 'Verifying project bundle and imported assets…';
+  loadingScreen.classList.remove('done');
+  try {
+    const integrity = await world.importProjectBundle(file);
+    syncDefinitionCacheFromWorld();
+    updateInspector(null);
+    toast(
+      'Project Restored',
+      `${integrity.entry.present}/${integrity.entry.expected} Welcome buildings and all verified assets were loaded.`,
+    );
+  } catch (error) {
+    toast('Project restore failed', error instanceof Error ? error.message : 'The bundle is invalid.', 'error', 5600);
+  } finally {
+    projectBundleImportButton.disabled = false;
+    loadingScreen.classList.add('done');
+  }
+});
+
 async function handleImport(files: File[]) {
   loadingStatus.textContent = 'Resolving imported mesh hierarchy…';
   loadingScreen.classList.remove('done');
   try {
     const results = await world.importFiles(files);
     if (!results.length) throw new Error('No supported GLB, GLTF, OBJ, or STL file was found.');
+    await world.saveProjectToLocalStorage(false);
     toast('Mesh imported', `${results.length} asset${results.length === 1 ? '' : 's'} added to the Imported Assets collection.`);
     if (currentMode !== 'edit') setMode('edit');
   } catch (error) {
@@ -1404,7 +1523,15 @@ document.addEventListener('drop', (event) => {
   document.body.classList.remove('drop-active');
   const files = Array.from(event.dataTransfer?.files ?? []);
   if (!files.length) return;
-  if (world.getActiveInteriorBuildingId()) {
+  const interiorBuildingId = world.getCurrentInteriorBuildingId();
+  if (interiorBuildingId) {
+    if (currentMode !== 'edit') setMode('edit');
+    if (!world.enterInterior(interiorBuildingId, true)) {
+      toast('Interior import unavailable', 'This building interior could not be opened for editing.', 'error');
+      return;
+    }
+    currentEditWorkspace = 'interior';
+    renderAssetLibrary();
     void handleImport(files);
     return;
   }

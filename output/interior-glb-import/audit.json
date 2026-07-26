@@ -1,0 +1,91 @@
+{
+  "before": {
+    "buildingId": "entry-logistics-building-e2",
+    "camera": [
+      170.87500000000003,
+      2.155180000085682,
+      -295.9641817433319
+    ],
+    "mode": "walk",
+    "detected": "entry-logistics-building-e2",
+    "interiorVisible": true
+  },
+  "after": {
+    "activeInteriorBuildingId": "entry-logistics-building-e2",
+    "activeInteriorType": "authored",
+    "workspace": "interior",
+    "mode": "edit",
+    "selected": {
+      "id": "imported-interior-import-test-ms1yjd68-1",
+      "name": "interior-import-test",
+      "label": "interior-import-test",
+      "description": "Editable mesh imported from interior-import-test.glb; its hierarchy and PBR materials are preserved for re-export inside this building.",
+      "category": "imported",
+      "state": {
+        "position": {
+          "x": -4.56,
+          "y": 0.8325,
+          "z": -13.908
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "scale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
+        "accent": "#b7f34b",
+        "primaryColor": "#ffffff",
+        "secondaryColor": "#74858a",
+        "patternType": "solid",
+        "patternScale": 1,
+        "styleCustomized": true,
+        "collisionEnabled": true,
+        "interactions": []
+      },
+      "districtCell": null,
+      "population": null,
+      "biomeEcologyPlan": null
+    },
+    "parentIsAuthoredInterior": true,
+    "definitionParentBuildingId": "entry-logistics-building-e2",
+    "definitionWorkspace": "interior",
+    "effectivelyVisible": true,
+    "cameraShift": 0,
+    "importPlacement": {
+      "choosing": false,
+      "position": null
+    },
+    "state": {
+      "position": {
+        "x": -4.56,
+        "y": 0.8325,
+        "z": -13.908
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#b7f34b",
+      "primaryColor": "#ffffff",
+      "secondaryColor": "#74858a",
+      "patternType": "solid",
+      "patternScale": 1,
+      "styleCustomized": true,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "transformAttached": true,
+    "interiorVisible": true
+  },
+  "errors": []
+}

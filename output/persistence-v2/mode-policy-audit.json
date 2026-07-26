@@ -1,0 +1,223 @@
+{
+  "captures": {
+    "explore": {
+      "mode": "explore",
+      "activeModeButton": "explore",
+      "activeViewPolicy": "explore-exterior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-e1",
+            "entry-logistics-building-e2",
+            "entry-logistics-building-e3",
+            "entry-logistics-building-e4",
+            "entry-logistics-building-e5",
+            "entry-logistics-building-e6",
+            "entry-logistics-building-e7",
+            "entry-logistics-building-e8",
+            "entry-logistics-building-e9",
+            "entry-logistics-building-e10",
+            "entry-logistics-building-e11",
+            "entry-logistics-building-e12",
+            "entry-logistics-building-e13"
+          ]
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-l1",
+            "entry-logistics-building-l2",
+            "entry-logistics-building-l3",
+            "entry-logistics-building-l4",
+            "entry-logistics-building-l5",
+            "entry-logistics-building-l6",
+            "entry-logistics-building-l7"
+          ]
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": true
+        }
+      },
+      "runtimeHiddenCount": 111
+    },
+    "plan": {
+      "mode": "plan",
+      "activeModeButton": "plan",
+      "activeViewPolicy": "plan-exterior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": []
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": []
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": false
+        }
+      },
+      "runtimeHiddenCount": 187
+    },
+    "edit": {
+      "mode": "edit",
+      "activeModeButton": "edit",
+      "activeViewPolicy": "edit-exterior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-e1",
+            "entry-logistics-building-e2",
+            "entry-logistics-building-e3",
+            "entry-logistics-building-e4",
+            "entry-logistics-building-e5",
+            "entry-logistics-building-e6",
+            "entry-logistics-building-e7",
+            "entry-logistics-building-e8",
+            "entry-logistics-building-e9",
+            "entry-logistics-building-e10",
+            "entry-logistics-building-e11",
+            "entry-logistics-building-e12",
+            "entry-logistics-building-e13"
+          ]
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": []
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": true
+        }
+      },
+      "runtimeHiddenCount": 172
+    },
+    "walkExterior": {
+      "mode": "walk",
+      "activeModeButton": "walk",
+      "activeViewPolicy": "walk-exterior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-e1",
+            "entry-logistics-building-e2",
+            "entry-logistics-building-e3",
+            "entry-logistics-building-e4",
+            "entry-logistics-building-e5",
+            "entry-logistics-building-e6",
+            "entry-logistics-building-e7",
+            "entry-logistics-building-e8",
+            "entry-logistics-building-e9",
+            "entry-logistics-building-e10",
+            "entry-logistics-building-e11",
+            "entry-logistics-building-e12",
+            "entry-logistics-building-e13"
+          ]
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": []
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": true
+        }
+      },
+      "runtimeHiddenCount": 172
+    },
+    "editInterior": {
+      "mode": "edit",
+      "activeModeButton": "edit",
+      "activeViewPolicy": "edit-interior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-e2"
+          ]
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-l1",
+            "entry-logistics-building-l2",
+            "entry-logistics-building-l3",
+            "entry-logistics-building-l4",
+            "entry-logistics-building-l5",
+            "entry-logistics-building-l6",
+            "entry-logistics-building-l7"
+          ]
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": false
+        }
+      },
+      "runtimeHiddenCount": 130
+    },
+    "walkInterior": {
+      "mode": "walk",
+      "activeModeButton": "walk",
+      "activeViewPolicy": "walk-interior",
+      "canonicalIntegrity": {
+        "entry": {
+          "expected": 13,
+          "present": 13,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": [
+            "entry-logistics-building-e2"
+          ]
+        },
+        "logistics": {
+          "expected": 7,
+          "present": 7,
+          "userHiddenIds": [],
+          "effectivelyVisibleIds": []
+        },
+        "welcomePool": {
+          "expected": true,
+          "present": true,
+          "visibilityIntent": "visible",
+          "effectivelyVisible": false
+        }
+      },
+      "runtimeHiddenCount": 139
+    }
+  },
+  "errors": []
+}

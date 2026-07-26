@@ -1,0 +1,302 @@
+{
+  "seeded": {
+    "expectedE4X": 58.00773263894174,
+    "hiddenCount": 14
+  },
+  "migrated": {
+    "schema": "youtopy.lab-island/2.0",
+    "canonical": {
+      "entry": {
+        "expected": 13,
+        "present": 13,
+        "userHiddenIds": [],
+        "effectivelyVisibleIds": [
+          "entry-logistics-building-e1",
+          "entry-logistics-building-e2",
+          "entry-logistics-building-e3",
+          "entry-logistics-building-e4",
+          "entry-logistics-building-e5",
+          "entry-logistics-building-e6",
+          "entry-logistics-building-e7",
+          "entry-logistics-building-e8",
+          "entry-logistics-building-e9",
+          "entry-logistics-building-e10",
+          "entry-logistics-building-e11",
+          "entry-logistics-building-e12",
+          "entry-logistics-building-e13"
+        ]
+      },
+      "logistics": {
+        "expected": 7,
+        "present": 7,
+        "userHiddenIds": [],
+        "effectivelyVisibleIds": [
+          "entry-logistics-building-l1",
+          "entry-logistics-building-l2",
+          "entry-logistics-building-l3",
+          "entry-logistics-building-l4",
+          "entry-logistics-building-l5",
+          "entry-logistics-building-l6",
+          "entry-logistics-building-l7"
+        ]
+      },
+      "welcomePool": {
+        "expected": true,
+        "present": true,
+        "visibilityIntent": "visible",
+        "effectivelyVisible": true
+      }
+    },
+    "e4": {
+      "position": {
+        "x": 58.00773263894174,
+        "y": 0,
+        "z": 58.56000542844694
+      },
+      "rotationY": -408.2,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "savedE4State": {
+      "position": {
+        "x": 58.00773263894174,
+        "y": 0,
+        "z": 58.56000542844694
+      },
+      "rotationY": -408.2,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visibilityIntent": "visible",
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "legacyBackup": true,
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 1,
+      "savedAt": "2026-07-26T18:45:31.208Z",
+      "source": "current",
+      "recoveryRevisionCount": 1,
+      "assetCount": 0,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": true,
+      "missingLegacyImportCount": 0
+    }
+  },
+  "modeSaveResults": [
+    {
+      "scenario": "plan",
+      "mode": "plan",
+      "activeViewPolicy": "plan-exterior",
+      "canonicalStateCount": 13,
+      "allExplicitVisible": true
+    },
+    {
+      "scenario": "interior-edit",
+      "mode": "edit",
+      "activeViewPolicy": "edit-interior",
+      "canonicalStateCount": 13,
+      "allExplicitVisible": true
+    },
+    {
+      "scenario": "walk-exterior",
+      "mode": "walk",
+      "activeViewPolicy": "walk-exterior",
+      "canonicalStateCount": 13,
+      "allExplicitVisible": true
+    },
+    {
+      "scenario": "walk-interior",
+      "mode": "walk",
+      "activeViewPolicy": "walk-interior",
+      "canonicalStateCount": 13,
+      "allExplicitVisible": true
+    }
+  ],
+  "explicitIntent": {
+    "e4": {
+      "position": {
+        "x": 58.00773263894174,
+        "y": 0,
+        "z": 58.56000542844694
+      },
+      "rotationY": -408.2,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": false,
+      "visibilityIntent": "hidden",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "e5Present": false,
+    "deletedIds": [
+      "entry-logistics-building-e5"
+    ]
+  },
+  "defaultsRestored": {
+    "entry": {
+      "expected": 13,
+      "present": 13,
+      "userHiddenIds": [],
+      "effectivelyVisibleIds": [
+        "entry-logistics-building-e1",
+        "entry-logistics-building-e2",
+        "entry-logistics-building-e3",
+        "entry-logistics-building-e4",
+        "entry-logistics-building-e5",
+        "entry-logistics-building-e6",
+        "entry-logistics-building-e7",
+        "entry-logistics-building-e8",
+        "entry-logistics-building-e9",
+        "entry-logistics-building-e10",
+        "entry-logistics-building-e11",
+        "entry-logistics-building-e12",
+        "entry-logistics-building-e13"
+      ]
+    },
+    "logistics": {
+      "expected": 7,
+      "present": 7,
+      "userHiddenIds": [],
+      "effectivelyVisibleIds": [
+        "entry-logistics-building-l1",
+        "entry-logistics-building-l2",
+        "entry-logistics-building-l3",
+        "entry-logistics-building-l4",
+        "entry-logistics-building-l5",
+        "entry-logistics-building-l6",
+        "entry-logistics-building-l7"
+      ]
+    },
+    "welcomePool": {
+      "expected": true,
+      "present": true,
+      "visibilityIntent": "visible",
+      "effectivelyVisible": true
+    }
+  },
+  "importedId": "imported-persistent-interior-triangle-ms25gl1e-1",
+  "importRestored": {
+    "definition": {
+      "id": "imported-persistent-interior-triangle-ms25gl1e-1",
+      "name": "persistent-interior-triangle",
+      "sourceLabel": "persistent-interior-triangle.glb",
+      "category": "imported",
+      "ring": "custom",
+      "position": [
+        -4.56,
+        0.8325,
+        -13.908
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "height": 1.15,
+      "archetype": "Imported GLB asset",
+      "accent": "#b7f34b",
+      "palette": [
+        "#11181a",
+        "#344246",
+        "#c9d3d0",
+        "#b7f34b"
+      ],
+      "description": "Editable mesh imported from persistent-interior-triangle.glb; its hierarchy and PBR materials are preserved for re-export inside this building.",
+      "workspace": "interior",
+      "parentBuildingId": "entry-logistics-building-e2",
+      "assetId": "sha256-25100a5a238d8ccacf15911d846b30fbbcf6ce790edd91fbb9a21c75fbb17c9e",
+      "assetSha256": "25100a5a238d8ccacf15911d846b30fbbcf6ce790edd91fbb9a21c75fbb17c9e",
+      "assetFilename": "persistent-interior-triangle.glb",
+      "assetFormat": "glb",
+      "assetDependencies": [
+        {
+          "assetId": "sha256-25100a5a238d8ccacf15911d846b30fbbcf6ce790edd91fbb9a21c75fbb17c9e",
+          "sha256": "25100a5a238d8ccacf15911d846b30fbbcf6ce790edd91fbb9a21c75fbb17c9e",
+          "filename": "persistent-interior-triangle.glb",
+          "extension": "glb",
+          "mimeType": "model/gltf-binary",
+          "byteLength": 500
+        }
+      ],
+      "state": {
+        "position": {
+          "x": -4.56,
+          "y": 0.8325,
+          "z": -13.908
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "scale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "visibilityIntent": "visible",
+        "accent": "#b7f34b",
+        "primaryColor": "#ffffff",
+        "secondaryColor": "#74858a",
+        "patternType": "solid",
+        "patternScale": 1,
+        "styleCustomized": true,
+        "collisionEnabled": true,
+        "interactions": []
+      }
+    },
+    "present": true,
+    "parent": "ENTRY__E2__WELCOME_REGISTRATION_INTERIOR",
+    "effectivelyVisible": true,
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 8,
+      "savedAt": "2026-07-26T18:47:00.698Z",
+      "source": "current",
+      "recoveryRevisionCount": 8,
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": true,
+      "missingLegacyImportCount": 0
+    }
+  },
+  "recovered": {
+    "schema": "youtopy.lab-island/2.0",
+    "revision": 8,
+    "savedAt": "2026-07-26T18:47:00.698Z",
+    "source": "recovery",
+    "recoveryRevisionCount": 8,
+    "assetCount": 1,
+    "missingAssetIds": [],
+    "persistentStorageGranted": false,
+    "lastError": "The active project was invalid; a recovery revision was loaded.",
+    "legacyBackupAvailable": true,
+    "missingLegacyImportCount": 0
+  },
+  "errors": []
+}

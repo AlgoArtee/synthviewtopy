@@ -12,7 +12,18 @@ import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { SAOPass } from 'three/addons/postprocessing/SAOPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
+import { strFromU8, strToU8, unzipSync, zipSync } from 'fflate';
 import { biomes, districts, type BiomeDefinition, type DistrictDefinition } from '../data/districts';
+import {
+  LEGACY_PROJECT_BACKUP_KEY,
+  PROJECT_SCHEMA_V2,
+  PROJECT_STORAGE_KEY,
+  ProjectPersistenceStore,
+  sha256Text,
+  type PersistedAssetRecord,
+  type PersistedAssetReference,
+  type ProjectPersistenceSnapshot,
+} from '../persistence/ProjectPersistence';
 import {
   ACADEMIC_CAMPUS_BUILDINGS,
   academicBuildingSelectableId,
@@ -39,6 +50,7 @@ import {
   ISLAND_RADIUS,
   ISLAND_SURFACE_Y,
   MASTERPLAN_RESCALE,
+  WALK_EYE_HEIGHT,
   WALK_INSPECT_DISTANCE,
   WALK_RADIUS,
   WALK_VERTICAL_FOV,
@@ -201,6 +213,32 @@ export interface ImportedDefinition {
   patternScale?: number;
   collisionEnabled?: boolean;
   interactions?: string[];
+  assetId?: string;
+  assetSha256?: string;
+  assetFilename?: string;
+  assetFormat?: string;
+  assetDependencies?: PersistedAssetReference[];
+}
+
+export interface AuthoredInteriorObjectDefinition {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  category: 'authored-interior';
+  ring: 'building-interior';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: 'interior';
+  assetKind: 'interior';
+  parentBuildingId: string;
+  authoredObjectName: string;
+  collisionEnabled: boolean;
+  interactions: string[];
 }
 
 export interface AcademicBuildingDefinition {
@@ -274,6 +312,7 @@ type SceneDefinitionBase =
   | BiomeDefinition
   | ImportedDefinition
   | EditorAssetDefinition
+  | AuthoredInteriorObjectDefinition
   | AcademicBuildingDefinition
   | EntryLogisticsBuildingDefinition
   | EntryLogisticsLandscapeDefinition;
@@ -418,7 +457,10 @@ export interface ObjectState {
   rotationY: number;
   scale: number;
   scale3D?: { x: number; y: number; z: number };
+  /** Compatibility alias for the explicit editor visibility checkbox. */
   visible: boolean;
+  visibilityIntent: 'visible' | 'hidden';
+  effectiveVisible: boolean;
   accent: string;
   primaryColor?: string;
   secondaryColor?: string;
@@ -478,6 +520,11 @@ interface InteriorReturnState {
   rootVisibility: Map<THREE.Object3D, boolean>;
 }
 
+interface SuspendedWalkInteriorState {
+  buildingId: string;
+  returnState: InteriorReturnState;
+}
+
 export interface IslandWorldCallbacks {
   onSelection?: (definition: SceneDefinition | null, source: 'scene' | 'ui' | 'system') => void;
   onTransform?: (definition: SceneDefinition, state: ObjectState) => void;
@@ -497,6 +544,7 @@ export interface IslandWorldCallbacks {
     position?: readonly [number, number, number],
   ) => void;
   onUndoStackChange?: (canUndo: boolean) => void;
+  onPersistenceChange?: (snapshot: ProjectPersistenceSnapshot) => void;
 }
 
 const CATEGORY_PRIORITY = new Set(['core', 'biome', 'perimeter', 'commercial']);
@@ -530,6 +578,19 @@ function slugify(value: string) {
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '')
     .slice(0, 48);
+}
+
+const AUTHORED_INTERIOR_EDITABLE_NAME = /(?:BENCH|SEAT|CHAIR|TABLE|DESK|COUNTER|POD|CONSOLE|DISPLAY|SIGN|DIRECTORY|LECTERN|MODEL|INSTALLATION|PLINTH|STORAGE|WORKBENCH|MACHINE|PRINTER|SCANNER|SHELF|RACK|PALLET|CONVEYOR|GARDEN|PLANT|STEM|LEAF|SHRUB|FERN|GRASS|MOSS|FLOWER|FIXTURE|SCULPTURE|EXHIBIT|LOUNGE|SCOPE|ARMILLARY|TURNSTILE|KIOSK|CABINET|LOCKER|SOFA|SCREEN|MONITOR|TERMINAL|STATUE|PEW|ALTAR|CANDLE|BOOKCASE|LAMP)/i;
+const AUTHORED_INTERIOR_STRUCTURAL_NAME = /(?:FLOOR|AISLE|WALL|CEILING|ROOF|COLLISION|NAV_ACCESS|THRESHOLD|DOOR|JAMB|HEADER|WINDOW_PROJECTION|STAIR|RAMP|RAIL|BALUSTRADE|COLUMN|BEAM|SLAB|FOUNDATION)/i;
+
+function authoredInteriorDisplayName(name: string) {
+  const cleaned = name
+    .replace(/^(?:ENTRY|LOGISTICS|ACADEMIC|WELCOME|INTERIOR)(?:__|_)+/i, '')
+    .replace(/(?:__|_)+/g, ' ')
+    .replace(/\b\d+\b$/, '')
+    .trim()
+    .toLowerCase();
+  return cleaned.replace(/\b\w/g, (letter) => letter.toUpperCase()) || 'Interior object';
 }
 
 function downloadBlob(blob: Blob, filename: string) {
@@ -721,6 +782,25 @@ export class IslandWorld {
   public readonly objectGroups = new Map<string, THREE.Group>();
   private readonly definitions = new Map<string, SceneDefinition>();
   private readonly undoStack: string[] = [];
+  private readonly persistence = new ProjectPersistenceStore();
+  private readonly objectVisibilityIntent = new Map<string, 'visible' | 'hidden'>();
+  private readonly deletedObjectIds = new Set<string>();
+  private readonly importedAssetReferences = new Map<string, PersistedAssetReference[]>();
+  private readonly missingImportedAssetIds = new Set<string>();
+  private legacyMissingImports: any[] = [];
+  private persistenceSnapshot: ProjectPersistenceSnapshot = {
+    schema: PROJECT_SCHEMA_V2,
+    revision: 0,
+    savedAt: null,
+    source: 'none',
+    recoveryRevisionCount: 0,
+    assetCount: 0,
+    missingAssetIds: [],
+    persistentStorageGranted: null,
+    lastError: null,
+  };
+  private persistenceHydrating = true;
+  private autosaveTimer: number | null = null;
   private readonly initialTransforms = new Map<
     string,
     { position: THREE.Vector3; quaternion: THREE.Quaternion; scale: THREE.Vector3; visible: boolean; accent: string }
@@ -740,10 +820,18 @@ export class IslandWorld {
   private readonly animatedObjects: THREE.Object3D[] = [];
   private readonly academicInteriorIsolation = new Map<THREE.Object3D, boolean>();
   private readonly exteriorHighDetailIsolation = new Map<THREE.Object3D, boolean>();
+  private readonly runtimeWalkInteriorIsolation = new Map<THREE.Object3D, boolean>();
   private readonly authoredRuntimeInteriors: THREE.Group[] = [];
+  private readonly authoredInteriorByBuildingId = new Map<string, THREE.Group>();
+  private readonly authoredInteriorComponentIds = new Map<string, Set<string>>();
+  private readonly deletedAuthoredInteriorComponentIds = new Set<string>();
   private readonly runtimeInteriorLocalPoint = new THREE.Vector3();
+  private readonly runtimeInteriorWorldScale = new THREE.Vector3();
+  private readonly projectInteriorAssetLoader = new GLTFLoader();
+  private isolatedRuntimeWalkInterior: THREE.Group | null = null;
   private readonly interiorGroups = new Map<string, THREE.Group>();
   private readonly interiorAssetIds = new Map<string, Set<string>>();
+  private activeGeneratedWalkInteriorBuildingId: string | null = null;
   private readonly importPlacementMarker = createImportPlacementMarker();
   private importPlacementChoosing = false;
   private importPlacement: THREE.Vector3 | null = null;
@@ -753,6 +841,7 @@ export class IslandWorld {
   private editWorkspace: EditorWorkspace = 'landscape';
   private activeInteriorBuildingId: string | null = null;
   private interiorReturnState: InteriorReturnState | null = null;
+  private suspendedWalkInteriorState: SuspendedWalkInteriorState | null = null;
   private generatedAssetSequence = 0;
   private dayTarget = 0;
   private dayMix = 0;
@@ -887,19 +976,24 @@ export class IslandWorld {
         // 1. Interior Wall Clamping
         const defAny = definition as any;
         if (group && collisionEnabled && defAny.workspace === 'interior' && this.activeInteriorBuildingId) {
-          const interior = this.interiorGroups.get(this.activeInteriorBuildingId);
-          if (interior) {
+          const interior = this.getEditorInterior(this.activeInteriorBuildingId);
+          if (interior && (group.parent === interior || group.userData.editorFloorLocked === true)) {
             const W = Number(interior.userData.roomWidth) || 8;
             const D = Number(interior.userData.roomDepth) || 6;
+            const center = interior.userData.editorRoomCenter as [number, number] | undefined;
+            const centerX = Number(center?.[0] ?? 0);
+            const centerZ = Number(center?.[1] ?? 0);
             const fw = defAny.footprint ? defAny.footprint[0] : 0.2;
             const fd = defAny.footprint ? defAny.footprint[1] : 0.2;
-            const minX = -W * 0.5 + fw * 0.5;
-            const maxX = W * 0.5 - fw * 0.5;
-            const minZ = -D * 0.5 + fd * 0.5;
-            const maxZ = D * 0.5 - fd * 0.5;
+            const minX = centerX - W * 0.5 + fw * 0.5;
+            const maxX = centerX + W * 0.5 - fw * 0.5;
+            const minZ = centerZ - D * 0.5 + fd * 0.5;
+            const maxZ = centerZ + D * 0.5 - fd * 0.5;
             group.position.x = THREE.MathUtils.clamp(group.position.x, minX, maxX);
             group.position.z = THREE.MathUtils.clamp(group.position.z, minZ, maxZ);
-            group.position.y = 0.012; // Snap to floor
+            if (group.userData.editorFloorLocked === true) {
+              group.position.y = Number(interior.userData.editorFloorY) || 0.012;
+            }
           }
         }
 
@@ -912,9 +1006,32 @@ export class IslandWorld {
             let intersects = false;
             for (const child of parent.children) {
               if (child === group || child.name === 'EDITOR__TRANSFORM_GIZMO' || child.name === 'EDITOR__SELECTION_BOUNDS') continue;
+              if (
+                definition.category === 'authored-interior'
+                && child.userData.authoredInteriorComponent !== true
+              ) continue;
               
               // Only check objects that have collisions enabled
               const childId = child.userData.selectableId;
+              const editingAuthoredInterior = defAny.workspace === 'interior'
+                && this.activeInteriorBuildingId !== null
+                && this.getEditorInterior(this.activeInteriorBuildingId)?.userData.authoredEditorInterior === true;
+              if (editingAuthoredInterior) {
+                const editableChild = typeof childId === 'string'
+                  ? this.definitions.get(childId)
+                  : null;
+                if (
+                  !editableChild
+                  || !(
+                    editableChild.category === 'authored-interior'
+                    || (
+                      (editableChild.category === 'editor' || editableChild.category === 'imported')
+                      && editableChild.workspace === 'interior'
+                      && editableChild.parentBuildingId === this.activeInteriorBuildingId
+                    )
+                  )
+                ) continue;
+              }
               // Academic buildings are nested inside the selectable district.
               // Ignore roads, lawns, and other parent-owned dressing while still
               // preventing one individually editable facility crossing another.
@@ -946,6 +1063,7 @@ export class IslandWorld {
         this.syncInteriorTransform(definition.id);
         this.refreshEntryLogisticsRoads(definition);
         this.callbacks.onTransform?.(definition, this.getObjectState(definition.id)!);
+        this.scheduleAutosave();
       }
       this.refreshSelectionBounds();
       this.updateLabels(true);
@@ -1067,16 +1185,11 @@ export class IslandWorld {
     this.renderer.setAnimationLoop(this.animate);
     // Saved-project reconstruction can invoke UI callbacks. Defer it until the
     // constructor has returned so main.ts has assigned the public `world`
-    // binding; a synchronous cold boot previously triggered its temporal-dead-
-    // zone and could leave one of the 41 static scene groups unregistered.
+    // binding; the asynchronous path also verifies IndexedDB revisions and
+    // hydrates imported binary assets before the ready state is announced.
     window.setTimeout(() => {
-      try {
-        this.loadProjectFromLocalStorage();
-      } catch (e) {
-        console.error('Error loading saved project on init', e);
-      }
+      void this.initializePersistentProject();
     }, 0);
-    window.setTimeout(() => this.callbacks.onReady?.(), 560);
   }
 
   private createDistrictsAndBiomes() {
@@ -1105,13 +1218,265 @@ export class IslandWorld {
   }
 
   private refreshAuthoredRuntimeInteriors() {
+    this.clearAuthoredInteriorComponentRegistry();
     this.authoredRuntimeInteriors.length = 0;
+    this.authoredInteriorByBuildingId.clear();
+    this.authoredInteriorComponentIds.clear();
     this.architectureRoot.traverse((object) => {
       if (object instanceof THREE.Group && object.userData.runtimeInterior === true) {
         this.authoredRuntimeInteriors.push(object);
       }
     });
+    this.authoredRuntimeInteriors.forEach((interior) => {
+      let host: THREE.Object3D | null = interior.parent;
+      let buildingId: string | null = null;
+      while (host && host !== this.architectureRoot) {
+        const candidateId = host.userData.individualSelectableId ?? host.userData.selectableId;
+        if (typeof candidateId === 'string') {
+          const definition = this.definitions.get(candidateId);
+          if (definition && (
+            definition.category === 'entry-logistics-building'
+            || definition.category === 'academic-building'
+          )) {
+            buildingId = candidateId;
+            break;
+          }
+        }
+        host = host.parent;
+      }
+      if (!buildingId) return;
+      const bounds = interior.userData.runtimeInteriorBounds as {
+        width?: number;
+        depth?: number;
+        height?: number;
+        center?: [number, number];
+      } | undefined;
+      const footprint = (
+        host?.userData.runtimeInteriorFootprint
+        ?? host?.userData.footprint
+      ) as [number, number] | undefined;
+      const center = bounds?.center
+        ?? host?.userData.runtimeInteriorCenter as [number, number] | undefined
+        ?? [0, 0];
+      interior.userData.buildingId = buildingId;
+      interior.userData.authoredEditorInterior = true;
+      interior.userData.roomWidth = Number(bounds?.width ?? footprint?.[0] ?? 8);
+      interior.userData.roomDepth = Number(bounds?.depth ?? footprint?.[1] ?? 6);
+      interior.userData.roomHeight = Number(
+        bounds?.height
+        ?? host?.userData.runtimeInteriorHeight
+        ?? 3,
+      );
+      interior.userData.editorRoomCenter = [Number(center[0]), Number(center[1])];
+      let floorY = Number.POSITIVE_INFINITY;
+      interior.updateWorldMatrix(true, true);
+      interior.traverse((child) => {
+        if (!(child instanceof THREE.Mesh)) return;
+        if (child.userData.walkable !== true && !/(?:FLOOR|AISLE)/i.test(child.name)) return;
+        const localFloor = interior.worldToLocal(child.getWorldPosition(new THREE.Vector3()));
+        floorY = Math.min(floorY, localFloor.y);
+      });
+      interior.userData.editorFloorY = Number.isFinite(floorY) ? floorY + 0.012 : 0.012;
+      this.authoredInteriorByBuildingId.set(buildingId!, interior);
+      this.interiorAssetIds.set(buildingId!, this.interiorAssetIds.get(buildingId!) ?? new Set());
+      this.registerAuthoredInteriorComponents(buildingId!, interior);
+    });
     this.syncAuthoredRuntimeInteriorVisibility();
+  }
+
+  private clearAuthoredInteriorComponentRegistry() {
+    this.authoredInteriorComponentIds.forEach((ids) => {
+      ids.forEach((id) => {
+        const label = this.labels.get(id);
+        if (label) {
+          label.anchor.removeFromParent();
+          label.anchor.element.remove();
+          this.labels.delete(id);
+        }
+        this.objectGroups.delete(id);
+        this.definitions.delete(id);
+        this.initialTransforms.delete(id);
+      });
+    });
+  }
+
+  private registerAuthoredInteriorComponents(buildingId: string, interior: THREE.Group) {
+    const building = this.definitions.get(buildingId);
+    if (!building) return;
+    const candidates: THREE.Object3D[] = [];
+    const collect = (object: THREE.Object3D) => {
+      if (object.userData.authoredInteriorEditorWrapper === true) return;
+      const editableName = AUTHORED_INTERIOR_EDITABLE_NAME.test(object.name)
+        && !AUTHORED_INTERIOR_STRUCTURAL_NAME.test(object.name)
+        && object.userData.animate === undefined;
+      const containsMesh = object instanceof THREE.Mesh
+        || object.children.some((child) => child instanceof THREE.Mesh || child.getObjectByProperty('isMesh', true));
+      if (editableName && containsMesh) {
+        candidates.push(object);
+        return;
+      }
+      object.children.slice().forEach(collect);
+    };
+    interior.children.slice().forEach(collect);
+
+    const occurrences = new Map<string, number>();
+    const ids = new Set<string>();
+    candidates.forEach((candidate) => {
+      const parent = candidate.parent;
+      if (!parent) return;
+      const sourceName = candidate.name || candidate.type;
+      const stableName = slugify(sourceName) || 'object';
+      const occurrence = (occurrences.get(stableName) ?? 0) + 1;
+      occurrences.set(stableName, occurrence);
+      const id = `authored-interior-${slugify(buildingId)}-${stableName}-${occurrence}`;
+      if (this.deletedAuthoredInteriorComponentIds.has(id)) {
+        candidate.removeFromParent();
+        return;
+      }
+
+      const siblingIndex = parent.children.indexOf(candidate);
+      const wrapper = new THREE.Group();
+      wrapper.name = `AUTHORED_INTERIOR_EDITABLE__${sourceName}`;
+      wrapper.position.copy(candidate.position);
+      wrapper.quaternion.copy(candidate.quaternion);
+      wrapper.scale.copy(candidate.scale);
+      wrapper.userData = {
+        selectableId: id,
+        editable: true,
+        workspace: 'interior',
+        authoredInteriorComponent: true,
+        authoredInteriorEditorWrapper: true,
+        parentBuildingId: buildingId,
+        editorBaseScale: wrapper.scale.toArray(),
+        collisionEnabled: false,
+        interactions: [],
+      };
+      candidate.removeFromParent();
+      candidate.position.set(0, 0, 0);
+      candidate.quaternion.identity();
+      candidate.scale.set(1, 1, 1);
+      wrapper.add(candidate);
+      parent.add(wrapper);
+      const appendedIndex = parent.children.indexOf(wrapper);
+      if (siblingIndex >= 0 && appendedIndex !== siblingIndex) {
+        parent.children.splice(appendedIndex, 1);
+        parent.children.splice(siblingIndex, 0, wrapper);
+      }
+
+      let collisionEnabled = false;
+      let accent = building.accent;
+      wrapper.traverse((child) => {
+        child.userData.selectableId = id;
+        if (!(child instanceof THREE.Mesh)) return;
+        collisionEnabled ||= child.userData.navObstacle === true;
+        const materials = Array.isArray(child.material) ? child.material : [child.material];
+        const material = materials.find((entry) => (
+          entry instanceof THREE.MeshStandardMaterial
+          || entry instanceof THREE.MeshPhysicalMaterial
+          || entry instanceof THREE.MeshBasicMaterial
+        )) as THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial | THREE.MeshBasicMaterial | undefined;
+        if (material?.color) accent = `#${material.color.getHexString()}`;
+      });
+      wrapper.userData.collisionEnabled = collisionEnabled;
+      wrapper.userData.editorFloorLocked = false;
+      wrapper.updateWorldMatrix(true, true);
+      const size = new THREE.Box3().setFromObject(wrapper, true).getSize(new THREE.Vector3());
+      const name = authoredInteriorDisplayName(sourceName);
+      const definition: AuthoredInteriorObjectDefinition = {
+        id,
+        name,
+        sourceLabel: `${building.name} / authored interior`,
+        category: 'authored-interior',
+        ring: 'building-interior',
+        position: [wrapper.position.x, wrapper.position.y, wrapper.position.z],
+        footprint: [Math.max(size.x, 0.05), Math.max(size.z, 0.05)],
+        height: Math.max(size.y, 0.05),
+        archetype: 'Authored interior component',
+        accent,
+        palette: ['#10191b', '#74858a', '#f3efe3', accent],
+        description: `Editable authored component inside ${building.name}. Its transform is shared by Edit and WALK modes.`,
+        workspace: 'interior',
+        assetKind: 'interior',
+        parentBuildingId: buildingId,
+        authoredObjectName: sourceName,
+        collisionEnabled,
+        interactions: [],
+      };
+      this.registerSelectable(definition, wrapper, Math.max(size.y + 0.25, 0.5), false, false);
+      ids.add(id);
+    });
+    this.authoredInteriorComponentIds.set(buildingId, ids);
+  }
+
+  private getEditorInterior(buildingId: string) {
+    return this.authoredInteriorByBuildingId.get(buildingId)
+      ?? this.interiorGroups.get(buildingId)
+      ?? null;
+  }
+
+  private getInteriorWalkSpawn(interior: THREE.Group) {
+    interior.updateWorldMatrix(true, false);
+    const center = interior.userData.editorRoomCenter as [number, number] | undefined;
+    const centerX = Number(center?.[0] ?? 0);
+    const centerZ = Number(center?.[1] ?? 0);
+    const floorY = Number(interior.userData.editorFloorY) || 0.012;
+    interior.getWorldScale(this.runtimeInteriorWorldScale);
+    // WALK_EYE_HEIGHT is expressed in world units. Authored buildings can be
+    // scaled in Edit mode, so convert it into the interior's local space
+    // before localToWorld applies the host scale. Otherwise a scaled-down
+    // building places the handoff camera below its finished floor and the
+    // runtime interior detector immediately rejects the room.
+    const localEyeHeight = WALK_EYE_HEIGHT
+      / Math.max(0.001, Math.abs(this.runtimeInteriorWorldScale.y));
+    return interior.localToWorld(new THREE.Vector3(
+      centerX,
+      floorY + localEyeHeight,
+      centerZ,
+    ));
+  }
+
+  private syncGeneratedWalkInteriorVisibility() {
+    const buildingId = this.activeGeneratedWalkInteriorBuildingId;
+    if (!buildingId) return false;
+    const interior = this.interiorGroups.get(buildingId);
+    if (!interior || this.mode !== 'walk') {
+      if (interior?.visible) interior.visible = false;
+      this.activeGeneratedWalkInteriorBuildingId = null;
+      return Boolean(interior);
+    }
+    interior.updateWorldMatrix(true, false);
+    this.runtimeInteriorLocalPoint.copy(this.camera.position);
+    interior.worldToLocal(this.runtimeInteriorLocalPoint);
+    const center = interior.userData.editorRoomCenter as [number, number] | undefined;
+    const centerX = Number(center?.[0] ?? 0);
+    const centerZ = Number(center?.[1] ?? 0);
+    const width = Number(interior.userData.roomWidth) || 8;
+    const depth = Number(interior.userData.roomDepth) || 6;
+    const height = Number(interior.userData.roomHeight) || 3.4;
+    const floorY = Number(interior.userData.editorFloorY) || 0;
+    const inside = Math.abs(this.runtimeInteriorLocalPoint.x - centerX) <= width * 0.5 + 0.22
+      && Math.abs(this.runtimeInteriorLocalPoint.z - centerZ) <= depth * 0.5 + 0.22
+      && this.runtimeInteriorLocalPoint.y >= floorY - 0.75
+      && this.runtimeInteriorLocalPoint.y <= floorY + height + 0.58;
+    if (interior.visible === inside) return false;
+    interior.visible = inside;
+    if (!inside) this.activeGeneratedWalkInteriorBuildingId = null;
+    return true;
+  }
+
+  private configureInteriorAssetBaseScale(group: THREE.Group, interior: THREE.Group) {
+    const base = group.scale.clone();
+    if (interior.userData.authoredEditorInterior === true) {
+      interior.updateWorldMatrix(true, false);
+      const inheritedScale = interior.getWorldScale(new THREE.Vector3());
+      base.set(
+        base.x / Math.max(0.001, inheritedScale.x),
+        base.y / Math.max(0.001, inheritedScale.y),
+        base.z / Math.max(0.001, inheritedScale.z),
+      );
+    }
+    group.scale.copy(base);
+    group.userData.editorBaseScale = base.toArray();
   }
 
   private registerAcademicBuildingSelectables(definition: DistrictDefinition, districtGroup: THREE.Group) {
@@ -1217,6 +1582,9 @@ export class IslandWorld {
   ) {
     this.definitions.set(definition.id, definition);
     this.objectGroups.set(definition.id, group);
+    if (!this.objectVisibilityIntent.has(definition.id)) {
+      this.objectVisibilityIntent.set(definition.id, group.visible ? 'visible' : 'hidden');
+    }
     group.userData.displayName = definition.name;
     group.userData.displayLabel = sceneLabel(definition);
     group.userData.description = definition.description;
@@ -1516,13 +1884,18 @@ export class IslandWorld {
     depth: number,
     height: number,
     center: readonly [number, number] = [0, 0],
+    floorY = 0,
   ) {
     host.updateWorldMatrix(true, false);
     this.runtimeInteriorLocalPoint.copy(this.camera.position);
     host.worldToLocal(this.runtimeInteriorLocalPoint);
+    host.getWorldScale(this.runtimeInteriorWorldScale);
+    const localEyeHeight = WALK_EYE_HEIGHT
+      / Math.max(0.001, Math.abs(this.runtimeInteriorWorldScale.y));
+    const localFeetY = this.runtimeInteriorLocalPoint.y - localEyeHeight;
     return Math.abs(this.runtimeInteriorLocalPoint.x - center[0]) <= width * 0.5 + 0.12
       && Math.abs(this.runtimeInteriorLocalPoint.z - center[1]) <= depth * 0.5 + 0.12
-      && this.runtimeInteriorLocalPoint.y >= -0.75
+      && localFeetY >= floorY - 0.12
       && this.runtimeInteriorLocalPoint.y <= height + 0.58;
   }
 
@@ -1533,29 +1906,156 @@ export class IslandWorld {
     return this.isCameraInsideBuildingHost(host, config.width ?? 10.8, config.depth ?? 7.2, 1.38);
   }
 
+  private ensureProjectInteriorAssets(interior: THREE.Group) {
+    const anchors: THREE.Object3D[] = [];
+    interior.traverse((object) => {
+      if (
+        typeof object.userData.projectAssetUrl === 'string'
+        && object.userData.projectAssetState !== 'loading'
+        && object.userData.projectAssetState !== 'loaded'
+      ) {
+        anchors.push(object);
+      }
+    });
+    anchors.forEach((anchor) => {
+      const assetUrl = String(anchor.userData.projectAssetUrl);
+      const target = anchor.userData.projectAssetTargetSize as readonly number[] | undefined;
+      const targetSize = new THREE.Vector3(
+        Math.max(0.01, Number(target?.[0]) || 1),
+        Math.max(0.01, Number(target?.[1]) || 1),
+        Math.max(0.01, Number(target?.[2]) || 1),
+      );
+      anchor.userData.projectAssetState = 'loading';
+      this.projectInteriorAssetLoader.loadAsync(assetUrl).then((result) => {
+        // A Save/Refresh can rebuild the authored district while this 26.7 MB
+        // request is in flight. Only attach to the still-current scene branch.
+        if (this.modelRoot.getObjectById(anchor.id) !== anchor) return;
+        const model = result.scene;
+        model.name = 'ENTRY__E2__LIVING_INDEX_PERSISTENT_GLB_GARDEN_MODEL';
+        model.updateWorldMatrix(true, true);
+        const originalBounds = new THREE.Box3().setFromObject(model, true);
+        const originalSize = originalBounds.getSize(new THREE.Vector3());
+        if (originalBounds.isEmpty() || Math.max(originalSize.x, originalSize.y, originalSize.z) <= 0) {
+          throw new Error(`Project interior asset has empty bounds: ${assetUrl}`);
+        }
+
+        // The Living Index is a long north/south case. Rotate an east/west
+        // authored source before fitting so it occupies the intended 22 m
+        // garden length instead of being shrunk to the narrow case width.
+        const rotatedToGardenAxis = originalSize.x > originalSize.z;
+        if (rotatedToGardenAxis) model.rotation.y += Math.PI * 0.5;
+        model.updateWorldMatrix(true, true);
+        let fittedBounds = new THREE.Box3().setFromObject(model, true);
+        const orientedSize = fittedBounds.getSize(new THREE.Vector3());
+        const fitScale = new THREE.Vector3(
+          targetSize.x / Math.max(0.001, orientedSize.x),
+          targetSize.y / Math.max(0.001, orientedSize.y),
+          targetSize.z / Math.max(0.001, orientedSize.z),
+        );
+        model.scale.multiply(fitScale);
+        model.updateWorldMatrix(true, true);
+        fittedBounds = new THREE.Box3().setFromObject(model, true);
+        const fittedCenter = fittedBounds.getCenter(new THREE.Vector3());
+        model.position.x -= fittedCenter.x;
+        model.position.y -= fittedBounds.min.y;
+        model.position.z -= fittedCenter.z;
+
+        let meshCount = 0;
+        let materialCount = 0;
+        const materials = new Set<THREE.Material>();
+        const selectableId = anchor.userData.selectableId as string | undefined;
+        model.traverse((object) => {
+          if (selectableId) object.userData.selectableId = selectableId;
+          object.userData.navObstacle = false;
+          object.userData.walkable = false;
+          if (!(object instanceof THREE.Mesh)) return;
+          meshCount += 1;
+          object.castShadow = false;
+          object.receiveShadow = true;
+          const entries = Array.isArray(object.material) ? object.material : [object.material];
+          entries.forEach((entry) => materials.add(entry));
+        });
+        materialCount = materials.size;
+        anchor.add(model);
+        anchor.updateWorldMatrix(true, true);
+        const finalSize = new THREE.Box3().setFromObject(model, true).getSize(new THREE.Vector3());
+
+        const fallbackName = String(anchor.userData.projectAssetFallbackGroupName ?? '');
+        const fallback = fallbackName ? interior.getObjectByName(fallbackName) : null;
+        fallback?.traverse((object) => {
+          if (object.userData.projectAssetFallback === true) object.visible = false;
+        });
+        anchor.userData.projectAssetState = 'loaded';
+        anchor.userData.projectAssetLoaded = true;
+        anchor.userData.projectAssetFallbackHidden = Boolean(fallback);
+        anchor.userData.projectAssetRotatedToGardenAxis = rotatedToGardenAxis;
+        anchor.userData.projectAssetSourceSize = originalSize.toArray();
+        anchor.userData.projectAssetFittedSize = finalSize.toArray();
+        anchor.userData.projectAssetFitScale = fitScale.toArray();
+        anchor.userData.projectAssetMeshCount = meshCount;
+        anchor.userData.projectAssetMaterialCount = materialCount;
+        anchor.userData.projectAssetLoadedAt = new Date().toISOString();
+        interior.userData.projectInteriorAssetCount = Number(interior.userData.projectInteriorAssetCount ?? 0) + 1;
+        interior.userData.projectInteriorAssetsLoaded = true;
+        this.refreshSelectionBounds();
+        this.walkController.refreshNavigation();
+      }).catch((error: unknown) => {
+        anchor.userData.projectAssetState = 'failed';
+        anchor.userData.projectAssetError = error instanceof Error ? error.message : String(error);
+        // Retain the procedural garden fallback if the project asset cannot be
+        // reached; the Hall stays usable and can retry on the next rebuild.
+        console.warn(`Unable to load project interior asset ${assetUrl}`, error);
+      });
+    });
+  }
+
   private syncAuthoredRuntimeInteriorVisibility() {
     let changed = false;
+    let isolationTarget: THREE.Group | null = null;
     this.authoredRuntimeInteriors.forEach((interior) => {
       const host = interior.parent;
-      const footprint = host?.userData.footprint as [number, number] | undefined;
+      const isolatedBounds = interior.userData.runtimeInteriorBounds as {
+        width: number;
+        depth: number;
+        height: number;
+        center: [number, number];
+      } | undefined;
+      const footprint = isolatedBounds
+        ? [isolatedBounds.width, isolatedBounds.depth] as [number, number]
+        : host?.userData.footprint as [number, number] | undefined;
       const record = host?.userData.academicBuildingData as AcademicCampusBuilding | undefined;
-      const interiorCenter = host?.userData.runtimeInteriorCenter as [number, number] | undefined;
-      const interiorHeight = Number(host?.userData.runtimeInteriorHeight) || Number(record?.height) || 2.4;
-      const shouldRender = Boolean(
+      const interiorCenter = isolatedBounds?.center
+        ?? host?.userData.runtimeInteriorCenter as [number, number] | undefined;
+      const interiorHeight = isolatedBounds?.height
+        ?? (
+          Number(host?.userData.runtimeInteriorHeight)
+          || Number(record?.height)
+          || 2.4
+        );
+      const interiorFloorY = Number(interior.userData.editorFloorY) || 0;
+      const editingThisInterior = this.mode === 'edit'
+        && this.activeInteriorBuildingId !== null
+        && this.authoredInteriorByBuildingId.get(this.activeInteriorBuildingId) === interior;
+      const shouldRender = editingThisInterior || Boolean(
         this.mode === 'walk'
-        && host
-        && footprint
-        && this.isCameraInsideBuildingHost(
-          host,
-          footprint[0],
-          footprint[1],
-          interiorHeight,
-          interiorCenter,
-        ),
+          && host
+          && footprint
+          && this.isCameraInsideBuildingHost(
+            host,
+            footprint[0],
+            footprint[1],
+            interiorHeight,
+            interiorCenter,
+            interiorFloorY,
+          ),
       );
       if (interior.visible !== shouldRender) {
         interior.visible = shouldRender;
         changed = true;
+      }
+      if (shouldRender) this.ensureProjectInteriorAssets(interior);
+      if (this.mode === 'walk' && shouldRender && interior.userData.isolatedWalkInterior === true) {
+        isolationTarget = interior;
       }
       host?.traverse((object) => {
         if (object.userData.hideWhenRuntimeInteriorVisible !== true) return;
@@ -1565,6 +2065,71 @@ export class IslandWorld {
         changed = true;
       });
     });
+    if (isolationTarget) {
+      changed = this.isolateRuntimeWalkInterior(isolationTarget) || changed;
+    } else {
+      changed = this.restoreRuntimeWalkInteriorIsolation() || changed;
+    }
+    return changed;
+  }
+
+  private hideForRuntimeWalkInterior(object: THREE.Object3D) {
+    if (!this.runtimeWalkInteriorIsolation.has(object)) {
+      this.runtimeWalkInteriorIsolation.set(object, object.visible);
+    }
+    if (!object.visible) return false;
+    object.visible = false;
+    return true;
+  }
+
+  private isolateRuntimeWalkInterior(interior: THREE.Group) {
+    let changed = false;
+    if (this.isolatedRuntimeWalkInterior && this.isolatedRuntimeWalkInterior !== interior) {
+      changed = this.restoreRuntimeWalkInteriorIsolation() || changed;
+    }
+    if (this.isolatedRuntimeWalkInterior !== interior) {
+      let branch: THREE.Object3D = interior;
+      while (branch.parent && branch.parent !== this.scene) {
+        const parent = branch.parent;
+        parent.children.forEach((sibling) => {
+          if (sibling !== branch) changed = this.hideForRuntimeWalkInterior(sibling) || changed;
+        });
+        branch = parent;
+        if (parent === this.modelRoot) break;
+      }
+      changed = this.hideForRuntimeWalkInterior(this.presentationRoot) || changed;
+      changed = this.hideForRuntimeWalkInterior(this.labelRoot) || changed;
+      this.isolatedRuntimeWalkInterior = interior;
+      interior.userData.exteriorIsolationActive = true;
+    }
+    changed = this.enforceRuntimeWalkInteriorIsolation() || changed;
+    return changed;
+  }
+
+  private enforceRuntimeWalkInteriorIsolation() {
+    if (!this.isolatedRuntimeWalkInterior) return false;
+    let changed = false;
+    this.runtimeWalkInteriorIsolation.forEach((_visible, object) => {
+      if (!object.visible) return;
+      object.visible = false;
+      changed = true;
+    });
+    return changed;
+  }
+
+  private restoreRuntimeWalkInteriorIsolation() {
+    if (!this.isolatedRuntimeWalkInterior && this.runtimeWalkInteriorIsolation.size === 0) return false;
+    let changed = false;
+    this.runtimeWalkInteriorIsolation.forEach((visible, object) => {
+      if (object.visible === visible) return;
+      object.visible = visible;
+      changed = true;
+    });
+    if (this.isolatedRuntimeWalkInterior) {
+      this.isolatedRuntimeWalkInterior.userData.exteriorIsolationActive = false;
+    }
+    this.runtimeWalkInteriorIsolation.clear();
+    this.isolatedRuntimeWalkInterior = null;
     return changed;
   }
 
@@ -1817,6 +2382,7 @@ export class IslandWorld {
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
     this.updateCerebrumStreamingLifecycle();
+    const generatedInteriorVisibilityChanged = this.syncGeneratedWalkInteriorVisibility();
     const authoredInteriorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
     const cerebrumRoot = this.getCerebrumLibraryRoot();
     const insideCerebrum = Boolean(
@@ -1827,7 +2393,10 @@ export class IslandWorld {
       this.callbacks.onCerebrumPresenceChange?.(insideCerebrum);
     }
     this.updateWorldStreaming(insideCerebrum || this.cerebrumLibraryInspectionActive);
-    if (authoredInteriorVisibilityChanged) this.walkController.refreshNavigation();
+    const runtimeWalkIsolationChanged = this.enforceRuntimeWalkInteriorIsolation();
+    if (generatedInteriorVisibilityChanged || authoredInteriorVisibilityChanged || runtimeWalkIsolationChanged) {
+      this.walkController.refreshNavigation();
+    }
     this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
     let targetDayMix = 0;
@@ -2095,6 +2664,13 @@ export class IslandWorld {
           object.geometry.computeVertexNormals();
           object.userData.waveTime = this.elapsed;
         }
+      } else if (object.userData.animate === 'welcome-interior-ring') {
+        const ringSpeed = Number(object.userData.rotationSpeed ?? 0.06);
+        if (object.userData.rotationAxis === 'y') {
+          object.rotation.y += delta * ringSpeed;
+        } else {
+          object.rotation.z += delta * ringSpeed;
+        }
       } else if (object.userData.animate === 'industrial-moving-light') {
         object.position.x = Math.sin(this.elapsed * 0.26) * 0.72;
         if (object instanceof THREE.Light) object.intensity = 1.45 + Math.sin(this.elapsed * 0.43) * 0.55;
@@ -2224,7 +2800,8 @@ export class IslandWorld {
       this.activeInteriorBuildingId &&
       !(
         ((definition.category === 'editor' && definition.workspace === 'interior') ||
-          (definition.category === 'imported' && definition.workspace === 'interior')) &&
+          (definition.category === 'imported' && definition.workspace === 'interior') ||
+          definition.category === 'authored-interior') &&
         definition.parentBuildingId === this.activeInteriorBuildingId
       )
     ) {
@@ -2258,13 +2835,52 @@ export class IslandWorld {
 
   setMode(mode: ViewMode) {
     const previousMode = this.mode;
+    // Resolve the occupied room before WALK teardown changes visibility or
+    // clears the generated-interior runtime marker. The inverse transition can
+    // then reopen the same authoritative room instead of revealing the island
+    // around a camera that is still physically inside the building.
+    const occupiedWalkInteriorBuildingId = previousMode === 'walk'
+      ? this.getCurrentInteriorBuildingId()
+      : null;
+    const suspendedWalkReturnState = occupiedWalkInteriorBuildingId
+      && this.suspendedWalkInteriorState?.buildingId === occupiedWalkInteriorBuildingId
+      ? this.suspendedWalkInteriorState.returnState
+      : null;
+    const interiorWalkBuildingId = mode === 'walk' ? this.activeInteriorBuildingId : null;
+    const interiorWalkTarget = interiorWalkBuildingId
+      ? this.getEditorInterior(interiorWalkBuildingId)
+      : null;
+    const interiorWalkSpawn = interiorWalkTarget
+      ? this.getInteriorWalkSpawn(interiorWalkTarget)
+      : null;
     // Fountain top-down inspection uses a Z-axis up vector. Every normal
     // world mode starts from canonical Y-up so that orbit, plan, and WALK
     // controls cannot inherit a rolled camera.
     this.camera.up.set(0, 1, 0);
     this.setAcademicFountainInspectionControls(false);
     this.setCerebrumLibraryInspectionControls(false);
-    if (this.activeInteriorBuildingId && mode !== 'edit') this.exitInterior(false);
+    if (this.activeInteriorBuildingId && mode !== 'edit') {
+      const returnState = this.interiorReturnState;
+      // Interior → WALK owns an explicit room-floor handoff. Every exterior
+      // mode should instead recover the exact camera/target that was saved
+      // before Interior Edit, otherwise a later Explore → WALK projection
+      // starts from the cutaway camera inside the building shell.
+      this.exitInterior(mode !== 'walk');
+      this.suspendedWalkInteriorState = mode === 'walk' && interiorWalkBuildingId && returnState
+        ? { buildingId: interiorWalkBuildingId, returnState }
+        : null;
+    }
+    // Release the WALK-only envelope before Interior Edit records its own
+    // isolation state. Capturing already-hidden roots would make the room and
+    // exterior restore each other incorrectly on the next transition.
+    if (previousMode === 'walk' && mode !== 'walk') {
+      this.restoreRuntimeWalkInteriorIsolation();
+    }
+    if (mode !== 'walk' && this.activeGeneratedWalkInteriorBuildingId) {
+      const generatedWalkInterior = this.interiorGroups.get(this.activeGeneratedWalkInteriorBuildingId);
+      if (generatedWalkInterior) generatedWalkInterior.visible = false;
+      this.activeGeneratedWalkInteriorBuildingId = null;
+    }
     if (previousMode === 'walk' && mode !== 'walk') {
       this.walkController.exit();
       const forward = this.camera.getWorldDirection(new THREE.Vector3());
@@ -2283,21 +2899,66 @@ export class IslandWorld {
     this.transformControls.getHelper().visible = false;
     if (mode === 'walk') {
       this.cameraTween = null;
-      const selectedWalkTarget = this.selectedId;
       const preservedDirection = this.camera.getWorldDirection(new THREE.Vector3());
-      const enteringFromOverview = !selectedWalkTarget
-        && this.camera.position.y - ISLAND_SURFACE_Y > 80;
-      const preferredSpawn = enteringFromOverview
-        ? new THREE.Vector3(0, ISLAND_SURFACE_Y, DISTRICT_ROAD_RADII[0])
-        : this.camera.position.clone();
-      const focusedSpawn = enteringFromOverview ? undefined : this.controls.target.clone();
-      const entryDirection = enteringFromOverview
-        ? new THREE.Vector3(0, -0.025, -1)
-        : preservedDirection;
+      // Preserve the viewed location: exterior Explore/Plan/Edit cameras are
+      // projected vertically onto their local walkable surface. If that X/Z
+      // is outside the island or obstructed, the orbit target is tried next;
+      // only then does WalkController use its global recovery anchor.
+      const exteriorRecoverySpawn = new THREE.Vector3(
+        0,
+        ISLAND_SURFACE_Y,
+        DISTRICT_ROAD_RADII[0],
+      );
+      const centralCoreClearance = DISTRICT_ROAD_RADII[0] * 0.25;
+      const cameraIsInsideCentralCore = Math.hypot(
+        this.camera.position.x,
+        this.camera.position.z,
+      ) < centralCoreClearance;
+      const targetIsInsideCentralCore = Math.hypot(
+        this.controls.target.x,
+        this.controls.target.z,
+      ) < centralCoreClearance;
+      const preferredSpawn = interiorWalkSpawn
+        ?? (
+          cameraIsInsideCentralCore
+            ? (
+              targetIsInsideCentralCore
+                ? exteriorRecoverySpawn
+                : this.controls.target.clone()
+            )
+            : this.camera.position.clone()
+        );
+      const focusedSpawn = interiorWalkSpawn
+        ? this.controls.target.clone()
+        : (
+          targetIsInsideCentralCore
+            ? exteriorRecoverySpawn
+            : this.controls.target.clone()
+        );
+      const entryDirection = preservedDirection.clone();
+      if (!interiorWalkSpawn) {
+        // Orbit/plan cameras often look almost vertically down. WALK keeps
+        // their compass heading but starts at a human forward pitch.
+        entryDirection.y = 0;
+        if (entryDirection.lengthSq() < 0.0001) entryDirection.set(0, 0, -1);
+        entryDirection.normalize();
+        entryDirection.y = -0.025;
+        entryDirection.normalize();
+      }
       this.clearSelection('system');
       this.camera.fov = WALK_VERTICAL_FOV;
       this.camera.near = 0.015;
       this.camera.updateProjectionMatrix();
+      if (interiorWalkTarget && interiorWalkBuildingId && interiorWalkSpawn) {
+        this.camera.position.copy(interiorWalkSpawn);
+        interiorWalkTarget.visible = true;
+        if (interiorWalkTarget.userData.authoredEditorInterior === true) {
+          this.syncAuthoredRuntimeInteriorVisibility();
+        } else {
+          this.interiorsRoot.visible = true;
+          this.activeGeneratedWalkInteriorBuildingId = interiorWalkBuildingId;
+        }
+      }
       this.walkController.enter(preferredSpawn, entryDirection, focusedSpawn);
       this.renderer.domElement.style.cursor = 'crosshair';
     } else if (mode === 'plan') {
@@ -2310,7 +2971,25 @@ export class IslandWorld {
       );
     } else if (mode === 'edit') {
       this.cameraTween = null;
-      if (this.selectedId) {
+      if (occupiedWalkInteriorBuildingId) {
+        if (
+          this.enterInterior(occupiedWalkInteriorBuildingId, true)
+          && suspendedWalkReturnState
+          && this.interiorReturnState
+        ) {
+          // Keep the newly captured visibility map, but retain the exact
+          // exterior orbit view that preceded Edit -> WALK. This makes the
+          // complete Edit -> WALK -> Edit -> Explore round trip reversible.
+          this.interiorReturnState.cameraPosition.copy(suspendedWalkReturnState.cameraPosition);
+          this.interiorReturnState.cameraTarget.copy(suspendedWalkReturnState.cameraTarget);
+          this.interiorReturnState.cameraFov = suspendedWalkReturnState.cameraFov;
+          this.interiorReturnState.cameraNear = suspendedWalkReturnState.cameraNear;
+          this.interiorReturnState.minDistance = suspendedWalkReturnState.minDistance;
+          this.interiorReturnState.maxDistance = suspendedWalkReturnState.maxDistance;
+          this.interiorReturnState.maxPolarAngle = suspendedWalkReturnState.maxPolarAngle;
+        }
+        this.suspendedWalkInteriorState = null;
+      } else if (this.selectedId) {
         const group = this.objectGroups.get(this.selectedId);
         if (group) {
           this.transformControls.attach(group);
@@ -2319,6 +2998,31 @@ export class IslandWorld {
       }
     } else {
       this.cameraTween = null;
+      if (occupiedWalkInteriorBuildingId) {
+        if (suspendedWalkReturnState) {
+          this.camera.position.copy(suspendedWalkReturnState.cameraPosition);
+          this.controls.target.copy(suspendedWalkReturnState.cameraTarget);
+          this.camera.fov = suspendedWalkReturnState.cameraFov;
+          this.camera.near = suspendedWalkReturnState.cameraNear;
+          this.controls.minDistance = suspendedWalkReturnState.minDistance;
+          this.controls.maxDistance = suspendedWalkReturnState.maxDistance;
+          this.controls.maxPolarAngle = suspendedWalkReturnState.maxPolarAngle;
+          this.camera.updateProjectionMatrix();
+          this.controls.update();
+        } else {
+          // A player may have entered the room directly from exterior WALK,
+          // without an earlier Interior Edit return view. Frame that same host
+          // from outside instead of leaving Explore inside a hidden shell.
+          this.focus(occupiedWalkInteriorBuildingId);
+        }
+      }
+    }
+    if (previousMode === 'walk' && mode !== 'walk' && !occupiedWalkInteriorBuildingId) {
+      // The player left the room before changing modes; a stale return view
+      // must not affect a later exterior transition.
+      this.suspendedWalkInteriorState = null;
+    } else if (previousMode === 'walk' && mode !== 'edit') {
+      this.suspendedWalkInteriorState = null;
     }
     if (mode !== 'walk' && !this.productionExportActive) {
       this.cerebrumLibraryPresence = false;
@@ -2331,7 +3035,10 @@ export class IslandWorld {
     }
     const interiorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
     this.updateWorldStreaming(false, true);
-    if (interiorVisibilityChanged) this.walkController.refreshNavigation();
+    const runtimeWalkIsolationChanged = this.enforceRuntimeWalkInteriorIsolation();
+    if (interiorVisibilityChanged || runtimeWalkIsolationChanged) {
+      this.walkController.refreshNavigation();
+    }
     this.updateLabels(true);
   }
 
@@ -2374,6 +3081,41 @@ export class IslandWorld {
     return this.activeInteriorBuildingId;
   }
 
+  getCurrentInteriorBuildingId() {
+    if (this.activeInteriorBuildingId) return this.activeInteriorBuildingId;
+    if (this.activeGeneratedWalkInteriorBuildingId) return this.activeGeneratedWalkInteriorBuildingId;
+    if (this.mode !== 'walk') return null;
+
+    for (const [buildingId, interior] of this.authoredInteriorByBuildingId) {
+      const host = interior.parent;
+      if (!host) continue;
+      const isolatedBounds = interior.userData.runtimeInteriorBounds as {
+        width: number;
+        depth: number;
+        height: number;
+        center: [number, number];
+      } | undefined;
+      const footprint = isolatedBounds
+        ? [isolatedBounds.width, isolatedBounds.depth] as [number, number]
+        : host.userData.footprint as [number, number] | undefined;
+      if (!footprint) continue;
+      const record = host.userData.academicBuildingData as AcademicCampusBuilding | undefined;
+      const center = isolatedBounds?.center
+        ?? host.userData.runtimeInteriorCenter as [number, number] | undefined;
+      const height = isolatedBounds?.height
+        ?? (
+          Number(host.userData.runtimeInteriorHeight)
+          || Number(record?.height)
+          || 2.4
+        );
+      const floorY = Number(interior.userData.editorFloorY) || 0;
+      if (this.isCameraInsideBuildingHost(host, footprint[0], footprint[1], height, center, floorY)) {
+        return buildingId;
+      }
+    }
+    return null;
+  }
+
   setEditWorkspace(workspace: EditorWorkspace) {
     if (workspace === 'landscape' && this.activeInteriorBuildingId) this.exitInterior();
     this.editWorkspace = workspace;
@@ -2410,6 +3152,7 @@ export class IslandWorld {
     group.userData.editable = true;
     group.userData.catalogId = item.id;
     group.userData.workspace = item.workspace;
+    group.userData.editorBaseScale = group.scale.toArray();
 
     const defaultInteractions = (() => {
       const list: string[] = [];
@@ -2448,17 +3191,23 @@ export class IslandWorld {
       if (!parentBuildingId) return null;
       const interior = this.ensureInterior(parentBuildingId);
       if (!interior) return null;
+      this.configureInteriorAssetBaseScale(group, interior);
       const placed = this.interiorAssetIds.get(parentBuildingId)?.size ?? 0;
       const width = Number(interior.userData.roomWidth) || 8;
       const depth = Number(interior.userData.roomDepth) || 6;
+      const center = interior.userData.editorRoomCenter as [number, number] | undefined;
+      const centerX = Number(center?.[0] ?? 0);
+      const centerZ = Number(center?.[1] ?? 0);
+      const floorY = Number(interior.userData.editorFloorY) || 0.012;
       const columns = 4;
       const column = placed % columns;
       const row = Math.floor(placed / columns) % 3;
       group.position.set(
-        THREE.MathUtils.lerp(-width * 0.31, width * 0.31, column / (columns - 1)),
-        0.012,
-        THREE.MathUtils.lerp(-depth * 0.24, depth * 0.2, row / 2),
+        centerX + THREE.MathUtils.lerp(-width * 0.31, width * 0.31, column / (columns - 1)),
+        floorY,
+        centerZ + THREE.MathUtils.lerp(-depth * 0.24, depth * 0.2, row / 2),
       );
+      group.userData.editorFloorLocked = true;
       interior.add(group);
     } else {
       if (customPosition) {
@@ -2513,12 +3262,26 @@ export class IslandWorld {
     this.select(id, 'system');
     this.focus(id);
     this.applySeasonColors(this.activeSeason);
+    this.scheduleAutosave();
     return definition;
   }
 
   deleteObject(id = this.selectedId) {
     if (!id || !this.definitions.has(id)) return false;
+    const definition = this.definitions.get(id)!;
+    if (definition.category === 'authored-interior') {
+      this.deletedAuthoredInteriorComponentIds.add(id);
+      this.unregisterObject(id);
+      this.authoredInteriorComponentIds.get(definition.parentBuildingId)?.delete(id);
+      this.walkController.refreshNavigation();
+      this.scheduleAutosave();
+      return true;
+    }
+    this.deletedObjectIds.add(id);
     if (this.activeInteriorBuildingId === id) this.exitInterior();
+    this.authoredInteriorComponentIds.get(id)?.forEach((componentId) => this.unregisterObject(componentId, false));
+    this.authoredInteriorComponentIds.delete(id);
+    this.authoredInteriorByBuildingId.delete(id);
     const interiorAssets = Array.from(this.interiorAssetIds.get(id) ?? []);
     interiorAssets.forEach((assetId) => this.unregisterObject(assetId));
     const interior = this.interiorGroups.get(id);
@@ -2529,26 +3292,51 @@ export class IslandWorld {
     }
     this.unregisterObject(id);
     this.walkController.refreshNavigation();
+    this.scheduleAutosave();
     return true;
   }
 
-  enterInterior(id = this.selectedId) {
+  enterInterior(id = this.selectedId, preserveCamera = false) {
     if (!id || !this.canEnterInterior(id)) return false;
     if (this.mode !== 'edit') this.setMode('edit');
+    if (this.activeInteriorBuildingId === id) return true;
     if (this.activeInteriorBuildingId && this.activeInteriorBuildingId !== id) this.exitInterior();
     const interior = this.ensureInterior(id);
     if (!interior) return false;
+    const authoredInterior = interior.userData.authoredEditorInterior === true;
 
     if (!this.interiorReturnState) {
-      const isolatedRoots = [
+      const rootVisibility = new Map<THREE.Object3D, boolean>();
+      const hide = (object: THREE.Object3D) => {
+        if (!rootVisibility.has(object)) rootVisibility.set(object, object.visible);
+        object.userData.editorIsolationRestoreVisible = object.visible;
+        object.visible = false;
+      };
+      [
         this.landscapeRoot,
-        this.architectureRoot,
         this.transitRoot,
         this.cityRoot,
         this.importedRoot,
         this.presentationRoot,
         this.labelRoot,
-      ];
+        this.interiorsRoot,
+      ].forEach(hide);
+      if (authoredInterior) {
+        let branch: THREE.Object3D = interior;
+        let parent = branch.parent;
+        while (parent && parent !== this.modelRoot) {
+          parent.children.forEach((sibling) => {
+            if (sibling !== branch) hide(sibling);
+          });
+          if (!rootVisibility.has(parent)) rootVisibility.set(parent, parent.visible);
+          parent.visible = true;
+          branch = parent;
+          parent = parent.parent;
+        }
+      } else {
+        hide(this.architectureRoot);
+        this.interiorsRoot.visible = true;
+      }
       this.interiorReturnState = {
         cameraPosition: this.camera.position.clone(),
         cameraTarget: this.controls.target.clone(),
@@ -2557,25 +3345,33 @@ export class IslandWorld {
         minDistance: this.controls.minDistance,
         maxDistance: this.controls.maxDistance,
         maxPolarAngle: this.controls.maxPolarAngle,
-        rootVisibility: new Map(isolatedRoots.map((root) => [root, root.visible])),
+        rootVisibility,
       };
-      isolatedRoots.forEach((root) => {
-        root.userData.editorIsolationRestoreVisible = root.visible;
-        root.visible = false;
-      });
     }
 
     this.editWorkspace = 'interior';
     this.activeInteriorBuildingId = id;
-    this.interiorsRoot.children.forEach((child) => {
-      child.visible = child === interior;
-    });
+    if (!authoredInterior) {
+      this.interiorsRoot.visible = true;
+      this.interiorsRoot.children.forEach((child) => {
+        child.visible = child === interior;
+      });
+    }
+    interior.visible = true;
     interior.traverse((child) => {
-      if (child.userData.editorCutawayCeiling || child.name.includes('INTERIOR_SHELL__CEILING_BEAM')) {
+      if (
+        child.userData.editorCutawayCeiling
+        || child.name.includes('INTERIOR_SHELL__CEILING_BEAM')
+        || (authoredInterior && /(?:CEILING|ROOF)/i.test(child.name))
+      ) {
         child.userData.editorCutawayCeiling = true;
+        if (child.userData.editorCutawayRestoreVisible === undefined) {
+          child.userData.editorCutawayRestoreVisible = child.visible;
+        }
         child.visible = false;
       }
     });
+    this.syncAuthoredRuntimeInteriorVisibility();
     this.clearSelection('system');
     this.cameraTween = null;
     this.camera.fov = 52;
@@ -2586,11 +3382,17 @@ export class IslandWorld {
     this.controls.maxPolarAngle = Math.PI * 0.495;
     interior.updateMatrixWorld(true);
     const depth = Number(interior.userData.roomDepth) || 7;
-    const roomHeight = Number(interior.userData.roomHeight) || 0.5;
-    const target = interior.localToWorld(new THREE.Vector3(0, roomHeight * 0.34, -depth * 0.04));
-    const position = interior.localToWorld(new THREE.Vector3(0, roomHeight * 1.28, depth * 0.52));
-    this.camera.position.copy(position);
-    this.controls.target.copy(target);
+    const roomHeight = Number(interior.userData.roomHeight) || 3;
+    const roomCenter = interior.userData.editorRoomCenter as [number, number] | undefined;
+    const centerX = Number(roomCenter?.[0] ?? 0);
+    const centerZ = Number(roomCenter?.[1] ?? 0);
+    const floorY = Number(interior.userData.editorFloorY) || 0;
+    if (!preserveCamera) {
+      const target = interior.localToWorld(new THREE.Vector3(centerX, floorY + roomHeight * 0.34, centerZ - depth * 0.04));
+      const position = interior.localToWorld(new THREE.Vector3(centerX, floorY + roomHeight * 1.08, centerZ + depth * 0.52));
+      this.camera.position.copy(position);
+      this.controls.target.copy(target);
+    }
     this.controls.update();
     this.callbacks.onEditWorkspaceChange?.('interior', id);
     this.updateLabels(true);
@@ -2600,11 +3402,14 @@ export class IslandWorld {
   exitInterior(restoreCamera = true) {
     const activeId = this.activeInteriorBuildingId;
     if (!activeId) return;
-    const active = this.interiorGroups.get(activeId);
+    const active = this.getEditorInterior(activeId);
     if (active) {
       active.visible = false;
       active.traverse((child) => {
-        if (child.userData.editorCutawayCeiling) child.visible = true;
+        if (child.userData.editorCutawayCeiling) {
+          child.visible = child.userData.editorCutawayRestoreVisible !== false;
+          delete child.userData.editorCutawayRestoreVisible;
+        }
       });
     }
     if (this.selectedId) this.clearSelection('system');
@@ -2628,10 +3433,14 @@ export class IslandWorld {
     }
     this.activeInteriorBuildingId = null;
     this.interiorReturnState = null;
+    this.syncAuthoredRuntimeInteriorVisibility();
+    this.walkController.refreshNavigation();
     this.callbacks.onEditWorkspaceChange?.(this.editWorkspace, null);
   }
 
   private ensureInterior(buildingId: string) {
+    const authored = this.authoredInteriorByBuildingId.get(buildingId);
+    if (authored) return authored;
     const existing = this.interiorGroups.get(buildingId);
     if (existing) return existing;
     const definition = this.definitions.get(buildingId);
@@ -2644,6 +3453,9 @@ export class IslandWorld {
     interior.userData.buildingId = buildingId;
     interior.userData.roomWidth = width;
     interior.userData.roomDepth = depth;
+    interior.userData.roomHeight = 3.4;
+    interior.userData.editorRoomCenter = [0, 0];
+    interior.userData.editorFloorY = 0.012;
     interior.userData.exportAlways = true;
     if (definition.category === 'biome') {
       interior.userData.biomeLaboratory = true;
@@ -2802,6 +3614,7 @@ export class IslandWorld {
     this.dayTarget = daylight ? 1 : 0;
     this.activeTimeOfDay = daylight ? 'noon' : 'night';
     this.syncAcademicGateForTime();
+    this.scheduleAutosave();
   }
 
   isDaylight() {
@@ -2813,6 +3626,7 @@ export class IslandWorld {
     this.activeTimeOfDay = time;
     this.dayTarget = time === 'noon' ? 1 : 0;
     this.syncAcademicGateForTime();
+    this.scheduleAutosave();
   }
 
   getTimeOfDay() {
@@ -2847,6 +3661,7 @@ export class IslandWorld {
     }
     this.academicAudio.setWeather(weather);
     this.syncAcademicGateForTime();
+    this.scheduleAutosave();
   }
 
   private refreshAnimatedObjects() {
@@ -4052,6 +4867,7 @@ export class IslandWorld {
       this.precipitation.setType(season === 'winter' ? 'snow' : 'rain');
     }
     this.applySeasonColors(season);
+    this.scheduleAutosave();
   }
 
   getSeason() {
@@ -4190,6 +5006,7 @@ export class IslandWorld {
       label.anchor.element.textContent = labelText;
     }
     this.callbacks.onMetadataChange?.(replacement);
+    this.scheduleAutosave();
     return replacement;
   }
 
@@ -4206,6 +5023,7 @@ export class IslandWorld {
       y: group.scale.y / Math.max(0.001, baseScale[1]),
       z: group.scale.z / Math.max(0.001, baseScale[2]),
     } : null;
+    const visibilityIntent = this.objectVisibilityIntent.get(id) ?? 'visible';
     return {
       position: { x: group.position.x, y: group.position.y, z: group.position.z },
       rotationY: THREE.MathUtils.radToDeg(group.rotation.y),
@@ -4213,7 +5031,9 @@ export class IslandWorld {
         ? (relativeScale.x + relativeScale.y + relativeScale.z) / 3
         : (group.scale.x + group.scale.y + group.scale.z) / 3,
       ...(relativeScale ? { scale3D: relativeScale } : {}),
-      visible: group.visible,
+      visible: visibilityIntent === 'visible',
+      visibilityIntent,
+      effectiveVisible: isEffectivelyVisible(group),
       accent: definition.accent,
       ...(styleCustomized ? {
         primaryColor: group.userData.primaryColor ?? (definition as any).primaryColor ?? '#ffffff',
@@ -4265,10 +5085,12 @@ export class IslandWorld {
   setObjectVisible(id: string, visible: boolean) {
     const group = this.objectGroups.get(id);
     if (!group) return;
+    this.objectVisibilityIntent.set(id, visible ? 'visible' : 'hidden');
     group.visible = visible;
     this.walkController.refreshNavigation();
     this.refreshSelectionBounds();
     this.updateLabels(true);
+    this.scheduleAutosave();
   }
 
   private isolateAcademicAccentMaterials(definition: SceneDefinition, group: THREE.Group) {
@@ -4293,11 +5115,32 @@ export class IslandWorld {
     }
   }
 
+  private isolateAuthoredInteriorMaterials(definition: SceneDefinition, group: THREE.Group) {
+    if (definition.category !== 'authored-interior' || group.userData.authoredMaterialsIsolated === true) return;
+    const replacements = new Map<THREE.Material, THREE.Material>();
+    group.traverse((child) => {
+      if (!(child instanceof THREE.Mesh || child instanceof THREE.LineSegments)) return;
+      const replace = (material: THREE.Material) => {
+        let replacement = replacements.get(material);
+        if (!replacement) {
+          replacement = material.clone();
+          replacements.set(material, replacement);
+        }
+        return replacement;
+      };
+      child.material = Array.isArray(child.material)
+        ? child.material.map(replace)
+        : replace(child.material);
+    });
+    group.userData.authoredMaterialsIsolated = true;
+  }
+
   setObjectAccent(id: string, color: string) {
     const group = this.objectGroups.get(id);
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
     this.isolateAcademicAccentMaterials(definition, group);
+    this.isolateAuthoredInteriorMaterials(definition, group);
     setModelAccent(group, color);
     if (group.userData.styleCustomized === true || definition.category === 'editor' || definition.category === 'imported') {
       const primary = group.userData.primaryColor ?? '#ffffff';
@@ -4311,6 +5154,7 @@ export class IslandWorld {
     if (label) label.definition = replacement;
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
     this.walkController.refreshNavigation();
+    this.scheduleAutosave();
   }
 
   setObjectColors(id: string, primary: string, secondary: string, accent: string) {
@@ -4318,6 +5162,7 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
 
+    this.isolateAuthoredInteriorMaterials(definition, group);
     group.userData.primaryColor = primary;
     group.userData.secondaryColor = secondary;
     group.userData.accent = accent;
@@ -4338,6 +5183,7 @@ export class IslandWorld {
     if (label) label.definition = replacement;
 
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+    this.scheduleAutosave();
   }
 
   setObjectPattern(id: string, pattern: string, scale: number) {
@@ -4345,6 +5191,7 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
 
+    this.isolateAuthoredInteriorMaterials(definition, group);
     group.userData.patternType = pattern;
     group.userData.patternScale = scale;
     group.userData.styleCustomized = true;
@@ -4359,6 +5206,7 @@ export class IslandWorld {
     this.definitions.set(id, replacement);
 
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+    this.scheduleAutosave();
   }
 
   setObjectCollision(id: string, enabled: boolean) {
@@ -4388,6 +5236,7 @@ export class IslandWorld {
 
     this.walkController.refreshNavigation();
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+    this.scheduleAutosave();
   }
 
   setObjectInteractions(id: string, list: string[]) {
@@ -4404,23 +5253,49 @@ export class IslandWorld {
     this.definitions.set(id, replacement);
 
     this.callbacks.onTransform?.(replacement, this.getObjectState(id)!);
+    this.scheduleAutosave();
   }
 
-  saveProjectToLocalStorage() {
+  private persistedObjectState(id: string) {
+    const state = this.getObjectState(id);
+    if (!state) return null;
+    const { visible: _visible, effectiveVisible: _effectiveVisible, ...persisted } = state;
+    return persisted;
+  }
+
+  private buildProjectPayload() {
     const objects = Array.from(this.definitions.values()).map((definition) => ({
       ...definition,
-      state: this.getObjectState(definition.id),
+      state: this.persistedObjectState(definition.id),
     }));
-    const payload = {
-      schema: 'youtopy.lab-island/1.0',
+    const assets = new Map<string, PersistedAssetReference>();
+    this.importedAssetReferences.forEach((references) => {
+      references.forEach((reference) => assets.set(reference.assetId, reference));
+    });
+    return {
+      schema: PROJECT_SCHEMA_V2,
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
         entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+        canonicalEntryBuildingIds: ENTRY_LOGISTICS_BUILDING_PROGRAM
+          .filter((record) => record.districtId === 'entry-commercial')
+          .map((record) => entryLogisticsBuildingSelectableId(record.code)),
+        canonicalLogisticsBuildingIds: ENTRY_LOGISTICS_BUILDING_PROGRAM
+          .filter((record) => record.districtId === 'logistics')
+          .map((record) => entryLogisticsBuildingSelectableId(record.code)),
+        canonicalWelcomePoolId: WELCOME_POOL_SELECTABLE_ID,
       },
       exportedAt: new Date().toISOString(),
+      units: '10 metres per world unit',
+      coordinateSystem: { x: 'east', y: 'up', z: 'south' },
       objects,
+      assets: Array.from(assets.values()),
       editor: {
+        mode: this.mode,
         workspace: this.editWorkspace,
+        deletedObjectIds: Array.from(this.deletedObjectIds),
+        deletedAuthoredInteriorComponentIds: Array.from(this.deletedAuthoredInteriorComponentIds),
+        missingLegacyImports: this.legacyMissingImports,
         daylight: this.isDaylight(),
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
@@ -4430,18 +5305,92 @@ export class IslandWorld {
         camera: this.serializeCameraState(),
       },
     };
-    localStorage.setItem('youtopy_saved_project', JSON.stringify(payload));
+  }
+
+  private scheduleAutosave() {
+    if (this.persistenceHydrating || this.disposed) return;
+    if (this.autosaveTimer !== null) window.clearTimeout(this.autosaveTimer);
+    this.autosaveTimer = window.setTimeout(() => {
+      this.autosaveTimer = null;
+      void this.saveProjectToLocalStorage(false).catch((error) => {
+        this.callbacks.onError?.('Autosave failed; the previous recovery revision is still available.', error);
+      });
+    }, 750);
+  }
+
+  async saveProjectToLocalStorage(_manual = true) {
+    if (this.autosaveTimer !== null) {
+      window.clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
+    const payload = this.buildProjectPayload();
+    // IndexedDB is the authoritative commit. Update the compatibility mirror
+    // only after its document and all referenced assets validate successfully.
+    await this.persistence.saveProject(payload);
+    localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(payload));
+    this.persistenceSnapshot = await this.persistence.getSnapshot();
+    this.callbacks.onPersistenceChange?.(this.persistenceSnapshot);
+    return this.persistenceSnapshot;
   }
 
   loadProjectFromLocalStorage(): boolean {
-    const raw = localStorage.getItem('youtopy_saved_project');
+    const raw = localStorage.getItem(PROJECT_STORAGE_KEY);
     if (!raw) return false;
     try {
       const payload = JSON.parse(raw);
-      return this.loadProject(payload);
+      const loaded = this.loadProject(payload);
+      if (loaded && payload.schema === PROJECT_SCHEMA_V2) {
+        void this.restoreImportedAssets(payload);
+      }
+      return loaded;
     } catch (e) {
       console.error('Failed to parse saved project from LocalStorage', e);
       return false;
+    }
+  }
+
+  async loadProjectFromPersistentStorage() {
+    this.persistenceHydrating = true;
+    try {
+      const stored = await this.persistence.loadProject();
+      const localRaw = localStorage.getItem(PROJECT_STORAGE_KEY);
+      let localPayload: any = null;
+      try {
+        localPayload = localRaw ? JSON.parse(localRaw) : null;
+      } catch {
+        localPayload = null;
+      }
+      // IndexedDB is authoritative. The LocalStorage copy is a compatibility
+      // fallback only when no verified current/recovery document exists.
+      const payload = stored?.payload ?? localPayload;
+      if (!payload) return false;
+      const legacy = payload.schema === 'youtopy.lab-island/1.0';
+      if (legacy) await this.persistence.backupLegacyPayload(payload);
+      if (!this.loadProject(payload)) return false;
+      await this.restoreImportedAssets(payload);
+      if (legacy || !stored) {
+        await this.saveProjectToLocalStorage(false);
+      }
+      this.persistenceSnapshot = await this.persistence.getSnapshot();
+      this.callbacks.onPersistenceChange?.(this.persistenceSnapshot);
+      return true;
+    } finally {
+      this.persistenceHydrating = false;
+    }
+  }
+
+  private async initializePersistentProject() {
+    try {
+      await this.persistence.requestPersistentStorage();
+      await this.loadProjectFromPersistentStorage();
+    } catch (error) {
+      console.error('Error loading saved project on init', error);
+      this.callbacks.onError?.('The saved project could not be loaded; authored defaults remain active.', error);
+    } finally {
+      this.persistenceHydrating = false;
+      this.persistenceSnapshot = await this.persistence.getSnapshot();
+      this.callbacks.onPersistenceChange?.(this.persistenceSnapshot);
+      this.callbacks.onReady?.();
     }
   }
 
@@ -4489,12 +5438,41 @@ export class IslandWorld {
   }
 
   loadProject(payload: any): boolean {
-    if (!payload || payload.schema !== 'youtopy.lab-island/1.0') return false;
+    const isLegacyV1 = payload?.schema === 'youtopy.lab-island/1.0';
+    const isV2 = payload?.schema === PROJECT_SCHEMA_V2;
+    if (!payload || (!isLegacyV1 && !isV2) || !Array.isArray(payload.objects)) return false;
+    const previousHydrating = this.persistenceHydrating;
+    this.persistenceHydrating = true;
+    if (this.activeInteriorBuildingId) this.exitInterior(false);
     const savedWorldExpansion = Number(payload.masterplan?.worldExpansion) || 3;
     const savedLayoutScale = WORLD_EXPANSION / savedWorldExpansion;
     const savedEntryLogisticsLayoutRevision = Number(payload.masterplan?.entryLogisticsLayoutRevision) || 0;
 
+    this.objectVisibilityIntent.clear();
+    this.deletedObjectIds.clear();
+    this.deletedAuthoredInteriorComponentIds.clear();
+    this.importedAssetReferences.clear();
+    this.missingImportedAssetIds.clear();
+    this.legacyMissingImports = Array.isArray(payload.editor?.missingLegacyImports)
+      ? payload.editor.missingLegacyImports
+      : [];
+    if (isV2 && Array.isArray(payload.editor?.deletedObjectIds)) {
+      payload.editor.deletedObjectIds.forEach((id: unknown) => {
+        if (typeof id === 'string') this.deletedObjectIds.add(id);
+      });
+    }
+    if (Array.isArray(payload.editor?.deletedAuthoredInteriorComponentIds)) {
+      payload.editor.deletedAuthoredInteriorComponentIds.forEach((id: unknown) => {
+        if (typeof id === 'string') this.deletedAuthoredInteriorComponentIds.add(id);
+      });
+    }
     this.rebuildStaticDistrictsAndBiomes();
+
+    // Deletions are explicit tombstones in v2. Legacy saves never had a safe
+    // way to distinguish an editor deletion from a temporary runtime hide.
+    if (isV2) {
+      this.deletedObjectIds.forEach((id) => this.unregisterObject(id, false));
+    }
 
     // 1. Clear any editor/imported dynamic assets
     const dynamicIds = Array.from(this.definitions.keys()).filter((id) => id.startsWith('editor-') || id.startsWith('imported-'));
@@ -4531,6 +5509,7 @@ export class IslandWorld {
     payload.objects.forEach((obj: any) => {
       const id = obj.id;
       const state = obj.state;
+      if (typeof id !== 'string' || this.deletedObjectIds.has(id)) return;
 
       if (id.startsWith('editor-')) {
         const catalogId = obj.catalogId;
@@ -4541,6 +5520,8 @@ export class IslandWorld {
           group.userData.editable = true;
           group.userData.catalogId = item.id;
           group.userData.workspace = item.workspace;
+          group.userData.editorBaseScale = group.scale.toArray();
+          group.userData.editorFloorLocked = item.workspace === 'interior';
 
           if (state) {
             const layoutScale = item.workspace === 'landscape' ? savedLayoutScale : 1;
@@ -4550,8 +5531,10 @@ export class IslandWorld {
               state.position.z * layoutScale,
             );
             group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
-            group.scale.setScalar(state.scale);
-            group.visible = state.visible;
+            const visibilityIntent = state.visibilityIntent
+              ?? (state.visible === false ? 'hidden' : 'visible');
+            this.objectVisibilityIntent.set(id, visibilityIntent);
+            group.visible = visibilityIntent === 'visible';
           }
 
           const primaryColor = state?.primaryColor ?? obj.primaryColor ?? '#ffffff';
@@ -4577,11 +5560,14 @@ export class IslandWorld {
             }
           });
 
+          let editorInterior: THREE.Group | null = null;
           if (item.workspace === 'interior') {
             const parentId = obj.parentBuildingId;
             if (parentId) {
               const interior = this.ensureInterior(parentId);
               if (interior) {
+                editorInterior = interior;
+                this.configureInteriorAssetBaseScale(group, interior);
                 interior.add(group);
                 const ids = this.interiorAssetIds.get(parentId) ?? new Set<string>();
                 ids.add(id);
@@ -4590,6 +5576,23 @@ export class IslandWorld {
             }
           } else {
             (item.kind === 'building' ? this.architectureRoot : this.landscapeRoot).add(group);
+          }
+          if (!editorInterior) group.userData.editorBaseScale = group.scale.toArray();
+          if (state) {
+            const editorBaseScale = group.userData.editorBaseScale as [number, number, number];
+            if (state.scale3D) {
+              group.scale.set(
+                editorBaseScale[0] * Number(state.scale3D.x ?? 1),
+                editorBaseScale[1] * Number(state.scale3D.y ?? 1),
+                editorBaseScale[2] * Number(state.scale3D.z ?? 1),
+              );
+            } else {
+              group.scale.set(
+                editorBaseScale[0] * state.scale,
+                editorBaseScale[1] * state.scale,
+                editorBaseScale[2] * state.scale,
+              );
+            }
           }
 
           const definition: EditorAssetDefinition = {
@@ -4604,7 +5607,33 @@ export class IslandWorld {
           this.registerSelectable(definition, group, item.height + 0.8, false, item.workspace === 'landscape');
         }
       } else if (id.startsWith('imported-')) {
-        // Skip recreating base64 imported models for LocalStorage context, but preserve definition if needed
+        const references = Array.isArray(obj.assetDependencies)
+          ? obj.assetDependencies as PersistedAssetReference[]
+          : [];
+        if (obj.assetId && !references.some((reference) => reference.assetId === obj.assetId)) {
+          references.unshift({
+            assetId: obj.assetId,
+            sha256: obj.assetSha256,
+            filename: obj.assetFilename ?? obj.sourceLabel ?? obj.name,
+            extension: obj.assetFormat
+              ?? String(obj.assetFilename ?? obj.sourceLabel ?? '').split('.').pop()?.toLowerCase()
+              ?? 'bin',
+            mimeType: 'application/octet-stream',
+            byteLength: 0,
+          });
+        }
+        if (references.length) {
+          this.importedAssetReferences.set(id, references);
+        } else {
+          this.legacyMissingImports.push({
+            id,
+            name: obj.name,
+            sourceLabel: obj.sourceLabel,
+            parentBuildingId: obj.parentBuildingId,
+            state,
+            reason: 'Legacy project did not store imported binary data.',
+          });
+        }
       } else {
         const group = this.objectGroups.get(id);
         const definition = this.definitions.get(id);
@@ -4613,10 +5642,13 @@ export class IslandWorld {
             const migrateWelcomeGeometry = id === entryLogisticsBuildingSelectableId('E2')
               && savedEntryLogisticsLayoutRevision < ENTRY_LOGISTICS_LAYOUT_REVISION;
             if (!migrateWelcomeGeometry) {
+              const objectLayoutScale = definition.category === 'authored-interior'
+                ? 1
+                : savedLayoutScale;
               group.position.set(
-                state.position.x * savedLayoutScale,
+                state.position.x * objectLayoutScale,
                 state.position.y,
-                state.position.z * savedLayoutScale,
+                state.position.z * objectLayoutScale,
               );
               group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
             }
@@ -4638,7 +5670,15 @@ export class IslandWorld {
             } else {
               group.scale.setScalar(state.scale);
             }
-            group.visible = state.visible;
+            const visibilityIntent = isLegacyV1
+              ? (
+                definition.category === 'editor' || definition.category === 'imported'
+                  ? (state.visible === false ? 'hidden' : 'visible')
+                  : 'visible'
+              )
+              : state.visibilityIntent ?? 'visible';
+            this.objectVisibilityIntent.set(id, visibilityIntent);
+            group.visible = visibilityIntent === 'visible';
           }
 
           // Prior saves wrote fallback editor swatches into every untouched procedural
@@ -4686,6 +5726,7 @@ export class IslandWorld {
 
           const accent = state?.accent ?? obj.accent;
           if (styleCustomized) {
+            this.isolateAuthoredInteriorMaterials(definition, group);
             applyCustomStyles(group, primaryColor, secondaryColor, accent, patternType, patternScale);
           } else if (String(accent).toLowerCase() !== String(definition.accent).toLowerCase()) {
             this.isolateAcademicAccentMaterials(definition, group);
@@ -4802,32 +5843,12 @@ export class IslandWorld {
     this.applySeasonColors(this.activeSeason);
     this.walkController.refreshNavigation();
     this.clearSelection('ui');
+    this.persistenceHydrating = previousHydrating;
     return true;
   }
 
   takeSnapshotPayload() {
-    return {
-      schema: 'youtopy.lab-island/1.0',
-      masterplan: {
-        worldExpansion: WORLD_EXPANSION,
-        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
-      },
-      exportedAt: new Date().toISOString(),
-      objects: Array.from(this.definitions.values()).map((definition) => ({
-        ...definition,
-        state: this.getObjectState(definition.id),
-      })),
-      editor: {
-        workspace: this.editWorkspace,
-        daylight: this.isDaylight(),
-        timeOfDay: this.activeTimeOfDay,
-        weather: this.activeWeather,
-        season: this.activeSeason,
-        academicFountain: this.serializeAcademicFountainState(),
-        cerebrumLibrary: this.serializeCerebrumLibraryState(),
-        camera: this.serializeCameraState(),
-      },
-    };
+    return this.buildProjectPayload();
   }
 
   saveUndoState() {
@@ -4847,6 +5868,11 @@ export class IslandWorld {
     try {
       const payload = JSON.parse(prevStr);
       this.loadProject(payload);
+      void this.restoreImportedAssets(payload)
+        .then(() => this.scheduleAutosave())
+        .catch((error) => {
+          this.callbacks.onError?.('Undo restored the document but one or more imported assets could not be reloaded.', error);
+        });
       this.callbacks.onUndoStackChange?.(this.undoStack.length > 0);
       return true;
     } catch (e) {
@@ -4862,6 +5888,7 @@ export class IslandWorld {
     group.position.copy(initial.position);
     group.quaternion.copy(initial.quaternion);
     group.scale.copy(initial.scale);
+    this.objectVisibilityIntent.set(id, initial.visible ? 'visible' : 'hidden');
     group.visible = initial.visible;
     setModelAccent(group, initial.accent);
     const definition = this.definitions.get(id);
@@ -4887,6 +5914,7 @@ export class IslandWorld {
     this.walkController.refreshNavigation();
     const state = this.getObjectState(id);
     if (definition && state) this.callbacks.onTransform?.(definition, state);
+    this.scheduleAutosave();
   }
 
   private refreshEntryLogisticsRoads(definition: SceneDefinition) {
@@ -4935,6 +5963,10 @@ export class IslandWorld {
     if (!files.length) return [];
     const objectUrls = new Map<string, string>();
     files.forEach((file) => objectUrls.set(file.name.toLowerCase(), URL.createObjectURL(file)));
+    const persistedAssets = new Map<string, PersistedAssetReference>();
+    for (const file of files) {
+      persistedAssets.set(file.name.toLowerCase(), await this.persistence.putAsset(file, file.name));
+    }
     const manager = new THREE.LoadingManager();
     manager.setURLModifier((url) => {
       const filename = decodeURIComponent(url).split('/').pop()?.toLowerCase() ?? '';
@@ -4963,21 +5995,159 @@ export class IslandWorld {
             new THREE.MeshPhysicalMaterial({ color: '#cbd5d2', roughness: 0.4, metalness: 0.22 }),
           );
         }
-        const definition = this.addImportedObject(object, file.name, imported.length);
+        const legacyRelink = this.legacyMissingImports.find((candidate) => (
+          String(candidate.sourceLabel ?? candidate.name).toLowerCase() === file.name.toLowerCase()
+        ));
+        const definition = this.addImportedObject(object, file.name, imported.length, {
+          id: legacyRelink?.id,
+          parentBuildingId: legacyRelink?.parentBuildingId,
+          state: legacyRelink?.state,
+          primaryAsset: persistedAssets.get(file.name.toLowerCase()),
+          dependencies: Array.from(persistedAssets.values()),
+        });
+        if (legacyRelink) {
+          this.legacyMissingImports = this.legacyMissingImports.filter((candidate) => candidate !== legacyRelink);
+        }
         imported.push(definition);
       }
     } finally {
       objectUrls.forEach((url) => URL.revokeObjectURL(url));
       this.clearImportPlacement();
     }
+    this.scheduleAutosave();
     return imported;
   }
 
-  private addImportedObject(object: THREE.Object3D, filename: string, placementIndex = 0) {
-    const interiorBuildingId = this.activeInteriorBuildingId;
+  private async restoreImportedAssets(payload: any) {
+    const importedObjects = Array.isArray(payload?.objects)
+      ? payload.objects.filter((object: any) => (
+        object?.category === 'imported'
+        && typeof object.id === 'string'
+        && !this.deletedObjectIds.has(object.id)
+      ))
+      : [];
+    for (const saved of importedObjects) {
+      if (this.objectGroups.has(saved.id)) continue;
+      const references = this.importedAssetReferences.get(saved.id) ?? [];
+      const primaryReference = references.find((reference) => reference.assetId === saved.assetId)
+        ?? references[0];
+      if (!primaryReference) continue;
+      const records: PersistedAssetRecord[] = [];
+      for (const reference of references) {
+        const record = await this.persistence.getAsset(reference.assetId);
+        if (record) records.push(record);
+        else this.missingImportedAssetIds.add(reference.assetId);
+      }
+      const primary = records.find((record) => record.assetId === primaryReference.assetId);
+      if (!primary) {
+        this.legacyMissingImports.push({
+          id: saved.id,
+          name: saved.name,
+          sourceLabel: saved.sourceLabel,
+          parentBuildingId: saved.parentBuildingId,
+          state: saved.state,
+          assetId: primaryReference.assetId,
+          reason: 'The stored binary is missing or failed checksum verification.',
+        });
+        continue;
+      }
+      const urls = new Map<string, string>();
+      records.forEach((record) => urls.set(record.filename.toLowerCase(), URL.createObjectURL(record.blob)));
+      const manager = new THREE.LoadingManager();
+      manager.setURLModifier((url) => {
+        const filename = decodeURIComponent(url).split('/').pop()?.toLowerCase() ?? '';
+        return urls.get(filename) ?? url;
+      });
+      try {
+        let object: THREE.Object3D;
+        if (primary.extension === 'glb' || primary.extension === 'gltf') {
+          const loader = new GLTFLoader(manager);
+          const result = await loader.loadAsync(urls.get(primary.filename.toLowerCase())!);
+          object = result.scene;
+          object.animations = result.animations;
+        } else if (primary.extension === 'obj') {
+          object = new OBJLoader(manager).parse(await primary.blob.text());
+        } else if (primary.extension === 'stl') {
+          const geometry = new STLLoader(manager).parse(await primary.blob.arrayBuffer());
+          geometry.computeVertexNormals();
+          object = new THREE.Mesh(
+            geometry,
+            new THREE.MeshPhysicalMaterial({ color: '#cbd5d2', roughness: 0.4, metalness: 0.22 }),
+          );
+        } else {
+          this.missingImportedAssetIds.add(primary.assetId);
+          continue;
+        }
+        const restored = this.addImportedObject(object, primary.filename, 0, {
+          id: saved.id,
+          parentBuildingId: saved.parentBuildingId,
+          state: saved.state,
+          primaryAsset: primaryReference,
+          dependencies: references,
+          restoring: true,
+        });
+        const group = this.objectGroups.get(saved.id);
+        if (!group) continue;
+        const state = saved.state ?? {};
+        const replacement = {
+          ...restored,
+          ...saved,
+          assetDependencies: references,
+        } as ImportedDefinition;
+        this.definitions.set(saved.id, replacement);
+        const primaryColor = state.primaryColor ?? saved.primaryColor ?? '#ffffff';
+        const secondaryColor = state.secondaryColor ?? saved.secondaryColor ?? '#74858a';
+        const patternType = state.patternType ?? saved.patternType ?? 'solid';
+        const patternScale = Number(state.patternScale ?? saved.patternScale ?? 1);
+        const collisionEnabled = state.collisionEnabled !== false && saved.collisionEnabled !== false;
+        group.userData.primaryColor = primaryColor;
+        group.userData.secondaryColor = secondaryColor;
+        group.userData.patternType = patternType;
+        group.userData.patternScale = patternScale;
+        group.userData.styleCustomized = true;
+        group.userData.collisionEnabled = collisionEnabled;
+        group.userData.interactions = state.interactions ?? saved.interactions ?? [];
+        applyCustomStyles(
+          group,
+          primaryColor,
+          secondaryColor,
+          state.accent ?? saved.accent,
+          patternType,
+          patternScale,
+        );
+        group.traverse((child) => {
+          if (!(child instanceof THREE.Mesh)) return;
+          child.userData.originalNavObstacle ??= child.userData.navObstacle === true;
+          child.userData.navObstacle = collisionEnabled && child.userData.originalNavObstacle === true;
+        });
+      } catch (error) {
+        this.missingImportedAssetIds.add(primary.assetId);
+        this.callbacks.onError?.(`Imported asset ${primary.filename} could not be restored.`, error);
+      } finally {
+        urls.forEach((url) => URL.revokeObjectURL(url));
+      }
+    }
+    this.walkController.refreshNavigation();
+  }
+
+  private addImportedObject(
+    object: THREE.Object3D,
+    filename: string,
+    placementIndex = 0,
+    options: {
+      id?: string;
+      parentBuildingId?: string;
+      state?: any;
+      primaryAsset?: PersistedAssetReference;
+      dependencies?: PersistedAssetReference[];
+      restoring?: boolean;
+    } = {},
+  ) {
+    const interiorBuildingId = options.parentBuildingId ?? this.activeInteriorBuildingId;
     const interiorTarget = interiorBuildingId ? this.ensureInterior(interiorBuildingId) : null;
     const safeName = slugify(filename) || 'mesh';
-    const id = `imported-${safeName}-${Date.now().toString(36)}-${this.importedRoot.children.length + 1}`;
+    const id = options.id
+      ?? `imported-${safeName}-${Date.now().toString(36)}-${this.importedRoot.children.length + 1}`;
     const wrapper = new THREE.Group();
     wrapper.name = `IMPORTED__${safeName}`;
     wrapper.renderOrder = 2;
@@ -4986,6 +6156,8 @@ export class IslandWorld {
       type: 'imported',
       originalFilename: filename,
       editable: true,
+      editorBaseScale: [1, 1, 1],
+      editorFloorLocked: Boolean(interiorTarget),
     };
     object.name ||= safeName;
     object.traverse((child) => {
@@ -5012,13 +6184,18 @@ export class IslandWorld {
     object.position.z -= center.z;
     object.position.y -= bounds.min.y;
     if (interiorTarget) {
+      this.configureInteriorAssetBaseScale(wrapper, interiorTarget);
       const placed = this.interiorAssetIds.get(interiorBuildingId!)?.size ?? 0;
       const width = Number(interiorTarget.userData.roomWidth) || 8;
       const depth = Number(interiorTarget.userData.roomDepth) || 6;
+      const center = interiorTarget.userData.editorRoomCenter as [number, number] | undefined;
+      const centerX = Number(center?.[0] ?? 0);
+      const centerZ = Number(center?.[1] ?? 0);
+      const floorY = Number(interiorTarget.userData.editorFloorY) || 0.012;
       wrapper.position.set(
-        THREE.MathUtils.lerp(-width * 0.3, width * 0.3, (placed % 4) / 3),
-        0.012,
-        THREE.MathUtils.lerp(-depth * 0.23, depth * 0.18, (Math.floor(placed / 4) % 3) / 2),
+        centerX + THREE.MathUtils.lerp(-width * 0.3, width * 0.3, (placed % 4) / 3),
+        floorY,
+        centerZ + THREE.MathUtils.lerp(-depth * 0.23, depth * 0.18, (Math.floor(placed / 4) % 3) / 2),
       );
       interiorTarget.add(wrapper);
     } else {
@@ -5041,6 +6218,30 @@ export class IslandWorld {
       }
       this.importedRoot.add(wrapper);
     }
+    if (options.state) {
+      wrapper.position.set(
+        Number(options.state.position?.x ?? wrapper.position.x),
+        Number(options.state.position?.y ?? wrapper.position.y),
+        Number(options.state.position?.z ?? wrapper.position.z),
+      );
+      wrapper.rotation.y = THREE.MathUtils.degToRad(Number(options.state.rotationY ?? 0));
+      const baseScale = wrapper.userData.editorBaseScale as readonly [number, number, number] | undefined;
+      const stateScale = options.state.scale3D;
+      if (baseScale && stateScale) {
+        wrapper.scale.set(
+          baseScale[0] * Number(stateScale.x ?? 1),
+          baseScale[1] * Number(stateScale.y ?? 1),
+          baseScale[2] * Number(stateScale.z ?? 1),
+        );
+      } else if (baseScale) {
+        const scalar = Number(options.state.scale ?? 1);
+        wrapper.scale.set(baseScale[0] * scalar, baseScale[1] * scalar, baseScale[2] * scalar);
+      }
+      const visibilityIntent = options.state.visibilityIntent
+        ?? (options.state.visible === false ? 'hidden' : 'visible');
+      this.objectVisibilityIntent.set(id, visibilityIntent);
+      wrapper.visible = visibilityIntent === 'visible';
+    }
     wrapper.updateMatrixWorld(true);
     const finalBounds = new THREE.Box3().setFromObject(wrapper, true);
     const finalSize = finalBounds.getSize(new THREE.Vector3());
@@ -5059,7 +6260,13 @@ export class IslandWorld {
       description: `Editable mesh imported from ${filename}; its hierarchy and PBR materials are preserved for re-export${interiorTarget ? ' inside this building' : ''}.`,
       workspace: interiorTarget ? 'interior' : 'landscape',
       parentBuildingId: interiorBuildingId ?? undefined,
+      assetId: options.primaryAsset?.assetId,
+      assetSha256: options.primaryAsset?.sha256,
+      assetFilename: options.primaryAsset?.filename,
+      assetFormat: options.primaryAsset?.extension,
+      assetDependencies: options.dependencies,
     };
+    if (options.dependencies?.length) this.importedAssetReferences.set(id, options.dependencies);
     this.registerSelectable(definition, wrapper, Math.max(finalSize.y + 1.5, 3), false, !interiorTarget);
     if (interiorBuildingId) {
       const ids = this.interiorAssetIds.get(interiorBuildingId) ?? new Set<string>();
@@ -5068,8 +6275,10 @@ export class IslandWorld {
     }
     this.walkController.refreshNavigation();
     this.callbacks.onImport?.(definition);
-    this.select(id, 'system');
-    this.focus(id);
+    if (!options.restoring) {
+      this.select(id, 'system');
+      if (!interiorTarget) this.focus(id);
+    }
     return definition;
   }
 
@@ -5508,39 +6717,151 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
   }
 
   exportProject(filename = 'YouTopy_Lab_Island.project.json') {
-    const objects = Array.from(this.definitions.values()).map((definition) => ({
-      ...definition,
-      state: this.getObjectState(definition.id),
-    }));
     const payload = {
-      schema: 'youtopy.lab-island/1.0',
-      masterplan: {
-        worldExpansion: WORLD_EXPANSION,
-        entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
-      },
-      exportedAt: new Date().toISOString(),
-      units: '10 metres per world unit',
-      coordinateSystem: { x: 'east', y: 'up', z: 'south' },
+      ...this.buildProjectPayload(),
       sourceSketch: 'YT_LabIsland_Ideas1.png',
-      objects,
-      editor: {
-        mode: this.mode,
-        workspace: this.editWorkspace,
-        activeInteriorBuildingId: this.activeInteriorBuildingId,
-        daylight: this.isDaylight(),
-        timeOfDay: this.activeTimeOfDay,
-        weather: this.activeWeather,
-        season: this.activeSeason,
-        academicFountain: this.serializeAcademicFountainState(),
-        cerebrumLibrary: this.serializeCerebrumLibraryState(),
-        camera: this.serializeCameraState(),
-      },
       blender: {
         import: 'File > Import > glTF 2.0',
         primaryExchangeFile: 'YouTopy_Lab_Island.glb',
       },
     };
     downloadBlob(new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' }), filename);
+  }
+
+  async exportProjectBundle(filename = 'YouTopy_Lab_Island.project.zip') {
+    const payload = this.buildProjectPayload();
+    const records = await this.persistence.getReferencedAssets(payload);
+    const serializedProject = JSON.stringify(payload, null, 2);
+    const projectSha256 = await sha256Text(serializedProject);
+    const files: Record<string, Uint8Array> = {
+      'project.json': strToU8(serializedProject),
+    };
+    for (const record of records) {
+      files[`assets/${record.assetId}.${record.extension}`] = new Uint8Array(await record.blob.arrayBuffer());
+    }
+    files['manifest.json'] = strToU8(JSON.stringify({
+      schema: 'youtopy.project-bundle/1.0',
+      projectSchema: PROJECT_SCHEMA_V2,
+      exportedAt: new Date().toISOString(),
+      projectSha256,
+      assetCount: records.length,
+      assets: records.map(({ blob: _blob, savedAt: _savedAt, ...reference }) => reference),
+    }, null, 2));
+    downloadBlob(new Blob([zipSync(files, { level: 0 })], { type: 'application/zip' }), filename);
+  }
+
+  async importProjectBundle(file: File) {
+    const archive = unzipSync(new Uint8Array(await file.arrayBuffer()));
+    const projectEntry = archive['project.json']
+      ?? Object.entries(archive).find(([path]) => path.endsWith('/project.json'))?.[1];
+    if (!projectEntry) throw new Error('The project bundle does not contain project.json.');
+    const serializedProject = strFromU8(projectEntry);
+    const manifestEntry = archive['manifest.json']
+      ?? Object.entries(archive).find(([path]) => path.endsWith('/manifest.json'))?.[1];
+    if (!manifestEntry) throw new Error('The project bundle does not contain manifest.json.');
+    const manifest = JSON.parse(strFromU8(manifestEntry));
+    if (
+      manifest.schema !== 'youtopy.project-bundle/1.0'
+      || manifest.projectSchema !== PROJECT_SCHEMA_V2
+      || typeof manifest.projectSha256 !== 'string'
+      || await sha256Text(serializedProject) !== manifest.projectSha256
+    ) {
+      throw new Error('The project bundle manifest or project checksum is invalid.');
+    }
+    const payload = JSON.parse(serializedProject);
+    if (payload.schema !== PROJECT_SCHEMA_V2 || !Array.isArray(payload.objects)) {
+      throw new Error('The project bundle uses an unsupported schema.');
+    }
+    const references = Array.isArray(payload.assets)
+      ? payload.assets as PersistedAssetReference[]
+      : [];
+    for (const reference of references) {
+      const entry = archive[`assets/${reference.assetId}.${reference.extension}`]
+        ?? Object.entries(archive).find(([path]) => (
+          path.endsWith(`/assets/${reference.assetId}.${reference.extension}`)
+        ))?.[1];
+      if (!entry) throw new Error(`Project bundle asset is missing: ${reference.filename}.`);
+      await this.persistence.putAssetRecord({
+        ...reference,
+        blob: new Blob([entry], { type: reference.mimeType }),
+        savedAt: new Date().toISOString(),
+      });
+    }
+    this.persistenceHydrating = true;
+    try {
+      if (!this.loadProject(payload)) throw new Error('The project document could not be loaded.');
+      await this.restoreImportedAssets(payload);
+    } finally {
+      this.persistenceHydrating = false;
+    }
+    await this.saveProjectToLocalStorage(true);
+    return this.getCanonicalIntegrity();
+  }
+
+  async restoreWelcomeDistrictDefaults() {
+    this.saveUndoState();
+    const payload = this.buildProjectPayload();
+    const welcomeIds = new Set([
+      ...ENTRY_LOGISTICS_BUILDING_PROGRAM
+        .filter((record) => record.districtId === 'entry-commercial')
+        .map((record) => entryLogisticsBuildingSelectableId(record.code)),
+      WELCOME_POOL_SELECTABLE_ID,
+    ]);
+    payload.objects = payload.objects.filter((object) => !welcomeIds.has(object.id));
+    payload.editor.deletedObjectIds = payload.editor.deletedObjectIds
+      .filter((id) => !welcomeIds.has(id));
+    this.persistenceHydrating = true;
+    try {
+      if (!this.loadProject(payload)) throw new Error('Welcome District defaults could not be rebuilt.');
+      await this.restoreImportedAssets(payload);
+    } finally {
+      this.persistenceHydrating = false;
+    }
+    await this.saveProjectToLocalStorage(true);
+    return this.getCanonicalIntegrity();
+  }
+
+  getPersistenceSnapshot() {
+    return {
+      ...this.persistenceSnapshot,
+      missingAssetIds: [
+        ...new Set([
+          ...this.persistenceSnapshot.missingAssetIds,
+          ...this.missingImportedAssetIds,
+        ]),
+      ],
+      legacyBackupAvailable: localStorage.getItem(LEGACY_PROJECT_BACKUP_KEY) !== null,
+      missingLegacyImportCount: this.legacyMissingImports.length,
+    };
+  }
+
+  private getCanonicalIntegrity() {
+    const entryIds = ENTRY_LOGISTICS_BUILDING_PROGRAM
+      .filter((record) => record.districtId === 'entry-commercial')
+      .map((record) => entryLogisticsBuildingSelectableId(record.code));
+    const logisticsIds = ENTRY_LOGISTICS_BUILDING_PROGRAM
+      .filter((record) => record.districtId === 'logistics')
+      .map((record) => entryLogisticsBuildingSelectableId(record.code));
+    const summarize = (ids: string[]) => ({
+      expected: ids.length,
+      present: ids.filter((id) => this.objectGroups.has(id)).length,
+      userHiddenIds: ids.filter((id) => this.objectVisibilityIntent.get(id) === 'hidden'),
+      effectivelyVisibleIds: ids.filter((id) => {
+        const group = this.objectGroups.get(id);
+        return group ? isEffectivelyVisible(group) : false;
+      }),
+    });
+    const pool = this.objectGroups.get(WELCOME_POOL_SELECTABLE_ID);
+    return {
+      entry: summarize(entryIds),
+      logistics: summarize(logisticsIds),
+      welcomePool: {
+        expected: true,
+        present: Boolean(pool),
+        visibilityIntent: this.objectVisibilityIntent.get(WELCOME_POOL_SELECTABLE_ID) ?? null,
+        effectivelyVisible: pool ? isEffectivelyVisible(pool) : false,
+      },
+    };
   }
 
   getTextSnapshot() {
@@ -5574,6 +6895,16 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const visibleLabels = Array.from(this.labels.values()).filter(
       (label) => !(label.anchor.element as HTMLElement).classList.contains('label-suppressed'),
     );
+    const userHiddenIds = Array.from(this.objectVisibilityIntent.entries())
+      .filter(([, intent]) => intent === 'hidden')
+      .map(([id]) => id);
+    const runtimeHiddenIds = Array.from(this.objectGroups.entries())
+      .filter(([id, group]) => (
+        this.objectVisibilityIntent.get(id) !== 'hidden'
+        && !isEffectivelyVisible(group)
+      ))
+      .map(([id]) => id);
+    const currentInteriorBuildingId = this.getCurrentInteriorBuildingId();
     return {
       application: 'YouTopy Lab Island spatial editor',
       contentAuthority: 'web-sandbox; Unreal Editor owns production content',
@@ -5591,6 +6922,18 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       runtimePolicies: {
         objectInteractionsEnabled: OBJECT_INTERACTIONS_ENABLED,
         interiorRendering: 'walk-inside-building-only',
+        isolatedWalkInteriorActive: Boolean(this.isolatedRuntimeWalkInterior),
+        isolatedWalkInteriorName: this.isolatedRuntimeWalkInterior?.name ?? null,
+        isolatedExteriorObjectCount: this.runtimeWalkInteriorIsolation.size,
+        exteriorProjectionCount: this.isolatedRuntimeWalkInterior
+          ? Array.from((() => {
+            const projections: THREE.Object3D[] = [];
+            this.isolatedRuntimeWalkInterior?.traverse((object) => {
+              if (object.userData.exteriorWindowProjection === true) projections.push(object);
+            });
+            return projections;
+          })()).length
+          : 0,
         authoredInteriorGroups: this.authoredRuntimeInteriors.length,
         visibleAuthoredInteriorGroups: this.authoredRuntimeInteriors.filter((interior) => (
           isEffectivelyVisible(interior)
@@ -5599,7 +6942,15 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
           this.getCerebrumLibraryRoot()
           && isEffectivelyVisible(this.getCerebrumLibraryRoot()!),
         ),
+        visibilityFormula: 'exists × user-intent × layer × mode × streaming × isolation',
+        activeViewPolicy: currentInteriorBuildingId
+          ? `${this.mode}-interior`
+          : `${this.mode}-exterior`,
+        userHiddenIds,
+        runtimeHiddenCount: runtimeHiddenIds.length,
       },
+      persistence: this.getPersistenceSnapshot(),
+      canonicalIntegrity: this.getCanonicalIntegrity(),
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
         entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
@@ -5612,7 +6963,11 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         biomes: biomes.length,
         importedAssets: this.importedRoot.children.length,
         editorAssets: Array.from(this.definitions.values()).filter((definition) => definition.category === 'editor').length,
-        authoredInteriors: this.interiorGroups.size,
+        authoredInteriors: this.authoredInteriorByBuildingId.size,
+        generatedInteriorFallbacks: this.interiorGroups.size,
+        authoredInteriorComponents: Array.from(this.definitions.values()).filter(
+          (definition) => definition.category === 'authored-interior',
+        ).length,
       },
       planning: {
         boundedDistricts,
@@ -5624,6 +6979,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       edit: {
         workspace: this.editWorkspace,
         activeInteriorBuildingId: this.activeInteriorBuildingId,
+        activeInteriorType: this.activeInteriorBuildingId
+          ? (this.authoredInteriorByBuildingId.has(this.activeInteriorBuildingId) ? 'authored' : 'generated-fallback')
+          : null,
+        activeAuthoredComponentIds: this.activeInteriorBuildingId
+          ? Array.from(this.authoredInteriorComponentIds.get(this.activeInteriorBuildingId) ?? [])
+          : [],
         availableAssets: this.getAssetCatalog().map((item) => item.id),
       },
       importPlacement: this.getImportPlacementState(),
@@ -5761,6 +7122,10 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
 
   dispose() {
     this.disposed = true;
+    if (this.autosaveTimer !== null) {
+      window.clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
     this.renderer.setAnimationLoop(null);
     this.cancelScheduledCerebrumLoad?.();
     this.cancelScheduledCerebrumLoad = null;

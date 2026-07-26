@@ -32,10 +32,10 @@
         </nav>
 
         <div class="top-actions">
-          <button class="icon-action" id="save-project" title="Save changes to LocalStorage">
+          <button class="icon-action" id="save-project" title="Save an atomic project revision">
             <span class="action-icon">💾</span><span class="action-label">Save</span>
           </button>
-          <button class="icon-action" id="refresh-project" title="Reload from last saved state">
+          <button class="icon-action" id="refresh-project" title="Reload the latest verified project revision">
             <span class="action-icon">⟳</span><span class="action-label">Refresh</span>
           </button>
           <button class="icon-action" id="undo-action" title="Undo last action" disabled>
@@ -47,8 +47,17 @@
           <button class="icon-action" id="toggle-time" title="Toggle day / night">
             <span class="action-icon">☼</span><span class="action-label">Blue hour</span>
           </button>
-          <button class="icon-action" id="import-trigger" title="Choose a location, then import GLB, GLTF, OBJ or STL">
+          <button class="icon-action" id="import-trigger" title="Import GLB, GLTF, OBJ or STL into the active interior, or choose an exterior location">
             <span class="action-icon">↥</span><span class="action-label">Import</span>
+          </button>
+          <button class="icon-action" id="project-bundle-export" title="Download project state and imported source assets">
+            <span class="action-icon">▣</span><span class="action-label">Backup</span>
+          </button>
+          <button class="icon-action" id="project-bundle-import" title="Restore a verified project bundle">
+            <span class="action-icon">▤</span><span class="action-label">Restore</span>
+          </button>
+          <button class="icon-action" id="relink-missing-assets" title="Relink source files that were not stored by an older project" hidden>
+            <span class="action-icon">↻</span><span class="action-label">Relink Missing</span>
           </button>
           <button class="primary-action" id="export-trigger" data-export-status="idle" title="Export Blender-ready GLB · Shift-click for project JSON">
             <span>Export scene</span><span class="action-icon">↗</span>
@@ -57,6 +66,7 @@
             <span>Production</span><span class="action-icon">⇈</span>
           </button>
           <input id="mesh-file" type="file" accept=".glb,.gltf,.bin,.obj,.stl,.png,.jpg,.jpeg,.webp" hidden multiple />
+          <input id="project-bundle-file" type="file" accept=".zip,.youtopy" hidden />
         </div>
       </header>
 
@@ -417,6 +427,14 @@
               hidden
             >
               Exit Interior
+            </button>
+            <button
+              class="context-action"
+              id="restore-welcome-district"
+              type="button"
+              title="Restore the authored E1–E13 buildings and pool without changing other districts"
+            >
+              Restore Welcome
             </button>
             <button
               class="context-action danger-action"

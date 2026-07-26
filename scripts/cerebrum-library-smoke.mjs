@@ -435,10 +435,10 @@ try {
     && window.labIsland.getCerebrumLibraryState()?.quietMode === false);
   if (!quietExited) throw new Error('Q did not exit quiet mode');
 
-  const persistenceAudit = await page.evaluate(() => {
+  const persistenceAudit = await page.evaluate(async () => {
     const world = window.labIsland;
     const expected = world.getCerebrumLibraryState();
-    world.saveProjectToLocalStorage();
+    await world.saveProjectToLocalStorage();
     world.performCerebrumLibraryInteraction('reading-lamp-2');
     const loaded = world.loadProjectFromLocalStorage();
     const restored = world.getCerebrumLibraryState();

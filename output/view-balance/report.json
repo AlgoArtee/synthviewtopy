@@ -5,9 +5,17 @@
     "runtimePolicies": {
       "objectInteractionsEnabled": false,
       "interiorRendering": "walk-inside-building-only",
+      "isolatedWalkInteriorActive": false,
+      "isolatedWalkInteriorName": null,
+      "isolatedExteriorObjectCount": 0,
+      "exteriorProjectionCount": 0,
       "authoredInteriorGroups": 21,
       "visibleAuthoredInteriorGroups": 0,
-      "cerebrumInteriorRendered": false
+      "cerebrumInteriorRendered": false,
+      "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
+      "activeViewPolicy": "explore-exterior",
+      "userHiddenIds": [],
+      "runtimeHiddenCount": 111
     }
   },
   "walk": {
@@ -35,9 +43,17 @@
   "diningInterior": {
     "objectInteractionsEnabled": false,
     "interiorRendering": "walk-inside-building-only",
+    "isolatedWalkInteriorActive": false,
+    "isolatedWalkInteriorName": null,
+    "isolatedExteriorObjectCount": 0,
+    "exteriorProjectionCount": 0,
     "authoredInteriorGroups": 21,
     "visibleAuthoredInteriorGroups": 1,
-    "cerebrumInteriorRendered": false
+    "cerebrumInteriorRendered": false,
+    "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
+    "activeViewPolicy": "walk-exterior",
+    "userHiddenIds": [],
+    "runtimeHiddenCount": 166
   },
   "cerebrum": {
     "phase": "active",

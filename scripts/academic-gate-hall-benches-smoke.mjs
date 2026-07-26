@@ -422,7 +422,7 @@ try {
     };
   });
 
-  const persistenceAudit = await page.evaluate(() => {
+  const persistenceAudit = await page.evaluate(async () => {
     const world = window.labIsland;
     const summarizeMaterials = (root) => {
       const materials = new Map();
@@ -458,7 +458,7 @@ try {
     world.setWeather('academic-rainy-dusk');
     const districtBeforeSave = world.objectGroups.get('academic-libraries-theoretical-labs');
     const before = summarizeMaterials(districtBeforeSave);
-    world.saveProjectToLocalStorage();
+    await world.saveProjectToLocalStorage();
     const pristinePayload = JSON.parse(localStorage.getItem('youtopy_saved_project'));
     const pristineAcademic = pristinePayload.objects.find((object) => object.id === 'academic-libraries-theoretical-labs');
     const styleFields = ['primaryColor', 'secondaryColor', 'patternType', 'patternScale'];
@@ -512,7 +512,7 @@ try {
     };
     world.setWeather('academic-foggy-night');
     world.setTimeOfDay('noon');
-    world.saveProjectToLocalStorage();
+    await world.saveProjectToLocalStorage();
     world.setWeather('academic-rainy-dusk');
     const independentLoaded = world.loadProjectFromLocalStorage();
     const independentDistrict = world.objectGroups.get('academic-libraries-theoretical-labs');

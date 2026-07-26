@@ -1,0 +1,622 @@
+{
+  "scenarios": [
+    {
+      "name": "explore-overview",
+      "source": {
+        "mode": "explore",
+        "camera": [
+          0,
+          90,
+          84
+        ],
+        "target": [
+          0,
+          1.61,
+          75
+        ],
+        "selectedId": null,
+        "expectedWalkXZ": [
+          0,
+          84
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              0,
+              1.7780000000521539,
+              84.00000000000004
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              0,
+              1.778,
+              84
+            ],
+            "positionMetres": [
+              0,
+              17.8,
+              840
+            ],
+            "groundY": 1.616,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              0,
+              -0.025,
+              -1
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.6160000000521542,
+        "eyeOffset": 0.1619999999999997,
+        "groundHitName": "Radial district boundary road 1",
+        "groundHitY": 1.6160000000521542,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08726851851851848
+      }
+    },
+    {
+      "name": "explore-selected-overview",
+      "source": {
+        "mode": "explore",
+        "camera": [
+          84,
+          90,
+          0
+        ],
+        "target": [
+          75,
+          1.61,
+          0
+        ],
+        "selectedId": "entry-logistics-building-e2",
+        "expectedWalkXZ": [
+          84,
+          0
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              84.00000000000004,
+              1.7720000000000002,
+              5.510910596163115e-16
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              84,
+              1.772,
+              0
+            ],
+            "positionMetres": [
+              840,
+              17.7,
+              0
+            ],
+            "groundY": 1.61,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              -1,
+              -0.025,
+              0
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.61,
+        "eyeOffset": 0.16200000000000014,
+        "groundHitName": "Island planted surface",
+        "groundHitY": 1.61,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08747446673880124
+      }
+    },
+    {
+      "name": "plan-overview",
+      "source": {
+        "mode": "plan",
+        "camera": [
+          0,
+          940,
+          -84
+        ],
+        "target": [
+          0,
+          1.61,
+          -84
+        ],
+        "selectedId": null,
+        "expectedWalkXZ": [
+          0,
+          -84
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              0,
+              1.7780000000521539,
+              -83.99906156828922
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              0,
+              1.778,
+              -83.999
+            ],
+            "positionMetres": [
+              0,
+              17.8,
+              -840
+            ],
+            "groundY": 1.616,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              0,
+              -0.025,
+              -1
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.6160000000521542,
+        "eyeOffset": 0.1619999999999997,
+        "groundHitName": "Radial district boundary road 1",
+        "groundHitY": 1.6160000000521542,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08726851851851848
+      }
+    },
+    {
+      "name": "exterior-edit-overview",
+      "source": {
+        "mode": "edit",
+        "workspace": "exterior",
+        "camera": [
+          -84,
+          90,
+          0
+        ],
+        "target": [
+          -75,
+          1.61,
+          0
+        ],
+        "selectedId": "entry-logistics-building-e2",
+        "expectedWalkXZ": [
+          -84,
+          0
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              -84.00000000000004,
+              1.778,
+              5.510910596163115e-16
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              -84,
+              1.778,
+              0
+            ],
+            "positionMetres": [
+              -840,
+              17.8,
+              0
+            ],
+            "groundY": 1.616,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              1,
+              -0.025,
+              0
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.616,
+        "eyeOffset": 0.16199999999999992,
+        "groundHitName": "District boundary ring road 1",
+        "groundHitY": 1.616,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08726851851851848
+      }
+    },
+    {
+      "name": "authored-interior-edit-to-explore",
+      "source": {
+        "mode": "explore",
+        "workspace": "interior",
+        "camera": [
+          0,
+          30,
+          84
+        ],
+        "target": [
+          0,
+          1.6100000000000003,
+          75
+        ],
+        "selectedId": null,
+        "interiorOrigin": "entry-logistics-building-e2",
+        "expectedWalkXZ": [
+          0,
+          84
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              0,
+              1.7780000000521539,
+              84
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              0,
+              1.778,
+              84
+            ],
+            "positionMetres": [
+              0,
+              17.8,
+              840
+            ],
+            "groundY": 1.616,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              0,
+              -0.025,
+              -1
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.6160000000521542,
+        "eyeOffset": 0.1619999999999997,
+        "groundHitName": "Radial district boundary road 1",
+        "groundHitY": 1.6160000000521542,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08726851851851848
+      }
+    },
+    {
+      "name": "generated-interior-edit-to-explore",
+      "source": {
+        "mode": "explore",
+        "workspace": "interior",
+        "camera": [
+          1.102182119232618e-15,
+          30,
+          -84
+        ],
+        "target": [
+          0,
+          1.6100000000000003,
+          -75
+        ],
+        "selectedId": null,
+        "interiorOrigin": "pharmacology-labs",
+        "expectedWalkXZ": [
+          0,
+          -84
+        ]
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              1.102182119232618e-15,
+              1.7780000000521539,
+              -84
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              0,
+              1.778,
+              -84
+            ],
+            "positionMetres": [
+              0,
+              17.8,
+              -840
+            ],
+            "groundY": 1.616,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              0,
+              -0.025,
+              1
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.6160000000521542,
+        "eyeOffset": 0.1619999999999997,
+        "groundHitName": "Radial district boundary road 1",
+        "groundHitY": 1.6160000000521542,
+        "currentInteriorBuildingId": null,
+        "maxMove": 0.08726851851851848
+      }
+    },
+    {
+      "name": "authored-interior-edit",
+      "source": {
+        "mode": "edit",
+        "workspace": "interior",
+        "camera": [
+          177.27100000000002,
+          3.5870300000000013,
+          -307.0423787085424
+        ],
+        "target": [
+          170.38300000000004,
+          2.49479,
+          -295.11201274600796
+        ],
+        "selectedId": null,
+        "buildingId": "entry-logistics-building-e2"
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              170.87500000000003,
+              2.155180000085682,
+              -295.9641817433319
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              170.875,
+              2.155,
+              -295.964
+            ],
+            "positionMetres": [
+              1708.8,
+              21.6,
+              -2959.6
+            ],
+            "groundY": 1.993,
+            "surfaceKind": "terrazzo",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              -0.498,
+              -0.079,
+              0.863
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.9931800000856819,
+        "eyeOffset": 0.16199999999999992,
+        "groundHitName": "ENTRY__E2__INTERIOR_TERRAZZO_FLOOR",
+        "groundHitY": 1.9931800000856819,
+        "currentInteriorBuildingId": "entry-logistics-building-e2",
+        "maxMove": 0.08726851851889705
+      }
+    },
+    {
+      "name": "generated-interior-edit",
+      "source": {
+        "mode": "edit",
+        "workspace": "interior",
+        "camera": [
+          52.49999999999993,
+          5.2940000000000005,
+          -88.3638673973661
+        ],
+        "target": [
+          52.49999999999993,
+          2.7780000000000005,
+          -91.1302673973661
+        ],
+        "selectedId": null,
+        "buildingId": "pharmacology-labs"
+      },
+      "result": {
+        "snapshot": {
+          "mode": "walk",
+          "camera": {
+            "position": [
+              52.49999999999993,
+              2.1120000017881395,
+              -90.9326673973661
+            ]
+          },
+          "walk": {
+            "active": true,
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "grounded": true,
+            "positionWorld": [
+              52.5,
+              2.112,
+              -90.933
+            ],
+            "positionMetres": [
+              525,
+              21.1,
+              -909.3
+            ],
+            "groundY": 1.95,
+            "surfaceKind": "stone",
+            "roomId": "outside",
+            "speedMetresPerSecond": 0,
+            "speedKilometresPerHour": 0,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "movementKeys": [],
+            "direction": [
+              0,
+              -0.376,
+              -0.927
+            ],
+            "safetyRecoveries": 0
+          }
+        },
+        "groundY": 1.9500000017881394,
+        "eyeOffset": 0.16200000000000014,
+        "groundHitName": "pharmacology-labs__PLOT",
+        "groundHitY": 1.9500000017881394,
+        "currentInteriorBuildingId": "pharmacology-labs",
+        "maxMove": 0.08726851851848494
+      }
+    }
+  ],
+  "failures": [],
+  "coordinateFailures": [],
+  "distinctExteriorLocations": [
+    "0.0,84.0",
+    "84.0,0.0",
+    "0.0,-84.0",
+    "-84.0,0.0"
+  ],
+  "errors": []
+}

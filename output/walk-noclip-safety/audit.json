@@ -1,0 +1,127 @@
+{
+  "audit": {
+    "safetyGeometry": {
+      "basePreventUnderwalk": true,
+      "staircaseAccessRegistered": true,
+      "podiumBarrierSegmentCount": 72
+    },
+    "perimeter": {
+      "samples": 57,
+      "breaches": [],
+      "minimumNormalizedRadius": 1.010667628135668
+    },
+    "formerSideSeams": [
+      {
+        "requestedX": -2.66,
+        "result": [
+          -2.4063761565186894,
+          0.4326086966887761,
+          3.8892893829205377
+        ],
+        "ground": 1.6329999997764826,
+        "blocker": null,
+        "insideNavigationAccess": true,
+        "underwalkSurfaceNames": [
+          "ENTRY__E2__ELLIPTICAL_PALE_STONE_BASE"
+        ],
+        "underwalkAccessVolumes": 1,
+        "normalizedRadius": 0.9631577183400445
+      },
+      {
+        "requestedX": 2.66,
+        "result": [
+          2.9651128890018583,
+          0.4326086966887761,
+          3.979438221415478
+        ],
+        "ground": 1.6450000001490117,
+        "blocker": null,
+        "insideNavigationAccess": false,
+        "underwalkSurfaceNames": [
+          "ENTRY__E2__ELLIPTICAL_PALE_STONE_BASE"
+        ],
+        "underwalkAccessVolumes": 1,
+        "normalizedRadius": 1.0182286320614182
+      }
+    ],
+    "staircase": {
+      "result": [
+        -2.842170943040401e-14,
+        0.4413043482310095,
+        3.5500000000000114
+      ],
+      "ground": 1.9816800064706803,
+      "baseTop": 1.9816800027418138,
+      "reachedFinishedFloor": true
+    },
+    "forcedRecovery": {
+      "buriedGround": 1.6450000001490117,
+      "highestGround": 1.9816800027418138,
+      "layerDifference": 0.33668000259280206,
+      "interiorVisibleWhileBuried": false,
+      "currentInteriorWhileBuried": null,
+      "recoveriesBefore": 0,
+      "recoveriesAfter": 1,
+      "recoveryDistance": 0
+    },
+    "islandSurfaceSweep": {
+      "samples": 1110,
+      "failures": []
+    },
+    "rejectsDeepGroundTransition": true,
+    "finalWalk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        179.075,
+        1.813,
+        -310.167
+      ],
+      "positionMetres": [
+        1790.8,
+        18.1,
+        -3101.7
+      ],
+      "groundY": 1.651,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        -0.5,
+        0,
+        0.866
+      ],
+      "safetyRecoveries": 1
+    },
+    "runtime": {
+      "objectInteractionsEnabled": false,
+      "interiorRendering": "walk-inside-building-only",
+      "isolatedWalkInteriorActive": false,
+      "isolatedWalkInteriorName": null,
+      "isolatedExteriorObjectCount": 0,
+      "exteriorProjectionCount": 0,
+      "authoredInteriorGroups": 21,
+      "visibleAuthoredInteriorGroups": 0,
+      "cerebrumInteriorRendered": false,
+      "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
+      "activeViewPolicy": "walk-exterior",
+      "userHiddenIds": [],
+      "runtimeHiddenCount": 163
+    }
+  },
+  "errors": [],
+  "failures": []
+}

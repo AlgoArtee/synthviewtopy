@@ -1,0 +1,211 @@
+{
+  "editStart": {
+    "camera": [
+      177.27100000000002,
+      3.5870300000000013,
+      -307.0423787085424
+    ],
+    "activeInteriorBuildingId": "entry-logistics-building-e2",
+    "currentInteriorBuildingId": "entry-logistics-building-e2",
+    "workspace": "interior"
+  },
+  "walkInside": {
+    "mode": "walk",
+    "camera": [
+      170.87500000000003,
+      2.155180000085682,
+      -295.9641817433319
+    ],
+    "currentInteriorBuildingId": "entry-logistics-building-e2",
+    "walk": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        170.875,
+        2.155,
+        -295.964
+      ],
+      "positionMetres": [
+        1708.8,
+        21.6,
+        -2959.6
+      ],
+      "groundY": 1.993,
+      "surfaceKind": "terrazzo",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        -0.498,
+        -0.079,
+        0.863
+      ],
+      "safetyRecoveries": 0
+    }
+  },
+  "editFromWalk": {
+    "mode": "edit",
+    "camera": [
+      170.87500000000003,
+      2.155180000085682,
+      -295.9641817433319
+    ],
+    "activeInteriorBuildingId": "entry-logistics-building-e2",
+    "currentInteriorBuildingId": "entry-logistics-building-e2",
+    "workspace": "interior",
+    "controlsEnabled": true,
+    "walkActive": false,
+    "interiorVisible": true,
+    "landscapeVisible": false,
+    "transitVisible": false,
+    "cityVisible": false,
+    "runtimePolicy": "edit-interior"
+  },
+  "inverseWelcomePass": true,
+  "exploreAfterRoundTrip": {
+    "mode": "explore",
+    "camera": [
+      150,
+      16,
+      -270
+    ],
+    "target": [
+      171,
+      2.2,
+      -296
+    ],
+    "activeInteriorBuildingId": null,
+    "currentInteriorBuildingId": null,
+    "landscapeVisible": true,
+    "transitVisible": true,
+    "cityVisible": true
+  },
+  "returnViewPass": true,
+  "authoredCount": 21,
+  "authoredFailures": [],
+  "generatedTransition": {
+    "id": "pharmacology-labs",
+    "entered": true,
+    "walkInterior": "pharmacology-labs",
+    "editInterior": "pharmacology-labs",
+    "currentInterior": "pharmacology-labs",
+    "workspace": "interior",
+    "cameraDelta": 2.1316282072803006e-14,
+    "interiorVisible": true,
+    "walkActive": false
+  },
+  "generatedPass": true,
+  "transitionMatrixCount": 24,
+  "transitionMatrixFailures": [],
+  "exteriorTransitions": {
+    "walkSnapshot": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        -84,
+        1.772,
+        46
+      ],
+      "positionMetres": [
+        -840,
+        17.7,
+        460
+      ],
+      "groundY": 1.61,
+      "surfaceKind": "stone",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0.894,
+        -0.025,
+        -0.447
+      ],
+      "safetyRecoveries": 0
+    },
+    "edit": {
+      "mode": "edit",
+      "workspace": "landscape",
+      "activeInterior": null,
+      "cameraDelta": 0.2655437359774115,
+      "horizontalCameraDelta": 0.009573257353842384,
+      "controlsEnabled": true
+    },
+    "plan": {
+      "mode": "plan",
+      "camera": [
+        -59.63053107720191,
+        546.7223190163626,
+        32.68410815338841
+      ],
+      "activeInterior": null
+    },
+    "planToWalk": {
+      "mode": "walk",
+      "currentInterior": null,
+      "walk": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -61.579,
+          1.997,
+          33.809
+        ],
+        "positionMetres": [
+          -615.8,
+          20,
+          338.1
+        ],
+        "groundY": 1.835,
+        "surfaceKind": "stone",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0.893,
+          -0.025,
+          -0.45
+        ],
+        "safetyRecoveries": 0
+      }
+    }
+  },
+  "exteriorPass": true,
+  "errors": []
+}

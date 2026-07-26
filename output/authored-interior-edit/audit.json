@@ -1,0 +1,276 @@
+{
+  "setup": {
+    "buildingId": "entry-logistics-building-e2",
+    "componentId": "authored-interior-entry-logistics-building-e2-entry-e2-interactive-orientation-table-1-1",
+    "componentName": "E2 Interactive Orientation Table",
+    "authoredInteriorName": "ENTRY__E2__WELCOME_REGISTRATION_INTERIOR",
+    "componentCount": 46,
+    "interiorInventory": [
+      {
+        "buildingId": "entry-logistics-building-l1",
+        "name": "LOGISTICS__L1__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l2",
+        "name": "LOGISTICS__L2__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l3",
+        "name": "LOGISTICS__L3__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l4",
+        "name": "LOGISTICS__L4__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l5",
+        "name": "LOGISTICS__L5__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l6",
+        "name": "LOGISTICS__L6__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-l7",
+        "name": "LOGISTICS__L7__AUTHORED_WALK_INTERIOR",
+        "componentCount": 2,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e2",
+        "name": "ENTRY__E2__WELCOME_REGISTRATION_INTERIOR",
+        "componentCount": 46,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e3",
+        "name": "ENTRY__E3__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e4",
+        "name": "ENTRY__E4__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e5",
+        "name": "ENTRY__E5__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e6",
+        "name": "ENTRY__E6__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e7",
+        "name": "ENTRY__E7__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e8",
+        "name": "ENTRY__E8__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e9",
+        "name": "ENTRY__E9__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e10",
+        "name": "ENTRY__E10__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e11",
+        "name": "ENTRY__E11__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e12",
+        "name": "ENTRY__E12__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "entry-logistics-building-e13",
+        "name": "ENTRY__E13__AUTHORED_WALK_INTERIOR",
+        "componentCount": 3,
+        "type": "authored"
+      },
+      {
+        "buildingId": "academic-building-st-anselm-chapel",
+        "name": "ST-ANSELM-CHAPEL__CHAPEL_NAVE",
+        "componentCount": 12,
+        "type": "authored"
+      },
+      {
+        "buildingId": "academic-building-founders-dining-hall",
+        "name": "FOUNDERS-DINING-HALL__DINING_HALL",
+        "componentCount": 6,
+        "type": "authored"
+      }
+    ],
+    "before": {
+      "position": {
+        "x": 2.7,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "after": {
+      "position": {
+        "x": 3.04,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 13,
+      "scale": 1.0733333333333333,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1.22
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "axisScaleVisible": true,
+    "genericFallbackCount": 0
+  },
+  "persistence": {
+    "restored": {
+      "position": {
+        "x": 3.04,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 13,
+      "scale": 1.0733333333333333,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1.22
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "expected": {
+      "position": {
+        "x": 3.04,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 13,
+      "scale": 1.0733333333333333,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1.22
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "addedAssetId": "editor-interior-focus-workstation-1",
+    "addedToAuthoredInterior": true,
+    "walkUsesEditedInterior": true,
+    "interiorVisibleInWalk": false,
+    "componentEffectivelyVisibleInWalk": true,
+    "walkState": {
+      "position": {
+        "x": 3.04,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 13,
+      "scale": 1.0733333333333333,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1.22
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "restoredState": {
+      "position": {
+        "x": 3.04,
+        "y": 0.8927826086956522,
+        "z": -10
+      },
+      "rotationY": 13,
+      "scale": 1.0733333333333333,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1.22
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#9f7a50",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "deletionRecorded": true,
+    "deletedStayedDeleted": true,
+    "activeInteriorType": "authored"
+  },
+  "errors": []
+}

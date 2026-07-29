@@ -6868,6 +6868,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selected = this.getSelectedDefinition();
     const selectedGroup = selected ? this.objectGroups.get(selected.id) : undefined;
     const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
+    const securityDistrict = this.objectGroups.get('security')?.userData.securityDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -6989,6 +6990,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       },
       importPlacement: this.getImportPlacementState(),
       industrialDistrict,
+      securityDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

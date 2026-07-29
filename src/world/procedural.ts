@@ -23,6 +23,7 @@ import {
 } from './academicSurfaceTextures';
 import { buildIndustrialDistrict } from './industrialDistrict';
 import { buildEntryCommercialDistrict, buildLogisticsDistrict } from './entryLogisticsDistrict';
+import { buildSecurityDistrict } from './securityDistrict';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
 
@@ -2089,6 +2090,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     return;
   }
 
+  if (definition.id === 'security') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('SECURITY__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
   if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
     const program = group.userData.entryLogisticsProgram as {
       plannedBuildings?: string[];
@@ -2310,12 +2321,15 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isIndustrialDistrict = definition.id === 'industrial-labs';
   const isAcademicDistrict = definition.id === 'academic-libraries-theoretical-labs';
   const isEntryLogisticsDistrict = definition.id === 'entry-commercial' || definition.id === 'logistics';
+  const isSecurityDistrict = definition.id === 'security';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
       ? ACADEMIC_FINISHED_FLOOR_Y
       : isEntryLogisticsDistrict
         ? metresToWorldUnits(0.08)
+        : isSecurityDistrict
+          ? metresToWorldUnits(0.08)
       : DISTRICT_FINISHED_FLOOR_Y;
   const accessRampLength = isIndustrialDistrict
     ? metresToWorldUnits(2.4)
@@ -2358,8 +2372,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   plot.userData.navObstacle = !isIndustrialDistrict && !isAcademicDistrict && !isEntryLogisticsDistrict;
   plot.userData.solidFoundation = true;
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
-  group.add(plot);
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict) {
+  if (!isSecurityDistrict) group.add(plot);
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict) {
     addAccessRamp(
       group,
       definition.id,
@@ -2372,13 +2386,15 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     );
   }
 
-  const inset = new THREE.LineSegments(
-    new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
-    new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
-  );
-  inset.position.y = finishedFloorY * 0.5;
-  inset.userData.selectableId = definition.id;
-  group.add(inset);
+  if (!isSecurityDistrict) {
+    const inset = new THREE.LineSegments(
+      new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
+      new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
+    );
+    inset.position.y = finishedFloorY * 0.5;
+    inset.userData.selectableId = definition.id;
+    group.add(inset);
+  }
 
   const height = definition.id === 'dark-center-lab-megabuilding'
     ? 30
@@ -2400,7 +2416,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       buildPhysics(group, definition, height);
       break;
     case 'security':
-      buildSecurity(group, definition, height);
+      if (definition.id === 'security') buildSecurityDistrict(group, definition);
+      else buildSecurity(group, definition, height);
       break;
     case 'civic':
     case 'commercial':
@@ -2420,7 +2437,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict) {
     addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
   }
   if (definition.id === 'academic-libraries-theoretical-labs') {
@@ -2430,14 +2447,14 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       academicPrimaryAccess.userData.servesFacility = 'Blackwood University Great Hall';
     }
   }
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict) addDistrictSignature(group, definition, height, random);
-  if (!isEntryLogisticsDistrict) populateDistrictSectorCampus(group, definition, random);
-  if (!isEntryLogisticsDistrict) addCyberpunkDistrictLife(group, definition, height);
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict) addDistrictSignature(group, definition, height, random);
+  populateDistrictSectorCampus(group, definition, random);
+  if (!isEntryLogisticsDistrict && !isSecurityDistrict) addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
     new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 3 }),
   );
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict) {
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict) {
     addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }
@@ -2454,6 +2471,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
         ? 10.5
       : definition.id === 'industrial-labs'
       ? 8.15
+      : definition.id === 'security'
+      ? 14.25
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };
 }

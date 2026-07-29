@@ -50,6 +50,9 @@ const audit = await page.evaluate(() => {
     if (!definition || definition.category === 'biome' || definition.category === 'editor') continue;
     const cell = group.userData.districtCell;
     const population = group.userData.population;
+    // Individual Academic and Entry/Logistics building selectables share
+    // their parent district's cell; they are not district packages.
+    if (!cell || !population) continue;
     const sectorAnchors = [];
     const semanticRoots = [];
     group.traverse((child) => {
@@ -191,17 +194,17 @@ for (const district of audit.districtResults) {
   ) {
     throw new Error(`Invalid annular sector for ${district.id}: ${JSON.stringify(district)}`);
   }
-  const industrial = district.id === 'industrial-labs';
+  const bespoke = ['industrial-labs', 'entry-commercial', 'logistics'].includes(district.id);
   if (
     district.population?.realizedFacilityCount < 4
     || district.population?.realizedObjectCount < 4
     || district.population?.distinct !== true
-    || (!industrial && district.population?.asymmetricCampus !== true)
-    || (!industrial && district.population?.localRoadCount < 3)
+    || (!bespoke && district.population?.asymmetricCampus !== true)
+    || (!bespoke && district.population?.localRoadCount < 3)
   ) {
     throw new Error(`District ${district.id} is under-populated: ${JSON.stringify(district.population)}`);
   }
-  if (!industrial && (
+  if (!bespoke && (
     district.sectorAnchorCount < 8
     || district.containedAnchors !== district.sectorAnchorCount
     || district.semanticRootCount < 8
@@ -241,11 +244,11 @@ for (const biome of audit.biomeResults) {
   }
 }
 // The complete authored world includes the industrial railway, detailed
-// Tropical dome, city horizon, Academic sector fence, and two shadow-map
-// passes. Keep the authored world below a measured ceiling instead of
-// comparing against a tiny demo scene; the instanced Gothic enclosure adds
-// 208 calls in the all-island overview while remaining cullable in WALK.
-if (audit.renderer.calls > 11_400 || audit.renderer.geometries > 5_000) {
+// Tropical dome, city horizon, Academic sector fence, authored Entry/Logistics
+// interiors, the 15-building Aegis Arc, and two shadow-map passes. Keep the
+// authored world below a measured ceiling instead of comparing against a tiny
+// demo scene. WALK streaming still swaps distant packages to compact HLODs.
+if (audit.renderer.calls > 17_000 || audit.renderer.geometries > 6_500) {
   throw new Error(`Population layer exceeded the scene budget: ${JSON.stringify(audit.renderer)}`);
 }
 if (consoleErrors.length > 0) throw new Error(`Browser console errors: ${consoleErrors.join('\n')}`);

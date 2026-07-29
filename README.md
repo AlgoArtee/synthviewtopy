@@ -100,6 +100,17 @@ The city-facing north-east perimeter wedge now follows the supplied red-line pro
 - In **Edit**, all twenty program buildings have individual Atlas entries and direct façade selection. Each keeps its own Move/Rotate/Scale gizmo, transform state, Reset, Undo, and project persistence. The Inspector adds relative X/Y/Z scale fields for deliberate width, height, or depth elongation, and all attached road branches rebuild from the building's live entrance after a move, rotation, or scale change.
 - These are exterior-only runtime programs. WALK routes and yards are grounded, while special object interactions remain disabled under the current global policy.
 
+## Security District
+
+The eastern outer-ring Security District is now the **Aegis Arc**, a dedicated exterior master plan of fifteen shield-like facilities arranged between the Secret Labs/bio-science interface, the Forensic/Cyberforensic boundary, and the Tundra/perimeter route.
+
+- **Central core:** Porta Aegis, Praesidium Nexus, and Forum Meridian establish the credentialing threshold, command skyline, and emergency assembly square.
+- **Perimeter:** Sentinel Crown, Strix Aviary, and Limes Forge provide the sensor-fusion landmark, autonomous aerial operations, and coast-integrated perimeter maintenance edge.
+- **Operational belt:** Celeritas Response Arc, Cerberus Yard, Via Custos, and Aegis Proving Hall share a curved deployment and service boulevard.
+- **Protected interfaces:** Janus Clean Gate and Silentium Bureau face the bio-science side; Scutum Blackglass, Custodia Vault, and Concordia Court face Forensics/Cyberforensics.
+- Frost-white ceramic, charcoal basalt, brushed titanium, smoked electrochromic glass, pale-blue normal-state lighting, restrained amber emergency seams, black reflecting water, high-canopy trees, and low geometric planters define one district-wide language without visible fences or crude barricades.
+- The main boulevard, operational arc, perimeter maintenance arc, and three radial service routes are grounded WALK surfaces. The complete district remains within its shared outer-ring road cell and participates in normal HLOD streaming, project persistence, selection, and GLB export. Interiors are intentionally deferred; Porta Aegis and Praesidium Nexus are the recommended first interior phase.
+
 ## Academic District instructions
 
 Select **Academic District — Libraries & Theoretical Labs** in the Atlas, then use Explore or Walk to follow the leaf-strewn processional path through the Blackwood gate. Academic paths are rough earth/gravel dressings only 6 cm above terrain, with consistent 4.2 m secondary walks and a 5.8 m ceremonial avenue; the former raised steel-grey slabs and 3.4 m Great Hall plinth are gone. One connected network links the live thresholds of all fourteen facilities through six named routes: Processional Avenue, West Service Walk, Library Walk, Science Walk, South Transverse Walk, and East Canal Walk. Disconnected entrance stubs, the central five-spoke starburst, decorative lawn crosses, and the long diagonal chapel strip have been removed. The Processional Avenue now makes a broad symmetrical crescent around the monumental fountain before returning to the Great Hall axis. The gate is laid out to frame the central clock tower; Old Science Court, Chapel Close, Marlowe Courts, and the Blackwater Canal branch from the central quadrangles.
@@ -211,6 +222,7 @@ Hold **Shift** while clicking **Export scene** to download `YouTopy_Lab_Island.p
 | `src/world/WalkController.ts` | Pointer-lock mouse-look, keyboard movement, grounding, semantic surface sampling, collision checks, and inspect interaction |
 | `src/world/editorAssets.ts` | Exterior/interior Design Studio catalog, GLB-safe procedural asset meshes, and reusable cutaway room shells |
 | `src/world/procedural.ts` | Seeded procedural district and biome geometry/material generation |
+| `src/world/securityDistrict.ts` | Fifteen-facility Aegis Arc exterior, curved security roads, embedded lighting, plazas, transparent landscaping, and district metadata |
 | `src/world/academicDistrict.ts` | Reusable Gothic building shells, furnished interiors, gate, quadrangles, garden, canal, service areas, hidden discoveries, semantic access, and optimization metadata |
 | `src/world/academicFountain.ts` | Modular Well of Infinite Knowledge geometry, Seshat/infinity/ring sculpture, procedural materials, water animation, camera/scene modes, LOD, collision, restoration, debug, state, and resource disposal |
 | `src/world/academicSurfaceTextures.ts` | Cached deterministic limestone, brick, slate, oak, and leaf-strewn path albedo/height patterns |

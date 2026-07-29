@@ -1,0 +1,475 @@
+{
+  "audit": {
+    "program": {
+      "identity": "The Aegis Arc",
+      "architecturalLanguage": "overlapping shield plates following the concentric island roads",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "S1",
+          "name": "Porta Aegis",
+          "purpose": "Internal Security Gate and Credentialing Hall",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 19
+        },
+        {
+          "code": "S2",
+          "name": "Praesidium Nexus",
+          "purpose": "Security District Command Headquarters",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 54
+        },
+        {
+          "code": "S3",
+          "name": "Sentinel Crown",
+          "purpose": "Island Surveillance and Sensor-Fusion Tower",
+          "placementZone": "Eastern perimeter and Tundra route",
+          "heightMetres": 132
+        },
+        {
+          "code": "S4",
+          "name": "Scutum Blackglass",
+          "purpose": "Active Cyberdefense Operations Centre",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 24
+        },
+        {
+          "code": "S5",
+          "name": "Forum Meridian",
+          "purpose": "Crisis Coordination and Emergency Assembly Centre",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 19
+        },
+        {
+          "code": "S6",
+          "name": "Celeritas Response Arc",
+          "purpose": "Rapid Response, Rescue, and Deployment Station",
+          "placementZone": "Operational belt",
+          "heightMetres": 28
+        },
+        {
+          "code": "S7",
+          "name": "Strix Aviary",
+          "purpose": "Autonomous Aerial Patrol and Drone Operations Tower",
+          "placementZone": "Eastern perimeter and Tundra route",
+          "heightMetres": 60
+        },
+        {
+          "code": "S8",
+          "name": "Cerberus Yard",
+          "purpose": "Autonomous Ground Patrol and Robotic Security Hangar",
+          "placementZone": "Operational belt",
+          "heightMetres": 24
+        },
+        {
+          "code": "S9",
+          "name": "Via Custos",
+          "purpose": "Protective Mobility and Secure Convoy Depot",
+          "placementZone": "Operational belt",
+          "heightMetres": 30
+        },
+        {
+          "code": "S10",
+          "name": "Janus Clean Gate",
+          "purpose": "Biosecurity Inspection and Decontamination Complex",
+          "placementZone": "Secret Labs and bio-science interface",
+          "heightMetres": 20
+        },
+        {
+          "code": "S11",
+          "name": "Custodia Vault",
+          "purpose": "Evidence and Chain-of-Custody Repository",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 17
+        },
+        {
+          "code": "S12",
+          "name": "Silentium Bureau",
+          "purpose": "Protective Intelligence and Threat Assessment Centre",
+          "placementZone": "Secret Labs and bio-science interface",
+          "heightMetres": 27
+        },
+        {
+          "code": "S13",
+          "name": "Aegis Proving Hall",
+          "purpose": "Security Training and Environmental Simulation Complex",
+          "placementZone": "Operational belt",
+          "heightMetres": 35
+        },
+        {
+          "code": "S14",
+          "name": "Concordia Court",
+          "purpose": "Temporary Custody, Interview, and Security Mediation Centre",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 23
+        },
+        {
+          "code": "S15",
+          "name": "Limes Forge",
+          "purpose": "Perimeter Systems Fabrication and Maintenance Facility",
+          "placementZone": "Eastern coastal perimeter",
+          "heightMetres": 31
+        }
+      ],
+      "skyline": [
+        "Praesidium Nexus",
+        "Sentinel Crown"
+      ],
+      "roads": {
+        "mainBoulevard": "SECURITY__MAIN_CURVED_BOULEVARD",
+        "operationalArc": "SECURITY__OPERATIONAL_SERVICE_ARC",
+        "perimeterArc": "SECURITY__PERIMETER_MAINTENANCE_ARC",
+        "radialRouteCount": 3,
+        "embeddedGuidanceLighting": true
+      },
+      "materials": [
+        "frost-white ceramic composite",
+        "charcoal basalt-fibre concrete",
+        "marine-grade titanium",
+        "smoked electrochromic glass",
+        "dark stone paving"
+      ],
+      "lighting": {
+        "normal": "muted white and pale blue",
+        "emergency": "thin amber route lines",
+        "immediateDanger": "red reserved and normally absent"
+      },
+      "landscape": {
+        "transparentSightLines": true,
+        "highCanopyTrees": 22,
+        "geometricPlanters": 16,
+        "lightPylons": 18,
+        "denseShrubs": 0
+      },
+      "exteriorOnly": true,
+      "recommendedInteriorSequence": [
+        "Porta Aegis",
+        "Praesidium Nexus"
+      ]
+    },
+    "population": {
+      "plannedFacilities": [
+        "Porta Aegis",
+        "Praesidium Nexus",
+        "Sentinel Crown",
+        "Scutum Blackglass",
+        "Forum Meridian",
+        "Celeritas Response Arc",
+        "Strix Aviary",
+        "Cerberus Yard",
+        "Via Custos",
+        "Janus Clean Gate",
+        "Custodia Vault",
+        "Silentium Bureau",
+        "Aegis Proving Hall",
+        "Concordia Court",
+        "Limes Forge"
+      ],
+      "plannedObjects": [
+        "Aegis Arc boulevard",
+        "operational service arc",
+        "perimeter maintenance arc",
+        "emergency assembly plazas",
+        "black reflecting pools",
+        "transparent security landscape"
+      ],
+      "realizedFeatureTags": [
+        "porta-aegis",
+        "praesidium-nexus",
+        "sentinel-crown",
+        "scutum-blackglass",
+        "forum-meridian",
+        "celeritas-response-arc",
+        "strix-aviary",
+        "cerberus-yard",
+        "via-custos",
+        "janus-clean-gate",
+        "custodia-vault",
+        "silentium-bureau",
+        "aegis-proving-hall",
+        "concordia-court",
+        "limes-forge"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 89,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 6,
+      "radialCoverage": 0.91,
+      "angularCoverage": 0.89,
+      "exteriorOnly": true,
+      "aegisArc": true
+    },
+    "codes": [
+      "S1",
+      "S10",
+      "S11",
+      "S12",
+      "S13",
+      "S14",
+      "S15",
+      "S2",
+      "S3",
+      "S4",
+      "S5",
+      "S6",
+      "S7",
+      "S8",
+      "S9"
+    ],
+    "displayNames": [
+      "Aegis Proving Hall",
+      "Celeritas Response Arc",
+      "Cerberus Yard",
+      "Concordia Court",
+      "Custodia Vault",
+      "Forum Meridian",
+      "Janus Clean Gate",
+      "Limes Forge",
+      "Porta Aegis",
+      "Praesidium Nexus",
+      "Scutum Blackglass",
+      "Sentinel Crown",
+      "Silentium Bureau",
+      "Strix Aviary",
+      "Via Custos"
+    ],
+    "facilityCount": 15,
+    "meshCount": 811,
+    "scaledMeshParentDetails": [],
+    "uniqueNames": 869,
+    "materialNames": [
+      "Aegis black reflecting water",
+      "Aegis brushed marine-grade titanium",
+      "Aegis charcoal basalt-fibre concrete",
+      "Aegis civic basalt paving",
+      "Aegis clear structural glass",
+      "Aegis dark moss roof",
+      "Aegis dark stone paving",
+      "Aegis dark titanium",
+      "Aegis emergency amber light",
+      "Aegis frost-white ceramic composite",
+      "Aegis normal-state pale blue light",
+      "Aegis pale ceramic armor",
+      "Aegis polished black basalt",
+      "Aegis silver coastal grass",
+      "Aegis smoked electrochromic glass",
+      "Concordia warm-grey stone composite",
+      "Janus clinical turquoise light",
+      "Scutum black glass composite"
+    ],
+    "requiredNames": [],
+    "roadAudit": [
+      {
+        "name": "SECURITY__MAIN_CURVED_BOULEVARD",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "SECURITY__OPERATIONAL_SERVICE_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "SECURITY__PERIMETER_MAINTENANCE_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "SECURITY__RADIAL_SERVICE_ROUTE_1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "SECURITY__RADIAL_SERVICE_ROUTE_2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "SECURITY__RADIAL_SERVICE_ROUTE_3",
+        "walkable": true,
+        "resident": true
+      }
+    ],
+    "roadGround": 1.6560000000000001,
+    "roadPoint": [
+      129.5367593765257,
+      1.6459999984502793,
+      -221.17904574178263
+    ],
+    "boundaryViolations": [],
+    "textSecurity": {
+      "identity": "The Aegis Arc",
+      "architecturalLanguage": "overlapping shield plates following the concentric island roads",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "S1",
+          "name": "Porta Aegis",
+          "purpose": "Internal Security Gate and Credentialing Hall",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 19
+        },
+        {
+          "code": "S2",
+          "name": "Praesidium Nexus",
+          "purpose": "Security District Command Headquarters",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 54
+        },
+        {
+          "code": "S3",
+          "name": "Sentinel Crown",
+          "purpose": "Island Surveillance and Sensor-Fusion Tower",
+          "placementZone": "Eastern perimeter and Tundra route",
+          "heightMetres": 132
+        },
+        {
+          "code": "S4",
+          "name": "Scutum Blackglass",
+          "purpose": "Active Cyberdefense Operations Centre",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 24
+        },
+        {
+          "code": "S5",
+          "name": "Forum Meridian",
+          "purpose": "Crisis Coordination and Emergency Assembly Centre",
+          "placementZone": "Central civic-security core",
+          "heightMetres": 19
+        },
+        {
+          "code": "S6",
+          "name": "Celeritas Response Arc",
+          "purpose": "Rapid Response, Rescue, and Deployment Station",
+          "placementZone": "Operational belt",
+          "heightMetres": 28
+        },
+        {
+          "code": "S7",
+          "name": "Strix Aviary",
+          "purpose": "Autonomous Aerial Patrol and Drone Operations Tower",
+          "placementZone": "Eastern perimeter and Tundra route",
+          "heightMetres": 60
+        },
+        {
+          "code": "S8",
+          "name": "Cerberus Yard",
+          "purpose": "Autonomous Ground Patrol and Robotic Security Hangar",
+          "placementZone": "Operational belt",
+          "heightMetres": 24
+        },
+        {
+          "code": "S9",
+          "name": "Via Custos",
+          "purpose": "Protective Mobility and Secure Convoy Depot",
+          "placementZone": "Operational belt",
+          "heightMetres": 30
+        },
+        {
+          "code": "S10",
+          "name": "Janus Clean Gate",
+          "purpose": "Biosecurity Inspection and Decontamination Complex",
+          "placementZone": "Secret Labs and bio-science interface",
+          "heightMetres": 20
+        },
+        {
+          "code": "S11",
+          "name": "Custodia Vault",
+          "purpose": "Evidence and Chain-of-Custody Repository",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 17
+        },
+        {
+          "code": "S12",
+          "name": "Silentium Bureau",
+          "purpose": "Protective Intelligence and Threat Assessment Centre",
+          "placementZone": "Secret Labs and bio-science interface",
+          "heightMetres": 27
+        },
+        {
+          "code": "S13",
+          "name": "Aegis Proving Hall",
+          "purpose": "Security Training and Environmental Simulation Complex",
+          "placementZone": "Operational belt",
+          "heightMetres": 35
+        },
+        {
+          "code": "S14",
+          "name": "Concordia Court",
+          "purpose": "Temporary Custody, Interview, and Security Mediation Centre",
+          "placementZone": "Forensics and cyberforensics interface",
+          "heightMetres": 23
+        },
+        {
+          "code": "S15",
+          "name": "Limes Forge",
+          "purpose": "Perimeter Systems Fabrication and Maintenance Facility",
+          "placementZone": "Eastern coastal perimeter",
+          "heightMetres": 31
+        }
+      ],
+      "skyline": [
+        "Praesidium Nexus",
+        "Sentinel Crown"
+      ],
+      "roads": {
+        "mainBoulevard": "SECURITY__MAIN_CURVED_BOULEVARD",
+        "operationalArc": "SECURITY__OPERATIONAL_SERVICE_ARC",
+        "perimeterArc": "SECURITY__PERIMETER_MAINTENANCE_ARC",
+        "radialRouteCount": 3,
+        "embeddedGuidanceLighting": true
+      },
+      "materials": [
+        "frost-white ceramic composite",
+        "charcoal basalt-fibre concrete",
+        "marine-grade titanium",
+        "smoked electrochromic glass",
+        "dark stone paving"
+      ],
+      "lighting": {
+        "normal": "muted white and pale blue",
+        "emergency": "thin amber route lines",
+        "immediateDanger": "red reserved and normally absent"
+      },
+      "landscape": {
+        "transparentSightLines": true,
+        "highCanopyTrees": 22,
+        "geometricPlanters": 16,
+        "lightPylons": 18,
+        "denseShrubs": 0
+      },
+      "exteriorOnly": true,
+      "recommendedInteriorSequence": [
+        "Porta Aegis",
+        "Praesidium Nexus"
+      ]
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "security",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6560000000000001,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999925815,
+    "grounded": true,
+    "position": [
+      129.675,
+      1.818,
+      -221.093
+    ]
+  },
+  "errors": []
+}

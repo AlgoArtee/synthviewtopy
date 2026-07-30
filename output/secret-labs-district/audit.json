@@ -1,0 +1,589 @@
+{
+  "audit": {
+    "program": {
+      "identity": "The Secret Labs Scientific Gradient",
+      "architecturalIntent": "unlimited research funding, extreme confidentiality, precise environmental control, and no public accountability",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "L1",
+          "name": "AION Biostasis and Rejuvenation Institute",
+          "publicMapName": "Thermal Physiology Annex",
+          "researchFocus": "biological age reversal, organ preservation, suspended metabolism, and extreme cryobiology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            190,
+            125
+          ],
+          "heightMetres": 27
+        },
+        {
+          "code": "L2",
+          "name": "MNEMOSYNE Neural Continuity Tower",
+          "publicMapName": "Neural Systems Archive",
+          "researchFocus": "connectomics, brain-computer interfaces, synthetic memory, and consciousness continuity",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            72,
+            70
+          ],
+          "heightMetres": 105
+        },
+        {
+          "code": "L3",
+          "name": "CHIMAERA Morphogenesis Conservatory",
+          "publicMapName": "Developmental Systems Conservatory",
+          "researchFocus": "organoids, synthetic embryology, xenobots, and programmable multicellular morphology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            155,
+            125
+          ],
+          "heightMetres": 50
+        },
+        {
+          "code": "L4",
+          "name": "EVE Extra-Uterine Development Ark",
+          "publicMapName": "Reproductive Resilience Annex",
+          "researchFocus": "artificial gestation, placenta-mimetic systems, and precision developmental physiology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            125,
+            100
+          ],
+          "heightMetres": 54
+        },
+        {
+          "code": "L5",
+          "name": "GENESIS Genome Assembly Foundry",
+          "publicMapName": "Genomic Data Foundry",
+          "researchFocus": "whole-genome synthesis, synthetic chromosomes, genetic recoding, and DNA data storage",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            220,
+            72
+          ],
+          "heightMetres": 42
+        },
+        {
+          "code": "L6",
+          "name": "PROTEUS Autonomous Discovery Foundry",
+          "publicMapName": "Automated Materials Warehouse",
+          "researchFocus": "self-driving laboratories, robotic experimentation, and machine-led discovery",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            170,
+            90
+          ],
+          "heightMetres": 48
+        },
+        {
+          "code": "L7",
+          "name": "ARIADNE Swarm Systems Aerarium",
+          "publicMapName": "Distributed Sensor Aerarium",
+          "researchFocus": "smart dust, microrobotic swarms, distributed sensing, and collective machine behaviour",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            96,
+            96
+          ],
+          "heightMetres": 58
+        },
+        {
+          "code": "L8",
+          "name": "MORPHOS Programmable Matter Forge",
+          "publicMapName": "Adaptive Materials Engineering Hall",
+          "researchFocus": "programmable matter, metamaterials, 4D printing, and self-assembling structures",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            105,
+            80
+          ],
+          "heightMetres": 40
+        },
+        {
+          "code": "L9",
+          "name": "TOPOS Topological Quantum Bastion",
+          "publicMapName": "Cryogenic Computation Centre",
+          "researchFocus": "topological qubits, fault-tolerant quantum computation, and secure quantum networks",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            150,
+            150
+          ],
+          "heightMetres": 28
+        },
+        {
+          "code": "L10",
+          "name": "CHRONOS Causality and Precision-Time Observatory",
+          "publicMapName": "Precision Metrology Observatory",
+          "researchFocus": "optical clocks, quantum synchronization, relativistic metrology, and causality",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            145,
+            145
+          ],
+          "heightMetres": 102
+        },
+        {
+          "code": "L11",
+          "name": "HELIOS Black-Flux Energy Annex",
+          "publicMapName": "Thermal Control Plant",
+          "researchFocus": "compact fusion, extreme-field superconductors, high-density storage, and plasma confinement",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            175,
+            165
+          ],
+          "heightMetres": 48
+        },
+        {
+          "code": "L12",
+          "name": "ORPHEUS Deep Signal Observatory",
+          "publicMapName": "Deep-Space Communications Facility",
+          "researchFocus": "anomalous signals, technosignatures, non-human communication, and machine-mediated decoding",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            150,
+            145
+          ],
+          "heightMetres": 78
+        },
+        {
+          "code": "L13",
+          "name": "NOOSPHERE Synthetic Intelligence Directorate",
+          "publicMapName": "Computational Forecasting Archive",
+          "researchFocus": "frontier artificial intelligence, machine consciousness, world models, and simulated civilizations",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 45
+        },
+        {
+          "code": "L14",
+          "name": "LIMEN Gravitic and Anomalous Physics Laboratory",
+          "publicMapName": "Precision Instrumentation Laboratory",
+          "researchFocus": "dark matter, quantum gravity, exotic field interactions, and unexplained physical anomalies",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            145,
+            125
+          ],
+          "heightMetres": 92
+        },
+        {
+          "code": "L15",
+          "name": "NULL Archive and Black Containment Vault",
+          "publicMapName": "Secure Records Archive",
+          "researchFocus": "containment of hazardous models, restricted designs, anomalous materials, and failed prototypes",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            155,
+            105
+          ],
+          "heightMetres": 42
+        }
+      ],
+      "researchBands": {
+        "medicalInterface": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5"
+        ],
+        "centralAutonomousSystems": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10"
+        ],
+        "securityInterface": [
+          "L11",
+          "L12",
+          "L13",
+          "L14",
+          "L15"
+        ]
+      },
+      "skyline": [
+        "MNEMOSYNE Neural Continuity Tower",
+        "CHRONOS tilted ring",
+        "ORPHEUS obelisk",
+        "LIMEN paired monoliths"
+      ],
+      "commonPalette": [
+        "black basalt",
+        "pale bioceramic",
+        "brushed titanium",
+        "carbon composite",
+        "ultradark glass",
+        "translucent structural polymer",
+        "controlled illumination"
+      ],
+      "conventionalLogos": false,
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "AION Biostasis and Rejuvenation Institute",
+        "MNEMOSYNE Neural Continuity Tower",
+        "CHIMAERA Morphogenesis Conservatory",
+        "EVE Extra-Uterine Development Ark",
+        "GENESIS Genome Assembly Foundry",
+        "PROTEUS Autonomous Discovery Foundry",
+        "ARIADNE Swarm Systems Aerarium",
+        "MORPHOS Programmable Matter Forge",
+        "TOPOS Topological Quantum Bastion",
+        "CHRONOS Causality and Precision-Time Observatory",
+        "HELIOS Black-Flux Energy Annex",
+        "ORPHEUS Deep Signal Observatory",
+        "NOOSPHERE Synthetic Intelligence Directorate",
+        "LIMEN Gravitic and Anomalous Physics Laboratory",
+        "NULL Archive and Black Containment Vault"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 1022,
+      "existingRichCampus": true,
+      "distinct": true,
+      "secretScientificGradient": true,
+      "exteriorOnly": true
+    },
+    "facilityCount": 15,
+    "codes": [
+      "L1",
+      "L10",
+      "L11",
+      "L12",
+      "L13",
+      "L14",
+      "L15",
+      "L2",
+      "L3",
+      "L4",
+      "L5",
+      "L6",
+      "L7",
+      "L8",
+      "L9"
+    ],
+    "displayNames": [
+      "AION Biostasis and Rejuvenation Institute",
+      "ARIADNE Swarm Systems Aerarium",
+      "CHIMAERA Morphogenesis Conservatory",
+      "CHRONOS Causality and Precision-Time Observatory",
+      "EVE Extra-Uterine Development Ark",
+      "GENESIS Genome Assembly Foundry",
+      "HELIOS Black-Flux Energy Annex",
+      "LIMEN Gravitic and Anomalous Physics Laboratory",
+      "MNEMOSYNE Neural Continuity Tower",
+      "MORPHOS Programmable Matter Forge",
+      "NOOSPHERE Synthetic Intelligence Directorate",
+      "NULL Archive and Black Containment Vault",
+      "ORPHEUS Deep Signal Observatory",
+      "PROTEUS Autonomous Discovery Foundry",
+      "TOPOS Topological Quantum Bastion"
+    ],
+    "researchBands": [
+      "autonomous and quantum systems",
+      "classified biology",
+      "high-risk physics and containment"
+    ],
+    "requiredRoots": [],
+    "meshCount": 1644,
+    "uniqueNameCount": 1626,
+    "nameCount": 1673,
+    "materialNames": [
+      "AION opaque cryogenic glass",
+      "CHIMAERA pearlescent bioceramic",
+      "MORPHOS independently actuated charcoal panel",
+      "MORPHOS reflective panel underside",
+      "NOOSPHERE computational dark mirror facets",
+      "NULL porous ultrablack ceramic",
+      "Secret Labs brushed titanium",
+      "Secret Labs calibrated cold-white illumination",
+      "Secret Labs controlled cyan illumination",
+      "Secret Labs controlled environmental vapour",
+      "Secret Labs copper-alloy network",
+      "Secret Labs dark technical paving",
+      "Secret Labs fine containment mesh",
+      "Secret Labs graphite ceramic",
+      "Secret Labs honed black basalt",
+      "Secret Labs mirrored titanium",
+      "Secret Labs pale calibration paving",
+      "Secret Labs pale ceramic gravel",
+      "Secret Labs restrained red perimeter marker",
+      "Secret Labs seamless pale bioceramic",
+      "Secret Labs still black water",
+      "Secret Labs translucent structural polymer",
+      "Secret Labs ultradark electrochromic glass"
+    ],
+    "scaledMeshParents": [],
+    "boundaryViolations": [],
+    "animatedCount": 26,
+    "animationChanges": 26,
+    "roadPoint": [
+      101.34039628505693,
+      1.6479999987781049,
+      -173.38237320616065
+    ],
+    "roadGround": 1.6660000017285348,
+    "roadWalkable": true,
+    "textSecretLabs": {
+      "identity": "The Secret Labs Scientific Gradient",
+      "architecturalIntent": "unlimited research funding, extreme confidentiality, precise environmental control, and no public accountability",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "L1",
+          "name": "AION Biostasis and Rejuvenation Institute",
+          "publicMapName": "Thermal Physiology Annex",
+          "researchFocus": "biological age reversal, organ preservation, suspended metabolism, and extreme cryobiology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            190,
+            125
+          ],
+          "heightMetres": 27
+        },
+        {
+          "code": "L2",
+          "name": "MNEMOSYNE Neural Continuity Tower",
+          "publicMapName": "Neural Systems Archive",
+          "researchFocus": "connectomics, brain-computer interfaces, synthetic memory, and consciousness continuity",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            72,
+            70
+          ],
+          "heightMetres": 105
+        },
+        {
+          "code": "L3",
+          "name": "CHIMAERA Morphogenesis Conservatory",
+          "publicMapName": "Developmental Systems Conservatory",
+          "researchFocus": "organoids, synthetic embryology, xenobots, and programmable multicellular morphology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            155,
+            125
+          ],
+          "heightMetres": 50
+        },
+        {
+          "code": "L4",
+          "name": "EVE Extra-Uterine Development Ark",
+          "publicMapName": "Reproductive Resilience Annex",
+          "researchFocus": "artificial gestation, placenta-mimetic systems, and precision developmental physiology",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            125,
+            100
+          ],
+          "heightMetres": 54
+        },
+        {
+          "code": "L5",
+          "name": "GENESIS Genome Assembly Foundry",
+          "publicMapName": "Genomic Data Foundry",
+          "researchFocus": "whole-genome synthesis, synthetic chromosomes, genetic recoding, and DNA data storage",
+          "researchBand": "classified biology",
+          "footprintMetres": [
+            220,
+            72
+          ],
+          "heightMetres": 42
+        },
+        {
+          "code": "L6",
+          "name": "PROTEUS Autonomous Discovery Foundry",
+          "publicMapName": "Automated Materials Warehouse",
+          "researchFocus": "self-driving laboratories, robotic experimentation, and machine-led discovery",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            170,
+            90
+          ],
+          "heightMetres": 48
+        },
+        {
+          "code": "L7",
+          "name": "ARIADNE Swarm Systems Aerarium",
+          "publicMapName": "Distributed Sensor Aerarium",
+          "researchFocus": "smart dust, microrobotic swarms, distributed sensing, and collective machine behaviour",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            96,
+            96
+          ],
+          "heightMetres": 58
+        },
+        {
+          "code": "L8",
+          "name": "MORPHOS Programmable Matter Forge",
+          "publicMapName": "Adaptive Materials Engineering Hall",
+          "researchFocus": "programmable matter, metamaterials, 4D printing, and self-assembling structures",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            105,
+            80
+          ],
+          "heightMetres": 40
+        },
+        {
+          "code": "L9",
+          "name": "TOPOS Topological Quantum Bastion",
+          "publicMapName": "Cryogenic Computation Centre",
+          "researchFocus": "topological qubits, fault-tolerant quantum computation, and secure quantum networks",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            150,
+            150
+          ],
+          "heightMetres": 28
+        },
+        {
+          "code": "L10",
+          "name": "CHRONOS Causality and Precision-Time Observatory",
+          "publicMapName": "Precision Metrology Observatory",
+          "researchFocus": "optical clocks, quantum synchronization, relativistic metrology, and causality",
+          "researchBand": "autonomous and quantum systems",
+          "footprintMetres": [
+            145,
+            145
+          ],
+          "heightMetres": 102
+        },
+        {
+          "code": "L11",
+          "name": "HELIOS Black-Flux Energy Annex",
+          "publicMapName": "Thermal Control Plant",
+          "researchFocus": "compact fusion, extreme-field superconductors, high-density storage, and plasma confinement",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            175,
+            165
+          ],
+          "heightMetres": 48
+        },
+        {
+          "code": "L12",
+          "name": "ORPHEUS Deep Signal Observatory",
+          "publicMapName": "Deep-Space Communications Facility",
+          "researchFocus": "anomalous signals, technosignatures, non-human communication, and machine-mediated decoding",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            150,
+            145
+          ],
+          "heightMetres": 78
+        },
+        {
+          "code": "L13",
+          "name": "NOOSPHERE Synthetic Intelligence Directorate",
+          "publicMapName": "Computational Forecasting Archive",
+          "researchFocus": "frontier artificial intelligence, machine consciousness, world models, and simulated civilizations",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 45
+        },
+        {
+          "code": "L14",
+          "name": "LIMEN Gravitic and Anomalous Physics Laboratory",
+          "publicMapName": "Precision Instrumentation Laboratory",
+          "researchFocus": "dark matter, quantum gravity, exotic field interactions, and unexplained physical anomalies",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            145,
+            125
+          ],
+          "heightMetres": 92
+        },
+        {
+          "code": "L15",
+          "name": "NULL Archive and Black Containment Vault",
+          "publicMapName": "Secure Records Archive",
+          "researchFocus": "containment of hazardous models, restricted designs, anomalous materials, and failed prototypes",
+          "researchBand": "high-risk physics and containment",
+          "footprintMetres": [
+            155,
+            105
+          ],
+          "heightMetres": 42
+        }
+      ],
+      "researchBands": {
+        "medicalInterface": [
+          "L1",
+          "L2",
+          "L3",
+          "L4",
+          "L5"
+        ],
+        "centralAutonomousSystems": [
+          "L6",
+          "L7",
+          "L8",
+          "L9",
+          "L10"
+        ],
+        "securityInterface": [
+          "L11",
+          "L12",
+          "L13",
+          "L14",
+          "L15"
+        ]
+      },
+      "skyline": [
+        "MNEMOSYNE Neural Continuity Tower",
+        "CHRONOS tilted ring",
+        "ORPHEUS obelisk",
+        "LIMEN paired monoliths"
+      ],
+      "commonPalette": [
+        "black basalt",
+        "pale bioceramic",
+        "brushed titanium",
+        "carbon composite",
+        "ultradark glass",
+        "translucent structural polymer",
+        "controlled illumination"
+      ],
+      "conventionalLogos": false,
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "secret-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 11447
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6479999987781049,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.163493883819624,
+    "grounded": true,
+    "position": [
+      101.478,
+      1.828,
+      -173.296
+    ]
+  },
+  "errors": []
+}

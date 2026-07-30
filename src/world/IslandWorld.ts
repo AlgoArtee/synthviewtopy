@@ -2630,6 +2630,32 @@ export class IslandWorld {
         object.rotation.x += delta * 0.22;
         const pulse = 1 + Math.sin(this.elapsed * 2.1) * 0.06;
         object.scale.setScalar(pulse);
+      } else if (object.userData.animate === 'secret-controlled-vapour') {
+        const phase = Number(object.userData.phase ?? 0);
+        object.position.y = Number(object.userData.baseY ?? object.position.y)
+          + ((this.elapsed * 0.035 + phase * 0.06) % 0.28);
+        object.position.x += Math.sin(this.elapsed * 0.18 + phase) * delta * 0.008;
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshBasicMaterial) {
+          object.material.opacity = 0.065 + (0.5 + 0.5 * Math.sin(this.elapsed * 0.42 + phase)) * 0.075;
+        }
+      } else if (object.userData.animate === 'secret-sensor-sweep') {
+        object.rotation.y += delta * Number(object.userData.speed ?? 0.1);
+      } else if (object.userData.animate === 'secret-swarm-orbit') {
+        object.rotation.y += delta * Number(object.userData.speed ?? 0.06);
+        object.rotation.z = Math.sin(this.elapsed * 0.13) * 0.025;
+      } else if (object.userData.animate === 'secret-horizontal-orbit') {
+        const angle = this.elapsed * Number(object.userData.speed ?? 0.16) + Number(object.userData.phase ?? 0);
+        const radius = Number(object.userData.orbitRadius ?? 1);
+        object.position.set(Math.cos(angle) * radius, Number(object.userData.baseY ?? object.position.y), Math.sin(angle) * radius);
+      } else if (object.userData.animate === 'secret-vertical-orbit') {
+        const angle = this.elapsed * Number(object.userData.speed ?? 0.16) + Number(object.userData.phase ?? 0);
+        const radius = Number(object.userData.orbitRadius ?? 1);
+        object.position.set(Math.cos(angle) * radius, Number(object.userData.centerY ?? 0) + Math.sin(angle) * radius, object.position.z);
+      } else if (object.userData.animate === 'secret-noosphere-shimmer') {
+        object.rotation.y += delta * 0.015;
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          object.material.emissiveIntensity = 0.28 + (0.5 + 0.5 * Math.sin(this.elapsed * 0.12)) * 0.26;
+        }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -6869,6 +6895,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedGroup = selected ? this.objectGroups.get(selected.id) : undefined;
     const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
     const securityDistrict = this.objectGroups.get('security')?.userData.securityDistrict ?? null;
+    const secretLabsDistrict = this.objectGroups.get('secret-labs')?.userData.secretLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -6991,6 +7018,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       importPlacement: this.getImportPlacementState(),
       industrialDistrict,
       securityDistrict,
+      secretLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

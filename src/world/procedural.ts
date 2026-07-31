@@ -25,6 +25,7 @@ import { buildIndustrialDistrict } from './industrialDistrict';
 import { buildEntryCommercialDistrict, buildLogisticsDistrict } from './entryLogisticsDistrict';
 import { buildSecurityDistrict } from './securityDistrict';
 import { buildSecretLabsDistrict } from './secretLabsDistrict';
+import { buildMedicalLabsDistrict } from './medicalLabsDistrict';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
 
@@ -2111,6 +2112,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     return;
   }
 
+  if (definition.id === 'medical-labs') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('MEDICAL__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
   if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
     const program = group.userData.entryLogisticsProgram as {
       plannedBuildings?: string[];
@@ -2334,6 +2345,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isEntryLogisticsDistrict = definition.id === 'entry-commercial' || definition.id === 'logistics';
   const isSecurityDistrict = definition.id === 'security';
   const isSecretLabsDistrict = definition.id === 'secret-labs';
+  const isMedicalLabsDistrict = definition.id === 'medical-labs';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
@@ -2342,6 +2354,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
         ? metresToWorldUnits(0.08)
         : isSecurityDistrict
           ? metresToWorldUnits(0.08)
+          : isMedicalLabsDistrict
+            ? metresToWorldUnits(0.08)
       : DISTRICT_FINISHED_FLOOR_Y;
   const accessRampLength = isIndustrialDistrict
     ? metresToWorldUnits(2.4)
@@ -2384,8 +2398,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   plot.userData.navObstacle = !isIndustrialDistrict && !isAcademicDistrict && !isEntryLogisticsDistrict;
   plot.userData.solidFoundation = true;
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
-  if (!isSecurityDistrict && !isSecretLabsDistrict) group.add(plot);
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) group.add(plot);
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) {
     addAccessRamp(
       group,
       definition.id,
@@ -2398,7 +2412,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     );
   }
 
-  if (!isSecurityDistrict && !isSecretLabsDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) {
     const inset = new THREE.LineSegments(
       new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
       new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
@@ -2416,7 +2430,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       buildCore(group, definition, height);
       break;
     case 'bioscience':
-      buildBioscience(group, definition, height, random);
+      if (definition.id === 'medical-labs') buildMedicalLabsDistrict(group, definition);
+      else buildBioscience(group, definition, height, random);
       break;
     case 'engineering':
       buildEngineering(group, definition, height);
@@ -2450,7 +2465,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) {
     addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
   }
   if (definition.id === 'academic-libraries-theoretical-labs') {
@@ -2460,14 +2475,14 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       academicPrimaryAccess.userData.servesFacility = 'Blackwood University Great Hall';
     }
   }
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict) addDistrictSignature(group, definition, height, random);
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) addDistrictSignature(group, definition, height, random);
   populateDistrictSectorCampus(group, definition, random);
-  if (!isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict) addCyberpunkDistrictLife(group, definition, height);
+  if (!isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
     new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 3 }),
   );
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict) {
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict) {
     addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }
@@ -2488,6 +2503,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       ? 14.25
       : definition.id === 'secret-labs'
       ? 11.8
+      : definition.id === 'medical-labs'
+      ? 16.4
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };
 }

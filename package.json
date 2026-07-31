@@ -13,6 +13,7 @@
     "test:entry-logistics": "node scripts/entry-logistics-smoke.mjs",
     "test:security": "node scripts/security-district-smoke.mjs",
     "test:secret-labs": "node scripts/secret-labs-district-smoke.mjs",
+    "test:medical-labs": "node scripts/medical-labs-district-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",
     "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs"
   },

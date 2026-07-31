@@ -1,0 +1,733 @@
+{
+  "audit": {
+    "program": {
+      "identity": "The Anatomical Crescent",
+      "progression": [
+        "disease observation",
+        "molecular diagnosis",
+        "experimental treatment",
+        "protected clinical translation"
+      ],
+      "architecturalLanguage": "a diagnostic instrument enlarged to urban scale",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "Atlas Pathologica",
+          "purpose": "Spatial Pathology and Disease Cartography Institute",
+          "placementZone": "Inner edge near Molecular Biology",
+          "heightMetres": 68,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M2",
+          "name": "Hemolumen Spire",
+          "purpose": "Liquid Biopsy and Circulating Biomarker Observatory",
+          "placementZone": "Western border near Pharmacology",
+          "heightMetres": 148,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M3",
+          "name": "Vitrivivarium",
+          "purpose": "Patient-Derived Organoid and Organ-on-Chip Foundry",
+          "placementZone": "Inner edge near Microbiology",
+          "heightMetres": 54,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M4",
+          "name": "Editorium Genomicum",
+          "purpose": "Genome Surgery and Rare-Disease Therapeutics Complex",
+          "placementZone": "Central Therapeutic Spine",
+          "heightMetres": 88,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M5",
+          "name": "Immunis Bastion",
+          "purpose": "Engineered Immunity and Living Medicines Center",
+          "placementZone": "Central Therapeutic Spine",
+          "heightMetres": 70,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M6",
+          "name": "Astra Theranostica",
+          "purpose": "Molecular Imaging and Radiotheranostics Beacon",
+          "placementZone": "Western border near Pharmacology",
+          "heightMetres": 80,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M7",
+          "name": "Regenera Forge",
+          "purpose": "Biofabrication and Regenerative Tissue Works",
+          "placementZone": "Central/eastern production zone",
+          "heightMetres": 70,
+          "maturity": "emerging translation"
+        },
+        {
+          "code": "M8",
+          "name": "Concordia Xenomedica",
+          "purpose": "Transplant Compatibility and Xenomedicine Institute",
+          "placementZone": "Outer edge near Security",
+          "heightMetres": 80,
+          "maturity": "emerging translation"
+        },
+        {
+          "code": "M9",
+          "name": "Aegis Phagica",
+          "purpose": "Precision Infection, Antimicrobial Resistance and Phage Biobank",
+          "placementZone": "Microbiology-Security junction",
+          "heightMetres": 60,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M10",
+          "name": "Clinica Simulacra",
+          "purpose": "Patient Digital Twin and Adaptive Treatment Observatory",
+          "placementZone": "Outer edge near Bioanalytics",
+          "heightMetres": 135,
+          "maturity": "emerging translation"
+        }
+      ],
+      "skyline": [
+        "Vitrivivarium",
+        "Atlas Pathologica",
+        "Editorium Genomicum",
+        "Immunis Bastion",
+        "Hemolumen Spire",
+        "Clinica Simulacra"
+      ],
+      "roads": {
+        "publicArc": "MEDICAL__DIAGNOSTIC_CRESCENT",
+        "radialBoulevard": "MEDICAL__THERAPEUTIC_SPINE",
+        "restrictedLogistics": "MEDICAL__RESTRICTED_SPECIMEN_VEIN",
+        "clinicalServiceRouteCount": 4,
+        "publicAndSpecimenTrafficSeparated": true
+      },
+      "materials": [
+        "bone-white sintered ceramic",
+        "frosted low-iron glass",
+        "satin titanium and pale stainless steel",
+        "black volcanic stone",
+        "opalescent electrochromic glazing",
+        "translucent membrane roofs"
+      ],
+      "lighting": [
+        "ruby",
+        "amber",
+        "violet",
+        "cold cyan"
+      ],
+      "landscape": {
+        "lowWhiteTrees": 28,
+        "diagnosticLightNeedles": 20,
+        "genericHospitalSymbols": 0,
+        "redCrosses": 0
+      },
+      "exteriorOnly": true,
+      "recommendedInteriorSequence": [
+        "Atlas Pathologica",
+        "Editorium Genomicum",
+        "Immunis Bastion"
+      ]
+    },
+    "population": {
+      "plannedFacilities": [
+        "Atlas Pathologica",
+        "Hemolumen Spire",
+        "Vitrivivarium",
+        "Editorium Genomicum",
+        "Immunis Bastion",
+        "Astra Theranostica",
+        "Regenera Forge",
+        "Concordia Xenomedica",
+        "Aegis Phagica",
+        "Clinica Simulacra"
+      ],
+      "plannedObjects": [
+        "Diagnostic Crescent",
+        "Therapeutic Spine",
+        "Specimen Vein",
+        "autonomous sample capsules",
+        "diagnostic contour plazas",
+        "white-tree landscape"
+      ],
+      "realizedFeatureTags": [
+        "atlas-pathologica",
+        "hemolumen-spire",
+        "vitrivivarium",
+        "editorium-genomicum",
+        "immunis-bastion",
+        "astra-theranostica",
+        "regenera-forge",
+        "concordia-xenomedica",
+        "aegis-phagica",
+        "clinica-simulacra"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 144,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 7,
+      "radialCoverage": 0.96,
+      "angularCoverage": 0.93,
+      "exteriorOnly": true,
+      "anatomicalCrescent": true
+    },
+    "facilityCount": 10,
+    "codes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10"
+    ],
+    "displayNames": [
+      "Aegis Phagica",
+      "Astra Theranostica",
+      "Atlas Pathologica",
+      "Clinica Simulacra",
+      "Concordia Xenomedica",
+      "Editorium Genomicum",
+      "Hemolumen Spire",
+      "Immunis Bastion",
+      "Regenera Forge",
+      "Vitrivivarium"
+    ],
+    "dimensions": [
+      {
+        "code": "M1",
+        "footprintMetres": [
+          145,
+          90
+        ],
+        "heightMetres": 68,
+        "placementZone": "Inner edge near Molecular Biology"
+      },
+      {
+        "code": "M2",
+        "footprintMetres": [
+          105,
+          82
+        ],
+        "heightMetres": 148,
+        "placementZone": "Western border near Pharmacology"
+      },
+      {
+        "code": "M3",
+        "footprintMetres": [
+          225,
+          145
+        ],
+        "heightMetres": 54,
+        "placementZone": "Inner edge near Microbiology"
+      },
+      {
+        "code": "M4",
+        "footprintMetres": [
+          130,
+          105
+        ],
+        "heightMetres": 88,
+        "placementZone": "Central Therapeutic Spine"
+      },
+      {
+        "code": "M5",
+        "footprintMetres": [
+          145,
+          145
+        ],
+        "heightMetres": 70,
+        "placementZone": "Central Therapeutic Spine"
+      },
+      {
+        "code": "M6",
+        "footprintMetres": [
+          185,
+          115
+        ],
+        "heightMetres": 80,
+        "placementZone": "Western border near Pharmacology"
+      },
+      {
+        "code": "M7",
+        "footprintMetres": [
+          250,
+          110
+        ],
+        "heightMetres": 70,
+        "placementZone": "Central/eastern production zone"
+      },
+      {
+        "code": "M8",
+        "footprintMetres": [
+          195,
+          155
+        ],
+        "heightMetres": 80,
+        "placementZone": "Outer edge near Security"
+      },
+      {
+        "code": "M9",
+        "footprintMetres": [
+          180,
+          85
+        ],
+        "heightMetres": 60,
+        "placementZone": "Microbiology-Security junction"
+      },
+      {
+        "code": "M10",
+        "footprintMetres": [
+          150,
+          125
+        ],
+        "heightMetres": 135,
+        "placementZone": "Outer edge near Bioanalytics"
+      }
+    ],
+    "meshCount": 985,
+    "uniqueNames": 998,
+    "materialNames": [
+      "Diagnostic Crescent dark mineral paving",
+      "Medical amber process light",
+      "Medical black reflecting water",
+      "Medical black volcanic stone",
+      "Medical bone-white sintered ceramic",
+      "Medical clear low-iron glass",
+      "Medical cold cyan diagnostic light",
+      "Medical contour plaza paving",
+      "Medical frosted low-iron glass",
+      "Medical opalescent electrochromic glazing",
+      "Medical pale mineral ceramic",
+      "Medical pale stainless steel",
+      "Medical polished basalt composite",
+      "Medical radiotheranostic bronze alloy",
+      "Medical ruby diagnostic light",
+      "Medical satin titanium",
+      "Medical silver-white planting",
+      "Medical translucent membrane roof",
+      "Medical ultradark electrochromic glass",
+      "Medical ultraviolet-white light",
+      "Medical violet therapeutic light"
+    ],
+    "animated": [
+      {
+        "name": "MEDICAL__M1__VERTICAL_LAYER_SCAN",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_1",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_2",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_3",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_4",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_5",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_6",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_7",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M2__ASCENDING_BIOMARKER_PULSE_8",
+        "animate": "medical-rising-pulse"
+      },
+      {
+        "name": "MEDICAL__M3__SLOW_ENVIRONMENT_RING_1",
+        "animate": "medical-slow-orbit"
+      },
+      {
+        "name": "MEDICAL__M3__SLOW_ENVIRONMENT_RING_2",
+        "animate": "medical-slow-orbit"
+      },
+      {
+        "name": "MEDICAL__M3__SLOW_ENVIRONMENT_RING_3",
+        "animate": "medical-slow-orbit"
+      },
+      {
+        "name": "MEDICAL__M3__SLOW_ENVIRONMENT_RING_4",
+        "animate": "medical-slow-orbit"
+      },
+      {
+        "name": "MEDICAL__M4__FOUR_BASE_CODE_BAND_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M4__FOUR_BASE_CODE_BAND_2",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M4__FOUR_BASE_CODE_BAND_3",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M4__FOUR_BASE_CODE_BAND_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_1_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_1_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_2_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_2_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_3_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_3_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_4_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_4_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_5_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_5_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_6_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_6_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_7_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_7_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_8_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M5__ADAPTIVE_HEX_PANEL_8_4",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M6__SUSPENDED_DIAGNOSTIC_RING",
+        "animate": "medical-slow-orbit"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_1_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_2_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_3_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_4_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_5_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M7__LAYER_PRINT_RING_6_2",
+        "animate": "medical-vertical-scan"
+      },
+      {
+        "name": "MEDICAL__M9__REFERENCE_RETRIEVAL_SWEEP",
+        "animate": "medical-horizontal-scan"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_1",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_8",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_15",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_22",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_29",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__ADAPTIVE_DATA_NODE_36",
+        "animate": "medical-emissive-pulse"
+      },
+      {
+        "name": "MEDICAL__M10__BRIDGE_MODEL_PULSE_1",
+        "animate": "medical-horizontal-scan"
+      },
+      {
+        "name": "MEDICAL__M10__BRIDGE_MODEL_PULSE_2",
+        "animate": "medical-horizontal-scan"
+      },
+      {
+        "name": "MEDICAL__M10__BRIDGE_MODEL_PULSE_3",
+        "animate": "medical-horizontal-scan"
+      }
+    ],
+    "scaledMeshParentDetails": [],
+    "boundaryViolations": [],
+    "missingRoots": [],
+    "legacyGenericNames": [],
+    "routeAudit": [
+      {
+        "name": "MEDICAL__DIAGNOSTIC_CRESCENT",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__THERAPEUTIC_SPINE",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__RESTRICTED_SPECIMEN_VEIN",
+        "walkable": false,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__CLINICAL_SERVICE_ROUTE_1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__CLINICAL_SERVICE_ROUTE_2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__CLINICAL_SERVICE_ROUTE_3",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MEDICAL__CLINICAL_SERVICE_ROUTE_4",
+        "walkable": true,
+        "resident": true
+      }
+    ],
+    "specimenCapsules": 10,
+    "roadGround": 1.6459999984502864,
+    "roadPoint": [
+      71.50300455093374,
+      1.6459999984502793,
+      -122.40132308053856
+    ],
+    "textMedical": {
+      "identity": "The Anatomical Crescent",
+      "progression": [
+        "disease observation",
+        "molecular diagnosis",
+        "experimental treatment",
+        "protected clinical translation"
+      ],
+      "architecturalLanguage": "a diagnostic instrument enlarged to urban scale",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "Atlas Pathologica",
+          "purpose": "Spatial Pathology and Disease Cartography Institute",
+          "placementZone": "Inner edge near Molecular Biology",
+          "heightMetres": 68,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M2",
+          "name": "Hemolumen Spire",
+          "purpose": "Liquid Biopsy and Circulating Biomarker Observatory",
+          "placementZone": "Western border near Pharmacology",
+          "heightMetres": 148,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M3",
+          "name": "Vitrivivarium",
+          "purpose": "Patient-Derived Organoid and Organ-on-Chip Foundry",
+          "placementZone": "Inner edge near Microbiology",
+          "heightMetres": 54,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M4",
+          "name": "Editorium Genomicum",
+          "purpose": "Genome Surgery and Rare-Disease Therapeutics Complex",
+          "placementZone": "Central Therapeutic Spine",
+          "heightMetres": 88,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M5",
+          "name": "Immunis Bastion",
+          "purpose": "Engineered Immunity and Living Medicines Center",
+          "placementZone": "Central Therapeutic Spine",
+          "heightMetres": 70,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M6",
+          "name": "Astra Theranostica",
+          "purpose": "Molecular Imaging and Radiotheranostics Beacon",
+          "placementZone": "Western border near Pharmacology",
+          "heightMetres": 80,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M7",
+          "name": "Regenera Forge",
+          "purpose": "Biofabrication and Regenerative Tissue Works",
+          "placementZone": "Central/eastern production zone",
+          "heightMetres": 70,
+          "maturity": "emerging translation"
+        },
+        {
+          "code": "M8",
+          "name": "Concordia Xenomedica",
+          "purpose": "Transplant Compatibility and Xenomedicine Institute",
+          "placementZone": "Outer edge near Security",
+          "heightMetres": 80,
+          "maturity": "emerging translation"
+        },
+        {
+          "code": "M9",
+          "name": "Aegis Phagica",
+          "purpose": "Precision Infection, Antimicrobial Resistance and Phage Biobank",
+          "placementZone": "Microbiology-Security junction",
+          "heightMetres": 60,
+          "maturity": "clinical translation"
+        },
+        {
+          "code": "M10",
+          "name": "Clinica Simulacra",
+          "purpose": "Patient Digital Twin and Adaptive Treatment Observatory",
+          "placementZone": "Outer edge near Bioanalytics",
+          "heightMetres": 135,
+          "maturity": "emerging translation"
+        }
+      ],
+      "skyline": [
+        "Vitrivivarium",
+        "Atlas Pathologica",
+        "Editorium Genomicum",
+        "Immunis Bastion",
+        "Hemolumen Spire",
+        "Clinica Simulacra"
+      ],
+      "roads": {
+        "publicArc": "MEDICAL__DIAGNOSTIC_CRESCENT",
+        "radialBoulevard": "MEDICAL__THERAPEUTIC_SPINE",
+        "restrictedLogistics": "MEDICAL__RESTRICTED_SPECIMEN_VEIN",
+        "clinicalServiceRouteCount": 4,
+        "publicAndSpecimenTrafficSeparated": true
+      },
+      "materials": [
+        "bone-white sintered ceramic",
+        "frosted low-iron glass",
+        "satin titanium and pale stainless steel",
+        "black volcanic stone",
+        "opalescent electrochromic glazing",
+        "translucent membrane roofs"
+      ],
+      "lighting": [
+        "ruby",
+        "amber",
+        "violet",
+        "cold cyan"
+      ],
+      "landscape": {
+        "lowWhiteTrees": 28,
+        "diagnosticLightNeedles": 20,
+        "genericHospitalSymbols": 0,
+        "redCrosses": 0
+      },
+      "exteriorOnly": true,
+      "recommendedInteriorSequence": [
+        "Atlas Pathologica",
+        "Editorium Genomicum",
+        "Immunis Bastion"
+      ]
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "medical-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999982076,
+    "grounded": true,
+    "position": [
+      71.642,
+      1.808,
+      -122.317
+    ]
+  },
+  "errors": []
+}

@@ -2656,6 +2656,37 @@ export class IslandWorld {
         if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
           object.material.emissiveIntensity = 0.28 + (0.5 + 0.5 * Math.sin(this.elapsed * 0.12)) * 0.26;
         }
+      } else if (object.userData.animate === 'medical-slow-orbit') {
+        object.rotation.z += delta * Number(object.userData.speed ?? 0.02);
+      } else if (object.userData.animate === 'medical-vertical-scan') {
+        const phase = Number(object.userData.phase ?? 0);
+        const progress = (this.elapsed * Number(object.userData.speed ?? 0.1) + phase) % 1;
+        object.position.y = Number(object.userData.baseY ?? object.position.y)
+          + progress * Number(object.userData.travel ?? 1);
+      } else if (object.userData.animate === 'medical-horizontal-scan') {
+        const phase = Number(object.userData.phase ?? 0);
+        const progress = (this.elapsed * Number(object.userData.speed ?? 0.1) + phase) % 1;
+        object.position.x = Number(object.userData.baseX ?? object.position.x)
+          + progress * Number(object.userData.travel ?? 1);
+      } else if (object.userData.animate === 'medical-rising-pulse') {
+        const phase = Number(object.userData.phase ?? 0);
+        const progress = (this.elapsed * Number(object.userData.speed ?? 0.1) + phase) % 1;
+        object.position.y = Number(object.userData.baseY ?? object.position.y)
+          + progress * Number(object.userData.travel ?? 1);
+        const pulseScale = 0.72 + Math.sin(progress * Math.PI) * 0.55;
+        object.scale.setScalar(pulseScale);
+      } else if (object.userData.animate === 'medical-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = 0.5 + 0.5 * Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.2) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          );
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.3),
+            Number(object.userData.maxIntensity ?? 3.2),
+            wave,
+          );
+        }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -6896,6 +6927,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const industrialDistrict = this.objectGroups.get('industrial-labs')?.userData.industrialDistrict ?? null;
     const securityDistrict = this.objectGroups.get('security')?.userData.securityDistrict ?? null;
     const secretLabsDistrict = this.objectGroups.get('secret-labs')?.userData.secretLabsDistrict ?? null;
+    const medicalLabsDistrict = this.objectGroups.get('medical-labs')?.userData.medicalLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7019,6 +7051,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       industrialDistrict,
       securityDistrict,
       secretLabsDistrict,
+      medicalLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

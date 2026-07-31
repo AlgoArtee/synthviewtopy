@@ -51,7 +51,7 @@
     "visibleAuthoredInteriorGroups": 1,
     "cerebrumInteriorRendered": false,
     "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
-    "activeViewPolicy": "walk-exterior",
+    "activeViewPolicy": "walk-interior",
     "userHiddenIds": [],
     "runtimeHiddenCount": 166
   },

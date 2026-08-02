@@ -1,0 +1,743 @@
+{
+  "audit": {
+    "program": {
+      "identity": "The Molecular Synthesis Quarter",
+      "architecturalLanguage": "carbon-black ceramic and basalt composite, white acid-resistant technical stone, amber/violet/smoke laboratory glass, brushed steel, dark titanium, dichroic photovoltaics, fluoropolymer membranes, and visible safety-shell utilities",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "O1",
+          "name": "Autocatalytic Synthesis Exchange",
+          "purpose": "Self-driving synthesis, natural-language robotic chemistry, reaction optimization, and continuous-flow discovery",
+          "placementZone": "Central Synthesis Arc",
+          "footprintMetres": [
+            180,
+            88
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "reconfigurable laboratory circuit board with an external carrier gallery and Decision Mast"
+        },
+        {
+          "code": "O2",
+          "name": "Skeletal Editing Cathedral",
+          "purpose": "Single-atom insertion, deletion, replacement, heteroarene reconstruction, and late-stage skeletal editing",
+          "placementZone": "Dark vertical landmark on the inner-southern approach",
+          "footprintMetres": [
+            112,
+            88
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "three cut and reassembled basalt masses pierced by aligned molecular voids"
+        },
+        {
+          "code": "O3",
+          "name": "Photon-Electron Catalysis Prism",
+          "purpose": "Photoredox chemistry, electroorganic synthesis, radical catalysis, and continuous-flow photoelectrochemistry",
+          "placementZone": "Inorganic Chemistry interface",
+          "footprintMetres": [
+            150,
+            86
+          ],
+          "heightMetres": 44,
+          "exteriorMotif": "dichroic triangular prism with four transparent electrosynthesis towers"
+        },
+        {
+          "code": "O4",
+          "name": "Meridian Institute for Selective C-H Activation",
+          "purpose": "Site-selective C-H functionalization, remote bond activation, and catalyst-controlled regioselectivity",
+          "placementZone": "Disciplined outer research terrace",
+          "footprintMetres": [
+            112,
+            82
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "two related towers altered at a few exact facade sites"
+        },
+        {
+          "code": "O5",
+          "name": "Chemoenzymatic Cascade Conservatory",
+          "purpose": "Engineered biocatalysts, chemoenzymatic cascades, photoenzymatic radicals, and hybrid enzyme-metal catalysis",
+          "placementZone": "Biochemistry-facing inner promenade",
+          "footprintMetres": [
+            146,
+            108
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "five planted terraces descending through visible water and protein-ribbon systems"
+        },
+        {
+          "code": "O6",
+          "name": "Chiral Synthesis Twin",
+          "purpose": "Asymmetric catalysis, stereodivergent synthesis, axial chirality, and radical stereocontrol",
+          "placementZone": "Eastern Synthesis Arc court",
+          "footprintMetres": [
+            152,
+            102
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "non-superimposable paired wings with opposite helicoidal exhausts"
+        },
+        {
+          "code": "O7",
+          "name": "Catenane Forum for Molecular Machines",
+          "purpose": "Molecular motors, mechanically interlocked molecules, dynamic cages, and responsive supramolecular systems",
+          "placementZone": "Principal civic plaza",
+          "footprintMetres": [
+            136,
+            124
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "three structurally interlocked toroidal volumes with distributed kinetic shading"
+        },
+        {
+          "code": "O8",
+          "name": "Organic Photonics and Semiconductor Loom",
+          "purpose": "Organic semiconductors, exciton transport, singlet fission, flexible optoelectronics, and organic photovoltaics",
+          "placementZone": "Sun-rich desert-facing southern edge",
+          "footprintMetres": [
+            240,
+            78
+          ],
+          "heightMetres": 40,
+          "exteriorMotif": "long folded photovoltaic ribbon terminating in the Exciton Fin"
+        },
+        {
+          "code": "O9",
+          "name": "Circular Carbon Reforging Works",
+          "purpose": "Polymer mechanochemistry, selective depolymerization, plastic upcycling, and biomass-derived aromatic chemistry",
+          "placementZone": "Industrial and particle-physics logistics boundary",
+          "footprintMetres": [
+            182,
+            122
+          ],
+          "heightMetres": 56,
+          "exteriorMotif": "two circular production halls, a mechanical tower, silos, and enclosed conveyors"
+        },
+        {
+          "code": "O10",
+          "name": "Atlas of Natural Products and Macrocyclic Space",
+          "purpose": "Natural-product synthesis, macrocycles, cyclic peptides, encoded libraries, and chemical-space discovery",
+          "placementZone": "Biochemistry-facing source-ecology landscape",
+          "footprintMetres": [
+            176,
+            132
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "nested macrocyclic walls surrounding a perforated Chemical-Space Lantern"
+        }
+      ],
+      "progression": [
+        "selective bond activation",
+        "single-atom skeletal editing",
+        "autonomous synthesis",
+        "photoelectrochemistry",
+        "stereochemical control",
+        "molecular motion",
+        "programmable photonic materials",
+        "chemoenzymatic cascades",
+        "natural-product chemical space",
+        "circular carbon economies"
+      ],
+      "silhouette": {
+        "darkVerticalMonument": "Skeletal Editing Cathedral",
+        "pairedTwist": "Chiral Synthesis Twin",
+        "interlockedCivicLandmark": "Catenane Forum for Molecular Machines",
+        "luminousEdge": "Photon-Electron Catalysis Prism",
+        "southernHorizon": "Organic Photonics and Semiconductor Loom",
+        "industrialAnchor": "Circular Carbon Reforging Works"
+      },
+      "circulation": {
+        "primaryBoulevard": "ORGCHEM__SYNTHESIS_ARC",
+        "innerPromenade": "ORGCHEM__BIOCHEMISTRY_RESEARCH_PROMENADE",
+        "shieldedLogisticsRoad": "ORGCHEM__SHIELDED_OUTER_LOGISTICS_ROAD",
+        "controlledServiceLinks": 4,
+        "exactBuildingApproaches": 10,
+        "reactionSchemeLines": 3
+      },
+      "safetySystems": {
+        "elevatedContainmentPlinths": 10,
+        "perimeterDrainageChannels": 40,
+        "remoteFireSuppressionPylons": 40,
+        "windDirectionBeacons": 18,
+        "partiallyBuriedSolventStores": 7,
+        "districtNeutralizationBasins": 12
+      },
+      "signatureSystems": {
+        "exchangeFacadeModules": 40,
+        "prismDichroicFins": 60,
+        "electrosynthesisTowers": 4,
+        "conservatoryTerraces": 5,
+        "catenaneRings": 3,
+        "loomPhotovoltaicLengthMetres": 240,
+        "recycledPolymerPanels": 48,
+        "lanternApertures": 96
+      },
+      "materials": [
+        "carbon-black ceramic and basalt composite",
+        "white acid-resistant technical stone",
+        "amber, violet, and smoke-tinted laboratory glass",
+        "brushed stainless steel and dark titanium",
+        "dichroic photovoltaic surfaces",
+        "replaceable fluoropolymer membranes"
+      ],
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Autocatalytic Synthesis Exchange",
+        "Skeletal Editing Cathedral",
+        "Photon-Electron Catalysis Prism",
+        "Meridian Institute for Selective C-H Activation",
+        "Chemoenzymatic Cascade Conservatory",
+        "Chiral Synthesis Twin",
+        "Catenane Forum for Molecular Machines",
+        "Organic Photonics and Semiconductor Loom",
+        "Circular Carbon Reforging Works",
+        "Atlas of Natural Products and Macrocyclic Space"
+      ],
+      "plannedObjects": [
+        "Synthesis Arc",
+        "Biochemistry Research Promenade",
+        "Shielded Logistics Road",
+        "Catalyst Courtyards",
+        "Neutralization Basins",
+        "Solvent Storage Compounds",
+        "Wind Beacons"
+      ],
+      "realizedFeatureTags": [
+        "autocatalytic-synthesis-exchange",
+        "skeletal-editing-cathedral",
+        "photon-electron-catalysis-prism",
+        "meridian-institute-for-selective-c-h-activation",
+        "chemoenzymatic-cascade-conservatory",
+        "chiral-synthesis-twin",
+        "catenane-forum-for-molecular-machines",
+        "organic-photonics-and-semiconductor-loom",
+        "circular-carbon-reforging-works",
+        "atlas-of-natural-products-and-macrocyclic-space"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 134,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 17,
+      "radialCoverage": 0.94,
+      "angularCoverage": 0.96,
+      "exteriorOnly": true,
+      "molecularSynthesisQuarter": true
+    },
+    "topLevelNames": [
+      "ORGCHEM__SYNTHESIS_ARC_INFRASTRUCTURE",
+      "ORGCHEM__MONITORED_SAFETY_LANDSCAPE",
+      "ORGCHEM__O1__AUTOCATALYTIC_SYNTHESIS_EXCHANGE",
+      "ORGCHEM__O2__SKELETAL_EDITING_CATHEDRAL",
+      "ORGCHEM__O3__PHOTON_ELECTRON_CATALYSIS_PRISM",
+      "ORGCHEM__O4__MERIDIAN_SELECTIVE_C_H_ACTIVATION",
+      "ORGCHEM__O5__CHEMOENZYMATIC_CASCADE_CONSERVATORY",
+      "ORGCHEM__O6__CHIRAL_SYNTHESIS_TWIN",
+      "ORGCHEM__O7__CATENANE_FORUM_MOLECULAR_MACHINES",
+      "ORGCHEM__O8__ORGANIC_PHOTONICS_SEMICONDUCTOR_LOOM",
+      "ORGCHEM__O9__CIRCULAR_CARBON_REFORGING_WORKS",
+      "ORGCHEM__O10__NATURAL_PRODUCTS_MACROCYCLIC_ATLAS"
+    ],
+    "codes": [
+      "O1",
+      "O2",
+      "O3",
+      "O4",
+      "O5",
+      "O6",
+      "O7",
+      "O8",
+      "O9",
+      "O10"
+    ],
+    "facilityCount": 10,
+    "meshCount": 1639,
+    "uniqueNames": 1652,
+    "scaledMeshParentDetails": [],
+    "materialNames": [
+      "Organic Chemistry amber laboratory glass",
+      "Organic Chemistry amber reaction-status light",
+      "Organic Chemistry brushed stainless steel",
+      "Organic Chemistry carbon-black basalt composite",
+      "Organic Chemistry carbon-black technical ceramic",
+      "Organic Chemistry controlled source-ecology planting",
+      "Organic Chemistry copper-violet dichroic photovoltaic surface",
+      "Organic Chemistry cyan photon-transfer light",
+      "Organic Chemistry cyan-silver dichroic photovoltaic surface",
+      "Organic Chemistry dark titanium structure",
+      "Organic Chemistry monitored neutralization water",
+      "Organic Chemistry pale containment paving",
+      "Organic Chemistry recycled polymer blue",
+      "Organic Chemistry recycled polymer ochre",
+      "Organic Chemistry recycled polymer pale",
+      "Organic Chemistry recycled polymer plum",
+      "Organic Chemistry replaceable fluoropolymer membrane",
+      "Organic Chemistry shielded logistics paving",
+      "Organic Chemistry smoke-tinted laboratory glass",
+      "Organic Chemistry transparent safety shell",
+      "Organic Chemistry violet charge-transfer light",
+      "Organic Chemistry violet laboratory glass",
+      "Organic Chemistry warm-grey macrocycle stone",
+      "Organic Chemistry white acid-resistant technical stone"
+    ],
+    "animations": {
+      "organic-chemistry-emissive-pulse": 400,
+      "organic-chemistry-orbit": 14,
+      "organic-chemistry-rotation": 47,
+      "organic-chemistry-sway": 313
+    },
+    "prefixCounts": {
+      "ORGCHEM__O1__RECONFIGURABLE_FACADE_MODULE_": 40,
+      "ORGCHEM__O2__MOLECULAR_VOID_FRAME_": 3,
+      "ORGCHEM__O3__DICHROIC_LIGHT_HARVESTING_FIN_": 60,
+      "ORGCHEM__O3__TRANSPARENT_ELECTROSYNTHESIS_TOWER_": 4,
+      "ORGCHEM__O4__SELECTIVELY_FUNCTIONALIZED_FACADE_PANEL_": 5,
+      "ORGCHEM__O5__DESCENDING_CASCADE_VOLUME_": 5,
+      "ORGCHEM__O6__LEFT_HELICOIDAL_EXHAUST_": 18,
+      "ORGCHEM__O6__RIGHT_HELICOIDAL_EXHAUST_": 18,
+      "ORGCHEM__O7__KINETIC_WOVEN_ENVELOPE_": 108,
+      "ORGCHEM__O8__SAWTOOTH_PHOTOVOLTAIC_ROOF_": 22,
+      "ORGCHEM__O9__RECYCLED_POLYMER_PANEL_": 48,
+      "ORGCHEM__O10__ALGORITHMIC_LANTERN_APERTURE_": 96
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "O1",
+        "min": [
+          124.36902026259375,
+          1.6660000000000001,
+          145.29247642066395
+        ],
+        "max": [
+          144.79536842220497,
+          11.716,
+          164.76080546478647
+        ]
+      },
+      {
+        "code": "O2",
+        "min": [
+          154.43630769147447,
+          1.6660000000000001,
+          117.45894527181426
+        ],
+        "max": [
+          171.8474663859935,
+          11.688904359092268,
+          134.02522757235505
+        ]
+      },
+      {
+        "code": "O3",
+        "min": [
+          13.346944192360969,
+          1.1736779815132081,
+          200.33090739983388
+        ],
+        "max": [
+          29.96345164713487,
+          8.723402896881105,
+          211.99367819973725
+        ]
+      },
+      {
+        "code": "O4",
+        "min": [
+          67.61968083073415,
+          1.6660000000000001,
+          204.16448744538832
+        ],
+        "max": [
+          81.80281315377076,
+          10.37056674819513,
+          216.39147748133888
+        ]
+      },
+      {
+        "code": "O5",
+        "min": [
+          134.4477455793514,
+          1.6660000000000001,
+          116.38684640536529
+        ],
+        "max": [
+          153.08406012771596,
+          10.558713039022543,
+          135.39914520424213
+        ]
+      },
+      {
+        "code": "O6",
+        "min": [
+          46.80730555789572,
+          1.6660000000000001,
+          195.9488615718276
+        ],
+        "max": [
+          65.03233769626263,
+          10.769051534494748,
+          210.52572631378996
+        ]
+      },
+      {
+        "code": "O7",
+        "min": [
+          89.84665933468109,
+          0.3767093310832861,
+          170.36413410750913
+        ],
+        "max": [
+          108.93451893393542,
+          11.355290668916716,
+          188.89698111391374
+        ]
+      },
+      {
+        "code": "O8",
+        "min": [
+          112.01851688032961,
+          1.6660000000000001,
+          176.87174138214402
+        ],
+        "max": [
+          137.34752379368152,
+          9.15541920957282,
+          197.6879712600026
+        ]
+      },
+      {
+        "code": "O9",
+        "min": [
+          152.5479011589961,
+          1.6160000059604642,
+          142.95988031103596
+        ],
+        "max": [
+          174.9539169123906,
+          7.966,
+          165.6190556776934
+        ]
+      },
+      {
+        "code": "O10",
+        "min": [
+          32.68039293672821,
+          1.6660000000000001,
+          172.03968345985064
+        ],
+        "max": [
+          53.74216633611083,
+          9.856000000298025,
+          191.7419812394845
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "ORGCHEM__SYNTHESIS_ARC",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BIOCHEMISTRY_RESEARCH_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__SHIELDED_OUTER_LOGISTICS_ROAD",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__CONTROLLED_SERVICE_LINK_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__CONTROLLED_SERVICE_LINK_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__CONTROLLED_SERVICE_LINK_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__CONTROLLED_SERVICE_LINK_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ORGCHEM__BUILDING_APPROACH_O10",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      139.70595550537112,
+      1.6459999984502793,
+      152.91640197469997
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "The Molecular Synthesis Quarter",
+      "architecturalLanguage": "carbon-black ceramic and basalt composite, white acid-resistant technical stone, amber/violet/smoke laboratory glass, brushed steel, dark titanium, dichroic photovoltaics, fluoropolymer membranes, and visible safety-shell utilities",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "O1",
+          "name": "Autocatalytic Synthesis Exchange",
+          "purpose": "Self-driving synthesis, natural-language robotic chemistry, reaction optimization, and continuous-flow discovery",
+          "placementZone": "Central Synthesis Arc",
+          "footprintMetres": [
+            180,
+            88
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "reconfigurable laboratory circuit board with an external carrier gallery and Decision Mast"
+        },
+        {
+          "code": "O2",
+          "name": "Skeletal Editing Cathedral",
+          "purpose": "Single-atom insertion, deletion, replacement, heteroarene reconstruction, and late-stage skeletal editing",
+          "placementZone": "Dark vertical landmark on the inner-southern approach",
+          "footprintMetres": [
+            112,
+            88
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "three cut and reassembled basalt masses pierced by aligned molecular voids"
+        },
+        {
+          "code": "O3",
+          "name": "Photon-Electron Catalysis Prism",
+          "purpose": "Photoredox chemistry, electroorganic synthesis, radical catalysis, and continuous-flow photoelectrochemistry",
+          "placementZone": "Inorganic Chemistry interface",
+          "footprintMetres": [
+            150,
+            86
+          ],
+          "heightMetres": 44,
+          "exteriorMotif": "dichroic triangular prism with four transparent electrosynthesis towers"
+        },
+        {
+          "code": "O4",
+          "name": "Meridian Institute for Selective C-H Activation",
+          "purpose": "Site-selective C-H functionalization, remote bond activation, and catalyst-controlled regioselectivity",
+          "placementZone": "Disciplined outer research terrace",
+          "footprintMetres": [
+            112,
+            82
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "two related towers altered at a few exact facade sites"
+        },
+        {
+          "code": "O5",
+          "name": "Chemoenzymatic Cascade Conservatory",
+          "purpose": "Engineered biocatalysts, chemoenzymatic cascades, photoenzymatic radicals, and hybrid enzyme-metal catalysis",
+          "placementZone": "Biochemistry-facing inner promenade",
+          "footprintMetres": [
+            146,
+            108
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "five planted terraces descending through visible water and protein-ribbon systems"
+        },
+        {
+          "code": "O6",
+          "name": "Chiral Synthesis Twin",
+          "purpose": "Asymmetric catalysis, stereodivergent synthesis, axial chirality, and radical stereocontrol",
+          "placementZone": "Eastern Synthesis Arc court",
+          "footprintMetres": [
+            152,
+            102
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "non-superimposable paired wings with opposite helicoidal exhausts"
+        },
+        {
+          "code": "O7",
+          "name": "Catenane Forum for Molecular Machines",
+          "purpose": "Molecular motors, mechanically interlocked molecules, dynamic cages, and responsive supramolecular systems",
+          "placementZone": "Principal civic plaza",
+          "footprintMetres": [
+            136,
+            124
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "three structurally interlocked toroidal volumes with distributed kinetic shading"
+        },
+        {
+          "code": "O8",
+          "name": "Organic Photonics and Semiconductor Loom",
+          "purpose": "Organic semiconductors, exciton transport, singlet fission, flexible optoelectronics, and organic photovoltaics",
+          "placementZone": "Sun-rich desert-facing southern edge",
+          "footprintMetres": [
+            240,
+            78
+          ],
+          "heightMetres": 40,
+          "exteriorMotif": "long folded photovoltaic ribbon terminating in the Exciton Fin"
+        },
+        {
+          "code": "O9",
+          "name": "Circular Carbon Reforging Works",
+          "purpose": "Polymer mechanochemistry, selective depolymerization, plastic upcycling, and biomass-derived aromatic chemistry",
+          "placementZone": "Industrial and particle-physics logistics boundary",
+          "footprintMetres": [
+            182,
+            122
+          ],
+          "heightMetres": 56,
+          "exteriorMotif": "two circular production halls, a mechanical tower, silos, and enclosed conveyors"
+        },
+        {
+          "code": "O10",
+          "name": "Atlas of Natural Products and Macrocyclic Space",
+          "purpose": "Natural-product synthesis, macrocycles, cyclic peptides, encoded libraries, and chemical-space discovery",
+          "placementZone": "Biochemistry-facing source-ecology landscape",
+          "footprintMetres": [
+            176,
+            132
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "nested macrocyclic walls surrounding a perforated Chemical-Space Lantern"
+        }
+      ],
+      "progression": [
+        "selective bond activation",
+        "single-atom skeletal editing",
+        "autonomous synthesis",
+        "photoelectrochemistry",
+        "stereochemical control",
+        "molecular motion",
+        "programmable photonic materials",
+        "chemoenzymatic cascades",
+        "natural-product chemical space",
+        "circular carbon economies"
+      ],
+      "silhouette": {
+        "darkVerticalMonument": "Skeletal Editing Cathedral",
+        "pairedTwist": "Chiral Synthesis Twin",
+        "interlockedCivicLandmark": "Catenane Forum for Molecular Machines",
+        "luminousEdge": "Photon-Electron Catalysis Prism",
+        "southernHorizon": "Organic Photonics and Semiconductor Loom",
+        "industrialAnchor": "Circular Carbon Reforging Works"
+      },
+      "circulation": {
+        "primaryBoulevard": "ORGCHEM__SYNTHESIS_ARC",
+        "innerPromenade": "ORGCHEM__BIOCHEMISTRY_RESEARCH_PROMENADE",
+        "shieldedLogisticsRoad": "ORGCHEM__SHIELDED_OUTER_LOGISTICS_ROAD",
+        "controlledServiceLinks": 4,
+        "exactBuildingApproaches": 10,
+        "reactionSchemeLines": 3
+      },
+      "safetySystems": {
+        "elevatedContainmentPlinths": 10,
+        "perimeterDrainageChannels": 40,
+        "remoteFireSuppressionPylons": 40,
+        "windDirectionBeacons": 18,
+        "partiallyBuriedSolventStores": 7,
+        "districtNeutralizationBasins": 12
+      },
+      "signatureSystems": {
+        "exchangeFacadeModules": 40,
+        "prismDichroicFins": 60,
+        "electrosynthesisTowers": 4,
+        "conservatoryTerraces": 5,
+        "catenaneRings": 3,
+        "loomPhotovoltaicLengthMetres": 240,
+        "recycledPolymerPanels": 48,
+        "lanternApertures": 96
+      },
+      "materials": [
+        "carbon-black ceramic and basalt composite",
+        "white acid-resistant technical stone",
+        "amber, violet, and smoke-tinted laboratory glass",
+        "brushed stainless steel and dark titanium",
+        "dichroic photovoltaic surfaces",
+        "replaceable fluoropolymer membranes"
+      ],
+      "exteriorOnly": true
+    },
+    "specializedRevision": 9,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "organic-chemistry-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6100000000000096,
+    "eyeClearance": 0.16199999999999748,
+    "moved": 0.1624999999991918,
+    "grounded": true,
+    "position": [
+      142.182,
+      1.772,
+      154.524
+    ]
+  },
+  "errors": []
+}

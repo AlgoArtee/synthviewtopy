@@ -12,8 +12,8 @@
     "preciseObstacleCount": 724,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 99,
-    "movementProbeCount": 153,
+    "broadOnlyMarginsAvoided": 105,
+    "movementProbeCount": 152,
     "failedDistricts": [],
     "districtResults": [
       {
@@ -209,8 +209,8 @@
         "id": "organic-chemistry-labs",
         "sampleCount": 756,
         "clearCount": 756,
-        "broadOnlyMarginsAvoided": 24,
-        "movementProbeCount": 5,
+        "broadOnlyMarginsAvoided": 27,
+        "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
       },
@@ -263,7 +263,7 @@
         "id": "inorganic-chemistry",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 3,
         "movementProbeCount": 5,
         "movementFailures": [],
         "failures": []

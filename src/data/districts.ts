@@ -392,10 +392,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [26, 0, 14],
     footprint: [11, 8],
     height: 12,
-    archetype: "organic-chemistry-campus",
-    accent: "#B7D84C",
-    palette: ["#1D2413", "#46562B", "#D9E0C2", "#B7D84C"],
-    description: "Ventilated synthesis laboratories and compact pilot plants are organized around a tanker-safe service court.",
+    archetype: "molecular-synthesis-quarter",
+    accent: "#D59BFF",
+    palette: ["#101417", "#343C43", "#E9E9E2", "#D59BFF"],
+    description: "Ten molecular landmarks follow the curved Synthesis Arc from selective bond activation and skeletal editing through autonomous synthesis, molecular machines, programmable photonics, natural-product chemical space, and circular carbon reforging.",
   },
 
   // Outer ring: housing, heavy research, and island security.

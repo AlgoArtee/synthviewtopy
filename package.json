@@ -22,6 +22,7 @@
     "test:forensic": "node scripts/forensic-cyberforensic-district-smoke.mjs",
     "test:genomics": "node scripts/genomics-labs-district-smoke.mjs",
     "test:biochemistry": "node scripts/biochemistry-labs-district-smoke.mjs",
+    "test:organic-chemistry": "node scripts/organic-chemistry-labs-district-smoke.mjs",
     "test:district-walkability": "node scripts/all-district-walkability-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",

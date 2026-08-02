@@ -167,16 +167,18 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'pharmacology-labs': {
     facilities: [
-      { name: 'Medicinal Chemistry Laboratory', form: 'lab-block' },
-      { name: 'Therapeutics Screening Hall', form: 'hall' },
-      { name: 'Medicinal Plant Conservatory', form: 'greenhouse' },
-      { name: 'Automated Compound Pavilion', form: 'pavilion' },
+      { name: 'Pharmakon Nexus', form: 'lab-block' },
+      { name: 'The Ternary Gate', form: 'tower' },
+      { name: 'Scriptorium Therapeutica', form: 'hall' },
+      { name: 'Vectorium Aegis', form: 'pavilion' },
+      { name: 'Chronopharm Observatory', form: 'tower' },
     ],
     objects: [
-      { name: 'High-Throughput Screening Robots', kind: 'robot' },
-      { name: 'Compound Carousel', kind: 'storage' },
-      { name: 'Dissolution Analyzer Benches', kind: 'instrument' },
-      { name: 'Medicinal Herb Beds', kind: 'garden' },
+      { name: 'Dose-Response Promenade', kind: 'street-furniture' },
+      { name: 'Ligand Field', kind: 'public-art' },
+      { name: 'Pharmacokinetic Water Channels', kind: 'water-feature' },
+      { name: 'Microfluidic Capsule Network', kind: 'robot' },
+      { name: 'Dose Dial Plaza', kind: 'public-art' },
     ],
   },
   'microbiology-labs': {

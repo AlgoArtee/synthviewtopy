@@ -1,0 +1,1010 @@
+{
+  "audit": {
+    "program": {
+      "identity": "The Therapeutic Gradient",
+      "progression": [
+        "molecular recognition",
+        "induced proximity",
+        "programmable medicines",
+        "targeted delivery",
+        "patient-specific pharmacokinetics"
+      ],
+      "architecturalLanguage": "receptor binding, dose response, membrane transport, and concentration-time control enlarged to urban scale",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "P1",
+          "name": "Pharmakon Nexus",
+          "purpose": "Autonomous Drug Design and Experimental Pharmacology Centre",
+          "placementZone": "Inner district threshold",
+          "heightMetres": 42,
+          "exteriorMotif": "molecular docking and autonomous experimentation"
+        },
+        {
+          "code": "P2",
+          "name": "The Ternary Gate",
+          "purpose": "Centre for Targeted Protein Degradation and Induced Proximity Pharmacology",
+          "placementZone": "Western edge adjoining Toxicology",
+          "heightMetres": 82,
+          "exteriorMotif": "induced proximity and ternary complexes"
+        },
+        {
+          "code": "P3",
+          "name": "Scriptorium Therapeutica",
+          "purpose": "Institute for RNA, Oligonucleotide and Programmable Medicines",
+          "placementZone": "Eastern transparent edge facing Medical Labs",
+          "heightMetres": 34,
+          "exteriorMotif": "encoded and programmable medicines"
+        },
+        {
+          "code": "P4",
+          "name": "Vectorium Aegis",
+          "purpose": "Precision Drug Delivery and Nanopharmacology Complex",
+          "placementZone": "Upper-middle research field",
+          "heightMetres": 58,
+          "exteriorMotif": "membranes, carriers, and targeted delivery"
+        },
+        {
+          "code": "P5",
+          "name": "Chronopharm Observatory",
+          "purpose": "Centre for Systems Pharmacology, Digital-Twin Therapeutics and PK/PD Modelling",
+          "placementZone": "Outer landmark facing the circular boulevard",
+          "heightMetres": 96,
+          "exteriorMotif": "pharmacokinetics, biological time, and personalised response"
+        }
+      ],
+      "skyline": [
+        "Pharmakon Nexus",
+        "The Ternary Gate",
+        "Scriptorium Therapeutica",
+        "Vectorium Aegis",
+        "Chronopharm Observatory"
+      ],
+      "circulation": {
+        "primaryPromenade": "PHARMACOLOGY__DOSE_RESPONSE_PROMENADE",
+        "concentrationLightCount": 74,
+        "pharmacokineticWaterBranches": 4,
+        "toxicologyServiceEdge": "PHARMACOLOGY__TOXICOLOGY_SHIELDED_SERVICE_ROUTE",
+        "medicalTranslationEdge": "PHARMACOLOGY__MEDICAL_TRANSLATION_WALK",
+        "publicAndContainmentTrafficSeparated": true
+      },
+      "materials": [
+        "bone-white responsive ceramic",
+        "pale satin titanium",
+        "smoked electrochromic glass",
+        "dark basalt",
+        "black photovoltaic glass",
+        "iridescent fluoropolymer membrane",
+        "cold-white and mint instrumentation light"
+      ],
+      "responsiveSystems": {
+        "facadePanels": 140,
+        "microfluidicCapsules": 5,
+        "slowArchitecturalMotion": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Pharmakon Nexus",
+        "The Ternary Gate",
+        "Scriptorium Therapeutica",
+        "Vectorium Aegis",
+        "Chronopharm Observatory"
+      ],
+      "plannedObjects": [
+        "Dose-Response Promenade",
+        "Ligand Field",
+        "pharmacokinetic water branches",
+        "microfluidic capsule network",
+        "Dose Dial plaza"
+      ],
+      "realizedFeatureTags": [
+        "pharmakon-nexus",
+        "the-ternary-gate",
+        "scriptorium-therapeutica",
+        "vectorium-aegis",
+        "chronopharm-observatory"
+      ],
+      "realizedFacilityCount": 5,
+      "realizedObjectCount": 220,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 8,
+      "radialCoverage": 0.93,
+      "angularCoverage": 0.91,
+      "exteriorOnly": true,
+      "therapeuticGradient": true
+    },
+    "facilityCount": 5,
+    "codes": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5"
+    ],
+    "displayNames": [
+      "Chronopharm Observatory",
+      "Pharmakon Nexus",
+      "Scriptorium Therapeutica",
+      "The Ternary Gate",
+      "Vectorium Aegis"
+    ],
+    "dimensions": [
+      {
+        "code": "P1",
+        "footprintMetres": [
+          150,
+          95
+        ],
+        "heightMetres": 42,
+        "placementZone": "Inner district threshold"
+      },
+      {
+        "code": "P2",
+        "footprintMetres": [
+          130,
+          95
+        ],
+        "heightMetres": 82,
+        "placementZone": "Western edge adjoining Toxicology"
+      },
+      {
+        "code": "P3",
+        "footprintMetres": [
+          175,
+          60
+        ],
+        "heightMetres": 34,
+        "placementZone": "Eastern transparent edge facing Medical Labs"
+      },
+      {
+        "code": "P4",
+        "footprintMetres": [
+          150,
+          145
+        ],
+        "heightMetres": 58,
+        "placementZone": "Upper-middle research field"
+      },
+      {
+        "code": "P5",
+        "footprintMetres": [
+          190,
+          150
+        ],
+        "heightMetres": 96,
+        "placementZone": "Outer landmark facing the circular boulevard"
+      }
+    ],
+    "meshCount": 1076,
+    "uniqueNames": 1088,
+    "materialNames": [
+      "Dose-Response dark mineral paving",
+      "Dose-Response pale mineral paving",
+      "Pharmacology black photovoltaic glass",
+      "Pharmacology bone-white responsive ceramic",
+      "Pharmacology charcoal defensive ceramic",
+      "Pharmacology cold-white instrumentation light",
+      "Pharmacology concentration mint light",
+      "Pharmacology containment amber status light",
+      "Pharmacology controlled medicinal planting",
+      "Pharmacology crystalline mediator glass",
+      "Pharmacology dark basalt podium",
+      "Pharmacology folded dark titanium",
+      "Pharmacology iridescent fluoropolymer membrane",
+      "Pharmacology mirror-polished basalt",
+      "Pharmacology opaline sequence glass",
+      "Pharmacology pale hydrophilic glass aggregate",
+      "Pharmacology pale opaline ceramic",
+      "Pharmacology pale satin titanium",
+      "Pharmacology pearl payload surface",
+      "Pharmacology pharmacokinetic water",
+      "Pharmacology porous hydrophobic stone",
+      "Pharmacology smoked electrochromic glass",
+      "Pharmacology transparent medical-interface glass"
+    ],
+    "animated": [
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_REAR_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_1_FRONT_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_REAR_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_2_FRONT_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_REAR_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_3_FRONT_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_REAR_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_4_FRONT_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_1",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_2",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_3",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_4",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_5",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_6",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_7",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_8",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_9",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_10",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_11",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_12",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_13",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_REAR_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__RESPONSIVE_HEX_PANEL_5_FRONT_14",
+        "animate": "pharmacology-facade-ripple"
+      },
+      {
+        "name": "PHARMACOLOGY__P1__STABILISED_LIGAND",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P2__MEDIATOR_LUMINOUS_SPINE",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_1",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_8",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_15",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_22",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_29",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P3__SEQUENCE_GLASS_ROD_36",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__PROMENADE_PORE_LIGHT",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__ROBOTIC_TRANSPORT_CAPSULE_1",
+        "animate": "pharmacology-path-transit"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__ROBOTIC_TRANSPORT_CAPSULE_2",
+        "animate": "pharmacology-path-transit"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__ROBOTIC_TRANSPORT_CAPSULE_3",
+        "animate": "pharmacology-path-transit"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__ROBOTIC_TRANSPORT_CAPSULE_4",
+        "animate": "pharmacology-path-transit"
+      },
+      {
+        "name": "PHARMACOLOGY__P4__ROBOTIC_TRANSPORT_CAPSULE_5",
+        "animate": "pharmacology-path-transit"
+      },
+      {
+        "name": "PHARMACOLOGY__P5__LUMINOUS_CONCENTRATION_TIME_TRACE",
+        "animate": "pharmacology-emissive-pulse"
+      },
+      {
+        "name": "PHARMACOLOGY__P5__PROGRAMMED_THERAPEUTIC_TIME_MARKER",
+        "animate": "pharmacology-orbit"
+      },
+      {
+        "name": "PHARMACOLOGY__P5__BIOLOGICAL_CYCLE_CROWN_RING_4",
+        "animate": "pharmacology-orbit-spin"
+      }
+    ],
+    "scaledMeshParentDetails": [],
+    "boundaryViolations": [],
+    "missingRoots": [],
+    "legacyGenericNames": [],
+    "routeAudit": [
+      {
+        "name": "PHARMACOLOGY__DOSE_RESPONSE_PROMENADE",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__TOXICOLOGY_SHIELDED_SERVICE_ROUTE",
+        "walkable": false,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__MEDICAL_TRANSLATION_WALK",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__BUILDING_APPROACH_P1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__BUILDING_APPROACH_P2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__BUILDING_APPROACH_P3",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__BUILDING_APPROACH_P4",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "PHARMACOLOGY__BUILDING_APPROACH_P5",
+        "walkable": true,
+        "resident": true
+      }
+    ],
+    "concentrationLights": 74,
+    "waterBranches": 4,
+    "responsivePanels": 140,
+    "sequenceFins": 128,
+    "vectoriumPods": 6,
+    "microfluidicCapsules": 5,
+    "doseDialSectors": 24,
+    "roadGround": 1.6459999984502793,
+    "roadPoint": [
+      52.542095243930746,
+      1.6459999984502793,
+      -91.00557848106438
+    ],
+    "textPharmacology": {
+      "identity": "The Therapeutic Gradient",
+      "progression": [
+        "molecular recognition",
+        "induced proximity",
+        "programmable medicines",
+        "targeted delivery",
+        "patient-specific pharmacokinetics"
+      ],
+      "architecturalLanguage": "receptor binding, dose response, membrane transport, and concentration-time control enlarged to urban scale",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "P1",
+          "name": "Pharmakon Nexus",
+          "purpose": "Autonomous Drug Design and Experimental Pharmacology Centre",
+          "placementZone": "Inner district threshold",
+          "heightMetres": 42,
+          "exteriorMotif": "molecular docking and autonomous experimentation"
+        },
+        {
+          "code": "P2",
+          "name": "The Ternary Gate",
+          "purpose": "Centre for Targeted Protein Degradation and Induced Proximity Pharmacology",
+          "placementZone": "Western edge adjoining Toxicology",
+          "heightMetres": 82,
+          "exteriorMotif": "induced proximity and ternary complexes"
+        },
+        {
+          "code": "P3",
+          "name": "Scriptorium Therapeutica",
+          "purpose": "Institute for RNA, Oligonucleotide and Programmable Medicines",
+          "placementZone": "Eastern transparent edge facing Medical Labs",
+          "heightMetres": 34,
+          "exteriorMotif": "encoded and programmable medicines"
+        },
+        {
+          "code": "P4",
+          "name": "Vectorium Aegis",
+          "purpose": "Precision Drug Delivery and Nanopharmacology Complex",
+          "placementZone": "Upper-middle research field",
+          "heightMetres": 58,
+          "exteriorMotif": "membranes, carriers, and targeted delivery"
+        },
+        {
+          "code": "P5",
+          "name": "Chronopharm Observatory",
+          "purpose": "Centre for Systems Pharmacology, Digital-Twin Therapeutics and PK/PD Modelling",
+          "placementZone": "Outer landmark facing the circular boulevard",
+          "heightMetres": 96,
+          "exteriorMotif": "pharmacokinetics, biological time, and personalised response"
+        }
+      ],
+      "skyline": [
+        "Pharmakon Nexus",
+        "The Ternary Gate",
+        "Scriptorium Therapeutica",
+        "Vectorium Aegis",
+        "Chronopharm Observatory"
+      ],
+      "circulation": {
+        "primaryPromenade": "PHARMACOLOGY__DOSE_RESPONSE_PROMENADE",
+        "concentrationLightCount": 74,
+        "pharmacokineticWaterBranches": 4,
+        "toxicologyServiceEdge": "PHARMACOLOGY__TOXICOLOGY_SHIELDED_SERVICE_ROUTE",
+        "medicalTranslationEdge": "PHARMACOLOGY__MEDICAL_TRANSLATION_WALK",
+        "publicAndContainmentTrafficSeparated": true
+      },
+      "materials": [
+        "bone-white responsive ceramic",
+        "pale satin titanium",
+        "smoked electrochromic glass",
+        "dark basalt",
+        "black photovoltaic glass",
+        "iridescent fluoropolymer membrane",
+        "cold-white and mint instrumentation light"
+      ],
+      "responsiveSystems": {
+        "facadePanels": 140,
+        "microfluidicCapsules": 5,
+        "slowArchitecturalMotion": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "pharmacology-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999984535,
+    "grounded": true,
+    "position": [
+      52.623,
+      1.808,
+      -91.146
+    ]
+  },
+  "errors": []
+}

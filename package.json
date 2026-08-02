@@ -15,6 +15,7 @@
     "test:security": "node scripts/security-district-smoke.mjs",
     "test:secret-labs": "node scripts/secret-labs-district-smoke.mjs",
     "test:medical-labs": "node scripts/medical-labs-district-smoke.mjs",
+    "test:pharmacology": "node scripts/pharmacology-district-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",
     "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs"

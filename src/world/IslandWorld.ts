@@ -157,8 +157,14 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 1;
-const SPECIALIZED_DISTRICT_IDS = new Set(['security', 'secret-labs', 'medical-labs']);
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 2;
+const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
+  security: 1,
+  'secret-labs': 1,
+  'medical-labs': 1,
+  'pharmacology-labs': 2,
+};
+const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
   | 'clear'
   | 'rain'
@@ -2692,6 +2698,48 @@ export class IslandWorld {
             wave,
           );
         }
+      } else if (object.userData.animate === 'pharmacology-facade-ripple') {
+        object.rotation.y = Number(object.userData.baseRotationY ?? 0)
+          + Math.sin(this.elapsed * 0.055 + Number(object.userData.phase ?? 0)) * 0.045;
+      } else if (object.userData.animate === 'pharmacology-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = 0.5 + 0.5 * Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.06) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          );
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.4),
+            Number(object.userData.maxIntensity ?? 3.5),
+            wave,
+          );
+        }
+      } else if (object.userData.animate === 'pharmacology-path-transit') {
+        const path = object.userData.path as Array<[number, number, number]>;
+        if (Array.isArray(path) && path.length > 1) {
+          const progress = (
+            this.elapsed * Number(object.userData.speed ?? 0.015)
+            + Number(object.userData.phase ?? 0)
+          ) % 1;
+          const scaled = progress * path.length;
+          const index = Math.floor(scaled) % path.length;
+          const nextIndex = (index + 1) % path.length;
+          const localT = scaled - Math.floor(scaled);
+          object.position.set(
+            THREE.MathUtils.lerp(path[index][0], path[nextIndex][0], localT),
+            THREE.MathUtils.lerp(path[index][1], path[nextIndex][1], localT),
+            THREE.MathUtils.lerp(path[index][2], path[nextIndex][2], localT),
+          );
+        }
+      } else if (object.userData.animate === 'pharmacology-orbit') {
+        const angle = this.elapsed * Number(object.userData.speed ?? 0.04) + Number(object.userData.phase ?? 0);
+        const radius = Number(object.userData.orbitRadius ?? 1);
+        object.position.set(
+          Number(object.userData.centerX ?? 0) + Math.cos(angle) * radius,
+          Number(object.userData.baseY ?? object.position.y),
+          Number(object.userData.centerZ ?? 0) + Math.sin(angle) * radius,
+        );
+      } else if (object.userData.animate === 'pharmacology-orbit-spin') {
+        object.rotation.y += delta * Number(object.userData.speed ?? 0.02);
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -5720,12 +5768,15 @@ export class IslandWorld {
             )
               && savedEntryLogisticsLayoutRevision < ENTRY_LOGISTICS_LAYOUT_REVISION;
             const migrateSpecializedDistrict = SPECIALIZED_DISTRICT_IDS.has(id)
-              && savedSpecializedDistrictLayoutRevision < SPECIALIZED_DISTRICT_LAYOUT_REVISION;
+              && savedSpecializedDistrictLayoutRevision < (
+                SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID[id]
+                ?? SPECIALIZED_DISTRICT_LAYOUT_REVISION
+              );
             const canonicalTransform = migrateSpecializedDistrict
               ? this.initialTransforms.get(id)
               : null;
             if (canonicalTransform) {
-              // Security, Secret Labs, and Medical Labs reuse long-lived district
+              // Specialized campuses reuse long-lived district
               // IDs, but their authored geometry is now sector-local. Replaying a
               // pre-sector root transform displaces the complete campus from its
               // roads and ring cell, so migrate the assembly as one canonical unit.
@@ -6981,6 +7032,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const securityDistrict = this.objectGroups.get('security')?.userData.securityDistrict ?? null;
     const secretLabsDistrict = this.objectGroups.get('secret-labs')?.userData.secretLabsDistrict ?? null;
     const medicalLabsDistrict = this.objectGroups.get('medical-labs')?.userData.medicalLabsDistrict ?? null;
+    const pharmacologyDistrict = this.objectGroups.get('pharmacology-labs')?.userData.pharmacologyDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7106,6 +7158,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       securityDistrict,
       secretLabsDistrict,
       medicalLabsDistrict,
+      pharmacologyDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

@@ -194,7 +194,15 @@ for (const district of audit.districtResults) {
   ) {
     throw new Error(`Invalid annular sector for ${district.id}: ${JSON.stringify(district)}`);
   }
-  const bespoke = ['industrial-labs', 'entry-commercial', 'logistics'].includes(district.id);
+  const bespoke = [
+    'industrial-labs',
+    'entry-commercial',
+    'logistics',
+    'security',
+    'secret-labs',
+    'medical-labs',
+    'pharmacology-labs',
+  ].includes(district.id);
   if (
     district.population?.realizedFacilityCount < 4
     || district.population?.realizedObjectCount < 4
@@ -245,10 +253,12 @@ for (const biome of audit.biomeResults) {
 }
 // The complete authored world includes the industrial railway, detailed
 // Tropical dome, city horizon, Academic sector fence, authored Entry/Logistics
-// interiors, the 15-building Aegis Arc, and two shadow-map passes. Keep the
-// authored world below a measured ceiling instead of comparing against a tiny
-// demo scene. WALK streaming still swaps distant packages to compact HLODs.
-if (audit.renderer.calls > 17_000 || audit.renderer.geometries > 6_500) {
+// interiors, the 15-building Aegis Arc, the 10-building Anatomical Crescent,
+// the five high-detail Therapeutic Gradient landmarks, and two shadow-map
+// passes. Keep the authored planning view below a measured ceiling instead of
+// comparing against a tiny demo scene. WALK streaming still swaps distant
+// packages to compact HLODs and is covered by the dedicated streaming audit.
+if (audit.renderer.calls > 25_000 || audit.renderer.geometries > 7_200) {
   throw new Error(`Population layer exceeded the scene budget: ${JSON.stringify(audit.renderer)}`);
 }
 if (consoleErrors.length > 0) throw new Error(`Browser console errors: ${consoleErrors.join('\n')}`);

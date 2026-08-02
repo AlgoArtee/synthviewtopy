@@ -1,0 +1,956 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Inorganic Chemistry Labs District",
+      "mapLabel": "Anorg Chem District",
+      "architecturalLanguage": "crystal lattices, coordination polyhedra, pressure vessels, ceramic fortresses, exposed elemental strata, controlled oxidation, vitrification, metallic grain, and salt-like translucency",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "I1",
+          "name": "The Crystal Genome Foundry",
+          "purpose": "Autonomous discovery of high-entropy oxides, carbides, nitrides, borides, intermetallics, metastable crystals, and compositionally complex ceramics",
+          "placementZone": "Valence Avenue mineral terrace",
+          "footprintMetres": [
+            145,
+            115
+          ],
+          "heightMetres": 91,
+          "exteriorMotif": "seven interlocking crystal-system wings, ordered-to-disordered diagrid, synthesis stack, and capsule tubes"
+        },
+        {
+          "code": "I2",
+          "name": "The Monatomic Catalyst Spire",
+          "purpose": "Single-atom and dual-atom catalysts, electrocatalytic water splitting, carbon-dioxide conversion, oxygen activation, and hydrogen production",
+          "placementZone": "Lightweight inner landmark",
+          "footprintMetres": [
+            76,
+            76
+          ],
+          "heightMetres": 138,
+          "exteriorMotif": "three coordination arms suspending a mirror active-centre sphere above radial research wings"
+        },
+        {
+          "code": "I3",
+          "name": "The Halide Ion Citadel",
+          "purpose": "Solid-state alkali-metal batteries, halide and mixed-anion electrolytes, ion transport, interface stability, and mechanical failure suppression",
+          "placementZone": "Dry western service court",
+          "footprintMetres": [
+            165,
+            100
+          ],
+          "heightMetres": 37,
+          "exteriorMotif": "four-layer salt-glass fortress with deep thresholds, dry trench, rain canopy, and six desiccant crystals"
+        },
+        {
+          "code": "I4",
+          "name": "The Breathing Framework Ark",
+          "purpose": "Metal-organic frameworks, porous coordination networks, selective gas separation, direct air capture, atmospheric water harvesting, and molecular sieving",
+          "placementZone": "Desert Dome approach",
+          "footprintMetres": [
+            190,
+            82
+          ],
+          "heightMetres": 71,
+          "exteriorMotif": "porous node-and-strut arch, breathing triangular shutters, six gill towers, atmospheric ducts, and basins"
+        },
+        {
+          "code": "I5",
+          "name": "The Solar-Fuels Leafworks",
+          "purpose": "Artificial photosynthesis, photoelectrochemical water splitting, solar hydrogen, carbon-dioxide reduction, and light-driven inorganic catalysis",
+          "placementZone": "Sun-rich desert perimeter",
+          "footprintMetres": [
+            225,
+            150
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "five pivoting mineral leaves, photoelectrode fields, water rills, gas-separation towers, and Solar Reaction Gate"
+        },
+        {
+          "code": "I6",
+          "name": "The Nitrogen Triple-Bond Forge",
+          "purpose": "Low-energy nitrogen fixation, mechanochemical ammonia synthesis, molecular molybdenum and iron catalysis, plasma activation, and cavitation chemistry",
+          "placementZone": "Heavy Stoichiometric Loop court",
+          "footprintMetres": [
+            135,
+            125
+          ],
+          "heightMetres": 79,
+          "exteriorMotif": "three acoustically isolated horizontal reactor drums held by a triple-bond steel exoskeleton"
+        },
+        {
+          "code": "I7",
+          "name": "The F-Block Containment Monastery",
+          "purpose": "Actinide chemistry, unusual f-element bonding, nuclear-fuel materials, isotope coordination, separations, and durable waste immobilization",
+          "placementZone": "Restricted Particle Physics edge",
+          "footprintMetres": [
+            195,
+            155
+          ],
+          "heightMetres": 76,
+          "exteriorMotif": "five nested mineral walls around a single amber Shielded Lantern and enclosed transport rail"
+        },
+        {
+          "code": "I8",
+          "name": "The Lanthanide Cascade Refinery",
+          "purpose": "Rare-earth separation, electronic-waste recovery, redox-selective extraction, ionic-liquid processing, magnet recycling, and critical-metal circularity",
+          "placementZone": "Descending outer process terraces",
+          "footprintMetres": [
+            270,
+            85
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seventeen progressively refined process towers, cascade columns, magnetic gantries, and sealed conveyors"
+        },
+        {
+          "code": "I9",
+          "name": "The Polyoxometalate Basilica",
+          "purpose": "Molecular metal-oxide clusters, multi-electron redox chemistry, water oxidation, molecular energy storage, photocatalysis, and switchable assemblies",
+          "placementZone": "Crystal Axis ceremonial court",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 69,
+          "exteriorMotif": "faceted cobalt polyhedral dome, twelve cluster chapels, molecular rose window, busbars, and redox crown"
+        },
+        {
+          "code": "I10",
+          "name": "The Quantum Oxide Terraces",
+          "purpose": "Superconducting oxides, multiferroics, quantum paraelectrics, antiferromagnetic spintronics, topological phases, and strain engineering",
+          "placementZone": "Vibration-isolated western terrace",
+          "footprintMetres": [
+            145,
+            105
+          ],
+          "heightMetres": 83,
+          "exteriorMotif": "six rotated epitaxial slabs separated by iridescent interfaces above isolated pylons and black-glass moat"
+        },
+        {
+          "code": "I11",
+          "name": "The Megabar Diamond-Anvil Tower",
+          "purpose": "High-pressure inorganic synthesis, superhydrides, extreme-state superconductors, planetary materials, and metastable phases",
+          "placementZone": "Particle Physics transition",
+          "footprintMetres": [
+            98,
+            98
+          ],
+          "heightMetres": 162,
+          "exteriorMotif": "opposed diamond anvils compressed by monumental arches, tension cables, pressure rings, and brilliant compression band"
+        },
+        {
+          "code": "I12",
+          "name": "The Molten-Salt Thermal Keep",
+          "purpose": "Molten-salt chemistry, high-temperature electrochemistry, thermal storage, electrorefining, corrosion-resistant materials, and advanced reactor salts",
+          "placementZone": "Hot southeastern service perimeter",
+          "footprintMetres": [
+            155,
+            135
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "ribbed ceramic fortress with six thermal stacks, glowing shielded conduits, radiator fields, and four ionic silos"
+        },
+        {
+          "code": "I13",
+          "name": "The Biomineral Hybrid Conservatory",
+          "purpose": "Bioinorganic chemistry, metalloenzymes, inorganic-microbial hybrids, nitrogenase-inspired catalysis, biomineralization, and metal-sulfur clusters",
+          "placementZone": "Organic Chemistry interface",
+          "footprintMetres": [
+            175,
+            95
+          ],
+          "heightMetres": 45,
+          "exteriorMotif": "white porous mineral-reef shell with metallic veins, deposition panels, hydrothermal gardens, and transition bridge"
+        },
+        {
+          "code": "I14",
+          "name": "The Carbon Mineralization Ramparts",
+          "purpose": "Carbon-dioxide mineralization, carbonate curing, geopolymers, low-emission cement, mine-tailings utilization, and permanent carbon storage",
+          "placementZone": "Industrial service boundary",
+          "footprintMetres": [
+            325,
+            65
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "coded experimental mineral strata, direct-air intake towers, erosion channels, and robotic construction rail"
+        },
+        {
+          "code": "I15",
+          "name": "The Valence Nexus and Coordination Crown",
+          "purpose": "Coordination chemistry, unusual oxidation states, metal-metal bonds, molecular magnets, low-valent main-group compounds, clusters, and Zintl phases",
+          "placementZone": "Valence Avenue and Crystal Axis intersection",
+          "footprintMetres": [
+            175,
+            175
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "elevated periodic-block ring with eight ligand pylons around a suspended central-ion sphere and Coordination Crown"
+        }
+      ],
+      "interfaces": {
+        "organicChemistry": [
+          "The Monatomic Catalyst Spire",
+          "The Biomineral Hybrid Conservatory"
+        ],
+        "particlePhysics": [
+          "The F-Block Containment Monastery",
+          "The Megabar Diamond-Anvil Tower"
+        ],
+        "desertDome": [
+          "The Breathing Framework Ark",
+          "The Solar-Fuels Leafworks",
+          "The Carbon Mineralization Ramparts"
+        ]
+      },
+      "circulation": {
+        "publicBoulevard": "INORGCHEM__VALENCE_AVENUE",
+        "heavyServiceLoop": "INORGCHEM__STOICHIOMETRIC_LOOP",
+        "pedestrianSpine": "INORGCHEM__CRYSTAL_AXIS",
+        "restrictedRoute": "INORGCHEM__F_BLOCK_PASSAGE",
+        "structuralServiceLinks": 4,
+        "exactBuildingApproaches": 15
+      },
+      "signatureSystems": {
+        "crystalSystemWings": 7,
+        "activeCentreSpheres": 1,
+        "desiccantTowers": 6,
+        "atmosphericGillTowers": 6,
+        "mineralLeaves": 5,
+        "mechanochemicalDrums": 3,
+        "containmentWalls": 5,
+        "rareEarthTowers": 17,
+        "clusterChapels": 12,
+        "epitaxialSlabs": 6,
+        "calibratedPressureRings": 13,
+        "thermalStacks": 6,
+        "mineralStrata": 7,
+        "ligandPylons": 8
+      },
+      "lightingLanguage": "selective lattice nodes, oxidation-state markings, structural bonds, pressure rings, gas-flow channels, and crystal edges only",
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Crystal Genome Foundry",
+        "The Monatomic Catalyst Spire",
+        "The Halide Ion Citadel",
+        "The Breathing Framework Ark",
+        "The Solar-Fuels Leafworks",
+        "The Nitrogen Triple-Bond Forge",
+        "The F-Block Containment Monastery",
+        "The Lanthanide Cascade Refinery",
+        "The Polyoxometalate Basilica",
+        "The Quantum Oxide Terraces",
+        "The Megabar Diamond-Anvil Tower",
+        "The Molten-Salt Thermal Keep",
+        "The Biomineral Hybrid Conservatory",
+        "The Carbon Mineralization Ramparts",
+        "The Valence Nexus and Coordination Crown"
+      ],
+      "plannedObjects": [
+        "Valence Avenue",
+        "Stoichiometric Loop",
+        "Crystal Axis",
+        "F-Block Passage",
+        "Coordination Polyhedron Courts",
+        "Sealed Mineral Samples",
+        "Gas-Flow Pylons"
+      ],
+      "realizedFeatureTags": [
+        "the-crystal-genome-foundry",
+        "the-monatomic-catalyst-spire",
+        "the-halide-ion-citadel",
+        "the-breathing-framework-ark",
+        "the-solar-fuels-leafworks",
+        "the-nitrogen-triple-bond-forge",
+        "the-f-block-containment-monastery",
+        "the-lanthanide-cascade-refinery",
+        "the-polyoxometalate-basilica",
+        "the-quantum-oxide-terraces",
+        "the-megabar-diamond-anvil-tower",
+        "the-molten-salt-thermal-keep",
+        "the-biomineral-hybrid-conservatory",
+        "the-carbon-mineralization-ramparts",
+        "the-valence-nexus-and-coordination-crown"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 83,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 23,
+      "radialCoverage": 0.95,
+      "angularCoverage": 0.97,
+      "exteriorOnly": true,
+      "mineralLatticeDistrict": true
+    },
+    "topLevelNames": [
+      "INORGCHEM__VALENCE_INFRASTRUCTURE",
+      "INORGCHEM__MINERAL_PROCESS_LANDSCAPE",
+      "INORGCHEM__I1__CRYSTAL_GENOME_FOUNDRY",
+      "INORGCHEM__I2__MONATOMIC_CATALYST_SPIRE",
+      "INORGCHEM__I3__HALIDE_ION_CITADEL",
+      "INORGCHEM__I4__BREATHING_FRAMEWORK_ARK",
+      "INORGCHEM__I5__SOLAR_FUELS_LEAFWORKS",
+      "INORGCHEM__I6__NITROGEN_TRIPLE_BOND_FORGE",
+      "INORGCHEM__I7__F_BLOCK_CONTAINMENT_MONASTERY",
+      "INORGCHEM__I8__LANTHANIDE_CASCADE_REFINERY",
+      "INORGCHEM__I9__POLYOXOMETALATE_BASILICA",
+      "INORGCHEM__I10__QUANTUM_OXIDE_TERRACES",
+      "INORGCHEM__I11__MEGABAR_DIAMOND_ANVIL_TOWER",
+      "INORGCHEM__I12__MOLTEN_SALT_THERMAL_KEEP",
+      "INORGCHEM__I13__BIOMINERAL_HYBRID_CONSERVATORY",
+      "INORGCHEM__I14__CARBON_MINERALIZATION_RAMPARTS",
+      "INORGCHEM__I15__VALENCE_NEXUS_AND_COORDINATION_CROWN"
+    ],
+    "codes": [
+      "I1",
+      "I2",
+      "I3",
+      "I4",
+      "I5",
+      "I6",
+      "I7",
+      "I8",
+      "I9",
+      "I10",
+      "I11",
+      "I12",
+      "I13",
+      "I14",
+      "I15"
+    ],
+    "facilityCount": 15,
+    "meshCount": 1530,
+    "uniqueNames": 1707,
+    "scaledMeshParentDetails": [],
+    "materialNames": [
+      "Inorganic Chemistry amber oxidation state light",
+      "Inorganic Chemistry black basalt geopolymer",
+      "Inorganic Chemistry blue black photoelectrode",
+      "Inorganic Chemistry brushed stainless steel",
+      "Inorganic Chemistry closed process water",
+      "Inorganic Chemistry controlled copper oxidation",
+      "Inorganic Chemistry copper violet photoelectrode",
+      "Inorganic Chemistry cyan lattice node light",
+      "Inorganic Chemistry dark cobalt polyhedral glass",
+      "Inorganic Chemistry dark prestressed alloy",
+      "Inorganic Chemistry iridescent oxide interface",
+      "Inorganic Chemistry mirror finished active metal",
+      "Inorganic Chemistry pale green biomineral glass",
+      "Inorganic Chemistry pale mineral paving",
+      "Inorganic Chemistry pale zirconia ceramic",
+      "Inorganic Chemistry red brown thermal ceramic",
+      "Inorganic Chemistry salt-like translucent glass ceramic",
+      "Inorganic Chemistry textured silicon carbide",
+      "Inorganic Chemistry titanium nitride laminate",
+      "Inorganic Chemistry transparent alumina",
+      "Inorganic Chemistry tungsten bronze alloy",
+      "Inorganic Chemistry violet halide node light",
+      "Inorganic Chemistry vitrified black paving",
+      "Inorganic Chemistry white pressure band light"
+    ],
+    "animations": {
+      "inorganic-chemistry-emissive-pulse": 523,
+      "inorganic-chemistry-travel": 21,
+      "inorganic-chemistry-rotation": 14,
+      "inorganic-chemistry-breathe": 72
+    },
+    "prefixCounts": {
+      "INORGCHEM__I1__CRYSTAL_SYSTEM_WING_": 7,
+      "INORGCHEM__I1__DIAGRID_LATTICE_NODE_": 48,
+      "INORGCHEM__I2__COORDINATION_ARM_LOWER_": 3,
+      "INORGCHEM__I3__FACETED_DESICCANT_CRYSTAL_": 6,
+      "INORGCHEM__I4__BREATHING_CERAMIC_SHUTTER_": 72,
+      "INORGCHEM__I5__MINERAL_LEAF_PIVOT_": 5,
+      "INORGCHEM__I6__MECHANOCHEMICAL_REACTOR_DRUM_": 3,
+      "INORGCHEM__I7__NESTED_CONTAINMENT_WALL_N_": 5,
+      "INORGCHEM__I8__RARE_EARTH_PROCESS_TOWER_": 17,
+      "INORGCHEM__I9__POLYGONAL_CLUSTER_CHAPEL_": 12,
+      "INORGCHEM__I10__ROTATED_EPITAXIAL_SLAB_": 6,
+      "INORGCHEM__I11__CALIBRATED_PRESSURE_RING_": 13,
+      "INORGCHEM__I12__THERMAL_STACK_": 6,
+      "INORGCHEM__I13__BRANCHING_POROUS_CERAMIC_RIB_": 44,
+      "INORGCHEM__I14__GEOLOGICAL_STRATUM_": 7,
+      "INORGCHEM__I15__COORDINATION_LIGAND_PYLON_": 8
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "I1",
+        "min": [
+          192.17958394402152,
+          1.6660000000000001,
+          154.28184580913194
+        ],
+        "max": [
+          211.24383989662934,
+          11.016,
+          173.80536997454738
+        ]
+      },
+      {
+        "code": "I2",
+        "min": [
+          161.30165086668737,
+          1.6660000000000001,
+          190.29945634567537
+        ],
+        "max": [
+          173.3038750301886,
+          19.966,
+          202.30505348995433
+        ]
+      },
+      {
+        "code": "I3",
+        "min": [
+          203.0585553605744,
+          1.6660000000000001,
+          183.30646329313126
+        ],
+        "max": [
+          223.2461946172527,
+          9.216000071525574,
+          203.948667392496
+        ]
+      },
+      {
+        "code": "I4",
+        "min": [
+          51.41642915361807,
+          1.6660000000000001,
+          278.0295140225208
+        ],
+        "max": [
+          72.56278804144996,
+          13.466000429153443,
+          291.9123593454853
+        ]
+      },
+      {
+        "code": "I5",
+        "min": [
+          104.09173754170904,
+          1.6660000000000001,
+          253.6657456415944
+        ],
+        "max": [
+          131.48888810026975,
+          8.666,
+          279.63368613349985
+        ]
+      },
+      {
+        "code": "I6",
+        "min": [
+          135.83857400021287,
+          1.6660000000000001,
+          247.74972134153344
+        ],
+        "max": [
+          154.71065072250127,
+          16.30427982544899,
+          266.25469655098806
+        ]
+      },
+      {
+        "code": "I7",
+        "min": [
+          183.86411604959662,
+          1.6660000000000001,
+          205.74103180913835
+        ],
+        "max": [
+          209.87670633542498,
+          9.955999917149544,
+          231.46037282214462
+        ]
+      },
+      {
+        "code": "I8",
+        "min": [
+          153.36760748726792,
+          1.6660000000000001,
+          220.63343381874387
+        ],
+        "max": [
+          181.24204550782804,
+          8.065999856948853,
+          244.30559197550093
+        ]
+      },
+      {
+        "code": "I9",
+        "min": [
+          84.48960874019366,
+          1.5959999713897703,
+          239.37756615014493
+        ],
+        "max": [
+          102.14497084301767,
+          11.066,
+          257.0504524062193
+        ]
+      },
+      {
+        "code": "I10",
+        "min": [
+          215.7091964856738,
+          1.4960000107288347,
+          147.7113124636533
+        ],
+        "max": [
+          234.31283293132262,
+          11.865999809265137,
+          166.74245685611177
+        ]
+      },
+      {
+        "code": "I11",
+        "min": [
+          185.36059620213345,
+          1.6660000000000001,
+          187.96218680410473
+        ],
+        "max": [
+          200.23057537525918,
+          18.866000000000003,
+          202.8324503156666
+        ]
+      },
+      {
+        "code": "I12",
+        "min": [
+          81.39384646929521,
+          1.6660000000000001,
+          271.94089227640126
+        ],
+        "max": [
+          101.32338059296414,
+          12.66600023841858,
+          291.77992424175864
+        ]
+      },
+      {
+        "code": "I13",
+        "min": [
+          25.778784340437376,
+          1.6660000000000001,
+          242.547491879412
+        ],
+        "max": [
+          45.23546540253368,
+          6.893855101227761,
+          263.17072556750037
+        ]
+      },
+      {
+        "code": "I14",
+        "min": [
+          17.023338766638844,
+          1.6660000000000001,
+          291.12692987716645
+        ],
+        "max": [
+          50.74096181449877,
+          8.166,
+          302.8515680186437
+        ]
+      },
+      {
+        "code": "I15",
+        "min": [
+          114.18294892322534,
+          -0.8539996948242186,
+          216.4049336568573
+        ],
+        "max": [
+          139.06954348355052,
+          15.78599969482422,
+          241.3032540454776
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "INORGCHEM__VALENCE_AVENUE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__STOICHIOMETRIC_LOOP",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__CRYSTAL_AXIS",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__F_BLOCK_PASSAGE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__STRUCTURAL_BOND_SERVICE_LINK_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__STRUCTURAL_BOND_SERVICE_LINK_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__STRUCTURAL_BOND_SERVICE_LINK_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__STRUCTURAL_BOND_SERVICE_LINK_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I10",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I11",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I12",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I13",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I14",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "INORGCHEM__BUILDING_APPROACH_I15",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      183.7519855499268,
+      1.6459999984502793,
+      201.12737757466823
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "Inorganic Chemistry Labs District",
+      "mapLabel": "Anorg Chem District",
+      "architecturalLanguage": "crystal lattices, coordination polyhedra, pressure vessels, ceramic fortresses, exposed elemental strata, controlled oxidation, vitrification, metallic grain, and salt-like translucency",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "I1",
+          "name": "The Crystal Genome Foundry",
+          "purpose": "Autonomous discovery of high-entropy oxides, carbides, nitrides, borides, intermetallics, metastable crystals, and compositionally complex ceramics",
+          "placementZone": "Valence Avenue mineral terrace",
+          "footprintMetres": [
+            145,
+            115
+          ],
+          "heightMetres": 91,
+          "exteriorMotif": "seven interlocking crystal-system wings, ordered-to-disordered diagrid, synthesis stack, and capsule tubes"
+        },
+        {
+          "code": "I2",
+          "name": "The Monatomic Catalyst Spire",
+          "purpose": "Single-atom and dual-atom catalysts, electrocatalytic water splitting, carbon-dioxide conversion, oxygen activation, and hydrogen production",
+          "placementZone": "Lightweight inner landmark",
+          "footprintMetres": [
+            76,
+            76
+          ],
+          "heightMetres": 138,
+          "exteriorMotif": "three coordination arms suspending a mirror active-centre sphere above radial research wings"
+        },
+        {
+          "code": "I3",
+          "name": "The Halide Ion Citadel",
+          "purpose": "Solid-state alkali-metal batteries, halide and mixed-anion electrolytes, ion transport, interface stability, and mechanical failure suppression",
+          "placementZone": "Dry western service court",
+          "footprintMetres": [
+            165,
+            100
+          ],
+          "heightMetres": 37,
+          "exteriorMotif": "four-layer salt-glass fortress with deep thresholds, dry trench, rain canopy, and six desiccant crystals"
+        },
+        {
+          "code": "I4",
+          "name": "The Breathing Framework Ark",
+          "purpose": "Metal-organic frameworks, porous coordination networks, selective gas separation, direct air capture, atmospheric water harvesting, and molecular sieving",
+          "placementZone": "Desert Dome approach",
+          "footprintMetres": [
+            190,
+            82
+          ],
+          "heightMetres": 71,
+          "exteriorMotif": "porous node-and-strut arch, breathing triangular shutters, six gill towers, atmospheric ducts, and basins"
+        },
+        {
+          "code": "I5",
+          "name": "The Solar-Fuels Leafworks",
+          "purpose": "Artificial photosynthesis, photoelectrochemical water splitting, solar hydrogen, carbon-dioxide reduction, and light-driven inorganic catalysis",
+          "placementZone": "Sun-rich desert perimeter",
+          "footprintMetres": [
+            225,
+            150
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "five pivoting mineral leaves, photoelectrode fields, water rills, gas-separation towers, and Solar Reaction Gate"
+        },
+        {
+          "code": "I6",
+          "name": "The Nitrogen Triple-Bond Forge",
+          "purpose": "Low-energy nitrogen fixation, mechanochemical ammonia synthesis, molecular molybdenum and iron catalysis, plasma activation, and cavitation chemistry",
+          "placementZone": "Heavy Stoichiometric Loop court",
+          "footprintMetres": [
+            135,
+            125
+          ],
+          "heightMetres": 79,
+          "exteriorMotif": "three acoustically isolated horizontal reactor drums held by a triple-bond steel exoskeleton"
+        },
+        {
+          "code": "I7",
+          "name": "The F-Block Containment Monastery",
+          "purpose": "Actinide chemistry, unusual f-element bonding, nuclear-fuel materials, isotope coordination, separations, and durable waste immobilization",
+          "placementZone": "Restricted Particle Physics edge",
+          "footprintMetres": [
+            195,
+            155
+          ],
+          "heightMetres": 76,
+          "exteriorMotif": "five nested mineral walls around a single amber Shielded Lantern and enclosed transport rail"
+        },
+        {
+          "code": "I8",
+          "name": "The Lanthanide Cascade Refinery",
+          "purpose": "Rare-earth separation, electronic-waste recovery, redox-selective extraction, ionic-liquid processing, magnet recycling, and critical-metal circularity",
+          "placementZone": "Descending outer process terraces",
+          "footprintMetres": [
+            270,
+            85
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seventeen progressively refined process towers, cascade columns, magnetic gantries, and sealed conveyors"
+        },
+        {
+          "code": "I9",
+          "name": "The Polyoxometalate Basilica",
+          "purpose": "Molecular metal-oxide clusters, multi-electron redox chemistry, water oxidation, molecular energy storage, photocatalysis, and switchable assemblies",
+          "placementZone": "Crystal Axis ceremonial court",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 69,
+          "exteriorMotif": "faceted cobalt polyhedral dome, twelve cluster chapels, molecular rose window, busbars, and redox crown"
+        },
+        {
+          "code": "I10",
+          "name": "The Quantum Oxide Terraces",
+          "purpose": "Superconducting oxides, multiferroics, quantum paraelectrics, antiferromagnetic spintronics, topological phases, and strain engineering",
+          "placementZone": "Vibration-isolated western terrace",
+          "footprintMetres": [
+            145,
+            105
+          ],
+          "heightMetres": 83,
+          "exteriorMotif": "six rotated epitaxial slabs separated by iridescent interfaces above isolated pylons and black-glass moat"
+        },
+        {
+          "code": "I11",
+          "name": "The Megabar Diamond-Anvil Tower",
+          "purpose": "High-pressure inorganic synthesis, superhydrides, extreme-state superconductors, planetary materials, and metastable phases",
+          "placementZone": "Particle Physics transition",
+          "footprintMetres": [
+            98,
+            98
+          ],
+          "heightMetres": 162,
+          "exteriorMotif": "opposed diamond anvils compressed by monumental arches, tension cables, pressure rings, and brilliant compression band"
+        },
+        {
+          "code": "I12",
+          "name": "The Molten-Salt Thermal Keep",
+          "purpose": "Molten-salt chemistry, high-temperature electrochemistry, thermal storage, electrorefining, corrosion-resistant materials, and advanced reactor salts",
+          "placementZone": "Hot southeastern service perimeter",
+          "footprintMetres": [
+            155,
+            135
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "ribbed ceramic fortress with six thermal stacks, glowing shielded conduits, radiator fields, and four ionic silos"
+        },
+        {
+          "code": "I13",
+          "name": "The Biomineral Hybrid Conservatory",
+          "purpose": "Bioinorganic chemistry, metalloenzymes, inorganic-microbial hybrids, nitrogenase-inspired catalysis, biomineralization, and metal-sulfur clusters",
+          "placementZone": "Organic Chemistry interface",
+          "footprintMetres": [
+            175,
+            95
+          ],
+          "heightMetres": 45,
+          "exteriorMotif": "white porous mineral-reef shell with metallic veins, deposition panels, hydrothermal gardens, and transition bridge"
+        },
+        {
+          "code": "I14",
+          "name": "The Carbon Mineralization Ramparts",
+          "purpose": "Carbon-dioxide mineralization, carbonate curing, geopolymers, low-emission cement, mine-tailings utilization, and permanent carbon storage",
+          "placementZone": "Industrial service boundary",
+          "footprintMetres": [
+            325,
+            65
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "coded experimental mineral strata, direct-air intake towers, erosion channels, and robotic construction rail"
+        },
+        {
+          "code": "I15",
+          "name": "The Valence Nexus and Coordination Crown",
+          "purpose": "Coordination chemistry, unusual oxidation states, metal-metal bonds, molecular magnets, low-valent main-group compounds, clusters, and Zintl phases",
+          "placementZone": "Valence Avenue and Crystal Axis intersection",
+          "footprintMetres": [
+            175,
+            175
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "elevated periodic-block ring with eight ligand pylons around a suspended central-ion sphere and Coordination Crown"
+        }
+      ],
+      "interfaces": {
+        "organicChemistry": [
+          "The Monatomic Catalyst Spire",
+          "The Biomineral Hybrid Conservatory"
+        ],
+        "particlePhysics": [
+          "The F-Block Containment Monastery",
+          "The Megabar Diamond-Anvil Tower"
+        ],
+        "desertDome": [
+          "The Breathing Framework Ark",
+          "The Solar-Fuels Leafworks",
+          "The Carbon Mineralization Ramparts"
+        ]
+      },
+      "circulation": {
+        "publicBoulevard": "INORGCHEM__VALENCE_AVENUE",
+        "heavyServiceLoop": "INORGCHEM__STOICHIOMETRIC_LOOP",
+        "pedestrianSpine": "INORGCHEM__CRYSTAL_AXIS",
+        "restrictedRoute": "INORGCHEM__F_BLOCK_PASSAGE",
+        "structuralServiceLinks": 4,
+        "exactBuildingApproaches": 15
+      },
+      "signatureSystems": {
+        "crystalSystemWings": 7,
+        "activeCentreSpheres": 1,
+        "desiccantTowers": 6,
+        "atmosphericGillTowers": 6,
+        "mineralLeaves": 5,
+        "mechanochemicalDrums": 3,
+        "containmentWalls": 5,
+        "rareEarthTowers": 17,
+        "clusterChapels": 12,
+        "epitaxialSlabs": 6,
+        "calibratedPressureRings": 13,
+        "thermalStacks": 6,
+        "mineralStrata": 7,
+        "ligandPylons": 8
+      },
+      "lightingLanguage": "selective lattice nodes, oxidation-state markings, structural bonds, pressure rings, gas-flow channels, and crystal edges only",
+      "exteriorOnly": true
+    },
+    "specializedRevision": 10,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "inorganic-chemistry",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000037973,
+    "grounded": true,
+    "position": [
+      183.63,
+      1.808,
+      201.235
+    ]
+  },
+  "errors": []
+}

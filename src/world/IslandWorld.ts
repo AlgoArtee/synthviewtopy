@@ -157,7 +157,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 9;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 10;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -170,6 +170,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'genomics-labs': 7,
   'biochemistry-labs': 8,
   'organic-chemistry-labs': 9,
+  'inorganic-chemistry': 10,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
@@ -2991,6 +2992,40 @@ export class IslandWorld {
           Number(object.userData.endX ?? object.position.x),
           progress,
         );
+      } else if (object.userData.animate === 'inorganic-chemistry-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.009) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.18),
+            Number(object.userData.maxIntensity ?? 4),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'inorganic-chemistry-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.02);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'inorganic-chemistry-breathe') {
+        const baseScale = object.userData.baseScale as THREE.Vector3 | undefined;
+        const amount = 1 + Math.sin(this.elapsed * 0.018 + Number(object.userData.phase ?? 0))
+          * Number(object.userData.amplitude ?? 0.18);
+        if (baseScale) object.scale.set(baseScale.x, baseScale.y * amount, baseScale.z);
+      } else if (object.userData.animate === 'inorganic-chemistry-travel') {
+        const start = object.userData.pathStart as [number, number, number] | undefined;
+        const end = object.userData.pathEnd as [number, number, number] | undefined;
+        if (start && end) {
+          const progress = (this.elapsed * Number(object.userData.speed ?? 0.01) + Number(object.userData.phase ?? 0)) % 1;
+          object.position.set(
+            THREE.MathUtils.lerp(start[0], end[0], progress),
+            THREE.MathUtils.lerp(start[1], end[1], progress),
+            THREE.MathUtils.lerp(start[2], end[2], progress),
+          );
+        }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -7291,6 +7326,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const genomicsLabsDistrict = this.objectGroups.get('genomics-labs')?.userData.genomicsLabsDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
+    const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7424,6 +7460,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       genomicsLabsDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
+      inorganicChemistryLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

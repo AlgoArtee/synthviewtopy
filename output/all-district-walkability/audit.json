@@ -13,7 +13,7 @@
     "sampleCount": 23305,
     "clearCount": 23305,
     "broadOnlyMarginsAvoided": 105,
-    "movementProbeCount": 152,
+    "movementProbeCount": 151,
     "failedDistricts": [],
     "districtResults": [
       {
@@ -264,7 +264,7 @@
         "sampleCount": 956,
         "clearCount": 956,
         "broadOnlyMarginsAvoided": 3,
-        "movementProbeCount": 5,
+        "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
       },

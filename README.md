@@ -33,6 +33,7 @@ npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
+npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
 npm run test:district-walkability # Probe every district delimiter and current generic entrance in WALK
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
@@ -136,6 +137,15 @@ The southern inner-ring Genomics Labs District is an exterior-only code landscap
 - **Fabrica Genomica** uses a heavy split basalt base, six exchangeable chromosome modules with displaced centromere bands, an elliptical gantry with four moving carriages, service tower, utility cylinders, controlled watercourse, and visitor pavilion.
 - **The Variant Constellation** combines a twelve-facet waisted core, projecting variant panels and luminous regulatory links, an interrupted translucent research ring, twelve leaning pylons, three structural-variant bridges, and the Manhattan Colonnade of statistical peaks.
 - The grounded **Base-Pair Promenade** carries four separating and recombining spectral traces, four district-interface links, and five exact building approaches. The complete 1,116-mesh campus stays within its inner-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export.
+
+## Inorganic Chemistry Labs District
+
+The eastern outer-ring Inorganic Chemistry Labs District is a fifteen-building exterior campus whose basalt, ceramic, metal, salt-glass, and selective-emission palette turns mineral lattices and inorganic process systems into architecture.
+
+- The Crystal Genome Foundry, Monatomic Catalyst Spire, Halide Ion Citadel, Breathing Framework Ark, and Solar-Fuels Leafworks establish the discovery, catalysis, solid-electrolyte, porous-framework, and photoelectrochemical research front.
+- The Nitrogen Triple-Bond Forge, F-Block Containment Monastery, Lanthanide Cascade Refinery, Polyoxometalate Basilica, and Quantum Oxide Terraces translate mechanochemistry, restricted f-element work, rare-earth recovery, metal-oxide clusters, and epitaxial quantum materials into distinct process forms.
+- The Megabar Diamond-Anvil Tower, Molten-Salt Thermal Keep, Biomineral Hybrid Conservatory, Carbon Mineralization Ramparts, and Valence Nexus and Coordination Crown complete the pressure, thermal, bioinorganic, mineral-storage, and coordination-chemistry program.
+- Valence Avenue, the Stoichiometric Loop, Crystal Axis, F-Block Passage, four service links, and fifteen exact approaches form 23 grounded WALK routes. The 1,530-mesh package stays inside its outer-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, project persistence, deterministic exterior animation, selection, text-state inspection, and GLB export. Interiors are intentionally deferred by the exterior specification.
 
 ## Biochemistry Labs District
 
@@ -276,6 +286,7 @@ Hold **Shift** while clicking **Export scene** to download `YouTopy_Lab_Island.p
 | `src/world/procedural.ts` | Seeded procedural district and biome geometry/material generation |
 | `src/world/securityDistrict.ts` | Fifteen-facility Aegis Arc exterior, curved security roads, embedded lighting, plazas, transparent landscaping, and district metadata |
 | `src/world/molecularBiologyDistrict.ts` | Ten-facility molecular-biology exterior, Molecular Meridian circulation, interaction plazas, information-light network, sensor landscapes, and deterministic scientific animation |
+| `src/world/inorganicChemistryLabsDistrict.ts` | Fifteen-facility mineral-and-lattice Inorganic Chemistry exterior, Valence Avenue circulation, selective node lighting, process machinery, and deterministic scientific animation |
 | `src/world/academicDistrict.ts` | Reusable Gothic building shells, furnished interiors, gate, quadrangles, garden, canal, service areas, hidden discoveries, semantic access, and optimization metadata |
 | `src/world/academicFountain.ts` | Modular Well of Infinite Knowledge geometry, Seshat/infinity/ring sculpture, procedural materials, water animation, camera/scene modes, LOD, collision, restoration, debug, state, and resource disposal |
 | `src/world/academicSurfaceTextures.ts` | Cached deterministic limestone, brick, slate, oak, and leaf-strewn path albedo/height patterns |

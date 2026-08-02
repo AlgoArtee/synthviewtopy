@@ -470,17 +470,17 @@ const districtBlueprints: readonly DistrictDefinition[] = [
   },
   {
     id: "inorganic-chemistry",
-    name: "Inorganic Chemistry District",
+    name: "Inorganic Chemistry Labs District",
     sourceLabel: "Anorg Chem District",
     category: "chemistry",
     ring: "outer",
     position: [37, 0, 15],
     footprint: [13, 9],
     height: 12,
-    archetype: "inorganic-process-campus",
+    archetype: "mineral-lattice-inorganic-campus",
     accent: "#D7A85C",
-    palette: ["#251E14", "#57482F", "#D4C8AF", "#D7A85C"],
-    description: "Mineral laboratories, ceramics workshops, and high-temperature furnaces frame a rugged sample-storage yard.",
+    palette: ["#11171A", "#40505A", "#DDD4C2", "#D7A85C"],
+    description: "Fifteen inorganic chemistry laboratories form a mineral-lattice research landscape along Valence Avenue, spanning crystal discovery, atomically dispersed catalysis, solid electrolytes, porous frameworks, solar fuels, f-block containment, rare-earth refining, quantum oxides, megabar synthesis, molten salts, biominerals, and carbon mineralization.",
   },
 
   // Perimeter belt: island-wide support, civic, and large-footprint programs.

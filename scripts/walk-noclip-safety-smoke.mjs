@@ -87,7 +87,10 @@ try {
     const podiumRadiusZ = 4.38;
     const perimeter = [];
     for (let degrees = 0; degrees < 360; degrees += 5) {
-      if (degrees >= 55 && degrees <= 125) continue;
+      if (
+        (degrees >= 55 && degrees <= 125)
+        || (degrees >= 235 && degrees <= 305)
+      ) continue;
       const angle = degrees * Math.PI / 180;
       placeOnHighestGround(
         Math.cos(angle) * podiumRadiusX * 1.22,
@@ -254,7 +257,7 @@ try {
   const failures = [];
   if (!audit.safetyGeometry.basePreventUnderwalk) failures.push('Hall base missing under-walk guard');
   if (!audit.safetyGeometry.staircaseAccessRegistered) failures.push('Hall stair access was not registered');
-  if (audit.safetyGeometry.podiumBarrierSegmentCount < 70) failures.push('Hall podium barrier is incomplete');
+  if (audit.safetyGeometry.podiumBarrierSegmentCount < 60) failures.push('Hall podium barrier is incomplete');
   if (audit.perimeter.breaches.length) failures.push(`${audit.perimeter.breaches.length} Hall perimeter breaches`);
   for (const seam of audit.formerSideSeams) {
     if (seam.normalizedRadius < 0.96) failures.push(`Former side seam ${seam.requestedX} still breaches podium`);

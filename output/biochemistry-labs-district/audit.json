@@ -1,0 +1,753 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Biochemistry Labs District",
+      "architecturalLanguage": "a molecular-to-industrial Reaction Gradient expressed through carbon-black basalt, pale vitrified ceramic, satin titanium, iridium-coated steel, smoke-grey electrochromic glass, visible utility spines, and catalytic light",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "B1",
+          "name": "Aminoform Foundry",
+          "subtitle": "Institute for Generative Protein Architecture",
+          "purpose": "AI-guided protein design, novel folds, catalytic proteins, binders, and controlled conformational change",
+          "placementZone": "Innermost Genomics-facing threshold",
+          "footprintMetres": [
+            165,
+            120
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "three folded molecular chains enclosing an active-site entrance canyon"
+        },
+        {
+          "code": "B2",
+          "name": "Cryostratum",
+          "subtitle": "Native Molecular Machinery Observatory",
+          "purpose": "In-situ cryo-electron tomography of molecular machinery in native cellular environments",
+          "placementZone": "Quiet northern boundary adjacent to Molecular Biology",
+          "footprintMetres": [
+            150,
+            105
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "three nested vitrified shells, a vibration moat, and ringed cryogenic capsule tower"
+        },
+        {
+          "code": "B3",
+          "name": "Metabolome Atlas",
+          "subtitle": "Spatial Flux Cartography Hall",
+          "purpose": "Spatial metabolomics and multimodal mass-spectrometry imaging across tissue-scale gradients",
+          "placementZone": "Long frontage on the Reaction Gradient",
+          "footprintMetres": [
+            180,
+            110
+          ],
+          "heightMetres": 44,
+          "exteriorMotif": "five displaced tissue-section terraces wrapped around the Flux Field"
+        },
+        {
+          "code": "B4",
+          "name": "Vesica Genesis",
+          "subtitle": "Synthetic Cell and Protocell Complex",
+          "purpose": "Bottom-up assembly of membranes, pores, cytoskeletons, biochemical compartments, and protocell networks",
+          "placementZone": "Central pedestrian convergence",
+          "footprintMetres": [
+            150,
+            125
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seven budding translucent vesicles joined by molecular-pore bridges"
+        },
+        {
+          "code": "B5",
+          "name": "Evozyme Loop",
+          "subtitle": "Autonomous Enzyme Evolution Foundry",
+          "purpose": "Closed-loop design-build-test-learn platforms for autonomous enzyme engineering",
+          "placementZone": "Southern service corridor toward Organic Chemistry",
+          "footprintMetres": [
+            210,
+            95
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "four interlocking process loops encircled by an autonomous sample rail"
+        },
+        {
+          "code": "B6",
+          "name": "Coacervum",
+          "subtitle": "Biomolecular Condensate Observatory",
+          "purpose": "Dynamic membraneless compartments, phase behavior, gradients, and selective molecular transport",
+          "placementZone": "Retention-basin site between Vesica Genesis and Metabolome Atlas",
+          "footprintMetres": [
+            155,
+            115
+          ],
+          "heightMetres": 30,
+          "exteriorMotif": "merged liquid masses beneath a perforated rain-and-mist canopy"
+        },
+        {
+          "code": "B7",
+          "name": "Glycan Cipher",
+          "subtitle": "Glycoproteome and Post-Translational Code Institute",
+          "purpose": "Deep glycoprofiling and integrated mapping of post-translational modifications",
+          "placementZone": "Narrow site between curving district roads",
+          "footprintMetres": [
+            95,
+            75
+          ],
+          "heightMetres": 72,
+          "exteriorMotif": "a branching tower with sugar-ring exoskeleton and terminal modules"
+        },
+        {
+          "code": "B8",
+          "name": "Proteostasis Citadel",
+          "subtitle": "Folding and Molecular Quality-Control Center",
+          "purpose": "Protein folding, chaperone systems, aggregation control, sorting, and degradation",
+          "placementZone": "Prominent Reaction Gradient and service-avenue corner",
+          "footprintMetres": [
+            125,
+            110
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "a protected folding chamber held within two monumental quality-control rings"
+        },
+        {
+          "code": "B9",
+          "name": "Chronocatalysis Spire",
+          "subtitle": "Single-Molecule and Ultrafast Reaction Observatory",
+          "purpose": "Single-molecule kinetics and ultrafast structural, photochemical, and electron-transfer dynamics",
+          "placementZone": "Triangular navigational plot at two converging avenues",
+          "footprintMetres": [
+            70,
+            60
+          ],
+          "heightMetres": 96,
+          "exteriorMotif": "two prismatic reaction-coordinate halves separated by a pulsing vertical slit"
+        },
+        {
+          "code": "B10",
+          "name": "Ferrum Vita Forge",
+          "subtitle": "Metallocluster, Redox, and Cell-Free Metabolism Works",
+          "purpose": "Metalloenzymes, electron-transfer systems, and programmable cell-free metabolic cascades",
+          "placementZone": "Outermost industrial transition to Organic and Inorganic Chemistry",
+          "footprintMetres": [
+            280,
+            135
+          ],
+          "heightMetres": 82,
+          "exteriorMotif": "an industrial biochemical cathedral with cascade halls, redox pipework, and three metallocluster towers"
+        }
+      ],
+      "progression": [
+        "sequence and protein form",
+        "native molecular machinery",
+        "spatial metabolic flux",
+        "synthetic compartments",
+        "autonomous enzyme evolution",
+        "phase behavior",
+        "post-translational modification",
+        "proteostasis",
+        "reaction dynamics",
+        "engineered metabolism"
+      ],
+      "landmarks": {
+        "innerThreshold": "Aminoform Foundry",
+        "quietObservatory": "Cryostratum",
+        "civicLandscape": "Metabolome Atlas and Vesica Genesis",
+        "verticalMarker": "Chronocatalysis Spire",
+        "industrialEdge": "Ferrum Vita Forge"
+      },
+      "circulation": {
+        "primaryWalk": "BIOCHEM__REACTION_GRADIENT",
+        "molecularFluxTraces": 3,
+        "controlledInterfaceLinks": 4,
+        "outerUtilitySpine": "BIOCHEM__OUTER_UTILITY_SPINE",
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "aminoformChains": 3,
+        "cryogenicShells": 3,
+        "metabolomeTerraces": 5,
+        "syntheticVesicles": 7,
+        "evozymeLoops": 4,
+        "condensateMasses": 5,
+        "glycanBranches": 5,
+        "proteostasisRings": 2,
+        "reactionCoordinateHalves": 2,
+        "metalloclusterTowers": 3,
+        "advertisingDisplays": false
+      },
+      "materials": [
+        "carbon-black basalt",
+        "pale vitrified ceramic",
+        "satin titanium",
+        "iridium-coated steel",
+        "smoke-grey electrochromic glass",
+        "catalytic amber and molecular cold-white light"
+      ],
+      "landscape": {
+        "sequenceFields": 30,
+        "reactionPlazas": 8,
+        "microfluidicWaterChannels": 6,
+        "environmentalSamplers": 14
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Aminoform Foundry",
+        "Cryostratum",
+        "Metabolome Atlas",
+        "Vesica Genesis",
+        "Evozyme Loop",
+        "Coacervum",
+        "Glycan Cipher",
+        "Proteostasis Citadel",
+        "Chronocatalysis Spire",
+        "Ferrum Vita Forge"
+      ],
+      "plannedObjects": [
+        "Reaction Gradient",
+        "Molecular Flux Traces",
+        "Outer Utility Spine",
+        "Circular Reaction Plazas",
+        "Microfluidic Water Channels",
+        "Environmental Reaction Samplers"
+      ],
+      "realizedFeatureTags": [
+        "aminoform-foundry",
+        "cryostratum",
+        "metabolome-atlas",
+        "vesica-genesis",
+        "evozyme-loop",
+        "coacervum",
+        "glycan-cipher",
+        "proteostasis-citadel",
+        "chronocatalysis-spire",
+        "ferrum-vita-forge"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 163,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 16,
+      "radialCoverage": 0.94,
+      "angularCoverage": 0.96,
+      "exteriorOnly": true,
+      "reactionGradientNarrative": true
+    },
+    "topLevelNames": [
+      "BIOCHEM__REACTION_GRADIENT_INFRASTRUCTURE",
+      "BIOCHEM__MOLECULAR_REACTION_LANDSCAPE",
+      "BIOCHEM__B1__AMINOFORM_FOUNDRY",
+      "BIOCHEM__B2__CRYOSTRATUM",
+      "BIOCHEM__B3__METABOLOME_ATLAS",
+      "BIOCHEM__B4__VESICA_GENESIS",
+      "BIOCHEM__B5__EVOZYME_LOOP",
+      "BIOCHEM__B6__COACERVUM",
+      "BIOCHEM__B7__GLYCAN_CIPHER",
+      "BIOCHEM__B8__PROTEOSTASIS_CITADEL",
+      "BIOCHEM__B9__CHRONOCATALYSIS_SPIRE",
+      "BIOCHEM__B10__FERRUM_VITA_FORGE"
+    ],
+    "codes": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B7",
+      "B8",
+      "B9",
+      "B10"
+    ],
+    "facilityCount": 10,
+    "meshCount": 1287,
+    "uniqueNames": 1300,
+    "scaledMeshParentDetails": [],
+    "materialNames": [
+      "Biochemistry blue-white opal cryogenic glass",
+      "Biochemistry carbon-black basalt substrate",
+      "Biochemistry carbon-black structural ceramic",
+      "Biochemistry catalytic amber light",
+      "Biochemistry dark reaction-gradient paving",
+      "Biochemistry iridium-coated catalytic steel",
+      "Biochemistry metabolic flux light",
+      "Biochemistry microfluidic black water",
+      "Biochemistry mirror analytical insert",
+      "Biochemistry molecular cold-white light",
+      "Biochemistry molecular moss field",
+      "Biochemistry pale mineral reaction paving",
+      "Biochemistry pale vitrified laboratory ceramic",
+      "Biochemistry protein-fold pearlescent ceramic",
+      "Biochemistry satin titanium instrumentation",
+      "Biochemistry sealed iron-rich weathering steel",
+      "Biochemistry silver reaction grass",
+      "Biochemistry smoke-grey electrochromic glass",
+      "Biochemistry translucent synthetic membrane"
+    ],
+    "animations": {
+      "biochemistry-emissive-pulse": 346,
+      "biochemistry-vertical-transit": 4,
+      "biochemistry-path-transit": 8,
+      "biochemistry-kinetic-blade": 42,
+      "biochemistry-phase-drift": 12,
+      "biochemistry-rotation": 2
+    },
+    "prefixCounts": {
+      "BIOCHEM__B2__TOMOGRAPHY_TILT_WINDOW_": 9,
+      "BIOCHEM__B3__ANALYTICAL_PIXEL_": 102,
+      "BIOCHEM__B4__TRANSLUCENT_VESICLE_": 7,
+      "BIOCHEM__B5__SEALED_SAMPLE_CARRIER_": 8,
+      "BIOCHEM__B6__MERGED_CONDENSATE_MASS_": 5,
+      "BIOCHEM__B7__SUGAR_RING_EXOSKELETON_": 10,
+      "BIOCHEM__B7__TERMINAL_GLYCAN_MODULE_": 5,
+      "BIOCHEM__B8__RADIAL_CHAMBER_BRIDGE_": 8,
+      "BIOCHEM__B9__LOGARITHMIC_OPTICAL_FIN_": 20,
+      "BIOCHEM__B10__METALLOCLUSTER_CORE_": 3,
+      "BIOCHEM__B10__CELL_FREE_CASCADE_HALL_": 4
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "B1",
+        "min": [
+          93.74922217908231,
+          1.671,
+          82.19772923628653
+        ],
+        "max": [
+          111.26400233284681,
+          7.647752170997563,
+          100.25383334360384
+        ]
+      },
+      {
+        "code": "B2",
+        "min": [
+          4.487754295298995,
+          1.6860000000000002,
+          129.67777615176178
+        ],
+        "max": [
+          22.12929043781728,
+          9.136,
+          144.28326205759186
+        ]
+      },
+      {
+        "code": "B3",
+        "min": [
+          81.09277034192122,
+          1.6660000000000001,
+          102.4066756542806
+        ],
+        "max": [
+          102.02376903927491,
+          7.606,
+          122.27646770332606
+        ]
+      },
+      {
+        "code": "B4",
+        "min": [
+          26.015297690904557,
+          1.6860000000000002,
+          131.90123927300363
+        ],
+        "max": [
+          39.08772555404361,
+          9.316,
+          148.6065877698679
+        ]
+      },
+      {
+        "code": "B5",
+        "min": [
+          116.07720271393045,
+          1.6660000000000001,
+          75.16828390122984
+        ],
+        "max": [
+          135.91421372864605,
+          6.3959999237060545,
+          98.02061835080247
+        ]
+      },
+      {
+        "code": "B6",
+        "min": [
+          51.45938666552248,
+          1.666,
+          129.34110699470708
+        ],
+        "max": [
+          70.10327440453239,
+          8.092000000536443,
+          148.75628588238482
+        ]
+      },
+      {
+        "code": "B7",
+        "min": [
+          107.65541045362622,
+          1.6660000000000001,
+          106.47055822637532
+        ],
+        "max": [
+          118.53804132013289,
+          9.721,
+          117.36651768079449
+        ]
+      },
+      {
+        "code": "B8",
+        "min": [
+          30.199438798909984,
+          1.5704659579281885,
+          148.67146201534666
+        ],
+        "max": [
+          44.64084646100459,
+          8.156,
+          162.74732234064916
+        ]
+      },
+      {
+        "code": "B9",
+        "min": [
+          12.274674033372232,
+          1.6660000000000004,
+          155.35640787259354
+        ],
+        "max": [
+          19.60106085771068,
+          12.740999988079071,
+          168.13126987917587
+        ]
+      },
+      {
+        "code": "B10",
+        "min": [
+          70.94161719907108,
+          1.6660000000000001,
+          127.84589288914636
+        ],
+        "max": [
+          101.9858137144911,
+          11.096,
+          154.0146507093417
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "BIOCHEM__REACTION_GRADIENT",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__DISTRICT_INTERFACE_LINK_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__DISTRICT_INTERFACE_LINK_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__DISTRICT_INTERFACE_LINK_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__DISTRICT_INTERFACE_LINK_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__OUTER_UTILITY_SPINE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "BIOCHEM__BUILDING_APPROACH_B10",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      101.62794685363771,
+      1.6459999984502793,
+      112.35662198114275
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "Biochemistry Labs District",
+      "architecturalLanguage": "a molecular-to-industrial Reaction Gradient expressed through carbon-black basalt, pale vitrified ceramic, satin titanium, iridium-coated steel, smoke-grey electrochromic glass, visible utility spines, and catalytic light",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "B1",
+          "name": "Aminoform Foundry",
+          "subtitle": "Institute for Generative Protein Architecture",
+          "purpose": "AI-guided protein design, novel folds, catalytic proteins, binders, and controlled conformational change",
+          "placementZone": "Innermost Genomics-facing threshold",
+          "footprintMetres": [
+            165,
+            120
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "three folded molecular chains enclosing an active-site entrance canyon"
+        },
+        {
+          "code": "B2",
+          "name": "Cryostratum",
+          "subtitle": "Native Molecular Machinery Observatory",
+          "purpose": "In-situ cryo-electron tomography of molecular machinery in native cellular environments",
+          "placementZone": "Quiet northern boundary adjacent to Molecular Biology",
+          "footprintMetres": [
+            150,
+            105
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "three nested vitrified shells, a vibration moat, and ringed cryogenic capsule tower"
+        },
+        {
+          "code": "B3",
+          "name": "Metabolome Atlas",
+          "subtitle": "Spatial Flux Cartography Hall",
+          "purpose": "Spatial metabolomics and multimodal mass-spectrometry imaging across tissue-scale gradients",
+          "placementZone": "Long frontage on the Reaction Gradient",
+          "footprintMetres": [
+            180,
+            110
+          ],
+          "heightMetres": 44,
+          "exteriorMotif": "five displaced tissue-section terraces wrapped around the Flux Field"
+        },
+        {
+          "code": "B4",
+          "name": "Vesica Genesis",
+          "subtitle": "Synthetic Cell and Protocell Complex",
+          "purpose": "Bottom-up assembly of membranes, pores, cytoskeletons, biochemical compartments, and protocell networks",
+          "placementZone": "Central pedestrian convergence",
+          "footprintMetres": [
+            150,
+            125
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seven budding translucent vesicles joined by molecular-pore bridges"
+        },
+        {
+          "code": "B5",
+          "name": "Evozyme Loop",
+          "subtitle": "Autonomous Enzyme Evolution Foundry",
+          "purpose": "Closed-loop design-build-test-learn platforms for autonomous enzyme engineering",
+          "placementZone": "Southern service corridor toward Organic Chemistry",
+          "footprintMetres": [
+            210,
+            95
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "four interlocking process loops encircled by an autonomous sample rail"
+        },
+        {
+          "code": "B6",
+          "name": "Coacervum",
+          "subtitle": "Biomolecular Condensate Observatory",
+          "purpose": "Dynamic membraneless compartments, phase behavior, gradients, and selective molecular transport",
+          "placementZone": "Retention-basin site between Vesica Genesis and Metabolome Atlas",
+          "footprintMetres": [
+            155,
+            115
+          ],
+          "heightMetres": 30,
+          "exteriorMotif": "merged liquid masses beneath a perforated rain-and-mist canopy"
+        },
+        {
+          "code": "B7",
+          "name": "Glycan Cipher",
+          "subtitle": "Glycoproteome and Post-Translational Code Institute",
+          "purpose": "Deep glycoprofiling and integrated mapping of post-translational modifications",
+          "placementZone": "Narrow site between curving district roads",
+          "footprintMetres": [
+            95,
+            75
+          ],
+          "heightMetres": 72,
+          "exteriorMotif": "a branching tower with sugar-ring exoskeleton and terminal modules"
+        },
+        {
+          "code": "B8",
+          "name": "Proteostasis Citadel",
+          "subtitle": "Folding and Molecular Quality-Control Center",
+          "purpose": "Protein folding, chaperone systems, aggregation control, sorting, and degradation",
+          "placementZone": "Prominent Reaction Gradient and service-avenue corner",
+          "footprintMetres": [
+            125,
+            110
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "a protected folding chamber held within two monumental quality-control rings"
+        },
+        {
+          "code": "B9",
+          "name": "Chronocatalysis Spire",
+          "subtitle": "Single-Molecule and Ultrafast Reaction Observatory",
+          "purpose": "Single-molecule kinetics and ultrafast structural, photochemical, and electron-transfer dynamics",
+          "placementZone": "Triangular navigational plot at two converging avenues",
+          "footprintMetres": [
+            70,
+            60
+          ],
+          "heightMetres": 96,
+          "exteriorMotif": "two prismatic reaction-coordinate halves separated by a pulsing vertical slit"
+        },
+        {
+          "code": "B10",
+          "name": "Ferrum Vita Forge",
+          "subtitle": "Metallocluster, Redox, and Cell-Free Metabolism Works",
+          "purpose": "Metalloenzymes, electron-transfer systems, and programmable cell-free metabolic cascades",
+          "placementZone": "Outermost industrial transition to Organic and Inorganic Chemistry",
+          "footprintMetres": [
+            280,
+            135
+          ],
+          "heightMetres": 82,
+          "exteriorMotif": "an industrial biochemical cathedral with cascade halls, redox pipework, and three metallocluster towers"
+        }
+      ],
+      "progression": [
+        "sequence and protein form",
+        "native molecular machinery",
+        "spatial metabolic flux",
+        "synthetic compartments",
+        "autonomous enzyme evolution",
+        "phase behavior",
+        "post-translational modification",
+        "proteostasis",
+        "reaction dynamics",
+        "engineered metabolism"
+      ],
+      "landmarks": {
+        "innerThreshold": "Aminoform Foundry",
+        "quietObservatory": "Cryostratum",
+        "civicLandscape": "Metabolome Atlas and Vesica Genesis",
+        "verticalMarker": "Chronocatalysis Spire",
+        "industrialEdge": "Ferrum Vita Forge"
+      },
+      "circulation": {
+        "primaryWalk": "BIOCHEM__REACTION_GRADIENT",
+        "molecularFluxTraces": 3,
+        "controlledInterfaceLinks": 4,
+        "outerUtilitySpine": "BIOCHEM__OUTER_UTILITY_SPINE",
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "aminoformChains": 3,
+        "cryogenicShells": 3,
+        "metabolomeTerraces": 5,
+        "syntheticVesicles": 7,
+        "evozymeLoops": 4,
+        "condensateMasses": 5,
+        "glycanBranches": 5,
+        "proteostasisRings": 2,
+        "reactionCoordinateHalves": 2,
+        "metalloclusterTowers": 3,
+        "advertisingDisplays": false
+      },
+      "materials": [
+        "carbon-black basalt",
+        "pale vitrified ceramic",
+        "satin titanium",
+        "iridium-coated steel",
+        "smoke-grey electrochromic glass",
+        "catalytic amber and molecular cold-white light"
+      ],
+      "landscape": {
+        "sequenceFields": 30,
+        "reactionPlazas": 8,
+        "microfluidicWaterChannels": 6,
+        "environmentalSamplers": 14
+      },
+      "exteriorOnly": true
+    },
+    "specializedRevision": 8,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "biochemistry-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.1625000000002111,
+    "grounded": true,
+    "speedKilometresPerHour": 6.5,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "position": [
+      102.256,
+      1.808,
+      112.464
+    ]
+  },
+  "errors": []
+}

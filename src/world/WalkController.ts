@@ -77,6 +77,15 @@ interface NavigationAccessVolume {
   allowUnderwalk: boolean;
 }
 
+interface NavigationObstacle {
+  object: THREE.Mesh;
+  localBounds: THREE.Box3;
+  inverseWorldMatrix: THREE.Matrix4;
+  worldScale: THREE.Vector3;
+  circularFootprint: boolean;
+  roundedFootprintRadius: number;
+}
+
 const MAX_GROUNDED_DROP = WALK_STEP_HEIGHT + 0.006;
 const NAVIGATION_LAYER_EPSILON = 0.003;
 
@@ -92,6 +101,11 @@ export class WalkController {
   private readonly walkables: THREE.Object3D[] = [];
   private readonly underwalkSurfaces: UnderwalkSurface[] = [];
   private readonly obstacleBounds: THREE.Box3[] = [];
+  // `obstacleBounds` remains the cheap broad phase (and is intentionally kept
+  // for legacy diagnostics). The aligned entry below is the narrow phase that
+  // prevents a rotated mesh's world AABB corners from becoming invisible WALK
+  // blockers on district roads.
+  private readonly navigationObstacles: Array<NavigationObstacle | null> = [];
   private readonly accessBounds: THREE.Box3[] = [];
   private readonly underwalkAccessVolumes: NavigationAccessVolume[] = [];
   private readonly barrierSegments: NavigationBarrierSegment[] = [];
@@ -108,6 +122,8 @@ export class WalkController {
   private readonly accessLocalBottom = new THREE.Vector3();
   private readonly accessLocalTop = new THREE.Vector3();
   private readonly accessWorldScale = new THREE.Vector3();
+  private readonly obstacleLocalBottom = new THREE.Vector3();
+  private readonly obstacleLocalTop = new THREE.Vector3();
   private externalIntent = { x: 0, z: 0, sprint: false };
   private active = false;
   private grounded = false;
@@ -298,6 +314,7 @@ export class WalkController {
     this.walkables.length = 0;
     this.underwalkSurfaces.length = 0;
     this.obstacleBounds.length = 0;
+    this.navigationObstacles.length = 0;
     this.accessBounds.length = 0;
     this.underwalkAccessVolumes.length = 0;
     this.barrierSegments.length = 0;
@@ -359,7 +376,47 @@ export class WalkController {
       }
       if (collisionEnabled && child.userData.navObstacle && child instanceof THREE.Mesh) {
         const bounds = new THREE.Box3().setFromObject(child, true);
-        if (!bounds.isEmpty()) this.obstacleBounds.push(bounds);
+        if (!bounds.isEmpty()) {
+          this.obstacleBounds.push(bounds);
+          // Instanced meshes need per-instance transforms and retain the broad
+          // phase until an authored instance collider is supplied. Ordinary
+          // district meshes use their own local footprint, including their
+          // actual rotation, instead of the oversized world-aligned bounds.
+          if (child instanceof THREE.InstancedMesh) {
+            this.navigationObstacles.push(null);
+          } else {
+            child.geometry.computeBoundingBox();
+            const localBounds = child.geometry.boundingBox?.clone();
+            if (!localBounds || localBounds.isEmpty()) {
+              this.navigationObstacles.push(null);
+            } else {
+              const localUp = new THREE.Vector3().setFromMatrixColumn(child.matrixWorld, 1).normalize();
+              const upright = Math.abs(localUp.y) > 0.98;
+              const circularFootprint = upright && [
+                'CylinderGeometry',
+                'ConeGeometry',
+                'SphereGeometry',
+                'IcosahedronGeometry',
+                'OctahedronGeometry',
+                'DodecahedronGeometry',
+              ].includes(child.geometry.type);
+              const geometryParameters = (child.geometry as THREE.BufferGeometry & {
+                parameters?: { radius?: number };
+              }).parameters;
+              const roundedFootprintRadius = upright && child.geometry.type === 'RoundedBoxGeometry'
+                ? Math.max(0, Number(geometryParameters?.radius) || 0)
+                : 0;
+              this.navigationObstacles.push({
+                object: child,
+                localBounds,
+                inverseWorldMatrix: child.matrixWorld.clone().invert(),
+                worldScale: child.getWorldScale(new THREE.Vector3()),
+                circularFootprint,
+                roundedFootprintRadius,
+              });
+            }
+          }
+        }
       }
     });
   }
@@ -548,19 +605,117 @@ export class WalkController {
     const bodyBottom = ground + 0.015;
     const bodyTop = ground + WALK_EYE_HEIGHT;
     const insideAccess = this.isInsideNavigationAccess(x, z, bodyBottom, bodyTop);
-    const hitsObstacle = this.obstacleBounds.some(
-      (bounds) =>
-        !insideAccess &&
-        x >= bounds.min.x - WALK_RADIUS &&
-        x <= bounds.max.x + WALK_RADIUS &&
-        z >= bounds.min.z - WALK_RADIUS &&
-        z <= bounds.max.z + WALK_RADIUS &&
-        bodyTop >= bounds.min.y &&
-        bodyBottom <= bounds.max.y,
-    );
-    return !hitsObstacle
+    return !this.collidesWithObstacle(x, z, bodyBottom, bodyTop, insideAccess)
       && !this.collidesWithBarrier(x, z, bodyBottom, bodyTop)
       && this.findUnderwalkSurface(x, z, ground, bodyBottom, bodyTop) === null;
+  }
+
+  private collidesWithObstacle(
+    x: number,
+    z: number,
+    bodyBottom: number,
+    bodyTop: number,
+    insideAccess = false,
+  ) {
+    return this.findObstacleCollisionIndex(x, z, bodyBottom, bodyTop, insideAccess) >= 0;
+  }
+
+  private findObstacleCollisionIndex(
+    x: number,
+    z: number,
+    bodyBottom: number,
+    bodyTop: number,
+    insideAccess = false,
+  ) {
+    if (insideAccess) return -1;
+    return this.obstacleBounds.findIndex((bounds, index) => {
+      const broadPhaseHit = x >= bounds.min.x - WALK_RADIUS
+        && x <= bounds.max.x + WALK_RADIUS
+        && z >= bounds.min.z - WALK_RADIUS
+        && z <= bounds.max.z + WALK_RADIUS
+        && bodyTop >= bounds.min.y
+        && bodyBottom <= bounds.max.y;
+      if (!broadPhaseHit) return false;
+
+      const obstacle = this.navigationObstacles[index];
+      // Synthetic test obstacles and unsupported instanced colliders retain
+      // the conservative box behavior; authored district meshes take the
+      // precise local-footprint path below.
+      if (!obstacle) return true;
+      this.obstacleLocalBottom
+        .set(x, bodyBottom, z)
+        .applyMatrix4(obstacle.inverseWorldMatrix);
+      this.obstacleLocalTop
+        .set(x, bodyTop, z)
+        .applyMatrix4(obstacle.inverseWorldMatrix);
+      const radiusX = WALK_RADIUS / Math.max(0.001, Math.abs(obstacle.worldScale.x));
+      const radiusY = WALK_RADIUS / Math.max(0.001, Math.abs(obstacle.worldScale.y));
+      const radiusZ = WALK_RADIUS / Math.max(0.001, Math.abs(obstacle.worldScale.z));
+      const { localBounds } = obstacle;
+
+      if (!this.localBodySegmentIntersectsBounds(
+        this.obstacleLocalBottom,
+        this.obstacleLocalTop,
+        localBounds,
+        radiusX,
+        radiusY,
+        radiusZ,
+      )) return false;
+
+      if (obstacle.circularFootprint) {
+        const centerX = (localBounds.min.x + localBounds.max.x) * 0.5;
+        const centerZ = (localBounds.min.z + localBounds.max.z) * 0.5;
+        const extentX = (localBounds.max.x - localBounds.min.x) * 0.5 + radiusX;
+        const extentZ = (localBounds.max.z - localBounds.min.z) * 0.5 + radiusZ;
+        const localX = (this.obstacleLocalBottom.x + this.obstacleLocalTop.x) * 0.5;
+        const localZ = (this.obstacleLocalBottom.z + this.obstacleLocalTop.z) * 0.5;
+        const normalizedX = (localX - centerX) / Math.max(0.001, extentX);
+        const normalizedZ = (localZ - centerZ) / Math.max(0.001, extentZ);
+        return normalizedX * normalizedX + normalizedZ * normalizedZ <= 1;
+      }
+      if (obstacle.roundedFootprintRadius > 0) {
+        const centerX = (localBounds.min.x + localBounds.max.x) * 0.5;
+        const centerZ = (localBounds.min.z + localBounds.max.z) * 0.5;
+        const halfX = (localBounds.max.x - localBounds.min.x) * 0.5;
+        const halfZ = (localBounds.max.z - localBounds.min.z) * 0.5;
+        const cornerRadius = Math.min(obstacle.roundedFootprintRadius, halfX, halfZ);
+        const coreHalfX = Math.max(0, halfX - cornerRadius);
+        const coreHalfZ = Math.max(0, halfZ - cornerRadius);
+        const localX = (this.obstacleLocalBottom.x + this.obstacleLocalTop.x) * 0.5;
+        const localZ = (this.obstacleLocalBottom.z + this.obstacleLocalTop.z) * 0.5;
+        const cornerX = Math.max(0, Math.abs(localX - centerX) - coreHalfX);
+        const cornerZ = Math.max(0, Math.abs(localZ - centerZ) - coreHalfZ);
+        const normalizedX = cornerX / Math.max(0.001, cornerRadius + radiusX);
+        const normalizedZ = cornerZ / Math.max(0.001, cornerRadius + radiusZ);
+        return normalizedX * normalizedX + normalizedZ * normalizedZ <= 1;
+      }
+      return true;
+    });
+  }
+
+  private localBodySegmentIntersectsBounds(
+    start: THREE.Vector3,
+    end: THREE.Vector3,
+    bounds: THREE.Box3,
+    radiusX: number,
+    radiusY: number,
+    radiusZ: number,
+  ) {
+    let minimumT = 0;
+    let maximumT = 1;
+    const intersectsAxis = (origin: number, target: number, minimum: number, maximum: number) => {
+      const delta = target - origin;
+      if (Math.abs(delta) < 0.000001) return origin >= minimum && origin <= maximum;
+      let entry = (minimum - origin) / delta;
+      let exit = (maximum - origin) / delta;
+      if (entry > exit) [entry, exit] = [exit, entry];
+      minimumT = Math.max(minimumT, entry);
+      maximumT = Math.min(maximumT, exit);
+      return minimumT <= maximumT;
+    };
+    return intersectsAxis(start.x, end.x, bounds.min.x - radiusX, bounds.max.x + radiusX)
+      && intersectsAxis(start.y, end.y, bounds.min.y - radiusY, bounds.max.y + radiusY)
+      && intersectsAxis(start.z, end.z, bounds.min.z - radiusZ, bounds.max.z + radiusZ);
   }
 
   private isInsideNavigationAccess(x: number, z: number, bodyBottom: number, bodyTop: number) {
@@ -735,17 +890,13 @@ export class WalkController {
       bodyBottom,
       bodyTop,
     )) return;
-    const collides = this.obstacleBounds.some(
-      (bounds) =>
-        !insideAccess &&
-        this.candidate.x >= bounds.min.x - WALK_RADIUS &&
-        this.candidate.x <= bounds.max.x + WALK_RADIUS &&
-        this.candidate.z >= bounds.min.z - WALK_RADIUS &&
-        this.candidate.z <= bounds.max.z + WALK_RADIUS &&
-        bodyTop >= bounds.min.y &&
-        bodyBottom <= bounds.max.y,
-    );
-    if (collides) return;
+    if (this.collidesWithObstacle(
+      this.candidate.x,
+      this.candidate.z,
+      bodyBottom,
+      bodyTop,
+      insideAccess,
+    )) return;
     const barrier = this.findBarrierCollision(this.candidate.x, this.candidate.z, bodyBottom, bodyTop);
     if (barrier) {
       this.tryBarrierSlide(dx, dz, barrier);
@@ -822,17 +973,16 @@ export class WalkController {
       bodyBottom,
       bodyTop,
     )) return;
-    const hitsObstacle = this.obstacleBounds.some(
-      (bounds) =>
-        !insideAccess
-        && this.candidate.x >= bounds.min.x - WALK_RADIUS
-        && this.candidate.x <= bounds.max.x + WALK_RADIUS
-        && this.candidate.z >= bounds.min.z - WALK_RADIUS
-        && this.candidate.z <= bounds.max.z + WALK_RADIUS
-        && bodyTop >= bounds.min.y
-        && bodyBottom <= bounds.max.y,
-    );
-    if (hitsObstacle || this.collidesWithBarrier(this.candidate.x, this.candidate.z, bodyBottom, bodyTop)) return;
+    if (
+      this.collidesWithObstacle(
+        this.candidate.x,
+        this.candidate.z,
+        bodyBottom,
+        bodyTop,
+        insideAccess,
+      )
+      || this.collidesWithBarrier(this.candidate.x, this.candidate.z, bodyBottom, bodyTop)
+    ) return;
     this.camera.position.x = this.candidate.x;
     this.camera.position.z = this.candidate.z;
     this.groundY = nextGround;

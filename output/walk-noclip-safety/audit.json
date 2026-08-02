@@ -3,20 +3,20 @@
     "safetyGeometry": {
       "basePreventUnderwalk": true,
       "staircaseAccessRegistered": true,
-      "podiumBarrierSegmentCount": 72
+      "podiumBarrierSegmentCount": 64
     },
     "perimeter": {
-      "samples": 57,
+      "samples": 42,
       "breaches": [],
-      "minimumNormalizedRadius": 1.010667628135668
+      "minimumNormalizedRadius": 1.0106125858525021
     },
     "formerSideSeams": [
       {
         "requestedX": -2.66,
         "result": [
-          -2.4063761565186894,
-          0.4326086966887761,
-          3.8892893829205377
+          -2.8310881973347652,
+          0.4326086966887762,
+          4.029762698262858
         ],
         "ground": 1.6329999997764826,
         "blocker": null,
@@ -24,40 +24,40 @@
         "underwalkSurfaceNames": [
           "ENTRY__E2__ELLIPTICAL_PALE_STONE_BASE"
         ],
-        "underwalkAccessVolumes": 1,
-        "normalizedRadius": 0.9631577183400445
+        "underwalkAccessVolumes": 2,
+        "normalizedRadius": 1.019375540315907
       },
       {
         "requestedX": 2.66,
         "result": [
-          2.9651128890018583,
-          0.4326086966887761,
-          3.979438221415478
+          2.9942884257393136,
+          0.4326086966887762,
+          3.967199847717894
         ],
-        "ground": 1.6450000001490117,
+        "ground": 1.6329999997764826,
         "blocker": null,
         "insideNavigationAccess": false,
         "underwalkSurfaceNames": [
           "ENTRY__E2__ELLIPTICAL_PALE_STONE_BASE"
         ],
-        "underwalkAccessVolumes": 1,
-        "normalizedRadius": 1.0182286320614182
+        "underwalkAccessVolumes": 2,
+        "normalizedRadius": 1.0177914350418227
       }
     ],
     "staircase": {
       "result": [
-        -2.842170943040401e-14,
-        0.4413043482310095,
-        3.5500000000000114
+        0,
+        0.4326086966887762,
+        3.5499999999999554
       ],
       "ground": 1.9816800064706803,
       "baseTop": 1.9816800027418138,
       "reachedFinishedFloor": true
     },
     "forcedRecovery": {
-      "buriedGround": 1.6450000001490117,
+      "buriedGround": 1.6329999997764826,
       "highestGround": 1.9816800027418138,
-      "layerDifference": 0.33668000259280206,
+      "layerDifference": 0.3486800029653312,
       "interiorVisibleWhileBuried": false,
       "currentInteriorWhileBuried": null,
       "recoveriesBefore": 0,
@@ -75,16 +75,16 @@
       "lookMode": "idle",
       "grounded": true,
       "positionWorld": [
-        179.075,
-        1.813,
-        -310.167
+        191.25,
+        1.809,
+        -294.499
       ],
       "positionMetres": [
-        1790.8,
+        1912.5,
         18.1,
-        -3101.7
+        -2945
       ],
-      "groundY": 1.651,
+      "groundY": 1.647,
       "surfaceKind": "stone",
       "roomId": "outside",
       "speedMetresPerSecond": 0,
@@ -100,9 +100,9 @@
       ],
       "movementKeys": [],
       "direction": [
-        -0.5,
+        -0.545,
         0,
-        0.866
+        0.839
       ],
       "safetyRecoveries": 1
     },

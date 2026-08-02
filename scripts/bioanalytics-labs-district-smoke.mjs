@@ -209,7 +209,7 @@ try {
   if (audit.population?.realizedFacilityCount !== 15 || audit.population?.measurementEngineeringDistrict !== true) throw new Error('Bioanalytics population metadata is incomplete');
   if (audit.streaming?.detailResident !== true) throw new Error('Bioanalytics detail package did not remain resident for inspection');
   if (audit.planning?.cellViolations !== 0) throw new Error(`Masterplan sector anchors regressed: ${audit.planning.cellViolations}`);
-  if (audit.revision !== 5) throw new Error(`Specialized layout revision is stale: ${audit.revision}`);
+  if (audit.revision !== 8) throw new Error(`Specialized layout revision is stale: ${audit.revision}`);
   for (const material of [
     'Bioanalytics vibration-isolated black basalt',
     'Bioanalytics white technical ceramic',

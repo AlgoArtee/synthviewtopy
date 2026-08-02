@@ -1,0 +1,366 @@
+{
+  "audit": {
+    "districtCount": 35,
+    "ringRadii": [
+      83.99999935726004,
+      126.00000042750801,
+      177.0000001498325,
+      240.00000011029104,
+      309.0000001583075
+    ],
+    "obstacleCount": 724,
+    "preciseObstacleCount": 724,
+    "sampleCount": 23305,
+    "clearCount": 23305,
+    "broadOnlyMarginsAvoided": 99,
+    "movementProbeCount": 153,
+    "failedDistricts": [],
+    "districtResults": [
+      {
+        "id": "synthetic-quantum-biosystems",
+        "sampleCount": 462,
+        "clearCount": 462,
+        "broadOnlyMarginsAvoided": 1,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "dark-center-lab-megabuilding",
+        "sampleCount": 462,
+        "clearCount": 462,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "corporate-core",
+        "sampleCount": 462,
+        "clearCount": 462,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "toxicology-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "pharmacology-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 2,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "microbiology-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "genomics-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "proteomics-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "omics-labs",
+        "sampleCount": 410,
+        "clearCount": 410,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "electronics-microelectronics-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 5,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "medical-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "molecular-biology-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "biochemistry-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 33,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "computational-biology-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "robotics-labs",
+        "sampleCount": 564,
+        "clearCount": 564,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "marketing",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 9,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "scientific-art-labs",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 9,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "even-hour-hotel",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "astronomy-astrobiology-labs",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "secret-labs",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "bioanalytics-lab",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "organic-chemistry-labs",
+        "sampleCount": 756,
+        "clearCount": 756,
+        "broadOnlyMarginsAvoided": 24,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "luxury-entertainment",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 4,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "scientist-residential",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "materials-science-lab",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "security",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 4,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "forensic-cyberforensic-lab",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "inorganic-chemistry",
+        "sampleCount": 956,
+        "clearCount": 956,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 5,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "financial-funding",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "logistics",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 4,
+        "movementProbeCount": 3,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "entry-commercial",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 4,
+        "movementProbeCount": 3,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "environmental-science-labs",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "academic-libraries-theoretical-labs",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 3,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "industrial-labs",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      },
+      {
+        "id": "particle-physics-labs",
+        "sampleCount": 721,
+        "clearCount": 721,
+        "broadOnlyMarginsAvoided": 0,
+        "movementProbeCount": 4,
+        "movementFailures": [],
+        "failures": []
+      }
+    ],
+    "representative": {
+      "districtId": "synthetic-quantum-biosystems",
+      "boundary": "outer-ring-road",
+      "x": 39.21510246740036,
+      "z": -74.2844246021418,
+      "ground": 1.6160000000000072,
+      "clear": true,
+      "broadOnly": true,
+      "blocker": null
+    },
+    "textState": {
+      "mode": "walk",
+      "runtimePolicies": {
+        "objectInteractionsEnabled": false,
+        "interiorRendering": "walk-inside-building-only",
+        "isolatedWalkInteriorActive": false,
+        "isolatedWalkInteriorName": null,
+        "isolatedExteriorObjectCount": 0,
+        "exteriorProjectionCount": 0,
+        "authoredInteriorGroups": 21,
+        "visibleAuthoredInteriorGroups": 0,
+        "cerebrumInteriorRendered": false,
+        "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
+        "activeViewPolicy": "walk-exterior",
+        "userHiddenIds": [],
+        "runtimeHiddenCount": 185
+      }
+    }
+  },
+  "errors": [],
+  "failures": []
+}

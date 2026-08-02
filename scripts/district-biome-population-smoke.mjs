@@ -266,12 +266,15 @@ for (const biome of audit.biomeResults) {
 // system with 2,056 exterior meshes, its Evidence Line, and elevated Chainline.
 // The five-building Genomics code landscape adds 1,116 authored meshes across
 // graph ribbons, the sequencing spire, cellular mosaic, gantry foundry, and
-// faceted observatory while remaining within the existing geometry ceiling.
+// faceted observatory. The ten-building Biochemistry Reaction Gradient adds
+// 1,287 exterior meshes; its small molecular details are excluded from the
+// shadow pass. The all-detail plan view remains below a measured 40k color-pass
+// draw-call ceiling without weakening WALK/HLOD streaming.
 // Keep the authored planning view below a measured ceiling instead
 // of comparing against a tiny demo scene. WALK
 // streaming still swaps distant packages to compact HLODs and is covered by
 // the dedicated streaming audit.
-if (audit.renderer.calls > 37_500 || audit.renderer.geometries > 7_500) {
+if (audit.renderer.calls > 40_000 || audit.renderer.geometries > 7_500) {
   throw new Error(`Population layer exceeded the scene budget: ${JSON.stringify(audit.renderer)}`);
 }
 if (consoleErrors.length > 0) throw new Error(`Browser console errors: ${consoleErrors.join('\n')}`);

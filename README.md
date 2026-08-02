@@ -32,6 +32,8 @@ npm run build     # Type-check and create the production bundle in dist/
 npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
+npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
+npm run test:district-walkability # Probe every district delimiter and current generic entrance in WALK
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
 
@@ -87,7 +89,8 @@ Additional controls:
 - Special object and entrance interactions are temporarily disabled; `E` does not open an interaction menu.
 - Press `Escape` to release pointer lock and return the mouse to the interface.
 - WALK is calibrated to a 1.7 m adult: the camera eye level is 0.162 world units (1.62 m), the configured km/h speed is converted exactly to world motion, and the dedicated 55° vertical field of view is restored to the overview lens when WALK ends.
-- Terrain, roads, district plots, bridge approaches, and city ramps expose semantic walkable surfaces. Buildings, biome structures, and imported meshes participate in collision/obstacle checks, while ramps keep traversal grounded across elevation changes.
+- Terrain, roads, district plots, bridge approaches, and city ramps expose semantic walkable surfaces. Buildings, biome structures, and imported meshes participate in collision/obstacle checks, while ramps keep traversal grounded across elevation changes. Collision now uses each obstacle's transformed local footprint after a cheap world-bounds broad phase, so rotated plots and structural masses cannot project invisible AABB corners across adjacent ring or radial roads.
+- The five concentric delimiter roads and six radial spokes remain continuously open through all 35 district cells. At the integrated core, the Dark Center podium is split into two visible wings around a ground-level covered civic passage instead of relying on a non-visual collision exemption.
 - Every district has a lit entry door and a walkable foyer linked to its approach ramp. All 14 Academic District facilities have their own open arched doorway, walkable ground floor, and exterior path; Cerebrum Externum, Founders Dining Hall, and St Anselm Chapel are furnished in-place rather than loaded as disconnected scenes. Cerebrum Externum includes connected reading halls, stacks, an upper gallery, and the underground Cerebrum Occultum archive. Each climate dome has a glazed airlock corridor: follow its ramp, cross the glowing threshold, and continue onto the dome's interior ground.
 
 ## Entry and Logistics District
@@ -133,6 +136,22 @@ The southern inner-ring Genomics Labs District is an exterior-only code landscap
 - **Fabrica Genomica** uses a heavy split basalt base, six exchangeable chromosome modules with displaced centromere bands, an elliptical gantry with four moving carriages, service tower, utility cylinders, controlled watercourse, and visitor pavilion.
 - **The Variant Constellation** combines a twelve-facet waisted core, projecting variant panels and luminous regulatory links, an interrupted translucent research ring, twelve leaning pylons, three structural-variant bridges, and the Manhattan Colonnade of statistical peaks.
 - The grounded **Base-Pair Promenade** carries four separating and recombining spectral traces, four district-interface links, and five exact building approaches. The complete 1,116-mesh campus stays within its inner-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export.
+
+## Biochemistry Labs District
+
+The east-southeastern Biochemistry Labs District is a ten-building exterior narrative organized along the curving **Reaction Gradient**. Pale molecular architecture at the inner Genomics/Molecular Biology edge becomes progressively darker, heavier, and more mechanical toward Organic and Inorganic Chemistry.
+
+- **Aminoform Foundry** folds three architectural protein chains around a binding-pocket entrance, residue-contact fins, engineered active sites, a suspended ligand, and high molecular-bond bridge.
+- **Cryostratum** layers three vitrified specimen shells inside a black-water vibration moat, beneath a floating canopy and ringed cryogenic capsule tower with visible storage vessels and exhausts.
+- **Metabolome Atlas** stacks five displaced tissue-section terraces around the Flux Field, analytical pixels, a reflective skybridge, and three instrument-like service towers.
+- **Vesica Genesis** connects seven budding translucent protocells through six molecular-pore bridges above a signalling pool and disc approach.
+- **Evozyme Loop** exposes four design-build-test-learn circuits, modular facades, skylight rings, four transfer towers, eight autonomous sample carriers, and a kinetic feedback portal.
+- **Coacervum** merges five condensate masses beneath a rain-and-mist canopy beside a droplet basin, phase-separated satellites, drifting metallic condensates, and dissolving-ring observation mast.
+- **Glycan Cipher** rises as a smoke-glass trunk wrapped by ten sugar-ring exoskeleton tiers, with five hierarchical branches, terminal glycan modules, and branching crown.
+- **Proteostasis Citadel** holds an ordering cylindrical chamber inside two monumental chaperone rings, radial bridges, regulated louvers, and three folding/sorting/recycling wings.
+- **Chronocatalysis Spire** separates two prismatic reaction-coordinate halves with a mirrored slit, logarithmic time bands and optical fins, state bridges, and a suspended transition crystal.
+- **Ferrum Vita Forge** forms the dark industrial edge with a ribbed cathedral hall, four cell-free cascade stages, exposed cofactor pipes, three polyhedral metallocluster towers, catalytic entrance, and energy-recovery skyline.
+- Three molecular flux traces, four district-interface links, one outer utility spine, eight reaction plazas, ten exact approaches, 30 sequence fields, six microfluidic channels, and 14 environmental samplers complete the district. The 1,287-mesh package has zero facility-envelope overlaps or sector violations and supports grounded WALK traversal, deterministic night systems, HLOD streaming, revision-8 persistence migration, text-state inspection, selection, and GLB export. Interiors remain intentionally deferred by the exterior specification.
 
 ## Molecular Biology Labs District
 

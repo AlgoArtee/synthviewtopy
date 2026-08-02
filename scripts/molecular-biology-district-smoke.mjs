@@ -199,7 +199,7 @@ try {
   if (audit.population?.realizedFacilityCount !== 10 || audit.population?.distributedMolecularCircuit !== true) throw new Error('Molecular Biology population metadata is incomplete');
   if (audit.streaming?.detailResident !== true) throw new Error('Molecular Biology detail package did not remain resident for inspection');
   if (audit.planning?.cellViolations !== 0) throw new Error(`Masterplan sector anchors regressed: ${audit.planning.cellViolations}`);
-  if (audit.revision !== 4) throw new Error(`Specialized layout revision is stale: ${audit.revision}`);
+  if (audit.revision !== 8) throw new Error(`Specialized layout revision is stale: ${audit.revision}`);
   for (const material of [
     'Molecular Biology satin white bioceramic',
     'Molecular Biology graphite titanium',

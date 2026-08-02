@@ -20,6 +20,7 @@
     "test:molecular-biology": "node scripts/molecular-biology-district-smoke.mjs",
     "test:bioanalytics": "node scripts/bioanalytics-labs-district-smoke.mjs",
     "test:forensic": "node scripts/forensic-cyberforensic-district-smoke.mjs",
+    "test:genomics": "node scripts/genomics-labs-district-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",
     "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs"

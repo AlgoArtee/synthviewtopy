@@ -199,16 +199,18 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'genomics-labs': {
     facilities: [
-      { name: 'Genome Sequencing Hall', form: 'hall' },
-      { name: 'Population Genomics Laboratory', form: 'lab-block' },
-      { name: 'Cryogenic Sample Vault', form: 'subterranean-bunker' },
-      { name: 'Genomic Data Pavilion', form: 'pavilion' },
+      { name: 'The Pangenome Confluence', form: 'hall' },
+      { name: 'Helix Meridian', form: 'tower' },
+      { name: 'Tessera Vitae', form: 'lab-block' },
+      { name: 'Fabrica Genomica', form: 'utility-plant' },
+      { name: 'The Variant Constellation', form: 'observatory' },
     ],
     objects: [
-      { name: 'Sequencer Racks', kind: 'instrument' },
-      { name: 'Robotic Library Preparation Cells', kind: 'robot' },
-      { name: 'Liquid Nitrogen Sample Tanks', kind: 'storage' },
-      { name: 'Genome Data Facade', kind: 'signage' },
+      { name: 'Base-Pair Promenade', kind: 'signage' },
+      { name: 'Spectral Sequence Traces', kind: 'instrument' },
+      { name: 'Coordinate Gardens', kind: 'garden' },
+      { name: 'Genomic Water Channels', kind: 'water-feature' },
+      { name: 'Environmental Sampling Masts', kind: 'instrument' },
     ],
   },
   'proteomics-labs': {

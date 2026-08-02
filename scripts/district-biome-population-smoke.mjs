@@ -205,6 +205,7 @@ for (const district of audit.districtResults) {
     'microbiology-labs',
     'molecular-biology-labs',
     'bioanalytics-lab',
+    'genomics-labs',
   ].includes(district.id);
   if (
     district.population?.realizedFacilityCount < 4
@@ -263,11 +264,14 @@ for (const biome of audit.biomeResults) {
 // measurement campus with 1,985 meshes after its legacy placeholders are
 // removed, and the 15-building Forensic / Cyberforensic persistent-signature
 // system with 2,056 exterior meshes, its Evidence Line, and elevated Chainline.
+// The five-building Genomics code landscape adds 1,116 authored meshes across
+// graph ribbons, the sequencing spire, cellular mosaic, gantry foundry, and
+// faceted observatory while remaining within the existing geometry ceiling.
 // Keep the authored planning view below a measured ceiling instead
 // of comparing against a tiny demo scene. WALK
 // streaming still swaps distant packages to compact HLODs and is covered by
 // the dedicated streaming audit.
-if (audit.renderer.calls > 35_500 || audit.renderer.geometries > 7_500) {
+if (audit.renderer.calls > 37_500 || audit.renderer.geometries > 7_500) {
   throw new Error(`Population layer exceeded the scene budget: ${JSON.stringify(audit.renderer)}`);
 }
 if (consoleErrors.length > 0) throw new Error(`Browser console errors: ${consoleErrors.join('\n')}`);

@@ -31,6 +31,7 @@ Open [http://127.0.0.1:5178](http://127.0.0.1:5178). The fixed local-only port a
 npm run build     # Type-check and create the production bundle in dist/
 npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
+npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
 
@@ -121,6 +122,17 @@ The eastern outer ring now contains a complete fifteen-facility forensic campus 
 - The curved **Evidence Line** is a grounded boulevard with split amber/cyan signature traces, embedded sample/hash markers, four controlled cross-links, an outer sealed service arc, exposed environmental sampling drains, and an exact approach to every facility.
 - The elevated **Chainline** uses 71 opal transport-tube segments, eleven titanium pylons, and ten animated hermetic evidence capsules. Anthracite ceramic, black basalt, satin titanium, smoked glass, opal panels, conductive mesh, restricted copper detailing, low silver grass, monitored moss, trimmed trees, and shallow reflecting water establish the district-wide language.
 - The complete exterior campus remains inside its outer-ring sector with non-overlapping facility envelopes and supports normal WALK grounding, HLOD streaming, project persistence, selection, deterministic animation, text-state inspection, and GLB export. Interiors remain intentionally deferred by the exterior brief.
+
+## Genomics Labs District
+
+The southern inner-ring Genomics Labs District is an exterior-only code landscape whose five buildings share volcanic basalt foundations, pearl-white genomic ceramic, brushed titanium, electrochromic glass, and restrained four-base spectral wayfinding.
+
+- **The Pangenome Confluence / Atrium Variorum** branches three horizontal research ribbons across Haplotype Court, variant bubbles, overlapping bridges, a deep entrance incision, and a floating roof graph.
+- **Helix Meridian** rises as three unequal read-length shafts above a vibration-isolated sequencing podium. Irregular metallic alignment bands, moiré blades, pore windows, upward read signals, and the instrument crown make it the district's vertical landmark.
+- **Tessera Vitae** forms a low tissue-like field of exactly thirty pentagonal and hexagonal cell modules with heterogeneous facades, nuclei skylights, three layered section walls, vascular bridges, Coordinate Court, branching water, and a rotating calibration mast.
+- **Fabrica Genomica** uses a heavy split basalt base, six exchangeable chromosome modules with displaced centromere bands, an elliptical gantry with four moving carriages, service tower, utility cylinders, controlled watercourse, and visitor pavilion.
+- **The Variant Constellation** combines a twelve-facet waisted core, projecting variant panels and luminous regulatory links, an interrupted translucent research ring, twelve leaning pylons, three structural-variant bridges, and the Manhattan Colonnade of statistical peaks.
+- The grounded **Base-Pair Promenade** carries four separating and recombining spectral traces, four district-interface links, and five exact building approaches. The complete 1,116-mesh campus stays within its inner-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export.
 
 ## Molecular Biology Labs District
 

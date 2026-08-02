@@ -1,0 +1,463 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Genomics Labs District",
+      "architecturalLanguage": "pangenome graphs, parallel alignments, chromatin territories, cellular mosaics, and structural rearrangements expressed through dark basalt, pearl genomic ceramic, brushed titanium, electrochromic glass, and spectral illumination",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "G1",
+          "name": "The Pangenome Confluence",
+          "subtitle": "Atrium Variorum",
+          "purpose": "Population pangenomes, graph references, and complete genome assembly",
+          "placementZone": "Northern civic threshold facing the Corporate Core",
+          "footprintMetres": [
+            148,
+            94
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "three branching research ribbons diverging, crossing, and reconnecting above a common basalt substrate"
+        },
+        {
+          "code": "G2",
+          "name": "Helix Meridian",
+          "subtitle": "Single-Molecule Sequencing Spire",
+          "purpose": "Long-read sequencing, phased assembly, and complete chromosome reconstruction",
+          "placementZone": "Western sequencing interface toward Proteomics",
+          "footprintMetres": [
+            86,
+            60
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "three offset read-length shafts wrapped by two irregular alignment bands above an isolated podium"
+        },
+        {
+          "code": "G3",
+          "name": "Tessera Vitae",
+          "subtitle": "Institute for Spatial and Single-Cell Genomics",
+          "purpose": "Single-cell profiling, spatial multiomics, and in-situ sequencing",
+          "placementZone": "Eastern spatial interface toward Biochemistry and Molecular Biology",
+          "footprintMetres": [
+            172,
+            128
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "thirty heterogeneous polygonal cells, nuclei skylights, section walls, and vascular bridges"
+        },
+        {
+          "code": "G4",
+          "name": "Fabrica Genomica",
+          "subtitle": "Synthetic Chromosome and Genome-Writing Foundry",
+          "purpose": "Synthetic chromosomes, genome-scale rewriting, and programmable rearrangement",
+          "placementZone": "Controlled southern industrial edge",
+          "footprintMetres": [
+            132,
+            108
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "six exchangeable chromosome modules beneath an elliptical titanium gantry ring"
+        },
+        {
+          "code": "G5",
+          "name": "The Variant Constellation",
+          "subtitle": "AI and Functional Genomics Observatory",
+          "purpose": "Regulatory-variant prediction, perturbation screens, and functional genomics",
+          "placementZone": "Computational interface facing the Corporate Core",
+          "footprintMetres": [
+            126,
+            126
+          ],
+          "heightMetres": 81,
+          "exteriorMotif": "a faceted dark observatory within an interrupted translucent research ring and statistical colonnade"
+        }
+      ],
+      "landmarks": {
+        "civicCenter": "The Pangenome Confluence",
+        "verticalMarker": "Helix Meridian",
+        "spatialLandscape": "Tessera Vitae",
+        "industrialEdge": "Fabrica Genomica",
+        "computationalInterface": "The Variant Constellation"
+      },
+      "circulation": {
+        "primaryWalk": "GENOMICS__BASE_PAIR_PROMENADE",
+        "spectralSequenceTraces": 4,
+        "controlledInterfaceLinks": 4,
+        "exactBuildingApproaches": 5
+      },
+      "signatureSystems": {
+        "graphRibbonBranches": 3,
+        "helixReadShafts": 3,
+        "tesseraCellModules": 30,
+        "chromosomeModules": 6,
+        "variantCoreFacets": 12,
+        "advertisingDisplays": false
+      },
+      "materials": [
+        "dark volcanic stone",
+        "pearl-white genomic ceramic",
+        "brushed titanium",
+        "electrochromic laboratory glass",
+        "spectral sequence illumination"
+      ],
+      "landscape": {
+        "asymmetricCoordinateGardens": 26,
+        "environmentalMasts": 13,
+        "shiftingWaterChannels": 5
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Pangenome Confluence",
+        "Helix Meridian",
+        "Tessera Vitae",
+        "Fabrica Genomica",
+        "The Variant Constellation"
+      ],
+      "plannedObjects": [
+        "Base-Pair Promenade",
+        "Spectral Sequence Traces",
+        "Coordinate Research Landscape",
+        "Genomic Water Channels",
+        "Environmental Sampling Masts"
+      ],
+      "realizedFeatureTags": [
+        "the-pangenome-confluence",
+        "helix-meridian",
+        "tessera-vitae",
+        "fabrica-genomica",
+        "the-variant-constellation"
+      ],
+      "realizedFacilityCount": 5,
+      "realizedObjectCount": 80,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 10,
+      "radialCoverage": 0.92,
+      "angularCoverage": 0.94,
+      "exteriorOnly": true,
+      "genomicCodeLandscape": true
+    },
+    "topLevelNames": [
+      "GENOMICS__DISTRICT_CODE_INFRASTRUCTURE",
+      "GENOMICS__COORDINATE_RESEARCH_LANDSCAPE",
+      "GENOMICS__G1__PANGENOME_CONFLUENCE",
+      "GENOMICS__G2__HELIX_MERIDIAN",
+      "GENOMICS__G3__TESSERA_VITAE",
+      "GENOMICS__G4__FABRICA_GENOMICA",
+      "GENOMICS__G5__VARIANT_CONSTELLATION"
+    ],
+    "codes": [
+      "G1",
+      "G2",
+      "G3",
+      "G4",
+      "G5"
+    ],
+    "facilityCount": 5,
+    "meshCount": 1116,
+    "uniqueNames": 1131,
+    "scaledMeshParentDetails": [],
+    "materialNames": [
+      "Base-Pair Promenade dark sequence paving",
+      "Base-Pair Promenade pale sequence paving",
+      "Genomics adenine cyan wayfinding light",
+      "Genomics brushed titanium",
+      "Genomics charcoal precision ceramic",
+      "Genomics controlled silver grass",
+      "Genomics coordinate-garden moss",
+      "Genomics cytosine violet wayfinding light",
+      "Genomics dark electrochromic laboratory glass",
+      "Genomics dark mirrored titanium",
+      "Genomics dark volcanic-stone foundation",
+      "Genomics guanine green wayfinding light",
+      "Genomics microscopic-gradient metal mesh",
+      "Genomics milky genomic glass",
+      "Genomics pale mineral ceramic",
+      "Genomics pearl-white genomic ceramic",
+      "Genomics shallow black reflecting water",
+      "Genomics spectral white sequence light",
+      "Genomics thymine amber wayfinding light",
+      "Genomics translucent laboratory glass"
+    ],
+    "animations": {
+      "genomics-emissive-pulse": 156,
+      "genomics-vertical-read": 11,
+      "genomics-rotation": 1,
+      "genomics-gantry-carriage": 4
+    },
+    "prefixCounts": {
+      "GENOMICS__G1__GRAPH_RIBBON_": 48,
+      "GENOMICS__G1__VARIANT_BUBBLE_": 6,
+      "GENOMICS__G2__VERTICAL_MOIRE_BLADE_": 48,
+      "GENOMICS__G2__PORE_WINDOW_": 12,
+      "GENOMICS__G3__CELL_MODULE_": 30,
+      "GENOMICS__G3__NUCLEUS_SKYLIGHT_": 15,
+      "GENOMICS__G4__CHROMOSOME_MODULE_": 6,
+      "GENOMICS__G4__ROBOTIC_GANTRY_CARRIAGE_": 4,
+      "GENOMICS__G5__PROJECTING_VARIANT_PANEL_": 52,
+      "GENOMICS__G5__MANHATTAN_PEAK_": 36
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "G1",
+        "min": [
+          38.981412011995154,
+          1.6660000000000001,
+          74.91778615555133
+        ],
+        "max": [
+          56.49858798800485,
+          8.326,
+          90.45842495112505
+        ]
+      },
+      {
+        "code": "G2",
+        "min": [
+          73.05410579429112,
+          1.671,
+          62.95473516358523
+        ],
+        "max": [
+          82.62606254808885,
+          14.476,
+          72.85373161550861
+        ]
+      },
+      {
+        "code": "G3",
+        "min": [
+          10.17698716485586,
+          1.6660000000000004,
+          92.16496248320045
+        ],
+        "max": [
+          29.51950215705409,
+          8.066,
+          109.10331044861768
+        ]
+      },
+      {
+        "code": "G4",
+        "min": [
+          35.86213668031314,
+          1.4273935554027535,
+          94.74418751613946
+        ],
+        "max": [
+          54.88863254392193,
+          11.127976939439776,
+          113.77058509360343
+        ]
+      },
+      {
+        "code": "G5",
+        "min": [
+          62.58658409195923,
+          1.671,
+          78.19865476421924
+        ],
+        "max": [
+          78.50684431979109,
+          11.410383390455571,
+          92.98938984868988
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "GENOMICS__BASE_PAIR_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__DISTRICT_INTERFACE_LINK_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__DISTRICT_INTERFACE_LINK_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__DISTRICT_INTERFACE_LINK_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__DISTRICT_INTERFACE_LINK_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__BUILDING_APPROACH_G1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__BUILDING_APPROACH_G2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__BUILDING_APPROACH_G3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__BUILDING_APPROACH_G4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "GENOMICS__BUILDING_APPROACH_G5",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      52.929168251110255,
+      1.6459999984502793,
+      92.56828063021707
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "Genomics Labs District",
+      "architecturalLanguage": "pangenome graphs, parallel alignments, chromatin territories, cellular mosaics, and structural rearrangements expressed through dark basalt, pearl genomic ceramic, brushed titanium, electrochromic glass, and spectral illumination",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "G1",
+          "name": "The Pangenome Confluence",
+          "subtitle": "Atrium Variorum",
+          "purpose": "Population pangenomes, graph references, and complete genome assembly",
+          "placementZone": "Northern civic threshold facing the Corporate Core",
+          "footprintMetres": [
+            148,
+            94
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "three branching research ribbons diverging, crossing, and reconnecting above a common basalt substrate"
+        },
+        {
+          "code": "G2",
+          "name": "Helix Meridian",
+          "subtitle": "Single-Molecule Sequencing Spire",
+          "purpose": "Long-read sequencing, phased assembly, and complete chromosome reconstruction",
+          "placementZone": "Western sequencing interface toward Proteomics",
+          "footprintMetres": [
+            86,
+            60
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "three offset read-length shafts wrapped by two irregular alignment bands above an isolated podium"
+        },
+        {
+          "code": "G3",
+          "name": "Tessera Vitae",
+          "subtitle": "Institute for Spatial and Single-Cell Genomics",
+          "purpose": "Single-cell profiling, spatial multiomics, and in-situ sequencing",
+          "placementZone": "Eastern spatial interface toward Biochemistry and Molecular Biology",
+          "footprintMetres": [
+            172,
+            128
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "thirty heterogeneous polygonal cells, nuclei skylights, section walls, and vascular bridges"
+        },
+        {
+          "code": "G4",
+          "name": "Fabrica Genomica",
+          "subtitle": "Synthetic Chromosome and Genome-Writing Foundry",
+          "purpose": "Synthetic chromosomes, genome-scale rewriting, and programmable rearrangement",
+          "placementZone": "Controlled southern industrial edge",
+          "footprintMetres": [
+            132,
+            108
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "six exchangeable chromosome modules beneath an elliptical titanium gantry ring"
+        },
+        {
+          "code": "G5",
+          "name": "The Variant Constellation",
+          "subtitle": "AI and Functional Genomics Observatory",
+          "purpose": "Regulatory-variant prediction, perturbation screens, and functional genomics",
+          "placementZone": "Computational interface facing the Corporate Core",
+          "footprintMetres": [
+            126,
+            126
+          ],
+          "heightMetres": 81,
+          "exteriorMotif": "a faceted dark observatory within an interrupted translucent research ring and statistical colonnade"
+        }
+      ],
+      "landmarks": {
+        "civicCenter": "The Pangenome Confluence",
+        "verticalMarker": "Helix Meridian",
+        "spatialLandscape": "Tessera Vitae",
+        "industrialEdge": "Fabrica Genomica",
+        "computationalInterface": "The Variant Constellation"
+      },
+      "circulation": {
+        "primaryWalk": "GENOMICS__BASE_PAIR_PROMENADE",
+        "spectralSequenceTraces": 4,
+        "controlledInterfaceLinks": 4,
+        "exactBuildingApproaches": 5
+      },
+      "signatureSystems": {
+        "graphRibbonBranches": 3,
+        "helixReadShafts": 3,
+        "tesseraCellModules": 30,
+        "chromosomeModules": 6,
+        "variantCoreFacets": 12,
+        "advertisingDisplays": false
+      },
+      "materials": [
+        "dark volcanic stone",
+        "pearl-white genomic ceramic",
+        "brushed titanium",
+        "electrochromic laboratory glass",
+        "spectral sequence illumination"
+      ],
+      "landscape": {
+        "asymmetricCoordinateGardens": 26,
+        "environmentalMasts": 13,
+        "shiftingWaterChannels": 5
+      },
+      "exteriorOnly": true
+    },
+    "specializedRevision": 7,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "genomics-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.1624999999999256,
+    "grounded": true,
+    "position": [
+      52.787,
+      1.808,
+      92.647
+    ]
+  },
+  "errors": []
+}

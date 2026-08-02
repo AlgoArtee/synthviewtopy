@@ -1,0 +1,44 @@
+{
+  "audit": {
+    "counts": {
+      "railBeds": 6,
+      "rails": 24,
+      "sleeperFields": 6,
+      "trains": 3,
+      "firstTrainWheels": 16,
+      "firstTrainBodies": 4
+    },
+    "metadata": {
+      "trackCount": 2,
+      "sectionCount": 6,
+      "trainCount": 3,
+      "totalLengthMetres": 29974,
+      "railHeadY": 1.6380000000000001,
+      "trainOriginY": 1.6340000000000001,
+      "wheelContactY": 1.6380000000000001,
+      "trackGaugeMetres": 1.435,
+      "physicalDepth": true
+    },
+    "trainTravelMetres": 22.499999999998735,
+    "verticalDatum": {
+      "railTopY": 1.6380000003799797,
+      "wheelBottomY": 1.6379999999105932,
+      "bodyBottomY": 1.6719000514745714,
+      "wheelToRailGapMetres": -4.693865296445665e-9,
+      "bodyClearanceMetres": 0.3390005109459171,
+      "wheelGaugeMetres": 1.435,
+      "railGaugeMetres": 1.435
+    },
+    "railBed": {
+      "minimumY": 1.603999999947846,
+      "maximumY": 1.6160000000521542,
+      "maximumHeightMetres": 0.12000000104308128,
+      "physicalDepth": true,
+      "defaultRenderOrder": true,
+      "depthTest": true,
+      "depthWrite": true,
+      "excludedFromAerialDecalMode": true
+    }
+  },
+  "consoleErrors": []
+}

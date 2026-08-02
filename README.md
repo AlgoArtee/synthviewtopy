@@ -111,6 +111,17 @@ The eastern outer-ring Security District is now the **Aegis Arc**, a dedicated e
 - Frost-white ceramic, charcoal basalt, brushed titanium, smoked electrochromic glass, pale-blue normal-state lighting, restrained amber emergency seams, black reflecting water, high-canopy trees, and low geometric planters define one district-wide language without visible fences or crude barricades.
 - The main boulevard, operational arc, perimeter maintenance arc, and three radial service routes are grounded WALK surfaces. The complete district remains within its shared outer-ring road cell and participates in normal HLOD streaming, project persistence, selection, and GLB export. Interiors are intentionally deferred; Porta Aegis and Praesidium Nexus are the recommended first interior phase.
 
+## Forensic / Cyberforensic Labs District
+
+The eastern outer ring now contains a complete fifteen-facility forensic campus conceived as one persistent-signature system rather than a police or administrative compound.
+
+- **Biological and material evidence:** Evidentia Nexus, Helix Trace Institute, Proteomic Residue Observatory, Microbiome Provenance Conservatory, Thanatoscan Monolith, Ridge Morphology Institute, Isotope Geolocation Spire, Nanotrace Materials Foundry, and Ecological Evidence Terraces progress from chain of custody through trace extraction and origin analysis.
+- **Cyberforensic evidence:** Silicon Autopsy Foundry, Malware Ecology Containment Tower, Network Reconstruction Array, Veritas Prism, and Quantum Evidence Vault move from damaged hardware and adversarial code through distributed incident reconstruction, media authenticity, and long-term cryptographic provenance.
+- **Convergence range:** the Cyber-Physical Reconstruction Range combines a crescent reconfigurable hangar, six sensor-calibration doors, configurable road and rail elements, a drone cage, water-damage basin, reconstruction gantries, and the rotating Forensic Eye.
+- The curved **Evidence Line** is a grounded boulevard with split amber/cyan signature traces, embedded sample/hash markers, four controlled cross-links, an outer sealed service arc, exposed environmental sampling drains, and an exact approach to every facility.
+- The elevated **Chainline** uses 71 opal transport-tube segments, eleven titanium pylons, and ten animated hermetic evidence capsules. Anthracite ceramic, black basalt, satin titanium, smoked glass, opal panels, conductive mesh, restricted copper detailing, low silver grass, monitored moss, trimmed trees, and shallow reflecting water establish the district-wide language.
+- The complete exterior campus remains inside its outer-ring sector with non-overlapping facility envelopes and supports normal WALK grounding, HLOD streaming, project persistence, selection, deterministic animation, text-state inspection, and GLB export. Interiors remain intentionally deferred by the exterior brief.
+
 ## Molecular Biology Labs District
 
 The Molecular Biology Labs District is a ten-facility exterior campus organized around the **Molecular Meridian**, with a skyline that progresses from low molecular landscapes through integrated mid-rise complexes to three vertical research landmarks.

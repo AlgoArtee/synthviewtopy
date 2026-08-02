@@ -7,7 +7,7 @@ const OUTPUT = process.env.SPECIALIZED_DISTRICT_LAYOUT_OUTPUT
 const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab'];
+const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab'];
 const roadNames = {
   security: 'SECURITY__MAIN_CURVED_BOULEVARD',
   'secret-labs': 'SECRET__BIOLOGICAL_ARC',
@@ -16,6 +16,7 @@ const roadNames = {
   'microbiology-labs': 'MICROBIOLOGY__INNER_COLONY_ARC',
   'molecular-biology-labs': 'MOLECULAR__MOLECULAR_MERIDIAN',
   'bioanalytics-lab': 'BIOANALYTICS__ANALYTICAL_CRESCENT',
+  'forensic-cyberforensic-lab': 'FORENSIC__EVIDENCE_LINE_BOULEVARD',
 };
 
 await mkdir(OUTPUT, { recursive: true });
@@ -170,7 +171,7 @@ try {
   if (audit.roadViolations.length) {
     throw new Error(`Migrated roads left their sector cells: ${JSON.stringify(audit.roadViolations.slice(0, 12))}`);
   }
-  if (audit.storedRevision !== 5 || audit.textRevision !== 5) {
+  if (audit.storedRevision !== 6 || audit.textRevision !== 6) {
     throw new Error(`Migration revision was not persisted: ${JSON.stringify({ stored: audit.storedRevision, text: audit.textRevision })}`);
   }
   if (audit.planningViolations !== 0) throw new Error(`Master-plan cell violations remain: ${audit.planningViolations}`);

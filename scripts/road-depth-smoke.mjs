@@ -48,7 +48,11 @@ const roadAudit = await page.evaluate(() => {
 });
 
 const invalidExploreDepthObjects = roadAudit.filter((record) => record.materials.some(
-  (material) => material.depthTest !== false || material.depthWrite !== false,
+  (material) => (
+    record.name.startsWith('Hexagonal coastal rail bed')
+      ? material.depthTest !== true || material.depthWrite !== true
+      : material.depthTest !== false || material.depthWrite !== false
+  ),
 ));
 const raisedRoads = roadAudit.filter((record) => (
   record.primarySurface && (record.maxY < 1.61 || record.maxY > 1.625 || record.height > 0.014)
@@ -166,7 +170,12 @@ const exploreDepthRestored = await page.evaluate(() => {
   world.transitRoot.traverse((child) => {
     if (!child.isMesh || !roadName.test(child.name)) return;
     const materials = Array.isArray(child.material) ? child.material : [child.material];
-    if (materials.some((material) => material.depthTest !== false || material.depthWrite !== false)) invalid.push(child.name);
+    const physicalRailBed = child.name.startsWith('Hexagonal coastal rail bed');
+    if (materials.some((material) => (
+      physicalRailBed
+        ? material.depthTest !== true || material.depthWrite !== true
+        : material.depthTest !== false || material.depthWrite !== false
+    ))) invalid.push(child.name);
   });
   return invalid;
 });

@@ -9,6 +9,15 @@ const ROAD_THICKNESS = 0.012;
 const ROAD_CENTER_Y = ROAD_SURFACE_Y - ROAD_THICKNESS * 0.5;
 const ROAD_MARKING_THICKNESS = 0.003;
 const ROAD_MARKING_CENTER_Y = ROAD_SURFACE_Y + ROAD_MARKING_THICKNESS * 0.5;
+const COASTAL_RAIL_SLEEPER_HEIGHT = metresToWorldUnits(0.12);
+const COASTAL_RAIL_CENTER_Y = ROAD_SURFACE_Y + metresToWorldUnits(0.14);
+const COASTAL_RAIL_HEIGHT = metresToWorldUnits(0.16);
+const COASTAL_RAIL_HEAD_Y = COASTAL_RAIL_CENTER_Y + COASTAL_RAIL_HEIGHT * 0.5;
+const COASTAL_RAIL_HALF_GAUGE = metresToWorldUnits(1.435 * 0.5);
+const COASTAL_TRAIN_WHEEL_RADIUS = metresToWorldUnits(0.46);
+const COASTAL_TRAIN_WHEEL_CENTER_Y = metresToWorldUnits(0.5);
+const COASTAL_TRAIN_ORIGIN_Y = COASTAL_RAIL_HEAD_Y
+  - (COASTAL_TRAIN_WHEEL_CENTER_Y - COASTAL_TRAIN_WHEEL_RADIUS);
 
 function islandShape(scale = 1) {
   const shape = new THREE.Shape();
@@ -280,12 +289,12 @@ function createCoastalTrain(index: number, railPath: readonly THREE.Vector3[], t
     for (const wheelZ of [z - length * 0.32, z + length * 0.32]) {
       for (const side of [-1, 1]) {
         const wheel = new THREE.Mesh(
-          new THREE.CylinderGeometry(metresToWorldUnits(0.46), metresToWorldUnits(0.46), metresToWorldUnits(0.2), 12),
+          new THREE.CylinderGeometry(COASTAL_TRAIN_WHEEL_RADIUS, COASTAL_TRAIN_WHEEL_RADIUS, metresToWorldUnits(0.2), 12),
           wheelMaterial,
         );
         wheel.name = `${name}__WHEEL`;
         wheel.rotation.z = Math.PI / 2;
-        wheel.position.set(side * metresToWorldUnits(1.35), metresToWorldUnits(0.5), wheelZ);
+        wheel.position.set(side * COASTAL_RAIL_HALF_GAUGE, COASTAL_TRAIN_WHEEL_CENTER_Y, wheelZ);
         train.add(wheel);
       }
     }
@@ -302,7 +311,9 @@ function createCoastalTrain(index: number, railPath: readonly THREE.Vector3[], t
     phaseDistance: totalPathLength * (index / 3),
     speed: metresToWorldUnits(7.5 + index * 1.2),
     trackOffset: index % 2 ? -0.21 : 0.21,
-    trackY: ROAD_SURFACE_Y,
+    trackY: COASTAL_TRAIN_ORIGIN_Y,
+    railHeadY: COASTAL_RAIL_HEAD_Y,
+    wheelContactY: COASTAL_RAIL_HEAD_Y,
   };
   return train;
 }
@@ -620,8 +631,8 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     color: '#343737',
     roughness: 0.96,
     metalness: 0.06,
-    depthTest: false,
-    depthWrite: false,
+    depthTest: true,
+    depthWrite: true,
     polygonOffset: true,
     polygonOffsetFactor: -2,
     polygonOffsetUnits: -2,
@@ -629,7 +640,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
   const sleeperMaterial = new THREE.MeshStandardMaterial({ color: '#493a2d', roughness: 0.9, metalness: 0.08 });
   const railMaterial = new THREE.MeshStandardMaterial({ color: '#a6afb0', roughness: 0.26, metalness: 0.94 });
   const signalMaterial = new THREE.MeshStandardMaterial({ color: '#ff5d48', emissive: '#ff2d1f', emissiveIntensity: 3.2, roughness: 0.22 });
-  ballastMaterial.userData.groundRoadDepthMode = true;
+  ballastMaterial.userData.physicalRailSurface = true;
   railPath.forEach((pathPoint, index) => {
     const nextPoint = railPath[(index + 1) % railPath.length];
     const start = new THREE.Vector3(pathPoint.x, ROAD_CENTER_Y, pathPoint.z);
@@ -640,13 +651,17 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     const perpendicular = new THREE.Vector3(-direction.z, 0, direction.x).normalize();
     const railBed = roadSegment(start, end, 1.18, ballastMaterial, ROAD_THICKNESS);
     railBed.name = `Hexagonal coastal rail bed ${index + 1}`;
-    railBed.renderOrder = 1;
-    railBed.userData = { walkable: true, districtDelimiter: true, roadType: 'perimeter-rail' };
+    railBed.userData = {
+      walkable: true,
+      districtDelimiter: true,
+      roadType: 'perimeter-rail',
+      physicalDepth: true,
+    };
     target.add(railBed);
 
     const sleeperSpacing = 0.72;
     const sleepersPerTrack = Math.max(2, Math.floor(segmentLength / sleeperSpacing));
-    const sleeperGeometry = new THREE.BoxGeometry(metresToWorldUnits(2.55), metresToWorldUnits(0.12), metresToWorldUnits(0.26));
+    const sleeperGeometry = new THREE.BoxGeometry(metresToWorldUnits(2.55), COASTAL_RAIL_SLEEPER_HEIGHT, metresToWorldUnits(0.26));
     const sleepers = new THREE.InstancedMesh(sleeperGeometry, sleeperMaterial, sleepersPerTrack * 2);
     sleepers.name = `Coastal railway sleepers ${index + 1}`;
     sleepers.castShadow = true;
@@ -667,12 +682,12 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     target.add(sleepers);
 
     for (const trackOffset of [-0.21, 0.21]) {
-      for (const gaugeOffset of [-metresToWorldUnits(0.7175), metresToWorldUnits(0.7175)]) {
+      for (const gaugeOffset of [-COASTAL_RAIL_HALF_GAUGE, COASTAL_RAIL_HALF_GAUGE]) {
         const offset = trackOffset + gaugeOffset;
         const railStart = pathPoint.clone().addScaledVector(perpendicular, offset);
         const railEnd = nextPoint.clone().addScaledVector(perpendicular, offset);
-        railStart.y = railEnd.y = ROAD_SURFACE_Y + metresToWorldUnits(0.14);
-        const rail = roadSegment(railStart, railEnd, metresToWorldUnits(0.09), railMaterial, metresToWorldUnits(0.16));
+        railStart.y = railEnd.y = COASTAL_RAIL_CENTER_Y;
+        const rail = roadSegment(railStart, railEnd, metresToWorldUnits(0.09), railMaterial, COASTAL_RAIL_HEIGHT);
         rail.name = `Coastal steel rail ${index + 1}`;
         rail.castShadow = true;
         target.add(rail);
@@ -700,6 +715,11 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     sectionCount: railPath.length,
     trainCount: 3,
     totalLengthMetres: Math.round(totalRailLength * 10),
+    railHeadY: COASTAL_RAIL_HEAD_Y,
+    trainOriginY: COASTAL_TRAIN_ORIGIN_Y,
+    wheelContactY: COASTAL_RAIL_HEAD_Y,
+    trackGaugeMetres: 1.435,
+    physicalDepth: true,
   };
 
   const biomeMap = new Map(biomes.map((biome) => [biome.id, biome]));

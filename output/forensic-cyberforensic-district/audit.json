@@ -1,0 +1,1069 @@
+{
+  "program": {
+    "identity": "Forensic / Cyberforensic Labs District",
+    "architecturalLanguage": "persistent signatures expressed as analytical monoliths, biological traces, material spectra, circuit paths, and isolated graph structures",
+    "buildingCount": 15,
+    "buildings": [
+      {
+        "code": "F1",
+        "name": "Evidentia Nexus",
+        "purpose": "Central Evidence Provenance and Chain-of-Custody Institute",
+        "placementZone": "Northern gateway toward the Security District",
+        "heightMetres": 82,
+        "exteriorMotif": "opposed basalt and white-ceramic monoliths divided by an amber provenance canyon"
+      },
+      {
+        "code": "F2",
+        "name": "Helix Trace Institute",
+        "purpose": "Forensic Genomics, Epigenetics and Biological Identity Laboratory",
+        "placementZone": "Inner edge toward Bioanalytics",
+        "heightMetres": 106,
+        "exteriorMotif": "paired elliptical sequencing towers wrapped in variable ceramic nucleotide fins"
+      },
+      {
+        "code": "F3",
+        "name": "Proteomic Residue Observatory",
+        "purpose": "Protein, Metabolite and Molecular Trace Analysis Center",
+        "placementZone": "Inner analytical band",
+        "heightMetres": 55,
+        "exteriorMotif": "a broad smoked-glass laboratory beneath a mass-spectrum roofline and droplet canopy"
+      },
+      {
+        "code": "F4",
+        "name": "Microbiome Provenance Conservatory",
+        "purpose": "Microbial Forensics and Biological Geolocation Laboratory",
+        "placementZone": "Eastern academic interface",
+        "heightMetres": 68,
+        "exteriorMotif": "overlapping translucent microbial-colony cylinders around a sealed dark core"
+      },
+      {
+        "code": "F5",
+        "name": "Thanatoscan Monolith",
+        "purpose": "Virtual Autopsy and Postmortem Imaging Institute",
+        "placementZone": "Quiet northern imaging court",
+        "heightMetres": 132,
+        "exteriorMotif": "an eleven-storey black monolith encircled by one ascending white scanning plane"
+      },
+      {
+        "code": "F6",
+        "name": "Ridge Morphology Institute",
+        "purpose": "Latent Print, Biometric and Anatomical Identification Laboratory",
+        "placementZone": "Central biometric transition",
+        "heightMetres": 54,
+        "exteriorMotif": "three titanium fingerprint-whorl walls enclosing a triangular calibration court"
+      },
+      {
+        "code": "F7",
+        "name": "Isotope Geolocation Spire",
+        "purpose": "Stable-Isotope and Elemental Origin Analysis Center",
+        "placementZone": "Southern boundary toward Inorganic Chemistry",
+        "heightMetres": 148,
+        "exteriorMotif": "a stratified triangular mineral spire pierced by elemental spectrum cuts"
+      },
+      {
+        "code": "F8",
+        "name": "Nanotrace Materials Foundry",
+        "purpose": "Microparticle, Fiber, Fracture and Residue Analysis Complex",
+        "placementZone": "Southern materials interface",
+        "heightMetres": 62,
+        "exteriorMotif": "five faceted charcoal fragments joined by iridescent residual seams and a technical spine"
+      },
+      {
+        "code": "F9",
+        "name": "Ecological Evidence Terraces",
+        "purpose": "Environmental Crime, Wildlife Forensics and eDNA Institute",
+        "placementZone": "Open eastern promenade toward the Academic District",
+        "heightMetres": 44,
+        "exteriorMotif": "a calibrated excavated landscape of planted laboratory terraces and visible sampling water"
+      },
+      {
+        "code": "F10",
+        "name": "Silicon Autopsy Foundry",
+        "purpose": "Semiconductor, Embedded-System and Hardware Forensics Laboratory",
+        "placementZone": "Cyberforensic threshold",
+        "heightMetres": 74,
+        "exteriorMotif": "a black integrated-circuit die crossed by physical copper and silver traces and a white insert"
+      },
+      {
+        "code": "F11",
+        "name": "Malware Ecology Containment Tower",
+        "purpose": "Autonomous Malware and Adversarial Code Research Facility",
+        "placementZone": "Isolated outer cyberforensic band",
+        "heightMetres": 156,
+        "exteriorMotif": "eight separated dark containment blocks held inside a braced titanium exoskeleton"
+      },
+      {
+        "code": "F12",
+        "name": "Network Reconstruction Array",
+        "purpose": "Cloud, Network and Distributed-System Forensics Complex",
+        "placementZone": "Outer distributed-systems plaza",
+        "heightMetres": 126,
+        "exteriorMotif": "three graph-latticed towers joined through opal junction nodes and tubular bridges"
+      },
+      {
+        "code": "F13",
+        "name": "Veritas Prism",
+        "purpose": "Synthetic Media, Deepfake and Sensor Authenticity Institute",
+        "placementZone": "Public-facing academic edge",
+        "heightMetres": 58,
+        "exteriorMotif": "a wedge prism with pixel, waveform, and displaced-frame evidence facades"
+      },
+      {
+        "code": "F14",
+        "name": "Quantum Evidence Vault",
+        "purpose": "Cryptographic Provenance and Long-Term Digital Evidence Institute",
+        "placementZone": "Buried outer archive ring",
+        "heightMetres": 32,
+        "exteriorMotif": "a seamless twelve-sided black vault behind a dogleg amber continuity bridge"
+      },
+      {
+        "code": "F15",
+        "name": "Cyber-Physical Reconstruction Range",
+        "purpose": "Autonomous Vehicle, Robot, IoT and Infrastructure Incident Laboratory",
+        "placementZone": "Southern outer convergence range",
+        "heightMetres": 72,
+        "exteriorMotif": "a reconfigurable crescent hangar, six sensor doors, test court, drone cage, and Forensic Eye"
+      }
+    ],
+    "interfaces": {
+      "northernSecurity": [
+        "Evidentia Nexus",
+        "Thanatoscan Monolith"
+      ],
+      "innerBioanalytics": [
+        "Helix Trace Institute",
+        "Proteomic Residue Observatory"
+      ],
+      "southernInorganicChemistry": [
+        "Isotope Geolocation Spire",
+        "Nanotrace Materials Foundry",
+        "Cyber-Physical Reconstruction Range"
+      ],
+      "easternAcademic": [
+        "Microbiome Provenance Conservatory",
+        "Ecological Evidence Terraces",
+        "Veritas Prism"
+      ]
+    },
+    "circulation": {
+      "centralBoulevard": "FORENSIC__EVIDENCE_LINE_BOULEVARD",
+      "illuminatedSignatureTraces": 2,
+      "restrictedServiceArc": "FORENSIC__SEALED_SERVICE_ARC",
+      "controlledEvidenceLinks": 4,
+      "exactBuildingApproaches": 15
+    },
+    "chainline": {
+      "elevatedSealedCourier": true,
+      "opalTubeSegments": 71,
+      "titaniumPylons": 11,
+      "hermeticCapsules": 10,
+      "verifiedEvidenceAmberPulses": true
+    },
+    "materials": [
+      "anthracite technical ceramic",
+      "volcanic basalt",
+      "satin titanium",
+      "dark stainless steel",
+      "white technical ceramic",
+      "electrochromic smoked glass",
+      "translucent opal glass",
+      "conductive mesh",
+      "limited hardware-forensic copper"
+    ],
+    "lighting": {
+      "primary": [
+        "cool white",
+        "ultraviolet violet",
+        "subdued cyan",
+        "verified-evidence amber"
+      ],
+      "redPolicy": "reserved exclusively for active isolation, contamination, or electromagnetic containment"
+    },
+    "landscape": {
+      "lowAndControlled": true,
+      "silverGrassBeds": 28,
+      "trimmedTrees": 14,
+      "shallowReflectingPools": 5,
+      "exposedSamplingDrains": 4,
+      "visualObstruction": false
+    },
+    "evidenceLifecycle": [
+      "evidence enters",
+      "fragments are isolated",
+      "signatures are extracted",
+      "events are reconstructed",
+      "provenance is preserved"
+    ],
+    "exteriorOnly": true
+  },
+  "population": {
+    "plannedFacilities": [
+      "Evidentia Nexus",
+      "Helix Trace Institute",
+      "Proteomic Residue Observatory",
+      "Microbiome Provenance Conservatory",
+      "Thanatoscan Monolith",
+      "Ridge Morphology Institute",
+      "Isotope Geolocation Spire",
+      "Nanotrace Materials Foundry",
+      "Ecological Evidence Terraces",
+      "Silicon Autopsy Foundry",
+      "Malware Ecology Containment Tower",
+      "Network Reconstruction Array",
+      "Veritas Prism",
+      "Quantum Evidence Vault",
+      "Cyber-Physical Reconstruction Range"
+    ],
+    "plannedObjects": [
+      "Evidence Line",
+      "Chainline",
+      "sealed service arc",
+      "controlled evidence links",
+      "exposed sampling drains",
+      "controlled analytical landscape"
+    ],
+    "realizedFeatureTags": [
+      "evidentia-nexus",
+      "helix-trace-institute",
+      "proteomic-residue-observatory",
+      "microbiome-provenance-conservatory",
+      "thanatoscan-monolith",
+      "ridge-morphology-institute",
+      "isotope-geolocation-spire",
+      "nanotrace-materials-foundry",
+      "ecological-evidence-terraces",
+      "silicon-autopsy-foundry",
+      "malware-ecology-containment-tower",
+      "network-reconstruction-array",
+      "veritas-prism",
+      "quantum-evidence-vault",
+      "cyber-physical-reconstruction-range"
+    ],
+    "realizedFacilityCount": 15,
+    "realizedObjectCount": 368,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 21,
+    "radialCoverage": 0.94,
+    "angularCoverage": 0.95,
+    "exteriorOnly": true,
+    "persistentSignatureSystem": true
+  },
+  "topLevelNames": [
+    "FORENSIC__DISTRICT_EVIDENCE_INFRASTRUCTURE",
+    "FORENSIC__CONTROLLED_LOW_ANALYTICAL_LANDSCAPE",
+    "FORENSIC__F1__EVIDENTIA_NEXUS",
+    "FORENSIC__F2__HELIX_TRACE_INSTITUTE",
+    "FORENSIC__F3__PROTEOMIC_RESIDUE_OBSERVATORY",
+    "FORENSIC__F4__MICROBIOME_PROVENANCE_CONSERVATORY",
+    "FORENSIC__F5__THANATOSCAN_MONOLITH",
+    "FORENSIC__F6__RIDGE_MORPHOLOGY_INSTITUTE",
+    "FORENSIC__F7__ISOTOPE_GEOLOCATION_SPIRE",
+    "FORENSIC__F8__NANOTRACE_MATERIALS_FOUNDRY",
+    "FORENSIC__F9__ECOLOGICAL_EVIDENCE_TERRACES",
+    "FORENSIC__F10__SILICON_AUTOPSY_FOUNDRY",
+    "FORENSIC__F11__MALWARE_ECOLOGY_CONTAINMENT_TOWER",
+    "FORENSIC__F12__NETWORK_RECONSTRUCTION_ARRAY",
+    "FORENSIC__F13__VERITAS_PRISM",
+    "FORENSIC__F14__QUANTUM_EVIDENCE_VAULT",
+    "FORENSIC__F15__CYBER_PHYSICAL_RECONSTRUCTION_RANGE"
+  ],
+  "codes": [
+    "F1",
+    "F2",
+    "F3",
+    "F4",
+    "F5",
+    "F6",
+    "F7",
+    "F8",
+    "F9",
+    "F10",
+    "F11",
+    "F12",
+    "F13",
+    "F14",
+    "F15"
+  ],
+  "facilityCount": 15,
+  "meshCount": 2056,
+  "uniqueNames": 2076,
+  "scaledMeshParentDetails": [],
+  "materialNames": [
+    "Chainline translucent opal glass",
+    "Evidence Line anthracite calibrated paving",
+    "Forensic anthracite technical ceramic",
+    "Forensic calibrated mineral aggregate",
+    "Forensic controlled silver grass",
+    "Forensic cool-white verification light",
+    "Forensic dark monitored moss",
+    "Forensic dark stainless steel",
+    "Forensic dormant containment-red indicator",
+    "Forensic electrochromic smoked glass",
+    "Forensic fine conductive mesh",
+    "Forensic pale reflective ceramic",
+    "Forensic pale specimen promenade paving",
+    "Forensic reference-culture green-blue glass",
+    "Forensic satin titanium",
+    "Forensic shallow black reflecting water",
+    "Forensic subdued-cyan evidence light",
+    "Forensic ultraviolet-violet evidence light",
+    "Forensic verified-evidence amber light",
+    "Forensic volcanic black basalt",
+    "Forensic white technical ceramic",
+    "Hardware-forensic copper trace metal"
+  ],
+  "animations": {
+    "forensic-emissive-pulse": 234,
+    "forensic-path-transit": 10,
+    "forensic-rotation": 1
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "facilityBoxes": [
+    {
+      "code": "F1",
+      "min": [
+        226.0322927355488,
+        1.3402735313195535,
+        -110.61622422345228
+      ],
+      "max": [
+        245.96231267295258,
+        14.666,
+        -88.23002695655536
+      ]
+    },
+    {
+      "code": "F2",
+      "min": [
+        244.0951889271667,
+        1.6760000000000002,
+        -46.0258064867473
+      ],
+      "max": [
+        257.9680867538372,
+        13.34100001192093,
+        -29.96892553773462
+      ]
+    },
+    {
+      "code": "F3",
+      "min": [
+        244.79026298437913,
+        1.6760000000000002,
+        23.5382176730184
+      ],
+      "max": [
+        259.80537693445046,
+        8.456,
+        43.57956896940264
+      ]
+    },
+    {
+      "code": "F4",
+      "min": [
+        226.55796932033212,
+        1.692378964930771,
+        84.63189686820218
+      ],
+      "max": [
+        250.4010914632646,
+        10.500764268677163,
+        108.47501901113466
+      ]
+    },
+    {
+      "code": "F5",
+      "min": [
+        248.45502563665102,
+        1.7060000000000002,
+        -87.9045024210059
+      ],
+      "max": [
+        263.40382671486515,
+        15.682991348564626,
+        -75.98176550384275
+      ]
+    },
+    {
+      "code": "F6",
+      "min": [
+        258.464419513489,
+        1.6860000000000002,
+        -40.86783052871453
+      ],
+      "max": [
+        275.56000009367676,
+        7.941487026572228,
+        -25.01546232154363
+      ]
+    },
+    {
+      "code": "F7",
+      "min": [
+        260.8727967005703,
+        1.696,
+        28.42755797347298
+      ],
+      "max": [
+        275.8066159904501,
+        15.356000003576277,
+        42.43838200572612
+      ]
+    },
+    {
+      "code": "F8",
+      "min": [
+        251.64781563647836,
+        1.7660000000000005,
+        64.92401738480307
+      ],
+      "max": [
+        266.32542921239366,
+        8.516000095367431,
+        84.93476265988016
+      ]
+    },
+    {
+      "code": "F9",
+      "min": [
+        253.28742685095335,
+        1.6560000000000001,
+        -120.95514818996415
+      ],
+      "max": [
+        272.5085005960128,
+        9.701,
+        -97.68865303976338
+      ]
+    },
+    {
+      "code": "F10",
+      "min": [
+        266.4368583674058,
+        1.786,
+        -68.36875914589287
+      ],
+      "max": [
+        284.72568241484015,
+        10.986,
+        -50.72907794055817
+      ]
+    },
+    {
+      "code": "F11",
+      "min": [
+        275.95579363432074,
+        1.6860000000000002,
+        18.88135520517682
+      ],
+      "max": [
+        288.84112414844725,
+        19.666,
+        30.07975167505231
+      ]
+    },
+    {
+      "code": "F12",
+      "min": [
+        258.6964874123942,
+        1.400942125615715,
+        90.89701457389047
+      ],
+      "max": [
+        274.7752939486723,
+        16.866,
+        105.6922541791913
+      ]
+    },
+    {
+      "code": "F13",
+      "min": [
+        275.386228470638,
+        -3.1640000000000006,
+        -92.23699507313785
+      ],
+      "max": [
+        292.15987229037034,
+        8.566,
+        -73.90981712753113
+      ]
+    },
+    {
+      "code": "F14",
+      "min": [
+        280.7998844739988,
+        1.0659999761581425,
+        -42.49702043117533
+      ],
+      "max": [
+        306.9228865364645,
+        9.866,
+        -18.61091518382954
+      ]
+    },
+    {
+      "code": "F15",
+      "min": [
+        279.71786623040805,
+        1.1937798501550683,
+        47.2014208587955
+      ],
+      "max": [
+        299.6478306604343,
+        12.650808129983007,
+        69.38465832908683
+      ]
+    }
+  ],
+  "sector": {
+    "innerRadius": 240,
+    "outerRadius": 309,
+    "startAngle": -0.5235987755982988,
+    "endAngle": 0.5235987755982988,
+    "centerAngle": 0,
+    "sectorIndex": 0,
+    "sectorCount": 6,
+    "sharedCellIndex": 0,
+    "sharedCellCount": 1,
+    "delimiterModel": "shared-ring-roads-and-six-spokes",
+    "areaWorldUnitsSquared": 19834.445218439156
+  },
+  "routeAudit": [
+    {
+      "name": "FORENSIC__EVIDENCE_LINE_BOULEVARD",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__SEALED_SERVICE_ARC",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__CONTROLLED_EVIDENCE_LINK_1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__CONTROLLED_EVIDENCE_LINK_2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__CONTROLLED_EVIDENCE_LINK_3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__CONTROLLED_EVIDENCE_LINK_4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F5",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F6",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F7",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F8",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F9",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F10",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F11",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F12",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F13",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F14",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "FORENSIC__BUILDING_APPROACH_F15",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "roadPoint": [
+    273.9596234411001,
+    1.6459999984502793,
+    1.141131043434143
+  ],
+  "roadGround": 1.6459999984502793,
+  "textDistrict": {
+    "identity": "Forensic / Cyberforensic Labs District",
+    "architecturalLanguage": "persistent signatures expressed as analytical monoliths, biological traces, material spectra, circuit paths, and isolated graph structures",
+    "buildingCount": 15,
+    "buildings": [
+      {
+        "code": "F1",
+        "name": "Evidentia Nexus",
+        "purpose": "Central Evidence Provenance and Chain-of-Custody Institute",
+        "placementZone": "Northern gateway toward the Security District",
+        "heightMetres": 82,
+        "exteriorMotif": "opposed basalt and white-ceramic monoliths divided by an amber provenance canyon"
+      },
+      {
+        "code": "F2",
+        "name": "Helix Trace Institute",
+        "purpose": "Forensic Genomics, Epigenetics and Biological Identity Laboratory",
+        "placementZone": "Inner edge toward Bioanalytics",
+        "heightMetres": 106,
+        "exteriorMotif": "paired elliptical sequencing towers wrapped in variable ceramic nucleotide fins"
+      },
+      {
+        "code": "F3",
+        "name": "Proteomic Residue Observatory",
+        "purpose": "Protein, Metabolite and Molecular Trace Analysis Center",
+        "placementZone": "Inner analytical band",
+        "heightMetres": 55,
+        "exteriorMotif": "a broad smoked-glass laboratory beneath a mass-spectrum roofline and droplet canopy"
+      },
+      {
+        "code": "F4",
+        "name": "Microbiome Provenance Conservatory",
+        "purpose": "Microbial Forensics and Biological Geolocation Laboratory",
+        "placementZone": "Eastern academic interface",
+        "heightMetres": 68,
+        "exteriorMotif": "overlapping translucent microbial-colony cylinders around a sealed dark core"
+      },
+      {
+        "code": "F5",
+        "name": "Thanatoscan Monolith",
+        "purpose": "Virtual Autopsy and Postmortem Imaging Institute",
+        "placementZone": "Quiet northern imaging court",
+        "heightMetres": 132,
+        "exteriorMotif": "an eleven-storey black monolith encircled by one ascending white scanning plane"
+      },
+      {
+        "code": "F6",
+        "name": "Ridge Morphology Institute",
+        "purpose": "Latent Print, Biometric and Anatomical Identification Laboratory",
+        "placementZone": "Central biometric transition",
+        "heightMetres": 54,
+        "exteriorMotif": "three titanium fingerprint-whorl walls enclosing a triangular calibration court"
+      },
+      {
+        "code": "F7",
+        "name": "Isotope Geolocation Spire",
+        "purpose": "Stable-Isotope and Elemental Origin Analysis Center",
+        "placementZone": "Southern boundary toward Inorganic Chemistry",
+        "heightMetres": 148,
+        "exteriorMotif": "a stratified triangular mineral spire pierced by elemental spectrum cuts"
+      },
+      {
+        "code": "F8",
+        "name": "Nanotrace Materials Foundry",
+        "purpose": "Microparticle, Fiber, Fracture and Residue Analysis Complex",
+        "placementZone": "Southern materials interface",
+        "heightMetres": 62,
+        "exteriorMotif": "five faceted charcoal fragments joined by iridescent residual seams and a technical spine"
+      },
+      {
+        "code": "F9",
+        "name": "Ecological Evidence Terraces",
+        "purpose": "Environmental Crime, Wildlife Forensics and eDNA Institute",
+        "placementZone": "Open eastern promenade toward the Academic District",
+        "heightMetres": 44,
+        "exteriorMotif": "a calibrated excavated landscape of planted laboratory terraces and visible sampling water"
+      },
+      {
+        "code": "F10",
+        "name": "Silicon Autopsy Foundry",
+        "purpose": "Semiconductor, Embedded-System and Hardware Forensics Laboratory",
+        "placementZone": "Cyberforensic threshold",
+        "heightMetres": 74,
+        "exteriorMotif": "a black integrated-circuit die crossed by physical copper and silver traces and a white insert"
+      },
+      {
+        "code": "F11",
+        "name": "Malware Ecology Containment Tower",
+        "purpose": "Autonomous Malware and Adversarial Code Research Facility",
+        "placementZone": "Isolated outer cyberforensic band",
+        "heightMetres": 156,
+        "exteriorMotif": "eight separated dark containment blocks held inside a braced titanium exoskeleton"
+      },
+      {
+        "code": "F12",
+        "name": "Network Reconstruction Array",
+        "purpose": "Cloud, Network and Distributed-System Forensics Complex",
+        "placementZone": "Outer distributed-systems plaza",
+        "heightMetres": 126,
+        "exteriorMotif": "three graph-latticed towers joined through opal junction nodes and tubular bridges"
+      },
+      {
+        "code": "F13",
+        "name": "Veritas Prism",
+        "purpose": "Synthetic Media, Deepfake and Sensor Authenticity Institute",
+        "placementZone": "Public-facing academic edge",
+        "heightMetres": 58,
+        "exteriorMotif": "a wedge prism with pixel, waveform, and displaced-frame evidence facades"
+      },
+      {
+        "code": "F14",
+        "name": "Quantum Evidence Vault",
+        "purpose": "Cryptographic Provenance and Long-Term Digital Evidence Institute",
+        "placementZone": "Buried outer archive ring",
+        "heightMetres": 32,
+        "exteriorMotif": "a seamless twelve-sided black vault behind a dogleg amber continuity bridge"
+      },
+      {
+        "code": "F15",
+        "name": "Cyber-Physical Reconstruction Range",
+        "purpose": "Autonomous Vehicle, Robot, IoT and Infrastructure Incident Laboratory",
+        "placementZone": "Southern outer convergence range",
+        "heightMetres": 72,
+        "exteriorMotif": "a reconfigurable crescent hangar, six sensor doors, test court, drone cage, and Forensic Eye"
+      }
+    ],
+    "interfaces": {
+      "northernSecurity": [
+        "Evidentia Nexus",
+        "Thanatoscan Monolith"
+      ],
+      "innerBioanalytics": [
+        "Helix Trace Institute",
+        "Proteomic Residue Observatory"
+      ],
+      "southernInorganicChemistry": [
+        "Isotope Geolocation Spire",
+        "Nanotrace Materials Foundry",
+        "Cyber-Physical Reconstruction Range"
+      ],
+      "easternAcademic": [
+        "Microbiome Provenance Conservatory",
+        "Ecological Evidence Terraces",
+        "Veritas Prism"
+      ]
+    },
+    "circulation": {
+      "centralBoulevard": "FORENSIC__EVIDENCE_LINE_BOULEVARD",
+      "illuminatedSignatureTraces": 2,
+      "restrictedServiceArc": "FORENSIC__SEALED_SERVICE_ARC",
+      "controlledEvidenceLinks": 4,
+      "exactBuildingApproaches": 15
+    },
+    "chainline": {
+      "elevatedSealedCourier": true,
+      "opalTubeSegments": 71,
+      "titaniumPylons": 11,
+      "hermeticCapsules": 10,
+      "verifiedEvidenceAmberPulses": true
+    },
+    "materials": [
+      "anthracite technical ceramic",
+      "volcanic basalt",
+      "satin titanium",
+      "dark stainless steel",
+      "white technical ceramic",
+      "electrochromic smoked glass",
+      "translucent opal glass",
+      "conductive mesh",
+      "limited hardware-forensic copper"
+    ],
+    "lighting": {
+      "primary": [
+        "cool white",
+        "ultraviolet violet",
+        "subdued cyan",
+        "verified-evidence amber"
+      ],
+      "redPolicy": "reserved exclusively for active isolation, contamination, or electromagnetic containment"
+    },
+    "landscape": {
+      "lowAndControlled": true,
+      "silverGrassBeds": 28,
+      "trimmedTrees": 14,
+      "shallowReflectingPools": 5,
+      "exposedSamplingDrains": 4,
+      "visualObstruction": false
+    },
+    "evidenceLifecycle": [
+      "evidence enters",
+      "fragments are isolated",
+      "signatures are extracted",
+      "events are reconstructed",
+      "provenance is preserved"
+    ],
+    "exteriorOnly": true
+  },
+  "specializedRevision": 6,
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "streaming": {
+    "id": "forensic-cyberforensic-lab",
+    "kind": "district",
+    "detailResident": true,
+    "proxyVisible": false,
+    "distanceMetres": 0
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000000137,
+    "grounded": true,
+    "position": [
+      273.956,
+      1.808,
+      1.304
+    ],
+    "text": {
+      "identity": "Forensic / Cyberforensic Labs District",
+      "architecturalLanguage": "persistent signatures expressed as analytical monoliths, biological traces, material spectra, circuit paths, and isolated graph structures",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "F1",
+          "name": "Evidentia Nexus",
+          "purpose": "Central Evidence Provenance and Chain-of-Custody Institute",
+          "placementZone": "Northern gateway toward the Security District",
+          "heightMetres": 82,
+          "exteriorMotif": "opposed basalt and white-ceramic monoliths divided by an amber provenance canyon"
+        },
+        {
+          "code": "F2",
+          "name": "Helix Trace Institute",
+          "purpose": "Forensic Genomics, Epigenetics and Biological Identity Laboratory",
+          "placementZone": "Inner edge toward Bioanalytics",
+          "heightMetres": 106,
+          "exteriorMotif": "paired elliptical sequencing towers wrapped in variable ceramic nucleotide fins"
+        },
+        {
+          "code": "F3",
+          "name": "Proteomic Residue Observatory",
+          "purpose": "Protein, Metabolite and Molecular Trace Analysis Center",
+          "placementZone": "Inner analytical band",
+          "heightMetres": 55,
+          "exteriorMotif": "a broad smoked-glass laboratory beneath a mass-spectrum roofline and droplet canopy"
+        },
+        {
+          "code": "F4",
+          "name": "Microbiome Provenance Conservatory",
+          "purpose": "Microbial Forensics and Biological Geolocation Laboratory",
+          "placementZone": "Eastern academic interface",
+          "heightMetres": 68,
+          "exteriorMotif": "overlapping translucent microbial-colony cylinders around a sealed dark core"
+        },
+        {
+          "code": "F5",
+          "name": "Thanatoscan Monolith",
+          "purpose": "Virtual Autopsy and Postmortem Imaging Institute",
+          "placementZone": "Quiet northern imaging court",
+          "heightMetres": 132,
+          "exteriorMotif": "an eleven-storey black monolith encircled by one ascending white scanning plane"
+        },
+        {
+          "code": "F6",
+          "name": "Ridge Morphology Institute",
+          "purpose": "Latent Print, Biometric and Anatomical Identification Laboratory",
+          "placementZone": "Central biometric transition",
+          "heightMetres": 54,
+          "exteriorMotif": "three titanium fingerprint-whorl walls enclosing a triangular calibration court"
+        },
+        {
+          "code": "F7",
+          "name": "Isotope Geolocation Spire",
+          "purpose": "Stable-Isotope and Elemental Origin Analysis Center",
+          "placementZone": "Southern boundary toward Inorganic Chemistry",
+          "heightMetres": 148,
+          "exteriorMotif": "a stratified triangular mineral spire pierced by elemental spectrum cuts"
+        },
+        {
+          "code": "F8",
+          "name": "Nanotrace Materials Foundry",
+          "purpose": "Microparticle, Fiber, Fracture and Residue Analysis Complex",
+          "placementZone": "Southern materials interface",
+          "heightMetres": 62,
+          "exteriorMotif": "five faceted charcoal fragments joined by iridescent residual seams and a technical spine"
+        },
+        {
+          "code": "F9",
+          "name": "Ecological Evidence Terraces",
+          "purpose": "Environmental Crime, Wildlife Forensics and eDNA Institute",
+          "placementZone": "Open eastern promenade toward the Academic District",
+          "heightMetres": 44,
+          "exteriorMotif": "a calibrated excavated landscape of planted laboratory terraces and visible sampling water"
+        },
+        {
+          "code": "F10",
+          "name": "Silicon Autopsy Foundry",
+          "purpose": "Semiconductor, Embedded-System and Hardware Forensics Laboratory",
+          "placementZone": "Cyberforensic threshold",
+          "heightMetres": 74,
+          "exteriorMotif": "a black integrated-circuit die crossed by physical copper and silver traces and a white insert"
+        },
+        {
+          "code": "F11",
+          "name": "Malware Ecology Containment Tower",
+          "purpose": "Autonomous Malware and Adversarial Code Research Facility",
+          "placementZone": "Isolated outer cyberforensic band",
+          "heightMetres": 156,
+          "exteriorMotif": "eight separated dark containment blocks held inside a braced titanium exoskeleton"
+        },
+        {
+          "code": "F12",
+          "name": "Network Reconstruction Array",
+          "purpose": "Cloud, Network and Distributed-System Forensics Complex",
+          "placementZone": "Outer distributed-systems plaza",
+          "heightMetres": 126,
+          "exteriorMotif": "three graph-latticed towers joined through opal junction nodes and tubular bridges"
+        },
+        {
+          "code": "F13",
+          "name": "Veritas Prism",
+          "purpose": "Synthetic Media, Deepfake and Sensor Authenticity Institute",
+          "placementZone": "Public-facing academic edge",
+          "heightMetres": 58,
+          "exteriorMotif": "a wedge prism with pixel, waveform, and displaced-frame evidence facades"
+        },
+        {
+          "code": "F14",
+          "name": "Quantum Evidence Vault",
+          "purpose": "Cryptographic Provenance and Long-Term Digital Evidence Institute",
+          "placementZone": "Buried outer archive ring",
+          "heightMetres": 32,
+          "exteriorMotif": "a seamless twelve-sided black vault behind a dogleg amber continuity bridge"
+        },
+        {
+          "code": "F15",
+          "name": "Cyber-Physical Reconstruction Range",
+          "purpose": "Autonomous Vehicle, Robot, IoT and Infrastructure Incident Laboratory",
+          "placementZone": "Southern outer convergence range",
+          "heightMetres": 72,
+          "exteriorMotif": "a reconfigurable crescent hangar, six sensor doors, test court, drone cage, and Forensic Eye"
+        }
+      ],
+      "interfaces": {
+        "northernSecurity": [
+          "Evidentia Nexus",
+          "Thanatoscan Monolith"
+        ],
+        "innerBioanalytics": [
+          "Helix Trace Institute",
+          "Proteomic Residue Observatory"
+        ],
+        "southernInorganicChemistry": [
+          "Isotope Geolocation Spire",
+          "Nanotrace Materials Foundry",
+          "Cyber-Physical Reconstruction Range"
+        ],
+        "easternAcademic": [
+          "Microbiome Provenance Conservatory",
+          "Ecological Evidence Terraces",
+          "Veritas Prism"
+        ]
+      },
+      "circulation": {
+        "centralBoulevard": "FORENSIC__EVIDENCE_LINE_BOULEVARD",
+        "illuminatedSignatureTraces": 2,
+        "restrictedServiceArc": "FORENSIC__SEALED_SERVICE_ARC",
+        "controlledEvidenceLinks": 4,
+        "exactBuildingApproaches": 15
+      },
+      "chainline": {
+        "elevatedSealedCourier": true,
+        "opalTubeSegments": 71,
+        "titaniumPylons": 11,
+        "hermeticCapsules": 10,
+        "verifiedEvidenceAmberPulses": true
+      },
+      "materials": [
+        "anthracite technical ceramic",
+        "volcanic basalt",
+        "satin titanium",
+        "dark stainless steel",
+        "white technical ceramic",
+        "electrochromic smoked glass",
+        "translucent opal glass",
+        "conductive mesh",
+        "limited hardware-forensic copper"
+      ],
+      "lighting": {
+        "primary": [
+          "cool white",
+          "ultraviolet violet",
+          "subdued cyan",
+          "verified-evidence amber"
+        ],
+        "redPolicy": "reserved exclusively for active isolation, contamination, or electromagnetic containment"
+      },
+      "landscape": {
+        "lowAndControlled": true,
+        "silverGrassBeds": 28,
+        "trimmedTrees": 14,
+        "shallowReflectingPools": 5,
+        "exposedSamplingDrains": 4,
+        "visualObstruction": false
+      },
+      "evidenceLifecycle": [
+        "evidence enters",
+        "fragments are isolated",
+        "signatures are extracted",
+        "events are reconstructed",
+        "provenance is preserved"
+      ],
+      "exteriorOnly": true
+    },
+    "activeDistrict": "forensic-cyberforensic-lab"
+  },
+  "errors": []
+}

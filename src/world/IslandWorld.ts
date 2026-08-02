@@ -157,7 +157,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 5;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 6;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -166,6 +166,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'microbiology-labs': 3,
   'molecular-biology-labs': 4,
   'bioanalytics-lab': 5,
+  'forensic-cyberforensic-lab': 6,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
@@ -2842,6 +2843,42 @@ export class IslandWorld {
         if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
           object.material.opacity = 0.8 * (1 - progress);
           object.material.transparent = true;
+        }
+      } else if (object.userData.animate === 'forensic-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.015) * Math.PI * 2
+            - Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.28),
+            Number(object.userData.maxIntensity ?? 3.5),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'forensic-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z'
+          ? object.userData.axis
+          : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.01);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'forensic-path-transit') {
+        const path = object.userData.path as Array<[number, number, number]>;
+        if (Array.isArray(path) && path.length > 1) {
+          const progress = (
+            this.elapsed * Number(object.userData.speed ?? 0.005)
+            + Number(object.userData.phase ?? 0)
+          ) % 1;
+          const scaled = progress * (path.length - 1);
+          const index = Math.min(path.length - 2, Math.floor(scaled));
+          const localT = scaled - index;
+          object.position.set(
+            THREE.MathUtils.lerp(path[index][0], path[index + 1][0], localT),
+            THREE.MathUtils.lerp(path[index][1], path[index + 1][1], localT),
+            THREE.MathUtils.lerp(path[index][2], path[index + 1][2], localT),
+          );
         }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
@@ -7139,6 +7176,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const microbiologyDistrict = this.objectGroups.get('microbiology-labs')?.userData.microbiologyDistrict ?? null;
     const molecularBiologyDistrict = this.objectGroups.get('molecular-biology-labs')?.userData.molecularBiologyDistrict ?? null;
     const bioanalyticsLabsDistrict = this.objectGroups.get('bioanalytics-lab')?.userData.bioanalyticsLabsDistrict ?? null;
+    const forensicCyberforensicDistrict = this.objectGroups.get('forensic-cyberforensic-lab')?.userData.forensicCyberforensicDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7268,6 +7306,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       microbiologyDistrict,
       molecularBiologyDistrict,
       bioanalyticsLabsDistrict,
+      forensicCyberforensicDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

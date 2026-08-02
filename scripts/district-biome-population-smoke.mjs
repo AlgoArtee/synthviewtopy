@@ -202,6 +202,7 @@ for (const district of audit.districtResults) {
     'secret-labs',
     'medical-labs',
     'pharmacology-labs',
+    'microbiology-labs',
   ].includes(district.id);
   if (
     district.population?.realizedFacilityCount < 4

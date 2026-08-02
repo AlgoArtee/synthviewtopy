@@ -1,0 +1,709 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Microbiology Labs District",
+      "progression": [
+        "microbial conflict",
+        "community ecology",
+        "biochemical production",
+        "extreme life",
+        "planetary surveillance"
+      ],
+      "architecturalLanguage": "abstract microbial colonies, biofilms, phage geometry, symbiotic networks, fermentation gradients, and monitored ecosystems",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "The Lytic Crown",
+          "purpose": "Institute for Phage Engineering and Antimicrobial Resistance",
+          "placementZone": "Inner district threshold and Lysis Court",
+          "heightMetres": 110,
+          "exteriorMotif": "faceted phage geometry and expanding lysis zones"
+        },
+        {
+          "code": "M2",
+          "name": "The Symbiome Terraces",
+          "purpose": "Center for Microbiome Therapeutics and Engineered Microbial Communities",
+          "placementZone": "Western garden and water-channel edge",
+          "heightMetres": 80,
+          "exteriorMotif": "interdependent communities and metabolic networks"
+        },
+        {
+          "code": "M3",
+          "name": "The Metabolite Foundry",
+          "purpose": "Institute for Microbial Natural Products and Precision Fermentation",
+          "placementZone": "Eastern production and service edge",
+          "heightMetres": 150,
+          "exteriorMotif": "fermentation vessels and biosynthetic machinery"
+        },
+        {
+          "code": "M4",
+          "name": "The Black Brine Observatory",
+          "purpose": "Center for Extremophile Microbiology and Astrobiological Systems",
+          "placementZone": "Outer mineral ridge and contained basin field",
+          "heightMetres": 92,
+          "exteriorMotif": "extreme environments and planetary simulation"
+        },
+        {
+          "code": "M5",
+          "name": "The One Health Sentinel",
+          "purpose": "Center for Emerging Pathogens and Planetary Microbial Surveillance",
+          "placementZone": "Outer boulevard planetary-surveillance landmark",
+          "heightMetres": 120,
+          "exteriorMotif": "global surveillance and a protected biological core"
+        }
+      ],
+      "skyline": [
+        "The Lytic Crown",
+        "The Symbiome Terraces",
+        "The Metabolite Foundry",
+        "The Black Brine Observatory",
+        "The One Health Sentinel"
+      ],
+      "circulation": {
+        "primaryWalk": "MICROBIOLOGY__INNER_COLONY_ARC",
+        "hierarchy": [
+          "inner colony arc",
+          "paired research spines",
+          "outer research arc",
+          "short building approaches"
+        ],
+        "majorRouteCount": 4,
+        "colonyPlazas": 3,
+        "shallowWaterChannels": 2,
+        "exactBuildingApproaches": 5,
+        "directCrossSiteDiagonals": 0,
+        "publicAndResearchInfrastructureLegible": true
+      },
+      "materials": [
+        "pale antimicrobial ceramic",
+        "silver titanium",
+        "cyan-green-violet-amber iridescent glass",
+        "sterilized basalt",
+        "perforated cellular facades",
+        "controlled rooftop ecology",
+        "cyan microbial communication light"
+      ],
+      "responsiveSystems": {
+        "slowArchitecturalMotion": true,
+        "activeResearchColumns": 4,
+        "interbuildingCommunicationLinks": 4,
+        "planetaryAndAtmosphericSensors": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Lytic Crown",
+        "The Symbiome Terraces",
+        "The Metabolite Foundry",
+        "The Black Brine Observatory",
+        "The One Health Sentinel"
+      ],
+      "plannedObjects": [
+        "Microbial Communication Network",
+        "Colony Plazas",
+        "Biosensor Gardens",
+        "Shallow Research Water Channels",
+        "Environmental Sampling Pylons"
+      ],
+      "realizedFeatureTags": [
+        "the-lytic-crown",
+        "the-symbiome-terraces",
+        "the-metabolite-foundry",
+        "the-black-brine-observatory",
+        "the-one-health-sentinel"
+      ],
+      "realizedFacilityCount": 5,
+      "realizedObjectCount": 144,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 9,
+      "radialCoverage": 0.93,
+      "angularCoverage": 0.9,
+      "exteriorOnly": true,
+      "microbialSystemsLandscape": true
+    },
+    "facilityCount": 5,
+    "codes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5"
+    ],
+    "displayNames": [
+      "The Black Brine Observatory",
+      "The Lytic Crown",
+      "The Metabolite Foundry",
+      "The One Health Sentinel",
+      "The Symbiome Terraces"
+    ],
+    "dimensions": [
+      {
+        "code": "M1",
+        "footprintMetres": [
+          140,
+          140
+        ],
+        "heightMetres": 110,
+        "placementZone": "Inner district threshold and Lysis Court",
+        "worldPosition": [
+          98.91999999999999,
+          1.6660000000000001,
+          0
+        ]
+      },
+      {
+        "code": "M2",
+        "footprintMetres": [
+          175,
+          150
+        ],
+        "heightMetres": 80,
+        "placementZone": "Western garden and water-channel edge",
+        "worldPosition": [
+          91.80165694222657,
+          1.6660000000000001,
+          -31.62418376277473
+        ]
+      },
+      {
+        "code": "M3",
+        "footprintMetres": [
+          210,
+          135
+        ],
+        "heightMetres": 150,
+        "placementZone": "Eastern production and service edge",
+        "worldPosition": [
+          91.80165694222657,
+          1.6660000000000001,
+          31.62418376277473
+        ]
+      },
+      {
+        "code": "M4",
+        "footprintMetres": [
+          170,
+          145
+        ],
+        "heightMetres": 92,
+        "placementZone": "Outer mineral ridge and contained basin field",
+        "worldPosition": [
+          113.3494020323649,
+          1.6660000000000001,
+          -24.39106793285836
+        ]
+      },
+      {
+        "code": "M5",
+        "footprintMetres": [
+          190,
+          190
+        ],
+        "heightMetres": 120,
+        "placementZone": "Outer boulevard planetary-surveillance landmark",
+        "worldPosition": [
+          113.0837641984167,
+          1.6660000000000001,
+          21.081349546859805
+        ]
+      }
+    ],
+    "facilityBounds": [
+      {
+        "code": "M1",
+        "min": [
+          84.47499982833861,
+          1.6660000000000001,
+          -8.36
+        ],
+        "max": [
+          106.21999999999998,
+          15.581350330504504,
+          9.02
+        ]
+      },
+      {
+        "code": "M2",
+        "min": [
+          81.90958716152952,
+          1.6660000000000001,
+          -42.198003775174406
+        ],
+        "max": [
+          101.69372672292363,
+          9.440723039132925,
+          -21.050363750375055
+        ]
+      },
+      {
+        "code": "M3",
+        "min": [
+          81.20981906867887,
+          1.6660000000000001,
+          19.45811277124381
+        ],
+        "max": [
+          101.60345221565868,
+          16.966,
+          43.79025475430566
+        ]
+      },
+      {
+        "code": "M4",
+        "min": [
+          101.40955009295452,
+          1.2160000000000002,
+          -34.609659035788034
+        ],
+        "max": [
+          121.84167481158754,
+          12.366,
+          -14.172476829928685
+        ]
+      },
+      {
+        "code": "M5",
+        "min": [
+          100.87386084363006,
+          0.8859999570846537,
+          9.418063352994057
+        ],
+        "max": [
+          124.31550893658513,
+          17.272628876723488,
+          32.31309428502824
+        ]
+      }
+    ],
+    "meshCount": 917,
+    "uniqueNames": 940,
+    "materialNames": [
+      "Black Brine rust-red mineral shelf",
+      "Black Brine sintered black ceramic",
+      "Black Brine ultraviolet fissure light",
+      "Black Brine volcanic mineral stone",
+      "Lytic Crown cobalt cycle light",
+      "Metabolite Foundry amber process light",
+      "Metabolite amber scientific glass",
+      "Microbiology black reflecting water",
+      "Microbiology bronze titanium",
+      "Microbiology charcoal colony plaza paving",
+      "Microbiology clear environmental glass",
+      "Microbiology cold-white instrumentation light",
+      "Microbiology controlled biosensor planting",
+      "Microbiology cyan biosensor water",
+      "Microbiology cyan communication light",
+      "Microbiology cyan green violet iridescent glass",
+      "Microbiology dark titanium",
+      "Microbiology metabolite amber ceramic",
+      "Microbiology pale antimicrobial ceramic",
+      "Microbiology pearl glazed ceramic",
+      "Microbiology polished pale pedestrian paving",
+      "Microbiology silver titanium",
+      "Microbiology smoked silver glass",
+      "Microbiology sterilized basalt foundation",
+      "Microbiology symbiome green ceramic",
+      "Symbiome moss and medicinal planting"
+    ],
+    "animated": [
+      {
+        "name": "MICROBIOLOGY__INTERBUILDING_COMMUNICATION_LINK_1",
+        "animate": "microbiology-network-signal"
+      },
+      {
+        "name": "MICROBIOLOGY__INTERBUILDING_COMMUNICATION_LINK_2",
+        "animate": "microbiology-network-signal"
+      },
+      {
+        "name": "MICROBIOLOGY__INTERBUILDING_COMMUNICATION_LINK_3",
+        "animate": "microbiology-network-signal"
+      },
+      {
+        "name": "MICROBIOLOGY__INTERBUILDING_COMMUNICATION_LINK_4",
+        "animate": "microbiology-network-signal"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__EXPANDING_LYSIS_RING_2",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__EXPANDING_LYSIS_RING_4",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__KINETIC_HEX_PLATE_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__KINETIC_HEX_PLATE_7",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__KINETIC_HEX_PLATE_13",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__KINETIC_HEX_PLATE_19",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__KINETIC_HEX_PLATE_25",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_1_1",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_1_2",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_1_3",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_2_1",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_2_2",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_2_3",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_3_1",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_3_2",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_3_3",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_4_1",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_4_2",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__TEST_COLUMN_BUBBLE_4_3",
+        "animate": "microbiology-column-current"
+      },
+      {
+        "name": "MICROBIOLOGY__M1__DISTANT_IDENTITY_CROWN_RING",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__BOULEVARD_NETWORK_FIN_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__BOULEVARD_NETWORK_FIN_6",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__BOULEVARD_NETWORK_FIN_11",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__BOULEVARD_NETWORK_FIN_16",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__WATER_NETWORK_FIN_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__WATER_NETWORK_FIN_6",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__WATER_NETWORK_FIN_11",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__WATER_NETWORK_FIN_16",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__GARDEN_NETWORK_FIN_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__GARDEN_NETWORK_FIN_6",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__GARDEN_NETWORK_FIN_11",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M2__GARDEN_NETWORK_FIN_16",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M3__METABOLITE_SPINE_LINK_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M3__METABOLITE_SPINE_LINK_4",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M3__METABOLITE_SPINE_LINK_7",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M3__METABOLITE_SPINE_LINK_10",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M4__CHIMNEY_LUMINOUS_FISSURE",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M4__ROTATING_PLANETARY_INSTRUMENT",
+        "animate": "microbiology-rotation"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_1",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_9",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_17",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_25",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_33",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_41",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_49",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PRECISE_VERTICAL_MULLION_57",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__OPERATIONAL_ROOFLINE_RING",
+        "animate": "microbiology-emissive-pulse"
+      },
+      {
+        "name": "MICROBIOLOGY__M5__PLANETARY_BIOLOGICAL_MONITOR",
+        "animate": "microbiology-rotation"
+      }
+    ],
+    "scaledMeshParentDetails": [],
+    "boundaryViolations": [],
+    "overlapPairs": [],
+    "missingRoots": [],
+    "signatureCounts": {
+      "lysisPerforations": 84,
+      "symbiomeCrescents": 3,
+      "fermentationTowers": 4,
+      "extremePods": 5,
+      "sentinelMullions": 64,
+      "colonyPlazas": 3,
+      "waterChannels": 2,
+      "gardens": 24
+    },
+    "routeAudit": [
+      {
+        "name": "MICROBIOLOGY__WEST_RESEARCH_SPINE",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__EAST_RESEARCH_SPINE",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__INNER_COLONY_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__OUTER_RESEARCH_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__BUILDING_APPROACH_M1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__BUILDING_APPROACH_M2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__BUILDING_APPROACH_M3",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__BUILDING_APPROACH_M4",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MICROBIOLOGY__BUILDING_APPROACH_M5",
+        "walkable": true,
+        "resident": true
+      }
+    ],
+    "roadGround": 1.6459999984502793,
+    "roadPoint": [
+      97.50705051422119,
+      1.6459999984502793,
+      -18.17750072479248
+    ],
+    "textMicrobiology": {
+      "identity": "Microbiology Labs District",
+      "progression": [
+        "microbial conflict",
+        "community ecology",
+        "biochemical production",
+        "extreme life",
+        "planetary surveillance"
+      ],
+      "architecturalLanguage": "abstract microbial colonies, biofilms, phage geometry, symbiotic networks, fermentation gradients, and monitored ecosystems",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "The Lytic Crown",
+          "purpose": "Institute for Phage Engineering and Antimicrobial Resistance",
+          "placementZone": "Inner district threshold and Lysis Court",
+          "heightMetres": 110,
+          "exteriorMotif": "faceted phage geometry and expanding lysis zones"
+        },
+        {
+          "code": "M2",
+          "name": "The Symbiome Terraces",
+          "purpose": "Center for Microbiome Therapeutics and Engineered Microbial Communities",
+          "placementZone": "Western garden and water-channel edge",
+          "heightMetres": 80,
+          "exteriorMotif": "interdependent communities and metabolic networks"
+        },
+        {
+          "code": "M3",
+          "name": "The Metabolite Foundry",
+          "purpose": "Institute for Microbial Natural Products and Precision Fermentation",
+          "placementZone": "Eastern production and service edge",
+          "heightMetres": 150,
+          "exteriorMotif": "fermentation vessels and biosynthetic machinery"
+        },
+        {
+          "code": "M4",
+          "name": "The Black Brine Observatory",
+          "purpose": "Center for Extremophile Microbiology and Astrobiological Systems",
+          "placementZone": "Outer mineral ridge and contained basin field",
+          "heightMetres": 92,
+          "exteriorMotif": "extreme environments and planetary simulation"
+        },
+        {
+          "code": "M5",
+          "name": "The One Health Sentinel",
+          "purpose": "Center for Emerging Pathogens and Planetary Microbial Surveillance",
+          "placementZone": "Outer boulevard planetary-surveillance landmark",
+          "heightMetres": 120,
+          "exteriorMotif": "global surveillance and a protected biological core"
+        }
+      ],
+      "skyline": [
+        "The Lytic Crown",
+        "The Symbiome Terraces",
+        "The Metabolite Foundry",
+        "The Black Brine Observatory",
+        "The One Health Sentinel"
+      ],
+      "circulation": {
+        "primaryWalk": "MICROBIOLOGY__INNER_COLONY_ARC",
+        "hierarchy": [
+          "inner colony arc",
+          "paired research spines",
+          "outer research arc",
+          "short building approaches"
+        ],
+        "majorRouteCount": 4,
+        "colonyPlazas": 3,
+        "shallowWaterChannels": 2,
+        "exactBuildingApproaches": 5,
+        "directCrossSiteDiagonals": 0,
+        "publicAndResearchInfrastructureLegible": true
+      },
+      "materials": [
+        "pale antimicrobial ceramic",
+        "silver titanium",
+        "cyan-green-violet-amber iridescent glass",
+        "sterilized basalt",
+        "perforated cellular facades",
+        "controlled rooftop ecology",
+        "cyan microbial communication light"
+      ],
+      "responsiveSystems": {
+        "slowArchitecturalMotion": true,
+        "activeResearchColumns": 4,
+        "interbuildingCommunicationLinks": 4,
+        "planetaryAndAtmosphericSensors": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "microbiology-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999986028,
+    "grounded": true,
+    "position": [
+      97.667,
+      1.808,
+      -18.207
+    ]
+  },
+  "errors": []
+}

@@ -183,16 +183,18 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'microbiology-labs': {
     facilities: [
-      { name: 'Biosafety Culture Laboratory', form: 'lab-block' },
-      { name: 'Glazed Microbe Gallery', form: 'pavilion' },
-      { name: 'Shared Sample Transfer Hub', form: 'service-building' },
-      { name: 'Sterilization Utility House', form: 'utility-plant' },
+      { name: 'The Lytic Crown', form: 'tower' },
+      { name: 'The Symbiome Terraces', form: 'lab-block' },
+      { name: 'The Metabolite Foundry', form: 'hall' },
+      { name: 'The Black Brine Observatory', form: 'observatory' },
+      { name: 'The One Health Sentinel', form: 'tower' },
     ],
     objects: [
-      { name: 'Incubator Banks', kind: 'process-equipment' },
-      { name: 'Laminar Flow Cabinets', kind: 'instrument' },
-      { name: 'Autoclave Cluster', kind: 'process-equipment' },
-      { name: 'Biosecure Transfer Carts', kind: 'vehicle' },
+      { name: 'Microbial Communication Network', kind: 'signage' },
+      { name: 'Colony Plazas', kind: 'street-furniture' },
+      { name: 'Biosensor Gardens', kind: 'garden' },
+      { name: 'Shallow Research Water Channels', kind: 'water-feature' },
+      { name: 'Environmental Sampling Pylons', kind: 'instrument' },
     ],
   },
   'genomics-labs': {

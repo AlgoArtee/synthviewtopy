@@ -157,12 +157,13 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 2;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 3;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
   'medical-labs': 1,
   'pharmacology-labs': 2,
+  'microbiology-labs': 3,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
@@ -2740,6 +2741,33 @@ export class IslandWorld {
         );
       } else if (object.userData.animate === 'pharmacology-orbit-spin') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.02);
+      } else if (object.userData.animate === 'microbiology-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = 0.5 + 0.5 * Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.08) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          );
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.35),
+            Number(object.userData.maxIntensity ?? 3.6),
+            wave,
+          );
+        }
+      } else if (object.userData.animate === 'microbiology-rotation') {
+        object.rotation.y += delta * Number(object.userData.speed ?? 0.035);
+      } else if (object.userData.animate === 'microbiology-column-current') {
+        const phase = Number(object.userData.phase ?? 0);
+        const progress = (this.elapsed * Number(object.userData.speed ?? 0.025) + phase) % 1;
+        object.position.y = Number(object.userData.baseY ?? object.position.y)
+          + progress * Number(object.userData.travel ?? 1);
+      } else if (object.userData.animate === 'microbiology-network-signal') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.18) * Math.PI * 2
+            - Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(0.25, 4.2, Math.pow(wave, 4));
+        }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -7033,6 +7061,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const secretLabsDistrict = this.objectGroups.get('secret-labs')?.userData.secretLabsDistrict ?? null;
     const medicalLabsDistrict = this.objectGroups.get('medical-labs')?.userData.medicalLabsDistrict ?? null;
     const pharmacologyDistrict = this.objectGroups.get('pharmacology-labs')?.userData.pharmacologyDistrict ?? null;
+    const microbiologyDistrict = this.objectGroups.get('microbiology-labs')?.userData.microbiologyDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7159,6 +7188,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       secretLabsDistrict,
       medicalLabsDistrict,
       pharmacologyDistrict,
+      microbiologyDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

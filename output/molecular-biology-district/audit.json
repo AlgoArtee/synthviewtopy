@@ -1,0 +1,1093 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Molecular Biology Labs District",
+      "architecturalLanguage": "complementary molecular pairing, codon modules, membrane pores, regulatory layers, folded systems, mineral environments, and distributed information light",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "MB1",
+          "name": "Genesis Forge",
+          "purpose": "Synthetic Genome Fabrication and Minimal-Life Institute",
+          "placementZone": "Inner threshold facing Microbiology and Genomics",
+          "heightMetres": 42,
+          "exteriorMotif": "complementary curved wings, codon-panel rhythms, and a transparent transcription rift"
+        },
+        {
+          "code": "MB2",
+          "name": "Xenocodon Bastion",
+          "purpose": "Xenobiology, Orthogonal Genetics and Alternative Biochemistry Facility",
+          "placementZone": "Northern boundary adjacent to Security",
+          "heightMetres": 58,
+          "exteriorMotif": "three chiral black monoliths, exclusion rings, and kinetic containment shutters"
+        },
+        {
+          "code": "MB3",
+          "name": "The Protosphere Complex",
+          "purpose": "Origins-of-Life and Artificial Protocell Research Centre",
+          "placementZone": "Southern boundary near Biochemistry",
+          "heightMetres": 35,
+          "exteriorMotif": "seven translucent protocell volumes settled within a mineral-rich prebiotic basin"
+        },
+        {
+          "code": "MB4",
+          "name": "Asterion Exobiology Array",
+          "purpose": "Astrobiology and Extraterrestrial Molecular Systems Institute",
+          "placementZone": "Outer edge oriented toward the Tundra and Desert Domes",
+          "heightMetres": 51,
+          "exteriorMotif": "Mars, ocean-moon, and Titan wings converging beneath a tilted analytical shield"
+        },
+        {
+          "code": "MB5",
+          "name": "Palimpsest Tower",
+          "purpose": "Epigenetic Programming and Cellular Identity Institute",
+          "placementZone": "Central district landmark",
+          "heightMetres": 79,
+          "exteriorMotif": "a glass core successively concealed by chromatin fins and overwritten metallic ribbons"
+        },
+        {
+          "code": "MB6",
+          "name": "Symbiogenesis Arc",
+          "purpose": "Organelle Engineering and Engineered Endosymbiosis Centre",
+          "placementZone": "Southeastern interface with Biochemistry",
+          "heightMetres": 46,
+          "exteriorMotif": "a dark host crescent permanently integrated with a luminous ovoid and six organelle pods"
+        },
+        {
+          "code": "MB7",
+          "name": "Molecular Automata Loom",
+          "purpose": "DNA Nanotechnology, Molecular Robotics and Biological Computing Laboratory",
+          "placementZone": "Molecular Meridian route toward Bioanalytics",
+          "heightMetres": 39,
+          "exteriorMotif": "four braided structural bands carrying travelling molecular-computation signals"
+        },
+        {
+          "code": "MB8",
+          "name": "The Darwin Engine",
+          "purpose": "Continuous Evolution and Adaptive Biodesign Tower",
+          "placementZone": "Central transit route",
+          "heightMetres": 91,
+          "exteriorMotif": "twelve successively rotated material strata and branching selection paths"
+        },
+        {
+          "code": "MB9",
+          "name": "Morphogen Exchange",
+          "purpose": "Cellular Signalling and Synthetic Pattern-Formation Institute",
+          "placementZone": "Outer-central Bioanalytics and Computational Biology link",
+          "heightMetres": 52,
+          "exteriorMotif": "five unequal gradient wings radiating from a translucent signalling hub"
+        },
+        {
+          "code": "MB10",
+          "name": "Cryptobiosis Vault",
+          "purpose": "Extremophile Biology, Molecular Preservation and Deep-Time Archive",
+          "placementZone": "Quiet northeastern corner between Security and the outer ring",
+          "heightMetres": 24,
+          "exteriorMotif": "a buried dark archive beneath overlapping glacier-like ceramic planes"
+        }
+      ],
+      "skyline": {
+        "lowMolecularLandscapes": [
+          "The Protosphere Complex",
+          "Molecular Automata Loom",
+          "Cryptobiosis Vault"
+        ],
+        "midRiseIntegratedComplexes": [
+          "Genesis Forge",
+          "Asterion Exobiology Array",
+          "Symbiogenesis Arc",
+          "Morphogen Exchange"
+        ],
+        "verticalLandmarks": [
+          "Xenocodon Bastion",
+          "Palimpsest Tower",
+          "The Darwin Engine"
+        ]
+      },
+      "circulation": {
+        "primaryWalk": "MOLECULAR__MOLECULAR_MERIDIAN",
+        "hierarchy": [
+          "Molecular Meridian",
+          "paired interaction arcs",
+          "triplet interaction branches",
+          "short exact building approaches"
+        ],
+        "majorRouteCount": 7,
+        "interactionPlazas": 5,
+        "exactBuildingApproaches": 10,
+        "embeddedInformationLines": 17,
+        "directCrossSiteDiagonals": 0
+      },
+      "responsiveSystems": {
+        "kineticIonChannelScreens": true,
+        "travellingTranscriptionLight": true,
+        "animatedObjects": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Genesis Forge",
+        "Xenocodon Bastion",
+        "The Protosphere Complex",
+        "Asterion Exobiology Array",
+        "Palimpsest Tower",
+        "Symbiogenesis Arc",
+        "Molecular Automata Loom",
+        "The Darwin Engine",
+        "Morphogen Exchange",
+        "Cryptobiosis Vault"
+      ],
+      "plannedObjects": [
+        "Molecular Meridian",
+        "Interaction Plazas",
+        "Embedded Information Circuit",
+        "Mineral and Engineered Landscapes",
+        "Atmospheric Sensor Network"
+      ],
+      "realizedFeatureTags": [
+        "genesis-forge",
+        "xenocodon-bastion",
+        "the-protosphere-complex",
+        "asterion-exobiology-array",
+        "palimpsest-tower",
+        "symbiogenesis-arc",
+        "molecular-automata-loom",
+        "the-darwin-engine",
+        "morphogen-exchange",
+        "cryptobiosis-vault"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 189,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 17,
+      "radialCoverage": 0.96,
+      "angularCoverage": 0.94,
+      "exteriorOnly": true,
+      "distributedMolecularCircuit": true
+    },
+    "facilityCount": 10,
+    "codes": [
+      "MB1",
+      "MB2",
+      "MB3",
+      "MB4",
+      "MB5",
+      "MB6",
+      "MB7",
+      "MB8",
+      "MB9",
+      "MB10"
+    ],
+    "meshCount": 1054,
+    "uniqueNames": 1067,
+    "materialNames": [
+      "Asterion Titan amber process light",
+      "Asterion Titan smoked amber glass",
+      "Asterion iron-rich Mars ceramic",
+      "Asterion muted Mars process light",
+      "Asterion ocean-moon glacial shell",
+      "Molecular Biology bronze structural alloy",
+      "Molecular Biology brushed silver alloy",
+      "Molecular Biology cold-white transcription light",
+      "Molecular Biology controlled fern and moss landscape",
+      "Molecular Biology deep shielding glass",
+      "Molecular Biology graphite titanium",
+      "Molecular Biology pale blue laboratory glass",
+      "Molecular Biology pale engineered grass",
+      "Molecular Biology pale mineral ceramic",
+      "Molecular Biology polished black basalt",
+      "Molecular Biology reflective black process water",
+      "Molecular Biology satin white bioceramic",
+      "Molecular Meridian dark molecular paving",
+      "Molecular Meridian information-circuit light",
+      "Molecular Meridian pale interaction paving",
+      "Protosphere iron-rich mineral shelf",
+      "Protosphere pearlescent translucent membrane",
+      "Protosphere sulfur-yellow mineral shelf",
+      "Symbiogenesis pearlescent organelle ceramic",
+      "Xenocodon black iridescent titanium ceramic",
+      "Xenocodon pale crushed quartz field",
+      "Xenocodon pale-violet containment notation"
+    ],
+    "animated": [
+      {
+        "name": "MOLECULAR__PAVEMENT_INFORMATION_LINE_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__PAVEMENT_INFORMATION_LINE_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__PAVEMENT_INFORMATION_LINE_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__PAVEMENT_INFORMATION_LINE_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_SIGNAL_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_SIGNAL_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_SIGNAL_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB5",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB6",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB7",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB8",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB9",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_SIGNAL_MB10",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_1_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_2_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_3_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_4_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_5_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_6_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_1_7_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_1_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_2_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_3_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_4_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_5_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_6_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB1__TRANSCRIPTION_LIGHT_2_7_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_1",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_2",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_3",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_4",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_5",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_6",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_7",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_8",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_9",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_10",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_11",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_12",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_13",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_14",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_15",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_16",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_17",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_18",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_19",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_20",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_21",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_22",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_23",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_24",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_25",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_26",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_27",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_28",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_29",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB2__KINETIC_SHUTTER_30",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB4__TILTED_ANALYTICAL_SHIELD_DISC",
+        "animate": "molecular-disc-drift"
+      },
+      {
+        "name": "MOLECULAR__MB4__TILTED_DISC_LIGHT_RING",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_1",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_8",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_15",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_22",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_29",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_36",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__CHROMATIN_FIN_43",
+        "animate": "molecular-kinetic-shutter"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_5",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_6",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_7",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_8",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_9",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_10",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_11",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_12",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_13",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB5__EPIGENETIC_MEMORY_MARK_14",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB7__TRAVELLING_LOGIC_SIGNAL_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB7__TRAVELLING_LOGIC_SIGNAL_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB7__TRAVELLING_LOGIC_SIGNAL_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB7__TRAVELLING_LOGIC_SIGNAL_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_1_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_1_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_1_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_1_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_2_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_2_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_2_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_2_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_3_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_3_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_3_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_3_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_4_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_4_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_4_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_4_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_5_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_5_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_5_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_5_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_6_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_6_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_6_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_6_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_7_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_7_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_7_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_7_RING_4",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_8_RING_1",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_8_RING_2",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_8_RING_3",
+        "animate": "molecular-info-pulse"
+      },
+      {
+        "name": "MOLECULAR__MB9__SIGNAL_PYLON_8_RING_4",
+        "animate": "molecular-info-pulse"
+      }
+    ],
+    "scaledMeshParentDetails": [],
+    "boundaryViolations": [],
+    "overlapPairs": [],
+    "facilityBounds": [
+      {
+        "code": "MB1",
+        "min": [
+          132.81,
+          1.5159999999999998,
+          -5.800462880763251
+        ],
+        "max": [
+          141.37,
+          6.316000000000001,
+          5.800462880763253
+        ]
+      },
+      {
+        "code": "MB2",
+        "min": [
+          129.22791887500983,
+          1.6960000000000002,
+          28.023055445055903
+        ],
+        "max": [
+          139.05781693767125,
+          8.059179107899634,
+          38.291449449788175
+        ]
+      },
+      {
+        "code": "MB3",
+        "min": [
+          124.04056815858765,
+          1.6110000000000002,
+          -53.00797121253142
+        ],
+        "max": [
+          136.90919255949396,
+          4.820244956433774,
+          -37.986929640076546
+        ]
+      },
+      {
+        "code": "MB4",
+        "min": [
+          148.75181803036557,
+          1.7132717273242664,
+          -58.78062288521312
+        ],
+        "max": [
+          161.16265107429484,
+          9.0139357727003,
+          -46.33107582226468
+        ]
+      },
+      {
+        "code": "MB5",
+        "min": [
+          144.77743245079665,
+          1.434023060560226,
+          -14.811358907760098
+        ],
+        "max": [
+          152.2151211295968,
+          10.412341810281351,
+          -7.373670228959965
+        ]
+      },
+      {
+        "code": "MB6",
+        "min": [
+          139.96668670078424,
+          1.6381570406109096,
+          -40.185750802377555
+        ],
+        "max": [
+          150.43385714373449,
+          6.958270744734088,
+          -25.87692046368447
+        ]
+      },
+      {
+        "code": "MB7",
+        "min": [
+          134.3125192542159,
+          1.6760000000000002,
+          43.50862941116743
+        ],
+        "max": [
+          145.0239873335241,
+          6.319621035069227,
+          59.77674461321932
+        ]
+      },
+      {
+        "code": "MB8",
+        "min": [
+          142.8269809698327,
+          1.791,
+          14.559110270960211
+        ],
+        "max": [
+          152.4318289333404,
+          11.361790333409303,
+          24.161386320945855
+        ]
+      },
+      {
+        "code": "MB9",
+        "min": [
+          158.33116588384857,
+          1.602677333017241,
+          -7.51399750588946
+        ],
+        "max": [
+          168.19622181924117,
+          6.811,
+          4.469364969613247
+        ]
+      },
+      {
+        "code": "MB10",
+        "min": [
+          148.03480639012443,
+          1.519950315622978,
+          44.29006743164095
+        ],
+        "max": [
+          162.11909963796685,
+          6.266,
+          60.63090747575272
+        ]
+      }
+    ],
+    "missingRoots": [],
+    "signatureCounts": {
+      "codonPanels": 42,
+      "kineticShutters": 30,
+      "protocells": 7,
+      "planetaryWings": 3,
+      "chromatinFins": 44,
+      "organellePods": 6,
+      "braidedBands": 12,
+      "evolutionaryStrata": 12,
+      "gradientWings": 5,
+      "glacialPlanes": 4,
+      "interactionPlazas": 5
+    },
+    "routeAudit": [
+      {
+        "name": "MOLECULAR__MOLECULAR_MERIDIAN",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__INNER_PAIRED_INTERACTION_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__MIDDLE_TRIPLET_INTERACTION_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__OUTER_PAIRED_INTERACTION_ARC",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__TRIPLET_BRANCH_3",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB1",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB2",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB3",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB4",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB5",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB6",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB7",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB8",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB9",
+        "walkable": true,
+        "resident": true
+      },
+      {
+        "name": "MOLECULAR__BUILDING_APPROACH_MB10",
+        "walkable": true,
+        "resident": true
+      }
+    ],
+    "roadGround": 1.6459999984502793,
+    "roadPoint": [
+      151.7501408457756,
+      1.6459999984502793,
+      0
+    ],
+    "textMolecular": {
+      "identity": "Molecular Biology Labs District",
+      "architecturalLanguage": "complementary molecular pairing, codon modules, membrane pores, regulatory layers, folded systems, mineral environments, and distributed information light",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "MB1",
+          "name": "Genesis Forge",
+          "purpose": "Synthetic Genome Fabrication and Minimal-Life Institute",
+          "placementZone": "Inner threshold facing Microbiology and Genomics",
+          "heightMetres": 42,
+          "exteriorMotif": "complementary curved wings, codon-panel rhythms, and a transparent transcription rift"
+        },
+        {
+          "code": "MB2",
+          "name": "Xenocodon Bastion",
+          "purpose": "Xenobiology, Orthogonal Genetics and Alternative Biochemistry Facility",
+          "placementZone": "Northern boundary adjacent to Security",
+          "heightMetres": 58,
+          "exteriorMotif": "three chiral black monoliths, exclusion rings, and kinetic containment shutters"
+        },
+        {
+          "code": "MB3",
+          "name": "The Protosphere Complex",
+          "purpose": "Origins-of-Life and Artificial Protocell Research Centre",
+          "placementZone": "Southern boundary near Biochemistry",
+          "heightMetres": 35,
+          "exteriorMotif": "seven translucent protocell volumes settled within a mineral-rich prebiotic basin"
+        },
+        {
+          "code": "MB4",
+          "name": "Asterion Exobiology Array",
+          "purpose": "Astrobiology and Extraterrestrial Molecular Systems Institute",
+          "placementZone": "Outer edge oriented toward the Tundra and Desert Domes",
+          "heightMetres": 51,
+          "exteriorMotif": "Mars, ocean-moon, and Titan wings converging beneath a tilted analytical shield"
+        },
+        {
+          "code": "MB5",
+          "name": "Palimpsest Tower",
+          "purpose": "Epigenetic Programming and Cellular Identity Institute",
+          "placementZone": "Central district landmark",
+          "heightMetres": 79,
+          "exteriorMotif": "a glass core successively concealed by chromatin fins and overwritten metallic ribbons"
+        },
+        {
+          "code": "MB6",
+          "name": "Symbiogenesis Arc",
+          "purpose": "Organelle Engineering and Engineered Endosymbiosis Centre",
+          "placementZone": "Southeastern interface with Biochemistry",
+          "heightMetres": 46,
+          "exteriorMotif": "a dark host crescent permanently integrated with a luminous ovoid and six organelle pods"
+        },
+        {
+          "code": "MB7",
+          "name": "Molecular Automata Loom",
+          "purpose": "DNA Nanotechnology, Molecular Robotics and Biological Computing Laboratory",
+          "placementZone": "Molecular Meridian route toward Bioanalytics",
+          "heightMetres": 39,
+          "exteriorMotif": "four braided structural bands carrying travelling molecular-computation signals"
+        },
+        {
+          "code": "MB8",
+          "name": "The Darwin Engine",
+          "purpose": "Continuous Evolution and Adaptive Biodesign Tower",
+          "placementZone": "Central transit route",
+          "heightMetres": 91,
+          "exteriorMotif": "twelve successively rotated material strata and branching selection paths"
+        },
+        {
+          "code": "MB9",
+          "name": "Morphogen Exchange",
+          "purpose": "Cellular Signalling and Synthetic Pattern-Formation Institute",
+          "placementZone": "Outer-central Bioanalytics and Computational Biology link",
+          "heightMetres": 52,
+          "exteriorMotif": "five unequal gradient wings radiating from a translucent signalling hub"
+        },
+        {
+          "code": "MB10",
+          "name": "Cryptobiosis Vault",
+          "purpose": "Extremophile Biology, Molecular Preservation and Deep-Time Archive",
+          "placementZone": "Quiet northeastern corner between Security and the outer ring",
+          "heightMetres": 24,
+          "exteriorMotif": "a buried dark archive beneath overlapping glacier-like ceramic planes"
+        }
+      ],
+      "skyline": {
+        "lowMolecularLandscapes": [
+          "The Protosphere Complex",
+          "Molecular Automata Loom",
+          "Cryptobiosis Vault"
+        ],
+        "midRiseIntegratedComplexes": [
+          "Genesis Forge",
+          "Asterion Exobiology Array",
+          "Symbiogenesis Arc",
+          "Morphogen Exchange"
+        ],
+        "verticalLandmarks": [
+          "Xenocodon Bastion",
+          "Palimpsest Tower",
+          "The Darwin Engine"
+        ]
+      },
+      "circulation": {
+        "primaryWalk": "MOLECULAR__MOLECULAR_MERIDIAN",
+        "hierarchy": [
+          "Molecular Meridian",
+          "paired interaction arcs",
+          "triplet interaction branches",
+          "short exact building approaches"
+        ],
+        "majorRouteCount": 7,
+        "interactionPlazas": 5,
+        "exactBuildingApproaches": 10,
+        "embeddedInformationLines": 17,
+        "directCrossSiteDiagonals": 0
+      },
+      "responsiveSystems": {
+        "kineticIonChannelScreens": true,
+        "travellingTranscriptionLight": true,
+        "animatedObjects": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "revision": 4,
+    "streaming": {
+      "id": "molecular-biology-labs",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000070486,
+    "grounded": true,
+    "position": [
+      151.913,
+      1.808,
+      0
+    ]
+  },
+  "errors": []
+}

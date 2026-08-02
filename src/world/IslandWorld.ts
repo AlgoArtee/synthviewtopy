@@ -157,13 +157,14 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 3;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 4;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
   'medical-labs': 1,
   'pharmacology-labs': 2,
   'microbiology-labs': 3,
+  'molecular-biology-labs': 4,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
@@ -2768,6 +2769,19 @@ export class IslandWorld {
           ));
           object.material.emissiveIntensity = THREE.MathUtils.lerp(0.25, 4.2, Math.pow(wave, 4));
         }
+      } else if (object.userData.animate === 'molecular-info-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.045) * Math.PI * 2
+            - Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(0.28, 4.1, Math.pow(wave, 3));
+        }
+      } else if (object.userData.animate === 'molecular-kinetic-shutter') {
+        object.rotation.y = Number(object.userData.baseRotationY ?? 0)
+          + (0.5 + 0.5 * Math.sin(this.elapsed * 0.045 + Number(object.userData.phase ?? 0))) * 0.24;
+      } else if (object.userData.animate === 'molecular-disc-drift') {
+        object.rotation.z = Number(object.userData.baseRotationZ ?? 0) + Math.sin(this.elapsed * 0.018) * 0.018;
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -7062,6 +7076,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const medicalLabsDistrict = this.objectGroups.get('medical-labs')?.userData.medicalLabsDistrict ?? null;
     const pharmacologyDistrict = this.objectGroups.get('pharmacology-labs')?.userData.pharmacologyDistrict ?? null;
     const microbiologyDistrict = this.objectGroups.get('microbiology-labs')?.userData.microbiologyDistrict ?? null;
+    const molecularBiologyDistrict = this.objectGroups.get('molecular-biology-labs')?.userData.molecularBiologyDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7189,6 +7204,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       medicalLabsDistrict,
       pharmacologyDistrict,
       microbiologyDistrict,
+      molecularBiologyDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

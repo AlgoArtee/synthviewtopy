@@ -102,8 +102,13 @@ try {
       const actions = document.querySelector('.top-actions');
       const modeButtons = [...document.querySelectorAll('.mode-switch .mode')];
       const actionButtons = [...document.querySelectorAll('.top-actions > button')];
-      const keyControls = [brand, ...modeButtons, ...actionButtons].filter(Boolean);
-      const insideControls = [brand, modes, actions, ...modeButtons, ...actionButtons].filter(Boolean);
+      const isRendered = (element) => {
+        if (!(element instanceof HTMLElement) || getComputedStyle(element).display === 'none') return false;
+        const rect = element.getBoundingClientRect();
+        return rect.width > 0 && rect.height > 0;
+      };
+      const keyControls = [brand, ...modeButtons, ...actionButtons].filter(isRendered);
+      const insideControls = [brand, modes, actions, ...modeButtons, ...actionButtons].filter(isRendered);
 
       const modeRect = modes?.getBoundingClientRect();
       const actionRect = actions?.getBoundingClientRect();

@@ -199,6 +199,7 @@ const collisionInput = required<HTMLInputElement>('#object-collision');
 const interactionOptionsContainer = required<HTMLElement>('#interaction-options');
 const saveProjectButton = required<HTMLButtonElement>('#save-project');
 const refreshProjectButton = required<HTMLButtonElement>('#refresh-project');
+const reloadCurrentBuildButton = required<HTMLButtonElement>('#reload-current-build');
 const restoreWelcomeDistrictButton = required<HTMLButtonElement>('#restore-welcome-district');
 const projectBundleExportButton = required<HTMLButtonElement>('#project-bundle-export');
 const projectBundleImportButton = required<HTMLButtonElement>('#project-bundle-import');
@@ -1246,8 +1247,8 @@ saveProjectButton.addEventListener('click', async () => {
   try {
     const snapshot = await world.saveProjectToLocalStorage(true);
     toast(
-      'Project Saved',
-      `Revision ${snapshot.revision} is verified. Scene state and imported assets are independent from view-mode visibility.`,
+      'Layout Saved',
+      `Manual revision ${snapshot.manualSaveRevision} stores all moved building positions and scene edits.`,
     );
   } catch (error) {
     toast('Save failed', error instanceof Error ? error.message : 'The previous recovery revision remains available.', 'error', 5600);
@@ -1259,7 +1260,7 @@ saveProjectButton.addEventListener('click', async () => {
 refreshProjectButton.addEventListener('click', async () => {
   refreshProjectButton.disabled = true;
   try {
-    if (await world.loadProjectFromPersistentStorage()) {
+    if (await world.loadProjectFromPersistentStorage(true)) {
       syncDefinitionCacheFromWorld();
       if (currentSelection) {
         updateInspector(world.getDefinition(currentSelection.id), world.getObjectState(currentSelection.id));
@@ -1269,7 +1270,7 @@ refreshProjectButton.addEventListener('click', async () => {
       syncEnvironmentUI();
       syncFountainControlPanel();
       syncCerebrumControls();
-      toast('Project Reloaded', 'The latest verified revision and imported assets were restored.');
+      toast('Saved Layout Restored', 'The latest working revision or protected manual Save was restored.');
     } else {
       toast('Load Failed', 'No verified project revision is available.', 'error');
     }
@@ -1277,6 +1278,30 @@ refreshProjectButton.addEventListener('click', async () => {
     toast('Refresh failed', error instanceof Error ? error.message : 'The project could not be restored.', 'error', 5600);
   } finally {
     refreshProjectButton.disabled = false;
+  }
+});
+
+reloadCurrentBuildButton.addEventListener('click', async () => {
+  const confirmed = window.confirm(
+    'Reload the current authored build? This clears working autosave overrides and recovery revisions. Your last manual Save and imported asset files are retained and can be restored with Refresh.',
+  );
+  if (!confirmed) return;
+  reloadCurrentBuildButton.disabled = true;
+  reloadCurrentBuildButton.dataset.resetStatus = 'clearing';
+  try {
+    await world.clearPersistedProjectForCurrentBuild();
+    reloadCurrentBuildButton.dataset.resetStatus = 'reloading';
+    toast('Loading Current Build', 'Saved scene overrides were removed. Reloading the authored scene...');
+    window.setTimeout(() => window.location.reload(), 250);
+  } catch (error) {
+    reloadCurrentBuildButton.dataset.resetStatus = 'failed';
+    reloadCurrentBuildButton.disabled = false;
+    toast(
+      'Current build reload failed',
+      error instanceof Error ? error.message : 'Saved scene overrides could not be cleared.',
+      'error',
+      5600,
+    );
   }
 });
 

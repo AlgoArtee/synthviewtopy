@@ -3,8 +3,9 @@ export const PROJECT_STORAGE_KEY = 'youtopy_saved_project';
 export const LEGACY_PROJECT_BACKUP_KEY = 'youtopy_saved_project_v1_backup';
 
 const DATABASE_NAME = 'synthviewtopy-projects';
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
 const ACTIVE_PROJECT_ID = 'default';
+const MANUAL_PROJECT_STORE = 'manualProjects';
 const MAX_RECOVERY_REVISIONS = 10;
 
 export interface PersistedAssetReference {
@@ -37,7 +38,7 @@ export interface LoadedProject {
   payload: any;
   revision: number;
   savedAt: string;
-  source: 'current' | 'recovery' | 'local-storage';
+  source: 'current' | 'recovery' | 'manual' | 'local-storage';
   missingAssetIds: string[];
 }
 
@@ -47,6 +48,9 @@ export interface ProjectPersistenceSnapshot {
   savedAt: string | null;
   source: LoadedProject['source'] | 'none';
   recoveryRevisionCount: number;
+  manualSaveAvailable: boolean;
+  manualSaveRevision: number;
+  manualSavedAt: string | null;
   assetCount: number;
   missingAssetIds: string[];
   persistentStorageGranted: boolean | null;
@@ -116,6 +120,17 @@ export class ProjectPersistenceStore {
         }
         if (!database.objectStoreNames.contains('assets')) {
           database.createObjectStore('assets', { keyPath: 'assetId' });
+        }
+        if (!database.objectStoreNames.contains(MANUAL_PROJECT_STORE)) {
+          const manualProjects = database.createObjectStore(MANUAL_PROJECT_STORE, { keyPath: 'id' });
+          const existingProjectRequest = request.transaction
+            ?.objectStore('projects')
+            .get(ACTIVE_PROJECT_ID) as IDBRequest<StoredProjectRecord | undefined> | undefined;
+          if (existingProjectRequest) {
+            existingProjectRequest.onsuccess = () => {
+              if (existingProjectRequest.result) manualProjects.put(existingProjectRequest.result);
+            };
+          }
         }
       };
       request.onsuccess = () => resolve(request.result);
@@ -195,7 +210,7 @@ export class ProjectPersistenceStore {
     return missing;
   }
 
-  async saveProject(payload: any) {
+  async saveProject(payload: any, options: { manual?: boolean } = {}) {
     if (payload?.schema !== PROJECT_SCHEMA_V2 || !Array.isArray(payload?.objects)) {
       throw new Error('Project validation failed: unsupported or incomplete project document.');
     }
@@ -224,10 +239,14 @@ export class ProjectPersistenceStore {
       ...record,
       revisionId: `${ACTIVE_PROJECT_ID}:${String(revision).padStart(12, '0')}`,
     };
-    const transaction = database.transaction(['projects', 'revisions'], 'readwrite');
+    const storeNames = options.manual
+      ? ['projects', 'revisions', MANUAL_PROJECT_STORE]
+      : ['projects', 'revisions'];
+    const transaction = database.transaction(storeNames, 'readwrite');
     const completed = transactionComplete(transaction);
     transaction.objectStore('projects').put(record);
     transaction.objectStore('revisions').put(recovery);
+    if (options.manual) transaction.objectStore(MANUAL_PROJECT_STORE).put(record);
     await completed;
     await this.trimRecoveryRevisions();
     this.revision = revision;
@@ -235,7 +254,12 @@ export class ProjectPersistenceStore {
     this.source = 'current';
     this.missingAssetIds = [];
     this.lastError = null;
-    return { revision, savedAt, missingAssetIds: [...this.missingAssetIds] };
+    return {
+      revision,
+      savedAt,
+      manual: options.manual === true,
+      missingAssetIds: [...this.missingAssetIds],
+    };
   }
 
   private async getCurrentRecord() {
@@ -244,6 +268,17 @@ export class ProjectPersistenceStore {
     const completed = transactionComplete(transaction);
     const record = await requestResult(
       transaction.objectStore('projects').get(ACTIVE_PROJECT_ID) as IDBRequest<StoredProjectRecord | undefined>,
+    );
+    await completed;
+    return record ?? null;
+  }
+
+  private async getManualRecord() {
+    const database = await this.openDatabase();
+    const transaction = database.transaction(MANUAL_PROJECT_STORE, 'readonly');
+    const completed = transactionComplete(transaction);
+    const record = await requestResult(
+      transaction.objectStore(MANUAL_PROJECT_STORE).get(ACTIVE_PROJECT_ID) as IDBRequest<StoredProjectRecord | undefined>,
     );
     await completed;
     return record ?? null;
@@ -269,6 +304,23 @@ export class ProjectPersistenceStore {
     const completed = transactionComplete(transaction);
     expired.forEach((record) => transaction.objectStore('revisions').delete(record.revisionId));
     await completed;
+  }
+
+  async clearProjectDocuments() {
+    const recoveries = await this.getRecoveryRecords();
+    const database = await this.openDatabase();
+    const transaction = database.transaction(['projects', 'revisions'], 'readwrite');
+    const completed = transactionComplete(transaction);
+    transaction.objectStore('projects').delete(ACTIVE_PROJECT_ID);
+    recoveries.forEach((record) => {
+      transaction.objectStore('revisions').delete(record.revisionId);
+    });
+    await completed;
+    this.revision = 0;
+    this.savedAt = null;
+    this.source = 'none';
+    this.missingAssetIds = [];
+    this.lastError = null;
   }
 
   private async verifyProjectRecord(record: StoredProjectRecord) {
@@ -323,6 +375,35 @@ export class ProjectPersistenceStore {
     return null;
   }
 
+  async loadManualProject(): Promise<LoadedProject | null> {
+    try {
+      const manual = await this.getManualRecord();
+      if (!manual) return null;
+      const verified = await this.verifyProjectRecord(manual);
+      if (!verified) {
+        this.lastError = 'The protected manual save failed integrity verification.';
+        return null;
+      }
+      this.revision = manual.revision;
+      this.savedAt = manual.savedAt;
+      this.source = 'manual';
+      this.missingAssetIds = verified.missingAssetIds;
+      this.lastError = verified.missingAssetIds.length
+        ? `Manual save loaded with ${verified.missingAssetIds.length} missing asset(s).`
+        : null;
+      return {
+        payload: manual.payload,
+        revision: manual.revision,
+        savedAt: manual.savedAt,
+        source: 'manual',
+        missingAssetIds: verified.missingAssetIds,
+      };
+    } catch (error) {
+      this.lastError = error instanceof Error ? error.message : String(error);
+      return null;
+    }
+  }
+
   async backupLegacyPayload(payload: any) {
     if (!payload || payload.schema !== 'youtopy.lab-island/1.0') return;
     if (!localStorage.getItem(LEGACY_PROJECT_BACKUP_KEY)) {
@@ -342,8 +423,10 @@ export class ProjectPersistenceStore {
   async getSnapshot(): Promise<ProjectPersistenceSnapshot> {
     let recoveryRevisionCount = 0;
     let assetCount = 0;
+    let manualRecord: StoredProjectRecord | null = null;
     try {
       recoveryRevisionCount = (await this.getRecoveryRecords()).length;
+      manualRecord = await this.getManualRecord();
       const database = await this.openDatabase();
       const transaction = database.transaction('assets', 'readonly');
       const completed = transactionComplete(transaction);
@@ -358,6 +441,9 @@ export class ProjectPersistenceStore {
       savedAt: this.savedAt,
       source: this.source,
       recoveryRevisionCount,
+      manualSaveAvailable: manualRecord !== null,
+      manualSaveRevision: manualRecord?.revision ?? 0,
+      manualSavedAt: manualRecord?.savedAt ?? null,
       assetCount,
       missingAssetIds: [...this.missingAssetIds],
       persistentStorageGranted: this.persistentStorageGranted,

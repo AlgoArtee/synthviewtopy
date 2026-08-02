@@ -1,13 +1,27 @@
 import fs from 'node:fs';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 
-const bundledClientPath = 'C:/Users/Mewxy/.codex/skills/develop-web-game/scripts/web_game_playwright_client.js';
-const playwrightModule = 'file:///C:/Users/Mewxy/Documents/ProjecTopy/SynthViewTopy/node_modules/playwright/index.mjs';
+const userProfile = process.env.USERPROFILE ?? process.env.HOME;
+if (!userProfile) throw new Error('Cannot locate the user profile for the bundled web-game client.');
+const codexHome = process.env.CODEX_HOME ?? path.join(userProfile, '.codex');
+const bundledClientPath = path.join(
+  codexHome,
+  'skills',
+  'develop-web-game',
+  'scripts',
+  'web_game_playwright_client.js',
+);
+const playwrightModule = pathToFileURL(path.resolve('node_modules/playwright/index.mjs')).href;
+const chromePath = process.env.PLAYWRIGHT_BROWSER_PATH
+  ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
+  ?? 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const source = fs
   .readFileSync(bundledClientPath, 'utf8')
   .replace('from "playwright"', `from "${playwrightModule}"`)
   .replace(
     'headless: args.headless,',
-    'headless: args.headless, executablePath: "C:/Program Files/Google/Chrome/Application/chrome.exe",',
+    `headless: args.headless, executablePath: ${JSON.stringify(chromePath)},`,
   )
   .replace(
     'args: ["--use-gl=angle", "--use-angle=swiftshader"],',

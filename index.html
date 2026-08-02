@@ -32,11 +32,14 @@
         </nav>
 
         <div class="top-actions">
-          <button class="icon-action" id="save-project" title="Save an atomic project revision">
+          <button class="icon-action" id="save-project" title="Protect the current building positions and scene edits as the manual saved layout">
             <span class="action-icon">💾</span><span class="action-label">Save</span>
           </button>
-          <button class="icon-action" id="refresh-project" title="Reload the latest verified project revision">
+          <button class="icon-action" id="refresh-project" title="Restore the latest working revision or protected manual saved layout">
             <span class="action-icon">⟳</span><span class="action-label">Refresh</span>
+          </button>
+          <button class="icon-action" id="reload-current-build" title="Clear working autosave overrides, retain the manual Save, and reload the authored build">
+            <span class="action-icon">◎</span><span class="action-label">Current Build</span>
           </button>
           <button class="icon-action" id="undo-action" title="Undo last action" disabled>
             <span class="action-icon">↶</span><span class="action-label">Undo</span>

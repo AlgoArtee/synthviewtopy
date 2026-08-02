@@ -157,6 +157,8 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 1;
+const SPECIALIZED_DISTRICT_IDS = new Set(['security', 'secret-labs', 'medical-labs']);
 export type WeatherMode =
   | 'clear'
   | 'rain'
@@ -794,6 +796,9 @@ export class IslandWorld {
     savedAt: null,
     source: 'none',
     recoveryRevisionCount: 0,
+    manualSaveAvailable: false,
+    manualSaveRevision: 0,
+    manualSavedAt: null,
     assetCount: 0,
     missingAssetIds: [],
     persistentStorageGranted: null,
@@ -5334,6 +5339,7 @@ export class IslandWorld {
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
         entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+        specializedDistrictLayoutRevision: SPECIALIZED_DISTRICT_LAYOUT_REVISION,
         canonicalEntryBuildingIds: ENTRY_LOGISTICS_BUILDING_PROGRAM
           .filter((record) => record.districtId === 'entry-commercial')
           .map((record) => entryLogisticsBuildingSelectableId(record.code)),
@@ -5375,7 +5381,7 @@ export class IslandWorld {
     }, 750);
   }
 
-  async saveProjectToLocalStorage(_manual = true) {
+  async saveProjectToLocalStorage(manual = true) {
     if (this.autosaveTimer !== null) {
       window.clearTimeout(this.autosaveTimer);
       this.autosaveTimer = null;
@@ -5383,7 +5389,7 @@ export class IslandWorld {
     const payload = this.buildProjectPayload();
     // IndexedDB is the authoritative commit. Update the compatibility mirror
     // only after its document and all referenced assets validate successfully.
-    await this.persistence.saveProject(payload);
+    await this.persistence.saveProject(payload, { manual });
     localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(payload));
     this.persistenceSnapshot = await this.persistence.getSnapshot();
     this.callbacks.onPersistenceChange?.(this.persistenceSnapshot);
@@ -5406,10 +5412,13 @@ export class IslandWorld {
     }
   }
 
-  async loadProjectFromPersistentStorage() {
+  async loadProjectFromPersistentStorage(includeManualFallback = false) {
     this.persistenceHydrating = true;
     try {
       const stored = await this.persistence.loadProject();
+      const manual = !stored && includeManualFallback
+        ? await this.persistence.loadManualProject()
+        : null;
       const localRaw = localStorage.getItem(PROJECT_STORAGE_KEY);
       let localPayload: any = null;
       try {
@@ -5419,13 +5428,19 @@ export class IslandWorld {
       }
       // IndexedDB is authoritative. The LocalStorage copy is a compatibility
       // fallback only when no verified current/recovery document exists.
-      const payload = stored?.payload ?? localPayload;
+      const payload = stored?.payload ?? manual?.payload ?? localPayload;
       if (!payload) return false;
       const legacy = payload.schema === 'youtopy.lab-island/1.0';
+      const migrateSpecializedDistricts = (
+        Number(payload.masterplan?.specializedDistrictLayoutRevision) || 0
+      ) < SPECIALIZED_DISTRICT_LAYOUT_REVISION;
+      const migrateEntryLogistics = (
+        Number(payload.masterplan?.entryLogisticsLayoutRevision) || 0
+      ) < ENTRY_LOGISTICS_LAYOUT_REVISION;
       if (legacy) await this.persistence.backupLegacyPayload(payload);
       if (!this.loadProject(payload)) return false;
       await this.restoreImportedAssets(payload);
-      if (legacy || !stored) {
+      if (legacy || !stored || migrateSpecializedDistricts || migrateEntryLogistics) {
         await this.saveProjectToLocalStorage(false);
       }
       this.persistenceSnapshot = await this.persistence.getSnapshot();
@@ -5504,6 +5519,9 @@ export class IslandWorld {
     const savedWorldExpansion = Number(payload.masterplan?.worldExpansion) || 3;
     const savedLayoutScale = WORLD_EXPANSION / savedWorldExpansion;
     const savedEntryLogisticsLayoutRevision = Number(payload.masterplan?.entryLogisticsLayoutRevision) || 0;
+    const savedSpecializedDistrictLayoutRevision = Number(
+      payload.masterplan?.specializedDistrictLayoutRevision,
+    ) || 0;
 
     this.objectVisibilityIntent.clear();
     this.deletedObjectIds.clear();
@@ -5696,9 +5714,25 @@ export class IslandWorld {
         const definition = this.definitions.get(id);
         if (group && definition) {
           if (state) {
-            const migrateWelcomeGeometry = id === entryLogisticsBuildingSelectableId('E2')
+            const migrateWelcomeGeometry = (
+              id === entryLogisticsBuildingSelectableId('E2')
+              || id === WELCOME_POOL_SELECTABLE_ID
+            )
               && savedEntryLogisticsLayoutRevision < ENTRY_LOGISTICS_LAYOUT_REVISION;
-            if (!migrateWelcomeGeometry) {
+            const migrateSpecializedDistrict = SPECIALIZED_DISTRICT_IDS.has(id)
+              && savedSpecializedDistrictLayoutRevision < SPECIALIZED_DISTRICT_LAYOUT_REVISION;
+            const canonicalTransform = migrateSpecializedDistrict
+              ? this.initialTransforms.get(id)
+              : null;
+            if (canonicalTransform) {
+              // Security, Secret Labs, and Medical Labs reuse long-lived district
+              // IDs, but their authored geometry is now sector-local. Replaying a
+              // pre-sector root transform displaces the complete campus from its
+              // roads and ring cell, so migrate the assembly as one canonical unit.
+              group.position.copy(canonicalTransform.position);
+              group.quaternion.copy(canonicalTransform.quaternion);
+              group.scale.copy(canonicalTransform.scale);
+            } else if (!migrateWelcomeGeometry) {
               const objectLayoutScale = definition.category === 'authored-interior'
                 ? 1
                 : savedLayoutScale;
@@ -5710,11 +5744,13 @@ export class IslandWorld {
               group.rotation.y = THREE.MathUtils.degToRad(state.rotationY);
             }
             const baseScale = group.userData.editorBaseScale as readonly [number, number, number] | undefined;
-            if (migrateWelcomeGeometry && baseScale) {
-              // Revision 5 follows a live-edit overlap during the Welcome Hall
-              // geometry pass. Older saved per-axis values can enlarge its
-              // finished floor and precise wall barriers over the approach
-              // road, so normalize the complete authored assembly together.
+            if (canonicalTransform) {
+              // The canonical specialized-district scale was restored above.
+            } else if (migrateWelcomeGeometry && baseScale) {
+              // Welcome layout revisions normalize the Hall and its editable
+              // pool together. Revision 6 moves the complete arrival ensemble
+              // clear of the 300-degree district delimiter; replaying an older
+              // transform would place either component back across the road.
               group.scale.set(baseScale[0], baseScale[1], baseScale[2]);
             } else if (baseScale && state.scale3D) {
               group.scale.set(
@@ -6878,6 +6914,23 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     return this.getCanonicalIntegrity();
   }
 
+  async clearPersistedProjectForCurrentBuild() {
+    if (this.autosaveTimer !== null) {
+      window.clearTimeout(this.autosaveTimer);
+      this.autosaveTimer = null;
+    }
+    this.persistenceHydrating = true;
+    try {
+      await this.persistence.clearProjectDocuments();
+      localStorage.removeItem(PROJECT_STORAGE_KEY);
+      this.persistenceSnapshot = await this.persistence.getSnapshot();
+      this.callbacks.onPersistenceChange?.(this.persistenceSnapshot);
+      return this.persistenceSnapshot;
+    } finally {
+      this.persistenceHydrating = false;
+    }
+  }
+
   getPersistenceSnapshot() {
     return {
       ...this.persistenceSnapshot,
@@ -7014,6 +7067,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       masterplan: {
         worldExpansion: WORLD_EXPANSION,
         entryLogisticsLayoutRevision: ENTRY_LOGISTICS_LAYOUT_REVISION,
+        specializedDistrictLayoutRevision: SPECIALIZED_DISTRICT_LAYOUT_REVISION,
         islandRadiusWorldUnits: ISLAND_RADIUS,
         islandRadiusMetres: ISLAND_RADIUS * 10,
       },

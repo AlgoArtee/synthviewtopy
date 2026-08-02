@@ -105,7 +105,8 @@ try {
     const requiredObjects = [
       'ENTRY__WELCOME_OVAL_ARRIVAL_PLAZA',
       'ENTRY__WELCOME_REFLECTING_POOL',
-      'ENTRY-COMMERCIAL__WELCOME_FORK__CLEAN_JUNCTION_CAP',
+      'ENTRY-COMMERCIAL__WELCOME_LOGISTICS_SPLIT__CLEAN_JUNCTION_CAP',
+      'ENTRY-COMMERCIAL__WELCOME_HALL_JUNCTION__CLEAN_JUNCTION_CAP',
       'LOGISTICS__NORTHFIELD_RUNWAY',
       'ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK',
       'ENTRY-COMMERCIAL__E1__TUNNEL_SIDEWALK_WEST',
@@ -187,6 +188,10 @@ try {
             occlusionSafeSurfaceDecal: object.userData.occlusionSafeSurfaceDecal === true,
             startClearanceMetres: object.userData.startClearanceMetres,
             endClearanceMetres: object.userData.endClearanceMetres,
+            laneCount: object.userData.laneCount,
+            dividerIndex: object.userData.dividerIndex,
+            lateralOffset: object.userData.lateralOffset,
+            color: object.material?.color?.getHexString?.() ?? null,
           });
         }
         if (object.userData.continuousRoadSurface === true) {
@@ -198,6 +203,7 @@ try {
             widthEnd: object.userData.widthEnd,
             logisticsPlatform: object.userData.logisticsPlatform === true,
             districtTransition: object.userData.districtTransition === true,
+            laneCount: object.userData.laneCount,
             color: object.material?.color?.getHexString?.() ?? null,
             terrainDepthBias: object.userData.terrainDepthBias === true,
             polygonOffset: object.material?.polygonOffset === true,
@@ -216,6 +222,8 @@ try {
         logisticsPlatformCount: network?.userData.logisticsPlatformCount ?? 0,
         surfacePalette: network?.userData.surfacePalette ?? [],
         routeCount: network?.userData.routeCount ?? 0,
+        primaryConnectorCount: network?.userData.primaryConnectorCount ?? 0,
+        redundantRouteCount: network?.userData.redundantRouteCount ?? -1,
         segmentCount: roads.length,
         buildingThresholdCount: network?.userData.buildingThresholdCount ?? 0,
         entranceApronCount: network?.userData.entranceApronCount ?? 0,
@@ -295,6 +303,12 @@ try {
     const logisticsBranchSegments = entryRoadAudit.roads
       .filter((road) => road.routeId === 'arrival-logistics-branch')
       .sort((left, right) => left.segmentIndex - right.segmentIndex);
+    const e2RearSegments = entryRoadAudit.roads
+      .filter((road) => road.routeId === 'e2-rear-boundary-link')
+      .sort((left, right) => left.segmentIndex - right.segmentIndex);
+    const e2FrontSegments = entryRoadAudit.roads
+      .filter((road) => road.routeId === 'e2-door-apron')
+      .sort((left, right) => left.segmentIndex - right.segmentIndex);
     const toWorldRoadPoint = (point) => entry.localToWorld(world.camera.position.clone().fromArray(point));
     const polarRoadPoint = (point) => {
       const worldPoint = toWorldRoadPoint(point);
@@ -303,10 +317,25 @@ try {
         degrees: ((Math.atan2(worldPoint.z, worldPoint.x) * 180 / Math.PI) + 360) % 360,
       };
     };
-    const branchOriginGap = (segments) => {
-      const arrivalEnd = toWorldRoadPoint(arrivalSegments.at(-1).toPoint);
+    const branchConnectionGap = (segments) => {
       const branchStart = toWorldRoadPoint(segments[0].fromPoint);
-      return Math.hypot(arrivalEnd.x - branchStart.x, arrivalEnd.z - branchStart.z);
+      return Math.min(...arrivalSegments.flatMap((segment) => [segment.fromPoint, segment.toPoint])
+        .map((point) => {
+          const arrivalPoint = toWorldRoadPoint(point);
+          return Math.hypot(arrivalPoint.x - branchStart.x, arrivalPoint.z - branchStart.z);
+        }));
+    };
+    const maximumRoadTurnDegrees = (segments) => {
+      const directions = segments.map((road) => {
+        const dx = road.toPoint[0] - road.fromPoint[0];
+        const dz = road.toPoint[2] - road.fromPoint[2];
+        const length = Math.hypot(dx, dz);
+        return [dx / length, dz / length];
+      });
+      return Math.max(0, ...directions.slice(1).map((direction, index) => Math.acos(Math.max(
+        -1,
+        Math.min(1, direction[0] * directions[index][0] + direction[1] * directions[index][1]),
+      )) * 180 / Math.PI));
     };
     const arrivalDirections = arrivalSegments.map((road) => {
       const dx = road.toPoint[0] - road.fromPoint[0];
@@ -349,9 +378,19 @@ try {
     const welcomePlazaForLevel = world.scene.getObjectByName('ENTRY__WELCOME_OVAL_ARRIVAL_PLAZA');
     const welcomeLandscape = world.scene.getObjectByName('ENTRY__WELCOME_LANDSCAPE');
     const welcomeLoop = world.scene.getObjectByName('ENTRY__WELCOME_VEHICLE_LOOP');
-    const welcomeForkCap = world.scene.getObjectByName(
-      'ENTRY-COMMERCIAL__WELCOME_FORK__CLEAN_JUNCTION_CAP',
-    );
+    const redundantWelcomeRoadMeshes = [
+      welcomeLoop,
+      ...Array.from({ length: 7 }, (_, index) => world.scene.getObjectByName(
+        `ENTRY__RADIAL_PAVING_LINE_${index + 1}`,
+      )),
+      ...['FRONT', 'EAST', 'REAR', 'WEST'].map((direction) => world.scene.getObjectByName(
+        `ENTRY__WELCOME_LOOP_ACCESS_${direction}`,
+      )),
+    ].filter(Boolean);
+    const welcomeJunctionCaps = [
+      world.scene.getObjectByName('ENTRY-COMMERCIAL__WELCOME_LOGISTICS_SPLIT__CLEAN_JUNCTION_CAP'),
+      world.scene.getObjectByName('ENTRY-COMMERCIAL__WELCOME_HALL_JUNCTION__CLEAN_JUNCTION_CAP'),
+    ];
     const welcomeForkSurfaceElevations = [
       'arrival',
       'arrival-entry-branch',
@@ -386,10 +425,34 @@ try {
       tunnelJoinTurnDegrees: Math.acos(tunnelArrivalDot) * 180 / Math.PI,
       entryBranchSegmentCount: entryBranchSegments.length,
       logisticsBranchSegmentCount: logisticsBranchSegments.length,
-      entryBranchOriginGap: branchOriginGap(entryBranchSegments),
-      logisticsBranchOriginGap: branchOriginGap(logisticsBranchSegments),
+      entryBranchOriginGap: branchConnectionGap(entryBranchSegments),
+      logisticsBranchOriginGap: branchConnectionGap(logisticsBranchSegments),
       entryBranchEndpoint: polarRoadPoint(entryBranchSegments.at(-1).toPoint),
       logisticsBranchEndpoint: polarRoadPoint(logisticsBranchSegments.at(-1).toPoint),
+      frontDoorRoad: {
+        segmentCount: e2FrontSegments.length,
+        maximumTurnDegrees: maximumRoadTurnDegrees(e2FrontSegments),
+        firstEndpointType: e2FrontSegments[0]?.fromEndpointType,
+        firstBuilding: e2FrontSegments[0]?.fromBuilding,
+        thresholdGap: Math.hypot(
+          (e2FrontSegments[0]?.fromPoint?.[0] ?? Infinity) - (e2Facility.userData.roadDoorThreshold?.[0] ?? 0),
+          (e2FrontSegments[0]?.fromPoint?.[2] ?? Infinity) - (e2Facility.userData.roadDoorThreshold?.[2] ?? 0),
+        ),
+        arrivalConnectionGap: Math.hypot(
+          (e2FrontSegments.at(-1)?.toPoint?.[0] ?? Infinity) - (arrivalSegments.at(-1)?.toPoint?.[0] ?? 0),
+          (e2FrontSegments.at(-1)?.toPoint?.[2] ?? Infinity) - (arrivalSegments.at(-1)?.toPoint?.[2] ?? 0),
+        ),
+      },
+      rearBoundaryRoad: {
+        segmentCount: e2RearSegments.length,
+        firstEndpointType: e2RearSegments[0]?.fromEndpointType,
+        firstBuilding: e2RearSegments[0]?.fromBuilding,
+        thresholdGap: Math.hypot(
+          (e2RearSegments[0]?.fromPoint?.[0] ?? Infinity) - (e2Facility.userData.roadRearDoorThreshold?.[0] ?? 0),
+          (e2RearSegments[0]?.fromPoint?.[2] ?? Infinity) - (e2Facility.userData.roadRearDoorThreshold?.[2] ?? 0),
+        ),
+        endpoint: e2RearSegments.length ? polarRoadPoint(e2RearSegments.at(-1).toPoint) : null,
+      },
       welcomeBuildingPosition: (() => {
         const point = e2Facility.getWorldPosition(world.camera.position.clone());
         return {
@@ -397,7 +460,13 @@ try {
           degrees: ((Math.atan2(point.z, point.x) * 180 / Math.PI) + 360) % 360,
         };
       })(),
-      welcomeForkPosition: polarRoadPoint(arrivalSegments.at(-1).toPoint),
+      welcomeDelimiterClearance: (() => {
+        const point = e2Facility.getWorldPosition(world.camera.position.clone());
+        const delimiterAngle = 300 * Math.PI / 180;
+        return Math.abs(point.x * Math.sin(delimiterAngle) - point.z * Math.cos(delimiterAngle));
+      })(),
+      welcomeHallJunctionPosition: polarRoadPoint(arrivalSegments.at(-1).toPoint),
+      welcomeLogisticsSplitPosition: polarRoadPoint(logisticsBranchSegments[0].fromPoint),
       welcomeLandscapePosition: (() => {
         const point = welcomeLandscape.getWorldPosition(world.camera.position.clone());
         return {
@@ -405,7 +474,7 @@ try {
           degrees: ((Math.atan2(point.z, point.x) * 180 / Math.PI) + 360) % 360,
         };
       })(),
-      welcomeForkLandscapeClearance: Math.hypot(
+      welcomeHallJunctionLandscapeClearance: Math.hypot(
         ...(() => {
           const fork = entry.localToWorld(world.camera.position.clone().fromArray(arrivalSegments.at(-1).toPoint));
           const landscape = welcomeLandscape.getWorldPosition(world.controls.target.clone());
@@ -414,18 +483,22 @@ try {
       ),
       welcomeLoopAccessPointCount: welcomeLoop?.userData.accessPointCount ?? 0,
       welcomeLoopArcCount: welcomeLoop?.children.filter((child) => child.name.startsWith('ENTRY__WELCOME_VEHICLE_LOOP_ARC_')).length ?? 0,
-      welcomeForkCap: {
-        present: Boolean(welcomeForkCap),
-        coversCoplanarOverlap: welcomeForkCap?.userData.coversCoplanarOverlap === true,
-        connectedRoutes: welcomeForkCap?.userData.connectedRoutes,
-        surfaceOffset: welcomeForkCap?.userData.surfaceOffset,
-        surfaceElevation: welcomeForkCap?.userData.surfaceElevation,
-        radius: welcomeForkCap?.geometry?.parameters?.radius,
-        walkable: welcomeForkCap?.userData.walkable === true,
-        terrainDepthBias: welcomeForkCap?.userData.terrainDepthBias === true,
-        polygonOffset: welcomeForkCap?.material?.polygonOffset === true,
-        polygonOffsetFactor: welcomeForkCap?.material?.polygonOffsetFactor,
-      },
+      redundantWelcomeRoadMeshCount: redundantWelcomeRoadMeshes.length,
+      welcomeJunctionCaps: welcomeJunctionCaps.map((cap) => ({
+        present: Boolean(cap),
+        role: cap?.userData.junctionRole,
+        staged: cap?.userData.stagedJunction === true,
+        coversCoplanarOverlap: cap?.userData.coversCoplanarOverlap === true,
+        connectedRoutes: cap?.userData.connectedRoutes,
+        surfaceOffset: cap?.userData.surfaceOffset,
+        surfaceElevation: cap?.userData.surfaceElevation,
+        radius: cap?.geometry?.parameters?.radius,
+        walkable: cap?.userData.walkable === true,
+        terrainDepthBias: cap?.userData.terrainDepthBias === true,
+        polygonOffset: cap?.material?.polygonOffset === true,
+        polygonOffsetFactor: cap?.material?.polygonOffsetFactor,
+        color: cap?.material?.color?.getHexString?.() ?? null,
+      })),
       welcomeForkSurfaceElevations,
       welcomeForkMedian: e2Facility?.userData.forkMedian === true,
       welcomeForkBranches: e2Facility?.userData.forkBranches,
@@ -593,8 +666,13 @@ try {
     const welcomeInterior = e2Facility.getObjectByName('ENTRY__E2__WELCOME_REGISTRATION_INTERIOR');
     const welcomeCollision = e2Facility.getObjectByName('ENTRY__E2__PRECISE_ELLIPTICAL_WALL_COLLISION');
     const welcomeDoorLeaves = e2Facility.children.filter((child) => child.name.startsWith('ENTRY__E2__AUTOMATIC_SLIDING_DOOR_'));
+    const welcomeRearDoorLeaves = e2Facility.children.filter((child) => child.name.startsWith('ENTRY__E2__REAR_AUTOMATIC_SLIDING_DOOR_'));
     const welcomeStaircase = e2Facility.getObjectByName('ENTRY__E2__WHITE_ENTRY_STAIRCASE');
     const welcomeStairNavigation = e2Facility.getObjectByName('ENTRY__E2__CONTINUOUS_STAIR_NAVIGATION_SURFACE');
+    const welcomeRearStaircase = e2Facility.getObjectByName('ENTRY__E2__WHITE_REAR_EXIT_STAIRCASE');
+    const welcomeRearStairNavigation = e2Facility.getObjectByName('ENTRY__E2__CONTINUOUS_REAR_STAIR_NAVIGATION_SURFACE');
+    const welcomeRearSteps = [...(welcomeRearStaircase?.children ?? [])]
+      .filter((child) => /^ENTRY__E2__WHITE_REAR_EXIT_STEP_\d+$/.test(child.name));
     const welcomePodiumCollision = e2Facility.getObjectByName('ENTRY__E2__PRECISE_PODIUM_COLLISION');
     const welcomeSteps = [...(welcomeStaircase?.children ?? [])]
       .filter((child) => child.userData.stairStep)
@@ -799,18 +877,7 @@ try {
     const poolSize = welcomePool ? objectSize(welcomePool) : null;
     const tabletopSizes = poolTabletops.map(objectSize);
     const chairSizes = poolChairs.map(objectSize);
-    const loopAccessMeshes = ['FRONT', 'EAST', 'REAR', 'WEST']
-      .map((direction) => world.scene.getObjectByName(`ENTRY__WELCOME_LOOP_ACCESS_${direction}`));
     world.walkController.refreshNavigation();
-    const loopAccess = loopAccessMeshes.map((access) => {
-      const point = access.getWorldPosition(world.camera.position.clone());
-      const ground = world.walkController.sampleGround(point.x, point.z, { spawnSearch: true });
-      return {
-        name: access.name,
-        ground,
-        clear: ground !== null && world.walkController.isSpawnClear(point.x, point.z, ground),
-      };
-    });
     const welcomeStart = e2Facility.localToWorld(world.camera.position.clone().set(0, 0.008, 7.7));
     const welcomeStartGround = world.walkController.sampleGround(welcomeStart.x, welcomeStart.z, { spawnSearch: true });
     world.camera.position.set(welcomeStart.x, welcomeStartGround + 0.162, welcomeStart.z);
@@ -843,10 +910,10 @@ try {
     );
     const welcomeAccessAudit = {
       visualDoorLeafCount: welcomeDoorLeaves.length,
+      rearVisualDoorLeafCount: welcomeRearDoorLeaves.length,
       preciseWallBarrierCount: welcomeCollision?.userData.navBarrierSegments?.length ?? 0,
       doorwayGapWidth: welcomeCollision?.userData.doorwayGapWidth ?? 0,
-      ringAccessPoints: loopAccess,
-      ringAccessCount: welcomeLoop?.userData.accessPointCount ?? 0,
+      redundantRoadMeshCount: redundantWelcomeRoadMeshes.length,
       blockedWalkSteps: welcomeBlockedSteps,
       maximumWalkTargetError: welcomeMaximumTargetError,
       minimumGround: Math.min(...welcomeGroundTrace),
@@ -860,6 +927,8 @@ try {
       interiorVisible: welcomeInterior?.visible === true,
       interiorRoomId: world.walkController.getSnapshot().roomId,
       walkAccess: e2Facility.userData.walkAccess,
+      rearThreshold: e2Facility.userData.roadRearDoorThreshold,
+      rearRouteStart: e2Facility.userData.roadRearRouteStart,
     };
     const poolTimeAfter = welcomePool?.userData.waveTime ?? null;
     const poolAnimatedVertexCount = poolPositionAttribute
@@ -871,6 +940,9 @@ try {
       stairCount: welcomeSteps.length,
       staircaseMetadata: welcomeStaircase?.userData,
       continuousNavigationSurface: welcomeStairNavigation?.userData.walkable === true,
+      rearStairCount: welcomeRearSteps.length,
+      rearStaircaseMetadata: welcomeRearStaircase?.userData,
+      rearContinuousNavigationSurface: welcomeRearStairNavigation?.userData.walkable === true,
       podiumCollisionSegmentCount: welcomePodiumCollision?.userData.navBarrierSegments?.length ?? 0,
       preventsUnderPodiumAccess: welcomePodiumCollision?.userData.preventsUnderPodiumAccess === true,
       missingStepGround: welcomeStepGround.filter((ground) => ground === null).length,
@@ -929,7 +1001,7 @@ try {
     // before sampling the independent apron-edge route.
     world.setMode('explore');
     world.walkController.refreshNavigation();
-    const e2ApronRoad = e2ApronMeshes[0];
+    const e2ApronRoad = e2ApronMeshes[Math.floor(e2ApronMeshes.length * 0.7)];
     const apronFrom = entry.localToWorld(world.camera.position.clone().fromArray(e2ApronRoad.userData.fromPoint));
     const apronTo = entry.localToWorld(world.camera.position.clone().fromArray(e2ApronRoad.userData.toPoint));
     const apronDirection = apronTo.clone().sub(apronFrom).setY(0).normalize();
@@ -1287,7 +1359,7 @@ try {
 
     const initialSnapshot = world.takeSnapshotPayload();
     const legacyWelcomeSnapshot = JSON.parse(JSON.stringify(initialSnapshot));
-    legacyWelcomeSnapshot.masterplan.entryLogisticsLayoutRevision = 4;
+    legacyWelcomeSnapshot.masterplan.entryLogisticsLayoutRevision = 5;
     const legacyWelcomeRecord = legacyWelcomeSnapshot.objects
       .find((object) => object.id === 'entry-logistics-building-e2');
     legacyWelcomeRecord.state.position.x += 14;
@@ -1295,14 +1367,24 @@ try {
     legacyWelcomeRecord.state.rotationY += 27;
     legacyWelcomeRecord.state.scale = 2.667;
     legacyWelcomeRecord.state.scale3D = { x: 4, y: 3, z: 1.8 };
+    const legacyWelcomePoolRecord = legacyWelcomeSnapshot.objects
+      .find((object) => object.id === 'entry-logistics-landscape-welcome-pool');
+    legacyWelcomePoolRecord.state.position.x -= 11;
+    legacyWelcomePoolRecord.state.position.z += 7;
+    legacyWelcomePoolRecord.state.rotationY -= 19;
+    legacyWelcomePoolRecord.state.scale3D = { x: 1.7, y: 1, z: 0.65 };
     const initialWelcomeState = world.getObjectState('entry-logistics-building-e2');
+    const initialWelcomePoolState = world.getObjectState('entry-logistics-landscape-welcome-pool');
     const welcomeChildCount = e2Facility.children.length;
     world.loadProject(legacyWelcomeSnapshot);
     const migratedWelcome = world.objectGroups.get('entry-logistics-building-e2');
     const migratedWelcomeState = world.getObjectState('entry-logistics-building-e2');
+    const migratedWelcomePoolState = world.getObjectState('entry-logistics-landscape-welcome-pool');
     const welcomeGeometryAudit = {
       initial: initialWelcomeState,
       migrated: migratedWelcomeState,
+      initialPool: initialWelcomePoolState,
+      migratedPool: migratedWelcomePoolState,
       baseScale: migratedWelcome?.userData.editorBaseScale,
       actualScale: migratedWelcome?.scale.toArray(),
       childCountBefore: welcomeChildCount,
@@ -1311,7 +1393,9 @@ try {
         'ENTRY__E2__ELLIPTICAL_PALE_STONE_BASE',
         'ENTRY__E2__FLOATING_ELLIPTICAL_ROOF',
         'ENTRY__E2__WELCOME_DOOR_THRESHOLD',
+        'ENTRY__E2__REAR_DOOR_THRESHOLD',
         'ENTRY__E2__WHITE_ENTRY_STAIRCASE',
+        'ENTRY__E2__WHITE_REAR_EXIT_STAIRCASE',
         'ENTRY__E2__WHITE_DNA_COLUMN_1',
         'ENTRY__E2__CONTINUOUS_STAIR_NAVIGATION_SURFACE',
         'ENTRY__E2__PRECISE_PODIUM_COLLISION',
@@ -1564,18 +1648,20 @@ try {
   if (!audit.roads.entry.dynamic || !audit.roads.entry.entranceLinked || !audit.roads.entry.doorToDoor
     || audit.roads.entry.routeCount !== 5 || audit.roads.entry.segmentCount < 105
     || !audit.roads.entry.uniformContinuousRibbons
-    || audit.roads.entry.continuousSurfaceCount !== 35
-    || audit.roads.entry.continuousSurfaces.length !== 35
+    || audit.roads.entry.continuousSurfaceCount !== 36
+    || audit.roads.entry.continuousSurfaces.length !== 36
     || audit.roads.entry.districtTransitionCount !== 2
     || audit.roads.entry.logisticsPlatformCount !== 0
     || audit.roads.entry.buildingThresholdCount !== 13 || audit.roads.entry.entranceApronCount !== 13
     || JSON.stringify(audit.roads.entry.thresholdCodes) !== JSON.stringify(expectedEntryCodes)
     || audit.roads.entry.directBuildingLinks.length
     || !audit.roads.logistics.dynamic || !audit.roads.logistics.entranceLinked || !audit.roads.logistics.doorToDoor
-    || audit.roads.logistics.routeCount !== 4 || audit.roads.logistics.segmentCount < 200
+    || audit.roads.logistics.routeCount !== 2 || audit.roads.logistics.segmentCount < 200
+    || audit.roads.logistics.primaryConnectorCount !== 7
+    || audit.roads.logistics.redundantRouteCount !== 0
     || !audit.roads.logistics.uniformContinuousRibbons
-    || audit.roads.logistics.continuousSurfaceCount !== 41
-    || audit.roads.logistics.continuousSurfaces.length !== 41
+    || audit.roads.logistics.continuousSurfaceCount !== 31
+    || audit.roads.logistics.continuousSurfaces.length !== 31
     || audit.roads.logistics.districtTransitionCount !== 2
     || audit.roads.logistics.logisticsPlatformCount !== 20
     || audit.roads.logistics.buildingThresholdCount !== 7 || audit.roads.logistics.entranceApronCount !== 20
@@ -1584,60 +1670,75 @@ try {
     throw new Error(`Road hierarchy failed: ${JSON.stringify(audit.roads, null, 2)}`);
   }
   const roadMarkings = [...audit.roads.entry.roadMarkings, ...audit.roads.logistics.roadMarkings];
-  const arrivalMarking = audit.roads.entry.roadMarkings.find((marking) => marking.routeId === 'arrival');
-  const logisticsBranchMarking = audit.roads.entry.roadMarkings
-    .find((marking) => marking.routeId === 'arrival-logistics-branch');
-  if (!arrivalMarking
-    || !logisticsBranchMarking
-    || roadMarkings.some((marking) => marking.pattern !== 'dashed-centreline'
-      || marking.name.includes('__EDGE_')
-      || Math.abs(marking.dashLengthMetres - 3.8) > 0.001
+  const expectedThreeLaneRoutes = [
+    'arrival',
+    'arrival-entry-branch',
+    'arrival-logistics-branch',
+    'e1-tunnel-through-road',
+    'e2-door-apron',
+    'e2-rear-boundary-link',
+  ];
+  const markedRoutes = Array.from(new Set(audit.roads.entry.roadMarkings.map((marking) => marking.routeId))).sort();
+  const markedRouteCounts = Object.fromEntries(expectedThreeLaneRoutes.map((routeId) => [
+    routeId,
+    audit.roads.entry.roadMarkings.filter((marking) => marking.routeId === routeId).length,
+  ]));
+  if (roadMarkings.length !== 12
+    || audit.roads.logistics.roadMarkings.length !== 0
+    || JSON.stringify(markedRoutes) !== JSON.stringify(expectedThreeLaneRoutes)
+    || Object.values(markedRouteCounts).some((count) => count !== 2)
+    || roadMarkings.some((marking) => marking.pattern !== 'three-lane-highway-divider'
+      || marking.laneCount !== 3
+      || ![1, 2].includes(marking.dividerIndex)
+      || Math.abs(marking.lateralOffset) < 1
+      || marking.color !== '646c70'
+      || marking.dashCount < 1
+      || Math.abs(marking.dashLengthMetres - 4.2) > 0.001
       || Math.abs(marking.gapLengthMetres - 2.6) > 0.001
-      || Math.abs(marking.markingLiftMetres - 0.005) > 0.0001
-      || !marking.occlusionSafeSurfaceDecal)
-    || audit.roads.entry.roadMarkings.some((marking) => [
-      'arrival-entry-branch',
-      'e2-door-apron',
-      'inner-retail-collector',
-      'central-commercial-collector',
-      'quay-promenade',
-    ].includes(marking.routeId))
-    || arrivalMarking.endClearanceMetres < 47.4
-    || logisticsBranchMarking.startClearanceMetres < 47.4) {
-    throw new Error(`Road marking pattern failed: ${JSON.stringify({
+      || !marking.occlusionSafeSurfaceDecal)) {
+    throw new Error(`Three-lane Welcome highway markings failed: ${JSON.stringify({
       entry: audit.roads.entry.roadMarkings,
       logistics: audit.roads.logistics.roadMarkings,
+      markedRoutes,
+      markedRouteCounts,
     }, null, 2)}`);
   }
-  const entryCivicSurfaces = audit.roads.entry.continuousSurfaces
-    .filter((surface) => ['public-white', 'pedestrian', 'promenade'].includes(surface.routeKind));
+  const entrySurfaces = audit.roads.entry.continuousSurfaces;
   const entryTransitions = audit.roads.entry.continuousSurfaces
     .filter((surface) => surface.districtTransition);
   const logisticsPlatforms = audit.roads.logistics.continuousSurfaces
     .filter((surface) => surface.logisticsPlatform);
-  const logisticsRoads = audit.roads.logistics.continuousSurfaces
-    .filter((surface) => [
-      'freight',
-      'logistics-landside',
-      'service-yard',
-      'airside',
-      'logistics-platform',
-      'district-link',
-    ].includes(surface.routeKind));
-  if (!entryCivicSurfaces.length
-    || entryCivicSurfaces.some((surface) => !['d7d0bf', 'e2e1d6'].includes(surface.color))
+  const logisticsRoads = audit.roads.logistics.continuousSurfaces;
+  const entryDoorConnectors = entrySurfaces.filter((surface) => surface.routeId.endsWith('-to-collector'));
+  const logisticsDoorConnectors = logisticsRoads.filter((surface) => surface.routeId.endsWith('-to-corridor'));
+  if (!entrySurfaces.length
+    || entrySurfaces.some((surface) => surface.color !== 'f3f4f0')
+    || JSON.stringify(audit.roads.entry.surfacePalette) !== JSON.stringify(['welcome white'])
     || entryTransitions.length !== 2
     || entryTransitions.some((surface) => surface.widthStart !== 3.6 || surface.widthEnd !== 1.55)
+    || entryDoorConnectors.length !== 11
     || logisticsPlatforms.length !== 20
-    || logisticsPlatforms.some((surface) => surface.color !== '656d70'
+    || logisticsPlatforms.some((surface) => surface.color !== '646c70'
       || surface.widthStart < 2.7
       || surface.widthEnd !== surface.widthStart)
-    || logisticsRoads.some((surface) => !['383f42', '656d70'].includes(surface.color))) {
-    throw new Error(`Uniform road palettes, tapered links, or Logistics hardstands failed: ${JSON.stringify({
-      entryCivicSurfaces,
+    || logisticsRoads.some((surface) => surface.color !== '646c70')
+    || JSON.stringify(audit.roads.logistics.surfacePalette) !== JSON.stringify(['logistics grey'])
+    || logisticsDoorConnectors.length !== 7
+    || JSON.stringify(logisticsRoads
+      .filter((surface) => !surface.logisticsPlatform && !surface.routeId.endsWith('-to-corridor'))
+      .map((surface) => surface.routeId).sort()) !== JSON.stringify([
+        'freight-spine',
+        'logistics-delimiter-link-276',
+        'logistics-delimiter-link-300',
+        'secure-yard-collector',
+      ])) {
+    throw new Error(`Two-color palettes, live door connectors, tapered links, or Logistics hardstands failed: ${JSON.stringify({
+      entrySurfaces,
       entryTransitions,
+      entryDoorConnectors,
       logisticsPlatforms,
       logisticsRoads,
+      logisticsDoorConnectors,
     }, null, 2)}`);
   }
   if (audit.citylineRoad.segmentCount < 20
@@ -1647,7 +1748,7 @@ try {
     || audit.citylineRoad.doorwayTangentDot < 0.995
     || audit.citylineRoad.maximumTurnDegrees > 8
     || audit.citylineRoad.continuousSurface?.routeKind !== 'promenade'
-    || !['d7d0bf', 'e2e1d6'].includes(audit.citylineRoad.continuousSurface?.color)) {
+    || audit.citylineRoad.continuousSurface?.color !== 'f3f4f0') {
     throw new Error(`Cityline live angled road failed: ${JSON.stringify(audit.citylineRoad, null, 2)}`);
   }
   if (audit.bridge.centrelineGapXZ > 0.01
@@ -1685,11 +1786,10 @@ try {
     throw new Error(`City-side tunnel WALK traversal failed: ${JSON.stringify(audit.tunnelWalk, null, 2)}`);
   }
   if (audit.welcomeAccess.visualDoorLeafCount !== 2
-    || audit.welcomeAccess.preciseWallBarrierCount < 30
+    || audit.welcomeAccess.rearVisualDoorLeafCount !== 2
+    || audit.welcomeAccess.preciseWallBarrierCount !== 28
     || audit.welcomeAccess.doorwayGapWidth < 3
-    || audit.welcomeAccess.ringAccessCount !== 4
-    || audit.welcomeAccess.ringAccessPoints.length !== 4
-    || audit.welcomeAccess.ringAccessPoints.some((access) => access.ground === null || !access.clear)
+    || audit.welcomeAccess.redundantRoadMeshCount !== 0
     || audit.welcomeAccess.blockedWalkSteps > 1
     || audit.welcomeAccess.maximumWalkTargetError > 0.11
     || audit.welcomeAccess.maximumGround - audit.welcomeAccess.minimumGround < 0.3
@@ -1699,13 +1799,21 @@ try {
     || audit.welcomeAccess.endLocal.z > 0.05
     || !audit.welcomeAccess.interiorVisible
     || audit.welcomeAccess.walkAccess?.accessible !== true
-    || audit.welcomeAccess.walkAccess?.exteriorOnly !== false) {
-    throw new Error(`Welcome Hall door, interior, or four-way ring access failed: ${JSON.stringify(audit.welcomeAccess, null, 2)}`);
+    || audit.welcomeAccess.walkAccess?.exteriorOnly !== false
+    || !Array.isArray(audit.welcomeAccess.rearThreshold)
+    || !Array.isArray(audit.welcomeAccess.rearRouteStart)
+    || JSON.stringify(audit.welcomeAccess.walkAccess?.accessibleSides) !== JSON.stringify(['front', 'rear'])) {
+    throw new Error(`Welcome Hall door, interior, or pruned-road access failed: ${JSON.stringify(audit.welcomeAccess, null, 2)}`);
   }
   if (audit.welcomeDesign.stairCount !== 11
     || audit.welcomeDesign.staircaseMetadata?.walkableStaircase !== true
     || audit.welcomeDesign.staircaseMetadata?.worldRiserHeight > 0.038
     || !audit.welcomeDesign.continuousNavigationSurface
+    || audit.welcomeDesign.rearStairCount !== 11
+    || audit.welcomeDesign.rearStaircaseMetadata?.walkableStaircase !== true
+    || audit.welcomeDesign.rearStaircaseMetadata?.exitSide !== 'rear'
+    || audit.welcomeDesign.rearStaircaseMetadata?.worldRiserHeight > 0.038
+    || !audit.welcomeDesign.rearContinuousNavigationSurface
     || audit.welcomeDesign.podiumCollisionSegmentCount < 60
     || !audit.welcomeDesign.preventsUnderPodiumAccess
     || audit.welcomeDesign.missingStepGround !== 0
@@ -1742,7 +1850,7 @@ try {
     || Math.max(
       audit.welcomeDesign.pool.sizeWorld?.[0] ?? 0,
       audit.welcomeDesign.pool.sizeWorld?.[2] ?? 0,
-    ) < 1.65
+    ) < 1.64
     || Math.min(
       audit.welcomeDesign.pool.sizeWorld?.[0] ?? 0,
       audit.welcomeDesign.pool.sizeWorld?.[2] ?? 0,
@@ -1917,6 +2025,12 @@ try {
     || Math.abs(audit.welcomeGeometry.migrated.scale3D.x - 1) > 0.001
     || Math.abs(audit.welcomeGeometry.migrated.scale3D.y - 1) > 0.001
     || Math.abs(audit.welcomeGeometry.migrated.scale3D.z - 1) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.position.x - audit.welcomeGeometry.initialPool.position.x) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.position.z - audit.welcomeGeometry.initialPool.position.z) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.rotationY - audit.welcomeGeometry.initialPool.rotationY) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.scale3D.x - 1) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.scale3D.y - 1) > 0.001
+    || Math.abs(audit.welcomeGeometry.migratedPool.scale3D.z - 1) > 0.001
     || JSON.stringify(audit.welcomeGeometry.actualScale) !== JSON.stringify(audit.welcomeGeometry.baseScale)
     || audit.welcomeGeometry.childCountAfter !== audit.welcomeGeometry.childCountBefore
     || audit.welcomeGeometry.requiredAssembly.some((part) => !part.present)) {
@@ -1927,7 +2041,7 @@ try {
     || audit.arrivalGeometry.surfaceOffsets.length !== 1
     || Math.abs(audit.arrivalGeometry.surfaceOffsets[0]) > 0.001
     || !audit.arrivalGeometry.clearOfBuildingPodium
-    || audit.arrivalGeometry.e2ApronCount !== 1
+    || audit.arrivalGeometry.e2ApronCount < 16
     || Math.abs(audit.arrivalGeometry.e2ApronSurfaceOffset - 0.003) > 0.0001
     || audit.arrivalGeometry.welcomePlazaTopY >= audit.arrivalGeometry.e2ApronTopY
     || audit.arrivalGeometry.innerCollectorMinimumRadius < 317.9
@@ -1940,48 +2054,62 @@ try {
     || Math.abs(audit.arrivalGeometry.entryBranchEndpoint.degrees - 311) > 0.02
     || Math.abs(audit.arrivalGeometry.logisticsBranchEndpoint.radius - 322) > 0.02
     || Math.abs(audit.arrivalGeometry.logisticsBranchEndpoint.degrees - 297) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeBuildingPosition.radius - 350) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeBuildingPosition.degrees - 300) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeForkPosition.radius - 366) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeForkPosition.degrees - 300) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeLandscapePosition.radius - 350) > 0.02
-    || Math.abs(audit.arrivalGeometry.welcomeLandscapePosition.degrees - 300) > 0.02
-    || audit.arrivalGeometry.welcomeForkLandscapeClearance < 15.9
-    || audit.arrivalGeometry.welcomeLoopAccessPointCount !== 4
-    || audit.arrivalGeometry.welcomeLoopArcCount !== 4
-    || !audit.arrivalGeometry.welcomeForkCap.present
-    || !audit.arrivalGeometry.welcomeForkCap.coversCoplanarOverlap
-    || !audit.arrivalGeometry.welcomeForkCap.walkable
-    || !audit.arrivalGeometry.welcomeForkCap.terrainDepthBias
-    || !audit.arrivalGeometry.welcomeForkCap.polygonOffset
-    || audit.arrivalGeometry.welcomeForkCap.polygonOffsetFactor >= 0
-    || Math.abs(audit.arrivalGeometry.welcomeForkCap.radius - 4.35) > 0.001
-    || Math.abs(audit.arrivalGeometry.welcomeForkCap.surfaceOffset - 0.0046) > 0.0001
-    || JSON.stringify(audit.arrivalGeometry.welcomeForkCap.connectedRoutes) !== JSON.stringify([
-      'arrival',
-      'arrival-entry-branch',
-      'arrival-logistics-branch',
-      'e2-door-apron',
-    ])
+    || Math.abs(audit.arrivalGeometry.welcomeBuildingPosition.radius - 343) > 0.02
+    || Math.abs(audit.arrivalGeometry.welcomeBuildingPosition.degrees - 303) > 0.02
+    || audit.arrivalGeometry.welcomeDelimiterClearance < 17.8
+    || Math.abs(audit.arrivalGeometry.welcomeLandscapePosition.radius - 343) > 0.02
+    || Math.abs(audit.arrivalGeometry.welcomeLandscapePosition.degrees - 303) > 0.02
+    || audit.arrivalGeometry.frontDoorRoad.segmentCount < 16
+    || audit.arrivalGeometry.frontDoorRoad.maximumTurnDegrees > 0.1
+    || audit.arrivalGeometry.frontDoorRoad.firstEndpointType !== 'building-threshold'
+    || audit.arrivalGeometry.frontDoorRoad.firstBuilding !== 'E2'
+    || audit.arrivalGeometry.frontDoorRoad.thresholdGap > 0.001
+    || audit.arrivalGeometry.frontDoorRoad.arrivalConnectionGap > 0.001
+    || audit.arrivalGeometry.rearBoundaryRoad.segmentCount < 20
+    || audit.arrivalGeometry.rearBoundaryRoad.firstEndpointType !== 'building-threshold'
+    || audit.arrivalGeometry.rearBoundaryRoad.firstBuilding !== 'E2'
+    || audit.arrivalGeometry.rearBoundaryRoad.thresholdGap > 0.001
+    || Math.abs(audit.arrivalGeometry.rearBoundaryRoad.endpoint.degrees - 300) > 0.02
+    || audit.arrivalGeometry.welcomeHallJunctionLandscapeClearance < 22
+    || audit.arrivalGeometry.welcomeLoopAccessPointCount !== 0
+    || audit.arrivalGeometry.welcomeLoopArcCount !== 0
+    || audit.arrivalGeometry.redundantWelcomeRoadMeshCount !== 0
+    || audit.arrivalGeometry.welcomeJunctionCaps.length !== 2
+    || audit.arrivalGeometry.welcomeJunctionCaps.some((cap) => !cap.present
+      || !cap.staged
+      || !cap.coversCoplanarOverlap
+      || !cap.walkable
+      || !cap.terrainDepthBias
+      || !cap.polygonOffset
+      || cap.polygonOffsetFactor >= 0
+      || Math.abs(cap.surfaceOffset - 0.0046) > 0.0001
+      || cap.color !== 'f3f4f0')
+    || JSON.stringify(audit.arrivalGeometry.welcomeJunctionCaps.map((cap) => cap.role))
+      !== JSON.stringify(['staged-logistics-split', 'door-aligned-entry-split'])
+    || JSON.stringify(audit.arrivalGeometry.welcomeJunctionCaps.map((cap) => cap.radius))
+      !== JSON.stringify([3.75, 4.1])
+    || JSON.stringify(audit.arrivalGeometry.welcomeJunctionCaps.map((cap) => cap.connectedRoutes))
+      !== JSON.stringify([
+        ['arrival', 'arrival-logistics-branch'],
+        ['arrival', 'arrival-entry-branch', 'e2-door-apron'],
+      ])
     || JSON.stringify(
       audit.arrivalGeometry.welcomeForkSurfaceElevations.map((route) => route.surfaceOffset),
     ) !== JSON.stringify([0, 0.001, 0.004, 0.003])
-    || audit.arrivalGeometry.welcomeForkCap.surfaceElevation
-      <= Math.max(
-        ...audit.arrivalGeometry.welcomeForkSurfaceElevations
-          .map((route) => route.surfaceElevation),
-      )
+    || audit.arrivalGeometry.welcomeJunctionCaps.some((cap) => cap.surfaceElevation
+      <= Math.max(...audit.arrivalGeometry.welcomeForkSurfaceElevations
+        .map((route) => route.surfaceElevation)))
     || audit.roads.entry.continuousSurfaces.some((surface) => !surface.terrainDepthBias
       || !surface.polygonOffset
       || surface.polygonOffsetFactor >= 0
       || surface.polygonOffsetUnits >= 0)
-    || !audit.arrivalGeometry.welcomeForkMedian
+    || audit.arrivalGeometry.welcomeForkMedian
     || JSON.stringify(audit.arrivalGeometry.welcomeForkBranches) !== JSON.stringify(['Entry and Commercial', 'Logistics'])
     || audit.arrivalGeometry.securityPanelCount !== 0
     || audit.arrivalGeometry.acousticBermCount !== 0) {
     throw new Error(`Entry arrival geometry failed: ${JSON.stringify(audit.arrivalGeometry, null, 2)}`);
   }
-  if (audit.layoutRevision !== 5) throw new Error(`Entry/Logistics layout revision was not persisted: ${audit.layoutRevision}`);
+  if (audit.layoutRevision !== 7) throw new Error(`Entry/Logistics layout revision was not persisted: ${audit.layoutRevision}`);
   if (audit.entry.boundaryViolations.length || audit.logistics.boundaryViolations.length) {
     throw new Error(`Red-line boundary violations: ${JSON.stringify({ entry: audit.entry.boundaryViolations, logistics: audit.logistics.boundaryViolations }, null, 2)}`);
   }
@@ -2338,7 +2466,15 @@ try {
     [0, 0.4, 0],
     { time: 'noon', weather: 'clear' },
   );
-  await page.screenshot({ path: `${OUTPUT}/welcome-clear-four-way-loop-and-door.png` });
+  await page.screenshot({ path: `${OUTPUT}/registration-hall-staged-junction-plan.png` });
+
+  await prepareView(
+    'ENTRY__E2__WELCOME_AND_REGISTRATION_HALL',
+    [10, 22, -28],
+    [0, 0.8, -4],
+    { time: 'noon', weather: 'clear' },
+  );
+  await page.screenshot({ path: `${OUTPUT}/registration-hall-rear-door-to-delimiter-road.png` });
 
   const welcomeKeyboardSetup = await page.evaluate(() => {
     const world = window.labIsland;

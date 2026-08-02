@@ -157,7 +157,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 4;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 5;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -165,6 +165,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'pharmacology-labs': 2,
   'microbiology-labs': 3,
   'molecular-biology-labs': 4,
+  'bioanalytics-lab': 5,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 export type WeatherMode =
@@ -2782,6 +2783,66 @@ export class IslandWorld {
           + (0.5 + 0.5 * Math.sin(this.elapsed * 0.045 + Number(object.userData.phase ?? 0))) * 0.24;
       } else if (object.userData.animate === 'molecular-disc-drift') {
         object.rotation.z = Number(object.userData.baseRotationZ ?? 0) + Math.sin(this.elapsed * 0.018) * 0.018;
+      } else if (object.userData.animate === 'bioanalytics-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.02) * Math.PI * 2
+            - Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.35),
+            Number(object.userData.maxIntensity ?? 3.8),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'bioanalytics-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z'
+          ? object.userData.axis
+          : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.02);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'bioanalytics-horizontal-scan') {
+        const progress = (
+          this.elapsed * Number(object.userData.speed ?? 0.02)
+          + Number(object.userData.phase ?? 0)
+        ) % 1;
+        object.position.x = Number(object.userData.baseX ?? object.position.x)
+          + progress * Number(object.userData.travel ?? 1);
+      } else if (object.userData.animate === 'bioanalytics-path-transit') {
+        const path = object.userData.path as Array<[number, number, number]>;
+        if (Array.isArray(path) && path.length > 1) {
+          const progress = (
+            this.elapsed * Number(object.userData.speed ?? 0.006)
+            + Number(object.userData.phase ?? 0)
+          ) % 1;
+          const scaled = progress * (path.length - 1);
+          const index = Math.min(path.length - 2, Math.floor(scaled));
+          const localT = scaled - index;
+          object.position.set(
+            THREE.MathUtils.lerp(path[index][0], path[index + 1][0], localT),
+            THREE.MathUtils.lerp(path[index][1], path[index + 1][1], localT) + 0.18,
+            THREE.MathUtils.lerp(path[index][2], path[index + 1][2], localT),
+          );
+        }
+      } else if (object.userData.animate === 'bioanalytics-pv-adjust') {
+        object.rotation.z = Number(object.userData.baseRotationZ ?? 0)
+          + Math.sin(this.elapsed * 0.015 + Number(object.userData.phase ?? 0)) * 0.08;
+      } else if (object.userData.animate === 'bioanalytics-focus-ring') {
+        const base = 0.92 - Math.max(0, object.position.y - 1) * 0.106;
+        const scale = 0.94 + Math.sin(this.elapsed * 0.04 + object.position.y) * 0.06;
+        object.scale.setScalar(Math.max(0.72, scale + base * 0.01));
+      } else if (object.userData.animate === 'bioanalytics-ripple') {
+        const progress = (
+          this.elapsed * 0.025 + Number(object.userData.phase ?? 0)
+        ) % 1;
+        const scale = Number(object.userData.baseScale ?? 1) + progress * 0.6;
+        object.scale.setScalar(scale);
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          object.material.opacity = 0.8 * (1 - progress);
+          object.material.transparent = true;
+        }
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -7077,6 +7138,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const pharmacologyDistrict = this.objectGroups.get('pharmacology-labs')?.userData.pharmacologyDistrict ?? null;
     const microbiologyDistrict = this.objectGroups.get('microbiology-labs')?.userData.microbiologyDistrict ?? null;
     const molecularBiologyDistrict = this.objectGroups.get('molecular-biology-labs')?.userData.molecularBiologyDistrict ?? null;
+    const bioanalyticsLabsDistrict = this.objectGroups.get('bioanalytics-lab')?.userData.bioanalyticsLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -7205,6 +7267,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       pharmacologyDistrict,
       microbiologyDistrict,
       molecularBiologyDistrict,
+      bioanalyticsLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

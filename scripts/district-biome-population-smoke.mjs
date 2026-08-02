@@ -203,6 +203,8 @@ for (const district of audit.districtResults) {
     'medical-labs',
     'pharmacology-labs',
     'microbiology-labs',
+    'molecular-biology-labs',
+    'bioanalytics-lab',
   ].includes(district.id);
   if (
     district.population?.realizedFacilityCount < 4
@@ -257,11 +259,13 @@ for (const biome of audit.biomeResults) {
 // interiors, the 15-building Aegis Arc, the 10-building Anatomical Crescent,
 // the five high-detail Therapeutic Gradient landmarks, and two shadow-map
 // passes. It now also includes the ten-building Molecular Biology circuit with
-// 1,053 authored exterior details. Keep the authored planning view below a
-// measured ceiling instead of comparing against a tiny demo scene. WALK
+// 1,053 authored exterior details, plus the 15-building Bioanalytics
+// measurement campus with 1,985 meshes after its legacy placeholders are
+// removed. Keep the authored planning view below a measured ceiling instead
+// of comparing against a tiny demo scene. WALK
 // streaming still swaps distant packages to compact HLODs and is covered by
 // the dedicated streaming audit.
-if (audit.renderer.calls > 27_500 || audit.renderer.geometries > 7_300) {
+if (audit.renderer.calls > 31_500 || audit.renderer.geometries > 7_300) {
   throw new Error(`Population layer exceeded the scene budget: ${JSON.stringify(audit.renderer)}`);
 }
 if (consoleErrors.length > 0) throw new Error(`Browser console errors: ${consoleErrors.join('\n')}`);

@@ -373,7 +373,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
   },
   {
     id: "bioanalytics-lab",
-    name: "Bioanalytics Lab District",
+    name: "Bioanalytics Labs District",
     category: "bioscience",
     ring: "outer-middle",
     position: [30, 0, -1],
@@ -382,7 +382,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "analytical-instrumentation-campus",
     accent: "#52D8CE",
     palette: ["#10211F", "#27534E", "#C6DFDC", "#52D8CE"],
-    description: "Glass-fronted instrumentation laboratories surround a secure receiving hall for automated biological sample analysis.",
+    description: "Instrument-scale prisms, detector arrays, flow cells, columns and microscope forms convert biological samples into calibrated images, spectra, sequences and mechanical profiles.",
   },
   {
     id: "organic-chemistry-labs",

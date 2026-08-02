@@ -1,0 +1,1991 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Bioanalytics Labs District",
+      "architecturalLanguage": "instrument-scale prisms, flow cells, detector arrays, columns, microscope objectives, microfluidic channels, and force diagrams over vibration-isolated basalt",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "BA1",
+          "name": "Prisma Cytometrica",
+          "purpose": "Spectral and Image-Enabled Cell Analysis Hall",
+          "placementZone": "Inner public threshold toward Molecular Biology",
+          "heightMetres": 62,
+          "exteriorMotif": "three optical wedges, a sheath column, dichroic fins, and sorted pavement markers"
+        },
+        {
+          "code": "BA2",
+          "name": "Astral Forge",
+          "purpose": "Ultrafast Mass Spectrometry and Ion-Mobility Center",
+          "placementZone": "Southern chemistry interface and central boulevard",
+          "heightMetres": 68,
+          "exteriorMotif": "parallel titanium analyser vaults, ion-trajectory ribs, an Ion Axis, and six columns"
+        },
+        {
+          "code": "BA3",
+          "name": "Atlas In Situ",
+          "purpose": "Spatial Transcriptomics and Spatial Proteomics Complex",
+          "placementZone": "Inner-western interface with Molecular Biology",
+          "heightMetres": 50,
+          "exteriorMotif": "eight offset tissue sections, capture-area tiles, and a coordinate-gridded Atlas Window"
+        },
+        {
+          "code": "BA4",
+          "name": "Nativa Helix Observatory",
+          "purpose": "Long-Read DNA and Direct Native-RNA Sequencing Center",
+          "placementZone": "Inner-western sequencing interface",
+          "heightMetres": 98,
+          "exteriorMotif": "asymmetric DNA and RNA spines joined by a continuous helical ribbon and pore wall"
+        },
+        {
+          "code": "BA5",
+          "name": "Proteoform Cipher House",
+          "purpose": "Single-Molecule Protein Sequencing Institute",
+          "placementZone": "Central analytical research band",
+          "heightMetres": 46,
+          "exteriorMotif": "four cleavage bars, a molecular landing-pad array, and a twelve-ring Iteration Tower"
+        },
+        {
+          "code": "BA6",
+          "name": "Metabolis Aerarium",
+          "purpose": "Four-Dimensional Metabolomics and Lipidomics Station",
+          "placementZone": "Southern chemistry interface",
+          "heightMetres": 74,
+          "exteriorMotif": "a circular molecular weather station, five unequal columns, orbital detector, and flux gardens"
+        },
+        {
+          "code": "BA7",
+          "name": "Glycan Arbor",
+          "purpose": "Glycomics and Glycoproteoform Laboratory",
+          "placementZone": "Outer-southern chemistry interface",
+          "heightMetres": 60,
+          "exteriorMotif": "a non-repeating branched ceramic exoskeleton, drainage nodes, and thirteen standards"
+        },
+        {
+          "code": "BA8",
+          "name": "Fragmenta Beacon",
+          "purpose": "Liquid Biopsy, Cell-Free Nucleic Acid and Fragmentomics Tower",
+          "placementZone": "Outer-eastern Forensic and Cyberforensic interface",
+          "heightMetres": 150,
+          "exteriorMotif": "a transparent-to-opaque tapered beacon wrapped by three broken fragment spirals"
+        },
+        {
+          "code": "BA9",
+          "name": "Vesicula Halo Array",
+          "purpose": "Extracellular Vesicle and Biological Nanoparticle Analytics Center",
+          "placementZone": "Outer-eastern evidence analytics interface",
+          "heightMetres": 50,
+          "exteriorMotif": "nine unequal membrane vesicles, tension-supported halos, nanoparticle domes, and ripple pool"
+        },
+        {
+          "code": "BA10",
+          "name": "Rheocell Rapids",
+          "purpose": "Cellular Mechanics and Deformability Analytics Institute",
+          "placementZone": "Central-southern mechanophenotyping band",
+          "heightMetres": 50,
+          "exteriorMotif": "a long responsive membrane forced through three structural constrictions beside a variable-flow watercourse"
+        },
+        {
+          "code": "BA11",
+          "name": "Chronocellum",
+          "purpose": "Long-Term Living-Cell Imaging Observatory",
+          "placementZone": "Inner imaging interface",
+          "heightMetres": 82,
+          "exteriorMotif": "eight shifted elliptical time frames beneath two intersecting light-sheet lattices"
+        },
+        {
+          "code": "BA12",
+          "name": "CryoTomos Vault",
+          "purpose": "Cryogenic Electron Tomography and In-Situ Structural Analysis Center",
+          "placementZone": "Quiet northern recessed plot behind the Calibration Spine",
+          "heightMetres": 94,
+          "exteriorMotif": "a buried faceted vault, symbolic electron column, and suspended cryogenic transfer tube"
+        },
+        {
+          "code": "BA13",
+          "name": "Molecular Tension Bridge",
+          "purpose": "Single-Molecule Force, Optical Tweezers and Nanofluidics Laboratory",
+          "placementZone": "Central crossing over the Calibration Spine",
+          "heightMetres": 70,
+          "exteriorMotif": "paired optical-trap towers suspending a capsule and molecular-force line over a pedestrian deck"
+        },
+        {
+          "code": "BA14",
+          "name": "Automata Assay Foundry",
+          "purpose": "Autonomous Bioanalytical Systems and Self-Driving Laboratory Center",
+          "placementZone": "Northern secured service boundary",
+          "heightMetres": 54,
+          "exteriorMotif": "a machine-scaled spine with twelve plug-in assay blocks, cartridge facade, and roof crane rail"
+        },
+        {
+          "code": "BA15",
+          "name": "Metron Bio",
+          "purpose": "Bioanalytical Metrology, Reference Materials and Calibration Institute",
+          "placementZone": "Outer-eastern traceability interface",
+          "heightMetres": 64,
+          "exteriorMotif": "a strict gridded monolith aligned to Analytical Zero and exterior reference artefacts"
+        }
+      ],
+      "interfaces": {
+        "westernBiology": [
+          "Atlas In Situ",
+          "Nativa Helix Observatory",
+          "Chronocellum",
+          "Prisma Cytometrica"
+        ],
+        "southernChemistry": [
+          "Astral Forge",
+          "Metabolis Aerarium",
+          "Glycan Arbor"
+        ],
+        "easternEvidence": [
+          "Fragmenta Beacon",
+          "Vesicula Halo Array",
+          "Metron Bio"
+        ],
+        "northernSecurity": [
+          "Automata Assay Foundry",
+          "CryoTomos Vault"
+        ],
+        "centralCrossing": "Molecular Tension Bridge"
+      },
+      "landmarks": {
+        "publicGateway": "Prisma Cytometrica",
+        "mechanicalAnchor": "Astral Forge",
+        "easternBeacon": "Fragmenta Beacon"
+      },
+      "circulation": {
+        "primaryWalk": "BIOANALYTICS__ANALYTICAL_CRESCENT",
+        "restrictedServiceRoute": "BIOANALYTICS__CALIBRATION_SPINE",
+        "controlledInterfaceLinks": 4,
+        "exactBuildingApproaches": 15,
+        "autonomousSampleVehicles": 8,
+        "visibleUtilityGalleries": true
+      },
+      "responsiveSystems": {
+        "diagnosticPulseLighting": true,
+        "opticalBaffles": true,
+        "autonomousSampleTransit": true,
+        "kineticCalibrationElements": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Prisma Cytometrica",
+        "Astral Forge",
+        "Atlas In Situ",
+        "Nativa Helix Observatory",
+        "Proteoform Cipher House",
+        "Metabolis Aerarium",
+        "Glycan Arbor",
+        "Fragmenta Beacon",
+        "Vesicula Halo Array",
+        "Rheocell Rapids",
+        "Chronocellum",
+        "CryoTomos Vault",
+        "Molecular Tension Bridge",
+        "Automata Assay Foundry",
+        "Metron Bio"
+      ],
+      "plannedObjects": [
+        "Analytical Crescent",
+        "Calibration Spine",
+        "Visible Vascular Utility Galleries",
+        "Autonomous Sample Vehicles",
+        "Calibrated Research Landscape"
+      ],
+      "realizedFeatureTags": [
+        "prisma-cytometrica",
+        "astral-forge",
+        "atlas-in-situ",
+        "nativa-helix-observatory",
+        "proteoform-cipher-house",
+        "metabolis-aerarium",
+        "glycan-arbor",
+        "fragmenta-beacon",
+        "vesicula-halo-array",
+        "rheocell-rapids",
+        "chronocellum",
+        "cryotomos-vault",
+        "molecular-tension-bridge",
+        "automata-assay-foundry",
+        "metron-bio"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 140,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 21,
+      "radialCoverage": 0.95,
+      "angularCoverage": 0.92,
+      "exteriorOnly": true,
+      "measurementEngineeringDistrict": true
+    },
+    "facilityCount": 15,
+    "codes": [
+      "BA1",
+      "BA2",
+      "BA3",
+      "BA4",
+      "BA5",
+      "BA6",
+      "BA7",
+      "BA8",
+      "BA9",
+      "BA10",
+      "BA11",
+      "BA12",
+      "BA13",
+      "BA14",
+      "BA15"
+    ],
+    "meshCount": 1985,
+    "uniqueNames": 2003,
+    "materialNames": [
+      "Analytical Crescent pale calibrated paving",
+      "Bioanalytics anodized aluminium",
+      "Bioanalytics black aggregate concrete",
+      "Bioanalytics black reflecting water",
+      "Bioanalytics controlled transparent glass",
+      "Bioanalytics dark moss planting",
+      "Bioanalytics dichroic amber optical coating",
+      "Bioanalytics dichroic cyan optical coating",
+      "Bioanalytics dichroic violet optical coating",
+      "Bioanalytics metabolic flux green light",
+      "Bioanalytics narrow diagnostic amber light",
+      "Bioanalytics narrow diagnostic blue-white light",
+      "Bioanalytics pale titanium",
+      "Bioanalytics pearl-grey technical ceramic",
+      "Bioanalytics silver research planting",
+      "Bioanalytics smoked electrochromic glass",
+      "Bioanalytics vibration-isolated black basalt",
+      "Bioanalytics white technical ceramic",
+      "Calibration Spine dark basalt paving",
+      "Fragmenta clinical dark ruby glass",
+      "Vesicula translucent laminated membrane"
+    ],
+    "animated": [
+      {
+        "name": "BIOANALYTICS__ANALYTICAL_CRESCENT_DIAGNOSTIC_LINE",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__CALIBRATION_SPINE_STATUS_LINE",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__VISIBLE_VASCULAR_UTILITY_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__VISIBLE_VASCULAR_UTILITY_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__VISIBLE_VASCULAR_UTILITY_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__VISIBLE_VASCULAR_UTILITY_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_1",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_2",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_3",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_4",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_5",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_6",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_7",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__AUTONOMOUS_SAMPLE_VEHICLE_8",
+        "animate": "bioanalytics-path-transit"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_STATUS_BA15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_25",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_26",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_27",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_28",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_29",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__SAMPLING_MAST_STATUS_30",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_1",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_2",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_3",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_4",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_5",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_6",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FOCUS_RING_7",
+        "animate": "bioanalytics-focus-ring"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__SHEATH_FILAMENT_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__ROTATING_OPTICAL_BAFFLE_1",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA1__ROTATING_OPTICAL_BAFFLE_2",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_1",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_2",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_3",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_4",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_5",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_6",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_7",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_8",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA2__ION_AXIS_PACKET_9",
+        "animate": "bioanalytics-horizontal-scan"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_25",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_26",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_27",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_28",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_29",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_30",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_31",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_32",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_33",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA3__SPATIAL_MARKER_34",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA4__VARIABLE_READ_PULSE_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_1_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_1_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_2_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_2_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_3_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_4_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_4_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_5_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_6_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_6_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_7_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_7_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_8_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_8_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_9_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__LANDING_PAD_DISC_9_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__ITERATION_TOWER_RING_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__ITERATION_TOWER_RING_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA5__ITERATION_TOWER_RING_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA6__WIND_RESPONSE_RING_1",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA6__WIND_RESPONSE_RING_2",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA6__WIND_RESPONSE_RING_3",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA6__WIND_RESPONSE_RING_4",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA6__WIND_RESPONSE_RING_5",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_25",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_26",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_1_SEGMENT_27",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_25",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_26",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_2_SEGMENT_27",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_10",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_11",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_12",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_13",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_14",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_15",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_16",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_17",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_18",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_19",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_20",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_21",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_22",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_23",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_24",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_25",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_26",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA8__BROKEN_FRAGMENT_BAND_3_SEGMENT_27",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__VESICLE_HALO_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__VESICLE_HALO_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__VESICLE_HALO_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__VESICLE_HALO_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__VESICLE_HALO_9",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_1",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_2",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_3",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_4",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_5",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA9__CONTROLLED_RIPPLE_6",
+        "animate": "bioanalytics-ripple"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_1",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_2",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_3",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_4",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_5",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_6",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_7",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA11__TIME_FRAME_EDGE_8",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA13__LUMINOUS_MOLECULAR_FORCE_LINE",
+        "animate": "bioanalytics-emissive-pulse"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ROBOTIC_CRANE_ARM_1",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ROBOTIC_CRANE_ARM_2",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ROBOTIC_CRANE_ARM_3",
+        "animate": "bioanalytics-rotation"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_1",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_2",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_3",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_4",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_5",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_6",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_7",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_8",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_9",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_10",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_11",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_12",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_13",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_14",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_15",
+        "animate": "bioanalytics-pv-adjust"
+      },
+      {
+        "name": "BIOANALYTICS__BA14__ARTICULATED_PV_SHADE_16",
+        "animate": "bioanalytics-pv-adjust"
+      }
+    ],
+    "scaledMeshParentDetails": [],
+    "boundaryViolations": [],
+    "overlapPairs": [],
+    "facilityBounds": [
+      {
+        "code": "BA1",
+        "min": [
+          181.90028823948884,
+          1.6710000000000003,
+          15.467794573730318
+        ],
+        "max": [
+          195.08613544980625,
+          9.871673555695878,
+          27.945215115719108
+        ]
+      },
+      {
+        "code": "BA2",
+        "min": [
+          178.59088191782934,
+          1.6660000000000001,
+          68.58727548957427
+        ],
+        "max": [
+          195.55811461690217,
+          9.439621035069226,
+          89.11424704602686
+        ]
+      },
+      {
+        "code": "BA3",
+        "min": [
+          174.88850193124037,
+          1.6960000000000002,
+          -68.4815306585513
+        ],
+        "max": [
+          188.42416618770628,
+          7.366987267027996,
+          -52.66955511575002
+        ]
+      },
+      {
+        "code": "BA4",
+        "min": [
+          185.50009046356612,
+          1.6204802044547986,
+          -25.19543658163546
+        ],
+        "max": [
+          193.3640349766317,
+          11.880986333766662,
+          -14.025595634019115
+        ]
+      },
+      {
+        "code": "BA5",
+        "min": [
+          194.56364936750384,
+          1.691,
+          -44.54149767538298
+        ],
+        "max": [
+          205.18961013844154,
+          8.469128824499554,
+          -28.575784629252823
+        ]
+      },
+      {
+        "code": "BA6",
+        "min": [
+          196.045301470821,
+          1.666,
+          56.60563268679691
+        ],
+        "max": [
+          212.51551261395537,
+          10.193369472044598,
+          71.56390602498671
+        ]
+      },
+      {
+        "code": "BA7",
+        "min": [
+          201.8253952422057,
+          1.5710000000000002,
+          80.2300344142741
+        ],
+        "max": [
+          214.9598005987887,
+          8.125964527666458,
+          94.75903001146334
+        ]
+      },
+      {
+        "code": "BA8",
+        "min": [
+          211.39791814649317,
+          1.6810000000000003,
+          -65.91823226027293
+        ],
+        "max": [
+          223.67830450119476,
+          16.661,
+          -53.1832155108595
+        ]
+      },
+      {
+        "code": "BA9",
+        "min": [
+          214.70234167141606,
+          1.0859310682022918,
+          -16.130871999776566
+        ],
+        "max": [
+          231.807945119888,
+          6.3051159710893305,
+          -1.715679055457987
+        ]
+      },
+      {
+        "code": "BA10",
+        "min": [
+          201.62593394967786,
+          1.5660000000000003,
+          30.593008753735482
+        ],
+        "max": [
+          214.24275015601881,
+          7.121655560030266,
+          48.54863293870396
+        ]
+      },
+      {
+        "code": "BA11",
+        "min": [
+          172.9658908671287,
+          0.3583667782470479,
+          51.88509969480606
+        ],
+        "max": [
+          190.34677725181794,
+          10.610533631927412,
+          69.26598607949528
+        ]
+      },
+      {
+        "code": "BA12",
+        "min": [
+          192.05411941224136,
+          0.4569002363681798,
+          -93.08883744832967
+        ],
+        "max": [
+          208.5481326694754,
+          12.88048414027691,
+          -75.15090114828335
+        ]
+      },
+      {
+        "code": "BA13",
+        "min": [
+          205.0265141555887,
+          1.7159999999999997,
+          -5.767865558519185
+        ],
+        "max": [
+          211.27051923377323,
+          10.766,
+          9.76468251827001
+        ]
+      },
+      {
+        "code": "BA14",
+        "min": [
+          190.5825277585562,
+          1.7160000000000002,
+          -65.43163180135063
+        ],
+        "max": [
+          202.27693491569073,
+          8.766,
+          -48.91155186341527
+        ]
+      },
+      {
+        "code": "BA15",
+        "min": [
+          215.55374372803138,
+          1.6860000000000002,
+          18.808222232657812
+        ],
+        "max": [
+          228.61278925083263,
+          11.666,
+          31.867267755459025
+        ]
+      }
+    ],
+    "legacyGenericNames": [],
+    "topLevelChildCount": 17,
+    "unexpectedTopLevelNames": [],
+    "visibility": {
+      "detailEffective": true,
+      "proxyEffective": false,
+      "simultaneousDetailAndProxy": false
+    },
+    "missingRoots": [],
+    "signatureCounts": {
+      "opticalWedges": 3,
+      "dichroicFins": 24,
+      "analyserVaults": 2,
+      "tissueSections": 8,
+      "helixSegments": 56,
+      "landingPadDiscs": 216,
+      "separationColumns": 5,
+      "primaryBranches": 6,
+      "fragmentSpiralSegments": 81,
+      "vesiclePods": 9,
+      "constrictionTops": 3,
+      "timeFramePlates": 8,
+      "cryoAccessBridges": 2,
+      "opticalTrapTowers": 2,
+      "assayBlocks": 12,
+      "metronGridLines": 17
+    },
+    "routeAudit": [
+      {
+        "name": "BIOANALYTICS__ANALYTICAL_CRESCENT",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__CALIBRATION_SPINE",
+        "walkable": false,
+        "restricted": true,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__CONTROLLED_INTERFACE_LINK_1",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__CONTROLLED_INTERFACE_LINK_2",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__CONTROLLED_INTERFACE_LINK_3",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__CONTROLLED_INTERFACE_LINK_4",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA1",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA2",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA3",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA4",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA5",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA6",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA7",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA8",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA9",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA10",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA11",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA12",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA13",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA14",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      },
+      {
+        "name": "BIOANALYTICS__BUILDING_APPROACH_BA15",
+        "walkable": true,
+        "restricted": false,
+        "resident": true
+      }
+    ],
+    "roadGround": 1.6459999984502793,
+    "roadPoint": [
+      206.55358332395554,
+      1.6459999984502793,
+      0.9991822838783264
+    ],
+    "textBioanalytics": {
+      "identity": "Bioanalytics Labs District",
+      "architecturalLanguage": "instrument-scale prisms, flow cells, detector arrays, columns, microscope objectives, microfluidic channels, and force diagrams over vibration-isolated basalt",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "BA1",
+          "name": "Prisma Cytometrica",
+          "purpose": "Spectral and Image-Enabled Cell Analysis Hall",
+          "placementZone": "Inner public threshold toward Molecular Biology",
+          "heightMetres": 62,
+          "exteriorMotif": "three optical wedges, a sheath column, dichroic fins, and sorted pavement markers"
+        },
+        {
+          "code": "BA2",
+          "name": "Astral Forge",
+          "purpose": "Ultrafast Mass Spectrometry and Ion-Mobility Center",
+          "placementZone": "Southern chemistry interface and central boulevard",
+          "heightMetres": 68,
+          "exteriorMotif": "parallel titanium analyser vaults, ion-trajectory ribs, an Ion Axis, and six columns"
+        },
+        {
+          "code": "BA3",
+          "name": "Atlas In Situ",
+          "purpose": "Spatial Transcriptomics and Spatial Proteomics Complex",
+          "placementZone": "Inner-western interface with Molecular Biology",
+          "heightMetres": 50,
+          "exteriorMotif": "eight offset tissue sections, capture-area tiles, and a coordinate-gridded Atlas Window"
+        },
+        {
+          "code": "BA4",
+          "name": "Nativa Helix Observatory",
+          "purpose": "Long-Read DNA and Direct Native-RNA Sequencing Center",
+          "placementZone": "Inner-western sequencing interface",
+          "heightMetres": 98,
+          "exteriorMotif": "asymmetric DNA and RNA spines joined by a continuous helical ribbon and pore wall"
+        },
+        {
+          "code": "BA5",
+          "name": "Proteoform Cipher House",
+          "purpose": "Single-Molecule Protein Sequencing Institute",
+          "placementZone": "Central analytical research band",
+          "heightMetres": 46,
+          "exteriorMotif": "four cleavage bars, a molecular landing-pad array, and a twelve-ring Iteration Tower"
+        },
+        {
+          "code": "BA6",
+          "name": "Metabolis Aerarium",
+          "purpose": "Four-Dimensional Metabolomics and Lipidomics Station",
+          "placementZone": "Southern chemistry interface",
+          "heightMetres": 74,
+          "exteriorMotif": "a circular molecular weather station, five unequal columns, orbital detector, and flux gardens"
+        },
+        {
+          "code": "BA7",
+          "name": "Glycan Arbor",
+          "purpose": "Glycomics and Glycoproteoform Laboratory",
+          "placementZone": "Outer-southern chemistry interface",
+          "heightMetres": 60,
+          "exteriorMotif": "a non-repeating branched ceramic exoskeleton, drainage nodes, and thirteen standards"
+        },
+        {
+          "code": "BA8",
+          "name": "Fragmenta Beacon",
+          "purpose": "Liquid Biopsy, Cell-Free Nucleic Acid and Fragmentomics Tower",
+          "placementZone": "Outer-eastern Forensic and Cyberforensic interface",
+          "heightMetres": 150,
+          "exteriorMotif": "a transparent-to-opaque tapered beacon wrapped by three broken fragment spirals"
+        },
+        {
+          "code": "BA9",
+          "name": "Vesicula Halo Array",
+          "purpose": "Extracellular Vesicle and Biological Nanoparticle Analytics Center",
+          "placementZone": "Outer-eastern evidence analytics interface",
+          "heightMetres": 50,
+          "exteriorMotif": "nine unequal membrane vesicles, tension-supported halos, nanoparticle domes, and ripple pool"
+        },
+        {
+          "code": "BA10",
+          "name": "Rheocell Rapids",
+          "purpose": "Cellular Mechanics and Deformability Analytics Institute",
+          "placementZone": "Central-southern mechanophenotyping band",
+          "heightMetres": 50,
+          "exteriorMotif": "a long responsive membrane forced through three structural constrictions beside a variable-flow watercourse"
+        },
+        {
+          "code": "BA11",
+          "name": "Chronocellum",
+          "purpose": "Long-Term Living-Cell Imaging Observatory",
+          "placementZone": "Inner imaging interface",
+          "heightMetres": 82,
+          "exteriorMotif": "eight shifted elliptical time frames beneath two intersecting light-sheet lattices"
+        },
+        {
+          "code": "BA12",
+          "name": "CryoTomos Vault",
+          "purpose": "Cryogenic Electron Tomography and In-Situ Structural Analysis Center",
+          "placementZone": "Quiet northern recessed plot behind the Calibration Spine",
+          "heightMetres": 94,
+          "exteriorMotif": "a buried faceted vault, symbolic electron column, and suspended cryogenic transfer tube"
+        },
+        {
+          "code": "BA13",
+          "name": "Molecular Tension Bridge",
+          "purpose": "Single-Molecule Force, Optical Tweezers and Nanofluidics Laboratory",
+          "placementZone": "Central crossing over the Calibration Spine",
+          "heightMetres": 70,
+          "exteriorMotif": "paired optical-trap towers suspending a capsule and molecular-force line over a pedestrian deck"
+        },
+        {
+          "code": "BA14",
+          "name": "Automata Assay Foundry",
+          "purpose": "Autonomous Bioanalytical Systems and Self-Driving Laboratory Center",
+          "placementZone": "Northern secured service boundary",
+          "heightMetres": 54,
+          "exteriorMotif": "a machine-scaled spine with twelve plug-in assay blocks, cartridge facade, and roof crane rail"
+        },
+        {
+          "code": "BA15",
+          "name": "Metron Bio",
+          "purpose": "Bioanalytical Metrology, Reference Materials and Calibration Institute",
+          "placementZone": "Outer-eastern traceability interface",
+          "heightMetres": 64,
+          "exteriorMotif": "a strict gridded monolith aligned to Analytical Zero and exterior reference artefacts"
+        }
+      ],
+      "interfaces": {
+        "westernBiology": [
+          "Atlas In Situ",
+          "Nativa Helix Observatory",
+          "Chronocellum",
+          "Prisma Cytometrica"
+        ],
+        "southernChemistry": [
+          "Astral Forge",
+          "Metabolis Aerarium",
+          "Glycan Arbor"
+        ],
+        "easternEvidence": [
+          "Fragmenta Beacon",
+          "Vesicula Halo Array",
+          "Metron Bio"
+        ],
+        "northernSecurity": [
+          "Automata Assay Foundry",
+          "CryoTomos Vault"
+        ],
+        "centralCrossing": "Molecular Tension Bridge"
+      },
+      "landmarks": {
+        "publicGateway": "Prisma Cytometrica",
+        "mechanicalAnchor": "Astral Forge",
+        "easternBeacon": "Fragmenta Beacon"
+      },
+      "circulation": {
+        "primaryWalk": "BIOANALYTICS__ANALYTICAL_CRESCENT",
+        "restrictedServiceRoute": "BIOANALYTICS__CALIBRATION_SPINE",
+        "controlledInterfaceLinks": 4,
+        "exactBuildingApproaches": 15,
+        "autonomousSampleVehicles": 8,
+        "visibleUtilityGalleries": true
+      },
+      "responsiveSystems": {
+        "diagnosticPulseLighting": true,
+        "opticalBaffles": true,
+        "autonomousSampleTransit": true,
+        "kineticCalibrationElements": true,
+        "advertisingDisplays": false
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "revision": 5,
+    "streaming": {
+      "id": "bioanalytics-lab",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 0
+    }
+  },
+  "staleProxyRepair": {
+    "recreatedOverlap": true,
+    "detailEffective": true,
+    "proxyEffective": false,
+    "streaming": {
+      "id": "bioanalytics-lab",
+      "kind": "district",
+      "detailResident": true,
+      "proxyVisible": false,
+      "distanceMetres": 9450
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.1624999999999907,
+    "grounded": true,
+    "position": [
+      206.55,
+      1.808,
+      1.162
+    ]
+  },
+  "errors": []
+}

@@ -327,7 +327,25 @@ export class WorldStreamingManager {
       || context.mode !== this.lastMode
       || context.selectedPackageId !== this.lastSelectedPackageId
       || context.interiorPackageId !== this.lastInteriorPackageId;
-    if (!contextChanged) return false;
+    if (!contextChanged) {
+      // The visibility flags are presentation state rather than authored
+      // object state. Reconcile them even when the camera is stationary so a
+      // stale HLOD flag (for example after a view/persistence transition)
+      // cannot leave a proxy rendered over its resident detailed package.
+      let repaired = false;
+      this.packages.forEach((pkg) => {
+        if (pkg.detailEnvelope.visible !== pkg.detailResident) {
+          pkg.detailEnvelope.visible = pkg.detailResident;
+          repaired = true;
+        }
+        const shouldShowProxy = this.packageLayerEnabled(pkg) && !pkg.detailResident;
+        if (pkg.proxy.visible !== shouldShowProxy) {
+          pkg.proxy.visible = shouldShowProxy;
+          repaired = true;
+        }
+      });
+      return repaired;
+    }
 
     this.lastCameraPosition.copy(context.cameraPosition);
     this.lastMode = context.mode;
@@ -373,10 +391,17 @@ export class WorldStreamingManager {
 
       if (pkg.detailResident !== shouldShowDetail) {
         pkg.detailResident = shouldShowDetail;
+        changed = true;
+      }
+      if (pkg.detailEnvelope.visible !== shouldShowDetail) {
         pkg.detailEnvelope.visible = shouldShowDetail;
         changed = true;
       }
-      pkg.proxy.visible = this.packageLayerEnabled(pkg) && !shouldShowDetail;
+      const shouldShowProxy = this.packageLayerEnabled(pkg) && !shouldShowDetail;
+      if (pkg.proxy.visible !== shouldShowProxy) {
+        pkg.proxy.visible = shouldShowProxy;
+        changed = true;
+      }
     });
     return changed;
   }

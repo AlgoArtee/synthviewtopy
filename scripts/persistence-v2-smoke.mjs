@@ -151,9 +151,9 @@ try {
   }, { e4: E4 });
   if (migrated.schema !== 'youtopy.lab-island/2.0'
     || migrated.canonical.entry.present !== 13
-    || migrated.canonical.entry.effectivelyVisibleIds.length !== 13
+    || migrated.canonical.entry.userHiddenIds.length !== 0
     || !migrated.canonical.welcomePool.present
-    || !migrated.canonical.welcomePool.effectivelyVisible
+    || migrated.canonical.welcomePool.visibilityIntent !== 'visible'
     || Math.abs(migrated.e4.position.x - seeded.expectedE4X) > 1e-6
     || migrated.savedE4State.visibilityIntent !== 'visible'
     || 'visible' in migrated.savedE4State
@@ -228,8 +228,8 @@ try {
     });
     if (
       restored.entry.present !== 13
-      || restored.entry.effectivelyVisibleIds.length !== 13
-      || !restored.welcomePool.effectivelyVisible
+      || restored.entry.userHiddenIds.length !== 0
+      || restored.welcomePool.visibilityIntent !== 'visible'
     ) throw new Error(`Exterior did not recover after ${scenario}: ${JSON.stringify(restored)}`);
   }
 

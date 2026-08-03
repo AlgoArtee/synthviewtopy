@@ -320,8 +320,8 @@
       "I15"
     ],
     "facilityCount": 15,
-    "meshCount": 1530,
-    "uniqueNames": 1707,
+    "meshCount": 1552,
+    "uniqueNames": 1729,
     "scaledMeshParentDetails": [],
     "materialNames": [
       "Inorganic Chemistry amber oxidation state light",
@@ -381,7 +381,7 @@
         "code": "I1",
         "min": [
           192.17958394402152,
-          1.6660000000000001,
+          0.41100000476837173,
           154.28184580913194
         ],
         "max": [
@@ -394,7 +394,7 @@
         "code": "I2",
         "min": [
           161.30165086668737,
-          1.6660000000000001,
+          1.1660000000000001,
           190.29945634567537
         ],
         "max": [
@@ -434,7 +434,7 @@
         "min": [
           104.09173754170904,
           1.6660000000000001,
-          253.6657456415944
+          253.66595297634973
         ],
         "max": [
           131.48888810026975,
@@ -485,7 +485,7 @@
         "code": "I9",
         "min": [
           84.48960874019366,
-          1.5959999713897703,
+          -0.4039999332427977,
           239.37756615014493
         ],
         "max": [
@@ -524,7 +524,7 @@
         "code": "I12",
         "min": [
           81.39384646929521,
-          1.6660000000000001,
+          1.1660000000000001,
           271.94089227640126
         ],
         "max": [
@@ -551,7 +551,7 @@
         "min": [
           17.023338766638844,
           1.6660000000000001,
-          291.12692987716645
+          291.13949663691244
         ],
         "max": [
           50.74096181449877,
@@ -936,9 +936,19 @@
     "streaming": {
       "id": "inorganic-chemistry",
       "kind": "district",
+      "loadState": "loaded",
+      "visualLevel": "detail",
       "detailResident": true,
       "proxyVisible": false,
-      "distanceMetres": 0
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 327,
+        "triangles": 193108,
+        "animationNodes": 107
+      }
     }
   },
   "walkAudit": {

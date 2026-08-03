@@ -82,7 +82,7 @@ try {
       results,
       atlasIds: Array.from(document.querySelectorAll('[data-id^="academic-building-"]'))
         .map((element) => element.getAttribute('data-id')),
-      labelCount: document.querySelectorAll('.academic-building-label').length,
+      labelCount: document.querySelectorAll('.academic-building-label[data-label-id^="academic-building-"]').length,
       mode: world.getTextSnapshot().mode,
     };
   }, facilities);
@@ -297,16 +297,23 @@ try {
     world.walkController.groundY = stand.y - 0.162;
     world.walkController.grounded = true;
     world.inspectFromWalkView();
+    let closedDoorCount = 0;
+    facility.traverse((object) => {
+      if (object.name.includes('CLOSED') && object.name.includes('DOOR')) closedDoorCount += 1;
+    });
     return {
       available: true,
       selectedId: world.getTextSnapshot().selected?.id ?? null,
-      hotspotName: world.getActiveAcademicHotspot()?.name ?? null,
+      canEnterInterior: world.canEnterInterior('academic-building-ashcroft-grand-library'),
+      interiorAvailable: facility.userData.interiorAvailable,
+      closedDoorCount,
     };
   });
   if (!walkEntranceRouting.available
-    || walkEntranceRouting.selectedId !== 'academic-libraries-theoretical-labs'
-    || walkEntranceRouting.hotspotName !== 'Cerebrum Externum') {
-    throw new Error(`WALK entrance routing failed: ${JSON.stringify(walkEntranceRouting, null, 2)}`);
+    || walkEntranceRouting.canEnterInterior
+    || walkEntranceRouting.interiorAvailable !== false
+    || walkEntranceRouting.closedDoorCount < 1) {
+    throw new Error(`Academic closed-entrance routing failed: ${JSON.stringify(walkEntranceRouting, null, 2)}`);
   }
 
   await page.evaluate((id) => {

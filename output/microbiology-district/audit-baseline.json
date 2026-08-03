@@ -217,7 +217,7 @@
         "code": "M1",
         "min": [
           84.47499982833861,
-          1.6660000000000001,
+          -2.7790001716613766,
           -8.36
         ],
         "max": [
@@ -230,7 +230,7 @@
         "code": "M2",
         "min": [
           81.90958716152952,
-          1.6660000000000001,
+          1.016000023841858,
           -42.198003775174406
         ],
         "max": [
@@ -243,7 +243,7 @@
         "code": "M3",
         "min": [
           81.20981906867887,
-          1.6660000000000001,
+          -0.5040000762939452,
           19.45811277124381
         ],
         "max": [
@@ -256,7 +256,7 @@
         "code": "M4",
         "min": [
           101.40955009295452,
-          1.2160000000000002,
+          0.045999995231628565,
           -34.609659035788034
         ],
         "max": [
@@ -269,7 +269,7 @@
         "code": "M5",
         "min": [
           100.87386084363006,
-          0.8859999570846537,
+          -7.964000114440918,
           9.418063352994057
         ],
         "max": [
@@ -279,8 +279,8 @@
         ]
       }
     ],
-    "meshCount": 917,
-    "uniqueNames": 940,
+    "meshCount": 976,
+    "uniqueNames": 999,
     "materialNames": [
       "Black Brine rust-red mineral shelf",
       "Black Brine sintered black ceramic",
@@ -689,9 +689,19 @@
     "streaming": {
       "id": "microbiology-labs",
       "kind": "district",
+      "loadState": "loaded",
+      "visualLevel": "detail",
       "detailResident": true,
       "proxyVisible": false,
-      "distanceMetres": 0
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 101,
+        "triangles": 180768,
+        "animationNodes": 14
+      }
     }
   },
   "errors": []

@@ -30,7 +30,7 @@ try {
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
   await page.waitForTimeout(900);
 
-  const audit = await page.evaluate(() => {
+  const audit = await page.evaluate(async () => {
     const world = window.labIsland;
     const controller = world.walkController;
 
@@ -102,6 +102,10 @@ try {
       group.updateWorldMatrix(true, true);
       const anchor = group.getWorldPosition(world.camera.position.clone());
       world.camera.position.set(anchor.x, 6, anchor.z);
+      world.updateWorldStreaming(false, true);
+      // Detail activation is asynchronous and bounded to 8 ms slices. Wait for
+      // pre-arrival collision residency before auditing this district cell.
+      await new Promise((resolve) => setTimeout(resolve, 30));
       world.updateWorldStreaming(false, true);
       controller.refreshNavigation();
       maximumObstacleCount = Math.max(maximumObstacleCount, controller.obstacleBounds.length);

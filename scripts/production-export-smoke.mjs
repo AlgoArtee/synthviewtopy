@@ -26,7 +26,6 @@ try {
     const world = window.labIsland;
     const plan = world.getProductionExportPlan();
     const initialStreaming = world.getStreamingSnapshot();
-    const initialLibraryMounted = world.getStreamingSnapshot().cerebrumExternum.mounted;
     const files = [];
     const progress = [];
     let duringStreaming = null;
@@ -78,8 +77,6 @@ try {
       initialStreaming,
       duringStreaming,
       finalStreaming: world.getStreamingSnapshot(),
-      initialLibraryMounted,
-      finalLibraryMounted: world.getStreamingSnapshot().cerebrumExternum.mounted,
     };
   });
 
@@ -96,18 +93,17 @@ try {
   assert.equal(audit.manifest.assetCount, audit.plan.length);
   assert.equal(audit.manifest.completeness.districts.exported, 35);
   assert.equal(audit.manifest.completeness.domes.exported, 6);
-  assert.equal(audit.manifest.completeness.streamedDetailPackagesLoaded, 41);
+  assert.equal(audit.manifest.completeness.streamedDetailPackagesSerializedSequentially, 41);
+  assert.equal(audit.manifest.completeness.academicInteriorsRemoved, true);
   assert.equal(audit.manifest.units.exported, 'metres');
   assert.equal(audit.manifest.units.blenderScale, 1);
   assert.equal(audit.districtRoot.extras.exportedUnits, 'metres');
   assert.ok(audit.districtRoot.scale.every((value) => Math.abs(value - 10) < 1e-6));
   assert.equal(audit.lightingSun.rotation.length, 4);
   assert.ok(audit.lightingSun.rotation.some((value, index) => Math.abs(value - [0, 0, 0, 1][index]) > 1e-6));
-  assert.equal(audit.duringStreaming.residentDetailPackages.length, 41);
-  assert.equal(audit.duringStreaming.proxyPackageCount, 0);
+  assert.ok(audit.duringStreaming.loadedPackageCount <= 8);
   assert.deepEqual(audit.finalStreaming.residentDetailPackages, audit.initialStreaming.residentDetailPackages);
   assert.equal(audit.finalStreaming.proxyPackageCount, audit.initialStreaming.proxyPackageCount);
-  assert.equal(audit.finalLibraryMounted, audit.initialLibraryMounted);
   assert.ok(audit.progress.some((entry) => entry.phase === 'loading'));
   assert.ok(audit.progress.some((entry) => entry.phase === 'finalizing'));
   const pythonCommand = process.platform === 'win32' ? 'py' : 'python3';
@@ -124,7 +120,8 @@ try {
     districts: audit.manifest.completeness.districts,
     domes: audit.manifest.completeness.domes,
     totalBytes: audit.summary.totalBytes,
-    streamedPackagesDuringExport: audit.duringStreaming.residentDetailPackages.length,
+    loadedPackagesDuringExport: audit.duringStreaming.loadedPackageCount,
+    sequentialDetailExports: audit.manifest.completeness.streamedDetailPackagesSerializedSequentially,
     streamingRestored: true,
     metresBaked: audit.districtRoot.scale,
   }, null, 2));

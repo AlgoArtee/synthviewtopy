@@ -30,6 +30,8 @@ try {
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
   await page.waitForTimeout(1_500);
   await page.evaluate(() => window.advanceTime(240));
+  await page.evaluate(() => window.labIsland.select('medical-labs', 'scene'));
+  await page.waitForFunction(() => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === 'medical-labs' && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'));
 
   const audit = await page.evaluate(() => {
     const world = window.labIsland;
@@ -59,7 +61,8 @@ try {
     district.traverse((object) => {
       if (object.name) names.push(object.name);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animated.push({ name: object.name, animate: object.userData.animate });
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animated.push({ name: object.name, animate: animationProfile });
       if (!object.isMesh) return;
       meshCount += 1;
       if (object.parent?.isMesh && (

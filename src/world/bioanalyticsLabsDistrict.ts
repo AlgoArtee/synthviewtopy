@@ -54,7 +54,9 @@ const FLOOR_Y = 0.036;
 const UNIT_BOX = new THREE.BoxGeometry(1, 1, 1);
 const UNIT_CYLINDER_12 = new THREE.CylinderGeometry(0.5, 0.5, 1, 12);
 const UNIT_CYLINDER_24 = new THREE.CylinderGeometry(0.5, 0.5, 1, 24);
-const UNIT_SPHERE = new THREE.SphereGeometry(0.5, 24, 16);
+// Preserve every vesicle, detector bead, dome, and landscape marker while
+// keeping the complete package inside its Detail triangle contract.
+const UNIT_SPHERE = new THREE.SphereGeometry(0.5, 20, 12);
 const UNIT_Y = new THREE.Vector3(0, 1, 0);
 const UNIT_X = new THREE.Vector3(1, 0, 0);
 const TORUS_CACHE = new Map<string, THREE.TorusGeometry>();

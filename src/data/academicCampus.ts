@@ -3,8 +3,6 @@
  * Locations are expressed in district-local campus axes: tangent runs across
  * the road-bounded wedge and radial runs from the island centre to the coast.
  */
-export type AcademicInteriorKind = 'library-entrance' | 'dining-hall' | 'chapel-nave';
-
 export interface AcademicCampusBuilding {
   readonly id: string;
   readonly name: string;
@@ -18,7 +16,7 @@ export interface AcademicCampusBuilding {
   readonly location: readonly [tangent: number, radial: number];
   readonly footprint: readonly [width: number, depth: number];
   readonly height: number;
-  readonly interior?: AcademicInteriorKind;
+  readonly interiorAvailable?: false;
   readonly existing?: boolean;
   readonly landmark?: boolean;
 }
@@ -56,7 +54,7 @@ export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
     location: [-21, -15],
     footprint: [12.8, 8.5],
     height: 4.8,
-    interior: 'library-entrance',
+    interiorAvailable: false,
     existing: true,
     landmark: true,
   },
@@ -124,7 +122,7 @@ export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
     location: [-44, 9],
     footprint: [7.2, 14.5],
     height: 5.2,
-    interior: 'chapel-nave',
+    interiorAvailable: false,
     landmark: true,
   },
   {
@@ -175,7 +173,7 @@ export const ACADEMIC_CAMPUS_BUILDINGS: readonly AcademicCampusBuilding[] = [
     location: [-23, 37],
     footprint: [15.5, 8.6],
     height: 5,
-    interior: 'dining-hall',
+    interiorAvailable: false,
     landmark: true,
   },
   {

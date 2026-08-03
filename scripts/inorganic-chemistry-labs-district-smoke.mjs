@@ -43,6 +43,8 @@ try {
   await page.waitForFunction(() => document.querySelector('#loading-screen')?.classList.contains('done') === true);
   await page.waitForTimeout(900);
   await page.evaluate(() => window.advanceTime(360));
+  await page.evaluate((packageId) => window.labIsland.select(packageId, 'scene'), districtId);
+  await page.waitForFunction((packageId) => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === packageId && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'), districtId);
 
   const audit = await page.evaluate(({ districtId, requiredRoots }) => {
     const world = window.labIsland;
@@ -73,7 +75,8 @@ try {
       if (object.name) names.push(object.name);
       if (Array.isArray(object.userData.instanceNames)) names.push(...object.userData.instanceNames);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animations.set(object.userData.animate, (animations.get(object.userData.animate) ?? 0) + (object.userData.authoredAnimationCount ?? 1));
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animations.set(animationProfile, (animations.get(animationProfile) ?? 0) + (object.userData.authoredAnimationCount ?? 1));
       if (!object.isMesh) return;
       meshCount += object.userData.authoredInstanceCount ?? 1;
       if (object.parent?.isMesh && (
@@ -177,7 +180,7 @@ try {
     return {
       program: district.userData.inorganicChemistryLabsDistrict,
       population: district.userData.population,
-      topLevelNames: district.children.map((child) => child.name),
+      topLevelNames: district.children.filter((child) => child.userData.gpuRuntimeBatch !== true).map((child) => child.name),
       codes: facilities.map((facility) => facility.userData.buildingCode).sort((left, right) => Number(left.slice(1)) - Number(right.slice(1))),
       facilityCount: facilities.length,
       meshCount,

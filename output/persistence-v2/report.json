@@ -10,41 +10,19 @@
         "expected": 13,
         "present": 13,
         "userHiddenIds": [],
-        "effectivelyVisibleIds": [
-          "entry-logistics-building-e1",
-          "entry-logistics-building-e2",
-          "entry-logistics-building-e3",
-          "entry-logistics-building-e4",
-          "entry-logistics-building-e5",
-          "entry-logistics-building-e6",
-          "entry-logistics-building-e7",
-          "entry-logistics-building-e8",
-          "entry-logistics-building-e9",
-          "entry-logistics-building-e10",
-          "entry-logistics-building-e11",
-          "entry-logistics-building-e12",
-          "entry-logistics-building-e13"
-        ]
+        "effectivelyVisibleIds": []
       },
       "logistics": {
         "expected": 7,
         "present": 7,
         "userHiddenIds": [],
-        "effectivelyVisibleIds": [
-          "entry-logistics-building-l1",
-          "entry-logistics-building-l2",
-          "entry-logistics-building-l3",
-          "entry-logistics-building-l4",
-          "entry-logistics-building-l5",
-          "entry-logistics-building-l6",
-          "entry-logistics-building-l7"
-        ]
+        "effectivelyVisibleIds": []
       },
       "welcomePool": {
         "expected": true,
         "present": true,
         "visibilityIntent": "visible",
-        "effectivelyVisible": true
+        "effectivelyVisible": false
       }
     },
     "e4": {
@@ -62,7 +40,7 @@
       },
       "visible": true,
       "visibilityIntent": "visible",
-      "effectiveVisible": true,
+      "effectiveVisible": false,
       "accent": "#FF5ACD",
       "styleCustomized": false,
       "collisionEnabled": true,
@@ -91,9 +69,12 @@
     "persistence": {
       "schema": "youtopy.lab-island/2.0",
       "revision": 1,
-      "savedAt": "2026-07-26T18:45:31.208Z",
+      "savedAt": "2026-08-02T21:37:37.965Z",
       "source": "current",
       "recoveryRevisionCount": 1,
+      "manualSaveAvailable": false,
+      "manualSaveRevision": 0,
+      "manualSavedAt": null,
       "assetCount": 0,
       "missingAssetIds": [],
       "persistentStorageGranted": false,
@@ -201,24 +182,24 @@
       "effectivelyVisible": true
     }
   },
-  "importedId": "imported-persistent-interior-triangle-ms25gl1e-1",
+  "importedId": "imported-persistent-interior-triangle-mscbnmoa-1",
   "importRestored": {
     "definition": {
-      "id": "imported-persistent-interior-triangle-ms25gl1e-1",
+      "id": "imported-persistent-interior-triangle-mscbnmoa-1",
       "name": "persistent-interior-triangle",
       "sourceLabel": "persistent-interior-triangle.glb",
       "category": "imported",
       "ring": "custom",
       "position": [
         -4.56,
-        0.8325,
+        0.8325000000000002,
         -13.908
       ],
       "footprint": [
         1,
         1
       ],
-      "height": 1.15,
+      "height": 1.1499999999999997,
       "archetype": "Imported GLB asset",
       "accent": "#b7f34b",
       "palette": [
@@ -247,7 +228,7 @@
       "state": {
         "position": {
           "x": -4.56,
-          "y": 0.8325,
+          "y": 0.8325000000000002,
           "z": -13.908
         },
         "rotationY": 0,
@@ -274,9 +255,12 @@
     "persistence": {
       "schema": "youtopy.lab-island/2.0",
       "revision": 8,
-      "savedAt": "2026-07-26T18:47:00.698Z",
+      "savedAt": "2026-08-02T21:38:08.636Z",
       "source": "current",
       "recoveryRevisionCount": 8,
+      "manualSaveAvailable": true,
+      "manualSaveRevision": 8,
+      "manualSavedAt": "2026-08-02T21:38:08.636Z",
       "assetCount": 1,
       "missingAssetIds": [],
       "persistentStorageGranted": false,
@@ -288,9 +272,12 @@
   "recovered": {
     "schema": "youtopy.lab-island/2.0",
     "revision": 8,
-    "savedAt": "2026-07-26T18:47:00.698Z",
+    "savedAt": "2026-08-02T21:38:08.636Z",
     "source": "recovery",
     "recoveryRevisionCount": 8,
+    "manualSaveAvailable": true,
+    "manualSaveRevision": 8,
+    "manualSavedAt": "2026-08-02T21:38:08.636Z",
     "assetCount": 1,
     "missingAssetIds": [],
     "persistentStorageGranted": false,

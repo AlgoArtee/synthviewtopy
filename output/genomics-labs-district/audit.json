@@ -155,8 +155,8 @@
       "G5"
     ],
     "facilityCount": 5,
-    "meshCount": 1116,
-    "uniqueNames": 1131,
+    "meshCount": 1183,
+    "uniqueNames": 1198,
     "scaledMeshParentDetails": [],
     "materialNames": [
       "Base-Pair Promenade dark sequence paving",
@@ -206,7 +206,7 @@
         "code": "G1",
         "min": [
           38.981412011995154,
-          1.6660000000000001,
+          0.8609999928474428,
           74.91778615555133
         ],
         "max": [
@@ -219,7 +219,7 @@
         "code": "G2",
         "min": [
           73.05410579429112,
-          1.671,
+          -0.2489999618530272,
           62.95473516358523
         ],
         "max": [
@@ -232,7 +232,7 @@
         "code": "G3",
         "min": [
           10.17698716485586,
-          1.6660000000000004,
+          -0.26899994277954087,
           92.16496248320045
         ],
         "max": [
@@ -245,7 +245,7 @@
         "code": "G4",
         "min": [
           35.86213668031314,
-          1.4273935554027535,
+          -3.2039998855590817,
           94.74418751613946
         ],
         "max": [
@@ -258,7 +258,7 @@
         "code": "G5",
         "min": [
           62.58658409195923,
-          1.671,
+          -0.8639999713897704,
           78.19865476421924
         ],
         "max": [
@@ -432,7 +432,7 @@
       },
       "exteriorOnly": true
     },
-    "specializedRevision": 7,
+    "specializedRevision": 10,
     "planning": {
       "boundedDistricts": 35,
       "populatedDistricts": 35,
@@ -443,9 +443,19 @@
     "streaming": {
       "id": "genomics-labs",
       "kind": "district",
+      "loadState": "loaded",
+      "visualLevel": "detail",
       "detailResident": true,
       "proxyVisible": false,
-      "distanceMetres": 0
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 105,
+        "triangles": 101984,
+        "animationNodes": 16
+      }
     }
   },
   "walkAudit": {

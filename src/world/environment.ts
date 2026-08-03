@@ -1097,18 +1097,23 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   );
   const cityRotation = -0.16;
   const cityHorizonCenterAngle = Math.atan2(cityCenter.z, cityCenter.x);
-  const cityHorizonSpan = THREE.MathUtils.degToRad(190);
-  const cityHorizonStart = cityHorizonCenterAngle - cityHorizonSpan * 0.5;
+  const originalCityHorizonSpan = THREE.MathUtils.degToRad(190);
+  const originalCityHorizonStart = cityHorizonCenterAngle - originalCityHorizonSpan * 0.5;
+  const cityHorizonEnd = cityHorizonCenterAngle + originalCityHorizonSpan * 0.5;
+  // The Alpine Dome sits on the -Z radial axis. Keep the city only from that
+  // axis toward the bridge/right side, leaving the entire western horizon open.
+  const cityHorizonStart = -Math.PI * 0.5;
+  const cityHorizonSpan = cityHorizonEnd - cityHorizonStart;
+  const cityHorizonSpanDegrees = THREE.MathUtils.radToDeg(cityHorizonSpan);
+  const removedCityArcDegrees = THREE.MathUtils.radToDeg(cityHorizonStart - originalCityHorizonStart);
   const cityHorizonInnerRadius = ISLAND_RADIUS + 330;
   // Extend beyond the ocean plane's farthest square corner so even elevated
   // views can never reveal a second strip of water behind the city.
   const cityHorizonOuterRadius = 2600;
   const cityGroundY = ISLAND_SURFACE_Y - 0.15;
 
-  // The city is a literal world boundary: an opaque mainland occupies a
-  // little more than half the island's horizon and extends past the ocean
-  // mesh. Looking toward the skyline can therefore never reveal more sea
-  // behind it.
+  // The city remains a literal world boundary on the retained side, while the
+  // horizon west of the Alpine Dome is intentionally open ocean and sky.
   const worldEndMainland = new THREE.Mesh(
     annularSectorGeometry(
       cityHorizonInnerRadius,
@@ -1125,11 +1130,13 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   worldEndMainland.userData = {
     worldBoundary: true,
     oceanBeyondCity: false,
-    horizonSpanDegrees: 190,
+    horizonSpanDegrees: Number(cityHorizonSpanDegrees.toFixed(1)),
+    cutoffBiome: 'alpine-dome',
+    westernCityRemoved: true,
   };
   cityTarget.add(worldEndMainland);
 
-  const seaWallSegments = 128;
+  const seaWallSegments = Math.round(128 * cityHorizonSpan / originalCityHorizonSpan);
   const seaWallArcWidth = (cityHorizonInnerRadius * cityHorizonSpan / seaWallSegments) * 1.04;
   const seaWallHeight = cityGroundY + 2.62;
   const seaWallGeometry = new THREE.BoxGeometry(seaWallArcWidth, seaWallHeight, 18);
@@ -1172,7 +1179,11 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   cityBase.userData.walkable = true;
   cityTarget.add(cityBase);
   cityTarget.userData.skylineLength = Number((cityHorizonInnerRadius * cityHorizonSpan).toFixed(1));
-  cityTarget.userData.skylineArcDegrees = 190;
+  cityTarget.userData.skylineArcDegrees = Number(cityHorizonSpanDegrees.toFixed(1));
+  cityTarget.userData.removedSkylineArcDegrees = Number(removedCityArcDegrees.toFixed(1));
+  cityTarget.userData.skylineCutoffAngleDegrees = -90;
+  cityTarget.userData.skylineCutoffBiome = 'alpine-dome';
+  cityTarget.userData.westernCityRemoved = true;
   cityTarget.userData.worldBoundaryOuterRadius = cityHorizonOuterRadius;
   cityTarget.userData.oceanBeyondCity = false;
   cityTarget.userData.worldBoundary = true;
@@ -1195,7 +1206,37 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     new THREE.MeshStandardMaterial({ color: '#0b1118', roughness: 0.38, metalness: 0.62 }),
   ];
   const neonMaterials = [cyan, magenta, new THREE.MeshStandardMaterial({ color: '#b8f34b', emissive: '#b8f34b', emissiveIntensity: 2.3 })];
-  const bridgeheadTowerCount = 144;
+  const bridgeheadTowerCount = 96;
+  const bridgeheadCountsByStyle = cityMaterials.map((_, style) => (
+    Math.floor((bridgeheadTowerCount + cityMaterials.length - 1 - style) / cityMaterials.length)
+  ));
+  const bridgeheadTowers = cityMaterials.map((material, style) => {
+    const instances = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), material, bridgeheadCountsByStyle[style]);
+    instances.name = `CYBER_CITY__BRIDGEHEAD_FACADE_BATCH_${style + 1}`;
+    instances.castShadow = false;
+    instances.receiveShadow = true;
+    instances.userData.instanceSemanticIds = [] as string[];
+    return instances;
+  });
+  const bridgeheadNeon = neonMaterials.map((material, style) => {
+    const instances = new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), material, bridgeheadCountsByStyle[style]);
+    instances.name = `CYBER_CITY__BRIDGEHEAD_NEON_BATCH_${style + 1}`;
+    instances.castShadow = false;
+    instances.receiveShadow = false;
+    instances.userData.instanceSemanticIds = [] as string[];
+    return instances;
+  });
+  const bridgeheadAntennaCount = Math.ceil(bridgeheadTowerCount / 9);
+  const bridgeheadAntennas = new THREE.InstancedMesh(
+    new THREE.CylinderGeometry(1, 1, 1, 6),
+    metalMaterial,
+    bridgeheadAntennaCount,
+  );
+  bridgeheadAntennas.name = 'CYBER_CITY__BRIDGEHEAD_ANTENNA_BATCH';
+  bridgeheadAntennas.castShadow = false;
+  bridgeheadAntennas.userData.instanceSemanticIds = [] as string[];
+  const bridgeheadStyleIndices = [0, 0, 0];
+  let antennaIndex = 0;
   for (let index = 0; index < bridgeheadTowerCount; index += 1) {
     const localX = (random() * 2 - 1) * 77 * MASTERPLAN_RESCALE;
     const localZ = (random() * 2 - 1) * 31 * MASTERPLAN_RESCALE;
@@ -1207,30 +1248,41 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
     const width = 1.1 + random() * 2.8;
     const depth = 1.1 + random() * 2.6;
     const height = 6 + Math.pow(random(), 1.55) * 54 + centerBias * 12;
-    const tower = new THREE.Mesh(new RoundedBoxGeometry(width, height, depth, 2, 0.12), cityMaterials[index % cityMaterials.length]);
-    tower.name = `Cyber city tower ${String(index + 1).padStart(2, '0')}`;
-    tower.position.set(x, cityCenter.y + 1.6 + height * 0.5, z);
-    tower.rotation.y = random() * Math.PI;
-    tower.castShadow = true;
-    cityTarget.add(tower);
-    const neon = new THREE.Mesh(
-      new THREE.BoxGeometry(width * (0.45 + random() * 0.35), Math.max(0.08, height * 0.018), depth * 1.012),
-      neonMaterials[index % neonMaterials.length],
-    );
-    neon.position.set(x, cityCenter.y + 1.6 + height * (0.22 + random() * 0.62), z);
-    neon.rotation.y = tower.rotation.y;
-    cityTarget.add(neon);
+    const style = index % cityMaterials.length;
+    const slot = bridgeheadStyleIndices[style]++;
+    const rotationY = random() * Math.PI;
+    instancePosition.set(x, cityCenter.y + 1.6 + height * 0.5, z);
+    instanceEuler.set(0, rotationY, 0);
+    instanceQuaternion.setFromEuler(instanceEuler);
+    instanceScale.set(width, height, depth);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    bridgeheadTowers[style].setMatrixAt(slot, instanceMatrix);
+    (bridgeheadTowers[style].userData.instanceSemanticIds as string[])[slot] = `cyber-city:tower:${index + 1}`;
+
+    instancePosition.y = cityCenter.y + 1.6 + height * (0.22 + random() * 0.62);
+    instanceScale.set(width * (0.45 + random() * 0.35), Math.max(0.08, height * 0.018), depth * 1.012);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    bridgeheadNeon[style].setMatrixAt(slot, instanceMatrix);
+    (bridgeheadNeon[style].userData.instanceSemanticIds as string[])[slot] = `cyber-city:neon:${index + 1}`;
     if (index % 9 === 0) {
-      const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.05, 4 + random() * 5, 6), metalMaterial);
-      antenna.position.set(x, cityCenter.y + 1.6 + height + antenna.geometry.parameters.height * 0.5, z);
-      cityTarget.add(antenna);
+      const antennaHeight = 4 + random() * 5;
+      instancePosition.set(x, cityCenter.y + 1.6 + height + antennaHeight * 0.5, z);
+      instanceScale.set(0.05, antennaHeight, 0.05);
+      instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+      bridgeheadAntennas.setMatrixAt(antennaIndex, instanceMatrix);
+      (bridgeheadAntennas.userData.instanceSemanticIds as string[])[antennaIndex] = `cyber-city:antenna:${index + 1}`;
+      antennaIndex += 1;
     }
   }
+  [...bridgeheadTowers, ...bridgeheadNeon, bridgeheadAntennas].forEach((instances) => {
+    instances.instanceMatrix.needsUpdate = true;
+    cityTarget.add(instances);
+  });
 
-  // Dense instanced silhouettes continue the bridgehead cluster into a
-  // 190-degree skyline. Instancing keeps the new horizon at six draw calls
-  // instead of hundreds while still giving every view a layered city edge.
-  const horizonTowerCount = 420;
+  // Dense instanced silhouettes continue the bridgehead cluster from the
+  // Alpine radial toward the east. Preserve the established tower density
+  // while omitting the requested western 51-degree portion of the city.
+  const horizonTowerCount = Math.round(420 * cityHorizonSpan / originalCityHorizonSpan);
   const horizonMaterials = cityMaterials.map((material) => material.clone());
   const horizonNeonMaterials = neonMaterials.map((material) => material.clone());
   const countsByStyle = horizonMaterials.map((_, style) => (
@@ -1287,17 +1339,8 @@ export function createBridgeAndCity(bridgeTarget: THREE.Group, cityTarget: THREE
   cityTarget.userData.horizonTowerCount = horizonTowerCount;
   cityTarget.userData.towerCount = bridgeheadTowerCount + horizonTowerCount;
 
-  const cityHalo = new THREE.PointLight('#ff4ecb', 32, 175, 2);
-  cityHalo.position.set(cityCenter.x, 10, cityCenter.z);
-  cityHalo.name = 'Cyber city atmospheric glow';
-  cityTarget.add(cityHalo);
-  const cityHaloCyan = new THREE.PointLight('#4af3ed', 28, 155, 2);
-  cityHaloCyan.position.set(cityCenter.x - 42, 9, cityCenter.z + 9);
-  cityTarget.add(cityHaloCyan);
-  const cityHaloEast = new THREE.PointLight('#b8f34b', 18, 130, 2);
-  cityHaloEast.position.set(cityCenter.x + 54, 8, cityCenter.z - 4);
-  cityHaloEast.name = 'Cyber city eastern skyline glow';
-  cityTarget.add(cityHaloEast);
+  cityTarget.userData.bridgeheadDrawCalls = 7;
+  cityTarget.userData.atmosphericGlow = 'emissive-instance-materials-and-global-rim-light';
 }
 
 export interface WaterSurface extends THREE.Mesh {

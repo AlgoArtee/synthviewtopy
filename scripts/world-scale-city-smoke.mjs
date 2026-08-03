@@ -18,6 +18,7 @@ page.on('pageerror', (error) => consoleErrors.push(error.message));
 
 await page.goto('http://127.0.0.1:5178/', { waitUntil: 'domcontentloaded', timeout: 30_000 });
 await page.waitForSelector('.mode[data-mode="walk"]', { state: 'visible', timeout: 30_000 });
+await page.waitForSelector('#loading-screen', { state: 'hidden', timeout: 30_000 });
 await page.waitForTimeout(1_100);
 
 const audit = await page.evaluate(() => {
@@ -49,6 +50,29 @@ const audit = await page.evaluate(() => {
     .filter(([id]) => world.definitions.get(id)?.category === 'biome')
     .map(([, group]) => Number(Math.hypot(group.position.x, group.position.z).toFixed(3)));
   const textState = JSON.parse(window.render_game_to_text());
+  const bridgeheadBatches = { facade: 0, neon: 0, antenna: 0, pointLights: 0 };
+  let westernHorizonTowerInstances = 0;
+  let westernSeaWallInstances = 0;
+  const instanceMatrix = seaWall.matrix.clone();
+  const instancePosition = world.camera.position.clone();
+  world.cityRoot.traverse((object) => {
+    if (object.name.startsWith('CYBER_CITY__BRIDGEHEAD_FACADE_BATCH')) bridgeheadBatches.facade += 1;
+    if (object.name.startsWith('CYBER_CITY__BRIDGEHEAD_NEON_BATCH')) bridgeheadBatches.neon += 1;
+    if (object.name === 'CYBER_CITY__BRIDGEHEAD_ANTENNA_BATCH') bridgeheadBatches.antenna += 1;
+    if (object.isPointLight) bridgeheadBatches.pointLights += 1;
+    if (object.name.startsWith('WORLD_END__CYBER_CITY_TOWERS_')) {
+      for (let index = 0; index < object.count; index += 1) {
+        object.getMatrixAt(index, instanceMatrix);
+        instancePosition.setFromMatrixPosition(instanceMatrix);
+        if (instancePosition.x < -0.01) westernHorizonTowerInstances += 1;
+      }
+    }
+  });
+  for (let index = 0; index < seaWall.count; index += 1) {
+    seaWall.getMatrixAt(index, instanceMatrix);
+    instancePosition.setFromMatrixPosition(instanceMatrix);
+    if (instancePosition.x < -0.01) westernSeaWallInstances += 1;
+  }
   const migrationProbeId = 'toxicology-labs';
   const migrationDefinition = world.definitions.get(migrationProbeId);
   const migrationState = world.getObjectState(migrationProbeId);
@@ -92,9 +116,17 @@ const audit = await page.evaluate(() => {
     city: {
       skylineLength: world.cityRoot.userData.skylineLength,
       skylineArcDegrees: world.cityRoot.userData.skylineArcDegrees,
+      removedSkylineArcDegrees: world.cityRoot.userData.removedSkylineArcDegrees,
+      skylineCutoffAngleDegrees: world.cityRoot.userData.skylineCutoffAngleDegrees,
+      skylineCutoffBiome: world.cityRoot.userData.skylineCutoffBiome,
+      westernCityRemoved: world.cityRoot.userData.westernCityRemoved,
+      westernHorizonTowerInstances,
+      westernSeaWallInstances,
       oceanBeyondCity: world.cityRoot.userData.oceanBeyondCity,
       worldBoundary: world.cityRoot.userData.worldBoundary,
       bridgeheadTowerCount: world.cityRoot.userData.bridgeheadTowerCount,
+      bridgeheadDrawCalls: world.cityRoot.userData.bridgeheadDrawCalls,
+      bridgeheadBatches,
       horizonTowerCount: world.cityRoot.userData.horizonTowerCount,
       towerCount: world.cityRoot.userData.towerCount,
       worldBoundaryOuterRadius: world.cityRoot.userData.worldBoundaryOuterRadius,
@@ -128,14 +160,15 @@ if (audit.biomeRadii.length !== 6 || audit.biomeRadii.some((radius) => !close(ra
 }
 const expectedDistrictRadii = {
   inner: 105,
-  middle: 151.2,
-  'outer-middle': 208.2,
-  outer: 274.2,
-  perimeter: 380,
+  middle: 151.5,
+  'outer-middle': 208.5,
+  outer: 274.5,
+  perimeter: 362.5,
 };
 for (const [ring, expectedRadius] of Object.entries(expectedDistrictRadii)) {
   const radii = audit.districtRadii[ring];
-  if (!radii.length || radii.some((radius) => !close(radius, expectedRadius, 0.05))) {
+  const tolerance = ring === 'outer-middle' ? 3.2 : ring === 'perimeter' ? 5.4 : 0.05;
+  if (!radii.length || radii.some((radius) => !close(radius, expectedRadius, tolerance))) {
     throw new Error(`District ring ${ring} was not doubled: ${JSON.stringify(radii)}`);
   }
 }
@@ -146,11 +179,24 @@ if (!audit.pond.depthTest || !audit.pond.depthWrite || audit.pond.renderOrder !=
   throw new Error(`Pond still bypasses scene depth: ${JSON.stringify(audit.pond)}`);
 }
 if (
-  audit.city.skylineArcDegrees < 180
+  !close(audit.city.skylineArcDegrees, 139, 0.2)
+  || !close(audit.city.removedSkylineArcDegrees, 51, 0.2)
+  || audit.city.skylineCutoffAngleDegrees !== -90
+  || audit.city.skylineCutoffBiome !== 'alpine-dome'
+  || audit.city.westernCityRemoved !== true
+  || audit.city.westernHorizonTowerInstances !== 0
+  || audit.city.westernSeaWallInstances !== 0
   || audit.city.oceanBeyondCity !== false
   || audit.city.worldBoundary !== true
-  || audit.city.towerCount < 500
-  || audit.city.seaWallInstances < 100
+  || audit.city.bridgeheadTowerCount !== 96
+  || audit.city.bridgeheadDrawCalls !== 7
+  || audit.city.bridgeheadBatches.facade !== 3
+  || audit.city.bridgeheadBatches.neon !== 3
+  || audit.city.bridgeheadBatches.antenna !== 1
+  || audit.city.bridgeheadBatches.pointLights !== 0
+  || audit.city.horizonTowerCount !== 307
+  || audit.city.towerCount !== 403
+  || audit.city.seaWallInstances !== 94
   || audit.city.worldBoundaryOuterRadius < 2_550
 ) {
   throw new Error(`City world boundary is incomplete: ${JSON.stringify(audit.city)}`);

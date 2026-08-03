@@ -12,7 +12,6 @@ import {
   academicBuildingSelectableId,
   academicCampusBuildingByName,
   type AcademicCampusBuilding,
-  type AcademicInteriorKind,
 } from '../data/academicCampus';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import {
@@ -380,96 +379,6 @@ function makeGableGeometry() {
 
 const gableGeometry = makeGableGeometry();
 
-function addInterior(
-  building: THREE.Group,
-  record: AcademicCampusBuilding,
-  materials: AcademicMaterials,
-  districtId: string,
-) {
-  if (!record.interior) return;
-  const [width, depth] = record.footprint;
-  // Interiors occupy a deliberate human-scale furnished zone just beyond the
-  // entrance; the surrounding shell retains the monumental campus footprint.
-  const zoneZ = depth * 0.5 - 2.35;
-  const interior = new THREE.Group();
-  interior.name = `${record.id.toUpperCase()}__${record.interior.toUpperCase().replace('-', '_')}`;
-  interior.userData.academicInterior = record.interior;
-  interior.userData.runtimeInterior = true;
-  interior.userData.runtimeVisibilityPolicy = 'walk-inside-building-only';
-  interior.visible = false;
-  building.add(interior);
-
-  const addColumn = (x: number, z: number) => {
-    const column = prepare(new THREE.Mesh(unitCylinder, materials.limestone), districtId);
-    column.name = `${interior.name}__STONE_COLUMN`;
-    column.scale.set(0.1, 0.62, 0.1);
-    column.position.set(x, 0.31, z);
-    column.userData.navObstacle = true;
-    interior.add(column);
-  };
-
-  for (const side of [-1, 1]) {
-    for (const z of [zoneZ - 1.55, zoneZ + 0.2]) addColumn(side * 0.82, z);
-  }
-
-  if (record.interior === 'library-entrance') {
-    for (const side of [-1, 1]) {
-      for (let index = 0; index < 3; index += 1) {
-        addBox(
-          interior,
-          districtId,
-          `${interior.name}__OAK_BOOKCASE`,
-          [0.1, 0.32, 0.7],
-          materials.oak,
-          [side * 0.94, 0.16, zoneZ + 0.25 - index * 0.76],
-          { obstacle: true },
-        );
-      }
-    }
-    addBox(interior, districtId, `${interior.name}__BRASS_LAMP_TABLE`, [0.86, 0.075, 0.32], materials.oak, [0, 0.075, zoneZ - 0.55], { obstacle: true });
-    const lamp = addBox(interior, districtId, `${interior.name}__BRASS_READING_LAMP`, [0.045, 0.2, 0.045], materials.brass, [0, 0.21, zoneZ - 0.55]);
-    lamp.userData.academicLightPosition = true;
-  } else if (record.interior === 'dining-hall') {
-    for (const x of [-0.48, 0.48]) {
-      addBox(interior, districtId, `${interior.name}__LONG_OAK_TABLE`, [0.18, 0.075, 2.25], materials.oak, [x, 0.075, zoneZ - 0.78], { obstacle: true });
-      for (const offset of [-0.14, 0.14]) {
-        const bench = addBox(interior, districtId, `${interior.name}__DINING_BENCH`, [0.065, 0.055, 2.05], materials.oak, [x + offset, 0.052, zoneZ - 0.78], { obstacle: true });
-        bench.userData.surfaceKind = 'seat';
-      }
-    }
-    for (let index = 0; index < 5; index += 1) {
-      addBox(interior, districtId, `${interior.name}__HAMMERBEAM`, [2.35, 0.085, 0.075], materials.oak, [0, 0.66, zoneZ + 0.3 - index * 0.62]);
-    }
-  } else {
-    for (let row = 0; row < 5; row += 1) {
-      for (const side of [-1, 1]) {
-        const pew = addBox(interior, districtId, `${interior.name}__WORN_OAK_PEW`, [0.34, 0.09, 0.085], materials.oak, [side * 0.24, 0.085, zoneZ + 0.15 - row * 0.46], { obstacle: true });
-        pew.userData.surfaceKind = 'seat';
-      }
-    }
-    addBox(interior, districtId, `${interior.name}__STONE_ALTAR`, [0.68, 0.13, 0.28], materials.limestone, [0, 0.065, zoneZ - 2.45], { obstacle: true });
-    const candles = addBox(interior, districtId, `${interior.name}__CANDLELIGHT`, [0.45, 0.035, 0.045], materials.stainedGlass, [0, 0.15, zoneZ - 2.42]);
-    candles.userData.academicLightPosition = true;
-  }
-
-  const dust = prepare(new THREE.Points(
-    new THREE.BufferGeometry().setAttribute('position', new THREE.Float32BufferAttribute(
-      Array.from({ length: 120 }, (_, index) => {
-        const axis = index % 3;
-        const sample = ((index * 47) % 113) / 113;
-        if (axis === 0) return (sample - 0.5) * 2.2;
-        if (axis === 1) return 0.04 + sample * 0.62;
-        return zoneZ - 0.9 + (sample - 0.5) * 3.6;
-      }),
-      3,
-    )),
-    new THREE.PointsMaterial({ color: '#e4d2a4', size: 0.006, transparent: true, opacity: 0.22, depthWrite: false }),
-  ), districtId);
-  dust.name = `${interior.name}__DUST_IN_LIGHT_SHAFTS`;
-  dust.userData.animate = 'academic-dust';
-  interior.add(dust);
-}
-
 function addBuildingEnvelopeDetails(
   building: THREE.Group,
   record: AcademicCampusBuilding,
@@ -503,10 +412,16 @@ function addBuildingEnvelopeDetails(
   arch.position.set(0, doorwayHeight, depth * 0.5 + 0.012);
   building.add(arch);
 
-  for (const side of [-1, 1]) {
-    const door = addBox(building, districtId, `${record.id}__OPEN_HEAVY_OAK_DOOR`, [doorwayWidth * 0.42, doorwayHeight * 0.9, 0.05], materials.oak, [side * doorwayWidth * 0.4, doorwayHeight * 0.45, depth * 0.5 + 0.13]);
-    door.rotation.y = side * 1.05;
-  }
+  const door = addBox(
+    building,
+    districtId,
+    `${record.id}__CLOSED_HEAVY_OAK_EXTERIOR_DOOR`,
+    [doorwayWidth * 0.94, doorwayHeight * 0.92, 0.08],
+    materials.oak,
+    [0, doorwayHeight * 0.46, depth * 0.5 + 0.08],
+    { obstacle: true },
+  );
+  door.userData.interiorAvailable = false;
 
   const windows: THREE.Mesh[] = [];
   const columns = Math.max(4, Math.min(9, Math.floor(width / 1.55)));
@@ -514,7 +429,7 @@ function addBuildingEnvelopeDetails(
     for (let column = 0; column < columns; column += 1) {
       const x = THREE.MathUtils.lerp(-width * 0.4, width * 0.4, column / Math.max(1, columns - 1));
       if (row === 0 && Math.abs(x) < doorwayWidth) continue;
-      const window = addBox(building, districtId, `${record.id}__LEADED_LANCET_WINDOW`, [0.42, 0.76, 0.035], record.interior === 'chapel-nave' ? materials.stainedGlass : materials.leadedGlass, [x, height * (0.31 + row * 0.34), depth * 0.5 + 0.018]);
+      const window = addBox(building, districtId, `${record.id}__LEADED_LANCET_WINDOW`, [0.42, 0.76, 0.035], record.kind === 'chapel' ? materials.stainedGlass : materials.leadedGlass, [x, height * (0.31 + row * 0.34), depth * 0.5 + 0.018]);
       window.userData.academicReadingLights = record.kind === 'library' || record.kind === 'dining';
       windows.push(window);
     }
@@ -561,7 +476,6 @@ function addBuildingEnvelopeDetails(
     }
   }
 
-  addInterior(building, record, materials, districtId);
 }
 
 function createBuilding(
@@ -581,21 +495,20 @@ function createBuilding(
   const halfDepth = record.footprint[1] * 0.5;
   const routeStart = position.clone().addScaledVector(front, halfDepth + 2.8);
   const threshold = position.clone().addScaledVector(front, halfDepth + 0.08);
-  const interiorTarget = position.clone().addScaledVector(front, halfDepth - 1.25);
   building.userData.semanticName = record.name;
   building.userData.academicFacility = true;
   building.userData.academicFacilityType = record.kind;
   building.userData.academicBuildingData = { ...record };
-  building.userData.accessibleInWalk = true;
+  building.userData.accessibleInWalk = false;
+  building.userData.interiorAvailable = false;
   building.userData.footprint = [...record.footprint];
   building.userData.entrancePoint = threshold.toArray();
   building.userData.walkAccess = {
-    accessible: true,
+    accessible: false,
     buildingKind: record.kind,
     coordinateSpace: 'district-local',
     routeStart: routeStart.toArray(),
     threshold: threshold.toArray(),
-    interiorTarget: interiorTarget.toArray(),
     finishedFloorY: 0,
     doorwayWidth: Math.min(0.58, Math.max(0.42, record.footprint[0] * 0.06)),
   };
@@ -770,10 +683,8 @@ function makeAcademicBoundaryCrestGeometry() {
   shield.closePath();
   const geometry = new THREE.ExtrudeGeometry(shield, {
     depth: 0.014,
-    bevelEnabled: true,
-    bevelSegments: 1,
-    bevelSize: 0.006,
-    bevelThickness: 0.004,
+    curveSegments: 1,
+    bevelEnabled: false,
   });
   geometry.translate(0, 0.01, -0.007);
   return geometry;
@@ -846,7 +757,7 @@ function createCollegiateGothicBoundary(
   const domeGapInnerRadius = BIOME_RING_RADIUS - 23.5;
   const domeGapOuterRadius = BIOME_RING_RADIUS + 18;
   const domeGateRadius = BIOME_RING_RADIUS - 20.8;
-  const maximumBayLength = 1.55;
+  const maximumBayLength = 4.6;
   const heightMultiplier = 5;
   const fenceSpearCenterY = 0.33 * heightMultiplier;
   const fencePicketBottomY = 0.0545;
@@ -941,7 +852,11 @@ function createCollegiateGothicBoundary(
   const crestGeometry = makeAcademicBoundaryCrestGeometry();
   const capGeometry = new THREE.ConeGeometry(0.5, 1, 4);
   const spearGeometry = new THREE.ConeGeometry(0.018, 0.062, 4);
-  const quatrefoilGeometry = new THREE.TorusGeometry(0.028, 0.0055, 5, 10);
+  // Thousands of fence ornaments remain present at close Detail, but their
+  // sub-centimetre roundness does not warrant 100 triangles per quatrefoil.
+  // A 24-triangle silhouette preserves the open Gothic motif and cuts the
+  // Academic package below its isolated triangle contract.
+  const quatrefoilGeometry = new THREE.TorusGeometry(0.028, 0.0055, 3, 4);
   const botanicalGeometry = new THREE.OctahedronGeometry(0.035, 0);
   let totalBayCount = 0;
   let totalPierCount = 0;
@@ -973,8 +888,6 @@ function createCollegiateGothicBoundary(
       const normal = adjacent.clone().cross(localUp).normalize();
       const basis = new THREE.Matrix4().makeBasis(adjacent, localUp, normal);
       const crestQuaternion = new THREE.Quaternion().setFromRotationMatrix(basis);
-      const reverseBasis = new THREE.Matrix4().makeBasis(adjacent.clone().negate(), localUp, normal.clone().negate());
-      const reverseCrestQuaternion = new THREE.Quaternion().setFromRotationMatrix(reverseBasis);
       stoneTransforms.push(
         {
           position: point.clone().setY(pierBaseHeight * 0.5),
@@ -997,18 +910,11 @@ function createCollegiateGothicBoundary(
         quaternion: new THREE.Quaternion().setFromAxisAngle(localUp, Math.PI * 0.25),
         scale: new THREE.Vector3(0.2, pierCapHeight, 0.2),
       });
-      crestTransforms.push(
-        {
-          position: point.clone().addScaledVector(normal, 0.067).setY(0.245 * heightMultiplier),
-          quaternion: crestQuaternion,
-          scale: oneScale,
-        },
-        {
-          position: point.clone().addScaledVector(normal, -0.067).setY(0.245 * heightMultiplier),
-          quaternion: reverseCrestQuaternion,
-          scale: oneScale,
-        },
-      );
+      crestTransforms.push({
+        position: point.clone().addScaledVector(normal, 0.067).setY(0.245 * heightMultiplier),
+        quaternion: crestQuaternion,
+        scale: oneScale,
+      });
     });
 
     for (let panelIndex = 0; panelIndex < spec.points.length - 1; panelIndex += 1) {
@@ -1024,7 +930,7 @@ function createCollegiateGothicBoundary(
       for (const y of [0.085, 0.18, 0.285].map((value) => value * heightMultiplier)) {
         addAcademicBoundaryBeam(ironTransforms, start.clone().setY(y), end.clone().setY(y), 0.014);
       }
-      const picketCount = Math.max(4, Math.floor(length / 0.23));
+      const picketCount = Math.max(4, Math.floor(length / 0.46));
       for (let picket = 1; picket <= picketCount; picket += 1) {
         const position = start.clone().lerp(end, picket / (picketCount + 1));
         ironTransforms.push({
@@ -1043,24 +949,18 @@ function createCollegiateGothicBoundary(
       const archRight = start.clone().lerp(end, 0.93).setY(0.205 * heightMultiplier);
       addAcademicBoundaryBeam(archTransforms, archLeft, archApex, 0.012);
       addAcademicBoundaryBeam(archTransforms, archApex, archRight, 0.012);
-      for (const [along, vertical] of [[-0.032, 0], [0.032, 0], [0, -0.032], [0, 0.032]] as const) {
-        quatrefoilTransforms.push({
-          position: center.clone().addScaledVector(direction, along).setY(0.18 * heightMultiplier + vertical),
-          quaternion: panelQuaternion,
-          scale: oneScale,
-        });
-      }
-      for (const side of [-1, 1]) {
-        botanicalTransforms.push({
-          position: center.clone()
-            .addScaledVector(direction, side * Math.min(0.18, length * 0.19))
-            .setY(0.115 * heightMultiplier),
-          quaternion: panelQuaternion.clone().multiply(
-            new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), side * 0.58),
-          ),
-          scale: new THREE.Vector3(1.5, 0.56, 0.35),
-        });
-      }
+      quatrefoilTransforms.push({
+        position: center.clone().setY(0.18 * heightMultiplier),
+        quaternion: panelQuaternion,
+        scale: oneScale,
+      });
+      botanicalTransforms.push({
+        position: center.clone().setY(0.115 * heightMultiplier),
+        quaternion: panelQuaternion.clone().multiply(
+          new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), 0.58),
+        ),
+        scale: new THREE.Vector3(1.5, 0.56, 0.35),
+      });
       for (const y of [0.1, 0.25]) {
         barriers.push({
           start: start.clone().setY(y).toArray(),
@@ -2702,6 +2602,8 @@ export function buildAcademicDistrictExtension(
     staticBakedLook: 'emissive windows and lantern pools replace per-window lights',
     navigation: 'precise wall and fence segments with explicit gate gaps; decorative detail is non-colliding unless needed',
   };
+  districtGroup.userData.interiorAvailable = false;
+  districtGroup.userData.academicInteriors = 'removed';
   districtGroup.userData.academicTreePopulation = academicTrees.userData.academicTreePopulation;
   districtGroup.userData.academicBoundary = gothicBoundary.userData;
   return { facilities, features, localRoads };
@@ -3035,6 +2937,13 @@ export function enrichExistingAcademicBuildings(buildings: readonly THREE.Group[
     building.userData.academicBuildingData = { ...record };
     building.userData.foundingDate = record.founded;
     building.userData.editableHistory = record.history;
+    building.userData.interiorAvailable = false;
+    building.userData.accessibleInWalk = false;
+    building.userData.walkAccess = {
+      ...(building.userData.walkAccess ?? {}),
+      accessible: false,
+      interiorAvailable: false,
+    };
     if (record.kind === 'library') {
       building.traverse((object) => {
         if (object instanceof THREE.Mesh && object.name.includes('LEADED_AMBER_WINDOWS')) {
@@ -3045,26 +2954,19 @@ export function enrichExistingAcademicBuildings(buildings: readonly THREE.Group[
     const [width, depth] = (building.userData.footprint ?? record.footprint) as [number, number];
     if (record.id === 'ashcroft-grand-library') {
       buildAshcroftReferenceFacade(building, districtId, width, depth, record.inscription ?? 'CEREBRUM EXTERNUM · FOUNDED MDXII');
-      // IslandWorld mounts this expensive authored interior as a streamed
-      // package near the entrance instead of constructing it during boot.
-      building.userData.cerebrumStreamingConfig = {
-        selectableId: academicBuildingSelectableId(record.id),
-        width: Math.max(10.8, width - 0.8),
-        depth: Math.max(7.2, depth - 0.7),
-        quality: 'medium',
-        muted: true,
-        hideLegacyShell: true,
-        preloadDistanceMetres: 60,
-        unloadDistanceMetres: 90,
-        retentionSeconds: 15,
-      };
     }
+    const closedDoor = addBox(
+      building,
+      districtId,
+      `${record.id}__CLOSED_COLLIDABLE_EXTERIOR_DOOR`,
+      [Math.min(0.9, width * 0.11), 1.02, 0.11],
+      materials.oak,
+      [0, 0.51, depth * 0.5 + 0.08],
+      { obstacle: true },
+    );
+    closedDoor.userData.interiorAvailable = false;
     const plaque = addBox(building, districtId, `${record.id}__CONFIGURED_BRASS_PLAQUE`, [0.66, 0.3, 0.035], materials.brass, [width * 0.12, 0.68, depth * 0.5 + 0.035]);
     plaque.userData.academicHotspot = record.id;
-    if (record.interior && record.id !== 'ashcroft-grand-library') {
-      addInterior(building, { ...record, footprint: [width, depth] }, materials, districtId);
-    }
-
     if (record.id === 'blackwood-great-hall') {
       const clockTower = addBox(building, districtId, 'ACADEMIC__PRIMARY_CLOCK_TOWER', [2.8, 7.8, 2.8], materials.limestone, [0, 3.9, -depth * 0.22], { obstacle: true });
       clockTower.userData.academicLandmark = true;

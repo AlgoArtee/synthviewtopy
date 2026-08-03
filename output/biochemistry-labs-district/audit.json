@@ -261,8 +261,8 @@
       "B10"
     ],
     "facilityCount": 10,
-    "meshCount": 1287,
-    "uniqueNames": 1300,
+    "meshCount": 1374,
+    "uniqueNames": 1387,
     "scaledMeshParentDetails": [],
     "materialNames": [
       "Biochemistry blue-white opal cryogenic glass",
@@ -314,7 +314,7 @@
         "code": "B1",
         "min": [
           93.74922217908231,
-          1.671,
+          1.1660000000000001,
           82.19772923628653
         ],
         "max": [
@@ -327,7 +327,7 @@
         "code": "B2",
         "min": [
           4.487754295298995,
-          1.6860000000000002,
+          -0.12899995708465561,
           129.67777615176178
         ],
         "max": [
@@ -340,7 +340,7 @@
         "code": "B3",
         "min": [
           81.09277034192122,
-          1.6660000000000001,
+          1.1660000000000001,
           102.4066756542806
         ],
         "max": [
@@ -353,7 +353,7 @@
         "code": "B4",
         "min": [
           26.015297690904557,
-          1.6860000000000002,
+          0.6660000000000001,
           131.90123927300363
         ],
         "max": [
@@ -366,7 +366,7 @@
         "code": "B5",
         "min": [
           116.07720271393045,
-          1.6660000000000001,
+          -0.6639999237060545,
           75.16828390122984
         ],
         "max": [
@@ -379,7 +379,7 @@
         "code": "B6",
         "min": [
           51.45938666552248,
-          1.666,
+          0.8960000190734865,
           129.34110699470708
         ],
         "max": [
@@ -392,7 +392,7 @@
         "code": "B7",
         "min": [
           107.65541045362622,
-          1.6660000000000001,
+          -0.7989999141693114,
           106.47055822637532
         ],
         "max": [
@@ -405,7 +405,7 @@
         "code": "B8",
         "min": [
           30.199438798909984,
-          1.5704659579281885,
+          -3.4139999237060543,
           148.67146201534666
         ],
         "max": [
@@ -418,7 +418,7 @@
         "code": "B9",
         "min": [
           12.274674033372232,
-          1.6660000000000004,
+          1.0659999761581422,
           155.35640787259354
         ],
         "max": [
@@ -431,7 +431,7 @@
         "code": "B10",
         "min": [
           70.94161719907108,
-          1.6660000000000001,
+          1.1660000000000001,
           127.84589288914636
         ],
         "max": [
@@ -720,7 +720,7 @@
       },
       "exteriorOnly": true
     },
-    "specializedRevision": 8,
+    "specializedRevision": 10,
     "planning": {
       "boundedDistricts": 35,
       "populatedDistricts": 35,
@@ -731,9 +731,19 @@
     "streaming": {
       "id": "biochemistry-labs",
       "kind": "district",
+      "loadState": "loaded",
+      "visualLevel": "detail",
       "detailResident": true,
       "proxyVisible": false,
-      "distanceMetres": 0
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 179,
+        "triangles": 174854,
+        "animationNodes": 68
+      }
     }
   },
   "walkAudit": {
@@ -744,7 +754,7 @@
     "speedKilometresPerHour": 6.5,
     "configuredWalkSpeedKilometresPerHour": 6.5,
     "position": [
-      102.256,
+      101.506,
       1.808,
       112.464
     ]

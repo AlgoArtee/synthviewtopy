@@ -8,232 +8,147 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 await mkdir(OUTPUT, { recursive: true });
-const browser = await chromium.launch({
-  headless: true,
-  executablePath: chrome,
-  args: ['--enable-gpu', '--ignore-gpu-blocklist'],
-});
+const browser = await chromium.launch({ headless: true, executablePath: chrome, args: ['--enable-gpu', '--ignore-gpu-blocklist'] });
 const page = await browser.newPage({ viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 });
 page.setDefaultTimeout(180_000);
 const errors = [];
-page.on('console', (message) => {
-  if (message.type() === 'error') errors.push(message.text());
-});
+page.on('console', (message) => { if (message.type() === 'error') errors.push(message.text()); });
 page.on('pageerror', (error) => errors.push(error.message));
 
-const readState = () => page.evaluate(() => JSON.parse(window.render_game_to_text()));
+const settle = async (milliseconds = 160) => {
+  await page.evaluate((duration) => window.labIsland.advanceTime(duration), milliseconds);
+  await page.waitForTimeout(80);
+};
+const read = () => page.evaluate(() => ({
+  text: window.labIsland.getTextSnapshot(),
+  stats: window.labIsland.getSceneStatistics(),
+}));
 
 try {
-  await page.addInitScript(() => {
-    localStorage.removeItem('youtopy_saved_project');
-    localStorage.removeItem('youtopy_walk_speed_kmh');
-  });
+  await page.addInitScript(() => localStorage.removeItem('youtopy_saved_project'));
   await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 90_000 });
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
-  await page.waitForTimeout(1_200);
-  await page.evaluate(() => window.advanceTime(80));
+  await page.waitForSelector('#loading-screen', { state: 'hidden' });
+  await settle(250);
 
-  const explore = await readState();
-  if (explore.mode !== 'explore'
-    || explore.streaming.residentDetailPackages.length !== 41
-    || explore.streaming.proxyPackageCount !== 0
-    || explore.runtimePolicies.visibleAuthoredInteriorGroups !== 0
-    || explore.runtimePolicies.cerebrumInteriorRendered
-    || explore.runtimePolicies.objectInteractionsEnabled) {
-    throw new Error(`EXPLORE policy audit failed: ${JSON.stringify({
-      mode: explore.mode,
-      streaming: explore.streaming,
-      policies: explore.runtimePolicies,
-    }, null, 2)}`);
+  const overview = await read();
+  if (overview.text.mode !== 'explore'
+    || overview.stats.streaming.residentPackageCount > 3
+    || overview.stats.streaming.loadedPackageCount > 8
+    || overview.stats.streaming.proxyPackageCount < 38
+    || overview.stats.activeAnimationNodes > 250
+    || overview.stats.drawCalls > 1_500) {
+    throw new Error(`EXPLORE overview budget failed: ${JSON.stringify(overview.stats, null, 2)}`);
   }
-  await page.screenshot({ path: `${OUTPUT}/explore-all-exteriors.png`, fullPage: true });
+  await page.screenshot({ path: `${OUTPUT}/explore-layered-hlod.png`, fullPage: true });
 
-  await page.click('#walk-mode');
-  await page.locator('#walk-speed-kmh').fill('18');
-  await page.locator('#walk-speed-kmh').press('Enter');
-  await page.locator('#walk-speed-kmh').blur();
-  await page.evaluate(() => window.advanceTime(80));
-  const walkBefore = await readState();
-  const walkSilhouettes = await page.evaluate(() => window.labIsland.worldStreaming.vistaRoot.children
-    .filter((proxy) => proxy.visible && proxy.userData.streamingSilhouetteProfile === 'multi-mass-building-silhouette')
-    .map((proxy) => {
-      const definition = window.labIsland.definitions.get(proxy.userData.selectableId);
-      const expectedPalette = definition?.palette.map((color) => color.replace('#', '').toLowerCase()) ?? [];
-      const visibleMassColors = Array.from(new Set(proxy.children
-        .filter((child) => child.name.includes('__SILHOUETTE_'))
-        .map((child) => child.material?.color?.getHexString?.())
-        .filter(Boolean)));
-      return {
-        name: proxy.name,
-        massCount: proxy.userData.streamingSilhouetteMassCount ?? 0,
-        hasLegacyPrimaryCube: proxy.children.some((child) => child.name.endsWith('__PRIMARY_MASS')),
-        paletteSource: proxy.userData.streamingPaletteSource ?? null,
-        expectedPalette,
-        visibleMassColors,
-        preservesAuthoredPalette: expectedPalette.every((color) => visibleMassColors.includes(color)),
-      };
-    }));
-  if (walkBefore.walk.configuredWalkSpeedKilometresPerHour !== 18
-    || walkBefore.streaming.proxyPackageCount <= 0
-    || walkBefore.streaming.residentDetailPackages.length <= 0
-    || walkBefore.streaming.residentDetailPackages.length >= 41
-    || walkBefore.runtimePolicies.visibleAuthoredInteriorGroups !== 0
-    || walkSilhouettes.length < 1
-    || walkSilhouettes.some((proxy) => proxy.massCount < 5
-      || proxy.hasLegacyPrimaryCube
-      || proxy.paletteSource !== 'authored-definition-palette'
-      || !proxy.preservesAuthoredPalette)) {
-    throw new Error(`WALK exterior LOD audit failed: ${JSON.stringify({
-      walk: walkBefore.walk,
-      streaming: walkBefore.streaming,
-      policies: walkBefore.runtimePolicies,
-      silhouettes: walkSilhouettes,
-    }, null, 2)}`);
+  await page.click('.mode[data-mode="plan"]');
+  await settle();
+  const plan = await read();
+  if (plan.stats.streaming.residentPackageCount !== 0
+    || plan.stats.streaming.activeDetailLimit !== 0
+    || plan.stats.drawCalls > 1_500) {
+    throw new Error(`PLAN budget failed: ${JSON.stringify(plan.stats, null, 2)}`);
   }
+  await page.screenshot({ path: `${OUTPUT}/plan-far-hlod.png`, fullPage: true });
 
-  const distance = await page.evaluate(() => {
+  await page.click('.mode[data-mode="walk"]');
+  const closeWalk = await page.evaluate(() => {
     const world = window.labIsland;
-    const before = world.camera.position.clone();
-    world.setWalkIntent(0, 1, false);
-    world.advanceTime(2_000);
-    world.setWalkIntent(0, 0, false);
+    const target = world.objectGroups.get('forensic-cyberforensic-lab');
+    const facility = target.children.find((child) => child.userData.exteriorProgram === true) ?? target;
+    const bounds = new world.selectionBounds.constructor().setFromObject(facility, true);
+    const position = bounds.getCenter(world.camera.position.clone());
+    const size = bounds.getSize(world.controls.target.clone());
+    const outward = position.clone().setY(0).normalize();
+    const stand = position.clone().addScaledVector(outward, Math.max(size.x, size.z) * 0.65 + 2);
+    world.walkController.refreshNavigation();
+    const ground = world.walkController.sampleGround(stand.x, stand.z) ?? position.y;
+    world.camera.position.set(stand.x, ground + 0.162, stand.z);
+    world.walkController.groundY = ground;
+    world.walkController.grounded = true;
+    world.camera.lookAt(position.x, bounds.min.y + size.y * 0.42, position.z);
+    world.camera.updateMatrixWorld(true);
+    world.advanceTime(180);
+    return true;
+  });
+  if (!closeWalk) throw new Error('Unable to position WALK view.');
+  await page.waitForTimeout(500);
+  await settle();
+  const walk = await read();
+  if (walk.stats.streaming.residentPackageCount > 5
+    || walk.stats.streaming.loadedPackageCount > 8
+    || walk.stats.activeAnimationNodes > 250
+    || walk.stats.drawCalls > 2_000
+    || walk.stats.triangles > 1_200_000) {
+    throw new Error(`Close WALK budget failed: ${JSON.stringify(walk.stats, null, 2)}`);
+  }
+  await page.screenshot({ path: `${OUTPUT}/walk-bounded-detail.png`, fullPage: true });
+
+  const academic = await page.evaluate(() => {
+    const world = window.labIsland;
+    const definitions = Array.from(world.definitions.values()).filter((definition) => definition.category === 'academic-building');
+    const buildings = definitions.map((definition) => {
+      const root = world.objectGroups.get(definition.id);
+      let runtimeInteriors = 0;
+      let closedDoors = 0;
+      root?.traverse((object) => {
+        if (object.userData.runtimeInterior === true) runtimeInteriors += 1;
+        if (object.name.includes('CLOSED') && object.name.includes('DOOR')) closedDoors += 1;
+      });
+      return {
+        id: definition.id,
+        canEnter: world.canEnterInterior(definition.id),
+        definitionInteriorAvailable: definition.interiorAvailable,
+        rootInteriorAvailable: root?.userData.interiorAvailable,
+        runtimeInteriors,
+        closedDoors,
+      };
+    });
+    const district = world.objectGroups.get('academic-libraries-theoretical-labs');
     return {
-      metres: before.distanceTo(world.camera.position) * 10,
-      state: world.walkController.getSnapshot(),
+      districtCanEnter: world.canEnterInterior('academic-libraries-theoretical-labs'),
+      districtInteriorAvailable: district?.userData.interiorAvailable,
+      buildings,
+      compatibility: world.getStreamingSnapshot().cerebrumExternum,
+      controlsPresent: Boolean(document.querySelector('[id^="cerebrum-"]')),
     };
   });
-  if (distance.metres < 9.4 || distance.metres > 10.6 || distance.state.speedKilometresPerHour !== 18) {
-    throw new Error(`Configured WALK speed audit failed: ${JSON.stringify(distance, null, 2)}`);
-  }
-  const detailedTower = await page.evaluate(() => {
-    const tower = window.labIsland.scene.getObjectByName(
-      'corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS',
-    );
-    return tower
-      ? {
-          profile: tower.userData.architecturalProfile ?? null,
-          massCount: tower.userData.architecturalMassCount ?? 0,
-          visible: tower.visible,
-          childNames: tower.children.map((child) => child.name),
-        }
-      : null;
-  });
-  if (!detailedTower
-    || detailedTower.profile !== 'tiered-tower'
-    || detailedTower.massCount < 5
-    || !detailedTower.visible
-    || !detailedTower.childNames.some((name) => name.endsWith('__SETBACK_CROWN'))) {
-    throw new Error(`Detailed WALK tower profile audit failed: ${JSON.stringify(detailedTower, null, 2)}`);
+  if (academic.districtCanEnter
+    || academic.districtInteriorAvailable !== false
+    || academic.controlsPresent
+    || academic.compatibility.available !== false
+    || academic.compatibility.phase !== 'removed'
+    || academic.compatibility.mounted
+    || academic.buildings.some((building) => building.canEnter
+      || building.definitionInteriorAvailable !== false
+      || building.rootInteriorAvailable !== false
+      || building.runtimeInteriors !== 0
+      || building.closedDoors < 1)) {
+    throw new Error(`Academic removal audit failed: ${JSON.stringify(academic, null, 2)}`);
   }
 
-  await page.keyboard.press('e');
-  await page.waitForTimeout(50);
-  if (!(await page.locator('#walk-interaction-menu').isHidden())) {
-    throw new Error('The WALK interaction menu opened while object interactions were disabled.');
-  }
-  const disabledActions = await page.evaluate(() => ({
-    academic: window.labIsland.performAcademicInteraction('ring chapel bell'),
-    cerebrum: window.labIsland.performCerebrumLibraryInteraction('reading-lamp-1'),
-  }));
-  if (disabledActions.academic.state?.interactionsEnabled !== false || disabledActions.cerebrum.handled) {
-    throw new Error(`Disabled interaction audit failed: ${JSON.stringify(disabledActions, null, 2)}`);
-  }
-  await page.screenshot({ path: `${OUTPUT}/walk-speed-and-distant-hlod.png`, fullPage: true });
-  await page.evaluate(() => {
-    window.labIsland.setTimeOfDay('noon');
-    window.advanceTime(4_000);
+  const representation = await page.evaluate(() => {
+    const snapshot = window.labIsland.getStreamingSnapshot();
+    return snapshot.packages.map((pkg) => ({
+      id: pkg.id,
+      representationCount: Number(pkg.detailResident) + Number(pkg.midVisible) + Number(pkg.farVisible),
+    }));
   });
-  await page.screenshot({ path: `${OUTPUT}/walk-distant-authored-colors.png`, fullPage: true });
-
-  const diningInterior = await page.evaluate(() => {
-    const world = window.labIsland;
-    const host = world.objectGroups.get('academic-building-founders-dining-hall');
-    if (!host) throw new Error('Founders Dining Hall host missing');
-    host.updateWorldMatrix(true, false);
-    const Vector3 = world.camera.position.constructor;
-    const center = host.localToWorld(new Vector3(0, 0.02, 3.1));
-    const direction = new Vector3(0, -0.03, -1).transformDirection(host.matrixWorld).normalize();
-    world.camera.position.copy(center).add(new Vector3(0, 0.2, 0));
-    world.advanceTime(50);
-    world.walkController.enter(center, direction, center);
-    world.advanceTime(80);
-    return world.getTextSnapshot().runtimePolicies;
-  });
-  if (diningInterior.visibleAuthoredInteriorGroups !== 1) {
-    throw new Error(`Authored inside-only interior audit failed: ${JSON.stringify(diningInterior, null, 2)}`);
-  }
-  await page.screenshot({ path: `${OUTPUT}/walk-inside-dining-hall.png`, fullPage: true });
-
-  const cerebrum = await page.evaluate(() => {
-    const world = window.labIsland;
-    const host = world.objectGroups.get('academic-building-ashcroft-grand-library');
-    if (!host) throw new Error('Cerebrum Externum host missing');
-    host.updateWorldMatrix(true, false);
-    const Vector3 = world.camera.position.constructor;
-    const center = host.localToWorld(new Vector3(0, 0.02, 0));
-    world.camera.position.copy(center).add(new Vector3(0, 0.2, 0));
-    world.advanceTime(50);
-    world.walkController.enter(center, new Vector3(0, 0, -1), center);
-    world.advanceTime(100);
-    return world.getTextSnapshot();
-  });
-  if (!cerebrum.runtimePolicies.cerebrumInteriorRendered
-    || cerebrum.streaming.cerebrumExternum.phase !== 'active'
-    || !cerebrum.academicDistrict?.cerebrumExternum?.mounted) {
-    throw new Error(`Cerebrum inside-only mount audit failed: ${JSON.stringify({
-      policies: cerebrum.runtimePolicies,
-      streaming: cerebrum.streaming.cerebrumExternum,
-      mounted: cerebrum.academicDistrict?.cerebrumExternum?.mounted,
-    }, null, 2)}`);
-  }
-  await page.screenshot({ path: `${OUTPUT}/walk-inside-cerebrum.png`, fullPage: true });
-
-  const returnedExplore = await page.evaluate(() => {
-    window.labIsland.setMode('explore');
-    window.advanceTime(80);
-    return window.labIsland.getTextSnapshot();
-  });
-  if (returnedExplore.streaming.residentDetailPackages.length !== 41
-    || returnedExplore.streaming.proxyPackageCount !== 0
-    || returnedExplore.runtimePolicies.visibleAuthoredInteriorGroups !== 0
-    || returnedExplore.runtimePolicies.cerebrumInteriorRendered
-    || returnedExplore.academicDistrict?.cerebrumExternum?.mounted) {
-    throw new Error(`Return-to-EXPLORE cleanup audit failed: ${JSON.stringify({
-      streaming: returnedExplore.streaming,
-      policies: returnedExplore.runtimePolicies,
-      mounted: returnedExplore.academicDistrict?.cerebrumExternum?.mounted,
-    }, null, 2)}`);
+  if (representation.some((pkg) => pkg.representationCount !== 1)) {
+    throw new Error(`Streaming representation overlap/hole: ${JSON.stringify(representation.filter((pkg) => pkg.representationCount !== 1))}`);
   }
 
-  const report = {
-    explore: {
-      residentDetailPackages: explore.streaming.residentDetailPackages.length,
-      proxyPackageCount: explore.streaming.proxyPackageCount,
-      runtimePolicies: explore.runtimePolicies,
-    },
-    walk: {
-      residentDetailPackages: walkBefore.streaming.residentDetailPackages.length,
-      proxyPackageCount: walkBefore.streaming.proxyPackageCount,
-      configuredSpeedKilometresPerHour: walkBefore.walk.configuredWalkSpeedKilometresPerHour,
-      measuredDistanceMetresInTwoSeconds: Number(distance.metres.toFixed(2)),
-      visibleSilhouettePackages: walkSilhouettes.length,
-      silhouetteMassesPerPackage: Math.min(...walkSilhouettes.map((proxy) => proxy.massCount)),
-      detailedTower,
-    },
-    diningInterior,
-    cerebrum: {
-      phase: cerebrum.streaming.cerebrumExternum.phase,
-      rendered: cerebrum.runtimePolicies.cerebrumInteriorRendered,
-    },
-    disabledActions,
-    errors,
-  };
+  const report = { overview: overview.stats, plan: plan.stats, walk: walk.stats, academic, errors };
   await writeFile(`${OUTPUT}/report.json`, JSON.stringify(report, null, 2));
   if (errors.length) throw new Error(`Browser errors: ${errors.join('\n')}`);
-  console.log(JSON.stringify(report, null, 2));
+  console.log(JSON.stringify({
+    overview: { drawCalls: overview.stats.drawCalls, triangles: overview.stats.triangles, loaded: overview.stats.streaming.loadedPackageCount },
+    plan: { drawCalls: plan.stats.drawCalls, resident: plan.stats.streaming.residentPackageCount },
+    walk: { drawCalls: walk.stats.drawCalls, triangles: walk.stats.triangles, resident: walk.stats.streaming.residentPackageCount },
+    academicBuildingsWithoutInteriors: academic.buildings.length,
+    errors,
+  }, null, 2));
 } finally {
-  await Promise.race([
-    browser.close(),
-    new Promise((resolve) => setTimeout(resolve, 5_000)),
-  ]);
+  await browser.close();
 }

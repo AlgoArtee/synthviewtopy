@@ -33,6 +33,8 @@ try {
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
   await page.waitForTimeout(1_300);
   await page.evaluate(() => window.advanceTime(300));
+  await page.evaluate((packageId) => window.labIsland.select(packageId, 'scene'), districtId);
+  await page.waitForFunction((packageId) => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === packageId && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'), districtId);
 
   const audit = await page.evaluate(({ districtId, requiredRoots }) => {
     const world = window.labIsland;
@@ -48,7 +50,8 @@ try {
     district.traverse((object) => {
       if (object.name) names.push(object.name);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animations.set(object.userData.animate, (animations.get(object.userData.animate) ?? 0) + 1);
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animations.set(animationProfile, (animations.get(animationProfile) ?? 0) + 1);
       if (!object.isMesh) return;
       meshCount += 1;
       if (object.parent?.isMesh && (Math.abs(object.parent.scale.x - 1) > 0.001 || Math.abs(object.parent.scale.y - 1) > 0.001 || Math.abs(object.parent.scale.z - 1) > 0.001)) scaledMeshParentDetails.push({ name: object.name, parent: object.parent.name, scale: object.parent.scale.toArray() });
@@ -74,7 +77,7 @@ try {
     world.walkController.refreshNavigation(); const roadGround = world.walkController.sampleGround(roadPoint.x, roadPoint.z); const textState = JSON.parse(window.render_game_to_text()); const streaming = world.worldStreaming.getSnapshot();
     const prefixCounts = Object.fromEntries(['GENOMICS__G1__GRAPH_RIBBON_', 'GENOMICS__G1__VARIANT_BUBBLE_', 'GENOMICS__G2__VERTICAL_MOIRE_BLADE_', 'GENOMICS__G2__PORE_WINDOW_', 'GENOMICS__G3__CELL_MODULE_', 'GENOMICS__G3__NUCLEUS_SKYLIGHT_', 'GENOMICS__G4__CHROMOSOME_MODULE_', 'GENOMICS__G4__ROBOTIC_GANTRY_CARRIAGE_', 'GENOMICS__G5__PROJECTING_VARIANT_PANEL_', 'GENOMICS__G5__MANHATTAN_PEAK_'].map((prefix) => [prefix, names.filter((name) => name.startsWith(prefix)).length]));
     return {
-      program: district.userData.genomicsLabsDistrict, population: district.userData.population, topLevelNames: district.children.map((child) => child.name), codes: facilities.map((facility) => facility.userData.buildingCode).sort(), facilityCount: facilities.length,
+      program: district.userData.genomicsLabsDistrict, population: district.userData.population, topLevelNames: district.children.filter((child) => child.userData.gpuRuntimeBatch !== true).map((child) => child.name), codes: facilities.map((facility) => facility.userData.buildingCode).sort(), facilityCount: facilities.length,
       meshCount, uniqueNames: new Set(names).size, scaledMeshParentDetails, materialNames: [...materialNames].sort(), animations: Object.fromEntries(animations), prefixCounts,
       missingRoots: requiredRoots.filter((name) => !district.getObjectByName(name)), boundaryViolations, overlaps, facilityBoxes, routeAudit: roads.map((road) => ({ name: road?.name ?? null, resident: Boolean(road?.parent), walkable: road?.userData.walkable === true })), roadPoint: roadPoint.toArray(), roadGround,
       textDistrict: textState.genomicsLabsDistrict, specializedRevision: textState.masterplan?.specializedDistrictLayoutRevision, planning: textState.planning, streaming: streaming.packages.find((entry) => entry.id === districtId) ?? null,

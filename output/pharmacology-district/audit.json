@@ -179,8 +179,8 @@
         "placementZone": "Outer landmark facing the circular boulevard"
       }
     ],
-    "meshCount": 1076,
-    "uniqueNames": 1088,
+    "meshCount": 1139,
+    "uniqueNames": 1151,
     "materialNames": [
       "Dose-Response dark mineral paving",
       "Dose-Response pale mineral paving",
@@ -990,9 +990,19 @@
     "streaming": {
       "id": "pharmacology-labs",
       "kind": "district",
+      "loadState": "loaded",
+      "visualLevel": "detail",
       "detailResident": true,
       "proxyVisible": false,
-      "distanceMetres": 0
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 237,
+        "triangles": 215692,
+        "animationNodes": 147
+      }
     }
   },
   "walkAudit": {

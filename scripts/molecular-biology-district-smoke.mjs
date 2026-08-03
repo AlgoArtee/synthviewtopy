@@ -29,6 +29,8 @@ try {
   await page.waitForFunction(() => document.querySelector('#loading-screen')?.classList.contains('done') === true);
   await page.waitForTimeout(700);
   await page.evaluate(() => window.advanceTime(240));
+  await page.evaluate(() => window.labIsland.select('molecular-biology-labs', 'scene'));
+  await page.waitForFunction(() => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === 'molecular-biology-labs' && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'));
 
   const audit = await page.evaluate(() => {
     const world = window.labIsland;
@@ -58,7 +60,8 @@ try {
     district.traverse((object) => {
       if (object.name) names.push(object.name);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animated.push({ name: object.name, animate: object.userData.animate });
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animated.push({ name: object.name, animate: animationProfile });
       if (!object.isMesh) return;
       meshCount += 1;
       if (object.parent?.isMesh && (

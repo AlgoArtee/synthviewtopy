@@ -51,8 +51,12 @@ interface WalkControllerOptions {
 
 function isActuallyVisible(object: THREE.Object3D) {
   let cursor: THREE.Object3D | null = object;
+  let sourceObject = true;
   while (cursor) {
-    if (!cursor.visible) return false;
+    // GPU-batched visual sources stay hidden to avoid double rendering, but
+    // their exact authored meshes remain the WALK collision authority.
+    if (!cursor.visible && !(sourceObject && cursor.userData.gpuBatchSource === true)) return false;
+    sourceObject = false;
     cursor = cursor.parent;
   }
   return true;

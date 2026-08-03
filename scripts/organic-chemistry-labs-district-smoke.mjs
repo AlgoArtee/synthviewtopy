@@ -38,6 +38,8 @@ try {
   await page.waitForFunction(() => document.querySelector('#loading-screen')?.classList.contains('done') === true);
   await page.waitForTimeout(900);
   await page.evaluate(() => window.advanceTime(360));
+  await page.evaluate((packageId) => window.labIsland.select(packageId, 'scene'), districtId);
+  await page.waitForFunction((packageId) => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === packageId && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'), districtId);
 
   const audit = await page.evaluate(({ districtId, requiredRoots }) => {
     const world = window.labIsland;
@@ -52,7 +54,8 @@ try {
     district.traverse((object) => {
       if (object.name) names.push(object.name);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animations.set(object.userData.animate, (animations.get(object.userData.animate) ?? 0) + 1);
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animations.set(animationProfile, (animations.get(animationProfile) ?? 0) + 1);
       if (!object.isMesh) return;
       meshCount += 1;
       if (object.parent?.isMesh && (Math.abs(object.parent.scale.x - 1) > 0.001 || Math.abs(object.parent.scale.y - 1) > 0.001 || Math.abs(object.parent.scale.z - 1) > 0.001)) scaledMeshParentDetails.push({ name: object.name, parent: object.parent.name, scale: object.parent.scale.toArray() });
@@ -80,7 +83,7 @@ try {
       'ORGCHEM__O1__RECONFIGURABLE_FACADE_MODULE_', 'ORGCHEM__O2__MOLECULAR_VOID_FRAME_', 'ORGCHEM__O3__DICHROIC_LIGHT_HARVESTING_FIN_', 'ORGCHEM__O3__TRANSPARENT_ELECTROSYNTHESIS_TOWER_', 'ORGCHEM__O4__SELECTIVELY_FUNCTIONALIZED_FACADE_PANEL_', 'ORGCHEM__O5__DESCENDING_CASCADE_VOLUME_', 'ORGCHEM__O6__LEFT_HELICOIDAL_EXHAUST_', 'ORGCHEM__O6__RIGHT_HELICOIDAL_EXHAUST_', 'ORGCHEM__O7__KINETIC_WOVEN_ENVELOPE_', 'ORGCHEM__O8__SAWTOOTH_PHOTOVOLTAIC_ROOF_', 'ORGCHEM__O9__RECYCLED_POLYMER_PANEL_', 'ORGCHEM__O10__ALGORITHMIC_LANTERN_APERTURE_',
     ].map((prefix) => [prefix, names.filter((name) => name.startsWith(prefix)).length]));
     return {
-      program: district.userData.organicChemistryLabsDistrict, population: district.userData.population, topLevelNames: district.children.map((child) => child.name), codes: facilities.map((facility) => facility.userData.buildingCode).sort((left, right) => Number(left.slice(1)) - Number(right.slice(1))), facilityCount: facilities.length,
+      program: district.userData.organicChemistryLabsDistrict, population: district.userData.population, topLevelNames: district.children.filter((child) => child.userData.gpuRuntimeBatch !== true).map((child) => child.name), codes: facilities.map((facility) => facility.userData.buildingCode).sort((left, right) => Number(left.slice(1)) - Number(right.slice(1))), facilityCount: facilities.length,
       meshCount, uniqueNames: new Set(names).size, scaledMeshParentDetails, materialNames: [...materialNames].sort(), animations: Object.fromEntries(animations), prefixCounts,
       missingRoots: requiredRoots.filter((name) => !district.getObjectByName(name)), boundaryViolations, overlaps, facilityBoxes, routeAudit: roads.map((road) => ({ name: road?.name ?? null, resident: Boolean(road?.parent), walkable: road?.userData.walkable === true })), roadPoint: roadPoint.toArray(), roadGround,
       textDistrict: textState.organicChemistryLabsDistrict, specializedRevision: textState.masterplan?.specializedDistrictLayoutRevision, planning: textState.planning, streaming: streaming.packages.find((entry) => entry.id === districtId) ?? null,

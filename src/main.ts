@@ -211,18 +211,9 @@ const envTimeSelect = required<HTMLSelectElement>('#env-time');
 const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
 const envSeasonSelect = required<HTMLSelectElement>('#env-season');
 const envQualitySelect = required<HTMLSelectElement>('#env-quality');
+const fullIslandDetailInput = required<HTMLInputElement>('#full-island-detail');
+const fullIslandDetailStatus = required<HTMLElement>('#full-island-detail-status');
 const academicAudioButton = required<HTMLButtonElement>('#academic-audio-toggle');
-const cerebrumQuietButton = required<HTMLButtonElement>('#cerebrum-quiet-toggle');
-const cerebrumPersistentControls = required<HTMLElement>('#cerebrum-sound-controls');
-const cerebrumPersistentQuiet = required<HTMLButtonElement>('#cerebrum-persistent-quiet');
-const cerebrumPersistentMute = required<HTMLButtonElement>('#cerebrum-persistent-mute');
-const cerebrumWalkButton = required<HTMLButtonElement>('#cerebrum-walk-button');
-const cerebrumOrbitButton = required<HTMLButtonElement>('#cerebrum-orbit-button');
-const cerebrumTitleCard = required<HTMLElement>('#cerebrum-title-card');
-const cerebrumTitleCardTitle = required<HTMLElement>('#cerebrum-title-card-title');
-const cerebrumTitleCardSubtitle = required<HTMLElement>('#cerebrum-title-card-subtitle');
-const cerebrumTitleCardBody = required<HTMLElement>('#cerebrum-title-card-body');
-const cerebrumTitleCardClose = required<HTMLButtonElement>('#cerebrum-title-card-close');
 const debugButton = required<HTMLButtonElement>('#debug-toggle');
 const debugStats = required<HTMLElement>('#debug-stats');
 const fountainControlPanel = required<HTMLElement>('#fountain-control-panel');
@@ -575,16 +566,8 @@ function syncDefinitionCacheFromWorld() {
   refreshAcademicCampusMapMetadata();
 }
 
-function isCerebrumDefinition(definition: SceneDefinition | null | undefined) {
-  return definition?.category === 'academic-building'
-    && definition.academicRecordId === 'ashcroft-grand-library';
-}
-
 function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
   currentSelection = definition;
-  const cerebrumSelected = isCerebrumDefinition(definition);
-  cerebrumWalkButton.hidden = !OBJECT_INTERACTIONS_ENABLED || !cerebrumSelected;
-  cerebrumOrbitButton.hidden = !OBJECT_INTERACTIONS_ENABLED || !cerebrumSelected;
   document.body.classList.toggle('has-selection', Boolean(definition));
   listButtons.forEach((button, id) => button.classList.toggle('active', id === definition?.id));
   if (!definition) {
@@ -670,56 +653,11 @@ function toast(title: string, message: string, kind: 'normal' | 'error' = 'norma
   }, duration);
 }
 
-function showCerebrumTitleCard(card: { title: string; subtitle: string; body: string }) {
-  cerebrumTitleCardTitle.textContent = card.title;
-  cerebrumTitleCardSubtitle.textContent = card.subtitle;
-  cerebrumTitleCardBody.textContent = card.body;
-  cerebrumTitleCard.hidden = false;
-}
-
 function syncAcademicAudioButtons() {
   const muted = world.isAcademicAudioMuted();
   academicAudioButton.setAttribute('aria-pressed', String(!muted));
   const label = academicAudioButton.querySelector<HTMLElement>('.utility-label');
   if (label) label.textContent = muted ? 'Audio muted' : 'Audio on';
-  cerebrumPersistentMute.setAttribute('aria-pressed', String(!muted));
-  cerebrumPersistentMute.textContent = muted ? 'Audio muted' : 'Audio · On';
-}
-
-function syncCerebrumControls(forceVisible = false) {
-  if (!OBJECT_INTERACTIONS_ENABLED) {
-    document.body.classList.remove('library-quiet-mode');
-    cerebrumPersistentControls.hidden = true;
-    cerebrumQuietButton.hidden = true;
-    return;
-  }
-  const state = world.getCerebrumLibraryState();
-  const quiet = state?.quietMode === true;
-  const relevant = forceVisible
-    || isCerebrumDefinition(currentSelection)
-    || world.isInsideCerebrumLibrary()
-    || world.isCerebrumLibraryInspectionActive();
-  document.body.classList.toggle('library-quiet-mode', quiet);
-  cerebrumPersistentControls.hidden = !relevant && !quiet;
-  cerebrumQuietButton.setAttribute('aria-pressed', String(quiet));
-  cerebrumPersistentQuiet.setAttribute('aria-pressed', String(quiet));
-  cerebrumPersistentQuiet.textContent = quiet ? 'Quiet · On' : 'Quiet · Off';
-  const quietLabel = cerebrumQuietButton.querySelector<HTMLElement>('.utility-label');
-  if (quietLabel) quietLabel.textContent = quiet ? 'Exit quiet' : 'Quiet mode';
-  syncAcademicAudioButtons();
-}
-
-function toggleCerebrumQuietMode() {
-  const enabled = !world.getCerebrumLibraryState()?.quietMode;
-  world.setCerebrumQuietMode(enabled);
-  if (enabled) cerebrumTitleCard.hidden = true;
-  syncCerebrumControls(true);
-  toast(
-    enabled ? 'Quiet mode enabled' : 'Quiet mode disabled',
-    enabled
-      ? 'Interface hidden and Cerebrum Externum ambience reduced. Q or the Quiet control restores the interface.'
-      : 'The library interface and normal restrained ambience are restored.',
-  );
 }
 
 function getFountainPanelState() {
@@ -819,7 +757,6 @@ function cycleFountainStateTo(
     lastResult = world.performAcademicInteraction(action);
     syncEnvironmentUI();
     syncFountainControlPanel();
-    syncCerebrumControls();
   }
   if (key === 'cameraPreset') world.focusAcademicFountain(target as FountainCameraPreset);
   syncFountainControlPanel();
@@ -859,7 +796,6 @@ function setMode(mode: ViewMode) {
   }
   refreshEditWorkspaceUI();
   syncFountainControlPanel();
-  syncCerebrumControls();
 }
 
 function setGizmo(mode: GizmoMode) {
@@ -879,7 +815,6 @@ function refreshSelectedState(definition: SceneDefinition, state: ObjectState) {
 const world = new IslandWorld(viewport, {
   onSelection: (definition) => {
     updateInspector(definition);
-    syncCerebrumControls();
     inspector.classList.toggle('hidden-panel', currentMode === 'walk' || (!definition && currentMode !== 'edit'));
     if (OBJECT_INTERACTIONS_ENABLED && currentMode === 'walk' && definition) {
       showWalkInteractionMenu(definition);
@@ -955,7 +890,6 @@ const world = new IslandWorld(viewport, {
     walkTurboButton.textContent = enabled ? 'Turbo · 12 m/s' : 'Turbo · Off';
   },
   onAcademicInteraction: (result) => toast(result.title, result.message),
-  onCerebrumPresenceChange: (inside) => syncCerebrumControls(inside),
   onImportPlacementChange: (state, position) => {
     const choosing = state === 'choosing';
     document.body.classList.toggle('import-placement-active', choosing);
@@ -1269,7 +1203,6 @@ refreshProjectButton.addEventListener('click', async () => {
       }
       syncEnvironmentUI();
       syncFountainControlPanel();
-      syncCerebrumControls();
       toast('Saved Layout Restored', 'The latest working revision or protected manual Save was restored.');
     } else {
       toast('Load Failed', 'No verified project revision is available.', 'error');
@@ -1332,7 +1265,6 @@ undoActionButton.addEventListener('click', () => {
     }
     syncEnvironmentUI();
     syncFountainControlPanel();
-    syncCerebrumControls();
     toast('Action Undone', 'The last customization or transformation step has been reverted.');
   } else {
     toast('Cannot Undo', 'No remaining history steps in the undo stack.', 'error');
@@ -1360,29 +1292,6 @@ required<HTMLButtonElement>('#focus-selection').addEventListener('click', () => 
     syncFountainControlPanel();
   }
 });
-
-cerebrumWalkButton.addEventListener('click', () => {
-  setMode('walk');
-  if (world.enterCerebrumLibraryWalk()) {
-    syncCerebrumControls(true);
-    toast('Cerebrum Externum', 'Entered through the porter vestibule. Use E on selected doors, drawers, lamps, ladders, books, and the card catalogue.');
-  }
-});
-
-cerebrumOrbitButton.addEventListener('click', () => {
-  setMode('explore');
-  if (world.focusCerebrumLibrary()) {
-    syncCerebrumControls(true);
-    toast('Architectural orbit', 'Cutaway orbit view reveals the connected reading halls, upper gallery, and Cerebrum Occultum below.');
-  }
-});
-
-cerebrumTitleCardClose.addEventListener('click', () => {
-  cerebrumTitleCard.hidden = true;
-});
-
-cerebrumQuietButton.addEventListener('click', toggleCerebrumQuietMode);
-cerebrumPersistentQuiet.addEventListener('click', toggleCerebrumQuietMode);
 
 required<HTMLButtonElement>('#reset-selection').addEventListener('click', () => {
   if (!currentSelection) return;
@@ -1612,16 +1521,6 @@ document.addEventListener('keydown', (event) => {
     return;
   }
   if (editingText) return;
-  if (OBJECT_INTERACTIONS_ENABLED
-    && event.key.toLowerCase() === 'q'
-    && (world.getCerebrumLibraryState()?.quietMode
-      || world.isInsideCerebrumLibrary()
-      || world.isCerebrumLibraryInspectionActive()
-      || isCerebrumDefinition(currentSelection))) {
-    event.preventDefault();
-    toggleCerebrumQuietMode();
-    return;
-  }
   if (event.key.toLowerCase() === 'm') {
     event.preventDefault();
     void toggleAcademicAudio();
@@ -1638,14 +1537,6 @@ document.addEventListener('keydown', (event) => {
   if (event.key.toLowerCase() === 'a' && currentMode === 'edit' && !addAssetButton.disabled) addAssetButton.click();
   if (event.key === 'Delete' && currentMode === 'edit' && !deleteObjectButton.disabled) deleteObjectButton.click();
   if (event.key === 'Escape') {
-    if (world.getCerebrumLibraryState()?.quietMode) {
-      toggleCerebrumQuietMode();
-      return;
-    }
-    if (!cerebrumTitleCard.hidden) {
-      cerebrumTitleCard.hidden = true;
-      return;
-    }
     if (world.cancelImportPlacement()) {
       queuedImportFiles = null;
       toast('Import cancelled', 'No building was added.');
@@ -1654,11 +1545,6 @@ document.addEventListener('keydown', (event) => {
     if (world.isAcademicFountainInspectionActive()) {
       world.overview();
       syncFountainControlPanel();
-      return;
-    }
-    if (world.isCerebrumLibraryInspectionActive()) {
-      world.overview();
-      syncCerebrumControls();
       return;
     }
     world.clearSelection('ui');
@@ -1810,10 +1696,6 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
 
   const state = world.getObjectState(definition.id);
   const rawList = state?.interactions ?? [];
-  const cerebrumHotspot = isCerebrumDefinition(definition)
-    ? world.getActiveCerebrumLibraryHotspot()
-    : null;
-
   const academicHotspot = definition.id === 'academic-libraries-theoretical-labs'
     ? world.getActiveAcademicHotspot()
     : null;
@@ -1823,9 +1705,7 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
     ? world.getTextSnapshot()
     : null;
   const fountainInteractions: string[] = academicSnapshot?.academicDistrict?.fountain?.metadata?.interactions ?? [];
-  const interactions: string[] = (cerebrumHotspot
-    ? [cerebrumHotspot.action]
-    : academicFountainHotspot
+  const interactions: string[] = (academicFountainHotspot
       ? fountainInteractions
       : rawList.length ? rawList : ['examine']).filter(
     (action) => action !== 'open main gate' || definition.id !== 'academic-libraries-theoretical-labs' || world.isAcademicMainGateNearby(),
@@ -1835,18 +1715,15 @@ function showWalkInteractionMenu(definition: SceneDefinition) {
     : academicSnapshot?.academicDistrict?.gateOpen
       ? 'Close main gate'
       : 'Open main gate';
-  walkInteractionMenuTitle.textContent = cerebrumHotspot?.title
-    ?? (cerebrumHotspot ? cerebrumHotspot.label : null)
-    ?? (academicFountainHotspot
+  walkInteractionMenuTitle.textContent = academicFountainHotspot
     ? academicSnapshot?.academicDistrict?.fountain?.metadata?.name ?? 'The Well of Infinite Knowledge'
-    : academicHotspot?.name ?? definition.name);
+    : academicHotspot?.name ?? definition.name;
   walkInteractionButtonsContainer.innerHTML = '';
 
   interactions.forEach((act) => {
     const btn = document.createElement('button');
     btn.className = 'interaction-menu-btn';
-    btn.textContent = cerebrumHotspot?.action === act ? cerebrumHotspot.label
-      : act === 'sit' ? 'Sit down'
+    btn.textContent = act === 'sit' ? 'Sit down'
       : act === 'sleep' ? 'Sleep / Rest'
       : act === 'research' ? 'Research'
       : act === 'analyze' ? 'Analyze samples'
@@ -1890,24 +1767,6 @@ function triggerWalkInteraction(definition: SceneDefinition, action: string) {
   if (!OBJECT_INTERACTIONS_ENABLED) return;
   const group = world.objectGroups.get(definition.id);
   if (!group) return;
-
-  if (isCerebrumDefinition(definition)) {
-    const hotspot = world.getActiveCerebrumLibraryHotspot();
-    if (!hotspot) return;
-    const result = world.performCerebrumLibraryInteraction(hotspot.id);
-    if (!result.handled) {
-      toast('Cerebrum Externum', result.message, 'error');
-      return;
-    }
-    if (result.titleCard) showCerebrumTitleCard(result.titleCard);
-    if (action === 'toggle-orbit-camera' || result.state.orbitCamera) {
-      setMode('explore');
-      world.focusCerebrumLibrary();
-    }
-    syncCerebrumControls(true);
-    toast(hotspot.title ?? 'Cerebrum Externum', result.message);
-    return;
-  }
 
   if (definition.id === 'academic-libraries-theoretical-labs') {
     if (action === 'campus map') {
@@ -2171,6 +2030,36 @@ envQualitySelect.addEventListener('change', () => {
   toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
 });
 
+const fullIslandDetailStorageKey = 'youtopy_full_island_detail';
+function syncFullIslandDetailUI() {
+  const streaming = world.getStreamingSnapshot();
+  const capabilities = world.getGpuDetailCapabilities();
+  fullIslandDetailInput.checked = streaming.fullIslandDetailRequested;
+  fullIslandDetailStatus.classList.toggle('warning', Boolean(capabilities.performanceWarning));
+  fullIslandDetailStatus.title = `${capabilities.renderer} · ${capabilities.batchingBackend} · physical VRAM is not exposed by the browser`;
+  if (capabilities.performanceWarning) {
+    fullIslandDetailStatus.textContent = capabilities.performanceWarning;
+  } else if (streaming.fullIslandDetailRequested && !streaming.fullIslandDetailReady) {
+    fullIslandDetailStatus.textContent = `Loading complete detail ${streaming.fullIslandDetailProgress.loaded}/${streaming.fullIslandDetailProgress.total} · proxies remain until ready`;
+  } else if (streaming.fullIslandDetailReady) {
+    fullIslandDetailStatus.textContent = `${streaming.residentPackageCount}/${streaming.totalPackages} resident · GPU frustum culling active`;
+  } else {
+    fullIslandDetailStatus.textContent = `${capabilities.multiDrawSupported ? 'Multi-draw batching' : 'Instanced/merged batching'} · streamed detail`;
+  }
+}
+
+fullIslandDetailInput.addEventListener('change', () => {
+  const enabled = world.setFullIslandDetail(fullIslandDetailInput.checked);
+  localStorage.setItem(fullIslandDetailStorageKey, String(enabled));
+  syncFullIslandDetailUI();
+  toast(
+    enabled ? 'Full island detail loading' : 'Streamed detail restored',
+    enabled
+      ? 'All 41 exterior packages will load progressively and remain resident. The setting will never be disabled automatically.'
+      : 'The eight-package LRU and normal Detail/Mid/Far streaming limits are active again.',
+  );
+});
+
 async function toggleAcademicAudio() {
   const muted = await world.setAcademicAudioMuted(!world.isAcademicAudioMuted());
   syncAcademicAudioButtons();
@@ -2179,26 +2068,31 @@ async function toggleAcademicAudio() {
     muted ? 'Campus audio muted' : 'Campus audio enabled',
     muted
       ? 'Ambient wind, window rain, page turns, clocks, footsteps, and bells are off.'
-      : 'Restrained campus and Cerebrum Externum ambience is active.',
+      : 'Restrained exterior campus ambience is active.',
   );
 }
 
 academicAudioButton.addEventListener('click', () => void toggleAcademicAudio());
-cerebrumPersistentMute.addEventListener('click', () => void toggleAcademicAudio());
 
 function refreshDebugStats() {
   const stats = world.getSceneStatistics();
   debugStats.textContent = [
     'ACADEMIC DEBUG',
-    `quality       ${stats.quality}`,
+    `quality       ${stats.quality} @ ${stats.effectivePixelRatio.toFixed(2)}x`,
+    `frame p50/95  ${stats.frameTimeMs.p50.toFixed(1)} / ${stats.frameTimeMs.p95.toFixed(1)} ms`,
     `visible mesh  ${stats.visibleMeshes.toLocaleString()}`,
     `geometries    ${stats.geometries.toLocaleString()}`,
     `triangles     ${stats.triangles.toLocaleString()}`,
     `draw calls    ${stats.drawCalls.toLocaleString()}`,
     `textures      ${stats.textureCount.toLocaleString()}`,
-    `stream detail ${stats.streaming.residentDetailPackages.length}`,
-    `stream proxy  ${stats.streaming.proxyPackageCount}`,
-    `interior      ${stats.streaming.cerebrumExternum.phase}`,
+    `stream loaded ${stats.streaming.loadedPackageCount}/${stats.streaming.cacheCapacity}`,
+    `detail policy ${stats.streaming.detailPolicy}`,
+    `stream detail ${stats.streaming.residentDetailPackages.length}/${stats.streaming.activeDetailLimit}`,
+    `GPU batches   ${stats.streaming.gpuBatching.batchCount.toLocaleString()} / ${stats.streaming.gpuBatching.batchedSourceCount.toLocaleString()} sources`,
+    `GPU backend   ${stats.streaming.gpuBatching.backend}`,
+    `renderer      ${stats.gpuDetail.renderer}`,
+    `mid / far     ${stats.streaming.midPackageCount} / ${stats.streaming.farPackageCount}`,
+    `animations    ${stats.activeAnimationNodes}`,
     'green = collision · cyan = light',
   ].join('\n');
 }
@@ -2212,6 +2106,12 @@ debugButton.addEventListener('click', () => {
 });
 
 world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
+world.setFullIslandDetail(localStorage.getItem(fullIslandDetailStorageKey) === 'true');
+syncFullIslandDetailUI();
+const gpuDetailUiInterval = window.setInterval(() => {
+  syncFullIslandDetailUI();
+  if (world.isDebugMode()) refreshDebugStats();
+}, 1000);
 
 const savedTheme = localStorage.getItem('youtopy_theme');
 if (savedTheme === 'cleantech') {
@@ -2227,9 +2127,10 @@ if (savedTheme === 'cleantech') {
   world.setTimeOfDay('night');
 }
 syncEnvironmentUI();
-// Apply a restored Cerebrum quiet/audio state on cold boot as well as after
-// explicit Load and Undo actions.
-syncCerebrumControls();
+syncAcademicAudioButtons();
 
-window.addEventListener('beforeunload', () => world.dispose(), { once: true });
+window.addEventListener('beforeunload', () => {
+  window.clearInterval(gpuDetailUiInterval);
+  world.dispose();
+}, { once: true });
 setGizmo(activeGizmo);

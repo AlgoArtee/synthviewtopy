@@ -119,18 +119,6 @@
         "name": "ENTRY__E13__AUTHORED_WALK_INTERIOR",
         "componentCount": 3,
         "type": "authored"
-      },
-      {
-        "buildingId": "academic-building-st-anselm-chapel",
-        "name": "ST-ANSELM-CHAPEL__CHAPEL_NAVE",
-        "componentCount": 12,
-        "type": "authored"
-      },
-      {
-        "buildingId": "academic-building-founders-dining-hall",
-        "name": "FOUNDERS-DINING-HALL__DINING_HALL",
-        "componentCount": 6,
-        "type": "authored"
       }
     ],
     "before": {

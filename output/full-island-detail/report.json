@@ -1,0 +1,3157 @@
+{
+  "defaultAudit": {
+    "stats": {
+      "visibleMeshes": 712,
+      "geometries": 638,
+      "rendererGeometries": 633,
+      "triangles": 333548,
+      "drawCalls": 713,
+      "textureCount": 1,
+      "quality": "medium",
+      "effectivePixelRatio": 1,
+      "frameTimeMs": {
+        "p50": 22.3,
+        "p95": 54.1,
+        "above50Percent": 10.71
+      },
+      "activeAnimationNodes": 8,
+      "gpuDetail": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 (0x00002503) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "multiDrawSupported": true,
+        "batchingBackend": "batched-mesh-multi-draw",
+        "vramDetection": "unavailable-in-browser",
+        "performanceWarning": null
+      },
+      "streaming": {
+        "authority": "web-sandbox",
+        "strategy": "bounded detail LRU with detail, batched mid HLOD, and far silhouette levels",
+        "detailPolicy": "streamed",
+        "fullIslandDetailRequested": false,
+        "fullIslandDetailReady": false,
+        "fullIslandDetailProgress": {
+          "loaded": 0,
+          "total": 41,
+          "percent": 0
+        },
+        "totalPackages": 41,
+        "cacheCapacity": 8,
+        "effectiveCacheCapacity": 8,
+        "loadedPackageCount": 0,
+        "loadedPackages": [],
+        "activeDetailLimit": 3,
+        "residentDetailPackages": [],
+        "residentPackageCount": 0,
+        "proxyPackageCount": 41,
+        "midPackageCount": 0,
+        "farPackageCount": 41,
+        "gpuBatching": {
+          "backend": "batched-mesh-multi-draw",
+          "multiDrawSupported": true,
+          "batchCount": 1769,
+          "batchedSourceCount": 19703,
+          "retainedSourceCount": 22606,
+          "estimatedGeometryBytes": 36284950,
+          "estimatedTextureBytes": 195615331
+        },
+        "packages": [
+          {
+            "id": "synthetic-quantum-biosystems",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11556,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 5144,
+              "animationNodes": 1
+            }
+          },
+          {
+            "id": "dark-center-lab-megabuilding",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11423,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 5892,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "corporate-core",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11277,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 3376,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "toxicology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 12489,
+            "estimatedCost": {
+              "drawCalls": 21,
+              "triangles": 5692,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "pharmacology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11537,
+            "estimatedCost": {
+              "drawCalls": 237,
+              "triangles": 215692,
+              "animationNodes": 147
+            }
+          },
+          {
+            "id": "microbiology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 10561,
+            "estimatedCost": {
+              "drawCalls": 101,
+              "triangles": 180768,
+              "animationNodes": 14
+            }
+          },
+          {
+            "id": "genomics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 10339,
+            "estimatedCost": {
+              "drawCalls": 105,
+              "triangles": 101984,
+              "animationNodes": 16
+            }
+          },
+          {
+            "id": "proteomics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11199,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 7792,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "omics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 12202,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 5488,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "electronics-microelectronics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 12944,
+            "estimatedCost": {
+              "drawCalls": 17,
+              "triangles": 3100,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "medical-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11481,
+            "estimatedCost": {
+              "drawCalls": 132,
+              "triangles": 187496,
+              "animationNodes": 24
+            }
+          },
+          {
+            "id": "molecular-biology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 10054,
+            "estimatedCost": {
+              "drawCalls": 148,
+              "triangles": 140436,
+              "animationNodes": 38
+            }
+          },
+          {
+            "id": "biochemistry-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 9847,
+            "estimatedCost": {
+              "drawCalls": 179,
+              "triangles": 174854,
+              "animationNodes": 68
+            }
+          },
+          {
+            "id": "computational-biology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11112,
+            "estimatedCost": {
+              "drawCalls": 24,
+              "triangles": 4828,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "robotics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 12543,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 3580,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "marketing",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 13489,
+            "estimatedCost": {
+              "drawCalls": 24,
+              "triangles": 7078,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "scientific-art-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 13502,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 5724,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "even-hour-hotel",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 12972,
+            "estimatedCost": {
+              "drawCalls": 25,
+              "triangles": 5906,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "astronomy-astrobiology-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11031,
+            "estimatedCost": {
+              "drawCalls": 17,
+              "triangles": 3728,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "secret-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11447,
+            "estimatedCost": {
+              "drawCalls": 141,
+              "triangles": 175208,
+              "animationNodes": 26
+            }
+          },
+          {
+            "id": "bioanalytics-lab",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 9450,
+            "estimatedCost": {
+              "drawCalls": 191,
+              "triangles": 206572,
+              "animationNodes": 56
+            }
+          },
+          {
+            "id": "organic-chemistry-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 9219,
+            "estimatedCost": {
+              "drawCalls": 285,
+              "triangles": 142544,
+              "animationNodes": 150
+            }
+          },
+          {
+            "id": "luxury-entertainment",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 14152,
+            "estimatedCost": {
+              "drawCalls": 25,
+              "triangles": 7322,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "scientist-residential",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 13482,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 6506,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "materials-science-lab",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 10973,
+            "estimatedCost": {
+              "drawCalls": 18,
+              "triangles": 2688,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "security",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11614,
+            "estimatedCost": {
+              "drawCalls": 108,
+              "triangles": 22868,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "forensic-cyberforensic-lab",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 9010,
+            "estimatedCost": {
+              "drawCalls": 179,
+              "triangles": 180100,
+              "animationNodes": 11
+            }
+          },
+          {
+            "id": "inorganic-chemistry",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 8522,
+            "estimatedCost": {
+              "drawCalls": 327,
+              "triangles": 193108,
+              "animationNodes": 107
+            }
+          },
+          {
+            "id": "financial-funding",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 15019,
+            "estimatedCost": {
+              "drawCalls": 26,
+              "triangles": 7330,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "logistics",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 13075,
+            "estimatedCost": {
+              "drawCalls": 299,
+              "triangles": 18940,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "entry-commercial",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11393,
+            "estimatedCost": {
+              "drawCalls": 237,
+              "triangles": 44620,
+              "animationNodes": 1
+            }
+          },
+          {
+            "id": "environmental-science-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 14181,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 2784,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "academic-libraries-theoretical-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 8911,
+            "estimatedCost": {
+              "drawCalls": 350,
+              "triangles": 233197,
+              "animationNodes": 27
+            }
+          },
+          {
+            "id": "industrial-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 10958,
+            "estimatedCost": {
+              "drawCalls": 215,
+              "triangles": 182428,
+              "animationNodes": 52
+            }
+          },
+          {
+            "id": "particle-physics-labs",
+            "kind": "district",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 7970,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 3184,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "alpine-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 15126,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 7032,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "tundra-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 11353,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 8662,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "desert-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 7231,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 8844,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "savanna-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 8694,
+            "estimatedCost": {
+              "drawCalls": 30,
+              "triangles": 9922,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "temperate-deciduous-forest-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 13247,
+            "estimatedCost": {
+              "drawCalls": 31,
+              "triangles": 13476,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "tropical-rainforest-dome",
+            "kind": "biome",
+            "loadState": "unloaded",
+            "visualLevel": "far",
+            "detailResident": false,
+            "proxyVisible": true,
+            "midVisible": false,
+            "farVisible": true,
+            "pinned": false,
+            "distanceMetres": 15878,
+            "estimatedCost": {
+              "drawCalls": 46,
+              "triangles": 41162,
+              "animationNodes": 0
+            }
+          }
+        ],
+        "cerebrumExternum": {
+          "available": false,
+          "phase": "removed",
+          "mounted": false,
+          "scheduled": false,
+          "renderPolicy": "removed",
+          "distanceMetres": -1,
+          "preloadDistanceMetres": 0,
+          "unloadDistanceMetres": 0,
+          "retentionSeconds": 0,
+          "stateCached": false
+        }
+      },
+      "migration": {
+        "manifestSchema": "youtopy.unreal-world/1.0",
+        "productionAuthority": "unreal-editor",
+        "browserEdits": "sandbox-only; no production roundtrip",
+        "coordinateMapping": "UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000"
+      }
+    },
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "bounded detail LRU with detail, batched mid HLOD, and far silhouette levels",
+      "detailPolicy": "streamed",
+      "fullIslandDetailRequested": false,
+      "fullIslandDetailReady": false,
+      "fullIslandDetailProgress": {
+        "loaded": 0,
+        "total": 41,
+        "percent": 0
+      },
+      "totalPackages": 41,
+      "cacheCapacity": 8,
+      "effectiveCacheCapacity": 8,
+      "loadedPackageCount": 0,
+      "loadedPackages": [],
+      "activeDetailLimit": 3,
+      "residentDetailPackages": [],
+      "residentPackageCount": 0,
+      "proxyPackageCount": 41,
+      "midPackageCount": 0,
+      "farPackageCount": 41,
+      "gpuBatching": {
+        "backend": "batched-mesh-multi-draw",
+        "multiDrawSupported": true,
+        "batchCount": 1769,
+        "batchedSourceCount": 19703,
+        "retainedSourceCount": 22606,
+        "estimatedGeometryBytes": 36284950,
+        "estimatedTextureBytes": 195615331
+      },
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11556,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 5144,
+            "animationNodes": 1
+          }
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11423,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 5892,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11277,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 3376,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 12489,
+          "estimatedCost": {
+            "drawCalls": 21,
+            "triangles": 5692,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11537,
+          "estimatedCost": {
+            "drawCalls": 237,
+            "triangles": 215692,
+            "animationNodes": 147
+          }
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 10561,
+          "estimatedCost": {
+            "drawCalls": 101,
+            "triangles": 180768,
+            "animationNodes": 14
+          }
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 10339,
+          "estimatedCost": {
+            "drawCalls": 105,
+            "triangles": 101984,
+            "animationNodes": 16
+          }
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11199,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 7792,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 12202,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 5488,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 12944,
+          "estimatedCost": {
+            "drawCalls": 17,
+            "triangles": 3100,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11481,
+          "estimatedCost": {
+            "drawCalls": 132,
+            "triangles": 187496,
+            "animationNodes": 24
+          }
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 10054,
+          "estimatedCost": {
+            "drawCalls": 148,
+            "triangles": 140436,
+            "animationNodes": 38
+          }
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 9847,
+          "estimatedCost": {
+            "drawCalls": 179,
+            "triangles": 174854,
+            "animationNodes": 68
+          }
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11112,
+          "estimatedCost": {
+            "drawCalls": 24,
+            "triangles": 4828,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 12543,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 3580,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 13489,
+          "estimatedCost": {
+            "drawCalls": 24,
+            "triangles": 7078,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 13502,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 5724,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 12972,
+          "estimatedCost": {
+            "drawCalls": 25,
+            "triangles": 5906,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11031,
+          "estimatedCost": {
+            "drawCalls": 17,
+            "triangles": 3728,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11447,
+          "estimatedCost": {
+            "drawCalls": 141,
+            "triangles": 175208,
+            "animationNodes": 26
+          }
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 9450,
+          "estimatedCost": {
+            "drawCalls": 191,
+            "triangles": 206572,
+            "animationNodes": 56
+          }
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 9219,
+          "estimatedCost": {
+            "drawCalls": 285,
+            "triangles": 142544,
+            "animationNodes": 150
+          }
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 14152,
+          "estimatedCost": {
+            "drawCalls": 25,
+            "triangles": 7322,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 13482,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 6506,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 10973,
+          "estimatedCost": {
+            "drawCalls": 18,
+            "triangles": 2688,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11614,
+          "estimatedCost": {
+            "drawCalls": 108,
+            "triangles": 22868,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 9010,
+          "estimatedCost": {
+            "drawCalls": 179,
+            "triangles": 180100,
+            "animationNodes": 11
+          }
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 8522,
+          "estimatedCost": {
+            "drawCalls": 327,
+            "triangles": 193108,
+            "animationNodes": 107
+          }
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 15019,
+          "estimatedCost": {
+            "drawCalls": 26,
+            "triangles": 7330,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 13075,
+          "estimatedCost": {
+            "drawCalls": 299,
+            "triangles": 18940,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11393,
+          "estimatedCost": {
+            "drawCalls": 237,
+            "triangles": 44620,
+            "animationNodes": 1
+          }
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 14181,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 2784,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 8911,
+          "estimatedCost": {
+            "drawCalls": 350,
+            "triangles": 233197,
+            "animationNodes": 27
+          }
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 10958,
+          "estimatedCost": {
+            "drawCalls": 215,
+            "triangles": 182428,
+            "animationNodes": 52
+          }
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 7970,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 3184,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 15126,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 7032,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 11353,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 8662,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 7231,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 8844,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 8694,
+          "estimatedCost": {
+            "drawCalls": 30,
+            "triangles": 9922,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 13247,
+          "estimatedCost": {
+            "drawCalls": 31,
+            "triangles": 13476,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 15878,
+          "estimatedCost": {
+            "drawCalls": 46,
+            "triangles": 41162,
+            "animationNodes": 0
+          }
+        }
+      ],
+      "cerebrumExternum": {
+        "available": false,
+        "phase": "removed",
+        "mounted": false,
+        "scheduled": false,
+        "renderPolicy": "removed",
+        "distanceMetres": -1,
+        "preloadDistanceMetres": 0,
+        "unloadDistanceMetres": 0,
+        "retentionSeconds": 0,
+        "stateCached": false
+      }
+    },
+    "packageBudgetViolations": [],
+    "suppressedMeshes": 0,
+    "facilityCount": 164,
+    "incompleteFacilities": []
+  },
+  "fullAudit": {
+    "stats": {
+      "visibleMeshes": 4427,
+      "geometries": 3301,
+      "rendererGeometries": 1667,
+      "triangles": 2840995,
+      "drawCalls": 2861,
+      "textureCount": 1471,
+      "quality": "medium",
+      "effectivePixelRatio": 0.75,
+      "frameTimeMs": {
+        "p50": 86.1,
+        "p95": 90.9,
+        "above50Percent": 100
+      },
+      "activeAnimationNodes": 250,
+      "gpuDetail": {
+        "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 (0x00002503) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "multiDrawSupported": true,
+        "batchingBackend": "batched-mesh-multi-draw",
+        "vramDetection": "unavailable-in-browser",
+        "performanceWarning": null
+      },
+      "streaming": {
+        "authority": "web-sandbox",
+        "strategy": "progressive full-island GPU detail with per-object frustum culling",
+        "detailPolicy": "full-island",
+        "fullIslandDetailRequested": true,
+        "fullIslandDetailReady": true,
+        "fullIslandDetailProgress": {
+          "loaded": 41,
+          "total": 41,
+          "percent": 100
+        },
+        "totalPackages": 41,
+        "cacheCapacity": 41,
+        "effectiveCacheCapacity": 41,
+        "loadedPackageCount": 41,
+        "loadedPackages": [
+          "forensic-cyberforensic-lab",
+          "inorganic-chemistry",
+          "synthetic-quantum-biosystems",
+          "dark-center-lab-megabuilding",
+          "corporate-core",
+          "toxicology-labs",
+          "pharmacology-labs",
+          "microbiology-labs",
+          "genomics-labs",
+          "proteomics-labs",
+          "omics-labs",
+          "electronics-microelectronics-labs",
+          "medical-labs",
+          "molecular-biology-labs",
+          "biochemistry-labs",
+          "computational-biology-labs",
+          "robotics-labs",
+          "marketing",
+          "scientific-art-labs",
+          "even-hour-hotel",
+          "astronomy-astrobiology-labs",
+          "secret-labs",
+          "bioanalytics-lab",
+          "organic-chemistry-labs",
+          "luxury-entertainment",
+          "scientist-residential",
+          "materials-science-lab",
+          "security",
+          "financial-funding",
+          "logistics",
+          "entry-commercial",
+          "environmental-science-labs",
+          "academic-libraries-theoretical-labs",
+          "industrial-labs",
+          "particle-physics-labs",
+          "alpine-dome",
+          "tundra-dome",
+          "desert-dome",
+          "savanna-dome",
+          "temperate-deciduous-forest-dome",
+          "tropical-rainforest-dome"
+        ],
+        "activeDetailLimit": 41,
+        "residentDetailPackages": [
+          "synthetic-quantum-biosystems",
+          "dark-center-lab-megabuilding",
+          "corporate-core",
+          "toxicology-labs",
+          "pharmacology-labs",
+          "microbiology-labs",
+          "genomics-labs",
+          "proteomics-labs",
+          "omics-labs",
+          "electronics-microelectronics-labs",
+          "medical-labs",
+          "molecular-biology-labs",
+          "biochemistry-labs",
+          "computational-biology-labs",
+          "robotics-labs",
+          "marketing",
+          "scientific-art-labs",
+          "even-hour-hotel",
+          "astronomy-astrobiology-labs",
+          "secret-labs",
+          "bioanalytics-lab",
+          "organic-chemistry-labs",
+          "luxury-entertainment",
+          "scientist-residential",
+          "materials-science-lab",
+          "security",
+          "forensic-cyberforensic-lab",
+          "inorganic-chemistry",
+          "financial-funding",
+          "logistics",
+          "entry-commercial",
+          "environmental-science-labs",
+          "academic-libraries-theoretical-labs",
+          "industrial-labs",
+          "particle-physics-labs",
+          "alpine-dome",
+          "tundra-dome",
+          "desert-dome",
+          "savanna-dome",
+          "temperate-deciduous-forest-dome",
+          "tropical-rainforest-dome"
+        ],
+        "residentPackageCount": 41,
+        "proxyPackageCount": 0,
+        "midPackageCount": 0,
+        "farPackageCount": 0,
+        "gpuBatching": {
+          "backend": "batched-mesh-multi-draw",
+          "multiDrawSupported": true,
+          "batchCount": 1769,
+          "batchedSourceCount": 19703,
+          "retainedSourceCount": 22606,
+          "estimatedGeometryBytes": 36284950,
+          "estimatedTextureBytes": 195615331
+        },
+        "packages": [
+          {
+            "id": "synthetic-quantum-biosystems",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 2843,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 5144,
+              "animationNodes": 1
+            }
+          },
+          {
+            "id": "dark-center-lab-megabuilding",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 2743,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 5892,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "corporate-core",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 2642,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 3376,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "toxicology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3739,
+            "estimatedCost": {
+              "drawCalls": 21,
+              "triangles": 5692,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "pharmacology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3016,
+            "estimatedCost": {
+              "drawCalls": 237,
+              "triangles": 215692,
+              "animationNodes": 147
+            }
+          },
+          {
+            "id": "microbiology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1977,
+            "estimatedCost": {
+              "drawCalls": 101,
+              "triangles": 180768,
+              "animationNodes": 14
+            }
+          },
+          {
+            "id": "genomics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1897,
+            "estimatedCost": {
+              "drawCalls": 105,
+              "triangles": 101984,
+              "animationNodes": 16
+            }
+          },
+          {
+            "id": "proteomics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 2912,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 7792,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "omics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3697,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 5488,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "electronics-microelectronics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4180,
+            "estimatedCost": {
+              "drawCalls": 17,
+              "triangles": 3100,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "medical-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3229,
+            "estimatedCost": {
+              "drawCalls": 132,
+              "triangles": 187496,
+              "animationNodes": 24
+            }
+          },
+          {
+            "id": "molecular-biology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1715,
+            "estimatedCost": {
+              "drawCalls": 148,
+              "triangles": 140436,
+              "animationNodes": 38
+            }
+          },
+          {
+            "id": "biochemistry-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1579,
+            "estimatedCost": {
+              "drawCalls": 179,
+              "triangles": 174854,
+              "animationNodes": 68
+            }
+          },
+          {
+            "id": "computational-biology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3088,
+            "estimatedCost": {
+              "drawCalls": 24,
+              "triangles": 4828,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "robotics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4126,
+            "estimatedCost": {
+              "drawCalls": 20,
+              "triangles": 3580,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "marketing",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4699,
+            "estimatedCost": {
+              "drawCalls": 24,
+              "triangles": 7078,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "scientific-art-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4743,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 5724,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "even-hour-hotel",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4661,
+            "estimatedCost": {
+              "drawCalls": 25,
+              "triangles": 5906,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "astronomy-astrobiology-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3379,
+            "estimatedCost": {
+              "drawCalls": 17,
+              "triangles": 3728,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "secret-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3556,
+            "estimatedCost": {
+              "drawCalls": 141,
+              "triangles": 175208,
+              "animationNodes": 26
+            }
+          },
+          {
+            "id": "bioanalytics-lab",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1530,
+            "estimatedCost": {
+              "drawCalls": 191,
+              "triangles": 206572,
+              "animationNodes": 56
+            }
+          },
+          {
+            "id": "organic-chemistry-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1315,
+            "estimatedCost": {
+              "drawCalls": 285,
+              "triangles": 142544,
+              "animationNodes": 150
+            }
+          },
+          {
+            "id": "luxury-entertainment",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 5366,
+            "estimatedCost": {
+              "drawCalls": 25,
+              "triangles": 7322,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "scientist-residential",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 5290,
+            "estimatedCost": {
+              "drawCalls": 22,
+              "triangles": 6506,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "materials-science-lab",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3797,
+            "estimatedCost": {
+              "drawCalls": 18,
+              "triangles": 2688,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "security",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4004,
+            "estimatedCost": {
+              "drawCalls": 108,
+              "triangles": 22868,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "forensic-cyberforensic-lab",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": true,
+            "distanceMetres": 1569,
+            "estimatedCost": {
+              "drawCalls": 179,
+              "triangles": 180100,
+              "animationNodes": 11
+            }
+          },
+          {
+            "id": "inorganic-chemistry",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1286,
+            "estimatedCost": {
+              "drawCalls": 327,
+              "triangles": 193108,
+              "animationNodes": 107
+            }
+          },
+          {
+            "id": "financial-funding",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 6224,
+            "estimatedCost": {
+              "drawCalls": 26,
+              "triangles": 7330,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "logistics",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4832,
+            "estimatedCost": {
+              "drawCalls": 299,
+              "triangles": 18940,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "entry-commercial",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4514,
+            "estimatedCost": {
+              "drawCalls": 237,
+              "triangles": 44620,
+              "animationNodes": 1
+            }
+          },
+          {
+            "id": "environmental-science-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 6138,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 2784,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "academic-libraries-theoretical-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1994,
+            "estimatedCost": {
+              "drawCalls": 350,
+              "triangles": 233197,
+              "animationNodes": 27
+            }
+          },
+          {
+            "id": "industrial-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4445,
+            "estimatedCost": {
+              "drawCalls": 215,
+              "triangles": 182428,
+              "animationNodes": 52
+            }
+          },
+          {
+            "id": "particle-physics-labs",
+            "kind": "district",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1706,
+            "estimatedCost": {
+              "drawCalls": 19,
+              "triangles": 3184,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "alpine-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 6501,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 7032,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "tundra-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 4125,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 8662,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "desert-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 1797,
+            "estimatedCost": {
+              "drawCalls": 28,
+              "triangles": 8844,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "savanna-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 3833,
+            "estimatedCost": {
+              "drawCalls": 30,
+              "triangles": 9922,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "temperate-deciduous-forest-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 6320,
+            "estimatedCost": {
+              "drawCalls": 31,
+              "triangles": 13476,
+              "animationNodes": 0
+            }
+          },
+          {
+            "id": "tropical-rainforest-dome",
+            "kind": "biome",
+            "loadState": "loaded",
+            "visualLevel": "detail",
+            "detailResident": true,
+            "proxyVisible": false,
+            "midVisible": false,
+            "farVisible": false,
+            "pinned": false,
+            "distanceMetres": 7330,
+            "estimatedCost": {
+              "drawCalls": 46,
+              "triangles": 41162,
+              "animationNodes": 0
+            }
+          }
+        ],
+        "cerebrumExternum": {
+          "available": false,
+          "phase": "removed",
+          "mounted": false,
+          "scheduled": false,
+          "renderPolicy": "removed",
+          "distanceMetres": -1,
+          "preloadDistanceMetres": 0,
+          "unloadDistanceMetres": 0,
+          "retentionSeconds": 0,
+          "stateCached": false
+        }
+      },
+      "migration": {
+        "manifestSchema": "youtopy.unreal-world/1.0",
+        "productionAuthority": "unreal-editor",
+        "browserEdits": "sandbox-only; no production roundtrip",
+        "coordinateMapping": "UE X=Web X*1000, UE Y=Web Z*1000, UE Z=Web Y*1000"
+      }
+    },
+    "representationErrors": [],
+    "suppressedMeshes": 0,
+    "runtimeBatches": 1769,
+    "batchedSources": 19703,
+    "selectableBatchMembers": 19703,
+    "hiddenSourceCollisionCount": 2460,
+    "localPreference": "true",
+    "projectSchema": "youtopy.lab-island/2.0"
+  },
+  "warningAudit": {
+    "checked": true,
+    "requested": true,
+    "warning": "Full island detail is active, but this renderer is running slowly (45.0 ms p95; 0.0% over 50 ms). Lower Graphics quality or uncheck full detail if needed."
+  },
+  "offAudit": {
+    "streaming": {
+      "authority": "web-sandbox",
+      "strategy": "bounded detail LRU with detail, batched mid HLOD, and far silhouette levels",
+      "detailPolicy": "streamed",
+      "fullIslandDetailRequested": false,
+      "fullIslandDetailReady": false,
+      "fullIslandDetailProgress": {
+        "loaded": 8,
+        "total": 41,
+        "percent": 20
+      },
+      "totalPackages": 41,
+      "cacheCapacity": 8,
+      "effectiveCacheCapacity": 8,
+      "loadedPackageCount": 8,
+      "loadedPackages": [
+        "forensic-cyberforensic-lab",
+        "alpine-dome",
+        "tundra-dome",
+        "desert-dome",
+        "savanna-dome",
+        "temperate-deciduous-forest-dome",
+        "tropical-rainforest-dome",
+        "inorganic-chemistry"
+      ],
+      "activeDetailLimit": 3,
+      "residentDetailPackages": [
+        "forensic-cyberforensic-lab"
+      ],
+      "residentPackageCount": 1,
+      "proxyPackageCount": 40,
+      "midPackageCount": 3,
+      "farPackageCount": 37,
+      "gpuBatching": {
+        "backend": "batched-mesh-multi-draw",
+        "multiDrawSupported": true,
+        "batchCount": 1769,
+        "batchedSourceCount": 19703,
+        "retainedSourceCount": 22606,
+        "estimatedGeometryBytes": 36284950,
+        "estimatedTextureBytes": 195615331
+      },
+      "packages": [
+        {
+          "id": "synthetic-quantum-biosystems",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2843,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 5144,
+            "animationNodes": 1
+          }
+        },
+        {
+          "id": "dark-center-lab-megabuilding",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2743,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 5892,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "corporate-core",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2642,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 3376,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "toxicology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3739,
+          "estimatedCost": {
+            "drawCalls": 21,
+            "triangles": 5692,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "pharmacology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2740,
+          "estimatedCost": {
+            "drawCalls": 237,
+            "triangles": 215692,
+            "animationNodes": 147
+          }
+        },
+        {
+          "id": "microbiology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1765,
+          "estimatedCost": {
+            "drawCalls": 101,
+            "triangles": 180768,
+            "animationNodes": 14
+          }
+        },
+        {
+          "id": "genomics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1735,
+          "estimatedCost": {
+            "drawCalls": 105,
+            "triangles": 101984,
+            "animationNodes": 16
+          }
+        },
+        {
+          "id": "proteomics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2912,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 7792,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "omics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3697,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 5488,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "electronics-microelectronics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4180,
+          "estimatedCost": {
+            "drawCalls": 17,
+            "triangles": 3100,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "medical-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2715,
+          "estimatedCost": {
+            "drawCalls": 132,
+            "triangles": 187496,
+            "animationNodes": 24
+          }
+        },
+        {
+          "id": "molecular-biology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1254,
+          "estimatedCost": {
+            "drawCalls": 148,
+            "triangles": 140436,
+            "animationNodes": 38
+          }
+        },
+        {
+          "id": "biochemistry-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1245,
+          "estimatedCost": {
+            "drawCalls": 179,
+            "triangles": 174854,
+            "animationNodes": 68
+          }
+        },
+        {
+          "id": "computational-biology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3088,
+          "estimatedCost": {
+            "drawCalls": 24,
+            "triangles": 4828,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "robotics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4126,
+          "estimatedCost": {
+            "drawCalls": 20,
+            "triangles": 3580,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "marketing",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4699,
+          "estimatedCost": {
+            "drawCalls": 24,
+            "triangles": 7078,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "scientific-art-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4743,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 5724,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "even-hour-hotel",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4661,
+          "estimatedCost": {
+            "drawCalls": 25,
+            "triangles": 5906,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "astronomy-astrobiology-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3379,
+          "estimatedCost": {
+            "drawCalls": 17,
+            "triangles": 3728,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "secret-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 2797,
+          "estimatedCost": {
+            "drawCalls": 141,
+            "triangles": 175208,
+            "animationNodes": 26
+          }
+        },
+        {
+          "id": "bioanalytics-lab",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "mid",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": true,
+          "farVisible": false,
+          "pinned": false,
+          "distanceMetres": 680,
+          "estimatedCost": {
+            "drawCalls": 191,
+            "triangles": 206572,
+            "animationNodes": 56
+          }
+        },
+        {
+          "id": "organic-chemistry-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "mid",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": true,
+          "farVisible": false,
+          "pinned": false,
+          "distanceMetres": 687,
+          "estimatedCost": {
+            "drawCalls": 285,
+            "triangles": 142544,
+            "animationNodes": 150
+          }
+        },
+        {
+          "id": "luxury-entertainment",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 5366,
+          "estimatedCost": {
+            "drawCalls": 25,
+            "triangles": 7322,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "scientist-residential",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 5290,
+          "estimatedCost": {
+            "drawCalls": 22,
+            "triangles": 6506,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "materials-science-lab",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3797,
+          "estimatedCost": {
+            "drawCalls": 18,
+            "triangles": 2688,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "security",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3255,
+          "estimatedCost": {
+            "drawCalls": 108,
+            "triangles": 22868,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "forensic-cyberforensic-lab",
+          "kind": "district",
+          "loadState": "loaded",
+          "visualLevel": "detail",
+          "detailResident": true,
+          "proxyVisible": false,
+          "midVisible": false,
+          "farVisible": false,
+          "pinned": true,
+          "distanceMetres": 549,
+          "estimatedCost": {
+            "drawCalls": 179,
+            "triangles": 180100,
+            "animationNodes": 11
+          }
+        },
+        {
+          "id": "inorganic-chemistry",
+          "kind": "district",
+          "loadState": "loaded",
+          "visualLevel": "mid",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": true,
+          "farVisible": false,
+          "pinned": false,
+          "distanceMetres": 96,
+          "estimatedCost": {
+            "drawCalls": 327,
+            "triangles": 193108,
+            "animationNodes": 107
+          }
+        },
+        {
+          "id": "financial-funding",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 6224,
+          "estimatedCost": {
+            "drawCalls": 26,
+            "triangles": 7330,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "logistics",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4672,
+          "estimatedCost": {
+            "drawCalls": 299,
+            "triangles": 18940,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "entry-commercial",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3358,
+          "estimatedCost": {
+            "drawCalls": 237,
+            "triangles": 44620,
+            "animationNodes": 1
+          }
+        },
+        {
+          "id": "environmental-science-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 6138,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 2784,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "academic-libraries-theoretical-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1434,
+          "estimatedCost": {
+            "drawCalls": 350,
+            "triangles": 233197,
+            "animationNodes": 27
+          }
+        },
+        {
+          "id": "industrial-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4445,
+          "estimatedCost": {
+            "drawCalls": 215,
+            "triangles": 182428,
+            "animationNodes": 52
+          }
+        },
+        {
+          "id": "particle-physics-labs",
+          "kind": "district",
+          "loadState": "unloaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1706,
+          "estimatedCost": {
+            "drawCalls": 19,
+            "triangles": 3184,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "alpine-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 6501,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 7032,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "tundra-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 4125,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 8662,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "desert-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 1797,
+          "estimatedCost": {
+            "drawCalls": 28,
+            "triangles": 8844,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "savanna-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 3833,
+          "estimatedCost": {
+            "drawCalls": 30,
+            "triangles": 9922,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "temperate-deciduous-forest-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 6320,
+          "estimatedCost": {
+            "drawCalls": 31,
+            "triangles": 13476,
+            "animationNodes": 0
+          }
+        },
+        {
+          "id": "tropical-rainforest-dome",
+          "kind": "biome",
+          "loadState": "loaded",
+          "visualLevel": "far",
+          "detailResident": false,
+          "proxyVisible": true,
+          "midVisible": false,
+          "farVisible": true,
+          "pinned": false,
+          "distanceMetres": 7330,
+          "estimatedCost": {
+            "drawCalls": 46,
+            "triangles": 41162,
+            "animationNodes": 0
+          }
+        }
+      ],
+      "cerebrumExternum": {
+        "available": false,
+        "phase": "removed",
+        "mounted": false,
+        "scheduled": false,
+        "renderPolicy": "removed",
+        "distanceMetres": -1,
+        "preloadDistanceMetres": 0,
+        "unloadDistanceMetres": 0,
+        "retentionSeconds": 0,
+        "stateCached": false
+      }
+    },
+    "preference": "false",
+    "warning": null
+  },
+  "reloadAudit": {
+    "checked": false,
+    "requested": false
+  },
+  "errors": []
+}

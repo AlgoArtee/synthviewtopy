@@ -34,6 +34,16 @@ try {
   await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30_000 });
   await page.waitForFunction(() => Boolean(window.labIsland), null, { timeout: 90_000 });
   await page.waitForSelector('.mode[data-mode="plan"]', { state: 'attached', timeout: 30_000 });
+  await page.waitForSelector('#loading-screen', { state: 'hidden', timeout: 30_000 });
+  await page.evaluate(() => {
+    const world = window.labIsland;
+    world.setMode('edit');
+    world.select('academic-libraries-theoretical-labs', 'system');
+    world.focus('academic-libraries-theoretical-labs');
+    world.advanceTime(250);
+  });
+  await page.waitForFunction(() => window.labIsland.getStreamingSnapshot().packages
+    .some((pkg) => pkg.id === 'academic-libraries-theoretical-labs' && pkg.detailResident));
   await page.waitForTimeout(1_000);
 
   const audit = await page.evaluate(() => {
@@ -121,6 +131,10 @@ try {
           geometryCount: new Set(meshes.map((mesh) => mesh.geometry.uuid)).size,
           bounds: serialiseBounds(bounds),
           accessibleInWalk: root.userData.accessibleInWalk === true,
+          interiorAvailable: root.userData.interiorAvailable,
+          closedDoorCount: meshes.filter((mesh) => (
+            mesh.name.includes('CLOSED') && mesh.name.includes('DOOR')
+          )).length,
           hasWalkAccess: Boolean(walkAccess && typeof walkAccess === 'object'),
           walkAccessFields: walkAccess && typeof walkAccess === 'object'
             ? Object.keys(walkAccess).sort()
@@ -387,7 +401,6 @@ try {
     const library = district.children.find((child) => (
       child.userData.academicFacility === true
       && String(child.userData.academicFacilityType ?? '').toLowerCase().includes('library')
-      && child.userData.accessibleInWalk === true
       && child.userData.walkAccess
     ));
     if (!library) return { available: false };
@@ -411,7 +424,7 @@ try {
       return point.applyMatrix4(library.matrixWorld);
     };
     const start = toWorld(access.routeStart);
-    const target = toWorld(access.interiorTarget) ?? toWorld(access.threshold);
+    const target = toWorld(access.threshold);
     if (!start || !target) return { available: false };
     world.setMode('walk');
     world.walkController.refreshNavigation();
@@ -428,6 +441,8 @@ try {
       available: true,
       facility: library.userData.semanticName ?? library.name,
       ground,
+      canEnterInterior: world.canEnterInterior(library.userData.selectableId),
+      interiorAvailable: library.userData.interiorAvailable,
     };
   });
   await hideNonEssentialUi({ keepWalkHud: true });
@@ -460,6 +475,14 @@ try {
   if (invalidFacilities.length) {
     throw new Error(`Academic facilities are not authored multi-mesh roots: ${JSON.stringify(invalidFacilities)}`);
   }
+  const openInteriorFacilities = audit.facilities.filter((facility) => (
+    facility.accessibleInWalk
+    || facility.interiorAvailable !== false
+    || facility.closedDoorCount < 1
+  ));
+  if (openInteriorFacilities.length || audit.walkEligibleCount !== 0) {
+    throw new Error(`Academic interiors were not fully removed: ${JSON.stringify(openInteriorFacilities)}`);
+  }
   if (new Set(audit.facilities.map((facility) => facility.name)).size !== audit.facilityCount) {
     throw new Error('Academic facility semantic names are not unique');
   }
@@ -485,7 +508,9 @@ try {
   if (audit.accessResults.length !== audit.walkEligibleCount || inaccessible.length) {
     throw new Error(`Academic WALK access failed: ${JSON.stringify(inaccessible)}`);
   }
-  if (!walkShot.available) throw new Error('Could not stage an academic library WALK-access screenshot');
+  if (!walkShot.available || walkShot.canEnterInterior || walkShot.interiorAvailable !== false) {
+    throw new Error(`Could not stage the closed Academic library entrance: ${JSON.stringify(walkShot)}`);
+  }
   if (consoleErrors.length) throw new Error(`Browser console errors: ${consoleErrors.join(' | ')}`);
 
   console.log(JSON.stringify({

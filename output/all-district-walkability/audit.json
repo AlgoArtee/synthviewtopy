@@ -8,11 +8,11 @@
       240.00000011029104,
       309.0000001583075
     ],
-    "obstacleCount": 724,
-    "preciseObstacleCount": 724,
+    "obstacleCount": 320,
+    "preciseObstacleCount": 320,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 105,
+    "broadOnlyMarginsAvoided": 80,
     "movementProbeCount": 151,
     "failedDistricts": [],
     "districtResults": [
@@ -20,7 +20,7 @@
         "id": "synthetic-quantum-biosystems",
         "sampleCount": 462,
         "clearCount": 462,
-        "broadOnlyMarginsAvoided": 1,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -101,7 +101,7 @@
         "id": "electronics-microelectronics-labs",
         "sampleCount": 564,
         "clearCount": 564,
-        "broadOnlyMarginsAvoided": 5,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 5,
         "movementFailures": [],
         "failures": []
@@ -218,7 +218,7 @@
         "id": "luxury-entertainment",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 4,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 5,
         "movementFailures": [],
         "failures": []
@@ -245,7 +245,7 @@
         "id": "security",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 4,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -263,7 +263,7 @@
         "id": "inorganic-chemistry",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 3,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -281,7 +281,7 @@
         "id": "logistics",
         "sampleCount": 721,
         "clearCount": 721,
-        "broadOnlyMarginsAvoided": 4,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 3,
         "movementFailures": [],
         "failures": []
@@ -290,7 +290,7 @@
         "id": "entry-commercial",
         "sampleCount": 721,
         "clearCount": 721,
-        "broadOnlyMarginsAvoided": 4,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 3,
         "movementFailures": [],
         "failures": []
@@ -333,10 +333,10 @@
       }
     ],
     "representative": {
-      "districtId": "synthetic-quantum-biosystems",
-      "boundary": "outer-ring-road",
-      "x": 39.21510246740036,
-      "z": -74.2844246021418,
+      "districtId": "pharmacology-labs",
+      "boundary": "inner-ring-road",
+      "x": 38.7317701217433,
+      "z": -74.53757430475204,
       "ground": 1.6160000000000072,
       "clear": true,
       "broadOnly": true,
@@ -351,13 +351,13 @@
         "isolatedWalkInteriorName": null,
         "isolatedExteriorObjectCount": 0,
         "exteriorProjectionCount": 0,
-        "authoredInteriorGroups": 21,
+        "authoredInteriorGroups": 19,
         "visibleAuthoredInteriorGroups": 0,
         "cerebrumInteriorRendered": false,
         "visibilityFormula": "exists × user-intent × layer × mode × streaming × isolation",
         "activeViewPolicy": "walk-exterior",
         "userHiddenIds": [],
-        "runtimeHiddenCount": 185
+        "runtimeHiddenCount": 168
       }
     }
   },

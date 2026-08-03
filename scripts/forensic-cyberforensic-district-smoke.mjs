@@ -43,6 +43,8 @@ try {
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
   await page.waitForTimeout(1_300);
   await page.evaluate(() => window.advanceTime(240));
+  await page.evaluate((packageId) => window.labIsland.select(packageId, 'scene'), districtId);
+  await page.waitForFunction((packageId) => window.labIsland.worldStreaming.getSnapshot().packages.some((entry) => entry.id === packageId && entry.loadState === 'loaded' && entry.detailResident && entry.visualLevel === 'detail'), districtId);
 
   const audit = await page.evaluate(({ districtId, requiredRoots }) => {
     const world = window.labIsland;
@@ -72,7 +74,8 @@ try {
     district.traverse((object) => {
       if (object.name) names.push(object.name);
       if (object.userData.exteriorProgram === true) facilities.push(object);
-      if (object.userData.animate) animations.set(object.userData.animate, (animations.get(object.userData.animate) ?? 0) + 1);
+      const animationProfile = object.userData.animate ?? object.userData.gpuAnimationProfile;
+      if (animationProfile) animations.set(animationProfile, (animations.get(animationProfile) ?? 0) + 1);
       if (!object.isMesh) return;
       meshCount += 1;
       if (object.parent?.isMesh && (
@@ -138,7 +141,7 @@ try {
     return {
       program: district.userData.forensicCyberforensicDistrict,
       population: district.userData.population,
-      topLevelNames: district.children.map((child) => child.name),
+      topLevelNames: district.children.filter((child) => child.userData.gpuRuntimeBatch !== true).map((child) => child.name),
       codes: facilities.map((facility) => facility.userData.buildingCode).sort((a, b) => Number(a.slice(1)) - Number(b.slice(1))),
       facilityCount: facilities.length,
       meshCount,

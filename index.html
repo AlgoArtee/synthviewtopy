@@ -132,6 +132,15 @@
               </select>
             </label>
           </div>
+          <label class="full-detail-option" for="full-island-detail">
+            <input id="full-island-detail" type="checkbox" />
+            <span class="full-detail-check" aria-hidden="true"></span>
+            <span>
+              <strong>Full island detail (12 GB VRAM+)</strong>
+              <small>For powerful discrete GPUs. Browser VRAM cannot be detected reliably.</small>
+            </span>
+          </label>
+          <p id="full-island-detail-status" class="full-detail-status" aria-live="polite"></p>
         </section>
 
         <div class="atlas-metrics">
@@ -265,8 +274,6 @@
           <div class="inspector-actions">
             <button id="focus-selection">Focus view</button>
             <button id="reset-selection">Reset</button>
-            <button id="cerebrum-walk-button" type="button" hidden>Explore interior</button>
-            <button id="cerebrum-orbit-button" type="button" hidden>Orbit interior</button>
             <button id="save-inspector-changes" class="inspector-save-btn">Save changes</button>
           </div>
         </div>
@@ -561,7 +568,6 @@
         <button class="layer active" data-layer="transit"><span class="layer-icon">⌁</span>Transit</button>
         <span class="layer-divider"></span>
         <button id="academic-audio-toggle" type="button" aria-pressed="false" title="Toggle quiet campus ambience"><span>♫</span><span class="utility-label">Audio muted</span></button>
-        <button id="cerebrum-quiet-toggle" type="button" aria-pressed="false" title="Hide interface and soften Cerebrum Externum ambience"><span>Q</span><span class="utility-label">Quiet mode</span></button>
         <button id="debug-toggle" type="button" aria-pressed="false" title="Show Academic District collisions, lights, and scene statistics"><span>⌗</span><span class="utility-label">Debug</span></button>
         <button id="fullscreen-toggle" title="Toggle fullscreen (F)"><span>⛶</span></button>
       </div>
@@ -601,19 +607,6 @@
         <div class="interaction-menu-body" id="interaction-menu-buttons"></div>
         <button class="interaction-menu-close" id="close-interaction-menu">Cancel</button>
       </div>
-
-      <div id="cerebrum-sound-controls" class="cerebrum-sound-controls glass-panel" hidden aria-label="Cerebrum Externum sound controls">
-        <button id="cerebrum-persistent-quiet" type="button" aria-pressed="false">Quiet · Off</button>
-        <button id="cerebrum-persistent-mute" type="button" aria-pressed="false">Audio muted</button>
-      </div>
-
-      <section id="cerebrum-title-card" class="cerebrum-title-card glass-panel" hidden aria-live="polite">
-        <button id="cerebrum-title-card-close" type="button" aria-label="Close inspected-book title card">×</button>
-        <span class="eyebrow">Cerebrum Externum collection</span>
-        <h2 id="cerebrum-title-card-title">Selected volume</h2>
-        <p id="cerebrum-title-card-subtitle"></p>
-        <p id="cerebrum-title-card-body"></p>
-      </section>
 
       <section id="academic-building-card" class="academic-overlay glass-panel" hidden aria-labelledby="academic-building-title">
         <button class="academic-overlay-close" id="academic-building-close" type="button" aria-label="Close building history">×</button>

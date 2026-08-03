@@ -1,0 +1,195 @@
+{
+  "target": "1080p Medium / integrated-GPU laptop; headless timing is diagnostic only",
+  "initialReadyMs": 3533,
+  "samples": [
+    {
+      "name": "overview-explore",
+      "kind": "overview",
+      "drawCalls": 715,
+      "triangles": 333548,
+      "visibleMeshes": 712,
+      "rendererGeometries": 635,
+      "effectivePixelRatio": 1,
+      "frameTimeMs": {
+        "p50": 25.7,
+        "p95": 50.2,
+        "above50Percent": 11.54
+      },
+      "loadedPackages": 0,
+      "residentPackages": 0,
+      "activeAnimationNodes": 8
+    },
+    {
+      "name": "close-forensic-cyberforensic-lab",
+      "kind": "close",
+      "drawCalls": 143,
+      "triangles": 513792,
+      "visibleMeshes": 891,
+      "rendererGeometries": 694,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 25.3,
+        "p95": 45.8,
+        "above50Percent": 7.69
+      },
+      "loadedPackages": 2,
+      "residentPackages": 1,
+      "activeAnimationNodes": 19
+    },
+    {
+      "name": "close-bioanalytics-lab",
+      "kind": "close",
+      "drawCalls": 146,
+      "triangles": 720256,
+      "visibleMeshes": 1079,
+      "rendererGeometries": 755,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 25.3,
+        "p95": 45.8,
+        "above50Percent": 7.69
+      },
+      "loadedPackages": 3,
+      "residentPackages": 2,
+      "activeAnimationNodes": 75
+    },
+    {
+      "name": "close-organic-chemistry-labs",
+      "kind": "close",
+      "drawCalls": 136,
+      "triangles": 476236,
+      "visibleMeshes": 997,
+      "rendererGeometries": 805,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 23.7,
+        "p95": 42.5,
+        "above50Percent": 3.7
+      },
+      "loadedPackages": 6,
+      "residentPackages": 1,
+      "activeAnimationNodes": 158
+    },
+    {
+      "name": "close-biochemistry-labs",
+      "kind": "close",
+      "drawCalls": 127,
+      "triangles": 651066,
+      "visibleMeshes": 1174,
+      "rendererGeometries": 850,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 24,
+        "p95": 35.5,
+        "above50Percent": 3.45
+      },
+      "loadedPackages": 7,
+      "residentPackages": 2,
+      "activeAnimationNodes": 226
+    },
+    {
+      "name": "close-genomics-labs",
+      "kind": "close",
+      "drawCalls": 136,
+      "triangles": 610422,
+      "visibleMeshes": 993,
+      "rendererGeometries": 905,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 23.2,
+        "p95": 40.1,
+        "above50Percent": 7.14
+      },
+      "loadedPackages": 7,
+      "residentPackages": 2,
+      "activeAnimationNodes": 92
+    },
+    {
+      "name": "district-boundary-walk",
+      "kind": "close",
+      "drawCalls": 536,
+      "triangles": 737024,
+      "visibleMeshes": 1081,
+      "rendererGeometries": 942,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 27.5,
+        "p95": 63.5,
+        "above50Percent": 15.79
+      },
+      "loadedPackages": 8,
+      "residentPackages": 2,
+      "activeAnimationNodes": 179
+    },
+    {
+      "name": "overview-plan",
+      "kind": "overview",
+      "drawCalls": 446,
+      "triangles": 333548,
+      "visibleMeshes": 712,
+      "rendererGeometries": 942,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 27.5,
+        "p95": 63.5,
+        "above50Percent": 15.79
+      },
+      "loadedPackages": 8,
+      "residentPackages": 0,
+      "activeAnimationNodes": 8
+    },
+    {
+      "name": "city-facing",
+      "kind": "close",
+      "drawCalls": 278,
+      "triangles": 527052,
+      "visibleMeshes": 1042,
+      "rendererGeometries": 983,
+      "effectivePixelRatio": 0.85,
+      "frameTimeMs": {
+        "p50": 27.1,
+        "p95": 50.5,
+        "above50Percent": 9.09
+      },
+      "loadedPackages": 8,
+      "residentPackages": 1,
+      "activeAnimationNodes": 115
+    },
+    {
+      "name": "night",
+      "kind": "close",
+      "drawCalls": 278,
+      "triangles": 526800,
+      "visibleMeshes": 1039,
+      "rendererGeometries": 983,
+      "effectivePixelRatio": 0.75,
+      "frameTimeMs": {
+        "p50": 27.1,
+        "p95": 45.1,
+        "above50Percent": 5
+      },
+      "loadedPackages": 8,
+      "residentPackages": 1,
+      "activeAnimationNodes": 115
+    },
+    {
+      "name": "rain",
+      "kind": "close",
+      "drawCalls": 279,
+      "triangles": 526800,
+      "visibleMeshes": 1039,
+      "rendererGeometries": 984,
+      "effectivePixelRatio": 0.75,
+      "frameTimeMs": {
+        "p50": 22.5,
+        "p95": 43,
+        "above50Percent": 0
+      },
+      "loadedPackages": 8,
+      "residentPackages": 1,
+      "activeAnimationNodes": 115
+    }
+  ],
+  "packageBudgetViolations": [],
+  "errors": []
+}

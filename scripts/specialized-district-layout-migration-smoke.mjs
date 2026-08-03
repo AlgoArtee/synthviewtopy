@@ -89,6 +89,9 @@ try {
       const district = world.scene.getObjectByName(`DISTRICT__${id}`);
       const definition = world.definitions.get(id);
       if (!district || !definition?.sector) throw new Error(`Missing restored district ${id}`);
+      const restoreAuthority = world.worldStreaming.mountPackageAuthoritySources(id);
+      if (!restoreAuthority) throw new Error(`Missing package authority for ${id}`);
+      try {
       district.updateMatrixWorld(true);
       const state = world.getObjectState(id);
       const canonical = expected[id];
@@ -150,10 +153,13 @@ try {
           || angle > sector.endAngle + 0.012
         ) roadViolations.push({ id, point: [point.x, point.z], radius, angle });
       }
+      } finally {
+        restoreAuthority();
+      }
     });
 
     const stored = await world.persistence.loadProject();
-    const text = JSON.parse(window.render_game_to_text());
+    const text = world.getTextSnapshot();
     return {
       restored,
       boundaryViolations,

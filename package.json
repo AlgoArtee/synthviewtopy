@@ -12,6 +12,8 @@
     "test:view-balance": "node scripts/view-balance-smoke.mjs",
     "test:performance-foundation": "node scripts/performance-foundation-smoke.mjs",
     "test:full-island-detail": "node scripts/full-island-detail-smoke.mjs",
+    "test:full-island-buildings": "node scripts/full-island-building-audit.mjs",
+    "test:full-island-performance": "node scripts/full-island-performance-usability-smoke.mjs",
     "test:current-build-reset": "node scripts/current-build-reset-smoke.mjs",
     "test:entry-logistics": "node scripts/entry-logistics-smoke.mjs",
     "test:security": "node scripts/security-district-smoke.mjs",

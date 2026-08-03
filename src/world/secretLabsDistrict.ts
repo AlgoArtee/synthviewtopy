@@ -609,6 +609,11 @@ function addMist(
 ) {
   const mist = ellipsoid(parent, name, scale, materials.vapour, position);
   mist.userData.animate = 'secret-controlled-vapour';
+  // Atmospheric vapour is decorative microdetail, never architecture. The
+  // runtime may screen-size cull it in distant full-island views and restores
+  // it for the selected/nearest package with hysteresis.
+  mist.userData.renderImportance = 'micro';
+  mist.userData.microDetail = true;
   mist.userData.baseY = position[1];
   mist.userData.phase = phase;
   return mist;

@@ -173,6 +173,10 @@ const objectInscriptionField = required<HTMLElement>('#object-inscription-field'
 const objectInscriptionInput = required<HTMLInputElement>('#object-inscription');
 const selectionRing = required<HTMLElement>('#selection-ring');
 const selectionArchetype = required<HTMLElement>('#selection-archetype');
+const buildingNavigation = required<HTMLElement>('#building-navigation');
+const previousBuildingButton = required<HTMLButtonElement>('#previous-building');
+const nextBuildingButton = required<HTMLButtonElement>('#next-building');
+const buildingNavigationPosition = required<HTMLElement>('#building-navigation-position');
 const positionInputs = {
   x: required<HTMLInputElement>('#pos-x'),
   y: required<HTMLInputElement>('#pos-y'),
@@ -213,7 +217,30 @@ const envSeasonSelect = required<HTMLSelectElement>('#env-season');
 const envQualitySelect = required<HTMLSelectElement>('#env-quality');
 const fullIslandDetailInput = required<HTMLInputElement>('#full-island-detail');
 const fullIslandDetailStatus = required<HTMLElement>('#full-island-detail-status');
+const fullIslandDetailMonitor = required<HTMLElement>('#full-island-detail-monitor');
+const fullIslandStatusChip = required<HTMLButtonElement>('#full-island-status-chip');
+const fullIslandStatusChipLabel = required<HTMLElement>('#full-island-status-chip-label');
+const fullIslandStatusCard = required<HTMLElement>('#full-island-status-card');
+const fullIslandStatusClose = required<HTMLButtonElement>('#full-island-status-close');
+const fullIslandStatusProgress = required<HTMLProgressElement>('#full-island-status-progress');
+const fullIslandStatusProgressLabel = required<HTMLElement>('#full-island-status-progress-label');
+const fullIslandStatusSummary = required<HTMLElement>('#full-island-status-summary');
+const fullIslandStatusAnnouncer = required<HTMLElement>('#full-island-status-announcer');
+const fullIslandRenderer = required<HTMLElement>('#full-island-renderer');
+const fullIslandBackend = required<HTMLElement>('#full-island-backend');
+const fullIslandDpr = required<HTMLElement>('#full-island-dpr');
+const fullIslandCpuP95 = required<HTMLElement>('#full-island-cpu-p95');
+const fullIslandGpuP95 = required<HTMLElement>('#full-island-gpu-p95');
+const fullIslandDrawCalls = required<HTMLElement>('#full-island-draw-calls');
+const fullIslandTriangles = required<HTMLElement>('#full-island-triangles');
+const fullIslandMemory = required<HTMLElement>('#full-island-memory');
+const fullIslandFailures = required<HTMLElement>('#full-island-failures');
+const fullIslandRetryButton = required<HTMLButtonElement>('#full-island-retry');
+const fullIslandLowerQualityButton = required<HTMLButtonElement>('#full-island-lower-quality');
+const fullIslandReturnStreamedButton = required<HTMLButtonElement>('#full-island-return-streamed');
+const fullIslandSafeSessionButton = required<HTMLButtonElement>('#full-island-safe-session');
 const academicAudioButton = required<HTMLButtonElement>('#academic-audio-toggle');
+const performanceButton = required<HTMLButtonElement>('#performance-toggle');
 const debugButton = required<HTMLButtonElement>('#debug-toggle');
 const debugStats = required<HTMLElement>('#debug-stats');
 const fountainControlPanel = required<HTMLElement>('#fountain-control-panel');
@@ -301,7 +328,7 @@ const allDefinitions: SceneDefinition[] = [
   welcomePoolDefinition,
   ...biomes,
 ];
-const staticEditableGroupCount = allDefinitions.length;
+let staticEditableGroupCount = allDefinitions.length;
 const definitionIndex = new Map<string, number>();
 const listButtons = new Map<string, HTMLButtonElement>();
 let currentSelection: SceneDefinition | null = null;
@@ -340,6 +367,7 @@ const categoryNames: Record<string, string> = {
   'academic-building': 'Academic building',
   'entry-logistics-building': 'Entry / logistics building',
   'entry-logistics-landscape': 'Entry landscape object',
+  'authored-exterior-building': 'Authored building',
   security: 'Restricted research',
   environmental: 'Environmental science',
   infrastructure: 'Operations',
@@ -360,7 +388,31 @@ const groupOrder = [
   'Imported assets',
 ] as const;
 
-function getAtlasGroup(definition: SceneDefinition) {
+type AtlasBuildingDefinition = Extract<SceneDefinition, {
+  category: 'academic-building' | 'entry-logistics-building' | 'authored-exterior-building';
+}>;
+
+const expandedAtlasDistrictIds = new Set<string>();
+const atlasReadinessBadges = new Map<string, HTMLElement>();
+
+function isAtlasBuildingDefinition(definition: SceneDefinition): definition is AtlasBuildingDefinition {
+  return definition.category === 'academic-building'
+    || definition.category === 'entry-logistics-building'
+    || definition.category === 'authored-exterior-building';
+}
+
+function definitionMatchesAtlasQuery(definition: SceneDefinition, normalizedQuery: string) {
+  if (!normalizedQuery) return true;
+  return `${definition.name} ${definition.label ?? ''} ${definition.sourceLabel ?? ''} ${definition.description} ${definition.category} ${definition.archetype}`
+    .toLowerCase()
+    .includes(normalizedQuery);
+}
+
+function getAtlasGroup(definition: SceneDefinition): (typeof groupOrder)[number] {
+  if (isAtlasBuildingDefinition(definition)) {
+    const parent = allDefinitions.find((candidate) => candidate.id === definition.parentDistrictId);
+    return parent ? getAtlasGroup(parent) : 'Applied research';
+  }
   if (definition.category === 'core') return 'Core systems';
   if (definition.category === 'bioscience') return 'Life sciences';
   if (['engineering', 'chemistry', 'physics'].includes(definition.category)) return 'Applied research';
@@ -384,6 +436,7 @@ function symbolFor(definition: SceneDefinition) {
     'academic-building': 'B',
     'entry-logistics-building': 'L',
     'entry-logistics-landscape': 'P',
+    'authored-exterior-building': 'B',
     security: 'S',
     environmental: 'N',
     infrastructure: 'I',
@@ -400,9 +453,18 @@ function escapeHtml(value: string) {
   return element.innerHTML;
 }
 
-function createAtlasButton(definition: SceneDefinition, index: number) {
+function prioritizeAtlasDefinition(definition: SceneDefinition) {
+  const packageId = isAtlasBuildingDefinition(definition) ? definition.parentDistrictId : definition.id;
+  fullIslandUiWorld.prioritizeFullIslandPackage?.(packageId);
+}
+
+function createAtlasButton(
+  definition: SceneDefinition,
+  index: number,
+  options: { child?: boolean; readinessPackageId?: string } = {},
+) {
   const button = document.createElement('button');
-  button.className = 'district-item';
+  button.className = options.child ? 'district-item district-building-item' : 'district-item';
   button.dataset.id = definition.id;
   button.style.setProperty('--item-accent', definition.accent);
   button.innerHTML = `
@@ -411,9 +473,13 @@ function createAtlasButton(definition: SceneDefinition, index: number) {
       <strong>${escapeHtml(definition.name)}</strong>
       <small>${escapeHtml(categoryNames[definition.category] ?? definition.category)}</small>
     </span>
-    <span class="district-item-index">${String(index).padStart(2, '0')}</span>
+    <span class="atlas-row-meta">
+      ${options.readinessPackageId ? `<span class="atlas-readiness" data-atlas-package-readiness="${escapeHtml(options.readinessPackageId)}">Proxy</span>` : ''}
+      <span class="district-item-index">${String(index).padStart(2, '0')}</span>
+    </span>
   `;
   button.addEventListener('click', () => {
+    prioritizeAtlasDefinition(definition);
     world.select(definition.id, 'ui');
     if (currentMode === 'explore') {
       world.focus(definition.id);
@@ -421,43 +487,172 @@ function createAtlasButton(definition: SceneDefinition, index: number) {
     }
   });
   button.addEventListener('dblclick', () => {
+    prioritizeAtlasDefinition(definition);
     world.focus(definition.id);
     syncFountainControlPanel();
   });
   return button;
 }
 
+function syncAtlasReadiness(snapshot = world.getStreamingSnapshot()) {
+  const packageMap = new Map(snapshot.packages.map((pkg) => [pkg.id, pkg]));
+  atlasReadinessBadges.forEach((badge, packageId) => {
+    const pkg = packageMap.get(packageId);
+    if (!pkg) {
+      badge.hidden = true;
+      return;
+    }
+    badge.hidden = false;
+    let label: string;
+    let state: string;
+    if (snapshot.fullIslandDetailRequested) {
+      state = pkg.lifecyclePhase;
+      label = pkg.lifecyclePhase === 'warming-gpu'
+        ? 'Warming'
+        : pkg.lifecyclePhase === 'building'
+          ? 'Building'
+          : pkg.lifecyclePhase === 'ready'
+            ? 'Ready'
+            : pkg.lifecyclePhase === 'error'
+              ? 'Error'
+              : pkg.lifecyclePhase === 'degraded'
+                ? 'Slow'
+                : 'Queued';
+    } else if (pkg.loadState === 'error') {
+      state = 'error';
+      label = 'Error';
+    } else if (pkg.detailResident && pkg.visualLevel === 'detail') {
+      state = 'detail';
+      label = 'Detail';
+    } else {
+      state = pkg.visualLevel;
+      label = pkg.visualLevel === 'mid' ? 'Mid' : 'Far';
+    }
+    badge.dataset.state = state;
+    badge.textContent = label;
+    badge.title = `${packageId}: ${label}`;
+  });
+}
+
+function scrollAtlasElementIntoView(element: HTMLElement, behavior: ScrollBehavior = 'auto') {
+  const viewportBounds = districtList.getBoundingClientRect();
+  const elementBounds = element.getBoundingClientRect();
+  let delta = 0;
+  if (elementBounds.top < viewportBounds.top) delta = elementBounds.top - viewportBounds.top - 6;
+  else if (elementBounds.bottom > viewportBounds.bottom) delta = elementBounds.bottom - viewportBounds.bottom + 6;
+  if (delta !== 0) districtList.scrollBy({ top: delta, behavior });
+}
+
+function syncAtlasBuildingBrowserMode() {
+  atlas.classList.toggle(
+    'building-browser-active',
+    Boolean(districtList.querySelector('.atlas-expand-toggle[aria-expanded="true"]')),
+  );
+}
+
 function renderAtlas(query = '') {
   const normalizedQuery = query.trim().toLowerCase();
-  const grouped = new Map<string, SceneDefinition[]>();
+  const childrenByParent = new Map<string, AtlasBuildingDefinition[]>();
+  allDefinitions.forEach((definition) => {
+    if (!isAtlasBuildingDefinition(definition)) return;
+    const children = childrenByParent.get(definition.parentDistrictId) ?? [];
+    children.push(definition);
+    childrenByParent.set(definition.parentDistrictId, children);
+  });
+  type AtlasDistrictEntry = { definition: SceneDefinition; children: AtlasBuildingDefinition[] };
+  const grouped = new Map<string, AtlasDistrictEntry[]>();
   groupOrder.forEach((group) => grouped.set(group, []));
   allDefinitions.forEach((definition) => {
-    const haystack = `${definition.name} ${definition.label ?? ''} ${definition.sourceLabel ?? ''} ${definition.description} ${definition.category} ${definition.archetype}`.toLowerCase();
-    if (normalizedQuery && !haystack.includes(normalizedQuery)) return;
-    grouped.get(getAtlasGroup(definition))!.push(definition);
+    if (isAtlasBuildingDefinition(definition)) return;
+    const children = childrenByParent.get(definition.id) ?? [];
+    const matchingChildren = normalizedQuery
+      ? children.filter((child) => definitionMatchesAtlasQuery(child, normalizedQuery))
+      : children;
+    if (normalizedQuery && !definitionMatchesAtlasQuery(definition, normalizedQuery) && matchingChildren.length === 0) return;
+    grouped.get(getAtlasGroup(definition))!.push({ definition, children: matchingChildren });
   });
   districtList.innerHTML = '';
   listButtons.clear();
-  grouped.forEach((definitions, groupName) => {
-    if (!definitions.length) return;
+  atlasReadinessBadges.clear();
+  const streamingPackageIds = new Set(world.getStreamingSnapshot().packages.map((pkg) => pkg.id));
+  grouped.forEach((entries, groupName) => {
+    if (!entries.length) return;
     const group = document.createElement('section');
     group.className = 'district-group';
     const title = document.createElement('div');
     title.className = 'district-group-title';
-    title.innerHTML = `<span>${escapeHtml(groupName)}</span><span>${String(definitions.length).padStart(2, '0')}</span>`;
+    title.innerHTML = `<span>${escapeHtml(groupName)}</span><span>${String(entries.length).padStart(2, '0')}</span>`;
     group.appendChild(title);
-    definitions.forEach((definition) => {
+    entries.forEach(({ definition, children }) => {
       const index = definitionIndex.get(definition.id) ?? allDefinitions.indexOf(definition) + 1;
-      const button = createAtlasButton(definition, index);
+      const node = document.createElement('div');
+      node.className = 'atlas-district-node';
+      node.dataset.districtId = definition.id;
+      const row = document.createElement('div');
+      row.className = 'atlas-district-row';
+      const readinessPackageId = streamingPackageIds.has(definition.id) ? definition.id : undefined;
+      const button = createAtlasButton(definition, index, { readinessPackageId });
       if (definition.id === currentSelection?.id) button.classList.add('active');
       listButtons.set(definition.id, button);
-      group.appendChild(button);
+      row.appendChild(button);
+      const readinessBadge = button.querySelector<HTMLElement>('[data-atlas-package-readiness]');
+      if (readinessBadge && readinessPackageId) atlasReadinessBadges.set(readinessPackageId, readinessBadge);
+      if (children.length > 0) {
+        const childListId = `atlas-buildings-${definition.id}`;
+        const autoExpanded = Boolean(normalizedQuery);
+        const expanded = autoExpanded || expandedAtlasDistrictIds.has(definition.id);
+        const expandButton = document.createElement('button');
+        expandButton.type = 'button';
+        expandButton.className = 'atlas-expand-toggle';
+        expandButton.setAttribute('aria-expanded', String(expanded));
+        expandButton.setAttribute('aria-controls', childListId);
+        expandButton.setAttribute('aria-label', `${expanded ? 'Collapse' : 'Expand'} ${definition.name} buildings`);
+        expandButton.innerHTML = `<span aria-hidden="true">›</span><span class="visually-hidden">${expanded ? 'Collapse' : 'Expand'} buildings</span>`;
+        row.appendChild(expandButton);
+        const childList = document.createElement('div');
+        childList.id = childListId;
+        childList.className = 'district-building-list';
+        childList.hidden = !expanded;
+        children.forEach((child) => {
+          const childIndex = definitionIndex.get(child.id) ?? allDefinitions.indexOf(child) + 1;
+          const childButton = createAtlasButton(child, childIndex, { child: true });
+          if (child.id === currentSelection?.id) childButton.classList.add('active');
+          listButtons.set(child.id, childButton);
+          childList.appendChild(childButton);
+        });
+        expandButton.addEventListener('click', () => {
+          const open = expandButton.getAttribute('aria-expanded') !== 'true';
+          expandButton.setAttribute('aria-expanded', String(open));
+          expandButton.setAttribute('aria-label', `${open ? 'Collapse' : 'Expand'} ${definition.name} buildings`);
+          const hiddenCopy = expandButton.querySelector<HTMLElement>('.visually-hidden');
+          if (hiddenCopy) hiddenCopy.textContent = `${open ? 'Collapse' : 'Expand'} buildings`;
+          childList.hidden = !open;
+          node.classList.toggle('expanded', open);
+          if (open) {
+            expandedAtlasDistrictIds.add(definition.id);
+            window.requestAnimationFrame(() => {
+              const firstBuilding = childList.querySelector<HTMLElement>('.district-building-item');
+              if (firstBuilding) scrollAtlasElementIntoView(firstBuilding);
+            });
+          } else {
+            expandedAtlasDistrictIds.delete(definition.id);
+          }
+          syncAtlasBuildingBrowserMode();
+        });
+        node.classList.toggle('expanded', expanded);
+        node.append(row, childList);
+      } else {
+        node.appendChild(row);
+      }
+      group.appendChild(node);
     });
     districtList.appendChild(group);
   });
   if (!districtList.childElementCount) {
-    districtList.innerHTML = '<div class="empty-search">No districts match this search.</div>';
+    districtList.innerHTML = '<div class="empty-search">No districts or buildings match this search.</div>';
   }
+  syncAtlasBuildingBrowserMode();
+  syncAtlasReadiness();
 }
 
 function previewClassForAsset(category: string, kind: string, workspace: EditorWorkspace) {
@@ -558,18 +753,75 @@ function cacheLiveDefinition(definition: SceneDefinition) {
 }
 
 function syncDefinitionCacheFromWorld() {
-  allDefinitions.forEach((definition, index) => {
-    allDefinitions[index] = world.getDefinition(definition.id) ?? definition;
+  world.getDefinitions().forEach((definition) => {
+    if (definition.category === 'authored-interior') return;
+    const index = allDefinitions.findIndex((candidate) => candidate.id === definition.id);
+    if (index >= 0) allDefinitions[index] = definition;
+    else allDefinitions.push(definition);
   });
+  definitionIndex.clear();
+  allDefinitions.forEach((definition, index) => definitionIndex.set(definition.id, index + 1));
+  staticEditableGroupCount = allDefinitions.filter((definition) => definition.category !== 'imported').length;
   if (currentSelection) currentSelection = world.getDefinition(currentSelection.id);
   renderAtlas(districtSearch.value);
   refreshAcademicCampusMapMetadata();
 }
 
+function getBuildingSiblings(definition: SceneDefinition | null) {
+  if (!definition || !isAtlasBuildingDefinition(definition)) return [];
+  return allDefinitions.filter((candidate): candidate is AtlasBuildingDefinition => (
+    isAtlasBuildingDefinition(candidate) && candidate.parentDistrictId === definition.parentDistrictId
+  ));
+}
+
+function syncBuildingNavigation(definition: SceneDefinition | null) {
+  const siblings = getBuildingSiblings(definition);
+  const index = definition ? siblings.findIndex((candidate) => candidate.id === definition.id) : -1;
+  const visible = index >= 0 && siblings.length > 0;
+  buildingNavigation.hidden = !visible;
+  if (!visible) {
+    buildingNavigationPosition.textContent = 'No building selected';
+    previousBuildingButton.disabled = true;
+    nextBuildingButton.disabled = true;
+    return;
+  }
+  buildingNavigationPosition.textContent = `Building ${index + 1} of ${siblings.length}`;
+  previousBuildingButton.disabled = index === 0;
+  nextBuildingButton.disabled = index === siblings.length - 1;
+  previousBuildingButton.title = index > 0 ? `Previous: ${siblings[index - 1].name}` : 'First building in this district';
+  nextBuildingButton.title = index < siblings.length - 1 ? `Next: ${siblings[index + 1].name}` : 'Last building in this district';
+}
+
+function navigateBuilding(offset: -1 | 1) {
+  if (!currentSelection || !isAtlasBuildingDefinition(currentSelection)) return;
+  const siblings = getBuildingSiblings(currentSelection);
+  const index = siblings.findIndex((candidate) => candidate.id === currentSelection?.id);
+  const target = siblings[index + offset];
+  if (!target) return;
+  expandedAtlasDistrictIds.add(target.parentDistrictId);
+  if (districtSearch.value) districtSearch.value = '';
+  renderAtlas();
+  prioritizeAtlasDefinition(target);
+  world.select(target.id, 'ui');
+  if (currentMode === 'explore') {
+    world.focus(target.id);
+    syncFountainControlPanel();
+  }
+}
+
+previousBuildingButton.addEventListener('click', () => navigateBuilding(-1));
+nextBuildingButton.addEventListener('click', () => navigateBuilding(1));
+
 function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
   currentSelection = definition;
+  if (definition && isAtlasBuildingDefinition(definition) && !districtSearch.value) {
+    const wasExpanded = expandedAtlasDistrictIds.has(definition.parentDistrictId);
+    expandedAtlasDistrictIds.add(definition.parentDistrictId);
+    if (!wasExpanded) renderAtlas();
+  }
   document.body.classList.toggle('has-selection', Boolean(definition));
   listButtons.forEach((button, id) => button.classList.toggle('active', id === definition?.id));
+  syncBuildingNavigation(definition);
   if (!definition) {
     inspectorTitle.textContent = 'No selection';
     selectionIndex.textContent = '—';
@@ -609,7 +861,7 @@ function updateInspector(definition: SceneDefinition | null, state?: ObjectState
   }
   accentInput.value = definition.accent;
   const listButton = listButtons.get(definition.id);
-  listButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  if (listButton) scrollAtlasElementIntoView(listButton, 'smooth');
   refreshEditWorkspaceUI();
 }
 
@@ -812,6 +1064,8 @@ function refreshSelectedState(definition: SceneDefinition, state: ObjectState) {
   updateInspector(liveDefinition, state);
 }
 
+let worldReadyForFullIslandActivation = false;
+
 const world = new IslandWorld(viewport, {
   onSelection: (definition) => {
     updateInspector(definition);
@@ -865,7 +1119,11 @@ const world = new IslandWorld(viewport, {
     syncFountainControlPanel();
     syncDefinitionCacheFromWorld();
     loadingStatus.textContent = 'Spatial twin ready';
-    window.setTimeout(() => loadingScreen.classList.add('done'), 220);
+    window.setTimeout(() => {
+      loadingScreen.classList.add('done');
+      worldReadyForFullIslandActivation = true;
+      applyPersistedFullIslandDetailPreference();
+    }, 220);
   },
   onError: (message, error) => {
     console.error(message, error);
@@ -935,7 +1193,7 @@ const world = new IslandWorld(viewport, {
 });
 
 window.labIsland = world;
-window.render_game_to_text = () => JSON.stringify(world.getTextSnapshot());
+window.render_game_to_text = () => JSON.stringify(world.getRenderTextSnapshot());
 window.advanceTime = (milliseconds: number) => world.advanceTime(milliseconds);
 document.body.classList.toggle('object-interactions-disabled', !OBJECT_INTERACTIONS_ENABLED);
 
@@ -949,7 +1207,7 @@ function applyWalkSpeed(value: number, persist = true) {
 }
 applyWalkSpeed(Number(localStorage.getItem(walkSpeedStorageKey) ?? walkSpeedInput.value), false);
 
-allDefinitions.forEach((definition, index) => definitionIndex.set(definition.id, index + 1));
+syncDefinitionCacheFromWorld();
 required<HTMLElement>('#district-count').textContent = String(districts.length).padStart(2, '0');
 renderAtlas();
 renderAssetLibrary();
@@ -2030,34 +2288,427 @@ envQualitySelect.addEventListener('change', () => {
   toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
 });
 
-const fullIslandDetailStorageKey = 'youtopy_full_island_detail';
-function syncFullIslandDetailUI() {
-  const streaming = world.getStreamingSnapshot();
-  const capabilities = world.getGpuDetailCapabilities();
-  fullIslandDetailInput.checked = streaming.fullIslandDetailRequested;
-  fullIslandDetailStatus.classList.toggle('warning', Boolean(capabilities.performanceWarning));
+const legacyFullIslandDetailStorageKey = 'youtopy_full_island_detail';
+const devicePerformancePreferencesStorageKey = 'youtopy_device_preferences';
+const safeStreamedSessionStorageKey = 'youtopy_full_island_safe_streamed_session';
+
+interface DevicePerformancePreferences {
+  version: number;
+  fullIslandDetail: boolean;
+  [key: string]: unknown;
+}
+
+interface FullIslandLifecycleTelemetry {
+  phase?: string;
+  queued?: number;
+  building?: number;
+  warmingGpu?: number;
+  ready?: number;
+  error?: number;
+  degraded?: number;
+  currentPackageId?: string | null;
+  failedPackageIds?: string[];
+}
+
+type FullIslandStreamingTelemetry = ReturnType<IslandWorld['getStreamingSnapshot']> & {
+  fullIslandLifecycle?: FullIslandLifecycleTelemetry;
+  fullIslandDetailProgress: ReturnType<IslandWorld['getStreamingSnapshot']>['fullIslandDetailProgress'] & FullIslandLifecycleTelemetry;
+  visiblePackageReadiness?: { ready: number; total: number; percent: number };
+  renderProfile?: string;
+  liveRenderObjectCount?: number;
+  batchOccupancy?: { capacity: number; active: number; ratio: number };
+  microdetail?: {
+    mandatory?: number;
+    micro?: number;
+    visibleMicro?: number;
+    culledMicro?: number;
+    total?: number;
+    visible?: number;
+    culled?: number;
+  };
+  collisionResidentCellCount?: number;
+};
+
+type FullIslandSceneStatistics = ReturnType<IslandWorld['getSceneStatistics']> & {
+  frameTiming?: {
+    cpuP50Ms?: number;
+    cpuP95Ms?: number;
+    gpuP50Ms?: number | null;
+    gpuP95Ms?: number | null;
+    hoverPickP95Ms?: number;
+    bottleneck?: string;
+    targetFps?: number;
+  };
+  renderer?: {
+    reverseDepthBuffer?: boolean;
+    transmissionPassActive?: boolean;
+    recoveryPhase?: string;
+    shaderProgramCount?: number;
+  };
+};
+
+type FullIslandUiWorld = IslandWorld & {
+  retryFullIslandDetail?: () => boolean | void;
+  retryPackage?: (id: string) => boolean | void;
+  prioritizeFullIslandPackage?: (id: string) => boolean | void;
+};
+
+const fullIslandUiWorld = world as FullIslandUiWorld;
+
+function safeStorageRead(kind: 'local' | 'session', key: string) {
+  try {
+    return (kind === 'local' ? window.localStorage : window.sessionStorage).getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeStorageWrite(kind: 'local' | 'session', key: string, value: string) {
+  try {
+    (kind === 'local' ? window.localStorage : window.sessionStorage).setItem(key, value);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+function safeStorageRemove(kind: 'local' | 'session', key: string) {
+  try {
+    (kind === 'local' ? window.localStorage : window.sessionStorage).removeItem(key);
+  } catch {
+    // Storage can be blocked in privacy-restricted or embedded browser contexts.
+  }
+}
+
+function readDevicePerformancePreferences(): DevicePerformancePreferences {
+  const saved = safeStorageRead('local', devicePerformancePreferencesStorageKey);
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved) as Record<string, unknown>;
+      if (parsed && typeof parsed === 'object' && typeof parsed.fullIslandDetail === 'boolean') {
+        return {
+          ...parsed,
+          version: typeof parsed.version === 'number' ? parsed.version : 1,
+          fullIslandDetail: parsed.fullIslandDetail,
+        };
+      }
+    } catch {
+      // Fall through to the legacy boolean migration.
+    }
+  }
+  const migrated = safeStorageRead('local', legacyFullIslandDetailStorageKey) === 'true';
+  const preferences: DevicePerformancePreferences = { version: 1, fullIslandDetail: migrated };
+  safeStorageWrite('local', devicePerformancePreferencesStorageKey, JSON.stringify(preferences));
+  return preferences;
+}
+
+let fullIslandDevicePreferences = readDevicePerformancePreferences();
+let fullIslandSafeStreamedSession = fullIslandDevicePreferences.fullIslandDetail
+  && safeStorageRead('session', safeStreamedSessionStorageKey) === 'true';
+let fullIslandContextRecoveryPhase: 'ready' | 'lost' | 'recovering' = 'ready';
+let fullIslandRecoveryResetTimer = 0;
+let lastFullIslandAnnouncementKey = '';
+
+function saveFullIslandDetailPreference(enabled: boolean) {
+  fullIslandDevicePreferences = {
+    ...fullIslandDevicePreferences,
+    version: Math.max(1, Number(fullIslandDevicePreferences.version) || 1),
+    fullIslandDetail: enabled,
+  };
+  safeStorageWrite('local', devicePerformancePreferencesStorageKey, JSON.stringify(fullIslandDevicePreferences));
+  // Keep the legacy value synchronized for rollback to an older build.
+  safeStorageWrite('local', legacyFullIslandDetailStorageKey, String(enabled));
+}
+
+function applyPersistedFullIslandDetailPreference() {
+  if (!worldReadyForFullIslandActivation) return;
+  world.setFullIslandDetail(fullIslandDevicePreferences.fullIslandDetail && !fullIslandSafeStreamedSession);
+  syncFullIslandDetailUI();
+}
+
+function finiteTelemetryNumber(...values: unknown[]) {
+  for (const value of values) {
+    const number = Number(value);
+    if (Number.isFinite(number)) return number;
+  }
+  return 0;
+}
+
+function formatTelemetryCount(value: unknown) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.round(number).toLocaleString() : '—';
+}
+
+function formatTelemetryMilliseconds(value: unknown) {
+  const number = Number(value);
+  return Number.isFinite(number) && number > 0 ? `${number.toFixed(1)} ms` : 'Unavailable';
+}
+
+function formatEstimatedMemory(bytes: number) {
+  if (!Number.isFinite(bytes) || bytes <= 0) return 'Unavailable';
+  return bytes >= 1024 ** 3
+    ? `${(bytes / 1024 ** 3).toFixed(2)} GB`
+    : `${(bytes / 1024 ** 2).toFixed(0)} MB`;
+}
+
+function readFullIslandLifecycle(streaming: FullIslandStreamingTelemetry) {
+  const progress = streaming.fullIslandDetailProgress;
+  const lifecycle = streaming.fullIslandLifecycle ?? progress;
+  const total = Math.max(1, Math.round(finiteTelemetryNumber(progress.total, streaming.totalPackages, 41)));
+  const ready = Math.min(total, Math.max(0, Math.round(finiteTelemetryNumber(lifecycle.ready, progress.ready, progress.loaded))));
+  const failedPackageIds = Array.isArray(lifecycle.failedPackageIds)
+    ? lifecycle.failedPackageIds
+    : Array.isArray(progress.failedPackageIds) ? progress.failedPackageIds : [];
+  const error = Math.max(failedPackageIds.length, Math.round(finiteTelemetryNumber(lifecycle.error, progress.error)));
+  return {
+    phase: String(lifecycle.phase ?? progress.phase ?? ''),
+    total,
+    ready,
+    queued: Math.round(finiteTelemetryNumber(lifecycle.queued, progress.queued)),
+    building: Math.round(finiteTelemetryNumber(lifecycle.building, progress.building)),
+    warmingGpu: Math.round(finiteTelemetryNumber(lifecycle.warmingGpu, progress.warmingGpu)),
+    error,
+    currentPackageId: lifecycle.currentPackageId ?? progress.currentPackageId ?? null,
+    failedPackageIds,
+  };
+}
+
+function announceFullIslandMilestone(state: string, ready: number, total: number, errors: number) {
+  const progressMilestone = state === 'loading'
+    ? Math.min(100, Math.floor((ready / Math.max(1, total)) * 4) * 25)
+    : 0;
+  const key = state === 'loading' ? `${state}-${progressMilestone}` : `${state}-${errors}`;
+  if (key === lastFullIslandAnnouncementKey) return;
+  lastFullIslandAnnouncementKey = key;
+  fullIslandStatusAnnouncer.textContent = state === 'loading'
+    ? `Full Island Detail loading: ${ready} of ${total} packages ready.`
+    : state === 'warming'
+      ? 'Full Island Detail is warming GPU resources.'
+      : state === 'ready'
+        ? `Full Island Detail ready: all ${total} packages are available.`
+        : state === 'slow'
+          ? 'Full Island Detail is ready, but performance is below its target.'
+          : state === 'error'
+            ? `Full Island Detail encountered ${errors} package ${errors === 1 ? 'error' : 'errors'}.`
+            : state === 'recovering'
+              ? 'The renderer is recovering Full Island Detail after a graphics context interruption.'
+              : fullIslandSafeStreamedSession
+                ? 'Streamed detail is active for this browser session.'
+                : 'Streamed detail is active.';
+}
+
+function syncFullIslandDetailUI(sceneStats?: FullIslandSceneStatistics) {
+  const streaming = world.getStreamingSnapshot() as FullIslandStreamingTelemetry;
+  const capabilities = world.getGpuDetailCapabilities() as ReturnType<IslandWorld['getGpuDetailCapabilities']> & {
+    recoveryPhase?: string;
+  };
+  const lifecycle = readFullIslandLifecycle(streaming);
+  const rendererRecoveryPhase = sceneStats?.renderer?.recoveryPhase ?? capabilities.recoveryPhase ?? fullIslandContextRecoveryPhase;
+  const recovering = rendererRecoveryPhase === 'lost' || rendererRecoveryPhase === 'recovering';
+  const warming = lifecycle.phase === 'warming-gpu' || lifecycle.warmingGpu > 0;
+  const slow = lifecycle.phase === 'degraded' || Boolean(capabilities.performanceWarning);
+  const requested = streaming.fullIslandDetailRequested;
+  const ready = streaming.fullIslandDetailReady || lifecycle.phase === 'ready';
+  let state = 'streamed';
+  let chipLabel = fullIslandSafeStreamedSession ? 'Safe session' : 'Streamed';
+  if (requested) {
+    if (recovering) {
+      state = 'recovering';
+      chipLabel = 'Recovering';
+    } else if (lifecycle.error > 0 || lifecycle.phase === 'error') {
+      state = 'error';
+      chipLabel = 'Error';
+    } else if (slow) {
+      state = 'slow';
+      chipLabel = 'Slow';
+    } else if (ready) {
+      state = 'ready';
+      chipLabel = 'Ready';
+    } else if (warming) {
+      state = 'warming';
+      chipLabel = 'Warming GPU';
+    } else {
+      state = 'loading';
+      chipLabel = `Loading ${lifecycle.ready}/${lifecycle.total}`;
+    }
+  }
+
+  fullIslandDetailMonitor.dataset.state = state;
+  fullIslandStatusChipLabel.textContent = chipLabel;
+  fullIslandStatusChip.title = `Full Island Detail: ${chipLabel}`;
+  fullIslandDetailInput.checked = requested;
+  fullIslandDetailStatus.classList.toggle('warning', state === 'slow' || state === 'error');
   fullIslandDetailStatus.title = `${capabilities.renderer} · ${capabilities.batchingBackend} · physical VRAM is not exposed by the browser`;
   if (capabilities.performanceWarning) {
     fullIslandDetailStatus.textContent = capabilities.performanceWarning;
-  } else if (streaming.fullIslandDetailRequested && !streaming.fullIslandDetailReady) {
-    fullIslandDetailStatus.textContent = `Loading complete detail ${streaming.fullIslandDetailProgress.loaded}/${streaming.fullIslandDetailProgress.total} · proxies remain until ready`;
-  } else if (streaming.fullIslandDetailReady) {
+  } else if (fullIslandSafeStreamedSession && !requested) {
+    fullIslandDetailStatus.textContent = 'Streamed for this browser session · device preference preserved';
+  } else if (requested && !ready) {
+    const activePackage = lifecycle.currentPackageId ? ` · ${lifecycle.currentPackageId}` : '';
+    fullIslandDetailStatus.textContent = `${warming ? 'Warming GPU' : 'Loading complete detail'} ${lifecycle.ready}/${lifecycle.total}${activePackage}`;
+  } else if (ready) {
     fullIslandDetailStatus.textContent = `${streaming.residentPackageCount}/${streaming.totalPackages} resident · GPU frustum culling active`;
   } else {
     fullIslandDetailStatus.textContent = `${capabilities.multiDrawSupported ? 'Multi-draw batching' : 'Instanced/merged batching'} · streamed detail`;
   }
+
+  fullIslandStatusProgress.max = lifecycle.total;
+  fullIslandStatusProgress.value = requested ? lifecycle.ready : 0;
+  fullIslandStatusProgress.textContent = requested
+    ? `${lifecycle.ready} of ${lifecycle.total}`
+    : 'Full Island Detail inactive';
+  fullIslandStatusProgressLabel.textContent = requested
+    ? `${lifecycle.ready} of ${lifecycle.total} packages ready`
+    : 'Full Island Detail inactive';
+  fullIslandStatusSummary.textContent = state === 'error'
+    ? `${lifecycle.error} package ${lifecycle.error === 1 ? 'failed' : 'failures'}; proxies remain available. Retry when ready.`
+    : state === 'slow'
+      ? capabilities.performanceWarning ?? 'Full detail remains active while Medium quality adapts expensive rendering work.'
+      : state === 'recovering'
+        ? 'Preserving selection and edits while GPU resources are restored in camera-priority order.'
+        : state === 'ready'
+          ? `All ${lifecycle.total} packages are resident at Detail level with GPU frustum culling.`
+          : state === 'warming'
+            ? `Preparing GPU resources${lifecycle.currentPackageId ? ` for ${lifecycle.currentPackageId}` : ''} before the atomic proxy swap.`
+            : state === 'loading'
+              ? `Building package detail${lifecycle.currentPackageId ? ` for ${lifecycle.currentPackageId}` : ''}; each proxy remains until its detail is ready.`
+              : fullIslandSafeStreamedSession
+                ? 'The device preference is preserved; streamed Detail/Mid/Far rendering is active for this session only.'
+                : 'Streamed Detail/Mid/Far rendering and the bounded package cache are active.';
+
+  fullIslandRenderer.textContent = capabilities.renderer;
+  fullIslandBackend.textContent = capabilities.batchingBackend;
+  const estimatedBytes = streaming.gpuBatching.estimatedGeometryBytes + streaming.gpuBatching.estimatedTextureBytes;
+  fullIslandMemory.textContent = formatEstimatedMemory(estimatedBytes);
+  fullIslandFailures.hidden = lifecycle.failedPackageIds.length === 0;
+  fullIslandFailures.textContent = lifecycle.failedPackageIds.length > 0
+    ? `Failed: ${lifecycle.failedPackageIds.join(', ')}`
+    : '';
+  fullIslandRetryButton.disabled = lifecycle.error === 0
+    || (typeof fullIslandUiWorld.retryFullIslandDetail !== 'function' && typeof fullIslandUiWorld.retryPackage !== 'function');
+  fullIslandLowerQualityButton.disabled = world.getGraphicsQuality() === 'low';
+  fullIslandReturnStreamedButton.disabled = !requested && !fullIslandSafeStreamedSession;
+  fullIslandSafeSessionButton.hidden = !fullIslandDevicePreferences.fullIslandDetail;
+  fullIslandSafeSessionButton.disabled = fullIslandSafeStreamedSession && !requested;
+  fullIslandSafeSessionButton.textContent = fullIslandSafeStreamedSession && !requested
+    ? 'Safe session active'
+    : 'Streamed this session';
+
+  if (sceneStats) {
+    const cpuP95 = sceneStats.frameTiming?.cpuP95Ms ?? sceneStats.frameTimeMs.p95;
+    const gpuP95 = sceneStats.frameTiming?.gpuP95Ms;
+    fullIslandDpr.textContent = `${sceneStats.effectivePixelRatio.toFixed(2)}×`;
+    fullIslandCpuP95.textContent = formatTelemetryMilliseconds(cpuP95);
+    fullIslandGpuP95.textContent = formatTelemetryMilliseconds(gpuP95);
+    fullIslandDrawCalls.textContent = formatTelemetryCount(sceneStats.drawCalls);
+    fullIslandTriangles.textContent = formatTelemetryCount(sceneStats.triangles);
+  }
+  syncAtlasReadiness(streaming);
+  announceFullIslandMilestone(state, lifecycle.ready, lifecycle.total, lifecycle.error);
 }
 
+function setFullIslandStatusCardOpen(open: boolean) {
+  fullIslandStatusCard.hidden = !open;
+  fullIslandStatusChip.setAttribute('aria-expanded', String(open));
+  if (open) syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
+}
+
+fullIslandStatusChip.addEventListener('click', () => {
+  setFullIslandStatusCardOpen(fullIslandStatusCard.hidden);
+});
+
+fullIslandStatusClose.addEventListener('click', () => {
+  setFullIslandStatusCardOpen(false);
+  fullIslandStatusChip.focus();
+});
+
+document.addEventListener('pointerdown', (event) => {
+  if (!fullIslandStatusCard.hidden && !fullIslandDetailMonitor.contains(event.target as Node)) {
+    setFullIslandStatusCardOpen(false);
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !fullIslandStatusCard.hidden) {
+    setFullIslandStatusCardOpen(false);
+    fullIslandStatusChip.focus();
+  }
+});
+
 fullIslandDetailInput.addEventListener('change', () => {
+  fullIslandSafeStreamedSession = false;
+  safeStorageRemove('session', safeStreamedSessionStorageKey);
   const enabled = world.setFullIslandDetail(fullIslandDetailInput.checked);
-  localStorage.setItem(fullIslandDetailStorageKey, String(enabled));
-  syncFullIslandDetailUI();
+  saveFullIslandDetailPreference(enabled);
+  syncFullIslandDetailUI(fullIslandStatusCard.hidden ? undefined : world.getSceneStatistics() as FullIslandSceneStatistics);
   toast(
     enabled ? 'Full island detail loading' : 'Streamed detail restored',
     enabled
       ? 'All 41 exterior packages will load progressively and remain resident. The setting will never be disabled automatically.'
       : 'The eight-package LRU and normal Detail/Mid/Far streaming limits are active again.',
   );
+});
+
+fullIslandRetryButton.addEventListener('click', () => {
+  const streaming = world.getStreamingSnapshot() as FullIslandStreamingTelemetry;
+  const failedIds = readFullIslandLifecycle(streaming).failedPackageIds;
+  let retryStarted = false;
+  if (typeof fullIslandUiWorld.retryFullIslandDetail === 'function') {
+    retryStarted = fullIslandUiWorld.retryFullIslandDetail() !== false;
+  } else if (typeof fullIslandUiWorld.retryPackage === 'function') {
+    failedIds.forEach((id) => {
+      retryStarted = fullIslandUiWorld.retryPackage?.(id) !== false || retryStarted;
+    });
+  }
+  toast(
+    retryStarted ? 'Retrying Full Island Detail' : 'Retry unavailable',
+    retryStarted ? 'Failed packages have returned to the prioritized build queue.' : 'No retryable package is currently available.',
+    retryStarted ? 'normal' : 'error',
+  );
+  syncFullIslandDetailUI(fullIslandStatusCard.hidden ? undefined : world.getSceneStatistics() as FullIslandSceneStatistics);
+});
+
+fullIslandLowerQualityButton.addEventListener('click', () => {
+  const current = world.getGraphicsQuality();
+  const next: GraphicsQuality = current === 'high' ? 'medium' : 'low';
+  world.setGraphicsQuality(next);
+  envQualitySelect.value = next;
+  syncFountainControlPanel();
+  toast('Graphics quality lowered', `${next === 'medium' ? 'Medium adaptive' : 'Low'} quality is active; Full Island Detail remains enabled.`);
+  syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
+});
+
+fullIslandReturnStreamedButton.addEventListener('click', () => {
+  fullIslandSafeStreamedSession = false;
+  safeStorageRemove('session', safeStreamedSessionStorageKey);
+  saveFullIslandDetailPreference(false);
+  world.setFullIslandDetail(false);
+  syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
+  toast('Streamed detail restored', 'The eight-package LRU and normal Detail/Mid/Far streaming limits are active again.');
+});
+
+fullIslandSafeSessionButton.addEventListener('click', () => {
+  fullIslandSafeStreamedSession = true;
+  safeStorageWrite('session', safeStreamedSessionStorageKey, 'true');
+  world.setFullIslandDetail(false);
+  syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
+  toast('Streamed safe session', 'Full Island Detail is off for this browser session only. Your device preference is preserved.');
+});
+
+const rendererCanvas = viewport.querySelector('canvas');
+rendererCanvas?.addEventListener('webglcontextlost', () => {
+  fullIslandContextRecoveryPhase = 'lost';
+  window.clearTimeout(fullIslandRecoveryResetTimer);
+  syncFullIslandDetailUI();
+});
+rendererCanvas?.addEventListener('webglcontextrestored', () => {
+  fullIslandContextRecoveryPhase = 'recovering';
+  window.clearTimeout(fullIslandRecoveryResetTimer);
+  fullIslandRecoveryResetTimer = window.setTimeout(() => {
+    fullIslandContextRecoveryPhase = 'ready';
+    syncFullIslandDetailUI();
+  }, 5000);
+  syncFullIslandDetailUI();
 });
 
 async function toggleAcademicAudio() {
@@ -2074,12 +2725,23 @@ async function toggleAcademicAudio() {
 
 academicAudioButton.addEventListener('click', () => void toggleAcademicAudio());
 
-function refreshDebugStats() {
-  const stats = world.getSceneStatistics();
+function refreshPerformanceStats(sceneStats?: FullIslandSceneStatistics) {
+  const stats = sceneStats ?? world.getSceneStatistics() as FullIslandSceneStatistics;
+  const streaming = stats.streaming as FullIslandStreamingTelemetry;
+  const lifecycle = readFullIslandLifecycle(streaming);
+  const cpuP50 = stats.frameTiming?.cpuP50Ms ?? stats.frameTimeMs.p50;
+  const cpuP95 = stats.frameTiming?.cpuP95Ms ?? stats.frameTimeMs.p95;
+  const gpuP50 = stats.frameTiming?.gpuP50Ms;
+  const gpuP95 = stats.frameTiming?.gpuP95Ms;
+  const estimatedBytes = streaming.gpuBatching.estimatedGeometryBytes + streaming.gpuBatching.estimatedTextureBytes;
+  const rendererInfo = stats.renderer;
   debugStats.textContent = [
-    'ACADEMIC DEBUG',
+    'PERFORMANCE HUD · ZERO GEOMETRY',
     `quality       ${stats.quality} @ ${stats.effectivePixelRatio.toFixed(2)}x`,
-    `frame p50/95  ${stats.frameTimeMs.p50.toFixed(1)} / ${stats.frameTimeMs.p95.toFixed(1)} ms`,
+    `CPU p50/95    ${cpuP50.toFixed(1)} / ${cpuP95.toFixed(1)} ms`,
+    `GPU p50/95    ${formatTelemetryMilliseconds(gpuP50)} / ${formatTelemetryMilliseconds(gpuP95)}`,
+    `bottleneck    ${stats.frameTiming?.bottleneck ?? 'CPU timing only'}`,
+    `target        ${stats.frameTiming?.targetFps ?? 60} FPS`,
     `visible mesh  ${stats.visibleMeshes.toLocaleString()}`,
     `geometries    ${stats.geometries.toLocaleString()}`,
     `triangles     ${stats.triangles.toLocaleString()}`,
@@ -2090,27 +2752,47 @@ function refreshDebugStats() {
     `stream detail ${stats.streaming.residentDetailPackages.length}/${stats.streaming.activeDetailLimit}`,
     `GPU batches   ${stats.streaming.gpuBatching.batchCount.toLocaleString()} / ${stats.streaming.gpuBatching.batchedSourceCount.toLocaleString()} sources`,
     `GPU backend   ${stats.streaming.gpuBatching.backend}`,
+    `GPU estimate  ${formatEstimatedMemory(estimatedBytes)}`,
     `renderer      ${stats.gpuDetail.renderer}`,
+    `full phase    ${lifecycle.phase || (streaming.fullIslandDetailReady ? 'ready' : streaming.detailPolicy)}`,
+    `full ready    ${lifecycle.ready}/${lifecycle.total} · errors ${lifecycle.error}`,
+    `visible ready ${streaming.visiblePackageReadiness ? `${streaming.visiblePackageReadiness.ready}/${streaming.visiblePackageReadiness.total}` : 'unavailable'}`,
+    `live objects  ${formatTelemetryCount(streaming.liveRenderObjectCount)}`,
+    `batch slots   ${streaming.batchOccupancy ? `${streaming.batchOccupancy.active.toLocaleString()}/${streaming.batchOccupancy.capacity.toLocaleString()} (${Math.round(streaming.batchOccupancy.ratio * 100)}%)` : 'unavailable'}`,
+    `micro detail  ${streaming.microdetail ? `${formatTelemetryCount(streaming.microdetail.visibleMicro ?? streaming.microdetail.visible)} visible / ${formatTelemetryCount(streaming.microdetail.culledMicro ?? streaming.microdetail.culled)} culled` : 'unavailable'}`,
+    `collision     ${streaming.collisionResidentCellCount?.toLocaleString() ?? 'unavailable'} resident cells`,
+    `transmission  ${rendererInfo ? (rendererInfo.transmissionPassActive ? 'active' : 'off') : 'unavailable'}`,
+    `depth buffer  ${rendererInfo ? (rendererInfo.reverseDepthBuffer ? 'reverse' : 'standard') : 'unavailable'}`,
+    `shaders       ${rendererInfo?.shaderProgramCount?.toLocaleString() ?? 'unavailable'}`,
+    `hover pick    ${formatTelemetryMilliseconds(stats.frameTiming?.hoverPickP95Ms)}`,
     `mid / far     ${stats.streaming.midPackageCount} / ${stats.streaming.farPackageCount}`,
     `animations    ${stats.activeAnimationNodes}`,
-    'green = collision · cyan = light',
+    `helpers       ${world.isDebugMode() ? 'collision/light visible' : 'off (separate control)'}`,
   ].join('\n');
 }
+
+performanceButton.addEventListener('click', () => {
+  const visible = debugStats.hidden;
+  debugStats.hidden = !visible;
+  performanceButton.setAttribute('aria-pressed', String(visible));
+  if (visible) refreshPerformanceStats();
+  toast(visible ? 'Performance HUD visible' : 'Performance HUD hidden', visible ? 'Renderer statistics are visible without adding debug geometry.' : 'Performance statistics are hidden.');
+});
 
 debugButton.addEventListener('click', () => {
   const enabled = world.setDebugMode(!world.isDebugMode());
   debugButton.setAttribute('aria-pressed', String(enabled));
-  debugStats.hidden = !enabled;
-  if (enabled) refreshDebugStats();
-  toast(enabled ? 'Academic debug enabled' : 'Academic debug disabled', enabled ? 'Collision bounds, light positions, and scene statistics are visible.' : 'Debug helpers are hidden.');
+  if (!debugStats.hidden) refreshPerformanceStats();
+  toast(enabled ? 'Academic helpers enabled' : 'Academic helpers disabled', enabled ? 'Collision bounds and light positions are visible. Performance statistics remain independently controlled.' : 'Collision and light helpers are hidden.');
 });
 
 world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
-world.setFullIslandDetail(localStorage.getItem(fullIslandDetailStorageKey) === 'true');
-syncFullIslandDetailUI();
+applyPersistedFullIslandDetailPreference();
 const gpuDetailUiInterval = window.setInterval(() => {
-  syncFullIslandDetailUI();
-  if (world.isDebugMode()) refreshDebugStats();
+  const needsSceneStatistics = !fullIslandStatusCard.hidden || !debugStats.hidden;
+  const sceneStats = needsSceneStatistics ? world.getSceneStatistics() as FullIslandSceneStatistics : undefined;
+  syncFullIslandDetailUI(sceneStats);
+  if (!debugStats.hidden) refreshPerformanceStats(sceneStats);
 }, 1000);
 
 const savedTheme = localStorage.getItem('youtopy_theme');
@@ -2131,6 +2813,7 @@ syncAcademicAudioButtons();
 
 window.addEventListener('beforeunload', () => {
   window.clearInterval(gpuDetailUiInterval);
+  window.clearTimeout(fullIslandRecoveryResetTimer);
   world.dispose();
 }, { once: true });
 setGizmo(activeGizmo);

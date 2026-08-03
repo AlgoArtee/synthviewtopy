@@ -141,7 +141,12 @@ import {
   type SkyDome,
   type WaterSurface,
 } from './environment';
+import {
+  batchGlobalEnvironmentGeometry,
+  type GlobalEnvironmentBatchingHandle,
+} from './globalEnvironmentBatching';
 import { WorldStreamingManager, isEffectivelyVisible } from './worldStreaming';
+import type { StreamingSnapshot } from './worldStreaming';
 import {
   UNREAL_DATA_LAYERS,
   UNREAL_WORLD_MANIFEST_SCHEMA,
@@ -173,6 +178,65 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'inorganic-chemistry': 10,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
+const GPU_SHARED_ANIMATION_PROFILES = new Set([
+  'medical-emissive-pulse',
+  'pharmacology-emissive-pulse',
+  'microbiology-emissive-pulse',
+  'microbiology-network-signal',
+  'molecular-info-pulse',
+  'bioanalytics-emissive-pulse',
+  'forensic-emissive-pulse',
+  'genomics-emissive-pulse',
+  'biochemistry-emissive-pulse',
+  'organic-chemistry-emissive-pulse',
+  'inorganic-chemistry-emissive-pulse',
+]);
+
+/**
+ * Full-island rendering cannot afford hundreds of independently submitted
+ * decorative transform nodes. Keep a small, deterministic set of landmark
+ * transforms per package; shared pulses are converted to GPU time uniforms by
+ * WorldStreamingManager and the remaining decorative transforms are marked as
+ * 15 Hz secondary work. WorldStreamingManager can still submit both tiers
+ * through runtime batches without leaving authored meshes mounted.
+ */
+function preparePackageAnimationProfile(root: THREE.Group, maximumCpuLandmarks = 2) {
+  const candidates: Array<{ object: THREE.Object3D; profile: string; score: number; order: number }> = [];
+  let order = 0;
+  root.traverse((object) => {
+    const profile = typeof object.userData.animate === 'string' ? object.userData.animate : '';
+    if (!profile || GPU_SHARED_ANIMATION_PROFILES.has(profile)) return;
+    const signature = `${profile} ${object.name}`;
+    let score = 0;
+    if (/quantum-core|academic-fountain|coastal-train|welcome-pool-water/i.test(signature)) score += 100;
+    if (/landmark|gantry|kinetic|orbit|fan|scanner|scan|rotation/i.test(signature)) score += 35;
+    if (/path-transit|travel|conveyor|truck|camera/i.test(signature)) score += 18;
+    if (/tree-wind|mist|steam|vapour|flicker|beacon|curtain|chain|water/i.test(signature)) score -= 20;
+    candidates.push({ object, profile, score, order: order++ });
+  });
+  candidates.sort((left, right) => right.score - left.score || left.order - right.order);
+  const retained = new Set(candidates.slice(0, maximumCpuLandmarks).map((candidate) => candidate.object));
+  let secondary = 0;
+  candidates.forEach(({ object, profile }) => {
+    if (retained.has(object)) {
+      object.userData.runtimeAnimationTier = 'landmark';
+      return;
+    }
+    object.userData.authoredAnimationProfile = profile;
+    object.userData.runtimeAnimationTier = 'secondary';
+    secondary += 1;
+  });
+  root.userData.runtimeAnimationProfile = {
+    cpuLandmarkLimit: maximumCpuLandmarks,
+    retainedCpuLandmarks: retained.size,
+    gpuSharedProfiles: candidates.length === 0 ? 0 : Array.from(GPU_SHARED_ANIMATION_PROFILES).filter((profile) => {
+      let found = false;
+      root.traverse((object) => { if (object.userData.animate === profile) found = true; });
+      return found;
+    }).length,
+    secondaryTransformNodes: secondary,
+  };
+}
 export type WeatherMode =
   | 'clear'
   | 'rain'
@@ -324,6 +388,28 @@ export interface EntryLogisticsLandscapeDefinition {
   interactions: string[];
 }
 
+export interface AuthoredExteriorBuildingDefinition {
+  id: string;
+  name: string;
+  sourceLabel: string;
+  category: 'authored-exterior-building';
+  ring: 'authored-district';
+  position: readonly [number, number, number];
+  footprint: readonly [number, number];
+  height: number;
+  archetype: string;
+  accent: string;
+  palette: readonly [string, string, string, string];
+  description: string;
+  workspace: 'landscape';
+  assetKind: 'building';
+  parentDistrictId: string;
+  buildingCode?: string;
+  collisionEnabled: boolean;
+  interiorAvailable: boolean;
+  interactions: string[];
+}
+
 type SceneDefinitionBase =
   | DistrictDefinition
   | BiomeDefinition
@@ -332,7 +418,8 @@ type SceneDefinitionBase =
   | AuthoredInteriorObjectDefinition
   | AcademicBuildingDefinition
   | EntryLogisticsBuildingDefinition
-  | EntryLogisticsLandscapeDefinition;
+  | EntryLogisticsLandscapeDefinition
+  | AuthoredExteriorBuildingDefinition;
 
 export type SceneDefinition = SceneDefinitionBase & {
   /** User-editable text shown by the floating scene label. */
@@ -525,6 +612,34 @@ interface LabelRecord {
   anchor: CSS2DObject;
   object: THREE.Object3D;
   labelHeight: number;
+}
+
+type RenderBottleneck = 'cpu' | 'gpu' | 'balanced' | 'unknown';
+type WebglRecoveryPhase = 'ready' | 'lost' | 'recovering';
+
+interface TransmissionMaterialState {
+  transmission: number;
+  thickness: number;
+  opacity: number;
+  transparent: boolean;
+  depthWrite: boolean;
+  alphaHash: boolean;
+  roughness: number;
+}
+
+interface MediumFullMaterialAssignment {
+  original: THREE.Material | THREE.Material[];
+  optimized: THREE.Material | THREE.Material[];
+}
+
+interface GpuTimerExtension {
+  TIME_ELAPSED_EXT: number;
+  GPU_DISJOINT_EXT: number;
+}
+
+interface PendingGpuTimerQuery {
+  query: WebGLQuery;
+  issuedAt: number;
 }
 
 interface InteriorReturnState {
@@ -794,6 +909,10 @@ export class IslandWorld {
   readonly presentationRoot = new THREE.Group();
   readonly debugRoot = new THREE.Group();
   private readonly worldStreaming = new WorldStreamingManager();
+  private renderTextStreamingSnapshotCache: {
+    snapshot: StreamingSnapshot;
+    expiresAt: number;
+  } | null = null;
 
   private readonly container: HTMLElement;
   private readonly callbacks: IslandWorldCallbacks;
@@ -828,8 +947,19 @@ export class IslandWorld {
   >();
   private readonly labels = new Map<string, LabelRecord>();
   private readonly labelRoot = new THREE.Group();
+  private readonly labelScene = new THREE.Scene();
+  private readonly labelWorldPosition = new THREE.Vector3();
   private readonly raycaster = new THREE.Raycaster();
   private readonly pointer = new THREE.Vector2();
+  private readonly pointerRelease = new THREE.Vector2();
+  private pendingHoverPoint: { x: number; y: number } | null = null;
+  private hoverPickFrame: number | null = null;
+  private readonly pickPackageBounds = new Map<string, THREE.Box3>();
+  private readonly selectableBoundsCache = new Map<string, THREE.Box3>();
+  private selectionBoundsDirty = true;
+  private lastSelectionBoundsId: string | null = null;
+  private readonly hoverPickSamples: number[] = [];
+  private hoverPickP95 = 0;
   private readonly selectionBox: THREE.Box3Helper;
   private readonly selectionBounds = new THREE.Box3();
   private readonly clock = new THREE.Clock();
@@ -878,9 +1008,20 @@ export class IslandWorld {
   private mediumPixelRatioTarget = 1;
   private adaptiveDetailPenalty = 0;
   private readonly frameTimeSamples: number[] = [];
+  private readonly cpuUpdateSamples: number[] = [];
+  private readonly cpuRenderSamples: number[] = [];
+  private readonly gpuFrameSamples: number[] = [];
   private frameSampleWindowStartedAt = 0;
   private frameTimeP50 = 0;
   private frameTimeP95 = 0;
+  private cpuUpdateP50 = 0;
+  private cpuUpdateP95 = 0;
+  private cpuRenderP50 = 0;
+  private cpuRenderP95 = 0;
+  private gpuFrameP50 = 0;
+  private gpuFrameP95 = 0;
+  private renderBottleneck: RenderBottleneck = 'unknown';
+  private framesAbove33Percent = 0;
   private framesAbove50Percent = 0;
   private slowFrameWindowCount = 0;
   private fastFrameWindowCount = 0;
@@ -889,7 +1030,35 @@ export class IslandWorld {
   private readonly multiDrawSupported: boolean;
   private fullIslandReadyAt = 0;
   private fullIslandSlowWindowCount = 0;
+  private fullIslandHealthyWindowCount = 0;
+  private fullIslandAdaptiveStage = 0;
+  private fullIslandSecondaryAnimationHz = 15;
   private fullIslandPerformanceWarning: string | null = null;
+  private readonly transmissionMaterialStates = new Map<THREE.MeshPhysicalMaterial, TransmissionMaterialState>();
+  /**
+   * Medium Full Island uses a cheaper live shading tier without touching the
+   * detached authored/export authority. Assignments retain the exact runtime
+   * physical materials so High, streamed mode, and Edit can restore them.
+   */
+  private readonly mediumFullMaterialAssignments = new Map<THREE.Mesh, MediumFullMaterialAssignment>();
+  private readonly mediumFullCanonicalMaterials = new Map<string, THREE.MeshStandardMaterial>();
+  private mediumFullMaterialTierActive = false;
+  private mediumFullMaterialTierSkippedCustom = 0;
+  /**
+   * Shader profiles are shared across package-owned material instances. Keep
+   * track of profiles that have already completed parallel compilation so a
+   * background package does not repeat a full-scene compile.
+   */
+  private readonly warmedGpuShaderProfiles = new Set<string>();
+  private gpuPackageWarmupQueue: Promise<void> = Promise.resolve();
+  private fullIslandTransmissionPassActive = false;
+  private readonly gl: WebGLRenderingContext | WebGL2RenderingContext;
+  private readonly gpuTimerExtension: GpuTimerExtension | null;
+  private readonly pendingGpuTimerQueries: PendingGpuTimerQuery[] = [];
+  private gpuTimerQueryActive = false;
+  private lastGpuTimerIssuedAt = Number.NEGATIVE_INFINITY;
+  private webglRecoveryPhase: WebglRecoveryPhase = 'ready';
+  private webglRecoveryGeneration = 0;
   private debugMode = false;
   private activeAcademicHotspot: AcademicCampusBuilding | null = null;
   private activeAcademicFountainHotspot = false;
@@ -915,14 +1084,37 @@ export class IslandWorld {
   private lightningFlashTime = 0;
   private elapsed = 0;
   private lastLabelUpdateSeconds = Number.NEGATIVE_INFINITY;
+  private labelRenderDirty = true;
   private readonly lastLabelCameraPosition = new THREE.Vector3(Number.NaN, Number.NaN, Number.NaN);
   private readonly lastLabelCameraQuaternion = new THREE.Quaternion(Number.NaN, Number.NaN, Number.NaN, Number.NaN);
   private readonly streamingCameraDirection = new THREE.Vector3();
+  private readonly streamingFrustum = new THREE.Frustum();
+  private readonly streamingProjectionView = new THREE.Matrix4();
+  private readonly streamingPackageSphere = new THREE.Sphere(new THREE.Vector3(), 1);
+  private lastNavigationResidencyRevision = -1;
   private readonly animationWorldPosition = new THREE.Vector3();
+  private readonly targetSkyTop = new THREE.Color('#071827');
+  private readonly targetSkyHorizon = new THREE.Color('#9b5f6c');
+  private readonly targetSkyBottom = new THREE.Color('#1a3036');
+  private readonly targetSunColor = new THREE.Color('#ffd9be');
+  private readonly targetSunPosition = new THREE.Vector3();
+  private readonly targetHemisphereSky = new THREE.Color('#9ecbd4');
+  private readonly targetHemisphereGround = new THREE.Color('#17241f');
+  private readonly targetFogColor = new THREE.Color('#102632');
+  private readonly weatherColorWhite = new THREE.Color('#cad5d6');
+  private readonly weatherColorRainFog = new THREE.Color('#4c5b63');
+  private readonly weatherColorRainSkyTop = new THREE.Color('#101a24');
+  private readonly weatherColorRainSkyHorizon = new THREE.Color('#384c56');
+  private readonly weatherColorRainSkyBottom = new THREE.Color('#4c5d68');
+  private readonly weatherColorStormFog = new THREE.Color('#222830');
+  private readonly weatherColorStormSkyTop = new THREE.Color('#080d14');
+  private readonly weatherColorStormSkyHorizon = new THREE.Color('#1c232d');
+  private readonly weatherColorStormSkyBottom = new THREE.Color('#242c38');
   private cameraTween: CameraTween | null = null;
   private draggingGizmo = false;
   private disposed = false;
   private productionExportActive = false;
+  private globalEnvironmentBatching: GlobalEnvironmentBatchingHandle | null = null;
   private resizeObserver: ResizeObserver;
 
   constructor(container: HTMLElement, callbacks: IslandWorldCallbacks = {}) {
@@ -937,7 +1129,10 @@ export class IslandWorld {
       alpha: false,
       powerPreference: 'high-performance',
       preserveDrawingBuffer: false,
-      logarithmicDepthBuffer: true,
+      // Reverse depth preserves the island's large view range without forcing
+      // fragment-depth writes. Three falls back to the standard depth buffer
+      // when EXT_clip_control is unavailable, retaining early-Z rejection.
+      reverseDepthBuffer: true,
     });
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.8));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -947,11 +1142,14 @@ export class IslandWorld {
     this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     this.renderer.domElement.setAttribute('aria-label', 'Editable 3D model of the YouTopy Lab Island');
     this.container.appendChild(this.renderer.domElement);
-    const gl = this.renderer.getContext();
-    this.multiDrawSupported = Boolean(gl.getExtension('WEBGL_multi_draw'));
-    const rendererInfo = gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
+    this.gl = this.renderer.getContext();
+    this.gpuTimerExtension = this.renderer.capabilities.isWebGL2
+      ? this.gl.getExtension('EXT_disjoint_timer_query_webgl2') as GpuTimerExtension | null
+      : null;
+    this.multiDrawSupported = Boolean(this.gl.getExtension('WEBGL_multi_draw'));
+    const rendererInfo = this.gl.getExtension('WEBGL_debug_renderer_info') as { UNMASKED_RENDERER_WEBGL: number } | null;
     this.rendererName = rendererInfo
-      ? String(gl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL))
+      ? String(this.gl.getParameter(rendererInfo.UNMASKED_RENDERER_WEBGL))
       : `${this.renderer.capabilities.isWebGL2 ? 'WebGL 2' : 'WebGL 1'} renderer`;
     this.worldStreaming.setGpuBatchingCapabilities(this.multiDrawSupported);
 
@@ -959,6 +1157,8 @@ export class IslandWorld {
     this.labelRenderer.domElement.className = 'label-layer';
     this.labelRenderer.domElement.setAttribute('aria-hidden', 'true');
     this.container.appendChild(this.labelRenderer.domElement);
+    this.labelScene.name = 'YouTopy label presentation scene';
+    this.labelScene.add(this.labelRoot);
 
     // The masterplan is large, but overview cameras never approach geometry closer
     // than several world units. A tighter clip range keeps flush road markings from
@@ -1023,6 +1223,7 @@ export class IslandWorld {
     this.transformControls.addEventListener('objectChange', () => {
       const definition = this.getSelectedDefinition();
       if (definition) {
+        this.invalidateSelectableBounds(definition.id);
         const group = this.objectGroups.get(definition.id);
         const collisionEnabled = group?.userData.collisionEnabled !== false && (definition as any).collisionEnabled !== false;
 
@@ -1115,6 +1316,8 @@ export class IslandWorld {
 
         this.syncInteriorTransform(definition.id);
         this.refreshEntryLogisticsRoads(definition);
+        const packageId = this.worldStreaming.findPackageId(group);
+        if (packageId) this.worldStreaming.syncPackageRuntimeBatches(packageId);
         this.callbacks.onTransform?.(definition, this.getObjectState(definition.id)!);
         this.scheduleAutosave();
       }
@@ -1166,7 +1369,7 @@ export class IslandWorld {
     this.landscapeRoot.add(this.islandShellRoot);
     this.transitRoot.add(this.transitNetworkRoot, this.industrialPortRoot, this.bridgeRoot);
     this.presentationRoot.add(this.worldStreaming.vistaRoot, this.debugRoot);
-    this.scene.add(this.modelRoot, this.presentationRoot, this.labelRoot);
+    this.scene.add(this.modelRoot, this.presentationRoot);
 
     this.precipitation = new PrecipitationSystem();
     this.ocean = createOcean();
@@ -1193,11 +1396,18 @@ export class IslandWorld {
     rimLight.position.set(70, 26, -62);
     rimLight.name = 'Cyber city rim light';
     this.scene.add(rimLight);
+    this.worldStreaming.setGpuWarmupHandler((packageId, detailRoot, onWarmStart) => (
+      this.warmPackageGpu(packageId, detailRoot, onWarmStart)
+    ));
 
     createIslandShell(this.islandShellRoot);
     createTransitNetwork(this.transitNetworkRoot, biomes);
     createIndustrialPort(this.industrialPortRoot);
     createBridgeAndCity(this.bridgeRoot, this.cityRoot);
+    this.globalEnvironmentBatching = batchGlobalEnvironmentGeometry([
+      this.islandShellRoot,
+      this.transitRoot,
+    ]);
     // Preserve the public collection-level metadata used by diagnostics and
     // saved automation while keeping Production export components separable.
     Object.assign(
@@ -1217,6 +1427,10 @@ export class IslandWorld {
       camera: this.camera,
       element: this.renderer.domElement,
       navigationRoot: this.modelRoot,
+      navigationAuthorityRoots: () => [
+        ...this.worldStreaming.getNavigationAuthorityRoots(),
+        ...(this.globalEnvironmentBatching ? [this.globalEnvironmentBatching.authorityRoot] : []),
+      ],
       onLockChange: (locked, dragLookActive) => this.callbacks.onWalkLockChange?.(locked, dragLookActive),
       onTurboChange: (enabled) => this.callbacks.onWalkTurboChange?.(enabled),
       onInteract: () => this.inspectFromWalkView(),
@@ -1230,6 +1444,9 @@ export class IslandWorld {
     this.renderer.domElement.addEventListener('pointerup', this.onPointerUp);
     this.renderer.domElement.addEventListener('pointermove', this.onPointerMove);
     this.renderer.domElement.addEventListener('dblclick', this.onDoubleClick);
+    this.renderer.domElement.addEventListener('webglcontextlost', this.onWebglContextLost, false);
+    this.renderer.domElement.addEventListener('webglcontextrestored', this.onWebglContextRestored, false);
+    document.addEventListener('visibilitychange', this.onDocumentVisibilityChange);
 
     this.resizeObserver = new ResizeObserver(() => this.resize());
     this.resizeObserver.observe(this.container);
@@ -1251,7 +1468,10 @@ export class IslandWorld {
       group.traverse((child) => {
         if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
       });
+      preparePackageAnimationProfile(group);
+      const authoredBuildings = this.prepareAuthoredExteriorBuildingIds(definition, group);
       this.worldStreaming.register(definition, 'district', group, this.architectureRoot);
+      this.configureRuntimePickingLayers(group);
       this.registerSelectable(definition, group, labelHeight, false);
       if (definition.id === 'academic-libraries-theoretical-labs') {
         this.registerAcademicBuildingSelectables(definition, group);
@@ -1259,14 +1479,164 @@ export class IslandWorld {
       if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
         this.registerEntryLogisticsBuildingSelectables(definition, group);
       }
+      this.registerAuthoredExteriorBuildingSelectables(definition, authoredBuildings);
     });
     biomes.forEach((definition) => {
       const { group, labelHeight } = createBiomeModel(definition);
       group.traverse((child) => {
         if (child instanceof THREE.Group) child.renderOrder = Math.max(child.renderOrder, 2);
       });
+      preparePackageAnimationProfile(group);
       this.worldStreaming.register(definition, 'biome', group, this.landscapeRoot);
+      this.configureRuntimePickingLayers(group);
       this.registerSelectable(definition, group, labelHeight, true);
+    });
+  }
+
+  private discoverAuthoredExteriorBuildings(definition: DistrictDefinition, district: THREE.Group) {
+    const rawCandidates: THREE.Group[] = [];
+    district.traverse((object) => {
+      if (!(object instanceof THREE.Group) || object === district) return;
+      const metadataFacility = object.userData.exteriorProgram === true
+        || object.userData.academicFacility === true
+        || typeof object.userData.facilityForm === 'string'
+        || (typeof object.userData.semanticName === 'string'
+          && (object.userData.featureRole === 'building' || object.userData.featureRole === 'lab'));
+      if (metadataFacility) rawCandidates.push(object);
+    });
+    if (definition.id === 'industrial-labs') {
+      district.children.forEach((object) => {
+        if (!(object instanceof THREE.Group) || rawCandidates.includes(object)) return;
+        const bounds = new THREE.Box3().setFromObject(object, true);
+        const size = bounds.getSize(new THREE.Vector3());
+        let primaryObstacleMeshes = 0;
+        object.traverse((child) => {
+          if (child instanceof THREE.Mesh && child.userData.navObstacle === true) primaryObstacleMeshes += 1;
+        });
+        if (primaryObstacleMeshes > 0 && size.y >= 1.15 && Math.max(size.x, size.z) >= 1.2) rawCandidates.push(object);
+      });
+    }
+    return rawCandidates.filter((candidate) => {
+      let cursor = candidate.parent;
+      while (cursor && cursor !== district) {
+        if (rawCandidates.includes(cursor as THREE.Group)) return false;
+        cursor = cursor.parent;
+      }
+      return true;
+    });
+  }
+
+  private authoredBuildingSelectableId(
+    definition: DistrictDefinition,
+    building: THREE.Group,
+    usedIds: Set<string>,
+  ) {
+    const academic = building.userData.academicBuildingData as AcademicCampusBuilding | undefined;
+    if (academic) return academicBuildingSelectableId(academic.id);
+    const buildingCode = String(building.userData.buildingCode ?? '').trim();
+    if ((definition.id === 'entry-commercial' || definition.id === 'logistics') && buildingCode) {
+      return entryLogisticsBuildingSelectableId(buildingCode);
+    }
+    const existing = String(building.userData.individualSelectableId ?? '').trim();
+    if (existing && existing !== definition.id && !usedIds.has(existing)) return existing;
+    const displayName = String(
+      building.userData.semanticName
+      ?? building.userData.displayName
+      ?? building.userData.buildingName
+      ?? building.name
+      ?? 'building',
+    );
+    const base = `${definition.id}__building-${slugify(displayName) || 'facility'}`;
+    let id = base;
+    let suffix = 2;
+    while (usedIds.has(id)) id = `${base}-${suffix++}`;
+    return id;
+  }
+
+  private prepareAuthoredExteriorBuildingIds(definition: DistrictDefinition, district: THREE.Group) {
+    const buildings = this.discoverAuthoredExteriorBuildings(definition, district);
+    const usedIds = new Set<string>();
+    buildings.forEach((building) => {
+      const id = this.authoredBuildingSelectableId(definition, building, usedIds);
+      usedIds.add(id);
+      building.userData.selectableId = id;
+      building.userData.individualSelectableId = id;
+      // This survives package-wide batching after authored meshes move into the
+      // detached authority root. Consumers must not need live child geometry to
+      // recognize a stable authored building anchor (notably the legacy
+      // Industrial campus, whose facility groups predate exteriorProgram).
+      building.userData.authoredExteriorBuilding = true;
+      building.userData.parentSelectableId = definition.id;
+      building.userData.editable = true;
+      building.userData.workspace = 'landscape';
+      building.userData.collisionEnabled = building.userData.collisionEnabled !== false;
+      const visit = (object: THREE.Object3D) => {
+        if (object !== building && object.userData.runtimeInterior === true) return;
+        if (object.userData.individualSelectableId === undefined || object.userData.individualSelectableId === definition.id) {
+          object.userData.individualSelectableId = id;
+        }
+        if (object.userData.selectableId === undefined || object.userData.selectableId === definition.id) {
+          object.userData.selectableId = id;
+        }
+        object.children.forEach(visit);
+      };
+      visit(building);
+    });
+    return buildings;
+  }
+
+  private registerAuthoredExteriorBuildingSelectables(
+    definition: DistrictDefinition,
+    buildings: THREE.Group[],
+  ) {
+    buildings.forEach((building) => {
+      const id = String(building.userData.individualSelectableId ?? '');
+      if (!id || this.definitions.has(id)) return;
+      building.updateWorldMatrix(true, true);
+      const size = new THREE.Box3().setFromObject(building, true).getSize(new THREE.Vector3());
+      const name = String(
+        building.userData.semanticName
+        ?? building.userData.displayName
+        ?? building.userData.buildingName
+        ?? building.name,
+      );
+      const code = String(building.userData.buildingCode ?? '').trim();
+      const authoredDefinition: AuthoredExteriorBuildingDefinition = {
+        id,
+        name,
+        sourceLabel: `${definition.name}${code ? ` / ${code}` : ''}`,
+        category: 'authored-exterior-building',
+        ring: 'authored-district',
+        position: [building.position.x, building.position.y, building.position.z],
+        footprint: [Math.max(0.05, size.x), Math.max(0.05, size.z)],
+        height: Math.max(0.05, size.y),
+        archetype: String(building.userData.facilityForm ?? 'authored-research-facility'),
+        accent: definition.accent,
+        palette: definition.palette,
+        description: String(
+          building.userData.description
+          ?? `${name} is a complete authored exterior facility within ${definition.name}.`,
+        ),
+        workspace: 'landscape',
+        assetKind: 'building',
+        parentDistrictId: definition.id,
+        ...(code ? { buildingCode: code } : {}),
+        collisionEnabled: building.userData.collisionEnabled !== false,
+        // Non-Academic buildings retain the generated-interior fallback even
+        // when no authored room hierarchy is mounted with the exterior.
+        interiorAvailable: true,
+        interactions: Array.isArray(building.userData.interactions) ? [...building.userData.interactions] : [],
+      };
+      this.registerSelectable(authoredDefinition, building, Math.max(size.y + 0.5, 1), false, false);
+    });
+  }
+
+  private configureRuntimePickingLayers(root: THREE.Object3D) {
+    root.traverse((object) => {
+      if (object.userData.gpuBatchSource !== true) return;
+      object.layers.disable(0);
+      object.layers.enable(2);
+      object.matrixAutoUpdate = false;
     });
   }
 
@@ -1648,11 +2018,14 @@ export class IslandWorld {
       visible: group.visible,
       accent: definition.accent,
     });
+    this.selectableBoundsCache.delete(definition.id);
+    this.pickPackageBounds.delete(definition.id);
     if (!showLabel) return;
     const element = document.createElement('div');
     const individualEditable = definition.category === 'academic-building'
       || definition.category === 'entry-logistics-building'
-      || definition.category === 'entry-logistics-landscape';
+      || definition.category === 'entry-logistics-landscape'
+      || definition.category === 'authored-exterior-building';
     element.className = `district-label${biome ? ' biome-label' : ''}${individualEditable ? ' academic-building-label' : ''}`;
     element.textContent = sceneLabel(definition);
     element.dataset.labelId = definition.id;
@@ -1665,16 +2038,16 @@ export class IslandWorld {
   }
 
   private updateSingleLabel(record: LabelRecord) {
-    const position = new THREE.Vector3(0, record.labelHeight, 0);
-    record.object.localToWorld(position);
-    record.anchor.position.copy(position);
+    this.labelWorldPosition.set(0, record.labelHeight, 0);
+    record.object.localToWorld(this.labelWorldPosition);
+    record.anchor.position.copy(this.labelWorldPosition);
   }
 
   private updateLabels(force = false) {
     if (!force) {
       const cameraMoved = this.camera.position.distanceToSquared(this.lastLabelCameraPosition) > 0.0001
         || Math.abs(this.camera.quaternion.dot(this.lastLabelCameraQuaternion)) < 0.999999;
-      if (!cameraMoved || this.elapsed - this.lastLabelUpdateSeconds < 0.1) return;
+      if (!cameraMoved || this.elapsed - this.lastLabelUpdateSeconds < 0.05) return;
     }
     this.lastLabelUpdateSeconds = this.elapsed;
     this.lastLabelCameraPosition.copy(this.camera.position);
@@ -1693,7 +2066,8 @@ export class IslandWorld {
       const distanceThreshold = this.mode === 'walk' ? 10 : this.mode === 'edit' ? 52 : 42;
       const individualEditable = record.definition.category === 'academic-building'
         || record.definition.category === 'entry-logistics-building'
-        || record.definition.category === 'entry-logistics-landscape';
+        || record.definition.category === 'entry-logistics-landscape'
+        || record.definition.category === 'authored-exterior-building';
       const visible = individualEditable
         ? this.mode === 'edit' && (priority || distance < distanceThreshold)
         : this.mode === 'plan' || priority || distance < distanceThreshold;
@@ -1703,6 +2077,7 @@ export class IslandWorld {
         element.style.opacity = record.definition.id === this.selectedId ? '1' : String(distanceOpacity);
       }
     });
+    this.labelRenderDirty = true;
   }
 
   private onPointerDown = (event: PointerEvent) => {
@@ -1741,10 +2116,21 @@ export class IslandWorld {
       return;
     }
     if (this.draggingGizmo) return;
-    const id = this.pick(event);
-    if (id === this.hoveredId) return;
-    this.hoveredId = id;
-    this.renderer.domElement.style.cursor = id ? 'pointer' : this.controls.enabled ? 'grab' : 'default';
+    this.pendingHoverPoint = { x: event.clientX, y: event.clientY };
+    if (this.hoverPickFrame !== null) return;
+    this.hoverPickFrame = requestAnimationFrame(() => {
+      this.hoverPickFrame = null;
+      const point = this.pendingHoverPoint;
+      this.pendingHoverPoint = null;
+      if (!point || this.disposed || this.mode === 'walk' || this.draggingGizmo) return;
+      const startedAt = performance.now();
+      const id = this.pickAt(point.x, point.y);
+      this.hoverPickSamples.push(performance.now() - startedAt);
+      if (this.hoverPickSamples.length > 240) this.hoverPickSamples.shift();
+      if (id === this.hoveredId) return;
+      this.hoveredId = id;
+      this.renderer.domElement.style.cursor = id ? 'pointer' : this.controls.enabled ? 'grab' : 'default';
+    });
   };
 
   private onDoubleClick = (event: MouseEvent) => {
@@ -1855,25 +2241,37 @@ export class IslandWorld {
     }
   }
 
-  private pick(event: MouseEvent | PointerEvent) {
+  private getPointerPickTargets() {
+    const targets: THREE.Object3D[] = [
+      this.importedRoot,
+      this.interiorsRoot,
+      this.worldStreaming.vistaRoot,
+    ];
+    [...districts, ...biomes].forEach((definition) => {
+      const group = this.objectGroups.get(definition.id);
+      if (!group || !isEffectivelyVisible(group)) return;
+      let bounds = this.pickPackageBounds.get(definition.id);
+      if (!bounds) {
+        const selectableBounds = this.getSelectableBounds(definition.id);
+        if (!selectableBounds) return;
+        bounds = selectableBounds.clone().expandByScalar(0.35);
+        this.pickPackageBounds.set(definition.id, bounds);
+      }
+      if (this.raycaster.ray.intersectsBox(bounds)) targets.push(group);
+    });
+    return targets;
+  }
+
+  private pickAt(clientX: number, clientY: number) {
     this.activeAcademicHotspot = null;
     this.activeAcademicFountainHotspot = false;
     this.activeCerebrumHotspot = null;
     const rect = this.renderer.domElement.getBoundingClientRect();
-    this.pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    this.pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+    this.pointer.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    this.pointer.y = -((clientY - rect.top) / rect.height) * 2 + 1;
     this.raycaster.far = Infinity;
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    const intersections = this.raycaster.intersectObjects(
-      [
-        this.architectureRoot,
-        this.landscapeRoot,
-        this.importedRoot,
-        this.interiorsRoot,
-        this.worldStreaming.vistaRoot,
-      ],
-      true,
-    );
+    const intersections = this.raycaster.intersectObjects(this.getPointerPickTargets(), true);
     for (const intersection of intersections) {
       if (!isEffectivelyVisible(intersection.object)) continue;
       let object: THREE.Object3D | null = intersection.object;
@@ -1897,6 +2295,10 @@ export class IslandWorld {
       }
     }
     return null;
+  }
+
+  private pick(event: MouseEvent | PointerEvent) {
+    return this.pickAt(event.clientX, event.clientY);
   }
 
   private pickImportPlacement(event: MouseEvent | PointerEvent) {
@@ -2433,12 +2835,47 @@ export class IslandWorld {
       ? this.objectGroups.get(occupiedInteriorBuildingId)
       : null;
     const occupiedInteriorPackageId = this.worldStreaming.findPackageId(occupiedInteriorObject);
+    this.camera.updateMatrixWorld();
+    this.streamingProjectionView.multiplyMatrices(this.camera.projectionMatrix, this.camera.matrixWorldInverse);
+    this.streamingFrustum.setFromProjectionMatrix(
+      this.streamingProjectionView,
+      this.renderer.coordinateSystem,
+    );
+    const visiblePackageIds: string[] = [];
+    let nearestPackageId: string | null = null;
+    let nearestDistanceSquared = Number.POSITIVE_INFINITY;
+    [...districts, ...biomes].forEach((definition) => {
+      const [x, y, z] = definition.position;
+      this.streamingPackageSphere.center.set(x, y + ISLAND_SURFACE_Y, z);
+      this.streamingPackageSphere.radius = Math.max(
+        definition.footprint[0],
+        definition.footprint[1],
+        definition.height,
+      ) * 0.72;
+      if (this.streamingFrustum.intersectsSphere(this.streamingPackageSphere)) {
+        visiblePackageIds.push(definition.id);
+      }
+      const distanceSquared = this.camera.position.distanceToSquared(this.streamingPackageSphere.center);
+      if (distanceSquared < nearestDistanceSquared) {
+        nearestDistanceSquared = distanceSquared;
+        nearestPackageId = definition.id;
+      }
+    });
+    this.worldStreaming.setHighQualityShadowPackages(
+      this.graphicsQuality === 'high'
+        ? Array.from(new Set(
+          [selectedPackageId, nearestPackageId].filter((id): id is string => Boolean(id)),
+        ))
+        : [],
+    );
     const changed = this.worldStreaming.update({
       cameraPosition: this.camera.position,
       cameraDirection: this.camera.getWorldDirection(this.streamingCameraDirection),
       mode: this.mode,
       selectedPackageId,
       interiorPackageId: occupiedInteriorPackageId,
+      visiblePackageIds,
+      nearestPackageId,
       elapsedSeconds: this.elapsed,
       force,
     });
@@ -2448,7 +2885,10 @@ export class IslandWorld {
     const exteriorIsolationChanged = interiorActive
       ? this.isolateExteriorHighDetailRoots()
       : this.restoreExteriorHighDetailRoots();
-    if ((changed || isolationChanged || exteriorIsolationChanged) && this.walkController) {
+    const navigationResidencyRevision = this.worldStreaming.getNavigationResidencyRevision();
+    const navigationResidencyChanged = navigationResidencyRevision !== this.lastNavigationResidencyRevision;
+    this.lastNavigationResidencyRevision = navigationResidencyRevision;
+    if ((changed || isolationChanged || exteriorIsolationChanged || navigationResidencyChanged) && this.walkController) {
       this.walkController.refreshNavigation();
     }
   }
@@ -2459,32 +2899,293 @@ export class IslandWorld {
     this.resize();
   }
 
+  private samplePercentile(samples: readonly number[], fraction: number) {
+    if (!samples.length) return 0;
+    const ordered = [...samples].sort((a, b) => a - b);
+    return ordered[Math.min(ordered.length - 1, Math.floor((ordered.length - 1) * fraction))] ?? 0;
+  }
+
+  private resetFrameTimingWindows(resetReportedValues = false) {
+    this.frameTimeSamples.length = 0;
+    this.cpuUpdateSamples.length = 0;
+    this.cpuRenderSamples.length = 0;
+    this.gpuFrameSamples.length = 0;
+    this.hoverPickSamples.length = 0;
+    this.lastGpuTimerIssuedAt = Number.NEGATIVE_INFINITY;
+    this.frameSampleWindowStartedAt = this.elapsed;
+    this.slowFrameWindowCount = 0;
+    this.fastFrameWindowCount = 0;
+    this.fullIslandSlowWindowCount = 0;
+    this.fullIslandHealthyWindowCount = 0;
+    if (resetReportedValues) {
+      this.frameTimeP50 = 0;
+      this.frameTimeP95 = 0;
+      this.cpuUpdateP50 = 0;
+      this.cpuUpdateP95 = 0;
+      this.cpuRenderP50 = 0;
+      this.cpuRenderP95 = 0;
+      this.gpuFrameP50 = 0;
+      this.gpuFrameP95 = 0;
+      this.hoverPickP95 = 0;
+      this.framesAbove33Percent = 0;
+      this.framesAbove50Percent = 0;
+      this.renderBottleneck = 'unknown';
+    }
+  }
+
+  private beginGpuTimerQuery() {
+    if (!this.gpuTimerExtension || this.gpuTimerQueryActive || this.webglRecoveryPhase !== 'ready') return;
+    const now = performance.now();
+    // Timer queries themselves add driver bookkeeping. Four representative
+    // samples per second are sufficient for the one-second adaptive windows
+    // and keep slow/disjoint queries from building an unbounded queue.
+    if (now - this.lastGpuTimerIssuedAt < 250 || this.pendingGpuTimerQueries.length >= 4) return;
+    const gl = this.gl as WebGL2RenderingContext;
+    const query = gl.createQuery();
+    if (!query) return;
+    try {
+      gl.beginQuery(this.gpuTimerExtension.TIME_ELAPSED_EXT, query);
+      this.gpuTimerQueryActive = true;
+      this.lastGpuTimerIssuedAt = now;
+      this.pendingGpuTimerQueries.push({ query, issuedAt: now });
+    } catch {
+      gl.deleteQuery(query);
+      this.gpuTimerQueryActive = false;
+    }
+  }
+
+  private endGpuTimerQuery() {
+    if (!this.gpuTimerExtension || !this.gpuTimerQueryActive) return;
+    try {
+      (this.gl as WebGL2RenderingContext).endQuery(this.gpuTimerExtension.TIME_ELAPSED_EXT);
+    } catch {
+      // Context loss can interrupt a query between begin/end. Recovery clears
+      // the query queue before accepting new timing samples.
+    }
+    this.gpuTimerQueryActive = false;
+  }
+
+  private pollGpuTimerQueries() {
+    if (!this.gpuTimerExtension || !this.pendingGpuTimerQueries.length) return;
+    const gl = this.gl as WebGL2RenderingContext;
+    const disjoint = Boolean(gl.getParameter(this.gpuTimerExtension.GPU_DISJOINT_EXT));
+    for (let index = this.pendingGpuTimerQueries.length - 1; index >= 0; index -= 1) {
+      const pending = this.pendingGpuTimerQueries[index];
+      let available = false;
+      try {
+        available = Boolean(gl.getQueryParameter(pending.query, gl.QUERY_RESULT_AVAILABLE));
+      } catch {
+        available = true;
+      }
+      if (!available && performance.now() - pending.issuedAt < 2_000) continue;
+      if (!disjoint && available) {
+        const nanoseconds = Number(gl.getQueryParameter(pending.query, gl.QUERY_RESULT));
+        const milliseconds = nanoseconds / 1_000_000;
+        if (Number.isFinite(milliseconds) && milliseconds >= 0 && milliseconds < 1_000) {
+          this.gpuFrameSamples.push(milliseconds);
+        }
+      }
+      gl.deleteQuery(pending.query);
+      this.pendingGpuTimerQueries.splice(index, 1);
+    }
+  }
+
+  private applyFullIslandAdaptiveStage() {
+    this.fullIslandAdaptiveStage = THREE.MathUtils.clamp(Math.round(this.fullIslandAdaptiveStage), 0, 5);
+    this.fullIslandSecondaryAnimationHz = this.fullIslandAdaptiveStage >= 2 ? 10 : 15;
+    const target = this.fullIslandAdaptiveStage >= 5
+      ? 0.75
+      : this.fullIslandAdaptiveStage === 4
+        ? 0.8
+        : this.fullIslandAdaptiveStage === 3
+          ? 0.9
+          : 1;
+    this.mediumPixelRatioTarget = target;
+    this.applyEffectivePixelRatio(target);
+    this.applyFullIslandMaterialPolicy();
+  }
+
+  private markRuntimeResourceForUpload(object: THREE.Object3D) {
+    if (!(object instanceof THREE.Mesh)) return;
+    const position = object.geometry.getAttribute('position');
+    if (position) position.needsUpdate = true;
+    Object.values(object.geometry.attributes as Record<string, THREE.BufferAttribute | THREE.InterleavedBufferAttribute>).forEach((attribute) => {
+      attribute.needsUpdate = true;
+    });
+    if (object.geometry.index) object.geometry.index.needsUpdate = true;
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    materials.forEach((material) => {
+      material.needsUpdate = true;
+      Object.values(material as unknown as Record<string, unknown>).forEach((value) => {
+        if (value instanceof THREE.Texture) value.needsUpdate = true;
+      });
+    });
+  }
+
+  private onWebglContextLost = (event: Event) => {
+    event.preventDefault();
+    this.webglRecoveryGeneration += 1;
+    this.webglRecoveryPhase = 'lost';
+    this.renderer.setAnimationLoop(null);
+    this.gpuTimerQueryActive = false;
+    this.pendingGpuTimerQueries.length = 0;
+    this.warmedGpuShaderProfiles.clear();
+    this.resetFrameTimingWindows(true);
+  };
+
+  private onWebglContextRestored = () => {
+    const generation = ++this.webglRecoveryGeneration;
+    this.webglRecoveryPhase = 'recovering';
+    this.resetFrameTimingWindows(true);
+    const selected = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+    const selectedPackageId = this.worldStreaming.findPackageId(selected);
+    if (selectedPackageId) this.worldStreaming.prioritizeFullIslandPackage(selectedPackageId);
+
+    const resources: THREE.Object3D[] = [];
+    this.scene.traverseVisible((object) => {
+      if (object.userData.gpuBatchSource === true) return;
+      if (object instanceof THREE.Mesh) resources.push(object);
+    });
+    resources.sort((a, b) => {
+      if (!selectedPackageId) return 0;
+      return Number(this.worldStreaming.findPackageId(b) === selectedPackageId)
+        - Number(this.worldStreaming.findPackageId(a) === selectedPackageId);
+    });
+    let cursor = 0;
+    const uploadSlice = () => {
+      if (this.disposed || generation !== this.webglRecoveryGeneration) return;
+      const deadline = performance.now() + 4;
+      while (cursor < resources.length && performance.now() < deadline) {
+        this.markRuntimeResourceForUpload(resources[cursor]);
+        cursor += 1;
+      }
+      if (cursor < resources.length) {
+        requestAnimationFrame(uploadSlice);
+        return;
+      }
+      const finish = () => {
+        if (this.disposed || generation !== this.webglRecoveryGeneration) return;
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          if (this.disposed || generation !== this.webglRecoveryGeneration) return;
+          this.webglRecoveryPhase = 'ready';
+          this.resetFrameTimingWindows(true);
+          this.clock.start();
+          this.renderer.setAnimationLoop(this.animate);
+        }));
+      };
+      const compileRepresentatives: THREE.Mesh[] = [];
+      const profiles = new Set<string>();
+      for (const object of resources) {
+        if (!(object instanceof THREE.Mesh)) continue;
+        const profile = this.getGpuWarmupProfile(object);
+        if (profiles.has(profile)) continue;
+        profiles.add(profile);
+        compileRepresentatives.push(object);
+        if (compileRepresentatives.length >= 32) break;
+      }
+      if (!compileRepresentatives.length) {
+        finish();
+        return;
+      }
+      const compileRoot = new THREE.Group();
+      compileRoot.traverse = (callback) => {
+        callback(compileRoot);
+        compileRepresentatives.forEach((object) => callback(object));
+      };
+      void this.renderer.compileAsync(compileRoot, this.camera, this.scene).then(() => {
+        compileRepresentatives.forEach((object) => {
+          this.warmedGpuShaderProfiles.add(this.getGpuWarmupProfile(object));
+        });
+        finish();
+      }, finish);
+    };
+    // Keep the DOM recovery/status surface responsive while avoiding a full
+    // 41-package render before camera-prioritized resource slices complete.
+    this.renderer.setAnimationLoop(null);
+    requestAnimationFrame(uploadSlice);
+  };
+
+  private onDocumentVisibilityChange = () => {
+    this.resetFrameTimingWindows(true);
+    this.clock.stop();
+    this.clock.start();
+    if (!document.hidden && this.webglRecoveryPhase !== 'lost' && !this.disposed) {
+      this.renderer.setAnimationLoop(this.animate);
+    }
+  };
+
   private recordFrameTime(frameTimeMs: number, nowSeconds: number) {
     this.frameTimeSamples.push(frameTimeMs);
     if (!this.frameSampleWindowStartedAt) this.frameSampleWindowStartedAt = nowSeconds;
     if (nowSeconds - this.frameSampleWindowStartedAt < 1) return;
-    const ordered = [...this.frameTimeSamples].sort((a, b) => a - b);
-    const percentile = (fraction: number) => ordered[Math.min(ordered.length - 1, Math.floor((ordered.length - 1) * fraction))] ?? 0;
-    this.frameTimeP50 = percentile(0.5);
-    this.frameTimeP95 = percentile(0.95);
-    this.framesAbove50Percent = ordered.length
-      ? ordered.filter((frameTime) => frameTime > 50).length / ordered.length * 100
+    this.frameTimeP50 = this.samplePercentile(this.frameTimeSamples, 0.5);
+    this.frameTimeP95 = this.samplePercentile(this.frameTimeSamples, 0.95);
+    this.cpuUpdateP50 = this.samplePercentile(this.cpuUpdateSamples, 0.5);
+    this.cpuUpdateP95 = this.samplePercentile(this.cpuUpdateSamples, 0.95);
+    this.cpuRenderP50 = this.samplePercentile(this.cpuRenderSamples, 0.5);
+    this.cpuRenderP95 = this.samplePercentile(this.cpuRenderSamples, 0.95);
+    this.gpuFrameP50 = this.samplePercentile(this.gpuFrameSamples, 0.5);
+    this.gpuFrameP95 = this.samplePercentile(this.gpuFrameSamples, 0.95);
+    this.hoverPickP95 = this.samplePercentile(this.hoverPickSamples, 0.95);
+    this.framesAbove33Percent = this.frameTimeSamples.length
+      ? this.frameTimeSamples.filter((frameTime) => frameTime > 33.3).length / this.frameTimeSamples.length * 100
       : 0;
+    this.framesAbove50Percent = this.frameTimeSamples.length
+      ? this.frameTimeSamples.filter((frameTime) => frameTime > 50).length / this.frameTimeSamples.length * 100
+      : 0;
+    const cpuP95 = this.cpuUpdateP95 + this.cpuRenderP95;
+    if (this.gpuFrameP95 <= 0 && cpuP95 <= 0) this.renderBottleneck = 'unknown';
+    else if (this.gpuFrameP95 > cpuP95 * 1.2) this.renderBottleneck = 'gpu';
+    else if (cpuP95 > this.gpuFrameP95 * 1.2) this.renderBottleneck = 'cpu';
+    else this.renderBottleneck = 'balanced';
     this.frameTimeSamples.length = 0;
+    this.cpuUpdateSamples.length = 0;
+    this.cpuRenderSamples.length = 0;
+    this.gpuFrameSamples.length = 0;
+    this.hoverPickSamples.length = 0;
     this.frameSampleWindowStartedAt = nowSeconds;
     const streaming = this.worldStreaming.getSnapshot();
     if (streaming.fullIslandDetailRequested && streaming.fullIslandDetailReady) {
       if (!this.fullIslandReadyAt) this.fullIslandReadyAt = nowSeconds;
+      const slow = this.frameTimeP95 > 18
+        || this.gpuFrameP95 > 18
+        || cpuP95 > 18
+        || this.framesAbove33Percent > 1;
+      const healthy = this.frameTimeP95 < 14.5
+        && (this.gpuFrameP95 <= 0 || this.gpuFrameP95 < 14.5)
+        && cpuP95 < 14.5;
+      this.fullIslandSlowWindowCount = slow ? this.fullIslandSlowWindowCount + 1 : 0;
+      this.fullIslandHealthyWindowCount = healthy ? this.fullIslandHealthyWindowCount + 1 : 0;
       if (nowSeconds - this.fullIslandReadyAt >= 5) {
-        if (this.frameTimeP95 > 40 || this.framesAbove50Percent > 5) this.fullIslandSlowWindowCount += 1;
-        else this.fullIslandSlowWindowCount = 0;
         if (this.fullIslandSlowWindowCount >= 3) {
-          this.fullIslandPerformanceWarning = `Full island detail is active, but this renderer is running slowly (${this.frameTimeP95.toFixed(1)} ms p95; ${this.framesAbove50Percent.toFixed(1)}% over 50 ms). Lower Graphics quality or uncheck full detail if needed.`;
+          this.fullIslandPerformanceWarning = `Full Island Detail is below its 60 FPS target (${this.frameTimeP95.toFixed(1)} ms frame p95${this.gpuFrameP95 > 0 ? `; ${this.gpuFrameP95.toFixed(1)} ms GPU p95` : ''}). Mandatory architecture remains complete; try Lower quality or Return to streamed.`;
         }
       }
+      if (this.fullIslandHealthyWindowCount >= 5) this.fullIslandPerformanceWarning = null;
+
+      if (this.graphicsQuality === 'medium' && nowSeconds >= this.adaptiveCooldownUntil) {
+        let changed = false;
+        if (this.fullIslandSlowWindowCount >= 2 && this.fullIslandAdaptiveStage < 5) {
+          this.fullIslandAdaptiveStage += 1;
+          changed = true;
+        } else if (this.fullIslandHealthyWindowCount >= 5 && this.fullIslandAdaptiveStage > 0) {
+          this.fullIslandAdaptiveStage -= 1;
+          changed = true;
+        }
+        if (changed) {
+          this.fullIslandSlowWindowCount = 0;
+          this.fullIslandHealthyWindowCount = 0;
+          this.adaptiveCooldownUntil = nowSeconds + 2;
+          this.applyFullIslandAdaptiveStage();
+        }
+      }
+      return;
     } else {
       this.fullIslandReadyAt = 0;
       this.fullIslandSlowWindowCount = 0;
+      this.fullIslandHealthyWindowCount = 0;
+      this.fullIslandAdaptiveStage = 0;
+      this.fullIslandSecondaryAnimationHz = 15;
       this.fullIslandPerformanceWarning = null;
     }
     if (this.graphicsQuality !== 'medium' || nowSeconds < this.adaptiveCooldownUntil) return;
@@ -2544,9 +3245,16 @@ export class IslandWorld {
     const rawDelta = this.clock.getDelta();
     const delta = Math.min(rawDelta, 0.05);
     this.elapsed = time / 1000;
-    this.recordFrameTime(rawDelta * 1000, this.elapsed);
+    this.pollGpuTimerQueries();
+    const updateStartedAt = performance.now();
     this.update(delta);
+    this.cpuUpdateSamples.push(performance.now() - updateStartedAt);
+    const renderStartedAt = performance.now();
+    this.beginGpuTimerQuery();
     this.render();
+    this.endGpuTimerQuery();
+    this.cpuRenderSamples.push(performance.now() - renderStartedAt);
+    this.recordFrameTime(rawDelta * 1000, this.elapsed);
   };
 
   private update(delta: number) {
@@ -2571,16 +3279,16 @@ export class IslandWorld {
     this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
     let targetDayMix = 0;
-    const targetSkyTop = new THREE.Color('#071827');
-    const targetSkyHorizon = new THREE.Color('#9b5f6c');
-    const targetSkyBottom = new THREE.Color('#1a3036');
+    const targetSkyTop = this.targetSkyTop.set('#071827');
+    const targetSkyHorizon = this.targetSkyHorizon.set('#9b5f6c');
+    const targetSkyBottom = this.targetSkyBottom.set('#1a3036');
     let targetSunIntensity = 3.6;
-    const targetSunColor = new THREE.Color('#ffd9be');
-    const targetSunPos = new THREE.Vector3(-180, 310, 170).multiplyScalar(MASTERPLAN_RESCALE);
+    const targetSunColor = this.targetSunColor.set('#ffd9be');
+    const targetSunPos = this.targetSunPosition.set(-180, 310, 170).multiplyScalar(MASTERPLAN_RESCALE);
     let targetHemiIntensity = 1.55;
-    const targetHemiSky = new THREE.Color('#9ecbd4');
-    const targetHemiGround = new THREE.Color('#17241f');
-    const targetFogColor = new THREE.Color('#102632');
+    const targetHemiSky = this.targetHemisphereSky.set('#9ecbd4');
+    const targetHemiGround = this.targetHemisphereGround.set('#17241f');
+    const targetFogColor = this.targetFogColor.set('#102632');
     let targetFogDensity = 0.00115 / MASTERPLAN_RESCALE;
     let targetExposure = 1.08;
 
@@ -2680,24 +3388,24 @@ export class IslandWorld {
       targetSkyBottom.set('#172229');
       targetExposure = 0.98;
     } else if (this.activeWeather === 'fog') {
-      targetFogColor.lerp(new THREE.Color('#cad5d6'), 0.8);
+      targetFogColor.lerp(this.weatherColorWhite, 0.8);
       targetFogDensity = this.mode === 'walk' ? 0.024 : 0.008;
       targetSunIntensity *= 0.15;
       targetHemiIntensity *= 1.25;
     } else if (this.activeWeather === 'rain') {
-      targetFogColor.lerp(new THREE.Color('#4c5b63'), 0.75);
+      targetFogColor.lerp(this.weatherColorRainFog, 0.75);
       targetFogDensity = this.mode === 'walk' ? 0.006 : 0.0022;
       targetSunIntensity *= 0.6;
-      targetSkyTop.lerp(new THREE.Color('#101a24'), 0.85);
-      targetSkyHorizon.lerp(new THREE.Color('#384c56'), 0.85);
-      targetSkyBottom.lerp(new THREE.Color('#4c5d68'), 0.85);
+      targetSkyTop.lerp(this.weatherColorRainSkyTop, 0.85);
+      targetSkyHorizon.lerp(this.weatherColorRainSkyHorizon, 0.85);
+      targetSkyBottom.lerp(this.weatherColorRainSkyBottom, 0.85);
     } else if (this.activeWeather === 'storm') {
-      targetFogColor.lerp(new THREE.Color('#222830'), 0.9);
+      targetFogColor.lerp(this.weatherColorStormFog, 0.9);
       targetFogDensity = this.mode === 'walk' ? 0.009 : 0.003;
       targetSunIntensity *= 0.25;
-      targetSkyTop.lerp(new THREE.Color('#080d14'), 0.9);
-      targetSkyHorizon.lerp(new THREE.Color('#1c232d'), 0.9);
-      targetSkyBottom.lerp(new THREE.Color('#242c38'), 0.9);
+      targetSkyTop.lerp(this.weatherColorStormSkyTop, 0.9);
+      targetSkyHorizon.lerp(this.weatherColorStormSkyHorizon, 0.9);
+      targetSkyBottom.lerp(this.weatherColorStormSkyBottom, 0.9);
     }
 
     if (insideCerebrum || this.cerebrumLibraryInspectionActive) {
@@ -2757,9 +3465,15 @@ export class IslandWorld {
     const playerPos = this.mode === 'walk' ? this.camera.position : this.controls.target;
     this.precipitation.update(delta, playerPos, this.elapsed);
     this.worldStreaming.updateGpuAnimations(this.elapsed);
+    this.worldStreaming.updateMicrodetailVisibility(
+      this.camera,
+      Math.max(1, this.container.clientHeight * this.effectivePixelRatio),
+      this.elapsed,
+    );
 
-    this.getActiveAnimatedObjects().forEach((object) => {
-      if (!isEffectivelyVisible(object)) {
+    const activeAnimatedObjects = this.getActiveAnimatedObjects();
+    activeAnimatedObjects.forEach((object) => {
+      if (!isEffectivelyVisible(object) && object.userData.runtimeBatchedAnimation !== true) {
         if (object.userData.animate === 'academic-fountain') {
           this.academicAudio.setFountain(0, Number.POSITIVE_INFINITY);
         }
@@ -3257,6 +3971,7 @@ export class IslandWorld {
         this.academicAudio.setFountain(getAcademicFountainState(object)?.waterFlow ?? 0, distance);
       }
     });
+    this.worldStreaming.syncRuntimeAnimatedObjects(activeAnimatedObjects);
 
     if (cerebrumRoot) {
       updateCerebrumLibrary(cerebrumRoot, delta, this.camera);
@@ -3302,7 +4017,307 @@ export class IslandWorld {
     // emissive lamps still provide the library's restrained glow.
     if (libraryView && this.graphicsQuality === 'high') this.composer.render();
     else this.renderer.render(this.scene, this.camera);
-    this.labelRenderer.render(this.scene, this.camera);
+    if (this.labelRoot.visible && this.labelRenderDirty) {
+      this.labelRenderer.render(this.labelScene, this.camera);
+      this.labelRenderDirty = false;
+    }
+  }
+
+  private getGpuWarmupProfile(object: THREE.Mesh) {
+    const materials = Array.isArray(object.material) ? object.material : [object.material];
+    const objectProfile = object instanceof THREE.BatchedMesh
+      ? `batched:${Boolean((object as THREE.BatchedMesh & { _colorsTexture?: THREE.Texture | null })._colorsTexture)}`
+      : object instanceof THREE.InstancedMesh
+        ? `instanced:${Boolean(object.instanceColor)}`
+        : 'mesh';
+    return materials.map((material) => {
+      const physical = material as THREE.MeshPhysicalMaterial;
+      const mapped = material as THREE.MeshStandardMaterial & {
+        alphaHash?: boolean;
+        customProgramCacheKey?: () => string;
+      };
+      const textureProfile = [
+        mapped.map,
+        mapped.normalMap,
+        mapped.roughnessMap,
+        mapped.metalnessMap,
+        mapped.emissiveMap,
+        mapped.alphaMap,
+        mapped.aoMap,
+        mapped.lightMap,
+      ].map(Boolean).join('');
+      return [
+        objectProfile,
+        material.type,
+        material.side,
+        material.transparent,
+        mapped.alphaHash === true,
+        material.vertexColors,
+        physical.transmission > 0,
+        textureProfile,
+        material.customProgramCacheKey(),
+      ].join(':');
+    }).join('|');
+  }
+
+  private createGpuWarmupMesh(source: THREE.Mesh) {
+    const geometry = new THREE.BoxGeometry(0.02, 0.02, 0.02);
+    const material = source.material;
+    if (source instanceof THREE.BatchedMesh) {
+      const indexCount = geometry.index?.count ?? 0;
+      const warm = new THREE.BatchedMesh(
+        1,
+        geometry.getAttribute('position').count,
+        indexCount,
+        Array.isArray(material) ? material[0] : material,
+      );
+      const geometryId = warm.addGeometry(geometry);
+      const instanceId = warm.addInstance(geometryId);
+      warm.setMatrixAt(instanceId, new THREE.Matrix4());
+      if ((source as THREE.BatchedMesh & { _colorsTexture?: THREE.Texture | null })._colorsTexture) {
+        warm.setColorAt(instanceId, new THREE.Color('#ffffff'));
+      }
+      warm.position.set(0, 0, 0);
+      warm.frustumCulled = false;
+      return {
+        mesh: warm as THREE.Mesh,
+        dispose: () => {
+          // BatchedMesh owns its combined geometry and lookup textures. The
+          // input box remains separate and must be released as well.
+          warm.dispose();
+          geometry.dispose();
+        },
+      };
+    }
+    if (source instanceof THREE.InstancedMesh) {
+      const warm = new THREE.InstancedMesh(geometry, material, 1);
+      warm.setMatrixAt(0, new THREE.Matrix4());
+      if (source.instanceColor) warm.setColorAt(0, new THREE.Color('#ffffff'));
+      warm.instanceMatrix.needsUpdate = true;
+      if (warm.instanceColor) warm.instanceColor.needsUpdate = true;
+      warm.frustumCulled = false;
+      return {
+        mesh: warm as THREE.Mesh,
+        dispose: () => geometry.dispose(),
+      };
+    }
+    const warm = new THREE.Mesh(geometry, material);
+    warm.frustumCulled = false;
+    return {
+      mesh: warm,
+      dispose: () => geometry.dispose(),
+    };
+  }
+
+  private warmPackageGpu(
+    _packageId: string,
+    detailRoot: THREE.Group,
+    onWarmStart: () => void,
+  ) {
+    const queued = this.gpuPackageWarmupQueue.then(
+      () => {
+        onWarmStart();
+        if (this.worldStreaming.isFullIslandDetail()
+          && this.graphicsQuality === 'medium'
+          && this.mode !== 'edit'
+          && !this.productionExportActive) {
+          // Package batching is already complete at this point. Swap only the
+          // live runtime materials before shader compilation and buffer warm-up;
+          // detached authored sources remain exact collision/export authority.
+          this.applyMediumFullMaterialTier(detailRoot);
+          this.applyMediumPhysicalFallback(detailRoot);
+        }
+        return this.performPackageGpuWarmup(detailRoot);
+      },
+      () => {
+        onWarmStart();
+        if (this.worldStreaming.isFullIslandDetail()
+          && this.graphicsQuality === 'medium'
+          && this.mode !== 'edit'
+          && !this.productionExportActive) {
+          this.applyMediumFullMaterialTier(detailRoot);
+          this.applyMediumPhysicalFallback(detailRoot);
+        }
+        return this.performPackageGpuWarmup(detailRoot);
+      },
+    );
+    this.gpuPackageWarmupQueue = queued.catch(() => undefined);
+    return queued;
+  }
+
+  private waitForGpuWarmupFrame() {
+    return new Promise<void>((resolve) => {
+      if (document.hidden) window.setTimeout(resolve, 0);
+      else requestAnimationFrame(() => resolve());
+    });
+  }
+
+  private async warmPackageRuntimeBuffers(detailRoot: THREE.Group) {
+    if (this.disposed || !this.isWebglReady()) return;
+    const sources: THREE.Mesh[] = [];
+    detailRoot.traverseVisible((object) => {
+      if (!(object instanceof THREE.Mesh)
+        || object.userData.gpuBatchSource === true
+        || object.userData.gpuBatchMetadataAnchor === true
+        || object.userData.gpuAuthoredMetadataAnchor === true
+        || !object.geometry.getAttribute('position')) return;
+      sources.push(object);
+    });
+    if (!sources.length) return;
+
+    const warmScene = new THREE.Scene();
+    const warmCamera = new THREE.OrthographicCamera(-100_000, 100_000, 100_000, -100_000, 0.01, 1_000_000);
+    warmCamera.position.set(0, 0, 100_000);
+    warmCamera.lookAt(0, 0, 0);
+    const uploadMaterial = new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      side: THREE.DoubleSide,
+      depthTest: false,
+      depthWrite: false,
+      toneMapped: false,
+    });
+    uploadMaterial.colorWrite = false;
+    warmScene.overrideMaterial = uploadMaterial;
+    const target = new THREE.WebGLRenderTarget(1, 1, { depthBuffer: false, stencilBuffer: false });
+
+    try {
+      let cursor = 0;
+      while (cursor < sources.length) {
+        const sliceStartedAt = performance.now();
+        do {
+          const source = sources[cursor++];
+          const originalParent = source.parent;
+          if (!originalParent) continue;
+          const originalIndex = originalParent.children.indexOf(source);
+          const originalVisible = source.visible;
+          const originalFrustumCulled = source.frustumCulled;
+          const batched = source instanceof THREE.BatchedMesh ? source : null;
+          const originalPerObjectFrustumCulled = batched?.perObjectFrustumCulled;
+          const originalSortObjects = batched?.sortObjects;
+          try {
+            warmScene.add(source);
+            source.visible = true;
+            source.frustumCulled = false;
+            if (batched) {
+              batched.perObjectFrustumCulled = false;
+              batched.sortObjects = false;
+            }
+            const previousTarget = this.renderer.getRenderTarget();
+            try {
+              this.renderer.setRenderTarget(target);
+              this.renderer.render(warmScene, warmCamera);
+            } finally {
+              this.renderer.setRenderTarget(previousTarget);
+            }
+          } finally {
+            originalParent.add(source);
+            const currentIndex = originalParent.children.indexOf(source);
+            if (currentIndex >= 0) originalParent.children.splice(currentIndex, 1);
+            originalParent.children.splice(
+              THREE.MathUtils.clamp(originalIndex, 0, originalParent.children.length),
+              0,
+              source,
+            );
+            source.visible = originalVisible;
+            source.frustumCulled = originalFrustumCulled;
+            if (batched) {
+              batched.perObjectFrustumCulled = originalPerObjectFrustumCulled ?? true;
+              batched.sortObjects = originalSortObjects ?? true;
+            }
+          }
+        } while (cursor < sources.length && performance.now() - sliceStartedAt < 4);
+        if (cursor < sources.length) await this.waitForGpuWarmupFrame();
+        if (this.disposed || !this.isWebglReady()) return;
+      }
+    } finally {
+      warmScene.clear();
+      target.dispose();
+      uploadMaterial.dispose();
+    }
+  }
+
+  private async performPackageGpuWarmup(detailRoot: THREE.Group) {
+    if (this.disposed || !this.isWebglReady()) return;
+    const MAX_EAGER_SHADER_PROFILES = 32;
+    const representatives: THREE.Mesh[] = [];
+    const packageProfiles = new Set<string>();
+    detailRoot.traverseVisible((object) => {
+      if (!(object instanceof THREE.Mesh) || object.userData.gpuBatchSource === true) return;
+      const profile = this.getGpuWarmupProfile(object);
+      if (packageProfiles.has(profile)) return;
+      packageProfiles.add(profile);
+      if (!this.warmedGpuShaderProfiles.has(profile)) representatives.push(object);
+    });
+
+    const compileRepresentatives = representatives.slice(
+      0,
+      Math.max(0, MAX_EAGER_SHADER_PROFILES - this.warmedGpuShaderProfiles.size),
+    );
+    if (compileRepresentatives.length) {
+      const reservedProfiles = compileRepresentatives.map((object) => this.getGpuWarmupProfile(object));
+      reservedProfiles.forEach((profile) => this.warmedGpuShaderProfiles.add(profile));
+      const compileRoot = new THREE.Group();
+      compileRoot.traverse = (callback) => {
+        callback(compileRoot);
+        compileRepresentatives.forEach((object) => callback(object));
+      };
+      try {
+        await this.renderer.compileAsync(compileRoot, this.camera, this.scene);
+      } catch (error) {
+        reservedProfiles.forEach((profile) => this.warmedGpuShaderProfiles.delete(profile));
+        throw error;
+      }
+    }
+    if (this.disposed || !this.isWebglReady()) return;
+
+    // Complete one bounded offscreen GPU frame for the package before the
+    // atomic proxy/detail swap. Lightweight representatives exercise each new
+    // batching path while avoiding a 41-package full-geometry raster pass on
+    // the UI thread; actual package buffers upload lazily under normal frustum
+    // culling once their detail representation is active.
+    // A previously rendered profile is already GPU-warm. Re-rendering a fresh
+    // box for every package made Full Island activation scale with all 41
+    // packages without uploading any additional package geometry.
+    if (!compileRepresentatives.length) {
+      await this.warmPackageRuntimeBuffers(detailRoot);
+      return;
+    }
+    const warmScene = new THREE.Scene();
+    const warmCamera = new THREE.PerspectiveCamera(50, 1, 0.01, 100_000);
+    warmCamera.position.set(0, 0, 2);
+    warmCamera.lookAt(0, 0, 0);
+    warmScene.environment = this.scene.environment;
+    const warmSources = compileRepresentatives.slice(0, 4);
+    const warmMeshes = warmSources.map((source, index) => {
+      const result = this.createGpuWarmupMesh(source);
+      result.mesh.position.x = (index - (warmSources.length - 1) * 0.5) * 0.04;
+      warmScene.add(result.mesh);
+      return result;
+    });
+    if (!warmMeshes.length) {
+      await this.warmPackageRuntimeBuffers(detailRoot);
+      return;
+    }
+    const target = new THREE.WebGLRenderTarget(1, 1, {
+      depthBuffer: true,
+      stencilBuffer: false,
+    });
+    const previousTarget = this.renderer.getRenderTarget();
+    try {
+      this.renderer.setRenderTarget(target);
+      this.renderer.clear(true, true, false);
+      this.renderer.render(warmScene, warmCamera);
+    } finally {
+      this.renderer.setRenderTarget(previousTarget);
+      warmScene.clear();
+      warmMeshes.forEach((entry) => entry.dispose());
+      target.dispose();
+    }
+    await this.warmPackageRuntimeBuffers(detailRoot);
+  }
+
+  private isWebglReady() {
+    return this.webglRecoveryPhase === 'ready';
   }
 
   private resize() {
@@ -3311,13 +4326,65 @@ export class IslandWorld {
     this.renderer.setSize(width, height, false);
     this.composer.setSize(width, height);
     this.labelRenderer.setSize(width, height);
+    this.labelRenderDirty = true;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+  }
+
+  private invalidateSelectableBounds(id?: string) {
+    if (!id) {
+      this.selectableBoundsCache.clear();
+      this.pickPackageBounds.clear();
+      this.selectionBoundsDirty = true;
+      return;
+    }
+    this.selectableBoundsCache.delete(id);
+    const definition = this.definitions.get(id);
+    const parentDistrictId = definition && 'parentDistrictId' in definition
+      ? definition.parentDistrictId
+      : null;
+    if (parentDistrictId) {
+      this.selectableBoundsCache.delete(parentDistrictId);
+      this.pickPackageBounds.delete(parentDistrictId);
+    }
+    this.pickPackageBounds.delete(id);
+    if (this.selectedId === id || this.selectedId === parentDistrictId) this.selectionBoundsDirty = true;
+  }
+
+  private getSelectableBounds(id: string, force = false) {
+    if (!force) {
+      const cached = this.selectableBoundsCache.get(id);
+      if (cached) return cached;
+    }
+    const group = this.objectGroups.get(id);
+    if (!group) return null;
+    group.updateWorldMatrix(true, true);
+    const authoredLocalBounds = group.userData.authoredLocalBounds as THREE.Box3 | undefined;
+    const authoredBounds = group.userData.authoredWorldBounds as THREE.Box3 | { min?: number[]; max?: number[] } | undefined;
+    const bounds = new THREE.Box3();
+    if (authoredLocalBounds instanceof THREE.Box3 && !authoredLocalBounds.isEmpty()) {
+      bounds.copy(authoredLocalBounds).applyMatrix4(group.matrixWorld);
+    } else if (authoredBounds instanceof THREE.Box3 && !authoredBounds.isEmpty()) {
+      bounds.copy(authoredBounds);
+    } else {
+      const serializedBounds = authoredBounds as { min?: number[]; max?: number[] } | undefined;
+      if (serializedBounds?.min?.length === 3 && serializedBounds.max?.length === 3) {
+        bounds.min.fromArray(serializedBounds.min);
+        bounds.max.fromArray(serializedBounds.max);
+      } else bounds.setFromObject(group, true);
+    }
+    if (bounds.isEmpty()) {
+      const center = group.getWorldPosition(this.labelWorldPosition);
+      bounds.setFromCenterAndSize(center, new THREE.Vector3(0.25, 0.25, 0.25));
+    }
+    this.selectableBoundsCache.set(id, bounds);
+    return bounds;
   }
 
   private refreshSelectionBounds() {
     if (!this.selectedId) {
       this.selectionBox.visible = false;
+      this.lastSelectionBoundsId = null;
       return;
     }
     const group = this.objectGroups.get(this.selectedId);
@@ -3325,7 +4392,17 @@ export class IslandWorld {
       this.selectionBox.visible = false;
       return;
     }
-    this.selectionBounds.setFromObject(group, true);
+    if (this.lastSelectionBoundsId !== this.selectedId) this.selectionBoundsDirty = true;
+    if (this.selectionBoundsDirty) {
+      const bounds = this.getSelectableBounds(this.selectedId, true);
+      if (!bounds) {
+        this.selectionBox.visible = false;
+        return;
+      }
+      this.selectionBounds.copy(bounds);
+      this.lastSelectionBoundsId = this.selectedId;
+      this.selectionBoundsDirty = false;
+    }
     this.selectionBox.box = this.selectionBounds;
     this.selectionBox.visible = true;
   }
@@ -3361,6 +4438,12 @@ export class IslandWorld {
       previousLabel?.classList.remove('selected');
     }
     this.selectedId = id;
+    this.selectionBoundsDirty = true;
+    const packageId = this.worldStreaming.findPackageId(group);
+    if (packageId) this.worldStreaming.prioritizeFullIslandPackage(packageId);
+    if (this.graphicsQuality === 'high' && this.worldStreaming.isFullIslandDetail()) {
+      this.applyFullIslandMaterialPolicy();
+    }
     this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
     const label = this.labels.get(id)?.anchor.element;
     label?.classList.add('selected');
@@ -3375,9 +4458,14 @@ export class IslandWorld {
   clearSelection(source: 'scene' | 'ui' | 'system' = 'ui') {
     if (this.selectedId) this.labels.get(this.selectedId)?.anchor.element.classList.remove('selected');
     this.selectedId = null;
+    this.lastSelectionBoundsId = null;
+    this.selectionBoundsDirty = true;
     this.selectionBox.visible = false;
     this.transformControls.detach();
     this.transformControls.getHelper().visible = false;
+    if (this.graphicsQuality === 'high' && this.worldStreaming.isFullIslandDetail()) {
+      this.applyFullIslandMaterialPolicy();
+    }
     this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
     this.callbacks.onSelection?.(null, source);
   }
@@ -3588,6 +4676,7 @@ export class IslandWorld {
     if (interiorVisibilityChanged || runtimeWalkIsolationChanged) {
       this.walkController.refreshNavigation();
     }
+    this.applyFullIslandMaterialPolicy();
     this.updateLabels(true);
   }
 
@@ -4069,6 +5158,7 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     const group = this.objectGroups.get(id);
     if (!definition || !group) return;
+    const packageId = this.worldStreaming.findPackageId(group);
     if (this.selectedId === id) this.clearSelection('system');
     const label = this.labels.get(id);
     if (label) {
@@ -4081,6 +5171,7 @@ export class IslandWorld {
     const library = group.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME);
     if (library) disposeCerebrumLibrary(library);
     group.removeFromParent();
+    if (packageId) this.worldStreaming.syncPackageRuntimeBatches(packageId);
     this.objectGroups.delete(id);
     this.definitions.delete(id);
     this.initialTransforms.delete(id);
@@ -4097,7 +5188,10 @@ export class IslandWorld {
     this.camera.up.set(0, 1, 0);
     const object = this.objectGroups.get(id);
     if (!object) return;
-    const box = new THREE.Box3().setFromObject(object, true);
+    const packageId = this.worldStreaming.findPackageId(object);
+    if (packageId) this.worldStreaming.prioritizeFullIslandPackage(packageId);
+    const box = this.getSelectableBounds(id, true);
+    if (!box) return;
     const center = box.getCenter(new THREE.Vector3());
     const size = box.getSize(new THREE.Vector3());
     const radius = Math.max(size.x, size.y, size.z, this.activeInteriorBuildingId ? 0.55 : 4);
@@ -4153,7 +5247,10 @@ export class IslandWorld {
     }
     if (layer === 'transit') affectedRoot = this.transitRoot;
     if (affectedRoot) affectedRoot.visible = visible;
-    if (layer === 'labels') this.labelRoot.visible = visible;
+    if (layer === 'labels') {
+      this.labelRoot.visible = visible;
+      this.labelRenderDirty = true;
+    }
     if (!visible && affectedRoot && this.selectedId) {
       const selected = this.objectGroups.get(this.selectedId);
       let cursor: THREE.Object3D | null = selected ?? null;
@@ -4221,10 +5318,16 @@ export class IslandWorld {
     this.animatedObjects.length = 0;
     this.animatedObjectsByPackage.clear();
     this.globalAnimatedObjects.length = 0;
-    this.modelRoot.traverse((child) => {
+    const registered = new Set<THREE.Object3D>();
+    const register = (child: THREE.Object3D) => {
       if (!child.userData.animate) return;
+      if (registered.has(child)) return;
+      registered.add(child);
       this.animatedObjects.push(child);
-      const packageId = this.worldStreaming.findPackageId(child);
+      const packageId = typeof child.userData.runtimeAnimationPackageId === 'string'
+        ? child.userData.runtimeAnimationPackageId as string
+        : this.worldStreaming.findPackageId(child);
+      child.userData.runtimeAnimationPackageId = packageId;
       if (!packageId) {
         this.globalAnimatedObjects.push(child);
         return;
@@ -4232,31 +5335,42 @@ export class IslandWorld {
       const packageObjects = this.animatedObjectsByPackage.get(packageId) ?? [];
       packageObjects.push(child);
       this.animatedObjectsByPackage.set(packageId, packageObjects);
-    });
+    };
+    this.modelRoot.traverse(register);
+    this.worldStreaming.getRuntimeAnimatedObjects().forEach(register);
   }
 
   private getActiveAnimatedObjects() {
-    const MAX_ACTIVE_ANIMATIONS = 250;
-    const snapshot = this.worldStreaming.getSnapshot();
-    const resident = snapshot.packages
-      .filter((pkg) => pkg.detailResident)
-      .sort((a, b) => Number(b.pinned) - Number(a.pinned) || a.distanceMetres - b.distanceMetres);
-    const eligible: THREE.Object3D[] = this.globalAnimatedObjects.filter(isEffectivelyVisible);
-    resident.forEach((pkg) => {
-      const packageObjects = this.animatedObjectsByPackage.get(pkg.id) ?? [];
-      packageObjects.forEach((object) => {
-        if (isEffectivelyVisible(object)) eligible.push(object);
-      });
-    });
-    this.activeAnimationCount = Math.min(MAX_ACTIVE_ANIMATIONS, eligible.length);
-    const secondaryTick = Math.floor(this.elapsed * 15);
+    // Full-island mode keeps the complete scene resident, so cap unique CPU
+    // transforms more aggressively. Repeated pulses/rings are represented by
+    // shared GPU animation profiles in runtime batches.
+    const MAX_ACTIVE_ANIMATIONS = this.worldStreaming.isFullIslandDetail() ? 120 : 250;
+    const residentPackageIds = this.worldStreaming.getResidentPackageIdsByPriority();
+    const eligible: THREE.Object3D[] = [];
+    for (const object of this.globalAnimatedObjects) {
+      if (isEffectivelyVisible(object) || object.userData.runtimeBatchedAnimation === true) eligible.push(object);
+      if (eligible.length >= MAX_ACTIVE_ANIMATIONS) break;
+    }
+    for (const packageId of residentPackageIds) {
+      const packageObjects = this.animatedObjectsByPackage.get(packageId) ?? [];
+      for (const object of packageObjects) {
+        if (isEffectivelyVisible(object) || object.userData.runtimeBatchedAnimation === true) eligible.push(object);
+        if (eligible.length >= MAX_ACTIVE_ANIMATIONS) break;
+      }
+      if (eligible.length >= MAX_ACTIVE_ANIMATIONS) break;
+    }
+    this.activeAnimationCount = eligible.length;
+    const secondaryTick = Math.floor(this.elapsed * this.fullIslandSecondaryAnimationHz);
     const updateSecondary = secondaryTick !== this.lastSecondaryAnimationTick;
     if (updateSecondary) this.lastSecondaryAnimationTick = secondaryTick;
-    const primaryPackageId = resident[0]?.id ?? null;
+    const primaryPackageId = residentPackageIds[0] ?? null;
     return eligible.filter((object) => {
-      const packageId = this.worldStreaming.findPackageId(object);
-      return !packageId || packageId === primaryPackageId || updateSecondary;
-    }).slice(0, MAX_ACTIVE_ANIMATIONS);
+      const packageId = object.userData.runtimeAnimationPackageId as string | null | undefined;
+      const animationTier = String(object.userData.runtimeAnimationTier ?? 'landmark');
+      return !packageId
+        || (packageId === primaryPackageId && animationTier === 'landmark')
+        || updateSecondary;
+    });
   }
 
   getWeather() {
@@ -5109,11 +6223,338 @@ export class IslandWorld {
     return this.academicAudio.isMuted();
   }
 
+  private restoreTransmissionMaterial(
+    material: THREE.MeshPhysicalMaterial,
+    state: TransmissionMaterialState,
+  ) {
+    material.transmission = state.transmission;
+    material.thickness = state.thickness;
+    material.opacity = state.opacity;
+    material.transparent = state.transparent;
+    material.depthWrite = state.depthWrite;
+    material.alphaHash = state.alphaHash;
+    material.roughness = state.roughness;
+    material.needsUpdate = true;
+  }
+
+  private isCustomPhysicalMaterialProgram(material: THREE.MeshPhysicalMaterial) {
+    return material.onBeforeCompile !== THREE.Material.prototype.onBeforeCompile
+      || material.customProgramCacheKey !== THREE.Material.prototype.customProgramCacheKey;
+  }
+
+  private mediumFullMaterialSignature(material: THREE.MeshPhysicalMaterial) {
+    const textureId = (texture: THREE.Texture | null) => texture?.uuid ?? '';
+    const normalScale = material.normalScale;
+    return [
+      material.color.getHexString(),
+      material.emissive.getHexString(),
+      Number(material.emissiveIntensity.toFixed(4)),
+      Number(Math.max(material.roughness, this.fullIslandAdaptiveStage >= 1 ? 0.28 : 0.17).toFixed(4)),
+      Number(material.metalness.toFixed(4)),
+      Number(material.opacity.toFixed(4)),
+      Number(material.transmission > 0),
+      material.side,
+      Number(material.depthTest),
+      material.depthFunc,
+      Number(material.colorWrite),
+      Number(material.vertexColors),
+      Number(material.fog),
+      Number(material.flatShading),
+      Number(material.alphaTest.toFixed(4)),
+      Number(material.alphaToCoverage),
+      material.blending,
+      Number(material.premultipliedAlpha),
+      Number(material.dithering),
+      Number(material.toneMapped),
+      Number(material.polygonOffset),
+      Number(material.polygonOffsetFactor.toFixed(4)),
+      Number(material.polygonOffsetUnits.toFixed(4)),
+      textureId(material.map),
+      textureId(material.lightMap),
+      textureId(material.aoMap),
+      textureId(material.emissiveMap),
+      textureId(material.bumpMap),
+      textureId(material.normalMap),
+      textureId(material.displacementMap),
+      textureId(material.roughnessMap),
+      textureId(material.metalnessMap),
+      textureId(material.alphaMap),
+      textureId(material.envMap),
+      Number(material.lightMapIntensity.toFixed(4)),
+      Number(material.aoMapIntensity.toFixed(4)),
+      Number(material.bumpScale.toFixed(4)),
+      material.normalMapType,
+      Number(normalScale.x.toFixed(4)),
+      Number(normalScale.y.toFixed(4)),
+      Number(material.displacementScale.toFixed(4)),
+      Number(material.displacementBias.toFixed(4)),
+      Number(material.envMapIntensity.toFixed(4)),
+      material.wireframe,
+      Number(material.wireframeLinewidth.toFixed(4)),
+      JSON.stringify((material as THREE.MeshPhysicalMaterial & { defines?: Record<string, unknown> }).defines ?? {}),
+    ].join('|');
+  }
+
+  private getMediumFullStandardMaterial(material: THREE.MeshPhysicalMaterial) {
+    const signature = this.mediumFullMaterialSignature(material);
+    const cached = this.mediumFullCanonicalMaterials.get(signature);
+    if (cached) return cached;
+
+    // MeshPhysicalMaterial extends MeshStandardMaterial, so Standard.copy()
+    // deliberately copies the common PBR channels while dropping clearcoat,
+    // sheen, iridescence, and transmission defines from this live-only tier.
+    const replacement = new THREE.MeshStandardMaterial();
+    replacement.copy(material);
+    replacement.name = `${material.name || 'Physical material'} [Medium Full standard tier]`;
+    replacement.userData = {
+      ...material.userData,
+      mediumFullIslandMaterialTier: true,
+      authoredPhysicalMaterialUuid: material.uuid,
+    };
+    replacement.transparent = false;
+    replacement.depthWrite = true;
+    replacement.blending = THREE.NormalBlending;
+    replacement.premultipliedAlpha = false;
+    replacement.alphaHash = material.opacity < 0.98;
+    replacement.opacity = replacement.alphaHash
+      ? THREE.MathUtils.clamp(Math.max(material.opacity, 0.68), 0.68, 0.92)
+      : 1;
+    replacement.roughness = Math.max(
+      material.roughness,
+      this.fullIslandAdaptiveStage >= 1 ? 0.28 : 0.17,
+    );
+    // Transmission glass still needs to read as reflective glazing after the
+    // costly physical pass is removed. Preserve authored emissive values and
+    // add only a restrained color reflection when none was authored.
+    if (material.transmission > 0 && replacement.emissiveIntensity <= 0.001) {
+      replacement.emissive.copy(material.color);
+      replacement.emissiveIntensity = 0.12;
+    }
+    replacement.needsUpdate = true;
+    this.mediumFullCanonicalMaterials.set(signature, replacement);
+    return replacement;
+  }
+
+  private restoreMediumFullMaterialTier() {
+    this.mediumFullMaterialAssignments.forEach((assignment, mesh) => {
+      if (mesh.material === assignment.optimized) mesh.material = assignment.original;
+    });
+    this.mediumFullMaterialAssignments.clear();
+    this.mediumFullMaterialTierActive = false;
+    this.mediumFullMaterialTierSkippedCustom = 0;
+  }
+
+  private applyMediumFullMaterialTier(scope: THREE.Object3D = this.modelRoot) {
+    this.mediumFullMaterialAssignments.forEach((assignment, mesh) => {
+      if (!mesh.parent || (mesh.material !== assignment.original && mesh.material !== assignment.optimized)) {
+        this.mediumFullMaterialAssignments.delete(mesh);
+      }
+    });
+    let skippedCustom = 0;
+    scope.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)
+        || object.userData.gpuBatchSource === true
+        || object.userData.gpuBatchMetadataAnchor === true
+        || object.userData.gpuAuthoredMetadataAnchor === true) return;
+
+      const existing = this.mediumFullMaterialAssignments.get(object);
+      const original = existing?.original ?? object.material;
+      const authoredMaterials = Array.isArray(original) ? original : [original];
+      let changed = false;
+      const optimizedMaterials = authoredMaterials.map((candidate) => {
+        if (!(candidate instanceof THREE.MeshPhysicalMaterial)) return candidate;
+        if (this.isCustomPhysicalMaterialProgram(candidate)) {
+          skippedCustom += 1;
+          return candidate;
+        }
+        changed = true;
+        return this.getMediumFullStandardMaterial(candidate);
+      });
+      if (!changed) return;
+      const optimized = Array.isArray(original) ? optimizedMaterials : optimizedMaterials[0];
+      object.material = optimized;
+      this.mediumFullMaterialAssignments.set(object, { original, optimized });
+    });
+    this.mediumFullMaterialTierActive = this.mediumFullMaterialAssignments.size > 0;
+    this.mediumFullMaterialTierSkippedCustom = scope === this.modelRoot
+      ? skippedCustom
+      : Math.max(this.mediumFullMaterialTierSkippedCustom, skippedCustom);
+    if (scope === this.modelRoot) {
+      const used = new Set<THREE.Material>();
+      this.mediumFullMaterialAssignments.forEach((assignment) => {
+        const materials = Array.isArray(assignment.optimized) ? assignment.optimized : [assignment.optimized];
+        materials.forEach((material) => used.add(material));
+      });
+      this.mediumFullCanonicalMaterials.forEach((material, signature) => {
+        if (used.has(material)) return;
+        material.dispose();
+        this.mediumFullCanonicalMaterials.delete(signature);
+      });
+    }
+  }
+
+  private applyMediumPhysicalFallback(scope: THREE.Object3D = this.modelRoot) {
+    scope.traverse((object) => {
+      if (!(object instanceof THREE.Mesh) || object.userData.gpuBatchSource === true) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach((candidate) => {
+        if (!(candidate instanceof THREE.MeshPhysicalMaterial) || candidate.transmission <= 0) return;
+        if (!this.transmissionMaterialStates.has(candidate)) {
+          this.transmissionMaterialStates.set(candidate, {
+            transmission: candidate.transmission,
+            thickness: candidate.thickness,
+            opacity: candidate.opacity,
+            transparent: candidate.transparent,
+            depthWrite: candidate.depthWrite,
+            alphaHash: candidate.alphaHash,
+            roughness: candidate.roughness,
+          });
+        }
+        const state = this.transmissionMaterialStates.get(candidate)!;
+        candidate.transmission = 0;
+        candidate.thickness = 0;
+        candidate.transparent = false;
+        candidate.depthWrite = true;
+        candidate.alphaHash = state.opacity < 0.98;
+        candidate.opacity = candidate.alphaHash
+          ? THREE.MathUtils.clamp(Math.max(state.opacity, 0.68), 0.68, 0.92)
+          : 1;
+        candidate.roughness = Math.max(
+          state.roughness,
+          this.fullIslandAdaptiveStage >= 1 ? 0.28 : 0.17,
+        );
+        candidate.needsUpdate = true;
+      });
+    });
+  }
+
+  private applyFullIslandMaterialPolicy() {
+    const fullIsland = this.worldStreaming.isFullIslandDetail();
+    // Medium Full keeps the same no-transmission runtime profile in Edit; the
+    // exact authored materials are mounted only around mutations and export.
+    // Production serialization is the sole render-policy fidelity exception.
+    const fidelityMode = this.productionExportActive;
+    if (fidelityMode) {
+      this.restoreMediumFullMaterialTier();
+      let authoredTransmissionActive = false;
+      this.transmissionMaterialStates.forEach((state, material) => {
+        this.restoreTransmissionMaterial(material, state);
+        authoredTransmissionActive ||= state.transmission > 0;
+      });
+      this.transmissionMaterialStates.clear();
+      // Materials that entered Edit/export directly may never have passed
+      // through the transmission policy, so include them in telemetry without
+      // mutating their authored values.
+      this.modelRoot.traverse((object) => {
+        if (!(object instanceof THREE.Mesh) || object.userData.gpuBatchSource === true) return;
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        authoredTransmissionActive ||= materials.some((material) => (
+          material instanceof THREE.MeshPhysicalMaterial && material.transmission > 0
+        ));
+      });
+      this.renderer.transmissionResolutionScale = fullIsland && this.graphicsQuality === 'high' ? 0.35 : 1;
+      this.fullIslandTransmissionPassActive = authoredTransmissionActive;
+      return;
+    }
+    const useMediumStandardTier = fullIsland
+      && this.graphicsQuality === 'medium'
+      && !fidelityMode;
+
+    if (useMediumStandardTier) {
+      // Restore authored values before deriving the cheaper material. The
+      // preceding frame may have applied the physical no-transmission policy.
+      this.transmissionMaterialStates.forEach((state, material) => {
+        this.restoreTransmissionMaterial(material, state);
+      });
+      this.transmissionMaterialStates.clear();
+      this.applyMediumFullMaterialTier();
+      // A custom physical shader may be unsafe to transplant onto Standard.
+      // Keep it live, but still guarantee that Medium never enters Three's
+      // full-scene transmission pass.
+      this.applyMediumPhysicalFallback();
+      this.renderer.transmissionResolutionScale = 1;
+      this.fullIslandTransmissionPassActive = false;
+      return;
+    }
+
+    this.restoreMediumFullMaterialTier();
+    const transmissionPackages = new Set<string>();
+    if (fullIsland && this.graphicsQuality === 'high') {
+      const selectedObject = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+      const selectedPackageId = this.worldStreaming.findPackageId(selectedObject);
+      if (selectedPackageId) transmissionPackages.add(selectedPackageId);
+      else {
+        const nearest = this.worldStreaming.getSnapshot().packages
+          .filter((pkg) => pkg.detailResident)
+          .sort((a, b) => a.distanceMetres - b.distanceMetres)[0];
+        if (nearest) transmissionPackages.add(nearest.id);
+      }
+    }
+
+    const materialAllowed = new Map<THREE.MeshPhysicalMaterial, boolean>();
+    const encounteredPhysicalMaterials = new Set<THREE.MeshPhysicalMaterial>();
+    this.modelRoot.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
+      const packageId = this.worldStreaming.findPackageId(object);
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach((candidate) => {
+        if (!(candidate instanceof THREE.MeshPhysicalMaterial)) return;
+        encounteredPhysicalMaterials.add(candidate);
+        if (candidate.transmission > 0 && !this.transmissionMaterialStates.has(candidate)) {
+          this.transmissionMaterialStates.set(candidate, {
+            transmission: candidate.transmission,
+            thickness: candidate.thickness,
+            opacity: candidate.opacity,
+            transparent: candidate.transparent,
+            depthWrite: candidate.depthWrite,
+            alphaHash: candidate.alphaHash,
+            roughness: candidate.roughness,
+          });
+        }
+        if (!this.transmissionMaterialStates.has(candidate)) return;
+        materialAllowed.set(
+          candidate,
+          (materialAllowed.get(candidate) ?? false) || Boolean(packageId && transmissionPackages.has(packageId)),
+        );
+      });
+    });
+    this.transmissionMaterialStates.forEach((_state, material) => {
+      if (!encounteredPhysicalMaterials.has(material)) this.transmissionMaterialStates.delete(material);
+    });
+
+    let activeTransmission = false;
+    this.transmissionMaterialStates.forEach((state, material) => {
+      const allowed = fullIsland && this.graphicsQuality === 'high' && materialAllowed.get(material) === true;
+      if (!fullIsland || allowed) {
+        this.restoreTransmissionMaterial(material, state);
+        activeTransmission ||= state.transmission > 0;
+        return;
+      }
+      material.transmission = 0;
+      material.thickness = 0;
+      material.transparent = false;
+      material.depthWrite = true;
+      material.alphaHash = state.opacity < 0.98;
+      material.opacity = material.alphaHash
+        ? THREE.MathUtils.clamp(Math.max(state.opacity, 0.68), 0.68, 0.92)
+        : 1;
+      material.roughness = Math.max(
+        state.roughness,
+        this.fullIslandAdaptiveStage >= 1 ? 0.28 : 0.17,
+      );
+      material.needsUpdate = true;
+    });
+    this.renderer.transmissionResolutionScale = fullIsland && this.graphicsQuality === 'high' ? 0.35 : 1;
+    this.fullIslandTransmissionPassActive = activeTransmission;
+  }
+
   setGraphicsQuality(quality: GraphicsQuality) {
     this.graphicsQuality = quality;
     if (quality === 'medium') {
       this.mediumPixelRatioTarget = 1;
       this.adaptiveDetailPenalty = 0;
+      this.fullIslandAdaptiveStage = 0;
+      this.fullIslandSecondaryAnimationHz = 15;
     }
     const pixelRatio = quality === 'low' ? 1 : quality === 'medium' ? this.mediumPixelRatioTarget : 1.8;
     this.effectivePixelRatio = Math.min(window.devicePixelRatio, pixelRatio);
@@ -5142,6 +6583,7 @@ export class IslandWorld {
       if (library) configureCerebrumLibraryQuality(library, quality);
     }
     this.worldStreaming.refreshPackageEstimates();
+    this.applyFullIslandMaterialPolicy();
     this.resize();
   }
 
@@ -5153,7 +6595,15 @@ export class IslandWorld {
     const active = this.worldStreaming.setFullIslandDetail(enabled);
     this.fullIslandReadyAt = 0;
     this.fullIslandSlowWindowCount = 0;
+    this.fullIslandHealthyWindowCount = 0;
+    this.fullIslandAdaptiveStage = 0;
+    this.fullIslandSecondaryAnimationHz = 15;
     this.fullIslandPerformanceWarning = null;
+    if (this.graphicsQuality === 'medium') {
+      this.mediumPixelRatioTarget = 1;
+      this.applyEffectivePixelRatio(1);
+    }
+    this.applyFullIslandMaterialPolicy();
     this.updateWorldStreaming(false, true);
     if (this.walkController) this.walkController.refreshNavigation();
     return active;
@@ -5163,19 +6613,76 @@ export class IslandWorld {
     return this.worldStreaming.isFullIslandDetail();
   }
 
+  retryFullIslandDetail() {
+    const retried = this.worldStreaming.retryFullIslandDetail();
+    if (retried) this.updateWorldStreaming(false, true);
+    return retried;
+  }
+
+  retryPackage(id: string) {
+    const packageId = this.worldStreaming.findPackageId(this.objectGroups.get(id)) ?? id;
+    const retried = this.worldStreaming.retryPackage(packageId);
+    if (retried) this.updateWorldStreaming(false, true);
+    return retried;
+  }
+
+  prioritizeFullIslandPackage(id: string) {
+    const packageId = this.worldStreaming.findPackageId(this.objectGroups.get(id)) ?? id;
+    const prioritized = this.worldStreaming.prioritizeFullIslandPackage(packageId);
+    if (prioritized) this.updateWorldStreaming(false, true);
+    return prioritized;
+  }
+
   getGpuDetailCapabilities() {
     return {
       renderer: this.rendererName,
       multiDrawSupported: this.multiDrawSupported,
       batchingBackend: this.worldStreaming.getSnapshot().gpuBatching.backend,
+      gpuTimerSupported: Boolean(this.gpuTimerExtension),
+      reverseDepthBuffer: this.renderer.capabilities.reverseDepthBuffer,
+      transmissionPassActive: this.fullIslandTransmissionPassActive,
+      mediumFullMaterialTier: {
+        active: this.mediumFullMaterialTierActive,
+        runtimeMeshCount: this.mediumFullMaterialAssignments.size,
+        canonicalMaterialCount: this.mediumFullCanonicalMaterials.size,
+        skippedCustomPhysicalMaterials: this.mediumFullMaterialTierSkippedCustom,
+      },
+      recoveryPhase: this.webglRecoveryPhase,
       vramDetection: 'unavailable-in-browser' as const,
       performanceWarning: this.fullIslandPerformanceWarning,
     };
   }
 
   getStreamingSnapshot() {
+    const snapshot = this.worldStreaming.getSnapshot();
+    const globalStats = this.globalEnvironmentBatching?.stats;
+    const globalSourceCount = globalStats?.sourceCount ?? 0;
+    const globalBatchCount = globalStats?.batchCount ?? 0;
+    const batchCapacity = snapshot.batchOccupancy.capacity + globalSourceCount;
+    const batchActive = snapshot.batchOccupancy.active + globalSourceCount;
     return {
-      ...this.worldStreaming.getSnapshot(),
+      ...snapshot,
+      strategy: `${snapshot.strategy}; detached global environment authority with texture-free merged submission`,
+      liveRenderObjectCount: snapshot.liveRenderObjectCount + globalBatchCount,
+      detachedAuthoringSourceCount: snapshot.detachedAuthoringSourceCount + globalSourceCount,
+      batchOccupancy: {
+        capacity: batchCapacity,
+        active: batchActive,
+        ratio: batchCapacity > 0 ? batchActive / batchCapacity : 1,
+      },
+      gpuBatching: {
+        ...snapshot.gpuBatching,
+        batchCount: snapshot.gpuBatching.batchCount + globalBatchCount,
+        batchedSourceCount: snapshot.gpuBatching.batchedSourceCount + globalSourceCount,
+        retainedSourceCount: snapshot.gpuBatching.retainedSourceCount + globalSourceCount,
+        estimatedGeometryBytes: snapshot.gpuBatching.estimatedGeometryBytes
+          + (globalStats?.estimatedGeometryBytes ?? 0),
+        mergedBatchCount: snapshot.gpuBatching.mergedBatchCount + globalBatchCount,
+        largestBatchInstances: Math.max(
+          snapshot.gpuBatching.largestBatchInstances,
+          globalBatchCount > 0 ? Math.ceil(globalSourceCount / globalBatchCount) : 0,
+        ),
+      },
       cerebrumExternum: {
         available: false as const,
         phase: 'removed' as const,
@@ -5210,7 +6717,7 @@ export class IslandWorld {
         const group = this.objectGroups.get(definition.id);
         if (!group) return [];
         group.updateWorldMatrix(true, true);
-        const bounds = new THREE.Box3().setFromObject(group, true);
+        const bounds = this.getSelectableBounds(definition.id, true)?.clone() ?? new THREE.Box3();
         if (bounds.isEmpty()) bounds.setFromCenterAndSize(group.getWorldPosition(new THREE.Vector3()), new THREE.Vector3());
         const packageId = this.worldStreaming.findPackageId(group);
         const cerebrum = definition.category === 'academic-building'
@@ -5295,8 +6802,15 @@ export class IslandWorld {
     }
     const source = this.objectGroups.get(entityId);
     if (!source) throw new Error(`Cannot export unknown bootstrap entity: ${entityId}`);
-    source.updateWorldMatrix(true, true);
-    const clone = source.clone(true);
+    const packageId = this.worldStreaming.findPackageId(source);
+    const restoreAuthority = packageId ? this.worldStreaming.mountPackageAuthoritySources(packageId) : null;
+    let clone: THREE.Object3D;
+    try {
+      source.updateWorldMatrix(true, true);
+      clone = source.clone(true);
+    } finally {
+      restoreAuthority?.();
+    }
     clone.name = stableUnrealName(entityId);
     // Geometry stays entity-local; the manifest owns authoritative world
     // placement so Unreal never applies the source transform twice.
@@ -5352,6 +6866,9 @@ export class IslandWorld {
         * instanceMultiplier
       ));
     });
+    const streaming = this.getStreamingSnapshot();
+    const collisionSpatialIndex = this.walkController.getNavigationSpatialIndexSnapshot();
+    const targetFps = this.worldStreaming.isFullIslandDetail() && this.graphicsQuality === 'medium' ? 60 : 30;
     return {
       visibleMeshes,
       geometries: geometries.size,
@@ -5364,14 +6881,48 @@ export class IslandWorld {
       frameTimeMs: {
         p50: Number(this.frameTimeP50.toFixed(2)),
         p95: Number(this.frameTimeP95.toFixed(2)),
+        above33Percent: Number(this.framesAbove33Percent.toFixed(2)),
         above50Percent: Number(this.framesAbove50Percent.toFixed(2)),
+      },
+      frameTiming: {
+        cpuP50Ms: Number((this.cpuUpdateP50 + this.cpuRenderP50).toFixed(2)),
+        cpuP95Ms: Number((this.cpuUpdateP95 + this.cpuRenderP95).toFixed(2)),
+        cpuUpdateP50Ms: Number(this.cpuUpdateP50.toFixed(2)),
+        cpuUpdateP95Ms: Number(this.cpuUpdateP95.toFixed(2)),
+        cpuRenderP50Ms: Number(this.cpuRenderP50.toFixed(2)),
+        cpuRenderP95Ms: Number(this.cpuRenderP95.toFixed(2)),
+        gpuP50Ms: Number(this.gpuFrameP50.toFixed(2)),
+        gpuP95Ms: Number(this.gpuFrameP95.toFixed(2)),
+        hoverPickP95Ms: Number(this.hoverPickP95.toFixed(2)),
+        bottleneck: this.renderBottleneck,
+        targetFps,
+      },
+      renderer: {
+        name: this.rendererName,
+        backend: this.renderer.capabilities.isWebGL2 ? 'WebGL 2' : 'WebGL 1',
+        reverseDepthBuffer: this.renderer.capabilities.reverseDepthBuffer,
+        transmissionPassActive: this.fullIslandTransmissionPassActive,
+        mediumFullMaterialTier: {
+          active: this.mediumFullMaterialTierActive,
+          runtimeMeshCount: this.mediumFullMaterialAssignments.size,
+          canonicalMaterialCount: this.mediumFullCanonicalMaterials.size,
+          skippedCustomPhysicalMaterials: this.mediumFullMaterialTierSkippedCustom,
+        },
+        transmissionResolutionScale: this.renderer.transmissionResolutionScale,
+        recoveryPhase: this.webglRecoveryPhase,
+        shaderProgramCount: this.renderer.info.programs?.length ?? 0,
+        gpuTimerSupported: Boolean(this.gpuTimerExtension),
       },
       activeAnimationNodes: this.activeAnimationCount,
       gpuDetail: {
         ...this.getGpuDetailCapabilities(),
         performanceWarning: this.fullIslandPerformanceWarning,
       },
-      streaming: this.getStreamingSnapshot(),
+      streaming: {
+        ...streaming,
+        collisionResidentCellCount: collisionSpatialIndex.occupiedCellCount,
+        collisionQueriedCellCount: collisionSpatialIndex.residentCellCount,
+      },
       migration: {
         manifestSchema: UNREAL_WORLD_MANIFEST_SCHEMA,
         productionAuthority: 'unreal-editor',
@@ -5536,6 +7087,10 @@ export class IslandWorld {
     return this.definitions.get(id) ?? null;
   }
 
+  getDefinitions() {
+    return Array.from(this.definitions.values());
+  }
+
   getSelectedDefinition() {
     return this.selectedId ? this.definitions.get(this.selectedId) ?? null : null;
   }
@@ -5656,6 +7211,9 @@ export class IslandWorld {
     if (!group) return;
     this.objectVisibilityIntent.set(id, visible ? 'visible' : 'hidden');
     group.visible = visible;
+    const packageId = this.worldStreaming.findPackageId(group);
+    if (packageId) this.worldStreaming.syncPackageRuntimeBatches(packageId);
+    this.invalidateSelectableBounds(id);
     this.walkController.refreshNavigation();
     this.refreshSelectionBounds();
     this.updateLabels(true);
@@ -5704,18 +7262,40 @@ export class IslandWorld {
     group.userData.authoredMaterialsIsolated = true;
   }
 
+  private mutatePackageAuthority(id: string, mutation: () => void, rebuildVisuals: boolean) {
+    const group = this.objectGroups.get(id);
+    const packageId = this.worldStreaming.findPackageId(group);
+    const restoreAuthority = packageId
+      ? this.worldStreaming.mountPackageAuthoritySources(packageId)
+      : null;
+    try {
+      mutation();
+    } finally {
+      restoreAuthority?.();
+    }
+    if (packageId && rebuildVisuals) {
+      this.worldStreaming.rebuildPackageRuntimeBatches(packageId);
+      this.configureRuntimePickingLayers(this.objectGroups.get(packageId) ?? group!);
+      this.applyFullIslandMaterialPolicy();
+      this.refreshAnimatedObjects();
+      this.invalidateSelectableBounds(id);
+    }
+  }
+
   setObjectAccent(id: string, color: string) {
     const group = this.objectGroups.get(id);
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
-    this.isolateAcademicAccentMaterials(definition, group);
-    this.isolateAuthoredInteriorMaterials(definition, group);
-    setModelAccent(group, color);
-    if (group.userData.styleCustomized === true || definition.category === 'editor' || definition.category === 'imported') {
-      const primary = group.userData.primaryColor ?? '#ffffff';
-      const secondary = group.userData.secondaryColor ?? '#74858a';
-      applyCustomStyles(group, primary, secondary, color, group.userData.patternType, group.userData.patternScale);
-    }
+    this.mutatePackageAuthority(id, () => {
+      this.isolateAcademicAccentMaterials(definition, group);
+      this.isolateAuthoredInteriorMaterials(definition, group);
+      setModelAccent(group, color);
+      if (group.userData.styleCustomized === true || definition.category === 'editor' || definition.category === 'imported') {
+        const primary = group.userData.primaryColor ?? '#ffffff';
+        const secondary = group.userData.secondaryColor ?? '#74858a';
+        applyCustomStyles(group, primary, secondary, color, group.userData.patternType, group.userData.patternScale);
+      }
+    }, true);
     const replacement = { ...definition, accent: color } as SceneDefinition;
     this.definitions.set(id, replacement);
     const label = this.labels.get(id);
@@ -5731,13 +7311,14 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
 
-    this.isolateAuthoredInteriorMaterials(definition, group);
-    group.userData.primaryColor = primary;
-    group.userData.secondaryColor = secondary;
-    group.userData.accent = accent;
-    group.userData.styleCustomized = true;
-
-    applyCustomStyles(group, primary, secondary, accent, group.userData.patternType, group.userData.patternScale);
+    this.mutatePackageAuthority(id, () => {
+      this.isolateAuthoredInteriorMaterials(definition, group);
+      group.userData.primaryColor = primary;
+      group.userData.secondaryColor = secondary;
+      group.userData.accent = accent;
+      group.userData.styleCustomized = true;
+      applyCustomStyles(group, primary, secondary, accent, group.userData.patternType, group.userData.patternScale);
+    }, true);
 
     const replacement = {
       ...definition,
@@ -5760,12 +7341,13 @@ export class IslandWorld {
     const definition = this.definitions.get(id);
     if (!group || !definition) return;
 
-    this.isolateAuthoredInteriorMaterials(definition, group);
-    group.userData.patternType = pattern;
-    group.userData.patternScale = scale;
-    group.userData.styleCustomized = true;
-
-    applyCustomStyles(group, group.userData.primaryColor ?? '#ffffff', group.userData.secondaryColor ?? '#74858a', definition.accent, pattern, scale);
+    this.mutatePackageAuthority(id, () => {
+      this.isolateAuthoredInteriorMaterials(definition, group);
+      group.userData.patternType = pattern;
+      group.userData.patternScale = scale;
+      group.userData.styleCustomized = true;
+      applyCustomStyles(group, group.userData.primaryColor ?? '#ffffff', group.userData.secondaryColor ?? '#74858a', definition.accent, pattern, scale);
+    }, true);
 
     const replacement = {
       ...definition,
@@ -5785,14 +7367,16 @@ export class IslandWorld {
 
     group.userData.collisionEnabled = enabled;
 
-    group.traverse((child) => {
-      if (child instanceof THREE.Mesh) {
-        if (child.userData.originalNavObstacle === undefined) {
-          child.userData.originalNavObstacle = child.userData.navObstacle || false;
+    this.mutatePackageAuthority(id, () => {
+      group.traverse((child) => {
+        if (child instanceof THREE.Mesh) {
+          if (child.userData.originalNavObstacle === undefined) {
+            child.userData.originalNavObstacle = child.userData.navObstacle || false;
+          }
+          child.userData.navObstacle = enabled ? child.userData.originalNavObstacle : false;
         }
-        child.userData.navObstacle = enabled ? child.userData.originalNavObstacle : false;
-      }
-    });
+      });
+    }, false);
     if (id === 'academic-libraries-theoretical-labs') {
       this.applyAcademicGateOpen(group.userData.academicGateOpen === true, false);
     }
@@ -6086,8 +7670,14 @@ export class IslandWorld {
       return list.length ? list : ['research'];
     };
 
-    // 2. Load objects
-    payload.objects.forEach((obj: any) => {
+    // 2. Load objects. Static authored meshes normally live in detached
+    // package authority roots; mount them synchronously while replaying saved
+    // styles/collision flags, then rebuild only packages whose visual source
+    // material actually changed.
+    const restoreStaticAuthority = this.worldStreaming.mountAllAuthoritySources();
+    const visuallyMutatedPackageIds = new Set<string>();
+    try {
+      payload.objects.forEach((obj: any) => {
       const id = obj.id;
       const state = obj.state;
       if (typeof id !== 'string' || this.deletedObjectIds.has(id)) return;
@@ -6354,6 +7944,20 @@ export class IslandWorld {
           const savedInscription = definition.category === 'academic-building' && typeof definition.inscription === 'string'
             ? (typeof obj.inscription === 'string' ? obj.inscription : definition.inscription).trim().slice(0, 96)
             : undefined;
+          const authorityPackageId = this.worldStreaming.findPackageId(group);
+          if (
+            authorityPackageId
+            && (
+              styleCustomized
+              || String(accent).toLowerCase() !== String(definition.accent).toLowerCase()
+              || (
+                savedInscription !== undefined
+                && savedInscription !== (definition as AcademicBuildingDefinition).inscription
+              )
+            )
+          ) {
+            visuallyMutatedPackageIds.add(authorityPackageId);
+          }
           const replacement = {
             ...definition,
             name: savedName,
@@ -6379,12 +7983,21 @@ export class IslandWorld {
           if (savedInscription !== undefined) updateAcademicBuildingInscription(group, savedInscription);
         }
       }
-    });
+      });
 
-    for (const districtId of ['entry-commercial', 'logistics']) {
-      const districtGroup = this.objectGroups.get(districtId);
-      if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
+      for (const districtId of ['entry-commercial', 'logistics']) {
+        const districtGroup = this.objectGroups.get(districtId);
+        if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
+      }
+    } finally {
+      restoreStaticAuthority();
     }
+    visuallyMutatedPackageIds.forEach((packageId) => {
+      this.worldStreaming.rebuildPackageRuntimeBatches(packageId);
+    });
+    this.worldStreaming.getSnapshot().packages.forEach((pkg) => {
+      this.worldStreaming.syncPackageRuntimeBatches(pkg.id);
+    });
 
     if (payload.editor) {
       if (payload.editor.weather !== undefined) {
@@ -6508,9 +8121,13 @@ export class IslandWorld {
   }
 
   private notifyTransform(id: string) {
+    this.invalidateSelectableBounds(id);
+    const group = this.objectGroups.get(id);
+    const packageId = this.worldStreaming.findPackageId(group);
     this.syncInteriorTransform(id);
     const definition = this.definitions.get(id);
     if (definition) this.refreshEntryLogisticsRoads(definition);
+    if (packageId) this.worldStreaming.syncPackageRuntimeBatches(packageId);
     this.refreshSelectionBounds();
     this.updateLabels(true);
     this.walkController.refreshNavigation();
@@ -7064,8 +8681,18 @@ export class IslandWorld {
   }
 
   private async createProductionGlb(entry: InternalProductionExportEntry) {
-    entry.source.updateWorldMatrix(true, true);
-    const clone = entry.source.clone(true);
+    const restoreAuthority = this.worldStreaming.mountPackageAuthoritySources(entry.id);
+    const restoreGlobalAuthority = this.globalEnvironmentBatching?.owns(entry.source)
+      ? this.globalEnvironmentBatching.mountSources()
+      : null;
+    let clone: THREE.Object3D;
+    try {
+      entry.source.updateWorldMatrix(true, true);
+      clone = entry.source.clone(true);
+    } finally {
+      restoreAuthority?.();
+      restoreGlobalAuthority?.();
+    }
     entry.source.matrixWorld.decompose(clone.position, clone.quaternion, clone.scale);
     // Production GLBs are baked to metres. Every file therefore imports at the
     // correct Blender size and world location without a manual root-scale step.
@@ -7189,6 +8816,10 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
   ): Promise<ProductionExportSummary> {
     if (this.productionExportActive) throw new Error('A Production export is already running.');
     this.productionExportActive = true;
+    // Production serialization uses authored authority roots. Restore the live
+    // material tier as well so export-time inspection never observes a
+    // Medium-only approximation.
+    this.applyFullIslandMaterialPolicy();
     let fountainQualityBefore: GraphicsQuality | null = null;
 
     try {
@@ -7289,27 +8920,44 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         if (fountain && fountainQualityBefore) configureAcademicFountainQuality(fountain, fountainQualityBefore);
       }
       this.productionExportActive = false;
+      this.applyFullIslandMaterialPolicy();
       this.updateWorldStreaming(false, true);
     }
   }
 
   async exportGLB(filename = 'YouTopy_Lab_Island.glb') {
-    this.modelRoot.updateMatrixWorld(true);
-    const exporter = new GLTFExporter();
-    const exportRoot = this.modelRoot.clone(true);
-    exportRoot.name = 'LAB_ISLAND__BLENDER_EXPORT';
-    this.normalizeBlenderExportClone(exportRoot);
-    const exportSun = this.createBlenderSun('Blender Sun');
-    exportRoot.add(exportSun);
-    const result = await exporter.parseAsync(exportRoot, {
-      binary: true,
-      onlyVisible: true,
-      trs: true,
-      maxTextureSize: 2048,
-      includeCustomExtensions: true,
-    });
-    if (!(result instanceof ArrayBuffer)) throw new Error('GLB exporter returned an unexpected text payload.');
-    downloadBlob(new Blob([result], { type: 'model/gltf-binary' }), filename);
+    const previousProductionExportActive = this.productionExportActive;
+    this.productionExportActive = true;
+    this.applyFullIslandMaterialPolicy();
+    try {
+      const exporter = new GLTFExporter();
+      const restoreAuthorities = this.worldStreaming.mountAllAuthoritySources();
+      const restoreGlobalAuthority = this.globalEnvironmentBatching?.mountSources() ?? null;
+      let exportRoot: THREE.Object3D;
+      try {
+        this.modelRoot.updateMatrixWorld(true);
+        exportRoot = this.modelRoot.clone(true);
+      } finally {
+        restoreAuthorities();
+        restoreGlobalAuthority?.();
+      }
+      exportRoot.name = 'LAB_ISLAND__BLENDER_EXPORT';
+      this.normalizeBlenderExportClone(exportRoot);
+      const exportSun = this.createBlenderSun('Blender Sun');
+      exportRoot.add(exportSun);
+      const result = await exporter.parseAsync(exportRoot, {
+        binary: true,
+        onlyVisible: true,
+        trs: true,
+        maxTextureSize: 2048,
+        includeCustomExtensions: true,
+      });
+      if (!(result instanceof ArrayBuffer)) throw new Error('GLB exporter returned an unexpected text payload.');
+      downloadBlob(new Blob([result], { type: 'model/gltf-binary' }), filename);
+    } finally {
+      this.productionExportActive = previousProductionExportActive;
+      this.applyFullIslandMaterialPolicy();
+    }
   }
 
   exportProject(filename = 'YouTopy_Lab_Island.project.json') {
@@ -7474,6 +9122,148 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         visibilityIntent: this.objectVisibilityIntent.get(WELCOME_POOL_SELECTABLE_ID) ?? null,
         effectivelyVisible: pool ? isEffectivelyVisible(pool) : false,
       },
+    };
+  }
+
+  /**
+   * Compact automation/accessibility state. Deep authored district metadata
+   * remains available through getTextSnapshot(), while the public game-text
+   * contract stays bounded and avoids a full scene traversal every call.
+   */
+  getRenderTextSnapshot() {
+    const startedAt = performance.now();
+    // Automation can poll render_game_to_text several times in the same frame.
+    // Building the complete per-package snapshot for each poll needlessly repeats
+    // batch-occupancy scans, so reuse it briefly while keeping state observably
+    // fresh for assistive technology and test clients.
+    const snapshotNow = performance.now();
+    if (!this.renderTextStreamingSnapshotCache
+      || snapshotNow >= this.renderTextStreamingSnapshotCache.expiresAt) {
+      this.renderTextStreamingSnapshotCache = {
+        snapshot: this.worldStreaming.getSnapshot(),
+        expiresAt: snapshotNow + 75,
+      };
+    }
+    const streaming = this.renderTextStreamingSnapshotCache.snapshot;
+    const selected = this.getSelectedDefinition();
+    const selectedObject = selected ? this.objectGroups.get(selected.id) : null;
+    const selectedPackageId = this.worldStreaming.findPackageId(selectedObject);
+    const relevantPackageIds = new Set<string>([
+      ...(selectedPackageId ? [selectedPackageId] : []),
+      ...(streaming.fullIslandDetailProgress.currentPackageId ? [streaming.fullIslandDetailProgress.currentPackageId] : []),
+      ...streaming.fullIslandDetailProgress.failedPackageIds,
+    ]);
+    const relevantPackages = streaming.packages
+      .filter((pkg) => relevantPackageIds.has(pkg.id)
+        || pkg.lifecyclePhase === 'building'
+        || pkg.lifecyclePhase === 'warming-gpu'
+        || pkg.lifecyclePhase === 'error')
+      .map((pkg) => ({
+        id: pkg.id,
+        phase: pkg.lifecyclePhase,
+        progress: Number(pkg.loadProgress.toFixed(3)),
+        visualLevel: pkg.visualLevel,
+        detailResident: pkg.detailResident,
+        priority: pkg.priorityReason,
+        error: pkg.error ?? null,
+      }));
+    const walk = this.walkController.getSnapshot();
+    const gpuMemoryLowerBound = streaming.gpuBatching.estimatedGeometryBytes
+      + streaming.gpuBatching.estimatedTextureBytes;
+    return {
+      application: 'YouTopy Lab Island spatial editor',
+      coordinateSystem: 'origin at central megabuilding; +X east, +Y up, +Z south; 1 world unit = 10 metres',
+      mode: this.mode,
+      atmosphere: {
+        timeOfDay: this.activeTimeOfDay,
+        weather: this.activeWeather,
+        season: this.activeSeason,
+        graphicsQuality: this.graphicsQuality,
+      },
+      performance: {
+        targetFps: streaming.fullIslandDetailRequested && this.graphicsQuality === 'medium' ? 60 : 30,
+        effectivePixelRatio: Number(this.effectivePixelRatio.toFixed(2)),
+        frameP50Ms: Number(this.frameTimeP50.toFixed(2)),
+        frameP95Ms: Number(this.frameTimeP95.toFixed(2)),
+        cpuUpdateP95Ms: Number(this.cpuUpdateP95.toFixed(2)),
+        cpuRenderP95Ms: Number(this.cpuRenderP95.toFixed(2)),
+        gpuP95Ms: Number(this.gpuFrameP95.toFixed(2)),
+        bottleneck: this.renderBottleneck,
+        calls: this.renderer.info.render.calls,
+        triangles: this.renderer.info.render.triangles,
+        geometries: this.renderer.info.memory.geometries,
+        textures: this.renderer.info.memory.textures,
+        shaderPrograms: this.renderer.info.programs?.length ?? 0,
+        activeAnimationNodes: this.activeAnimationCount,
+        hoverPickP95Ms: Number(this.hoverPickP95.toFixed(2)),
+        gpuMemoryLowerBoundBytes: gpuMemoryLowerBound,
+        warning: this.fullIslandPerformanceWarning,
+      },
+      renderer: {
+        name: this.rendererName,
+        backend: this.renderer.capabilities.isWebGL2 ? 'WebGL 2' : 'WebGL 1',
+        batching: streaming.gpuBatching.backend,
+        reverseDepthBuffer: this.renderer.capabilities.reverseDepthBuffer,
+        gpuTimerAvailable: Boolean(this.gpuTimerExtension),
+        transmissionPassActive: this.fullIslandTransmissionPassActive,
+        mediumFullMaterialTier: {
+          active: this.mediumFullMaterialTierActive,
+          runtimeMeshCount: this.mediumFullMaterialAssignments.size,
+          canonicalMaterialCount: this.mediumFullCanonicalMaterials.size,
+          skippedCustomPhysicalMaterials: this.mediumFullMaterialTierSkippedCustom,
+        },
+        recoveryPhase: this.webglRecoveryPhase,
+      },
+      streaming: {
+        detailPolicy: streaming.detailPolicy,
+        requested: streaming.fullIslandDetailRequested,
+        ready: streaming.fullIslandDetailReady,
+        progress: streaming.fullIslandDetailProgress,
+        visibleReadiness: streaming.visiblePackageReadiness,
+        residentPackages: streaming.residentPackageCount,
+        loadedPackages: streaming.loadedPackageCount,
+        effectiveCacheCapacity: streaming.effectiveCacheCapacity,
+        proxies: streaming.proxyPackageCount,
+        batches: streaming.gpuBatching.batchCount,
+        batchedSources: streaming.gpuBatching.batchedSourceCount,
+        liveRenderObjects: streaming.liveRenderObjectCount,
+        batchOccupancy: streaming.batchOccupancy,
+        microdetail: streaming.microdetail,
+        relevantPackages,
+      },
+      counts: {
+        districts: districts.length,
+        biomes: biomes.length,
+        authoredBuildings: Array.from(this.definitions.values()).filter((definition) => (
+          definition.category === 'academic-building'
+          || definition.category === 'entry-logistics-building'
+          || definition.category === 'authored-exterior-building'
+        )).length,
+        selectableDefinitions: this.definitions.size,
+      },
+      selected: selected ? {
+        id: selected.id,
+        name: selected.name,
+        category: selected.category,
+        packageId: selectedPackageId,
+        state: this.getObjectState(selected.id),
+      } : null,
+      camera: {
+        position: this.camera.position.toArray().map((value) => Number(value.toFixed(2))),
+        target: this.controls.target.toArray().map((value) => Number(value.toFixed(2))),
+      },
+      walk: {
+        active: walk.active,
+        grounded: walk.grounded,
+        positionWorld: walk.positionWorld,
+        speedKilometresPerHour: walk.speedKilometresPerHour,
+        collisionSpatialIndex: walk.collisionSpatialIndex,
+      },
+      academicDistrict: {
+        interiorAvailable: false,
+        cerebrumExternum: { available: false, phase: 'removed', mounted: false },
+      },
+      preparationMs: Number((performance.now() - startedAt).toFixed(3)),
     };
   }
 
@@ -7778,6 +9568,14 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     this.renderer.domElement.removeEventListener('pointerup', this.onPointerUp);
     this.renderer.domElement.removeEventListener('pointermove', this.onPointerMove);
     this.renderer.domElement.removeEventListener('dblclick', this.onDoubleClick);
+    this.renderer.domElement.removeEventListener('webglcontextlost', this.onWebglContextLost, false);
+    this.renderer.domElement.removeEventListener('webglcontextrestored', this.onWebglContextRestored, false);
+    document.removeEventListener('visibilitychange', this.onDocumentVisibilityChange);
+    if (this.hoverPickFrame !== null) cancelAnimationFrame(this.hoverPickFrame);
+    this.hoverPickFrame = null;
+    const gl = this.gl as WebGL2RenderingContext;
+    this.pendingGpuTimerQueries.forEach((pending) => gl.deleteQuery?.(pending.query));
+    this.pendingGpuTimerQueries.length = 0;
     this.controls.dispose();
     this.walkController.dispose();
     this.transformControls.dispose();
@@ -7785,6 +9583,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     this.saoPass.dispose();
     this.bloomPass.dispose();
     this.composer.dispose();
+    this.worldStreaming.setGpuWarmupHandler(null);
+    this.restoreMediumFullMaterialTier();
+    this.mediumFullCanonicalMaterials.forEach((material) => material.dispose());
+    this.mediumFullCanonicalMaterials.clear();
+    this.globalEnvironmentBatching?.dispose();
+    this.globalEnvironmentBatching = null;
     this.worldStreaming.dispose();
     this.renderer.dispose();
     this.labelRenderer.domElement.remove();

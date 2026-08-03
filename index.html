@@ -32,6 +32,60 @@
         </nav>
 
         <div class="top-actions">
+          <div class="full-detail-monitor" id="full-island-detail-monitor" data-state="streamed">
+            <button
+              class="full-detail-status-chip"
+              id="full-island-status-chip"
+              type="button"
+              aria-expanded="false"
+              aria-controls="full-island-status-card"
+              title="Full Island Detail status"
+            >
+              <span class="full-detail-status-dot" aria-hidden="true"></span>
+              <span class="full-detail-chip-copy">
+                <small>Full detail</small>
+                <strong id="full-island-status-chip-label">Streamed</strong>
+              </span>
+            </button>
+            <section
+              class="full-detail-status-card glass-panel"
+              id="full-island-status-card"
+              aria-labelledby="full-island-status-title"
+              hidden
+            >
+              <header class="full-detail-card-head">
+                <div>
+                  <span class="eyebrow">Full Island Detail</span>
+                  <h2 id="full-island-status-title">Streaming status</h2>
+                </div>
+                <button id="full-island-status-close" type="button" aria-label="Close Full Island Detail status">&times;</button>
+              </header>
+              <label class="full-detail-progress-label" for="full-island-status-progress">
+                <span id="full-island-status-progress-label">0 of 41 packages ready</span>
+                <progress id="full-island-status-progress" max="41" value="0">0 of 41</progress>
+              </label>
+              <p class="full-detail-card-summary" id="full-island-status-summary">Streamed Detail/Mid/Far rendering is active.</p>
+              <dl class="full-detail-telemetry">
+                <div><dt>Renderer</dt><dd id="full-island-renderer">&mdash;</dd></div>
+                <div><dt>Batching</dt><dd id="full-island-backend">&mdash;</dd></div>
+                <div><dt>DPR</dt><dd id="full-island-dpr">&mdash;</dd></div>
+                <div><dt>CPU p95</dt><dd id="full-island-cpu-p95">&mdash;</dd></div>
+                <div><dt>GPU p95</dt><dd id="full-island-gpu-p95">Unavailable</dd></div>
+                <div><dt>Draw calls</dt><dd id="full-island-draw-calls">&mdash;</dd></div>
+                <div><dt>Triangles</dt><dd id="full-island-triangles">&mdash;</dd></div>
+                <div><dt>GPU memory*</dt><dd id="full-island-memory">&mdash;</dd></div>
+              </dl>
+              <p class="full-detail-memory-note">*Lower-bound geometry and texture estimate. Browsers do not expose physical VRAM reliably.</p>
+              <p class="full-detail-failures" id="full-island-failures" hidden></p>
+              <div class="full-detail-card-actions">
+                <button id="full-island-retry" type="button" disabled>Retry failed</button>
+                <button id="full-island-lower-quality" type="button">Lower quality</button>
+                <button id="full-island-return-streamed" type="button">Return to streamed</button>
+                <button id="full-island-safe-session" type="button">Streamed this session</button>
+              </div>
+            </section>
+            <span id="full-island-status-announcer" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></span>
+          </div>
           <button class="icon-action" id="save-project" title="Protect the current building positions and scene edits as the manual saved layout">
             <span class="action-icon">💾</span><span class="action-label">Save</span>
           </button>
@@ -133,14 +187,14 @@
             </label>
           </div>
           <label class="full-detail-option" for="full-island-detail">
-            <input id="full-island-detail" type="checkbox" />
+            <input id="full-island-detail" type="checkbox" aria-describedby="full-island-detail-help full-island-detail-status" />
             <span class="full-detail-check" aria-hidden="true"></span>
             <span>
               <strong>Full island detail (12 GB VRAM+)</strong>
-              <small>For powerful discrete GPUs. Browser VRAM cannot be detected reliably.</small>
+              <small id="full-island-detail-help">For powerful discrete GPUs. Browser VRAM cannot be detected reliably.</small>
             </span>
           </label>
-          <p id="full-island-detail-status" class="full-detail-status" aria-live="polite"></p>
+          <p id="full-island-detail-status" class="full-detail-status"></p>
         </section>
 
         <div class="atlas-metrics">
@@ -181,6 +235,11 @@
               <span id="selection-ring">Ring 01</span>
               <span id="selection-archetype">Wet lab</span>
             </div>
+            <nav id="building-navigation" class="building-navigation" aria-label="Building navigation" hidden>
+              <button id="previous-building" type="button" aria-label="Select previous building">&larr; Previous</button>
+              <span id="building-navigation-position" aria-live="polite">Building 1 of 1</span>
+              <button id="next-building" type="button" aria-label="Select next building">Next &rarr;</button>
+            </nav>
           </div>
 
           <section class="inspector-section">
@@ -568,7 +627,8 @@
         <button class="layer active" data-layer="transit"><span class="layer-icon">⌁</span>Transit</button>
         <span class="layer-divider"></span>
         <button id="academic-audio-toggle" type="button" aria-pressed="false" title="Toggle quiet campus ambience"><span>♫</span><span class="utility-label">Audio muted</span></button>
-        <button id="debug-toggle" type="button" aria-pressed="false" title="Show Academic District collisions, lights, and scene statistics"><span>⌗</span><span class="utility-label">Debug</span></button>
+        <button id="performance-toggle" type="button" aria-pressed="false" title="Show zero-geometry performance statistics"><span>⌁</span><span class="utility-label">Performance</span></button>
+        <button id="debug-toggle" type="button" aria-pressed="false" title="Show Academic District collision and light helpers"><span>⌗</span><span class="utility-label">Helpers</span></button>
         <button id="fullscreen-toggle" title="Toggle fullscreen (F)"><span>⛶</span></button>
       </div>
 
@@ -629,7 +689,7 @@
         <div class="academic-map" id="academic-map-markers" aria-label="Stylized campus map"></div>
       </section>
 
-      <div id="debug-stats" class="debug-stats glass-panel" hidden aria-live="polite"></div>
+      <div id="debug-stats" class="debug-stats performance-stats glass-panel" hidden aria-live="polite" aria-label="Performance statistics"></div>
 
       <div class="toast-region" id="toast-region" aria-live="polite"></div>
       <div class="loading-screen" id="loading-screen">

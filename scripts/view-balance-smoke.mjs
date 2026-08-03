@@ -87,22 +87,41 @@ try {
 
   const academic = await page.evaluate(() => {
     const world = window.labIsland;
+    const academicPackage = world.worldStreaming.packages.get('academic-libraries-theoretical-labs');
     const definitions = Array.from(world.definitions.values()).filter((definition) => definition.category === 'academic-building');
     const buildings = definitions.map((definition) => {
       const root = world.objectGroups.get(definition.id);
       let runtimeInteriors = 0;
-      let closedDoors = 0;
+      const directClosedDoors = [];
       root?.traverse((object) => {
         if (object.userData.runtimeInterior === true) runtimeInteriors += 1;
-        if (object.name.includes('CLOSED') && object.name.includes('DOOR')) closedDoors += 1;
+        if (object.name.includes('CLOSED') && object.name.includes('DOOR')) directClosedDoors.push(object.name);
       });
+      const manifest = root?.children.find((object) => object.userData.gpuBatchMetadataAnchor === true);
+      const manifestedClosedDoors = (manifest?.userData.batchSourceNames ?? []).filter((name) => (
+        String(name).includes('CLOSED') && String(name).includes('DOOR')
+      ));
+      const authorityClosedDoors = (academicPackage?.authoritySources ?? []).filter((entry) => {
+        const selectableId = String(
+          entry.semanticOwner?.userData.individualSelectableId
+          ?? entry.semanticOwner?.userData.selectableId
+          ?? entry.source?.userData.individualSelectableId
+          ?? entry.source?.userData.selectableId
+          ?? '',
+        );
+        return selectableId === definition.id
+          && entry.source?.name.includes('CLOSED')
+          && entry.source?.name.includes('DOOR');
+      });
+      const closedDoorNames = [...new Set([...directClosedDoors, ...manifestedClosedDoors])];
       return {
         id: definition.id,
         canEnter: world.canEnterInterior(definition.id),
         definitionInteriorAvailable: definition.interiorAvailable,
         rootInteriorAvailable: root?.userData.interiorAvailable,
         runtimeInteriors,
-        closedDoors,
+        closedDoors: closedDoorNames.length,
+        collidableClosedDoors: authorityClosedDoors.filter((entry) => entry.source.userData.navObstacle === true).length,
       };
     });
     const district = world.objectGroups.get('academic-libraries-theoretical-labs');
@@ -124,7 +143,8 @@ try {
       || building.definitionInteriorAvailable !== false
       || building.rootInteriorAvailable !== false
       || building.runtimeInteriors !== 0
-      || building.closedDoors < 1)) {
+      || building.closedDoors < 1
+      || building.collidableClosedDoors < 1)) {
     throw new Error(`Academic removal audit failed: ${JSON.stringify(academic, null, 2)}`);
   }
 

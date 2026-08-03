@@ -38,12 +38,32 @@ export interface WalkSnapshot {
   movementKeys: string[];
   direction: [number, number, number];
   safetyRecoveries: number;
+  collisionSpatialIndex: WalkCollisionSpatialIndexSnapshot;
+}
+
+export interface WalkCollisionSpatialIndexSnapshot {
+  cellSizeWorld: number;
+  cellSizeMetres: number;
+  occupiedCellCount: number;
+  residentCellCount: number;
+  residentCandidates: WalkNavigationSpatialCounts;
+  totalCandidates: WalkNavigationSpatialCounts;
+}
+
+export interface WalkNavigationSpatialCounts {
+  walkables: number;
+  obstacles: number;
+  accessBounds: number;
+  underwalkAccessVolumes: number;
+  underwalkSurfaces: number;
+  barriers: number;
 }
 
 interface WalkControllerOptions {
   camera: THREE.PerspectiveCamera;
   element: HTMLElement;
   navigationRoot: THREE.Object3D;
+  navigationAuthorityRoots?: () => readonly THREE.Object3D[];
   onLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
   onTurboChange?: (enabled: boolean) => void;
   onInteract?: () => void;
@@ -90,14 +110,47 @@ interface NavigationObstacle {
   roundedFootprintRadius: number;
 }
 
+type NavigationSpatialCandidateKind =
+  | 'walkables'
+  | 'obstacles'
+  | 'accessBounds'
+  | 'underwalkAccessVolumes'
+  | 'underwalkSurfaces'
+  | 'barriers';
+type NavigationSpatialCell = Partial<Record<NavigationSpatialCandidateKind, number[]>>;
+type NavigationSpatialBuckets = Record<NavigationSpatialCandidateKind, number[]>;
+type NavigationSpatialCounts = WalkNavigationSpatialCounts;
+
+const createNavigationSpatialBuckets = (): NavigationSpatialBuckets => ({
+  walkables: [],
+  obstacles: [],
+  accessBounds: [],
+  underwalkAccessVolumes: [],
+  underwalkSurfaces: [],
+  barriers: [],
+});
+
+const createNavigationSpatialCounts = (): NavigationSpatialCounts => ({
+  walkables: 0,
+  obstacles: 0,
+  accessBounds: 0,
+  underwalkAccessVolumes: 0,
+  underwalkSurfaces: 0,
+  barriers: 0,
+});
+
 const MAX_GROUNDED_DROP = WALK_STEP_HEIGHT + 0.006;
 const NAVIGATION_LAYER_EPSILON = 0.003;
+const NAVIGATION_SPATIAL_CELL_SIZE_METRES = 80;
+const NAVIGATION_SPATIAL_CELL_SIZE = metresToWorldUnits(NAVIGATION_SPATIAL_CELL_SIZE_METRES);
+const NAVIGATION_SPATIAL_MAX_CELLS_PER_CANDIDATE = 512;
 
 export class WalkController {
   readonly pointerControls: PointerLockControls;
   private readonly camera: THREE.PerspectiveCamera;
   private readonly element: HTMLElement;
   private readonly navigationRoot: THREE.Object3D;
+  private readonly navigationAuthorityRoots?: () => readonly THREE.Object3D[];
   private readonly onLockChange?: (locked: boolean, dragLookActive?: boolean) => void;
   private readonly onTurboChange?: (enabled: boolean) => void;
   private readonly onInteract?: () => void;
@@ -113,6 +166,23 @@ export class WalkController {
   private readonly accessBounds: THREE.Box3[] = [];
   private readonly underwalkAccessVolumes: NavigationAccessVolume[] = [];
   private readonly barrierSegments: NavigationBarrierSegment[] = [];
+  // Cells store indices into the arrays above; those arrays remain the exact
+  // authored authority and retain their existing browser-test accessibility.
+  private readonly navigationSpatialCells = new Map<string, NavigationSpatialCell>();
+  private readonly globalSpatialCandidates = createNavigationSpatialBuckets();
+  private readonly spatialQueryScratch = createNavigationSpatialBuckets();
+  private readonly spatialQuerySeen: Record<NavigationSpatialCandidateKind, Set<number>> = {
+    walkables: new Set(),
+    obstacles: new Set(),
+    accessBounds: new Set(),
+    underwalkAccessVolumes: new Set(),
+    underwalkSurfaces: new Set(),
+    barriers: new Set(),
+  };
+  private readonly indexedSpatialCounts = createNavigationSpatialCounts();
+  private readonly residentSpatialCandidates = createNavigationSpatialCounts();
+  private readonly walkableQueryObjects: THREE.Object3D[] = [];
+  private residentSpatialCellCount = 0;
   private readonly keys = new Set<string>();
   private readonly direction = new THREE.Vector3();
   private readonly right = new THREE.Vector3();
@@ -153,6 +223,7 @@ export class WalkController {
     this.camera = options.camera;
     this.element = options.element;
     this.navigationRoot = options.navigationRoot;
+    this.navigationAuthorityRoots = options.navigationAuthorityRoots;
     this.onLockChange = options.onLockChange;
     this.onTurboChange = options.onTurboChange;
     this.onInteract = options.onInteract;
@@ -314,6 +385,187 @@ export class WalkController {
     return Number((worldUnitsToMetres(this.walkSpeed) * 3.6).toFixed(1));
   }
 
+  private spatialCellCoordinate(value: number) {
+    return Math.floor(value / NAVIGATION_SPATIAL_CELL_SIZE);
+  }
+
+  private spatialCellKey(cellX: number, cellZ: number) {
+    return `${cellX},${cellZ}`;
+  }
+
+  private addSpatialBounds(
+    kind: NavigationSpatialCandidateKind,
+    index: number,
+    bounds: THREE.Box3,
+    padding = 0,
+  ) {
+    const minimumX = bounds.min.x - padding;
+    const maximumX = bounds.max.x + padding;
+    const minimumZ = bounds.min.z - padding;
+    const maximumZ = bounds.max.z + padding;
+    if (
+      bounds.isEmpty()
+      || !Number.isFinite(minimumX)
+      || !Number.isFinite(maximumX)
+      || !Number.isFinite(minimumZ)
+      || !Number.isFinite(maximumZ)
+    ) {
+      this.globalSpatialCandidates[kind].push(index);
+      return;
+    }
+    const minimumCellX = this.spatialCellCoordinate(minimumX);
+    const maximumCellX = this.spatialCellCoordinate(maximumX);
+    const minimumCellZ = this.spatialCellCoordinate(minimumZ);
+    const maximumCellZ = this.spatialCellCoordinate(maximumZ);
+    const coveredCellCount = (maximumCellX - minimumCellX + 1)
+      * (maximumCellZ - minimumCellZ + 1);
+    // Island terrain and complete ring-road meshes cover most of the map.
+    // Keeping these few broad surfaces in a global bucket avoids creating
+    // tens of thousands of mostly empty cell records while every local
+    // collider and walkable still benefits from the 80-metre hash.
+    if (coveredCellCount > NAVIGATION_SPATIAL_MAX_CELLS_PER_CANDIDATE) {
+      this.globalSpatialCandidates[kind].push(index);
+      return;
+    }
+    for (let cellX = minimumCellX; cellX <= maximumCellX; cellX += 1) {
+      for (let cellZ = minimumCellZ; cellZ <= maximumCellZ; cellZ += 1) {
+        const key = this.spatialCellKey(cellX, cellZ);
+        let cell = this.navigationSpatialCells.get(key);
+        if (!cell) {
+          cell = {};
+          this.navigationSpatialCells.set(key, cell);
+        }
+        const bucket = cell[kind] ?? [];
+        bucket.push(index);
+        cell[kind] = bucket;
+      }
+    }
+  }
+
+  private currentNavigationSpatialCounts(): NavigationSpatialCounts {
+    return {
+      walkables: this.walkables.length,
+      obstacles: this.obstacleBounds.length,
+      accessBounds: this.accessBounds.length,
+      underwalkAccessVolumes: this.underwalkAccessVolumes.length,
+      underwalkSurfaces: this.underwalkSurfaces.length,
+      barriers: this.barrierSegments.length,
+    };
+  }
+
+  private rebuildNavigationSpatialIndex() {
+    this.navigationSpatialCells.clear();
+    (Object.keys(this.globalSpatialCandidates) as NavigationSpatialCandidateKind[])
+      .forEach((kind) => {
+        this.globalSpatialCandidates[kind].length = 0;
+        this.spatialQueryScratch[kind].length = 0;
+        this.spatialQuerySeen[kind].clear();
+        this.residentSpatialCandidates[kind] = 0;
+      });
+    this.residentSpatialCellCount = 0;
+
+    this.walkables.forEach((walkable, index) => {
+      const bounds = new THREE.Box3().setFromObject(walkable, true);
+      this.addSpatialBounds('walkables', index, bounds);
+    });
+    this.obstacleBounds.forEach((bounds, index) => {
+      this.addSpatialBounds('obstacles', index, bounds, WALK_RADIUS);
+    });
+    this.accessBounds.forEach((bounds, index) => {
+      this.addSpatialBounds('accessBounds', index, bounds);
+    });
+    this.underwalkAccessVolumes.forEach((volume, index) => {
+      const bounds = new THREE.Box3().setFromObject(volume.object, true);
+      this.addSpatialBounds('underwalkAccessVolumes', index, bounds);
+    });
+    this.underwalkSurfaces.forEach((surface, index) => {
+      this.addSpatialBounds('underwalkSurfaces', index, surface.bounds, WALK_RADIUS);
+    });
+    this.barrierSegments.forEach((barrier, index) => {
+      const padding = barrier.radius + WALK_RADIUS;
+      const bounds = new THREE.Box3(
+        new THREE.Vector3(
+          Math.min(barrier.start.x, barrier.end.x) - padding,
+          barrier.minY,
+          Math.min(barrier.start.z, barrier.end.z) - padding,
+        ),
+        new THREE.Vector3(
+          Math.max(barrier.start.x, barrier.end.x) + padding,
+          barrier.maxY,
+          Math.max(barrier.start.z, barrier.end.z) + padding,
+        ),
+      );
+      this.addSpatialBounds('barriers', index, bounds);
+    });
+
+    Object.assign(this.indexedSpatialCounts, this.currentNavigationSpatialCounts());
+  }
+
+  private ensureNavigationSpatialIndexCurrent() {
+    // Keep the hot movement path allocation-free while still detecting the
+    // direct array push/pop operations used by public browser regressions.
+    const changed = this.walkables.length !== this.indexedSpatialCounts.walkables
+      || this.obstacleBounds.length !== this.indexedSpatialCounts.obstacles
+      || this.accessBounds.length !== this.indexedSpatialCounts.accessBounds
+      || this.underwalkAccessVolumes.length !== this.indexedSpatialCounts.underwalkAccessVolumes
+      || this.underwalkSurfaces.length !== this.indexedSpatialCounts.underwalkSurfaces
+      || this.barrierSegments.length !== this.indexedSpatialCounts.barriers;
+    if (changed) this.rebuildNavigationSpatialIndex();
+  }
+
+  private queryNavigationSpatialIndices(
+    kind: NavigationSpatialCandidateKind,
+    x: number,
+    z: number,
+    padding = 0,
+  ) {
+    this.ensureNavigationSpatialIndexCurrent();
+    const result = this.spatialQueryScratch[kind];
+    const seen = this.spatialQuerySeen[kind];
+    result.length = 0;
+    seen.clear();
+    let residentCellCount = 0;
+    const minimumCellX = this.spatialCellCoordinate(x - padding);
+    const maximumCellX = this.spatialCellCoordinate(x + padding);
+    const minimumCellZ = this.spatialCellCoordinate(z - padding);
+    const maximumCellZ = this.spatialCellCoordinate(z + padding);
+    for (let cellX = minimumCellX; cellX <= maximumCellX; cellX += 1) {
+      for (let cellZ = minimumCellZ; cellZ <= maximumCellZ; cellZ += 1) {
+        const cell = this.navigationSpatialCells.get(this.spatialCellKey(cellX, cellZ));
+        if (!cell) continue;
+        residentCellCount += 1;
+        cell[kind]?.forEach((index) => {
+          if (seen.has(index)) return;
+          seen.add(index);
+          result.push(index);
+        });
+      }
+    }
+    this.globalSpatialCandidates[kind].forEach((index) => {
+      if (seen.has(index)) return;
+      seen.add(index);
+      result.push(index);
+    });
+    // Preserve the former global-array ordering for overlapping surfaces and
+    // for the barrier selected as the movement-slide authority.
+    result.sort((left, right) => left - right);
+    this.residentSpatialCellCount = residentCellCount;
+    this.residentSpatialCandidates[kind] = result.length;
+    return result;
+  }
+
+  getNavigationSpatialIndexSnapshot(): WalkCollisionSpatialIndexSnapshot {
+    this.ensureNavigationSpatialIndexCurrent();
+    return {
+      cellSizeWorld: NAVIGATION_SPATIAL_CELL_SIZE,
+      cellSizeMetres: NAVIGATION_SPATIAL_CELL_SIZE_METRES,
+      occupiedCellCount: this.navigationSpatialCells.size,
+      residentCellCount: this.residentSpatialCellCount,
+      residentCandidates: { ...this.residentSpatialCandidates },
+      totalCandidates: this.currentNavigationSpatialCounts(),
+    };
+  }
+
   refreshNavigation() {
     this.walkables.length = 0;
     this.underwalkSurfaces.length = 0;
@@ -323,7 +575,7 @@ export class WalkController {
     this.underwalkAccessVolumes.length = 0;
     this.barrierSegments.length = 0;
     this.navigationRoot.updateMatrixWorld(true);
-    this.navigationRoot.traverse((child) => {
+    const inspectNavigationObject = (child: THREE.Object3D) => {
       if (child.userData.navAccess && child instanceof THREE.Mesh) {
         const bounds = new THREE.Box3().setFromObject(child, true);
         if (!bounds.isEmpty()) this.accessBounds.push(bounds);
@@ -422,7 +674,10 @@ export class WalkController {
           }
         }
       }
-    });
+    };
+    this.navigationRoot.traverse(inspectNavigationObject);
+    this.navigationAuthorityRoots?.().forEach((root) => root.traverse(inspectNavigationObject));
+    this.rebuildNavigationSpatialIndex();
   }
 
   update(delta: number) {
@@ -556,6 +811,7 @@ export class WalkController {
       movementKeys: Array.from(this.keys).sort(),
       direction: this.direction.toArray().map((value) => Number(value.toFixed(3))) as [number, number, number],
       safetyRecoveries: this.safetyRecoveries,
+      collisionSpatialIndex: this.getNavigationSpatialIndexSnapshot(),
     };
   }
 
@@ -585,7 +841,13 @@ export class WalkController {
     this.raycaster.set(this.rayOrigin, this.down);
     this.raycaster.near = 0;
     this.raycaster.far = 80;
-    const intersections = this.raycaster.intersectObjects(this.walkables, false);
+    const walkableIndices = this.queryNavigationSpatialIndices('walkables', x, z);
+    this.walkableQueryObjects.length = 0;
+    walkableIndices.forEach((index) => {
+      const walkable = this.walkables[index];
+      if (walkable) this.walkableQueryObjects.push(walkable);
+    });
+    const intersections = this.raycaster.intersectObjects(this.walkableQueryObjects, false);
     const hit = intersections[0];
     if (!hit) return null;
     if (options.trackSurface) {
@@ -632,20 +894,23 @@ export class WalkController {
     insideAccess = false,
   ) {
     if (insideAccess) return -1;
-    return this.obstacleBounds.findIndex((bounds, index) => {
+    const obstacleIndices = this.queryNavigationSpatialIndices('obstacles', x, z);
+    for (const index of obstacleIndices) {
+      const bounds = this.obstacleBounds[index];
+      if (!bounds) continue;
       const broadPhaseHit = x >= bounds.min.x - WALK_RADIUS
         && x <= bounds.max.x + WALK_RADIUS
         && z >= bounds.min.z - WALK_RADIUS
         && z <= bounds.max.z + WALK_RADIUS
         && bodyTop >= bounds.min.y
         && bodyBottom <= bounds.max.y;
-      if (!broadPhaseHit) return false;
+      if (!broadPhaseHit) continue;
 
       const obstacle = this.navigationObstacles[index];
       // Synthetic test obstacles and unsupported instanced colliders retain
       // the conservative box behavior; authored district meshes take the
       // precise local-footprint path below.
-      if (!obstacle) return true;
+      if (!obstacle) return index;
       this.obstacleLocalBottom
         .set(x, bodyBottom, z)
         .applyMatrix4(obstacle.inverseWorldMatrix);
@@ -664,7 +929,7 @@ export class WalkController {
         radiusX,
         radiusY,
         radiusZ,
-      )) return false;
+      )) continue;
 
       if (obstacle.circularFootprint) {
         const centerX = (localBounds.min.x + localBounds.max.x) * 0.5;
@@ -675,7 +940,8 @@ export class WalkController {
         const localZ = (this.obstacleLocalBottom.z + this.obstacleLocalTop.z) * 0.5;
         const normalizedX = (localX - centerX) / Math.max(0.001, extentX);
         const normalizedZ = (localZ - centerZ) / Math.max(0.001, extentZ);
-        return normalizedX * normalizedX + normalizedZ * normalizedZ <= 1;
+        if (normalizedX * normalizedX + normalizedZ * normalizedZ <= 1) return index;
+        continue;
       }
       if (obstacle.roundedFootprintRadius > 0) {
         const centerX = (localBounds.min.x + localBounds.max.x) * 0.5;
@@ -691,10 +957,12 @@ export class WalkController {
         const cornerZ = Math.max(0, Math.abs(localZ - centerZ) - coreHalfZ);
         const normalizedX = cornerX / Math.max(0.001, cornerRadius + radiusX);
         const normalizedZ = cornerZ / Math.max(0.001, cornerRadius + radiusZ);
-        return normalizedX * normalizedX + normalizedZ * normalizedZ <= 1;
+        if (normalizedX * normalizedX + normalizedZ * normalizedZ <= 1) return index;
+        continue;
       }
-      return true;
-    });
+      return index;
+    }
+    return -1;
   }
 
   private localBodySegmentIntersectsBounds(
@@ -723,14 +991,19 @@ export class WalkController {
   }
 
   private isInsideNavigationAccess(x: number, z: number, bodyBottom: number, bodyTop: number) {
-    return this.accessBounds.some(
-      (bounds) =>
-        x >= bounds.min.x + WALK_RADIUS
-        && x <= bounds.max.x - WALK_RADIUS
-        && z >= bounds.min.z + WALK_RADIUS
-        && z <= bounds.max.z - WALK_RADIUS
-        && bodyTop >= bounds.min.y
-        && bodyBottom <= bounds.max.y,
+    const accessIndices = this.queryNavigationSpatialIndices('accessBounds', x, z);
+    return accessIndices.some(
+      (index) => {
+        const bounds = this.accessBounds[index];
+        return Boolean(bounds) && (
+          x >= bounds.min.x + WALK_RADIUS
+          && x <= bounds.max.x - WALK_RADIUS
+          && z >= bounds.min.z + WALK_RADIUS
+          && z <= bounds.max.z - WALK_RADIUS
+          && bodyTop >= bounds.min.y
+          && bodyBottom <= bounds.max.y
+        );
+      },
     );
   }
 
@@ -765,8 +1038,16 @@ export class WalkController {
     bodyBottom: number,
     bodyTop: number,
   ) {
-    const insideUnderwalkAccess = this.underwalkAccessVolumes.some(
-      (volume) => this.isInsideAccessVolume(volume, x, z, bodyBottom, bodyTop),
+    const underwalkAccessIndices = this.queryNavigationSpatialIndices(
+      'underwalkAccessVolumes',
+      x,
+      z,
+    );
+    const insideUnderwalkAccess = underwalkAccessIndices.some(
+      (index) => {
+        const volume = this.underwalkAccessVolumes[index];
+        return Boolean(volume) && this.isInsideAccessVolume(volume, x, z, bodyBottom, bodyTop);
+      },
     );
     if (insideUnderwalkAccess) return null;
     const sampleOffset = WALK_RADIUS * 0.78;
@@ -777,7 +1058,10 @@ export class WalkController {
       [0, sampleOffset],
       [0, -sampleOffset],
     ];
-    for (const surface of this.underwalkSurfaces) {
+    const surfaceIndices = this.queryNavigationSpatialIndices('underwalkSurfaces', x, z);
+    for (const index of surfaceIndices) {
+      const surface = this.underwalkSurfaces[index];
+      if (!surface) continue;
       const { bounds, object } = surface;
       if (
         x < bounds.min.x - WALK_RADIUS
@@ -831,8 +1115,10 @@ export class WalkController {
   }
 
   private findBarrierCollision(x: number, z: number, bodyBottom: number, bodyTop: number) {
-    return this.barrierSegments.find((barrier) => {
-      if (bodyTop < barrier.minY || bodyBottom > barrier.maxY) return false;
+    const barrierIndices = this.queryNavigationSpatialIndices('barriers', x, z);
+    for (const index of barrierIndices) {
+      const barrier = this.barrierSegments[index];
+      if (!barrier || bodyTop < barrier.minY || bodyBottom > barrier.maxY) continue;
       const abX = barrier.end.x - barrier.start.x;
       const abZ = barrier.end.z - barrier.start.z;
       const lengthSquared = abX * abX + abZ * abZ;
@@ -848,8 +1134,9 @@ export class WalkController {
       const dx = x - closestX;
       const dz = z - closestZ;
       const clearance = WALK_RADIUS + barrier.radius;
-      return dx * dx + dz * dz <= clearance * clearance;
-    }) ?? null;
+      if (dx * dx + dz * dz <= clearance * clearance) return barrier;
+    }
+    return null;
   }
 
   private canTraverseGroundTransition(nextGround: number) {

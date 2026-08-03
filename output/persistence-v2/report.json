@@ -69,7 +69,7 @@
     "persistence": {
       "schema": "youtopy.lab-island/2.0",
       "revision": 1,
-      "savedAt": "2026-08-02T21:37:37.965Z",
+      "savedAt": "2026-08-03T13:09:50.311Z",
       "source": "current",
       "recoveryRevisionCount": 1,
       "manualSaveAvailable": false,
@@ -165,15 +165,7 @@
       "expected": 7,
       "present": 7,
       "userHiddenIds": [],
-      "effectivelyVisibleIds": [
-        "entry-logistics-building-l1",
-        "entry-logistics-building-l2",
-        "entry-logistics-building-l3",
-        "entry-logistics-building-l4",
-        "entry-logistics-building-l5",
-        "entry-logistics-building-l6",
-        "entry-logistics-building-l7"
-      ]
+      "effectivelyVisibleIds": []
     },
     "welcomePool": {
       "expected": true,
@@ -182,10 +174,10 @@
       "effectivelyVisible": true
     }
   },
-  "importedId": "imported-persistent-interior-triangle-mscbnmoa-1",
+  "importedId": "imported-persistent-interior-triangle-msd8zhzk-1",
   "importRestored": {
     "definition": {
-      "id": "imported-persistent-interior-triangle-mscbnmoa-1",
+      "id": "imported-persistent-interior-triangle-msd8zhzk-1",
       "name": "persistent-interior-triangle",
       "sourceLabel": "persistent-interior-triangle.glb",
       "category": "imported",
@@ -255,12 +247,12 @@
     "persistence": {
       "schema": "youtopy.lab-island/2.0",
       "revision": 8,
-      "savedAt": "2026-08-02T21:38:08.636Z",
+      "savedAt": "2026-08-03T13:11:09.704Z",
       "source": "current",
       "recoveryRevisionCount": 8,
       "manualSaveAvailable": true,
       "manualSaveRevision": 8,
-      "manualSavedAt": "2026-08-02T21:38:08.636Z",
+      "manualSavedAt": "2026-08-03T13:11:09.704Z",
       "assetCount": 1,
       "missingAssetIds": [],
       "persistentStorageGranted": false,
@@ -272,12 +264,12 @@
   "recovered": {
     "schema": "youtopy.lab-island/2.0",
     "revision": 8,
-    "savedAt": "2026-08-02T21:38:08.636Z",
+    "savedAt": "2026-08-03T13:11:09.704Z",
     "source": "recovery",
     "recoveryRevisionCount": 8,
     "manualSaveAvailable": true,
     "manualSaveRevision": 8,
-    "manualSavedAt": "2026-08-02T21:38:08.636Z",
+    "manualSavedAt": "2026-08-03T13:11:09.704Z",
     "assetCount": 1,
     "missingAssetIds": [],
     "persistentStorageGranted": false,

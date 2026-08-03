@@ -1,193 +1,204 @@
 {
   "target": "1080p Medium / integrated-GPU laptop; headless timing is diagnostic only",
-  "initialReadyMs": 3533,
+  "initialReadyMs": 4817,
   "samples": [
     {
       "name": "overview-explore",
       "kind": "overview",
-      "drawCalls": 715,
-      "triangles": 333548,
-      "visibleMeshes": 712,
-      "rendererGeometries": 635,
+      "drawCalls": 118,
+      "triangles": 330428,
+      "visibleMeshes": 121,
+      "rendererGeometries": 44,
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 25.7,
-        "p95": 50.2,
-        "above50Percent": 11.54
+        "p50": 16.7,
+        "p95": 73.6,
+        "above33Percent": 13.79,
+        "above50Percent": 13.79
       },
       "loadedPackages": 0,
       "residentPackages": 0,
-      "activeAnimationNodes": 8
+      "activeAnimationNodes": 3
     },
     {
       "name": "close-forensic-cyberforensic-lab",
       "kind": "close",
-      "drawCalls": 143,
-      "triangles": 513792,
-      "visibleMeshes": 891,
-      "rendererGeometries": 694,
-      "effectivePixelRatio": 0.85,
+      "drawCalls": 33,
+      "triangles": 330680,
+      "visibleMeshes": 124,
+      "rendererGeometries": 44,
+      "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 25.3,
-        "p95": 45.8,
-        "above50Percent": 7.69
+        "p50": 16.7,
+        "p95": 73.6,
+        "above33Percent": 13.79,
+        "above50Percent": 13.79
       },
-      "loadedPackages": 2,
-      "residentPackages": 1,
-      "activeAnimationNodes": 19
+      "loadedPackages": 0,
+      "residentPackages": 0,
+      "activeAnimationNodes": 3
     },
     {
       "name": "close-bioanalytics-lab",
       "kind": "close",
-      "drawCalls": 146,
-      "triangles": 720256,
-      "visibleMeshes": 1079,
-      "rendererGeometries": 755,
+      "drawCalls": 58,
+      "triangles": 510672,
+      "visibleMeshes": 153,
+      "rendererGeometries": 159,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 25.3,
-        "p95": 45.8,
-        "above50Percent": 7.69
+        "p50": 16.7,
+        "p95": 38.8,
+        "above33Percent": 8,
+        "above50Percent": 6
       },
-      "loadedPackages": 3,
-      "residentPackages": 2,
-      "activeAnimationNodes": 75
+      "loadedPackages": 1,
+      "residentPackages": 1,
+      "activeAnimationNodes": 14
     },
     {
       "name": "close-organic-chemistry-labs",
       "kind": "close",
-      "drawCalls": 136,
-      "triangles": 476236,
-      "visibleMeshes": 997,
-      "rendererGeometries": 805,
+      "drawCalls": 1,
+      "triangles": 473116,
+      "visibleMeshes": 163,
+      "rendererGeometries": 266,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 23.7,
-        "p95": 42.5,
-        "above50Percent": 3.7
+        "p50": 16.7,
+        "p95": 277.3,
+        "above33Percent": 18.75,
+        "above50Percent": 18.75
       },
-      "loadedPackages": 6,
+      "loadedPackages": 4,
       "residentPackages": 1,
-      "activeAnimationNodes": 158
+      "activeAnimationNodes": 153
     },
     {
       "name": "close-biochemistry-labs",
       "kind": "close",
-      "drawCalls": 127,
-      "triangles": 651066,
-      "visibleMeshes": 1174,
-      "rendererGeometries": 850,
+      "drawCalls": 69,
+      "triangles": 647946,
+      "visibleMeshes": 187,
+      "rendererGeometries": 294,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 24,
-        "p95": 35.5,
-        "above50Percent": 3.45
+        "p50": 16.7,
+        "p95": 31.5,
+        "above33Percent": 8.33,
+        "above50Percent": 8.33
       },
-      "loadedPackages": 7,
+      "loadedPackages": 6,
       "residentPackages": 2,
-      "activeAnimationNodes": 226
+      "activeAnimationNodes": 221
     },
     {
       "name": "close-genomics-labs",
       "kind": "close",
-      "drawCalls": 136,
-      "triangles": 610422,
-      "visibleMeshes": 993,
-      "rendererGeometries": 905,
+      "drawCalls": 80,
+      "triangles": 607302,
+      "visibleMeshes": 178,
+      "rendererGeometries": 294,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 23.2,
-        "p95": 40.1,
-        "above50Percent": 7.14
+        "p50": 16.6,
+        "p95": 73.1,
+        "above33Percent": 14.29,
+        "above50Percent": 14.29
       },
-      "loadedPackages": 7,
+      "loadedPackages": 6,
       "residentPackages": 2,
-      "activeAnimationNodes": 92
+      "activeAnimationNodes": 87
     },
     {
       "name": "district-boundary-walk",
       "kind": "close",
-      "drawCalls": 536,
-      "triangles": 737024,
-      "visibleMeshes": 1081,
-      "rendererGeometries": 942,
+      "drawCalls": 118,
+      "triangles": 733904,
+      "visibleMeshes": 173,
+      "rendererGeometries": 339,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 27.5,
-        "p95": 63.5,
-        "above50Percent": 15.79
+        "p50": 16.6,
+        "p95": 73.1,
+        "above33Percent": 14.29,
+        "above50Percent": 14.29
       },
       "loadedPackages": 8,
       "residentPackages": 2,
-      "activeAnimationNodes": 179
+      "activeAnimationNodes": 174
     },
     {
       "name": "overview-plan",
       "kind": "overview",
-      "drawCalls": 446,
-      "triangles": 333548,
-      "visibleMeshes": 712,
-      "rendererGeometries": 942,
+      "drawCalls": 103,
+      "triangles": 330428,
+      "visibleMeshes": 121,
+      "rendererGeometries": 339,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 27.5,
-        "p95": 63.5,
-        "above50Percent": 15.79
+        "p50": 16.6,
+        "p95": 38.1,
+        "above33Percent": 8.33,
+        "above50Percent": 5.56
       },
       "loadedPackages": 8,
       "residentPackages": 0,
-      "activeAnimationNodes": 8
+      "activeAnimationNodes": 3
     },
     {
       "name": "city-facing",
       "kind": "close",
-      "drawCalls": 278,
-      "triangles": 527052,
-      "visibleMeshes": 1042,
-      "rendererGeometries": 983,
+      "drawCalls": 62,
+      "triangles": 523932,
+      "visibleMeshes": 169,
+      "rendererGeometries": 343,
       "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 27.1,
-        "p95": 50.5,
-        "above50Percent": 9.09
+        "p50": 16.7,
+        "p95": 86.1,
+        "above33Percent": 10.26,
+        "above50Percent": 10.26
       },
       "loadedPackages": 8,
       "residentPackages": 1,
-      "activeAnimationNodes": 115
+      "activeAnimationNodes": 110
     },
     {
       "name": "night",
       "kind": "close",
-      "drawCalls": 278,
-      "triangles": 526800,
-      "visibleMeshes": 1039,
-      "rendererGeometries": 983,
-      "effectivePixelRatio": 0.75,
+      "drawCalls": 62,
+      "triangles": 523680,
+      "visibleMeshes": 166,
+      "rendererGeometries": 343,
+      "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 27.1,
-        "p95": 45.1,
-        "above50Percent": 5
+        "p50": 16.7,
+        "p95": 86.1,
+        "above33Percent": 10.26,
+        "above50Percent": 10.26
       },
       "loadedPackages": 8,
       "residentPackages": 1,
-      "activeAnimationNodes": 115
+      "activeAnimationNodes": 110
     },
     {
       "name": "rain",
       "kind": "close",
-      "drawCalls": 279,
-      "triangles": 526800,
-      "visibleMeshes": 1039,
-      "rendererGeometries": 984,
-      "effectivePixelRatio": 0.75,
+      "drawCalls": 63,
+      "triangles": 523680,
+      "visibleMeshes": 166,
+      "rendererGeometries": 344,
+      "effectivePixelRatio": 0.85,
       "frameTimeMs": {
-        "p50": 22.5,
-        "p95": 43,
-        "above50Percent": 0
+        "p50": 16.7,
+        "p95": 21.8,
+        "above33Percent": 1.75,
+        "above50Percent": 1.75
       },
       "loadedPackages": 8,
       "residentPackages": 1,
-      "activeAnimationNodes": 115
+      "activeAnimationNodes": 110
     }
   ],
   "packageBudgetViolations": [],

@@ -2456,6 +2456,42 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
   };
 }
 
+/**
+ * Explicitly classifies only named, physically small decorative meshes as
+ * screen-size-adaptive microdetail. Architectural geometry remains mandatory
+ * by default, including every mass, roof, facade, entrance and landmark.
+ */
+function tagExplicitDistrictMicrodetail(root: THREE.Group) {
+  const decorativeName = /(?:STATUS|INDICATOR|LED|PIXEL|GLYPH|TICK|RIVET|BOLT|SPARK|PULSE|BEACON|BLINK|LANTERN|WARNING[_ -]?LIGHT|SECURITY[_ -]?LIGHT|GUIDANCE[_ -]?LIGHT|SAMPLE[_ -]?LIGHT|SIGNAGE[_ -]?MARK)/i;
+  const localSize = new THREE.Vector3();
+  const worldScale = new THREE.Vector3();
+  let tagged = 0;
+  root.updateMatrixWorld(true);
+  root.traverse((object) => {
+    if (!(object instanceof THREE.Mesh)
+      || object.userData.renderImportance === 'mandatory'
+      || object.userData.renderImportance === 'micro'
+      || object.userData.navObstacle === true
+      || object.userData.walkable === true
+      || !decorativeName.test(object.name)) return;
+    object.geometry.computeBoundingBox();
+    const bounds = object.geometry.boundingBox;
+    if (!bounds || bounds.isEmpty()) return;
+    bounds.getSize(localSize);
+    object.getWorldScale(worldScale);
+    localSize.set(
+      localSize.x * Math.abs(worldScale.x),
+      localSize.y * Math.abs(worldScale.y),
+      localSize.z * Math.abs(worldScale.z),
+    );
+    if (Math.max(localSize.x, localSize.y, localSize.z) > 0.28) return;
+    object.userData.renderImportance = 'micro';
+    object.userData.microDetail = true;
+    tagged += 1;
+  });
+  root.userData.explicitMicrodetailCount = tagged;
+}
+
 export interface ProceduralModel {
   group: THREE.Group;
   labelHeight: number;
@@ -2570,10 +2606,19 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   // Its actual buildings remain collision obstacles, while the slab can be
   // approached from every side at normal walking step height.
   plot.userData.navObstacle = definition.id !== 'dark-center-lab-megabuilding'
+    && definition.id !== 'corporate-core'
     && !isIndustrialDistrict
     && !isAcademicDistrict
     && !isEntryLogisticsDistrict;
   plot.userData.solidFoundation = true;
+  if (definition.id === 'corporate-core') {
+    // This low walkable podium meets the shared Dark Center/Corporate radial
+    // delimiter. Treat its top as the ground authority instead of a wall-like
+    // obstacle so the visible boundary road remains traversable; the actual
+    // corporate buildings retain exact collision.
+    plot.userData.preventUnderwalk = true;
+    plot.userData.districtDelimiterAccess = true;
+  }
   if (definition.id === 'dark-center-lab-megabuilding') {
     plot.userData.splitFoundationPassageWidth = darkCenterPassageWidth;
     plot.userData.districtDelimiterAccess = true;
@@ -2677,6 +2722,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }
 
+  tagExplicitDistrictMicrodetail(group);
   group.traverse((child) => {
     if (!child.userData.individualSelectableId) child.userData.selectableId = definition.id;
   });
@@ -4259,6 +4305,7 @@ export function createBiomeModel(definition: BiomeDefinition): ProceduralModel {
   group.traverse((child) => {
     child.userData.selectableId = definition.id;
   });
+  tagExplicitDistrictMicrodetail(group);
   return { group, labelHeight: definition.height + 2.4 };
 }
 

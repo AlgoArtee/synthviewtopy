@@ -35,8 +35,11 @@ try {
     const controller = world.walkController;
 
     const ringRadii = [];
-    world.modelRoot.traverse((object) => {
+    const ringSources = new Set();
+    const inspectRingRoad = (object) => {
       if (!object.isMesh || object.userData.districtDelimiter !== true || object.userData.roadType !== 'ring') return;
+      if (ringSources.has(object)) return;
+      ringSources.add(object);
       const positions = object.geometry.attributes.position;
       let minimum = Infinity;
       let maximum = -Infinity;
@@ -46,7 +49,11 @@ try {
         maximum = Math.max(maximum, radius);
       }
       ringRadii.push((minimum + maximum) * 0.5);
-    });
+    };
+    world.modelRoot.traverse(inspectRingRoad);
+    // Global batching detaches exact road meshes from normal render traversal;
+    // WALK intentionally consumes the same collision/export authority root.
+    world.globalEnvironmentBatching?.authorityRoot.traverse(inspectRingRoad);
     ringRadii.sort((left, right) => left - right);
 
     // Collision is intentionally disabled in PLAN. Run every cell with WALK

@@ -1,0 +1,188 @@
+{
+  "target": "1920x1080 Medium Full Island Detail; headless timing is diagnostic only",
+  "activationMs": 12806,
+  "accessibility": {
+    "toggleDescribedBy": "full-island-detail-help full-island-detail-status",
+    "toggleTarget": {
+      "width": 250,
+      "height": 47
+    },
+    "chipVisible": true,
+    "chipControls": "full-island-status-card",
+    "chipExpanded": "false",
+    "cardInitiallyHidden": true,
+    "nativeProgress": true,
+    "progressMaximum": 41,
+    "liveRegion": "polite",
+    "actions": [
+      {
+        "selector": "#full-island-retry",
+        "present": true,
+        "label": "Retry failed"
+      },
+      {
+        "selector": "#full-island-lower-quality",
+        "present": true,
+        "label": "Lower quality"
+      },
+      {
+        "selector": "#full-island-return-streamed",
+        "present": true,
+        "label": "Return to streamed"
+      },
+      {
+        "selector": "#full-island-safe-session",
+        "present": true,
+        "label": "Streamed this session"
+      }
+    ]
+  },
+  "lifecycle": {
+    "sampleCount": 70,
+    "phases": [
+      "warming-gpu",
+      "ready"
+    ],
+    "maximumConcurrentActivation": 4,
+    "queuedObserved": true,
+    "progressMonotonic": true,
+    "exactRepresentationThroughout": true,
+    "final": {
+      "elapsed": 19516.90000000596,
+      "lifecycle": {
+        "phase": "ready",
+        "queued": 0,
+        "building": 0,
+        "warmingGpu": 0,
+        "ready": 41,
+        "error": 0,
+        "degraded": 0,
+        "currentPackageId": null,
+        "failedPackageIds": []
+      },
+      "loaded": 41,
+      "resident": 41,
+      "proxies": 0,
+      "ready": true,
+      "chip": "Ready",
+      "uiProgress": {
+        "value": 41,
+        "maximum": 41
+      },
+      "activePhases": [],
+      "priority": "manual"
+    }
+  },
+  "definitions": {
+    "count": 257,
+    "unique": 257,
+    "missingGroups": [],
+    "missingParents": [],
+    "batchResolved": 257,
+    "missingBatchResolved": [],
+    "compactCount": 257
+  },
+  "microdetail": {
+    "total": 320,
+    "packageId": "pharmacology-labs",
+    "sourceName": "PHARMACOLOGY__P3__CONTROLLED_MEDICINAL_PLANT_1_1",
+    "visibleBeforeCull": true,
+    "hiddenBelow075": true,
+    "remainedHiddenDuringDwell": true,
+    "restoredAbove09": true,
+    "hiddenAgain": true,
+    "selectedRestoredImmediately": true,
+    "mandatoryCount": 22286
+  },
+  "compactText": {
+    "largestBytes": 2397,
+    "largestPreparationMs": 0.1,
+    "p50Ms": 0,
+    "p95Ms": 0.09999999403953552
+  },
+  "readyUi": {
+    "state": "ready",
+    "chip": "Ready",
+    "expanded": "true",
+    "progress": {
+      "value": 41,
+      "maximum": 41
+    },
+    "summary": "All 41 packages are resident at Detail level with GPU frustum culling.",
+    "renderer": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 (0x00002503) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "backend": "batched-mesh-multi-draw",
+    "dpr": "0.75×",
+    "cpu": "99.3 ms",
+    "gpu": "22.6 ms",
+    "calls": "1.116",
+    "triangles": "2.849.559",
+    "memory": "260 MB"
+  },
+  "atlasNavigation": {
+    "candidateCount": 15,
+    "selectedFirst": "forensic-cyberforensic-lab__f1",
+    "selectedNext": "forensic-cyberforensic-lab__f2",
+    "selectedPrevious": "forensic-cyberforensic-lab__f1",
+    "navigationVisible": true,
+    "position": "Building 1 of 15"
+  },
+  "performance": {
+    "drawCalls": 1116,
+    "triangles": 2849559,
+    "textures": 311,
+    "runtimeBatches": 688,
+    "activeAnimationNodes": 120,
+    "liveAuthoredSources": 0,
+    "frameTiming": {
+      "cpuP50Ms": 17.4,
+      "cpuP95Ms": 19.1,
+      "cpuUpdateP50Ms": 0.9,
+      "cpuUpdateP95Ms": 1.4,
+      "cpuRenderP50Ms": 16.5,
+      "cpuRenderP95Ms": 17.7,
+      "gpuP50Ms": 13.62,
+      "gpuP95Ms": 14.79,
+      "hoverPickP95Ms": 0,
+      "bottleneck": "cpu",
+      "targetFps": 60
+    },
+    "renderer": {
+      "name": "ANGLE (NVIDIA, NVIDIA GeForce RTX 3060 (0x00002503) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "backend": "WebGL 2",
+      "reverseDepthBuffer": true,
+      "transmissionPassActive": false,
+      "mediumFullMaterialTier": {
+        "active": true,
+        "runtimeMeshCount": 279,
+        "canonicalMaterialCount": 168,
+        "skippedCustomPhysicalMaterials": 7
+      },
+      "transmissionResolutionScale": 1,
+      "recoveryPhase": "ready",
+      "shaderProgramCount": 111,
+      "gpuTimerSupported": true
+    }
+  },
+  "errorUi": {
+    "failed": true,
+    "chip": "Error",
+    "retryDisabled": false,
+    "failures": "Failed: tropical-rainforest-dome"
+  },
+  "recovery": {
+    "phase": "ready",
+    "selected": "forensic-cyberforensic-lab__f1",
+    "requested": true,
+    "ready": true
+  },
+  "streamed": {
+    "loadedPackages": 8,
+    "detailPolicy": "streamed",
+    "devicePreference": {
+      "version": 1,
+      "fullIslandDetail": false
+    }
+  },
+  "errors": [],
+  "diagnosticFailures": []
+}

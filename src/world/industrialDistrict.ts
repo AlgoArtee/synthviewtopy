@@ -694,6 +694,8 @@ function addPowerStation(group: THREE.Group, mats: ReturnType<typeof createIndus
     steam.name = `INDUSTRIAL__THIN_STACK_STEAM_${index + 1}`;
     steam.position.set(0.58 + index * 0.06, FLOOR_Y + 6.88 + index * 0.3, -0.42);
     steam.userData.animate = 'industrial-steam';
+    steam.userData.renderImportance = 'micro';
+    steam.userData.microDetail = true;
     steam.userData.phase = index * 1.1;
     steam.userData.baseY = steam.position.y;
     station.add(steam);
@@ -840,6 +842,8 @@ function addColdStorage(group: THREE.Group, mats: ReturnType<typeof createIndust
     mist.name = `INDUSTRIAL__COLD_DOCK_MIST_${index + 1}`;
     mist.position.set(0.28 + index * 0.14, FLOOR_Y + 0.22 + index * 0.05, 1.08 + index * 0.09);
     mist.userData.animate = 'industrial-steam';
+    mist.userData.renderImportance = 'micro';
+    mist.userData.microDetail = true;
     mist.userData.phase = index * 0.8;
     mist.userData.baseY = mist.position.y;
     cold.add(mist);

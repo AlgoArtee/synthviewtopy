@@ -270,7 +270,7 @@ try {
   if (audit.routeAudit.length !== 23 || audit.routeAudit.some((route) => !route.resident || !route.walkable) || audit.roadGround === null) throw new Error(`Particle Physics circulation is incomplete: ${JSON.stringify(audit.routeAudit)}`);
   if (audit.textDistrict?.buildingCount !== 15 || audit.textDistrict?.zones?.northernTheoryRidge?.length !== 3 || audit.textDistrict?.exclusions?.length !== 4) throw new Error('Particle Physics metadata is absent from render_game_to_text()');
   if (audit.population?.realizedFacilityCount !== 15 || audit.population?.surfaceFacilitiesOnly !== true || audit.population?.performanceAuthored !== true) throw new Error('Particle Physics population/performance metadata is incomplete');
-  if (audit.specializedRevision !== 11 || audit.streaming?.detailResident !== true || audit.planning?.cellViolations !== 0) throw new Error(`Particle Physics integration regressed: revision=${audit.specializedRevision}, streaming=${JSON.stringify(audit.streaming)}, planning=${JSON.stringify(audit.planning)}`);
+  if (audit.specializedRevision !== 12 || audit.streaming?.detailResident !== true || audit.planning?.cellViolations !== 0) throw new Error(`Particle Physics integration regressed: revision=${audit.specializedRevision}, streaming=${JSON.stringify(audit.streaming)}, planning=${JSON.stringify(audit.planning)}`);
   if ((audit.animations['particle-physics-emissive-pulse'] ?? 0) < 80 || (audit.animations['particle-physics-rotation'] ?? 0) < 4) throw new Error(`Particle Physics animation coverage is incomplete: ${JSON.stringify(audit.animations)}`);
 
   const overallMin = [0, 1, 2].map((axis) => Math.min(...audit.facilityBoxes.map((entry) => entry.min[axis])));

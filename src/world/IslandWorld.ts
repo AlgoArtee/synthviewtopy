@@ -162,7 +162,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 11;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 12;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -173,6 +173,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'bioanalytics-lab': 5,
   'forensic-cyberforensic-lab': 6,
   'genomics-labs': 7,
+  'proteomics-labs': 12,
   'biochemistry-labs': 8,
   'organic-chemistry-labs': 9,
   'inorganic-chemistry': 10,
@@ -188,6 +189,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'bioanalytics-emissive-pulse',
   'forensic-emissive-pulse',
   'genomics-emissive-pulse',
+  'proteomics-emissive-pulse',
   'biochemistry-emissive-pulse',
   'organic-chemistry-emissive-pulse',
   'inorganic-chemistry-emissive-pulse',
@@ -3740,6 +3742,34 @@ export class IslandWorld {
           Number(object.userData.centerZ ?? 0) + Math.sin(angle) * Number(object.userData.radiusZ ?? 1),
         );
         object.rotation.y = -angle;
+      } else if (object.userData.animate === 'proteomics-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.012) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.2),
+            Number(object.userData.maxIntensity ?? 4.2),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'proteomics-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.03);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'proteomics-signal-travel') {
+        const progress = (
+          this.elapsed * Number(object.userData.speed ?? 0.015)
+          + Number(object.userData.phase ?? 0)
+        ) % 1;
+        const travel = progress * Number(object.userData.travel ?? 1);
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        object.position.x = Number(object.userData.baseX ?? object.position.x) + (axis === 'x' ? travel : 0);
+        object.position.y = Number(object.userData.baseY ?? object.position.y) + (axis === 'y' ? travel : 0);
+        object.position.z = Number(object.userData.baseZ ?? object.position.z) + (axis === 'z' ? travel : 0);
       } else if (object.userData.animate === 'biochemistry-emissive-pulse') {
         if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
           const wave = Math.max(0, Math.sin(
@@ -9307,6 +9337,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const bioanalyticsLabsDistrict = this.objectGroups.get('bioanalytics-lab')?.userData.bioanalyticsLabsDistrict ?? null;
     const forensicCyberforensicDistrict = this.objectGroups.get('forensic-cyberforensic-lab')?.userData.forensicCyberforensicDistrict ?? null;
     const genomicsLabsDistrict = this.objectGroups.get('genomics-labs')?.userData.genomicsLabsDistrict ?? null;
+    const proteomicsLabsDistrict = this.objectGroups.get('proteomics-labs')?.userData.proteomicsLabsDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9462,6 +9493,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       bioanalyticsLabsDistrict,
       forensicCyberforensicDistrict,
       genomicsLabsDistrict,
+      proteomicsLabsDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

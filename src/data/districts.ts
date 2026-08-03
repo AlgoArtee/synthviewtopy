@@ -199,10 +199,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [-8.5, 0, 9],
     footprint: [9, 6.5],
     height: 11,
-    archetype: "analytical-wet-lab-campus",
+    archetype: "folded-proteome-landscape",
     accent: "#B68CFF",
     palette: ["#1A1327", "#3D2D59", "#D9C8E9", "#B68CFF"],
-    description: "Mass-spectrometry suites and modular wet labs share a softly illuminated analytical courtyard.",
+    description: "Five proteomic landmarks translate single-cell measurement, tissue cartography, intact proteoforms, interaction networks, and experimental protein reading into folds, cavities, nodes, and porous membranes.",
   },
   {
     id: "omics-labs",

@@ -1,0 +1,492 @@
+{
+  "program": {
+    "identity": "Proteomics Labs District",
+    "architecturalLanguage": "folds, knots, cavities, branching assemblies, porous membranes, and appended molecular modifications expressed through pearl ceramic, dark titanium, smoked glass, dichroic glazing, and sparse analytical signals",
+    "buildingCount": 5,
+    "buildings": [
+      {
+        "code": "P1",
+        "name": "The Monocell Proteome Array",
+        "subtitle": "Single-Cell and Ultra-Low-Input Proteomics",
+        "purpose": "Ultra-sensitive single-cell preparation, mass analysis, and data-independent acquisition",
+        "placementZone": "Inner research threshold toward the Dark Center",
+        "footprintMetres": [
+          92,
+          68
+        ],
+        "heightMetres": 58,
+        "exteriorMotif": "seven independently illuminated tapered laboratory blades rising from a microplate podium"
+      },
+      {
+        "code": "P2",
+        "name": "The Tissue Cartography Hall",
+        "subtitle": "Spatial and Deep Visual Proteomics",
+        "purpose": "Imaging, AI cellular classification, laser microdissection, and spatial protein mapping",
+        "placementZone": "Spatial interface toward Genomics",
+        "footprintMetres": [
+          145,
+          76
+        ],
+        "heightMetres": 30,
+        "exteriorMotif": "a folded tissue section with cellular mosaic facades, false-colour roof terraces, and a segmentation canyon"
+      },
+      {
+        "code": "P3",
+        "name": "The Proteoform Resonance Basilica",
+        "subtitle": "Native and Top-Down Proteomics",
+        "purpose": "Intact proteoforms, native complexes, modifications, and higher-order molecular structure",
+        "placementZone": "Monumental centre on the Dark Center radial sightline",
+        "footprintMetres": [
+          84,
+          84
+        ],
+        "heightMetres": 74,
+        "exteriorMotif": "two continuous folded black shells restrained by a tilted analytical ring and coloured modifications"
+      },
+      {
+        "code": "P4",
+        "name": "The Interactome Constellation",
+        "subtitle": "Interaction and Structural Proteomics",
+        "purpose": "Protein interactions, transient complexes, cross-linking, and structural interpretation",
+        "placementZone": "Computational Biology interface",
+        "footprintMetres": [
+          126,
+          108
+        ],
+        "heightMetres": 40,
+        "exteriorMotif": "nine heterogeneous faceted nodes joined by bridges, cross-links, and a suspended interaction cloud"
+      },
+      {
+        "code": "P5",
+        "name": "The Amino-Pore Sequencing Veil",
+        "subtitle": "Single-Molecule Protein Reading",
+        "purpose": "Experimental nanopore protein reading and AI interpretation of heterogeneous molecular signals",
+        "placementZone": "Experimental eastern gate toward Genomics",
+        "footprintMetres": [
+          168,
+          70
+        ],
+        "heightMetres": 49,
+        "exteriorMotif": "paired iridescent porous membrane walls framing a crystalline data prism and monumental primary pore"
+      }
+    ],
+    "landmarks": {
+      "verticalArray": "The Monocell Proteome Array",
+      "spatialMap": "The Tissue Cartography Hall",
+      "monumentalCenter": "The Proteoform Resonance Basilica",
+      "networkJunction": "The Interactome Constellation",
+      "experimentalGate": "The Amino-Pore Sequencing Veil"
+    },
+    "circulation": {
+      "primaryWalk": "PROTEOMICS__POLYPEPTIDE_WALK",
+      "molecularBackboneLights": 3,
+      "branchingSideChainPaths": 4,
+      "exactBuildingApproaches": 5
+    },
+    "signatureSystems": {
+      "monocellBlades": 7,
+      "cartographyCellPanels": 144,
+      "proteoformModifications": 40,
+      "interactomeNodes": 9,
+      "membranePores": 240,
+      "advertisingDisplays": false
+    },
+    "materials": [
+      "pearl-white technical ceramic",
+      "dark titanium and graphite metal",
+      "smoked laboratory glass",
+      "cyan-violet dichroic glazing",
+      "amber, magenta, and electric-blue modifications"
+    ],
+    "landscape": {
+      "heterogeneousCellGardens": 36,
+      "specimenTreeIslands": 9,
+      "foldedRouteFurniture": true
+    },
+    "exteriorOnly": true
+  },
+  "population": {
+    "plannedFacilities": [
+      "The Monocell Proteome Array",
+      "The Tissue Cartography Hall",
+      "The Proteoform Resonance Basilica",
+      "The Interactome Constellation",
+      "The Amino-Pore Sequencing Veil"
+    ],
+    "plannedObjects": [
+      "Polypeptide Walk",
+      "Molecular Backbone Lights",
+      "Side-Chain Paths",
+      "Heterogeneous Cell Gardens",
+      "Specimen Tree Islands"
+    ],
+    "realizedFeatureTags": [
+      "the-monocell-proteome-array",
+      "the-tissue-cartography-hall",
+      "the-proteoform-resonance-basilica",
+      "the-interactome-constellation",
+      "the-amino-pore-sequencing-veil"
+    ],
+    "realizedFacilityCount": 5,
+    "realizedObjectCount": 85,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 10,
+    "radialCoverage": 0.92,
+    "angularCoverage": 0.94,
+    "exteriorOnly": true,
+    "foldedProteinLandscape": true
+  },
+  "topLevelNames": [
+    "PROTEOMICS__DISTRICT_FOLDED_INFRASTRUCTURE",
+    "PROTEOMICS__HETEROGENEOUS_CELL_GARDENS",
+    "PROTEOMICS__P1__MONOCELL_PROTEOME_ARRAY",
+    "PROTEOMICS__P2__TISSUE_CARTOGRAPHY_HALL",
+    "PROTEOMICS__P3__PROTEOFORM_RESONANCE_BASILICA",
+    "PROTEOMICS__P4__INTERACTOME_CONSTELLATION",
+    "PROTEOMICS__P5__AMINO_PORE_SEQUENCING_VEIL"
+  ],
+  "codes": [
+    "P1",
+    "P2",
+    "P3",
+    "P4",
+    "P5"
+  ],
+  "facilityCount": 5,
+  "meshCount": 1494,
+  "uniqueNames": 1513,
+  "scaledMeshParentDetails": [],
+  "materialNames": [
+    "Polypeptide Walk elongated pale stone",
+    "Proteomics amber modification light",
+    "Proteomics analytical signal light",
+    "Proteomics black reflecting water",
+    "Proteomics cyan-violet dichroic glazing",
+    "Proteomics dark brushed titanium",
+    "Proteomics dark mineral court paving",
+    "Proteomics electric-blue modification light",
+    "Proteomics graphite-black structural metal",
+    "Proteomics heterogeneous moss garden",
+    "Proteomics magenta-violet modification light",
+    "Proteomics mirror-polished titanium",
+    "Proteomics pearl-white technical ceramic",
+    "Proteomics satin pale ceramic",
+    "Proteomics silver research grass",
+    "Proteomics smoked laboratory glass",
+    "Proteomics translucent fibre resin"
+  ],
+  "animations": {
+    "proteomics-emissive-pulse": 489,
+    "proteomics-rotation": 2,
+    "proteomics-signal-travel": 68
+  },
+  "prefixCounts": {
+    "PROTEOMICS__P1__TAPERED_LAB_BLADE_": 7,
+    "PROTEOMICS__P1__MICROPLATE_WELL_": 96,
+    "PROTEOMICS__P2__CELLULAR_FACADE_PANEL_": 144,
+    "PROTEOMICS__P2__FALSE_COLOUR_ROOF_TILE_": 60,
+    "PROTEOMICS__P3__POST_TRANSLATIONAL_MODIFICATION_": 40,
+    "PROTEOMICS__P4__FACETED_INTERACTION_NODE_": 9,
+    "PROTEOMICS__P4__SUSPENDED_MIRROR_DISC_": 96,
+    "PROTEOMICS__P5__INDEPENDENT_MEMBRANE_PORE_": 240,
+    "PROTEOMICS__P5__MEMBRANE_WALL_": 44
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "facilityBoxes": [
+    {
+      "code": "P1",
+      "min": [
+        -53.83171685740841,
+        1.6660000000000004,
+        77.28427050617479
+      ],
+      "max": [
+        -41.96428314259157,
+        9.677871173147501,
+        88.63926865569341
+      ]
+    },
+    {
+      "code": "P2",
+      "min": [
+        -28.771413860102072,
+        1.5351173030684868,
+        95.53291892044442
+      ],
+      "max": [
+        -12.825948297128784,
+        4.9159999999999995,
+        106.2643600170372
+      ]
+    },
+    {
+      "code": "P3",
+      "min": [
+        -83.99304867814419,
+        1.666,
+        61.981097219182324
+      ],
+      "max": [
+        -70.45257317035353,
+        9.71652825405532,
+        75.33507857897644
+      ]
+    },
+    {
+      "code": "P4",
+      "min": [
+        -80.33040878357086,
+        1.6709999999999998,
+        79.91916937551974
+      ],
+      "max": [
+        -64.99156942995324,
+        6.248496583330368,
+        94.9977283562547
+      ]
+    },
+    {
+      "code": "P5",
+      "min": [
+        -45.78531746417171,
+        1.4459999713897709,
+        102.3536074789643
+      ],
+      "max": [
+        -28.643782025704418,
+        7.7410000000000005,
+        111.37765263318238
+      ]
+    }
+  ],
+  "routeAudit": [
+    {
+      "name": "PROTEOMICS__POLYPEPTIDE_WALK",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__SIDE_CHAIN_PATH_1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__SIDE_CHAIN_PATH_2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__SIDE_CHAIN_PATH_3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__SIDE_CHAIN_PATH_4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__BUILDING_APPROACH_P1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__BUILDING_APPROACH_P2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__BUILDING_APPROACH_P3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__BUILDING_APPROACH_P4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "PROTEOMICS__BUILDING_APPROACH_P5",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "roadPoint": [
+    -53.70189842581747,
+    1.6459999984502793,
+    92.12214463244487
+  ],
+  "roadGround": 1.6459999984502793,
+  "textDistrict": {
+    "identity": "Proteomics Labs District",
+    "architecturalLanguage": "folds, knots, cavities, branching assemblies, porous membranes, and appended molecular modifications expressed through pearl ceramic, dark titanium, smoked glass, dichroic glazing, and sparse analytical signals",
+    "buildingCount": 5,
+    "buildings": [
+      {
+        "code": "P1",
+        "name": "The Monocell Proteome Array",
+        "subtitle": "Single-Cell and Ultra-Low-Input Proteomics",
+        "purpose": "Ultra-sensitive single-cell preparation, mass analysis, and data-independent acquisition",
+        "placementZone": "Inner research threshold toward the Dark Center",
+        "footprintMetres": [
+          92,
+          68
+        ],
+        "heightMetres": 58,
+        "exteriorMotif": "seven independently illuminated tapered laboratory blades rising from a microplate podium"
+      },
+      {
+        "code": "P2",
+        "name": "The Tissue Cartography Hall",
+        "subtitle": "Spatial and Deep Visual Proteomics",
+        "purpose": "Imaging, AI cellular classification, laser microdissection, and spatial protein mapping",
+        "placementZone": "Spatial interface toward Genomics",
+        "footprintMetres": [
+          145,
+          76
+        ],
+        "heightMetres": 30,
+        "exteriorMotif": "a folded tissue section with cellular mosaic facades, false-colour roof terraces, and a segmentation canyon"
+      },
+      {
+        "code": "P3",
+        "name": "The Proteoform Resonance Basilica",
+        "subtitle": "Native and Top-Down Proteomics",
+        "purpose": "Intact proteoforms, native complexes, modifications, and higher-order molecular structure",
+        "placementZone": "Monumental centre on the Dark Center radial sightline",
+        "footprintMetres": [
+          84,
+          84
+        ],
+        "heightMetres": 74,
+        "exteriorMotif": "two continuous folded black shells restrained by a tilted analytical ring and coloured modifications"
+      },
+      {
+        "code": "P4",
+        "name": "The Interactome Constellation",
+        "subtitle": "Interaction and Structural Proteomics",
+        "purpose": "Protein interactions, transient complexes, cross-linking, and structural interpretation",
+        "placementZone": "Computational Biology interface",
+        "footprintMetres": [
+          126,
+          108
+        ],
+        "heightMetres": 40,
+        "exteriorMotif": "nine heterogeneous faceted nodes joined by bridges, cross-links, and a suspended interaction cloud"
+      },
+      {
+        "code": "P5",
+        "name": "The Amino-Pore Sequencing Veil",
+        "subtitle": "Single-Molecule Protein Reading",
+        "purpose": "Experimental nanopore protein reading and AI interpretation of heterogeneous molecular signals",
+        "placementZone": "Experimental eastern gate toward Genomics",
+        "footprintMetres": [
+          168,
+          70
+        ],
+        "heightMetres": 49,
+        "exteriorMotif": "paired iridescent porous membrane walls framing a crystalline data prism and monumental primary pore"
+      }
+    ],
+    "landmarks": {
+      "verticalArray": "The Monocell Proteome Array",
+      "spatialMap": "The Tissue Cartography Hall",
+      "monumentalCenter": "The Proteoform Resonance Basilica",
+      "networkJunction": "The Interactome Constellation",
+      "experimentalGate": "The Amino-Pore Sequencing Veil"
+    },
+    "circulation": {
+      "primaryWalk": "PROTEOMICS__POLYPEPTIDE_WALK",
+      "molecularBackboneLights": 3,
+      "branchingSideChainPaths": 4,
+      "exactBuildingApproaches": 5
+    },
+    "signatureSystems": {
+      "monocellBlades": 7,
+      "cartographyCellPanels": 144,
+      "proteoformModifications": 40,
+      "interactomeNodes": 9,
+      "membranePores": 240,
+      "advertisingDisplays": false
+    },
+    "materials": [
+      "pearl-white technical ceramic",
+      "dark titanium and graphite metal",
+      "smoked laboratory glass",
+      "cyan-violet dichroic glazing",
+      "amber, magenta, and electric-blue modifications"
+    ],
+    "landscape": {
+      "heterogeneousCellGardens": 36,
+      "specimenTreeIslands": 9,
+      "foldedRouteFurniture": true
+    },
+    "exteriorOnly": true
+  },
+  "specializedRevision": 12,
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "compactSelected": {
+    "id": "proteomics-labs",
+    "name": "Proteomics Labs District",
+    "category": "bioscience",
+    "packageId": "proteomics-labs",
+    "state": {
+      "position": {
+        "x": -52.49999999999998,
+        "y": 1.61,
+        "z": 90.93266739736606
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#B68CFF",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    }
+  },
+  "streaming": {
+    "id": "proteomics-labs",
+    "kind": "district",
+    "loadState": "loaded",
+    "lifecyclePhase": "ready",
+    "loadProgress": 1,
+    "priorityReason": "selected",
+    "priorityScore": 1000000,
+    "visibleCandidate": true,
+    "visualLevel": "detail",
+    "detailResident": true,
+    "proxyVisible": false,
+    "midVisible": false,
+    "farVisible": false,
+    "pinned": true,
+    "distanceMetres": 0,
+    "estimatedCost": {
+      "drawCalls": 24,
+      "triangles": 66060,
+      "animationNodes": 1
+    },
+    "renderImportance": {
+      "mandatory": 1473,
+      "micro": 0,
+      "visibleMicro": 0,
+      "culledMicro": 0
+    },
+    "batchOccupancy": {
+      "capacity": 1470,
+      "active": 1470,
+      "ratio": 1
+    }
+  }
+}

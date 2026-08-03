@@ -179,7 +179,7 @@ try {
   if (audit.roadGround === null) throw new Error('The Evidence Line is not WALK-grounded');
   if (audit.textDistrict?.buildingCount !== 15 || audit.textDistrict?.chainline?.hermeticCapsules !== 10) throw new Error('Forensic metadata is missing from render_game_to_text()');
   if (audit.population?.realizedFacilityCount !== 15 || audit.population?.persistentSignatureSystem !== true) throw new Error('Forensic population metadata is incomplete');
-  if (audit.specializedRevision !== 11) throw new Error(`Expected specialized layout revision 11, received ${audit.specializedRevision}`);
+  if (audit.specializedRevision !== 12) throw new Error(`Expected specialized layout revision 12, received ${audit.specializedRevision}`);
   if (audit.streaming?.detailResident !== true) throw new Error('Forensic detail package did not remain resident');
   if (audit.planning?.cellViolations !== 0) throw new Error(`Masterplan sector anchors regressed: ${audit.planning.cellViolations}`);
   if ((audit.animations['forensic-path-transit'] ?? 0) !== 10 || (audit.animations['forensic-emissive-pulse'] ?? 0) < 70 || (audit.animations['forensic-rotation'] ?? 0) < 1) throw new Error(`Forensic animation coverage is incomplete: ${JSON.stringify(audit.animations)}`);

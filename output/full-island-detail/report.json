@@ -10,22 +10,22 @@
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 16.7,
-        "p95": 55.7,
-        "above33Percent": 8.33,
-        "above50Percent": 8.33
+        "p50": 16.6,
+        "p95": 54,
+        "above33Percent": 8.11,
+        "above50Percent": 8.11
       },
       "frameTiming": {
-        "cpuP50Ms": 4.3,
-        "cpuP95Ms": 8.3,
+        "cpuP50Ms": 3.9,
+        "cpuP95Ms": 6.6,
         "cpuUpdateP50Ms": 1,
-        "cpuUpdateP95Ms": 2,
-        "cpuRenderP50Ms": 3.3,
-        "cpuRenderP95Ms": 6.3,
-        "gpuP50Ms": 3.29,
-        "gpuP95Ms": 3.41,
+        "cpuUpdateP95Ms": 1.8,
+        "cpuRenderP50Ms": 2.9,
+        "cpuRenderP95Ms": 4.8,
+        "gpuP50Ms": 6.6,
+        "gpuP95Ms": 7.07,
         "hoverPickP95Ms": 0,
-        "bottleneck": "cpu",
+        "bottleneck": "balanced",
         "targetFps": 30
       },
       "renderer": {
@@ -100,18 +100,18 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 61,
         "batchOccupancy": {
-          "capacity": 40291,
+          "capacity": 41700,
           "active": 611,
-          "ratio": 0.015164676975006825
+          "ratio": 0.014652278177458034
         },
         "microdetail": {
           "total": 320,
           "visible": 0,
           "culled": 320
         },
-        "collisionResidentCellCount": 1263,
+        "collisionResidentCellCount": 1261,
         "navigationResidencyRevision": 0,
-        "detachedAuthoringSourceCount": 22077,
+        "detachedAuthoringSourceCount": 23486,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -127,13 +127,13 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 702,
-          "batchedSourceCount": 22077,
-          "retainedSourceCount": 24007,
-          "estimatedGeometryBytes": 78352976,
-          "estimatedTextureBytes": 193523421,
+          "batchCount": 710,
+          "batchedSourceCount": 23486,
+          "retainedSourceCount": 25415,
+          "estimatedGeometryBytes": 79274984,
+          "estimatedTextureBytes": 191431511,
           "instancedBatchCount": 146,
-          "batchedMeshBatchCount": 95,
+          "batchedMeshBatchCount": 103,
           "mergedBatchCount": 461,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
@@ -383,7 +383,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11199,
+            "priorityScore": -10894,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -391,20 +391,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11199,
+            "distanceMetres": 10894,
             "estimatedCost": {
-              "drawCalls": 16,
-              "triangles": 7792,
-              "animationNodes": 0
+              "drawCalls": 24,
+              "triangles": 66060,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 65,
+              "mandatory": 1473,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 61,
+              "capacity": 1470,
               "active": 0,
               "ratio": 0
             }
@@ -1537,19 +1537,19 @@
       "effectivePixelRatio": 1,
       "frameTimeMs": {
         "p50": 16.7,
-        "p95": 20.9,
-        "above33Percent": 4.44,
-        "above50Percent": 4.44
+        "p95": 29.5,
+        "above33Percent": 6.98,
+        "above50Percent": 6.98
       },
       "frameTiming": {
-        "cpuP50Ms": 4.5,
-        "cpuP95Ms": 7,
-        "cpuUpdateP50Ms": 1,
-        "cpuUpdateP95Ms": 1.6,
-        "cpuRenderP50Ms": 3.5,
-        "cpuRenderP95Ms": 5.4,
-        "gpuP50Ms": 1.15,
-        "gpuP95Ms": 3.01,
+        "cpuP50Ms": 3.9,
+        "cpuP95Ms": 4.8,
+        "cpuUpdateP50Ms": 0.9,
+        "cpuUpdateP95Ms": 1.2,
+        "cpuRenderP50Ms": 3,
+        "cpuRenderP95Ms": 3.6,
+        "gpuP50Ms": 0.59,
+        "gpuP95Ms": 2.79,
         "hoverPickP95Ms": 0,
         "bottleneck": "cpu",
         "targetFps": 30
@@ -1626,18 +1626,18 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 92,
         "batchOccupancy": {
-          "capacity": 40291,
+          "capacity": 41700,
           "active": 2660,
-          "ratio": 0.06601970663423594
+          "ratio": 0.06378896882494005
         },
         "microdetail": {
           "total": 320,
           "visible": 0,
           "culled": 320
         },
-        "collisionResidentCellCount": 1506,
+        "collisionResidentCellCount": 1504,
         "navigationResidencyRevision": 3,
-        "detachedAuthoringSourceCount": 22077,
+        "detachedAuthoringSourceCount": 23486,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -1657,13 +1657,13 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 702,
-          "batchedSourceCount": 22077,
-          "retainedSourceCount": 24007,
-          "estimatedGeometryBytes": 78352976,
-          "estimatedTextureBytes": 193523421,
+          "batchCount": 710,
+          "batchedSourceCount": 23486,
+          "retainedSourceCount": 25415,
+          "estimatedGeometryBytes": 79274984,
+          "estimatedTextureBytes": 191431511,
           "instancedBatchCount": 146,
-          "batchedMeshBatchCount": 95,
+          "batchedMeshBatchCount": 103,
           "mergedBatchCount": 461,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
@@ -1913,7 +1913,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11199,
+            "priorityScore": -10894,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -1921,20 +1921,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11199,
+            "distanceMetres": 10894,
             "estimatedCost": {
-              "drawCalls": 16,
-              "triangles": 7792,
-              "animationNodes": 0
+              "drawCalls": 24,
+              "triangles": 66060,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 65,
+              "mandatory": 1473,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 61,
+              "capacity": 1470,
               "active": 0,
               "ratio": 0
             }
@@ -3054,29 +3054,29 @@
   },
   "fullAudit": {
     "stats": {
-      "visibleMeshes": 1068,
-      "geometries": 916,
-      "rendererGeometries": 964,
-      "triangles": 2934847,
-      "drawCalls": 1174,
-      "textureCount": 332,
+      "visibleMeshes": 1076,
+      "geometries": 924,
+      "rendererGeometries": 971,
+      "triangles": 2993115,
+      "drawCalls": 1185,
+      "textureCount": 348,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 109.7,
-        "p95": 117.2,
-        "above33Percent": 72.73,
-        "above50Percent": 63.64
+        "p50": 104,
+        "p95": 205.3,
+        "above33Percent": 81.82,
+        "above50Percent": 72.73
       },
       "frameTiming": {
-        "cpuP50Ms": 99.8,
-        "cpuP95Ms": 105.6,
-        "cpuUpdateP50Ms": 81.9,
-        "cpuUpdateP95Ms": 85.5,
+        "cpuP50Ms": 89.4,
+        "cpuP95Ms": 96.8,
+        "cpuUpdateP50Ms": 71.5,
+        "cpuUpdateP95Ms": 74.4,
         "cpuRenderP50Ms": 17.9,
-        "cpuRenderP95Ms": 20.1,
-        "gpuP50Ms": 16.61,
-        "gpuP95Ms": 16.61,
+        "cpuRenderP95Ms": 22.4,
+        "gpuP50Ms": 21.96,
+        "gpuP95Ms": 21.96,
         "hoverPickP95Ms": 0,
         "bottleneck": "cpu",
         "targetFps": 60
@@ -3088,8 +3088,8 @@
         "transmissionPassActive": false,
         "mediumFullMaterialTier": {
           "active": true,
-          "runtimeMeshCount": 272,
-          "canonicalMaterialCount": 162,
+          "runtimeMeshCount": 264,
+          "canonicalMaterialCount": 157,
           "skippedCustomPhysicalMaterials": 7
         },
         "transmissionResolutionScale": 1,
@@ -3107,8 +3107,8 @@
         "transmissionPassActive": false,
         "mediumFullMaterialTier": {
           "active": true,
-          "runtimeMeshCount": 272,
-          "canonicalMaterialCount": 162,
+          "runtimeMeshCount": 264,
+          "canonicalMaterialCount": 157,
           "skippedCustomPhysicalMaterials": 7
         },
         "recoveryPhase": "ready",
@@ -3151,20 +3151,20 @@
           "percent": 100
         },
         "renderProfile": "full-island",
-        "liveRenderObjectCount": 2632,
+        "liveRenderObjectCount": 2639,
         "batchOccupancy": {
-          "capacity": 40291,
-          "active": 39161,
-          "ratio": 0.9719540343997419
+          "capacity": 41700,
+          "active": 40570,
+          "ratio": 0.9729016786570743
         },
         "microdetail": {
           "total": 320,
           "visible": 21,
           "culled": 299
         },
-        "collisionResidentCellCount": 4831,
+        "collisionResidentCellCount": 4845,
         "navigationResidencyRevision": 43,
-        "detachedAuthoringSourceCount": 22077,
+        "detachedAuthoringSourceCount": 23486,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 41,
@@ -3264,13 +3264,13 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 702,
-          "batchedSourceCount": 22077,
-          "retainedSourceCount": 24007,
-          "estimatedGeometryBytes": 78352976,
-          "estimatedTextureBytes": 193523421,
+          "batchCount": 710,
+          "batchedSourceCount": 23486,
+          "retainedSourceCount": 25415,
+          "estimatedGeometryBytes": 79274984,
+          "estimatedTextureBytes": 191431511,
           "instancedBatchCount": 146,
-          "batchedMeshBatchCount": 95,
+          "batchedMeshBatchCount": 103,
           "mergedBatchCount": 461,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
@@ -3530,19 +3530,19 @@
             "pinned": false,
             "distanceMetres": 11199,
             "estimatedCost": {
-              "drawCalls": 16,
-              "triangles": 7792,
-              "animationNodes": 0
+              "drawCalls": 24,
+              "triangles": 66060,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 65,
+              "mandatory": 1473,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 61,
-              "active": 61,
+              "capacity": 1470,
+              "active": 1470,
               "ratio": 1
             }
           },
@@ -4661,26 +4661,26 @@
     "nonReadyPackages": [],
     "suppressedMeshes": 0,
     "liveAuthoredSources": 0,
-    "markedRuntimeObjects": 971,
-    "metadataAnchorCount": 269,
-    "trueRuntimeBatchCount": 702,
+    "markedRuntimeObjects": 980,
+    "metadataAnchorCount": 270,
+    "trueRuntimeBatchCount": 710,
     "stableBuildings": {
-      "count": 268,
-      "uniqueCount": 268,
+      "count": 269,
+      "uniqueCount": 269,
       "categoryCounts": {
-        "authored-exterior-building": 234,
+        "authored-exterior-building": 235,
         "entry-logistics-building": 20,
         "academic-building": 14
       },
       "missingObjectGroups": [],
-      "resolvedByBatchMetadata": 268,
+      "resolvedByBatchMetadata": 269,
       "missingBatchMetadata": []
     },
-    "hiddenSourceCollisionCount": 2948,
+    "hiddenSourceCollisionCount": 3034,
     "collisionSpatialIndex": {
       "cellSizeWorld": 8,
       "cellSizeMetres": 80,
-      "occupiedCellCount": 4831,
+      "occupiedCellCount": 4845,
       "residentCellCount": 0,
       "residentCandidates": {
         "walkables": 0,
@@ -4691,9 +4691,9 @@
         "barriers": 0
       },
       "totalCandidates": {
-        "walkables": 863,
-        "obstacles": 2197,
-        "accessBounds": 77,
+        "walkables": 865,
+        "obstacles": 2279,
+        "accessBounds": 76,
         "underwalkAccessVolumes": 2,
         "underwalkSurfaces": 2,
         "barriers": 1530
@@ -4708,32 +4708,32 @@
   },
   "compactTextAudit": {
     "elapsedSamples": [
+      0,
+      0.09999999403953552,
+      0.20000001788139343,
       0.09999999403953552,
       0,
       0,
-      0,
       0.19999998807907104,
+      0,
       0,
       0.10000002384185791,
       0,
       0,
       0,
       0,
-      0,
+      0.09999999403953552,
       0.09999999403953552,
       0,
       0,
-      0.09999999403953552,
       0,
-      0,
-      0.20000001788139343,
       0
     ],
-    "largestBytes": 2906,
-    "largestPreparationMs": 0.2,
+    "largestBytes": 2902,
+    "largestPreparationMs": 0.1,
     "relevantPackageCount": 1,
     "includesPackageArray": false,
-    "authoredBuildingCount": 268,
+    "authoredBuildingCount": 269,
     "p95Ms": 0.19999998807907104
   },
   "warningAudit": {
@@ -4745,25 +4745,25 @@
     "stats": {
       "visibleMeshes": 151,
       "geometries": 72,
-      "rendererGeometries": 241,
+      "rendererGeometries": 240,
       "triangles": 510504,
       "drawCalls": 155,
-      "textureCount": 332,
+      "textureCount": 348,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 29.2,
-        "p95": 29.2,
+        "p50": 27.8,
+        "p95": 27.8,
         "above33Percent": 0,
         "above50Percent": 0
       },
       "frameTiming": {
-        "cpuP50Ms": 18.8,
-        "cpuP95Ms": 18.8,
+        "cpuP50Ms": 17.7,
+        "cpuP95Ms": 17.7,
         "cpuUpdateP50Ms": 0.8,
         "cpuUpdateP95Ms": 0.8,
-        "cpuRenderP50Ms": 18,
-        "cpuRenderP95Ms": 18,
+        "cpuRenderP50Ms": 16.9,
+        "cpuRenderP95Ms": 16.9,
         "gpuP50Ms": 0,
         "gpuP95Ms": 0,
         "hoverPickP95Ms": 0,
@@ -4778,7 +4778,7 @@
         "mediumFullMaterialTier": {
           "active": false,
           "runtimeMeshCount": 0,
-          "canonicalMaterialCount": 162,
+          "canonicalMaterialCount": 157,
           "skippedCustomPhysicalMaterials": 0
         },
         "transmissionResolutionScale": 1,
@@ -4797,7 +4797,7 @@
         "mediumFullMaterialTier": {
           "active": false,
           "runtimeMeshCount": 0,
-          "canonicalMaterialCount": 162,
+          "canonicalMaterialCount": 157,
           "skippedCustomPhysicalMaterials": 0
         },
         "recoveryPhase": "ready",
@@ -4842,18 +4842,18 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 92,
         "batchOccupancy": {
-          "capacity": 40291,
+          "capacity": 41700,
           "active": 2660,
-          "ratio": 0.06601970663423594
+          "ratio": 0.06378896882494005
         },
         "microdetail": {
           "total": 320,
           "visible": 0,
           "culled": 320
         },
-        "collisionResidentCellCount": 1506,
+        "collisionResidentCellCount": 1504,
         "navigationResidencyRevision": 44,
-        "detachedAuthoringSourceCount": 22077,
+        "detachedAuthoringSourceCount": 23486,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -4880,13 +4880,13 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 702,
-          "batchedSourceCount": 22077,
-          "retainedSourceCount": 24007,
-          "estimatedGeometryBytes": 78352976,
-          "estimatedTextureBytes": 193523421,
+          "batchCount": 710,
+          "batchedSourceCount": 23486,
+          "retainedSourceCount": 25415,
+          "estimatedGeometryBytes": 79274984,
+          "estimatedTextureBytes": 191431511,
           "instancedBatchCount": 146,
-          "batchedMeshBatchCount": 95,
+          "batchedMeshBatchCount": 103,
           "mergedBatchCount": 461,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
@@ -5136,7 +5136,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11199,
+            "priorityScore": -10894,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -5144,20 +5144,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11199,
+            "distanceMetres": 10894,
             "estimatedCost": {
-              "drawCalls": 16,
-              "triangles": 7792,
-              "animationNodes": 0
+              "drawCalls": 24,
+              "triangles": 66060,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 65,
+              "mandatory": 1473,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 61,
+              "capacity": 1470,
               "active": 0,
               "ratio": 0
             }

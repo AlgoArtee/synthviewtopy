@@ -7,7 +7,7 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-const TARGET_BUILDING_COUNT = 268;
+const TARGET_BUILDING_COUNT = 269;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;

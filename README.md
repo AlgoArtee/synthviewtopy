@@ -32,6 +32,7 @@ npm run build     # Type-check and create the production bundle in dist/
 npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
+npm run test:proteomics         # Audit the five-building Proteomics Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
 npm run test:particle-physics # Audit the fifteen-building Particle Physics Labs District exterior package
@@ -138,6 +139,17 @@ The southern inner-ring Genomics Labs District is an exterior-only code landscap
 - **Fabrica Genomica** uses a heavy split basalt base, six exchangeable chromosome modules with displaced centromere bands, an elliptical gantry with four moving carriages, service tower, utility cylinders, controlled watercourse, and visitor pavilion.
 - **The Variant Constellation** combines a twelve-facet waisted core, projecting variant panels and luminous regulatory links, an interrupted translucent research ring, twelve leaning pylons, three structural-variant bridges, and the Manhattan Colonnade of statistical peaks.
 - The grounded **Base-Pair Promenade** carries four separating and recombining spectral traces, four district-interface links, and five exact building approaches. The complete 1,116-mesh campus stays within its inner-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export.
+
+## Proteomics Labs District
+
+The north-western inner-ring Proteomics Labs District is an exterior-only folded molecular landscape. Pearl technical ceramic, graphite and dark titanium, smoked glass, cyan-violet dichroic glazing, and restrained amber, magenta, and electric-blue modifications unify five deliberately different scientific silhouettes.
+
+- **The Monocell Proteome Array** raises seven independently illuminated tapered laboratory blades from an oval microplate podium with 96 heterogeneous wells, capillary signals, modification capsules, electrospray crowns, recessed bridges, and a floating oval roof ring.
+- **The Tissue Cartography Hall** folds two low tissue plates around the black Segmentation Passage. Its 144 heterogeneous cellular facade panels, luminous cell boundaries, false-colour roof map, microscope-aperture housings, and layered magnification entrance preserve the spatial-proteomics theme at every viewing height.
+- **The Proteoform Resonance Basilica** wraps two dark folded shells around a full-height central void and tilted analytical ring. Forty appended facade modifications, exposed branching supports, reflection basins, and nested elliptical crown frames express intact proteoforms and native complexes.
+- **The Interactome Constellation** assembles nine faceted nodes into a compact research settlement linked by sixteen bridges and cross-links. A suspended 96-disc interaction cloud, coloured hub joints, and responsive court markers make the network readable without a conventional monumental front.
+- **The Amino-Pore Sequencing Veil** forms the Genomics-facing frontier from two long porous membrane walls, 240 independently lit pores, paired Primary Pore rings, an open sequencing canyon, and a rotated crystalline data prism carrying an irregular single-chain signal motif.
+- The grounded **Polypeptide Walk** carries three molecular-backbone lights, four branching side-chain paths, and five exact approaches through 36 heterogeneous cell gardens and nine specimen-tree islands. The 1,494-element package stays inside its inner-ring sector with zero facility-envelope overlaps, uses 24 runtime draw calls and approximately 66,000 triangles, and participates in HLOD streaming, revision-12 persistence migration, selection, deterministic animation, deep text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the exterior specification.
 
 ## Particle Physics Labs District
 

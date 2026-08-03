@@ -215,16 +215,18 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'proteomics-labs': {
     facilities: [
-      { name: 'Mass Spectrometry Hall', form: 'hall' },
-      { name: 'Protein Chemistry Laboratory', form: 'lab-block' },
-      { name: 'Sample Preparation Pavilion', form: 'pavilion' },
-      { name: 'Cold Reagent Store', form: 'service-building' },
+      { name: 'The Monocell Proteome Array', form: 'tower' },
+      { name: 'The Tissue Cartography Hall', form: 'hall' },
+      { name: 'The Proteoform Resonance Basilica', form: 'observatory' },
+      { name: 'The Interactome Constellation', form: 'lab-block' },
+      { name: 'The Amino-Pore Sequencing Veil', form: 'hall' },
     ],
     objects: [
-      { name: 'Orbitrap Instrument Suite', kind: 'instrument' },
-      { name: 'Chromatography Columns', kind: 'process-equipment' },
-      { name: 'Automated Sample Freezers', kind: 'storage' },
-      { name: 'Protein Fold Light Sculpture', kind: 'public-art' },
+      { name: 'Polypeptide Walk', kind: 'signage' },
+      { name: 'Molecular Backbone Lights', kind: 'instrument' },
+      { name: 'Side-Chain Paths', kind: 'garden' },
+      { name: 'Heterogeneous Cell Gardens', kind: 'garden' },
+      { name: 'Specimen Tree Islands', kind: 'public-art' },
     ],
   },
   'omics-labs': {

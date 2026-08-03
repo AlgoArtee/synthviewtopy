@@ -215,7 +215,7 @@ try {
   if (audit.routeAudit.length !== 23 || audit.routeAudit.some((road) => !road.resident || !road.walkable) || audit.roadGround === null) throw new Error(`Inorganic Chemistry circulation is incomplete: ${JSON.stringify(audit.routeAudit)}`);
   if (audit.textDistrict?.buildingCount !== 15 || audit.textDistrict?.signatureSystems?.rareEarthTowers !== 17 || audit.textDistrict?.signatureSystems?.ligandPylons !== 8) throw new Error('Inorganic Chemistry metadata is missing from render_game_to_text()');
   if (audit.population?.realizedFacilityCount !== 15 || audit.population?.mineralLatticeDistrict !== true) throw new Error('Inorganic Chemistry population metadata is incomplete');
-  if (audit.specializedRevision !== 10 || audit.streaming?.detailResident !== true || audit.planning?.cellViolations !== 0) throw new Error(`Inorganic Chemistry integration regressed: revision=${audit.specializedRevision}, streaming=${JSON.stringify(audit.streaming)}, planning=${JSON.stringify(audit.planning)}`);
+  if (audit.specializedRevision !== 11 || audit.streaming?.detailResident !== true || audit.planning?.cellViolations !== 0) throw new Error(`Inorganic Chemistry integration regressed: revision=${audit.specializedRevision}, streaming=${JSON.stringify(audit.streaming)}, planning=${JSON.stringify(audit.planning)}`);
   if ((audit.animations['inorganic-chemistry-emissive-pulse'] ?? 0) < 300 || (audit.animations['inorganic-chemistry-rotation'] ?? 0) !== 14 || (audit.animations['inorganic-chemistry-breathe'] ?? 0) !== 72 || (audit.animations['inorganic-chemistry-travel'] ?? 0) !== 21) throw new Error(`Inorganic Chemistry animation coverage is incomplete: ${JSON.stringify(audit.animations)}`);
   const expectedCounts = {
     'INORGCHEM__I1__CRYSTAL_SYSTEM_WING_': 7,

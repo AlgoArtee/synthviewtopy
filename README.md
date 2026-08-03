@@ -34,6 +34,7 @@ npm run test:streaming          # Verify balanced Explore/Walk rendering and ins
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
+npm run test:particle-physics # Audit the fifteen-building Particle Physics Labs District exterior package
 npm run test:district-walkability # Probe every district delimiter and current generic entrance in WALK
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
@@ -137,6 +138,16 @@ The southern inner-ring Genomics Labs District is an exterior-only code landscap
 - **Fabrica Genomica** uses a heavy split basalt base, six exchangeable chromosome modules with displaced centromere bands, an elliptical gantry with four moving carriages, service tower, utility cylinders, controlled watercourse, and visitor pavilion.
 - **The Variant Constellation** combines a twelve-facet waisted core, projecting variant panels and luminous regulatory links, an interrupted translucent research ring, twelve leaning pylons, three structural-variant bridges, and the Manhattan Colonnade of statistical peaks.
 - The grounded **Base-Pair Promenade** carries four separating and recombining spectral traces, four district-interface links, and five exact building approaches. The complete 1,116-mesh campus stays within its inner-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export.
+
+## Particle Physics Labs District
+
+The south-eastern perimeter Particle Physics Labs District is a fifteen-building, surface-only exterior campus organized as a physical visualization of event tracks, detector layers, probability fields, symmetry breaking, interference, and curved spacetime. It deliberately contains no accelerator, beam hall, magnet hall, or accelerator-access structure.
+
+- The central interaction zone joins the twelve-sector **Conventus Orbis** convention ring and open Interaction Court with the floating Higgs cube **Scalaris**, braided **Chromodynamic Court**, moire-screened neutrino institute **Oscilla**, and subtly mismatched twin towers of **The Asymmetry House**.
+- The computational and operational arc places **Chronos Relay**, **The Event Loom**, and **The Lattice Citadel** on curved data routes leading to **The Signal Coast Archive**, whose basalt storm barrier, wave canopy, twin sentinels, and exposed data conduits form the fortified Data Coast.
+- The low-signal garden groups incomplete black-ring **Noctis**, cruciform **Symmetria**, and the six isolated volumes beneath **The Quantum Silence Pavilion** with sparse landscaping and embedded fibre-optic points.
+- The northern theory ridge progresses from crystalline **Amplituhedron House** through the seven displaced regimes of **The Renormalization Tower** to the dark-to-pale expansion of **Genesis Spiral**.
+- Event Track Promenade, Theory Ridge Path, Data Coast Service Road, Probability Field Spine, four curved operational links, and fifteen exact approaches form 23 grounded routes. Shared primitive geometry, instanced facade/landscape fields, low-segment curves, HLOD/full-island batching, selective animation, and sparse linear lighting keep the district performance-conscious while preserving every building's authored silhouette. Interiors remain intentionally deferred by the exterior specification.
 
 ## Inorganic Chemistry Labs District
 
@@ -287,6 +298,7 @@ Hold **Shift** while clicking **Export scene** to download `YouTopy_Lab_Island.p
 | `src/world/securityDistrict.ts` | Fifteen-facility Aegis Arc exterior, curved security roads, embedded lighting, plazas, transparent landscaping, and district metadata |
 | `src/world/molecularBiologyDistrict.ts` | Ten-facility molecular-biology exterior, Molecular Meridian circulation, interaction plazas, information-light network, sensor landscapes, and deterministic scientific animation |
 | `src/world/inorganicChemistryLabsDistrict.ts` | Fifteen-facility mineral-and-lattice Inorganic Chemistry exterior, Valence Avenue circulation, selective node lighting, process machinery, and deterministic scientific animation |
+| `src/world/particlePhysicsLabsDistrict.ts` | Fifteen-facility Particle Physics exterior, central convention ring, event-track circulation, low-signal garden, northern theory ridge, fortified Data Coast, and deterministic data pulses |
 | `src/world/academicDistrict.ts` | Reusable Gothic building shells, furnished interiors, gate, quadrangles, garden, canal, service areas, hidden discoveries, semantic access, and optimization metadata |
 | `src/world/academicFountain.ts` | Modular Well of Infinite Knowledge geometry, Seshat/infinity/ring sculpture, procedural materials, water animation, camera/scene modes, LOD, collision, restoration, debug, state, and resource disposal |
 | `src/world/academicSurfaceTextures.ts` | Cached deterministic limestone, brick, slate, oak, and leaf-strewn path albedo/height patterns |

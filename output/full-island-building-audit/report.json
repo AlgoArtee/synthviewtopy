@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2619,
+    "liveRenderObjectCount": 2632,
     "batchOccupancy": {
-      "capacity": 38980,
-      "active": 37850,
-      "ratio": 0.9710107747562853
+      "capacity": 40287,
+      "active": 39157,
+      "ratio": 0.9719512497828083
     },
     "microdetail": {
       "total": 320,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 21286,
+    "detachedAuthoringSourceCount": 22073,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 688,
-      "batchedSourceCount": 21286,
-      "retainedSourceCount": 23217,
-      "estimatedGeometryBytes": 77247748,
-      "estimatedTextureBytes": 195615331,
-      "instancedBatchCount": 144,
-      "batchedMeshBatchCount": 86,
-      "mergedBatchCount": 458,
+      "batchCount": 702,
+      "batchedSourceCount": 22073,
+      "retainedSourceCount": 24003,
+      "estimatedGeometryBytes": 78365936,
+      "estimatedTextureBytes": 193523421,
+      "instancedBatchCount": 146,
+      "batchedMeshBatchCount": 95,
+      "mergedBatchCount": 461,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -1305,19 +1305,19 @@
         "pinned": false,
         "distanceMetres": 7970,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3184,
-          "animationNodes": 0
+          "drawCalls": 29,
+          "triangles": 73688,
+          "animationNodes": 3
         },
         "renderImportance": {
-          "mandatory": 40,
+          "mandatory": 826,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 33,
-          "active": 33,
+          "capacity": 1340,
+          "active": 1340,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 257,
+  "buildingCount": 268,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -8280,8 +8280,8 @@
     {
       "districtId": "particle-physics-labs",
       "name": "Particle Physics Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 15,
+      "discoveredCount": 15,
       "packageState": {
         "id": "particle-physics-labs",
         "kind": "district",
@@ -8299,104 +8299,335 @@
         "pinned": false,
         "distanceMetres": 7970,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3184,
-          "animationNodes": 0
+          "drawCalls": 29,
+          "triangles": 73688,
+          "animationNodes": 3
         },
         "renderImportance": {
-          "mandatory": 40,
+          "mandatory": 826,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 33,
-          "active": 33,
+          "capacity": 1340,
+          "active": 1340,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "particle-physics-labs",
-          "name": "Subsurface Accelerator Ring",
-          "rootName": "particle-physics-labs__FACILITY__SUBSURFACE-ACCELERATOR-RING",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "Conventus Orbis",
+          "rootName": "PARTICLE__P1__CONVENTUS_ORBIS",
+          "code": "P1",
+          "representedSourceCount": 119,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
+          "visibleBatchSources": 119,
+          "authoredBatchedSources": 119,
+          "expectedRuntimeBatchSources": 119,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            38.389,
+            3.207,
+            38.389
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Chronos Relay",
+          "rootName": "PARTICLE__P2__CHRONOS_RELAY",
+          "code": "P2",
+          "representedSourceCount": 94,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 94,
+          "authoredBatchedSources": 94,
+          "expectedRuntimeBatchSources": 94,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.894,
+            8.348,
+            20.835
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "The Event Loom",
+          "rootName": "PARTICLE__P3__EVENT_LOOM",
+          "code": "P3",
+          "representedSourceCount": 137,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 136,
+          "authoredBatchedSources": 136,
+          "expectedRuntimeBatchSources": 136,
           "mandatoryArchitecturalSources": 1,
           "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14.808,
-            2.425,
-            14.615
+            34.472,
+            6.453,
+            34.441
           ],
           "failures": []
         },
         {
           "districtId": "particle-physics-labs",
-          "name": "Grand Particle Detector Hall",
-          "rootName": "particle-physics-labs__FACILITY__GRAND-PARTICLE-DETECTOR-HALL",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "Scalaris",
+          "rootName": "PARTICLE__P4__SCALARIS",
+          "code": "P4",
+          "representedSourceCount": 33,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 32,
+          "authoredBatchedSources": 32,
+          "expectedRuntimeBatchSources": 32,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            22.508,
-            5.86,
-            22.305
+            20.238,
+            6.02,
+            20.238
           ],
           "failures": []
         },
         {
           "districtId": "particle-physics-labs",
-          "name": "Cryogenic Services Plant",
-          "rootName": "particle-physics-labs__FACILITY__CRYOGENIC-SERVICES-PLANT",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "Chromodynamic Court",
+          "rootName": "PARTICLE__P5__CHROMODYNAMIC_COURT",
+          "code": "P5",
+          "representedSourceCount": 75,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
+          "visibleBatchSources": 75,
+          "authoredBatchedSources": 75,
+          "expectedRuntimeBatchSources": 75,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            26.745,
+            4.114,
+            25.862
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Oscilla",
+          "rootName": "PARTICLE__P6__OSCILLA",
+          "code": "P6",
+          "representedSourceCount": 84,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 84,
+          "authoredBatchedSources": 84,
+          "expectedRuntimeBatchSources": 84,
           "mandatoryArchitecturalSources": 1,
           "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14.838,
-            3.388,
-            14.696
+            25.497,
+            3.314,
+            25.257
           ],
           "failures": []
         },
         {
           "districtId": "particle-physics-labs",
-          "name": "Accelerator Control Pavilion",
-          "rootName": "particle-physics-labs__FACILITY__ACCELERATOR-CONTROL-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Asymmetry House",
+          "rootName": "PARTICLE__P7__ASYMMETRY_HOUSE",
+          "code": "P7",
+          "representedSourceCount": 91,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 91,
+          "authoredBatchedSources": 91,
+          "expectedRuntimeBatchSources": 91,
+          "mandatoryArchitecturalSources": 41,
+          "representedMandatorySources": 41,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            20.682,
-            2.793,
-            20.672
+            25.663,
+            6.4,
+            25.57
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Noctis",
+          "rootName": "PARTICLE__P8__NOCTIS",
+          "code": "P8",
+          "representedSourceCount": 62,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 62,
+          "authoredBatchedSources": 62,
+          "expectedRuntimeBatchSources": 62,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.581,
+            2.49,
+            20.581
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Symmetria",
+          "rootName": "PARTICLE__P9__SYMMETRIA",
+          "code": "P9",
+          "representedSourceCount": 74,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 74,
+          "authoredBatchedSources": 74,
+          "expectedRuntimeBatchSources": 74,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            38.919,
+            4.58,
+            38.919
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "The Quantum Silence Pavilion",
+          "rootName": "PARTICLE__P10__QUANTUM_SILENCE_PAVILION",
+          "code": "P10",
+          "representedSourceCount": 28,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 27,
+          "authoredBatchedSources": 27,
+          "expectedRuntimeBatchSources": 27,
+          "mandatoryArchitecturalSources": 12,
+          "representedMandatorySources": 12,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.845,
+            3.545,
+            20.157
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "The Lattice Citadel",
+          "rootName": "PARTICLE__P11__LATTICE_CITADEL",
+          "code": "P11",
+          "representedSourceCount": 126,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 125,
+          "authoredBatchedSources": 125,
+          "expectedRuntimeBatchSources": 125,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            31.245,
+            8.295,
+            30.032
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Amplituhedron House",
+          "rootName": "PARTICLE__P12__AMPLITUHEDRON_HOUSE",
+          "code": "P12",
+          "representedSourceCount": 33,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 33,
+          "authoredBatchedSources": 33,
+          "expectedRuntimeBatchSources": 33,
+          "mandatoryArchitecturalSources": 9,
+          "representedMandatorySources": 9,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            26.296,
+            6.105,
+            26.294
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "The Renormalization Tower",
+          "rootName": "PARTICLE__P13__RENORMALIZATION_TOWER",
+          "code": "P13",
+          "representedSourceCount": 36,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 36,
+          "authoredBatchedSources": 36,
+          "expectedRuntimeBatchSources": 36,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.319,
+            11.63,
+            19.269
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "Genesis Spiral",
+          "rootName": "PARTICLE__P14__GENESIS_SPIRAL",
+          "code": "P14",
+          "representedSourceCount": 40,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 40,
+          "authoredBatchedSources": 40,
+          "expectedRuntimeBatchSources": 40,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            26.345,
+            4.72,
+            25.91
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "particle-physics-labs",
+          "name": "The Signal Coast Archive",
+          "rootName": "PARTICLE__P15__SIGNAL_COAST_ARCHIVE",
+          "code": "P15",
+          "representedSourceCount": 169,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 169,
+          "authoredBatchedSources": 169,
+          "expectedRuntimeBatchSources": 169,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            28.547,
+            7.21,
+            19.31
           ],
           "failures": []
         }

@@ -162,7 +162,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 10;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 11;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -176,6 +176,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'biochemistry-labs': 8,
   'organic-chemistry-labs': 9,
   'inorganic-chemistry': 10,
+  'particle-physics-labs': 11,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -190,6 +191,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'biochemistry-emissive-pulse',
   'organic-chemistry-emissive-pulse',
   'inorganic-chemistry-emissive-pulse',
+  'particle-physics-emissive-pulse',
 ]);
 
 /**
@@ -1217,6 +1219,9 @@ export class IslandWorld {
             group.userData.lastSafePosition = new THREE.Vector3();
           }
           group.userData.lastSafePosition.copy(group.position);
+          const definition = this.definitions.get(this.selectedId);
+          group.userData.lastSafePositionValid = !definition
+            || !this.intersectsEditableSibling(definition, group);
         }
       }
     });
@@ -1251,66 +1256,17 @@ export class IslandWorld {
           }
         }
 
-        // 2. Overlap collision check with other objects in the same root
+        // 2. Overlap collision check with other editable objects in the same root
         if (group && collisionEnabled) {
-          const parent = group.parent;
-          if (parent) {
-            const selectedBox = new THREE.Box3().setFromObject(group);
-            const parentSelectableId = group.userData.parentSelectableId as string | undefined;
-            let intersects = false;
-            for (const child of parent.children) {
-              if (child === group || child.name === 'EDITOR__TRANSFORM_GIZMO' || child.name === 'EDITOR__SELECTION_BOUNDS') continue;
-              if (
-                definition.category === 'authored-interior'
-                && child.userData.authoredInteriorComponent !== true
-              ) continue;
-              
-              // Only check objects that have collisions enabled
-              const childId = child.userData.selectableId;
-              const editingAuthoredInterior = defAny.workspace === 'interior'
-                && this.activeInteriorBuildingId !== null
-                && this.getEditorInterior(this.activeInteriorBuildingId)?.userData.authoredEditorInterior === true;
-              if (editingAuthoredInterior) {
-                const editableChild = typeof childId === 'string'
-                  ? this.definitions.get(childId)
-                  : null;
-                if (
-                  !editableChild
-                  || !(
-                    editableChild.category === 'authored-interior'
-                    || (
-                      (editableChild.category === 'editor' || editableChild.category === 'imported')
-                      && editableChild.workspace === 'interior'
-                      && editableChild.parentBuildingId === this.activeInteriorBuildingId
-                    )
-                  )
-                ) continue;
-              }
-              // Academic buildings are nested inside the selectable district.
-              // Ignore roads, lawns, and other parent-owned dressing while still
-              // preventing one individually editable facility crossing another.
-              if (parentSelectableId && childId === parentSelectableId) continue;
-              if (childId) {
-                const childDef = this.definitions.get(childId);
-                if (childDef && (childDef as any).collisionEnabled === false) continue;
-              }
-              
-              const childBox = new THREE.Box3().setFromObject(child);
-              if (selectedBox.intersectsBox(childBox)) {
-                intersects = true;
-                break;
-              }
-            }
-            if (intersects) {
-              if (group.userData.lastSafePosition) {
-                group.position.copy(group.userData.lastSafePosition);
-              }
-            } else {
-              if (!group.userData.lastSafePosition) {
-                group.userData.lastSafePosition = new THREE.Vector3();
-              }
-              group.userData.lastSafePosition.copy(group.position);
-            }
+          const intersects = this.intersectsEditableSibling(definition, group);
+          if (intersects && group.userData.lastSafePositionValid !== false) {
+            if (group.userData.lastSafePosition) group.position.copy(group.userData.lastSafePosition);
+          } else {
+            if (!group.userData.lastSafePosition) group.userData.lastSafePosition = new THREE.Vector3();
+            group.userData.lastSafePosition.copy(group.position);
+            // A persisted/imported overlap may be moved freely until it reaches
+            // a valid position; collision blocking resumes from that point.
+            group.userData.lastSafePositionValid = !intersects;
           }
         }
 
@@ -3893,6 +3849,24 @@ export class IslandWorld {
             THREE.MathUtils.lerp(start[2], end[2], progress),
           );
         }
+      } else if (object.userData.animate === 'particle-physics-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.007) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.18),
+            Number(object.userData.maxIntensity ?? 4),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'particle-physics-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.006);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
       } else if (object.userData.animate === 'industrial-fan') {
         object.rotation.y += delta * Number(object.userData.speed ?? 0.18);
       } else if (object.userData.animate === 'industrial-curtain') {
@@ -4329,6 +4303,53 @@ export class IslandWorld {
     this.labelRenderDirty = true;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+  }
+
+  private intersectsEditableSibling(definition: SceneDefinition, group: THREE.Group) {
+    const parent = group.parent;
+    if (!parent) return false;
+    const selectedBox = this.getSelectableBounds(definition.id, true)?.clone()
+      ?? new THREE.Box3().setFromObject(group);
+    const parentSelectableId = group.userData.parentSelectableId as string | undefined;
+    const definitionWorkspace = (definition as any).workspace;
+    const editingAuthoredInterior = definitionWorkspace === 'interior'
+      && this.activeInteriorBuildingId !== null
+      && this.getEditorInterior(this.activeInteriorBuildingId)?.userData.authoredEditorInterior === true;
+
+    for (const child of parent.children) {
+      if (child === group || child.name === 'EDITOR__TRANSFORM_GIZMO' || child.name === 'EDITOR__SELECTION_BOUNDS') continue;
+      if (definition.category === 'authored-interior' && child.userData.authoredInteriorComponent !== true) continue;
+      const childId = String(child.userData.individualSelectableId ?? child.userData.selectableId ?? '');
+      if (editingAuthoredInterior) {
+        const editableChild = childId ? this.definitions.get(childId) : null;
+        if (!editableChild
+          || !(
+            editableChild.category === 'authored-interior'
+            || (
+              (editableChild.category === 'editor' || editableChild.category === 'imported')
+              && editableChild.workspace === 'interior'
+              && editableChild.parentBuildingId === this.activeInteriorBuildingId
+            )
+          )) continue;
+      }
+      // Individually editable facilities share a district root with roads,
+      // landscape, metadata anchors, and package-wide GPU batches. Only other
+      // registered facility roots are valid overlap blockers.
+      if (parentSelectableId) {
+        if (!childId || childId === parentSelectableId || this.objectGroups.get(childId) !== child) continue;
+        const siblingDefinition = this.definitions.get(childId);
+        if (!siblingDefinition
+          || !('parentDistrictId' in siblingDefinition)
+          || siblingDefinition.parentDistrictId !== parentSelectableId) continue;
+      }
+      const childDefinition = childId ? this.definitions.get(childId) : null;
+      if (childDefinition && (childDefinition as any).collisionEnabled === false) continue;
+      const childBox = childId
+        ? this.getSelectableBounds(childId, true) ?? new THREE.Box3().setFromObject(child)
+        : new THREE.Box3().setFromObject(child);
+      if (selectedBox.intersectsBox(childBox)) return true;
+    }
+    return false;
   }
 
   private invalidateSelectableBounds(id?: string) {
@@ -5154,7 +5175,7 @@ export class IslandWorld {
     interior.updateMatrixWorld(true);
   }
 
-  private unregisterObject(id: string, notifyUi = true) {
+  private unregisterObject(id: string, notifyUi = true, syncRuntimePackage = true) {
     const definition = this.definitions.get(id);
     const group = this.objectGroups.get(id);
     if (!definition || !group) return;
@@ -5171,7 +5192,7 @@ export class IslandWorld {
     const library = group.getObjectByName(CEREBRUM_LIBRARY_ROOT_NAME);
     if (library) disposeCerebrumLibrary(library);
     group.removeFromParent();
-    if (packageId) this.worldStreaming.syncPackageRuntimeBatches(packageId);
+    if (packageId && syncRuntimePackage) this.worldStreaming.syncPackageRuntimeBatches(packageId);
     this.objectGroups.delete(id);
     this.definitions.delete(id);
     this.initialTransforms.delete(id);
@@ -7567,14 +7588,19 @@ export class IslandWorld {
     const toRemove = ACADEMIC_CAMPUS_BUILDINGS.map((record) => academicBuildingSelectableId(record.id));
     ENTRY_LOGISTICS_BUILDING_PROGRAM.forEach((record) => toRemove.push(entryLogisticsBuildingSelectableId(record.code)));
     toRemove.push(WELCOME_POOL_SELECTABLE_ID);
+    this.definitions.forEach((definition) => {
+      if (definition.category === 'authored-exterior-building') toRemove.push(definition.id);
+    });
     districts.forEach((d) => toRemove.push(d.id));
     biomes.forEach((b) => toRemove.push(b.id));
 
-    toRemove.forEach((id) => {
+    new Set(toRemove).forEach((id) => {
       // Static reconstruction replaces the same canonical 41 definitions.
       // Do not report them as user deletions or the Atlas will splice every
       // district/biome from its own definition list during Save/Refresh.
-      this.unregisterObject(id, false);
+      // Package rendering is replaced atomically below, so synchronizing every
+      // soon-to-be-discarded child anchor would only rebuild stale GPU batches.
+      this.unregisterObject(id, false, false);
     });
 
     this.createDistrictsAndBiomes();
@@ -9284,6 +9310,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
+    const particlePhysicsLabsDistrict = this.objectGroups.get('particle-physics-labs')?.userData.particlePhysicsLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -9438,6 +9465,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,
+      particlePhysicsLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

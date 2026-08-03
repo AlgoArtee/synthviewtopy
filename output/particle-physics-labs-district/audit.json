@@ -1,0 +1,1155 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Particle Physics Labs District",
+      "mapLabel": "Particle Physics Labs",
+      "architecturalLanguage": "detector-derived layered shells, graphite basalt, pale technical ceramic, brushed titanium, dark stainless steel, selective dichroic glass, event tracks, probability fields, symmetry breaking, interference, and curved spacetime",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "P1",
+          "name": "Conventus Orbis",
+          "purpose": "Principal scientific convention, symposium, and collaboration forum",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            215,
+            215
+          ],
+          "heightMetres": 31,
+          "exteriorMotif": "twelve deep hall-scale sectors on one perfect circular titanium ring, four symmetric cardinal interaction nodes, equal elevated bridges, twelve sector-centered V-pylon pairs, and open Interaction Court"
+        },
+        {
+          "code": "P2",
+          "name": "Chronos Relay",
+          "purpose": "Global experiment operations, timing synchronization, remote observation shifts, and live collaboration",
+          "placementZone": "Western operational approach",
+          "footprintMetres": [
+            105,
+            92
+          ],
+          "heightMetres": 72,
+          "exteriorMotif": "wave-fin hexagonal operations base and seven subtly rotated timing volumes beneath an optical crown"
+        },
+        {
+          "code": "P3",
+          "name": "The Event Loom",
+          "purpose": "Event reconstruction, detector triggers, scientific AI, anomaly detection, and simulation-based inference",
+          "placementZone": "Computational and operational arc",
+          "footprintMetres": [
+            185,
+            148
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "two obliquely colliding data wings, sparse signal pixels, translucent event wall, and Trigger Tiers"
+        },
+        {
+          "code": "P4",
+          "name": "Scalaris",
+          "purpose": "Precision Higgs measurements, rare decays, self-coupling signatures, and new-physics connections",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            92,
+            92
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "floating pearlescent ceramic cube, displaced symmetry frames, dichroic slit, and one-field error"
+        },
+        {
+          "code": "P5",
+          "name": "Chromodynamic Court",
+          "purpose": "Quantum chromodynamics, proton tomography, quark and gluon dynamics, jets, exotic hadrons, and quark-gluon plasma",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            170,
+            150
+          ],
+          "heightMetres": 32,
+          "exteriorMotif": "three braided ribbed wings around a mist court beneath a force-network canopy"
+        },
+        {
+          "code": "P6",
+          "name": "Oscilla",
+          "purpose": "Synthesis of long-baseline, atmospheric, reactor, solar, and astrophysical neutrino observations",
+          "placementZone": "Central interaction zone toward the Savanna approach",
+          "footprintMetres": [
+            210,
+            118
+          ],
+          "heightMetres": 29,
+          "exteriorMotif": "three shifted translucent volumes with geometric moire screens over black-water basins"
+        },
+        {
+          "code": "P7",
+          "name": "The Asymmetry House",
+          "purpose": "Flavour physics, CP violation, rare decays, and matter-antimatter differences",
+          "placementZone": "Outer collaborative court",
+          "footprintMetres": [
+            132,
+            108
+          ],
+          "heightMetres": 61,
+          "exteriorMotif": "near-mirror twin towers with controlled differences, off-axis sky prism, and decay-tree canopy"
+        },
+        {
+          "code": "P8",
+          "name": "Noctis",
+          "purpose": "Axion, dark-photon, weakly interacting particle, and other low-background dark-sector signal correlation",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            118,
+            118
+          ],
+          "heightMetres": 19,
+          "exteriorMotif": "recessed incomplete black ring, roof waves, isolated light wells, and a faint irregular signal trace"
+        },
+        {
+          "code": "P9",
+          "name": "Symmetria",
+          "purpose": "Fundamental symmetries, dipole moments, CPT tests, lepton universality, muon properties, and ultra-rare processes",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            190,
+            190
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "strict cruciform stone plan, calibrated central rings, terminal frames, and one deliberate discontinuity"
+        },
+        {
+          "code": "P10",
+          "name": "The Quantum Silence Pavilion",
+          "purpose": "Quantum sensor readout, calibration, and low-noise precision analysis",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            145,
+            118
+          ],
+          "heightMetres": 24,
+          "exteriorMotif": "six isolated ceramic pavilions beneath a tapered floating roof within a dry vibration moat"
+        },
+        {
+          "code": "P11",
+          "name": "The Lattice Citadel",
+          "purpose": "Exascale lattice field calculations, Standard Model predictions, quantum simulation, and large-scale theoretical computation",
+          "placementZone": "Computational and operational arc",
+          "footprintMetres": [
+            190,
+            135
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "stepped cubic megastructure, warped facade grid, faceted cooling prisms, diagonal ramps, and exposed cooling channel"
+        },
+        {
+          "code": "P12",
+          "name": "Amplituhedron House",
+          "purpose": "Scattering amplitudes, quantum geometry, conformal structures, and geometrical field-theory methods",
+          "placementZone": "Northern theory ridge",
+          "footprintMetres": [
+            125,
+            116
+          ],
+          "heightMetres": 47,
+          "exteriorMotif": "intersecting triangular planes, skewed iridescent prisms, sharp cantilevers, and perspective-resolving columns"
+        },
+        {
+          "code": "P13",
+          "name": "The Renormalization Tower",
+          "purpose": "Beyond-Standard-Model phenomenology, hidden sectors, compositeness, extra dimensions, and effective field theories",
+          "placementZone": "Northern theory ridge landmark",
+          "footprintMetres": [
+            98,
+            94
+          ],
+          "heightMetres": 116,
+          "exteriorMotif": "seven migrating regimes, branching structural exoskeleton, luminous scale gaps, and open beacon crown"
+        },
+        {
+          "code": "P14",
+          "name": "Genesis Spiral",
+          "purpose": "Particle cosmology, baryogenesis, phase transitions, inflationary particle physics, and relic fields",
+          "placementZone": "Northern theory ridge",
+          "footprintMetres": [
+            165,
+            155
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "logarithmic expansion from dark core to pale arc, widening bronze ribs, and architectural oculus"
+        },
+        {
+          "code": "P15",
+          "name": "The Signal Coast Archive",
+          "purpose": "Multimessenger alerts, particle open data, long-term archives, and protected coastal data links",
+          "placementZone": "Fortified Data Coast",
+          "footprintMetres": [
+            240,
+            94
+          ],
+          "heightMetres": 64,
+          "exteriorMotif": "basalt storm barrier, silver wave canopy, paired sentinel towers, cable conduits, and narrow alert wavefront"
+        }
+      ],
+      "zones": {
+        "centralInteraction": [
+          "Conventus Orbis",
+          "Scalaris",
+          "Chromodynamic Court",
+          "Oscilla",
+          "The Asymmetry House"
+        ],
+        "computationalOperational": [
+          "Chronos Relay",
+          "The Event Loom",
+          "The Lattice Citadel",
+          "The Signal Coast Archive"
+        ],
+        "lowSignalGarden": [
+          "Noctis",
+          "Symmetria",
+          "The Quantum Silence Pavilion"
+        ],
+        "northernTheoryRidge": [
+          "Amplituhedron House",
+          "The Renormalization Tower",
+          "Genesis Spiral"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "PARTICLE__EVENT_TRACK_PROMENADE",
+        "theoryRidge": "PARTICLE__THEORY_RIDGE_PATH",
+        "dataCoast": "PARTICLE__DATA_COAST_SERVICE_ROAD",
+        "probabilitySpine": "PARTICLE__PROBABILITY_FIELD_SPINE",
+        "operationalLinks": 4,
+        "exactBuildingApproaches": 15
+      },
+      "performance": {
+        "sharedPrimitiveGeometries": true,
+        "instancedFacadeFields": true,
+        "lowSegmentCurves": true,
+        "broadDecorativeLightingOnly": false
+      },
+      "lightingLanguage": "fine linear traces, isolated pulses, sparse signals, synchronized sequences, and slowly changing data patterns",
+      "exclusions": [
+        "accelerator equipment",
+        "beam hall",
+        "magnet hall",
+        "accelerator access building"
+      ],
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Conventus Orbis",
+        "Chronos Relay",
+        "The Event Loom",
+        "Scalaris",
+        "Chromodynamic Court",
+        "Oscilla",
+        "The Asymmetry House",
+        "Noctis",
+        "Symmetria",
+        "The Quantum Silence Pavilion",
+        "The Lattice Citadel",
+        "Amplituhedron House",
+        "The Renormalization Tower",
+        "Genesis Spiral",
+        "The Signal Coast Archive"
+      ],
+      "plannedObjects": [
+        "Event Track Promenade",
+        "Theory Ridge Path",
+        "Data Coast Service Road",
+        "Probability Field Spine",
+        "Interaction Plazas",
+        "Feynman Rain Channels",
+        "Fibre-Optic Ground Field",
+        "Data Coast Storm Barrier"
+      ],
+      "realizedFeatureTags": [
+        "conventus-orbis",
+        "chronos-relay",
+        "the-event-loom",
+        "scalaris",
+        "chromodynamic-court",
+        "oscilla",
+        "the-asymmetry-house",
+        "noctis",
+        "symmetria",
+        "the-quantum-silence-pavilion",
+        "the-lattice-citadel",
+        "amplituhedron-house",
+        "the-renormalization-tower",
+        "genesis-spiral",
+        "the-signal-coast-archive"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 145,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 23,
+      "radialCoverage": 0.99,
+      "angularCoverage": 0.98,
+      "exteriorOnly": true,
+      "surfaceFacilitiesOnly": true,
+      "performanceAuthored": true
+    },
+    "codes": [
+      "P1",
+      "P2",
+      "P3",
+      "P4",
+      "P5",
+      "P6",
+      "P7",
+      "P8",
+      "P9",
+      "P10",
+      "P11",
+      "P12",
+      "P13",
+      "P14",
+      "P15"
+    ],
+    "facilityCount": 15,
+    "meshCount": 1691,
+    "uniqueNames": 1760,
+    "materialNames": [
+      "Particle Physics amber timing trace",
+      "Particle Physics amber-violet dichroic glass",
+      "Particle Physics black reflecting water",
+      "Particle Physics black vibration gravel",
+      "Particle Physics blue-black stainless steel",
+      "Particle Physics calibrated bronze",
+      "Particle Physics cyan data trace",
+      "Particle Physics dark stainless steel",
+      "Particle Physics graphite basalt",
+      "Particle Physics iridescent theory glass",
+      "Particle Physics low silver grass",
+      "Particle Physics muted red ceramic",
+      "Particle Physics near-black technical ceramic",
+      "Particle Physics oxidized copper",
+      "Particle Physics pale precision stone",
+      "Particle Physics pale technical ceramic",
+      "Particle Physics perforated technical mesh",
+      "Particle Physics polished instrument metal",
+      "Particle Physics satin brushed titanium",
+      "Particle Physics smoked electrochromic glass",
+      "Particle Physics violet field trace"
+    ],
+    "animations": {
+      "particle-physics-emissive-pulse": 212,
+      "particle-physics-rotation": 10
+    },
+    "missingRoots": [],
+    "missingSignatures": [],
+    "retiredAcceleratorObjects": [],
+    "facilityBoxes": [
+      {
+        "code": "P1",
+        "name": "Conventus Orbis",
+        "min": [
+          180.9800994176525,
+          1.5413530738566639,
+          301.52655957403476
+        ],
+        "max": [
+          204.55287681492362,
+          4.886,
+          325.0993369713059
+        ],
+        "center": [
+          192.76648811628806,
+          3.213676536928332,
+          313.3129482726703
+        ],
+        "size": [
+          23.572777397271125,
+          3.3446469261433363,
+          23.572777397271125
+        ]
+      },
+      {
+        "code": "P2",
+        "name": "Chronos Relay",
+        "min": [
+          289.7449688820718,
+          1.643367997169495,
+          212.36807928045627
+        ],
+        "max": [
+          304.5189214702235,
+          9.991,
+          227.42827477373012
+        ],
+        "center": [
+          297.13194517614767,
+          5.817183998584747,
+          219.8981770270932
+        ],
+        "size": [
+          14.773952588151701,
+          8.347632002830505,
+          15.060195493273852
+        ]
+      },
+      {
+        "code": "P3",
+        "name": "The Event Loom",
+        "min": [
+          280.3161800107901,
+          1.6660000000000001,
+          244.70884110153835
+        ],
+        "max": [
+          304.5584228755112,
+          8.119477695051703,
+          269.2969453431195
+        ],
+        "center": [
+          292.43730144315066,
+          4.892738847525852,
+          257.0028932223289
+        ],
+        "size": [
+          24.242242864721106,
+          6.453477695051703,
+          24.588104241581135
+        ]
+      },
+      {
+        "code": "P4",
+        "name": "Scalaris",
+        "min": [
+          250.30796090752622,
+          1.6660000000000004,
+          255.5923546596829
+        ],
+        "max": [
+          264.61906406800347,
+          7.686,
+          269.90345782016016
+        ],
+        "center": [
+          257.46351248776483,
+          4.676,
+          262.7479062399215
+        ],
+        "size": [
+          14.311103160477245,
+          6.02,
+          14.311103160477245
+        ]
+      },
+      {
+        "code": "P5",
+        "name": "Chromodynamic Court",
+        "min": [
+          101.14890888764961,
+          1.6660000000000001,
+          340.2913540671603
+        ],
+        "max": [
+          122.75691006197223,
+          5.795223321343538,
+          360.53806471068987
+        ],
+        "center": [
+          111.95290947481092,
+          3.730611660671769,
+          350.4147093889251
+        ],
+        "size": [
+          21.608001174322624,
+          4.129223321343537,
+          20.246710643529582
+        ]
+      },
+      {
+        "code": "P6",
+        "name": "Oscilla",
+        "min": [
+          30.136766554104703,
+          1.5832937671120433,
+          350.0996712609176
+        ],
+        "max": [
+          53.201040633903254,
+          4.897238124803154,
+          372.8911765592031
+        ],
+        "center": [
+          41.66890359400398,
+          3.240265945957599,
+          361.49542391006037
+        ],
+        "size": [
+          23.06427407979855,
+          3.3139443576911107,
+          22.791505298285472
+        ]
+      },
+      {
+        "code": "P7",
+        "name": "The Asymmetry House",
+        "min": [
+          225.2564651449099,
+          1.6660000000000001,
+          302.84663937634963
+        ],
+        "max": [
+          243.78565100984832,
+          8.065999999999999,
+          320.9060010646078
+        ],
+        "center": [
+          234.5210580773791,
+          4.866,
+          311.8763202204787
+        ],
+        "size": [
+          18.529185864938427,
+          6.399999999999999,
+          18.05936168825815
+        ]
+      },
+      {
+        "code": "P8",
+        "name": "Noctis",
+        "min": [
+          267.72423704792647,
+          1.4859999761581415,
+          203.57327665374464
+        ],
+        "max": [
+          288.4789523306428,
+          3.976,
+          224.327991936461
+        ],
+        "center": [
+          278.10159468928464,
+          2.7309999880790707,
+          213.95063429510282
+        ],
+        "size": [
+          20.754715282716347,
+          2.4900000238418585,
+          20.754715282716347
+        ]
+      },
+      {
+        "code": "P9",
+        "name": "Symmetria",
+        "min": [
+          211.83823604648236,
+          1.6159999999999999,
+          253.7195888553429
+        ],
+        "max": [
+          239.45741060722312,
+          6.196,
+          281.3387634160837
+        ],
+        "center": [
+          225.64782332685274,
+          3.9059999999999997,
+          267.52917613571327
+        ],
+        "size": [
+          27.61917456074076,
+          4.58,
+          27.619174560740788
+        ]
+      },
+      {
+        "code": "P10",
+        "name": "The Quantum Silence Pavilion",
+        "min": [
+          63.136843577385136,
+          1.6660000000000004,
+          334.9725071481834
+        ],
+        "max": [
+          80.89696675834942,
+          5.211,
+          351.8431486257437
+        ],
+        "center": [
+          72.01690516786728,
+          3.4385000000000003,
+          343.40782788696356
+        ],
+        "size": [
+          17.760123180964285,
+          3.545,
+          16.870641477560298
+        ]
+      },
+      {
+        "code": "P11",
+        "name": "The Lattice Citadel",
+        "min": [
+          147.6681800391696,
+          1.6660000000000001,
+          345.77803624392106
+        ],
+        "max": [
+          172.05842458508624,
+          9.961,
+          367.76118692914355
+        ],
+        "center": [
+          159.86330231212793,
+          5.8135,
+          356.7696115865323
+        ],
+        "size": [
+          24.39024454591663,
+          8.295,
+          21.983150685222483
+        ]
+      },
+      {
+        "code": "P12",
+        "name": "Amplituhedron House",
+        "min": [
+          229.35932742231336,
+          1.2900463627096816,
+          212.54478475679312
+        ],
+        "max": [
+          247.94009727683334,
+          7.395401939367909,
+          231.17553486567314
+        ],
+        "center": [
+          238.64971234957335,
+          4.342724151038795,
+          221.86015981123313
+        ],
+        "size": [
+          18.580769854519986,
+          6.105355576658228,
+          18.630750108880022
+        ]
+      },
+      {
+        "code": "P13",
+        "name": "The Renormalization Tower",
+        "min": [
+          167.24224102854248,
+          1.6660000000000001,
+          270.47885611820004
+        ],
+        "max": [
+          181.31494913753323,
+          13.296000000000001,
+          284.39413566237874
+        ],
+        "center": [
+          174.27859508303786,
+          7.481000000000001,
+          277.4364958902894
+        ],
+        "size": [
+          14.072708108990753,
+          11.63,
+          13.915279544178702
+        ]
+      },
+      {
+        "code": "P14",
+        "name": "Genesis Spiral",
+        "min": [
+          85.65917944076773,
+          1.6660000000000001,
+          301.0213102507531
+        ],
+        "max": [
+          106.87753560405454,
+          6.385999996423721,
+          322.8980634837302
+        ],
+        "center": [
+          96.26835752241114,
+          4.02599999821186,
+          311.95968686724166
+        ],
+        "size": [
+          21.218356163286813,
+          4.719999996423721,
+          21.87675323297708
+        ]
+      },
+      {
+        "code": "P15",
+        "name": "The Signal Coast Archive",
+        "min": [
+          61.996331783968415,
+          1.6660000000000001,
+          387.4213943649213
+        ],
+        "max": [
+          88.26609237344023,
+          8.876,
+          402.0783760405799
+        ],
+        "center": [
+          75.13121207870432,
+          5.271,
+          394.7498852027506
+        ],
+        "size": [
+          26.269760589471815,
+          7.209999999999999,
+          14.656981675658585
+        ]
+      }
+    ],
+    "overlaps": [],
+    "boundaryViolations": [],
+    "conventusStructure": {
+      "metadata": {
+        "habitableSectorCount": 12,
+        "storeysPerSector": 3,
+        "circularPlan": true,
+        "ringRadiusMetres": 92,
+        "minimumSectorDepthMetres": 30.4,
+        "supportPairCount": 12,
+        "supportApexRadiusX": 9.2,
+        "supportApexRadiusZ": 9.2,
+        "cardinalNodeCount": 4,
+        "cardinalNodeRadiusMetres": 92,
+        "ringUndersideY": 0.886,
+        "bearingContactY": 0.904
+      },
+      "hallBandCount": 36,
+      "pylonLegCount": 24,
+      "bearingShoeCount": 12,
+      "minimumHallDepthMetres": 30.36,
+      "actualRingUndersideY": 0.88625,
+      "maximumBearingVerticalOffset": 0.020000000000000018,
+      "maximumBearingEllipseError": 2.220446049250313e-16,
+      "maximumBearingSectorAngleError": 6.432490598706546e-16,
+      "maximumBandCircularScaleError": 0,
+      "bandRadiusSpread": 0,
+      "cardinalNodeCount": 4,
+      "cardinalNodeRadiusSpread": 0,
+      "maximumCardinalNodeAngleError": 2.4492935982947064e-16,
+      "cardinalBridgeLengthSpread": 0
+    },
+    "routeAudit": [
+      {
+        "name": "PARTICLE__EVENT_TRACK_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__THEORY_RIDGE_PATH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__DATA_COAST_SERVICE_ROAD",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__PROBABILITY_FIELD_SPINE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__CURVED_OPERATIONAL_LINK_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__CURVED_OPERATIONAL_LINK_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__CURVED_OPERATIONAL_LINK_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__CURVED_OPERATIONAL_LINK_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P10",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P11",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P12",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P13",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P14",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "PARTICLE__BUILDING_APPROACH_P15",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      249.5097007751465,
+      1.6459999984502793,
+      270.3124704380211
+    ],
+    "roadNextPoint": [
+      237.06559562683108,
+      1.6459999984502793,
+      281.28957653238143
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "Particle Physics Labs District",
+      "mapLabel": "Particle Physics Labs",
+      "architecturalLanguage": "detector-derived layered shells, graphite basalt, pale technical ceramic, brushed titanium, dark stainless steel, selective dichroic glass, event tracks, probability fields, symmetry breaking, interference, and curved spacetime",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "P1",
+          "name": "Conventus Orbis",
+          "purpose": "Principal scientific convention, symposium, and collaboration forum",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            215,
+            215
+          ],
+          "heightMetres": 31,
+          "exteriorMotif": "twelve deep hall-scale sectors on one perfect circular titanium ring, four symmetric cardinal interaction nodes, equal elevated bridges, twelve sector-centered V-pylon pairs, and open Interaction Court"
+        },
+        {
+          "code": "P2",
+          "name": "Chronos Relay",
+          "purpose": "Global experiment operations, timing synchronization, remote observation shifts, and live collaboration",
+          "placementZone": "Western operational approach",
+          "footprintMetres": [
+            105,
+            92
+          ],
+          "heightMetres": 72,
+          "exteriorMotif": "wave-fin hexagonal operations base and seven subtly rotated timing volumes beneath an optical crown"
+        },
+        {
+          "code": "P3",
+          "name": "The Event Loom",
+          "purpose": "Event reconstruction, detector triggers, scientific AI, anomaly detection, and simulation-based inference",
+          "placementZone": "Computational and operational arc",
+          "footprintMetres": [
+            185,
+            148
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "two obliquely colliding data wings, sparse signal pixels, translucent event wall, and Trigger Tiers"
+        },
+        {
+          "code": "P4",
+          "name": "Scalaris",
+          "purpose": "Precision Higgs measurements, rare decays, self-coupling signatures, and new-physics connections",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            92,
+            92
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "floating pearlescent ceramic cube, displaced symmetry frames, dichroic slit, and one-field error"
+        },
+        {
+          "code": "P5",
+          "name": "Chromodynamic Court",
+          "purpose": "Quantum chromodynamics, proton tomography, quark and gluon dynamics, jets, exotic hadrons, and quark-gluon plasma",
+          "placementZone": "Central interaction zone",
+          "footprintMetres": [
+            170,
+            150
+          ],
+          "heightMetres": 32,
+          "exteriorMotif": "three braided ribbed wings around a mist court beneath a force-network canopy"
+        },
+        {
+          "code": "P6",
+          "name": "Oscilla",
+          "purpose": "Synthesis of long-baseline, atmospheric, reactor, solar, and astrophysical neutrino observations",
+          "placementZone": "Central interaction zone toward the Savanna approach",
+          "footprintMetres": [
+            210,
+            118
+          ],
+          "heightMetres": 29,
+          "exteriorMotif": "three shifted translucent volumes with geometric moire screens over black-water basins"
+        },
+        {
+          "code": "P7",
+          "name": "The Asymmetry House",
+          "purpose": "Flavour physics, CP violation, rare decays, and matter-antimatter differences",
+          "placementZone": "Outer collaborative court",
+          "footprintMetres": [
+            132,
+            108
+          ],
+          "heightMetres": 61,
+          "exteriorMotif": "near-mirror twin towers with controlled differences, off-axis sky prism, and decay-tree canopy"
+        },
+        {
+          "code": "P8",
+          "name": "Noctis",
+          "purpose": "Axion, dark-photon, weakly interacting particle, and other low-background dark-sector signal correlation",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            118,
+            118
+          ],
+          "heightMetres": 19,
+          "exteriorMotif": "recessed incomplete black ring, roof waves, isolated light wells, and a faint irregular signal trace"
+        },
+        {
+          "code": "P9",
+          "name": "Symmetria",
+          "purpose": "Fundamental symmetries, dipole moments, CPT tests, lepton universality, muon properties, and ultra-rare processes",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            190,
+            190
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "strict cruciform stone plan, calibrated central rings, terminal frames, and one deliberate discontinuity"
+        },
+        {
+          "code": "P10",
+          "name": "The Quantum Silence Pavilion",
+          "purpose": "Quantum sensor readout, calibration, and low-noise precision analysis",
+          "placementZone": "Low-signal research garden",
+          "footprintMetres": [
+            145,
+            118
+          ],
+          "heightMetres": 24,
+          "exteriorMotif": "six isolated ceramic pavilions beneath a tapered floating roof within a dry vibration moat"
+        },
+        {
+          "code": "P11",
+          "name": "The Lattice Citadel",
+          "purpose": "Exascale lattice field calculations, Standard Model predictions, quantum simulation, and large-scale theoretical computation",
+          "placementZone": "Computational and operational arc",
+          "footprintMetres": [
+            190,
+            135
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "stepped cubic megastructure, warped facade grid, faceted cooling prisms, diagonal ramps, and exposed cooling channel"
+        },
+        {
+          "code": "P12",
+          "name": "Amplituhedron House",
+          "purpose": "Scattering amplitudes, quantum geometry, conformal structures, and geometrical field-theory methods",
+          "placementZone": "Northern theory ridge",
+          "footprintMetres": [
+            125,
+            116
+          ],
+          "heightMetres": 47,
+          "exteriorMotif": "intersecting triangular planes, skewed iridescent prisms, sharp cantilevers, and perspective-resolving columns"
+        },
+        {
+          "code": "P13",
+          "name": "The Renormalization Tower",
+          "purpose": "Beyond-Standard-Model phenomenology, hidden sectors, compositeness, extra dimensions, and effective field theories",
+          "placementZone": "Northern theory ridge landmark",
+          "footprintMetres": [
+            98,
+            94
+          ],
+          "heightMetres": 116,
+          "exteriorMotif": "seven migrating regimes, branching structural exoskeleton, luminous scale gaps, and open beacon crown"
+        },
+        {
+          "code": "P14",
+          "name": "Genesis Spiral",
+          "purpose": "Particle cosmology, baryogenesis, phase transitions, inflationary particle physics, and relic fields",
+          "placementZone": "Northern theory ridge",
+          "footprintMetres": [
+            165,
+            155
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "logarithmic expansion from dark core to pale arc, widening bronze ribs, and architectural oculus"
+        },
+        {
+          "code": "P15",
+          "name": "The Signal Coast Archive",
+          "purpose": "Multimessenger alerts, particle open data, long-term archives, and protected coastal data links",
+          "placementZone": "Fortified Data Coast",
+          "footprintMetres": [
+            240,
+            94
+          ],
+          "heightMetres": 64,
+          "exteriorMotif": "basalt storm barrier, silver wave canopy, paired sentinel towers, cable conduits, and narrow alert wavefront"
+        }
+      ],
+      "zones": {
+        "centralInteraction": [
+          "Conventus Orbis",
+          "Scalaris",
+          "Chromodynamic Court",
+          "Oscilla",
+          "The Asymmetry House"
+        ],
+        "computationalOperational": [
+          "Chronos Relay",
+          "The Event Loom",
+          "The Lattice Citadel",
+          "The Signal Coast Archive"
+        ],
+        "lowSignalGarden": [
+          "Noctis",
+          "Symmetria",
+          "The Quantum Silence Pavilion"
+        ],
+        "northernTheoryRidge": [
+          "Amplituhedron House",
+          "The Renormalization Tower",
+          "Genesis Spiral"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "PARTICLE__EVENT_TRACK_PROMENADE",
+        "theoryRidge": "PARTICLE__THEORY_RIDGE_PATH",
+        "dataCoast": "PARTICLE__DATA_COAST_SERVICE_ROAD",
+        "probabilitySpine": "PARTICLE__PROBABILITY_FIELD_SPINE",
+        "operationalLinks": 4,
+        "exactBuildingApproaches": 15
+      },
+      "performance": {
+        "sharedPrimitiveGeometries": true,
+        "instancedFacadeFields": true,
+        "lowSegmentCurves": true,
+        "broadDecorativeLightingOnly": false
+      },
+      "lightingLanguage": "fine linear traces, isolated pulses, sparse signals, synchronized sequences, and slowly changing data patterns",
+      "exclusions": [
+        "accelerator equipment",
+        "beam hall",
+        "magnet hall",
+        "accelerator access building"
+      ],
+      "exteriorOnly": true
+    },
+    "specializedRevision": 11,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "particle-physics-labs",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 29,
+        "triangles": 75368,
+        "animationNodes": 3
+      },
+      "renderImportance": {
+        "mandatory": 830,
+        "micro": 0,
+        "visibleMicro": 0,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 1344,
+        "active": 1344,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999935183,
+    "grounded": true,
+    "position": [
+      249.388,
+      1.808,
+      270.42
+    ]
+  },
+  "errors": []
+}

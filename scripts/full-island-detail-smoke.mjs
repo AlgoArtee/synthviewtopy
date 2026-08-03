@@ -7,7 +7,7 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-const TARGET_BUILDING_COUNT = 257;
+const TARGET_BUILDING_COUNT = 268;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -241,7 +241,10 @@ try {
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
     || fullAudit.stats.drawCalls > 1_500
-    || fullStreaming.gpuBatching.batchCount > 700
+    // The 15-building Particle Physics campus adds 14 packages of authored
+    // architecture while remaining at 29 district draw calls. Keep a narrow
+    // eight-batch margin above the measured 702-batch full-island baseline.
+    || fullStreaming.gpuBatching.batchCount > 710
     || fullAudit.stats.textureCount > 400
     || fullAudit.stats.triangles > 3_000_000
     || fullAudit.stats.activeAnimationNodes > 120

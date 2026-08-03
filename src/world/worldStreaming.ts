@@ -1023,6 +1023,46 @@ function collapseCompatibleMergedBatches(records: RuntimeBatchRecord[], root: TH
   });
 }
 
+function computeAuthoredLocalBounds(owner: THREE.Object3D) {
+  owner.updateWorldMatrix(true, true);
+  const ownerWorldInverse = owner.matrixWorld.clone().invert();
+  const bounds = new THREE.Box3();
+  const transformedBounds = new THREE.Box3();
+  const objectToOwner = new THREE.Matrix4();
+  const instanceTransform = new THREE.Matrix4();
+  const instanceToOwner = new THREE.Matrix4();
+  let populated = false;
+
+  owner.traverse((object) => {
+    if (!(object instanceof THREE.Mesh || object instanceof THREE.Line || object instanceof THREE.Points)
+      || object.userData.gpuRuntimeBatch === true
+      || object.userData.gpuBatchMetadataAnchor === true
+      || object.userData.gpuAuthoredMetadataAnchor === true) return;
+    const geometry = object.geometry;
+    if (!geometry.boundingBox) geometry.computeBoundingBox();
+    if (!geometry.boundingBox) return;
+    objectToOwner.multiplyMatrices(ownerWorldInverse, object.matrixWorld);
+
+    const include = (matrix: THREE.Matrix4) => {
+      transformedBounds.copy(geometry.boundingBox!).applyMatrix4(matrix);
+      if (!populated) {
+        bounds.copy(transformedBounds);
+        populated = true;
+      } else bounds.union(transformedBounds);
+    };
+
+    if (object instanceof THREE.InstancedMesh) {
+      for (let index = 0; index < object.count; index += 1) {
+        object.getMatrixAt(index, instanceTransform);
+        instanceToOwner.multiplyMatrices(objectToOwner, instanceTransform);
+        include(instanceToOwner);
+      }
+    } else include(objectToOwner);
+  });
+
+  return bounds;
+}
+
 function batchStaticPackageMeshes(root: THREE.Group, backend: GpuBatchingBackend): PackageBatchingResult {
   root.updateWorldMatrix(true, true);
   type Candidate = {
@@ -1842,10 +1882,10 @@ function batchStaticPackageMeshes(root: THREE.Group, backend: GpuBatchingBackend
   runtimeBatches.forEach((record) => record.entries.forEach((entry) => authoredOwners.add(entry.semanticOwner)));
   authoredOwners.add(root);
   authoredOwners.forEach((owner) => {
-    const worldBounds = new THREE.Box3().setFromObject(owner, true);
-    if (worldBounds.isEmpty()) return;
-    owner.userData.authoredWorldBounds = worldBounds.clone();
-    owner.userData.authoredLocalBounds = worldBounds.clone().applyMatrix4(owner.matrixWorld.clone().invert());
+    const localBounds = computeAuthoredLocalBounds(owner);
+    if (localBounds.isEmpty()) return;
+    owner.userData.authoredLocalBounds = localBounds;
+    owner.userData.authoredWorldBounds = localBounds.clone().applyMatrix4(owner.matrixWorld);
     owner.userData.authoredBoundsVersion = 1;
   });
 

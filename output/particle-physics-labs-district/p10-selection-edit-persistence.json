@@ -1,0 +1,85 @@
+{
+  "restored": {
+    "state": {
+      "position": {
+        "x": -137.23309483213274,
+        "y": 0.055999999999999994,
+        "z": 43.47361901510459
+      },
+      "rotationY": -168.156,
+      "scale": 1,
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#78A7FF",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "selectionCenter": [
+      44.01690516786728,
+      3.4385000000000003,
+      357.40782788696356
+    ],
+    "selectionSize": [
+      17.809058683886533,
+      3.545,
+      16.880903862943285
+    ],
+    "batchCenter": [
+      44.01690516786728,
+      3.4385000000000003,
+      357.40782788696356
+    ],
+    "batchSize": [
+      17.760123180964257,
+      3.545,
+      16.870641477560355
+    ],
+    "entryCount": 27,
+    "currentOwnerCount": 27,
+    "transformAttached": true
+  },
+  "edited": {
+    "state": {
+      "position": {
+        "x": -135.73309483213274,
+        "y": 0.055999999999999994,
+        "z": 43.47361901510459
+      },
+      "rotationY": -168.156,
+      "scale": 1,
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#78A7FF",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "selectionCenter": [
+      45.51690516786728,
+      3.4385000000000003,
+      357.40782788696356
+    ],
+    "selectionSize": [
+      17.809058683886526,
+      3.545,
+      16.880903862943228
+    ],
+    "batchCenter": [
+      45.516905167867286,
+      3.4385000000000003,
+      357.40782788696356
+    ],
+    "batchSize": [
+      17.76012318096427,
+      3.545,
+      16.870641477560298
+    ],
+    "entryCount": 27,
+    "currentOwnerCount": 27,
+    "transformAttached": true
+  },
+  "errors": []
+}

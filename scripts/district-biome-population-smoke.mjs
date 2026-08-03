@@ -2,6 +2,7 @@ import { chromium } from 'playwright';
 import { mkdir } from 'node:fs/promises';
 
 const outputDirectory = process.env.DISTRICT_BIOME_OUTPUT_DIRECTORY ?? 'output/district-biome-population';
+const BASE_URL = process.env.BASE_URL ?? 'http://127.0.0.1:5178';
 await mkdir(outputDirectory, { recursive: true });
 
 const browser = await chromium.launch({
@@ -16,7 +17,7 @@ page.on('console', (message) => {
 });
 page.on('pageerror', (error) => consoleErrors.push(error.message));
 
-await page.goto('http://127.0.0.1:5178/', { waitUntil: 'domcontentloaded', timeout: 30_000 });
+await page.goto(BASE_URL, { waitUntil: 'domcontentloaded', timeout: 30_000 });
 await page.waitForSelector('.mode[data-mode="plan"]', { state: 'attached', timeout: 90_000 }).catch(async (error) => {
   throw new Error(`${error.message}\nurl=${page.url()} title=${await page.title()} body=${(await page.locator('body').innerText()).slice(0, 500)} console=${consoleErrors.join(' | ')}`);
 });
@@ -29,7 +30,10 @@ const audit = await page.evaluate(() => {
   const world = window.labIsland;
   world.setDaylight(true);
   world.advanceTime(1_000);
-  const textState = JSON.parse(window.render_game_to_text());
+  const textState = world.getTextSnapshot();
+  const restorePackages = [...world.definitions.keys()]
+    .map((id) => world.worldStreaming.mountPackageAuthoritySources(id))
+    .filter(Boolean);
   const normalize = (angle) => ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
   const districtResults = [];
   const ringIntervals = {};
@@ -39,12 +43,12 @@ const audit = await page.evaluate(() => {
     districtBoundaryOverlays: 0,
     localCampusRoads: 0,
   };
-  world.scene.traverse((child) => {
+  [world.scene, world.globalEnvironmentBatching?.authorityRoot].filter(Boolean).forEach((root) => root.traverse((child) => {
     if (child.name.startsWith('District boundary ring road ')) infrastructure.ringRoads += 1;
     if (child.name.startsWith('Radial district boundary road ')) infrastructure.radialRoadDiameters += 1;
     if (child.userData.masterplanBoundary) infrastructure.districtBoundaryOverlays += 1;
     if (child.userData.localCampusRoad) infrastructure.localCampusRoads += 1;
-  });
+  }));
   for (const [id, group] of world.objectGroups.entries()) {
     const definition = world.definitions.get(id);
     if (!definition || definition.category === 'biome' || definition.category === 'editor') continue;
@@ -155,7 +159,7 @@ const audit = await page.evaluate(() => {
     };
   });
 
-  return {
+  const result = {
     planning: textState.planning,
     infrastructure,
     districtResults,
@@ -168,6 +172,8 @@ const audit = await page.evaluate(() => {
       textures: world.renderer.info.memory.textures,
     },
   };
+  restorePackages.reverse().forEach((restore) => restore());
+  return result;
 });
 
 if (JSON.stringify(audit.planning) !== JSON.stringify({

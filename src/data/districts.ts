@@ -574,12 +574,12 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     category: "physics",
     ring: "perimeter",
     position: [26, 0, 29],
-    footprint: [16, 9],
-    height: 14,
-    archetype: "particle-accelerator-campus",
+    footprint: [27, 21.5],
+    height: 11.6,
+    archetype: "event-field-particle-physics-campus",
     accent: "#78A7FF",
-    palette: ["#11182A", "#304064", "#C5CDDE", "#78A7FF"],
-    description: "A mostly buried accelerator feeds a dramatic detector hall, cryogenic plant, and circular service structures above ground.",
+    palette: ["#10161B", "#323C43", "#DDE1DE", "#78A7FF"],
+    description: "Fifteen surface institutes translate detector layers, event tracks, symmetry breaking, interference, probability fields, and scientific data into architecture around a symbolic convention ring and fortified Data Coast.",
   },
 ];
 

@@ -28,6 +28,8 @@
     "test:biochemistry": "node scripts/biochemistry-labs-district-smoke.mjs",
     "test:organic-chemistry": "node scripts/organic-chemistry-labs-district-smoke.mjs",
     "test:inorganic-chemistry": "node scripts/inorganic-chemistry-labs-district-smoke.mjs",
+    "test:particle-physics": "node scripts/particle-physics-labs-district-smoke.mjs",
+    "test:authored-exterior-selection": "node scripts/authored-exterior-selection-persistence-smoke.mjs",
     "test:district-walkability": "node scripts/all-district-walkability-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",

@@ -7,7 +7,7 @@ const OUTPUT = process.env.SPECIALIZED_DISTRICT_LAYOUT_OUTPUT
 const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs'];
+const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'computational-biology-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs'];
 const roadNames = {
   security: 'SECURITY__MAIN_CURVED_BOULEVARD',
   'secret-labs': 'SECRET__BIOLOGICAL_ARC',
@@ -19,6 +19,7 @@ const roadNames = {
   'forensic-cyberforensic-lab': 'FORENSIC__EVIDENCE_LINE_BOULEVARD',
   'genomics-labs': 'GENOMICS__BASE_PAIR_PROMENADE',
   'proteomics-labs': 'PROTEOMICS__POLYPEPTIDE_WALK',
+  'computational-biology-labs': 'COMPBIO__INFERENCE_SPINE',
   'biochemistry-labs': 'BIOCHEM__REACTION_GRADIENT',
   'organic-chemistry-labs': 'ORGCHEM__SYNTHESIS_ARC',
   'inorganic-chemistry': 'INORGCHEM__VALENCE_AVENUE',
@@ -183,7 +184,7 @@ try {
   if (audit.roadViolations.length) {
     throw new Error(`Migrated roads left their sector cells: ${JSON.stringify(audit.roadViolations.slice(0, 12))}`);
   }
-  if (audit.storedRevision !== 12 || audit.textRevision !== 12) {
+  if (audit.storedRevision !== 13 || audit.textRevision !== 13) {
     throw new Error(`Migration revision was not persisted: ${JSON.stringify({ stored: audit.storedRevision, text: audit.textRevision })}`);
   }
   if (audit.planningViolations !== 0) throw new Error(`Master-plan cell violations remain: ${audit.planningViolations}`);

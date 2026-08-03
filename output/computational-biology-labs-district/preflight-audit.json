@@ -1,0 +1,580 @@
+{
+  "program": {
+    "identity": "Computational Biology Labs District",
+    "architecturalLanguage": "graph structures, nested scales, changing facade states, branching circulation, folded molecular surfaces, cellular neighborhoods, spatial coordinates, evolutionary strata, and visible validation",
+    "buildingCount": 10,
+    "buildings": [
+      {
+        "code": "C1",
+        "name": "Cellularis Nexus",
+        "subtitle": "AI Virtual Cell and Whole-Cell Modeling Institute",
+        "purpose": "Virtual cells, biological foundation models, mechanistic simulation, perturbation response, and independent benchmarking",
+        "placementZone": "Angular Robotics interface",
+        "footprintMetres": [
+          148,
+          116
+        ],
+        "heightMetres": 72,
+        "exteriorMotif": "three displaced elliptical shells, a violet-black ovoid, and a severe seventeen-degree Validation Bar"
+      },
+      {
+        "code": "C2",
+        "name": "Causa Array",
+        "subtitle": "Causal Perturbation and Counterfactual Biology Center",
+        "purpose": "CRISPR perturbation screens, counterfactual prediction, causal regulatory networks, and uncertainty-aware benchmarks",
+        "placementZone": "Cartesian control field beside Robotics",
+        "footprintMetres": [
+          190,
+          88
+        ],
+        "heightMetres": 91,
+        "exteriorMotif": "a horizontal initial-state base crossed by sixteen control and perturbed slabs around a Counterfactual Void"
+      },
+      {
+        "code": "C10",
+        "name": "Continuum BioTwin Observatory",
+        "subtitle": "Multiscale Systems Biology and Digital Twin Institute",
+        "purpose": "Personalized, dynamically updated and testable molecular-to-organ biological digital twins",
+        "placementZone": "Central landmark on the Inference Spine",
+        "footprintMetres": [
+          170,
+          105
+        ],
+        "heightMetres": 112,
+        "exteriorMotif": "four incomplete and offset molecular, cellular, tissue, and systems frames linked by selective diagonal bridges"
+      },
+      {
+        "code": "C3",
+        "name": "Proteus Fold",
+        "subtitle": "Generative Biomolecular Geometry and Interaction Center",
+        "purpose": "Generative protein, antibody, complex, and functional conformational design",
+        "placementZone": "Folded molecular transition toward Proteomics",
+        "footprintMetres": [
+          132,
+          102
+        ],
+        "heightMetres": 124,
+        "exteriorMotif": "two related folded towers, a conditional interaction bridge, and an irregular molecular contact lattice"
+      },
+      {
+        "code": "C4",
+        "name": "Pangenome Meridian",
+        "subtitle": "Graph Genome and Structural Variation Observatory",
+        "purpose": "Graph genome references, phased assemblies, structural variation, and inclusive genomic representation",
+        "placementZone": "Linear graph interface toward Genomics",
+        "footprintMetres": [
+          190,
+          118
+        ],
+        "heightMetres": 67,
+        "exteriorMotif": "five diverging and reconnecting genome bars with equivalent entrances and a translucent courier line"
+      },
+      {
+        "code": "C7",
+        "name": "Immunome Exchange",
+        "subtitle": "Computational Immunology and Molecular Recognition Center",
+        "purpose": "Immune repertoire modeling, receptor-antigen recognition, antibody structure, and therapeutic binder design",
+        "placementZone": "Cellular-recognition interface toward Proteomics",
+        "footprintMetres": [
+          176,
+          132
+        ],
+        "heightMetres": 106,
+        "exteriorMotif": "two imperfectly matched crescent wings facing across Recognition Court behind a diverse Repertoire Fin"
+      },
+      {
+        "code": "C5",
+        "name": "Morphospace Atlas",
+        "subtitle": "Spatial Multi-Omics and Virtual Tissue Reconstruction Center",
+        "purpose": "Spatial molecular alignment, cellular neighborhoods, tissue geometry, and virtual tissue reconstruction",
+        "placementZone": "Spatial transition toward OMICS",
+        "footprintMetres": [
+          218,
+          126
+        ],
+        "heightMetres": 63,
+        "exteriorMotif": "six offset tissue-section plates, a deep Section Break, cellular relief, and a rising Contour Promenade"
+      },
+      {
+        "code": "C8",
+        "name": "Kinetica Dynamics Array",
+        "subtitle": "Biomolecular Simulation and Differentiable Biophysics Center",
+        "purpose": "Molecular dynamics, conformational sampling, learned energy models, and motion-aware biomolecular design",
+        "placementZone": "Outer computational infrastructure belt",
+        "footprintMetres": [
+          154,
+          128
+        ],
+        "heightMetres": 72,
+        "exteriorMotif": "a dark faceted core surrounded by three open warped trajectory ribbons and an exposed cooling cascade"
+      },
+      {
+        "code": "C9",
+        "name": "Aion Evolution Engine",
+        "subtitle": "Evolutionary Genomics and Biosphere Computation Complex",
+        "purpose": "Evolutionary foundation models, genomic context, metagenomic inference, and biosphere-scale sequence design",
+        "placementZone": "Dark outer anchor toward Astrobiology",
+        "footprintMetres": [
+          186,
+          112
+        ],
+        "heightMetres": 99,
+        "exteriorMotif": "a stratified basalt monolith divided by a branching Phylogenetic Canyon and backed by a porous Thermal Reef"
+      },
+      {
+        "code": "C6",
+        "name": "Regula Loom",
+        "subtitle": "Regulatory Genome and Synthetic Control Institute",
+        "purpose": "Long-context regulatory sequence modeling, variant interpretation, and synthetic control-element design",
+        "placementZone": "Long genomic edge toward Genomics",
+        "footprintMetres": [
+          235,
+          84
+        ],
+        "heightMetres": 98,
+        "exteriorMotif": "a dark Sequence Plinth carrying three distant veil towers and long-range Enhancer Bridges"
+      }
+    ],
+    "landmarks": {
+      "virtualCell": "Cellularis Nexus",
+      "causalArray": "Causa Array",
+      "biomolecularFold": "Proteus Fold",
+      "graphGenome": "Pangenome Meridian",
+      "spatialTissue": "Morphospace Atlas",
+      "regulatoryGrammar": "Regula Loom",
+      "immuneRecognition": "Immunome Exchange",
+      "molecularDynamics": "Kinetica Dynamics Array",
+      "evolutionaryArchive": "Aion Evolution Engine",
+      "digitalTwin": "Continuum BioTwin Observatory"
+    },
+    "circulation": {
+      "primaryAxis": "COMPBIO__INFERENCE_SPINE",
+      "widthMetres": 32,
+      "cartesianGridLines": 9,
+      "branchingPaths": 5,
+      "exactBuildingApproaches": 10,
+      "autonomousCourierTrack": true
+    },
+    "signatureSystems": {
+      "cellularShells": 3,
+      "validationBars": 1,
+      "causalSlabs": 16,
+      "pangenomeBars": 5,
+      "tissueSections": 6,
+      "contextVeilTowers": 3,
+      "recognitionCrescents": 2,
+      "trajectoryRibbons": 3,
+      "thermalReefTowers": 18,
+      "biologicalScales": 4
+    },
+    "materials": [
+      "pale mineral ceramic",
+      "white ultra-high-performance concrete",
+      "graphite titanium",
+      "black basalt",
+      "translucent photovoltaic glass",
+      "restrained iridescent metal"
+    ],
+    "lighting": [
+      "cool white",
+      "pale cyan",
+      "muted violet",
+      "amber calibration markers"
+    ],
+    "landscape": {
+      "validationDomains": 36,
+      "districtCoolingExchangers": 10,
+      "perturbationPlots": 32,
+      "interventionBasins": 48,
+      "exposedDataConduits": true
+    },
+    "exteriorOnly": true
+  },
+  "population": {
+    "plannedFacilities": [
+      "Cellularis Nexus",
+      "Causa Array",
+      "Continuum BioTwin Observatory",
+      "Proteus Fold",
+      "Pangenome Meridian",
+      "Immunome Exchange",
+      "Morphospace Atlas",
+      "Kinetica Dynamics Array",
+      "Aion Evolution Engine",
+      "Regula Loom"
+    ],
+    "plannedObjects": [
+      "Inference Spine",
+      "Branching Inference Paths",
+      "District Data Conduits",
+      "Autonomous Courier Track",
+      "Validation and Uncertainty Landscape",
+      "District Cooling Exchangers"
+    ],
+    "realizedFeatureTags": [
+      "cellularis-nexus",
+      "causa-array",
+      "continuum-biotwin-observatory",
+      "proteus-fold",
+      "pangenome-meridian",
+      "immunome-exchange",
+      "morphospace-atlas",
+      "kinetica-dynamics-array",
+      "aion-evolution-engine",
+      "regula-loom"
+    ],
+    "realizedFacilityCount": 10,
+    "realizedObjectCount": 234,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 16,
+    "radialCoverage": 0.94,
+    "angularCoverage": 0.96,
+    "exteriorOnly": true,
+    "inferenceSpineNarrative": true
+  },
+  "facilityCount": 10,
+  "codes": [
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10"
+  ],
+  "meshCount": 1887,
+  "uniqueNames": 1920,
+  "materialNames": [
+    "Computational Biology amber calibration marker",
+    "Computational Biology black basalt",
+    "Computational Biology controlled research grass",
+    "Computational Biology cool white calibration light",
+    "Computational Biology dark analytical paving",
+    "Computational Biology experimental moss",
+    "Computational Biology graphite titanium",
+    "Computational Biology muted violet signal",
+    "Computational Biology pale cyan signal",
+    "Computational Biology pale mineral ceramic",
+    "Computational Biology pale titanium",
+    "Computational Biology restrained iridescent metal",
+    "Computational Biology shallow black water",
+    "Computational Biology translucent photovoltaic glass",
+    "Computational Biology violet-black electrochromic glass",
+    "Computational Biology white UHPC",
+    "Inference Spine pale coordinate paving"
+  ],
+  "animations": {
+    "computational-biology-emissive-pulse": 346,
+    "computational-biology-path-transit": 6,
+    "computational-biology-rotation": 7,
+    "computational-biology-signal-travel": 4
+  },
+  "prefixCounts": {
+    "COMPBIO__C1__DISPLACED_ELLIPTICAL_SHELL_": 3,
+    "COMPBIO__C1__PERTURBATION_GARDEN_PLOT_": 32,
+    "COMPBIO__C2__INTERVENTION_BASIN_": 48,
+    "COMPBIO__C4__GENOME_GRAPH_BAR_": 5,
+    "COMPBIO__C5__OFFSET_TISSUE_SECTION_PLATE_": 6,
+    "COMPBIO__C6__CONTEXT_CORE_": 3,
+    "COMPBIO__C7__RECOGNITION_FACET_": 96,
+    "COMPBIO__C8__WARPED_TRAJECTORY_RIBBON_": 87,
+    "COMPBIO__C9__THERMAL_REEF_TOWER_": 18,
+    "COMPBIO__C10__TISSUE_FRAME_TERRACE_": 3
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "facilityBoxes": [
+    {
+      "code": "C1",
+      "min": [
+        -23.24975799984191,
+        1.6660000000000001,
+        129.5189231142712
+      ],
+      "max": [
+        -8.31523164611287,
+        9.431000000000001,
+        144.5820784249279
+      ]
+    },
+    {
+      "code": "C2",
+      "min": [
+        -53.691926757191894,
+        1.6600000000000001,
+        122.49317132831459
+      ],
+      "max": [
+        -33.10943392017057,
+        10.967670011992777,
+        138.93847112419903
+      ]
+    },
+    {
+      "code": "C10",
+      "min": [
+        -79.53327216993111,
+        1.666,
+        109.33422038565502
+      ],
+      "max": [
+        -59.14042471388734,
+        14.797468760675454,
+        129.71411814620092
+      ]
+    },
+    {
+      "code": "C3",
+      "min": [
+        -96.69936507279995,
+        1.6660000000000001,
+        99.71425473791903
+      ],
+      "max": [
+        -80.97271936871341,
+        16.017092056365353,
+        114.9628407012725
+      ]
+    },
+    {
+      "code": "C4",
+      "min": [
+        -116.89679489527299,
+        1.6660000000000001,
+        78.5835627424124
+      ],
+      "max": [
+        -100.35658618439751,
+        8.566,
+        96.77924901274116
+      ]
+    },
+    {
+      "code": "C7",
+      "min": [
+        -27.76370811918648,
+        1.6660000000000004,
+        153.09514123291476
+      ],
+      "max": [
+        -9.068093766012186,
+        14.495515472287202,
+        171.59313455440213
+      ]
+    },
+    {
+      "code": "C5",
+      "min": [
+        -62.49023336805337,
+        1.9659999999999997,
+        146.68431018827314
+      ],
+      "max": [
+        -38.900769067114155,
+        8.646,
+        164.18430693524076
+      ]
+    },
+    {
+      "code": "C8",
+      "min": [
+        -90.66364607176048,
+        1.6478896623457246,
+        130.7020424725348
+      ],
+      "max": [
+        -71.19298432571097,
+        10.566395357076733,
+        151.46622107270414
+      ]
+    },
+    {
+      "code": "C9",
+      "min": [
+        -123.46149085501483,
+        1.6337021224708803,
+        107.4227489086005
+      ],
+      "max": [
+        -101.28857890190386,
+        11.610365096677798,
+        129.4070186189537
+      ]
+    },
+    {
+      "code": "C6",
+      "min": [
+        -143.45857302007246,
+        1.6660000000000001,
+        79.2003363587031
+      ],
+      "max": [
+        -121.62549380628789,
+        14.566,
+        104.88433591858887
+      ]
+    }
+  ],
+  "routeAudit": [
+    {
+      "name": "COMPBIO__INFERENCE_SPINE",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BRANCHING_INFERENCE_PATH_1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BRANCHING_INFERENCE_PATH_2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BRANCHING_INFERENCE_PATH_3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BRANCHING_INFERENCE_PATH_4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BRANCHING_INFERENCE_PATH_5",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C5",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C6",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C7",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C8",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C9",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "COMPBIO__BUILDING_APPROACH_C10",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "roadPoint": [
+    -45.01420497894284,
+    1.6459999984502793,
+    144.65811896371721
+  ],
+  "roadNext": [
+    -49.07230758666989,
+    1.6459999984502793,
+    143.33233666467547
+  ],
+  "roadGround": 1.6459999984502864,
+  "textDistrict": {
+    "buildingCount": 10,
+    "circulation": {
+      "primaryAxis": "COMPBIO__INFERENCE_SPINE",
+      "widthMetres": 32,
+      "cartesianGridLines": 9,
+      "branchingPaths": 5,
+      "exactBuildingApproaches": 10,
+      "autonomousCourierTrack": true
+    },
+    "signatureSystems": {
+      "cellularShells": 3,
+      "validationBars": 1,
+      "causalSlabs": 16,
+      "pangenomeBars": 5,
+      "tissueSections": 6,
+      "contextVeilTowers": 3,
+      "recognitionCrescents": 2,
+      "trajectoryRibbons": 3,
+      "thermalReefTowers": 18,
+      "biologicalScales": 4
+    }
+  },
+  "specializedRevision": 13,
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "streaming": {
+    "id": "computational-biology-labs",
+    "kind": "district",
+    "loadState": "loaded",
+    "lifecyclePhase": "ready",
+    "loadProgress": 1,
+    "priorityReason": "selected",
+    "priorityScore": 1000000,
+    "visibleCandidate": true,
+    "visualLevel": "detail",
+    "detailResident": true,
+    "proxyVisible": false,
+    "midVisible": false,
+    "farVisible": false,
+    "pinned": true,
+    "distanceMetres": 0,
+    "estimatedCost": {
+      "drawCalls": 32,
+      "triangles": 65090,
+      "animationNodes": 0
+    },
+    "renderImportance": {
+      "mandatory": 1859,
+      "micro": 0,
+      "visibleMicro": 0,
+      "culledMicro": 0
+    },
+    "batchOccupancy": {
+      "capacity": 1855,
+      "active": 1855,
+      "ratio": 1
+    }
+  }
+}

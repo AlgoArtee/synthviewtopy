@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2639,
+    "liveRenderObjectCount": 2653,
     "batchOccupancy": {
-      "capacity": 41700,
-      "active": 40570,
-      "ratio": 0.9729016786570743
+      "capacity": 43490,
+      "active": 42360,
+      "ratio": 0.9740170154058404
     },
     "microdetail": {
       "total": 320,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 23486,
+    "detachedAuthoringSourceCount": 25276,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 710,
-      "batchedSourceCount": 23486,
-      "retainedSourceCount": 25415,
-      "estimatedGeometryBytes": 82403060,
-      "estimatedTextureBytes": 191431511,
-      "instancedBatchCount": 146,
-      "batchedMeshBatchCount": 103,
-      "mergedBatchCount": 461,
+      "batchCount": 725,
+      "batchedSourceCount": 25276,
+      "retainedSourceCount": 27204,
+      "estimatedGeometryBytes": 80509676,
+      "estimatedTextureBytes": 189339601,
+      "instancedBatchCount": 155,
+      "batchedMeshBatchCount": 114,
+      "mergedBatchCount": 456,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -415,7 +415,7 @@
         "distanceMetres": 11199,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 400028,
+          "triangles": 66060,
           "animationNodes": 1
         },
         "renderImportance": {
@@ -612,19 +612,19 @@
         "pinned": false,
         "distanceMetres": 11112,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 4828,
+          "drawCalls": 32,
+          "triangles": 65090,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 70,
+          "mandatory": 1859,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 65,
-          "active": 65,
+          "capacity": 1855,
+          "active": 1855,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 269,
+  "buildingCount": 275,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -2504,7 +2504,7 @@
         "distanceMetres": 11199,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 400028,
+          "triangles": 66060,
           "animationNodes": 1
         },
         "renderImportance": {
@@ -2536,7 +2536,7 @@
           "semanticOwnershipFailures": [],
           "bounds": [
             9.2,
-            8.021,
+            8.012,
             7.8
           ],
           "failures": []
@@ -2578,7 +2578,7 @@
           "semanticOwnershipFailures": [],
           "bounds": [
             8.4,
-            8.05,
+            8.051,
             10.65
           ],
           "failures": []
@@ -2621,7 +2621,7 @@
           "bounds": [
             16.869,
             6.295,
-            3.729
+            3.681
           ],
           "failures": []
         }
@@ -3639,8 +3639,8 @@
     {
       "districtId": "computational-biology-labs",
       "name": "Computational Biology Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 10,
+      "discoveredCount": 10,
       "packageState": {
         "id": "computational-biology-labs",
         "kind": "district",
@@ -3658,104 +3658,230 @@
         "pinned": false,
         "distanceMetres": 11112,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 4828,
+          "drawCalls": 32,
+          "triangles": 65090,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 70,
+          "mandatory": 1859,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 65,
-          "active": 65,
+          "capacity": 1855,
+          "active": 1855,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "computational-biology-labs",
-          "name": "Biological Supercomputing Tower",
-          "rootName": "computational-biology-labs__FACILITY__BIOLOGICAL-SUPERCOMPUTING-TOWER",
-          "code": null,
-          "representedSourceCount": 7,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 7,
-          "authoredBatchedSources": 7,
-          "expectedRuntimeBatchSources": 7,
-          "mandatoryArchitecturalSources": 7,
-          "representedMandatorySources": 7,
+          "name": "Cellularis Nexus",
+          "rootName": "COMPBIO__C1__CELLULARIS_NEXUS",
+          "code": "C1",
+          "representedSourceCount": 156,
+          "directVisibleMeshes": 3,
+          "visibleBatchSources": 153,
+          "authoredBatchedSources": 153,
+          "expectedRuntimeBatchSources": 153,
+          "mandatoryArchitecturalSources": 24,
+          "representedMandatorySources": 24,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.938,
-            4.793,
-            6.862
+            14.1,
+            7.765,
+            13.71
           ],
           "failures": []
         },
         {
           "districtId": "computational-biology-labs",
-          "name": "Collaborative Analysis Pavilion",
-          "rootName": "computational-biology-labs__FACILITY__COLLABORATIVE-ANALYSIS-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Causa Array",
+          "rootName": "COMPBIO__C2__CAUSA_ARRAY",
+          "code": "C2",
+          "representedSourceCount": 216,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 216,
+          "authoredBatchedSources": 216,
+          "expectedRuntimeBatchSources": 216,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.172,
-            6.705
+            18.6,
+            9.308,
+            11.771
           ],
           "failures": []
         },
         {
           "districtId": "computational-biology-labs",
-          "name": "Machine Learning Laboratory",
-          "rootName": "computational-biology-labs__FACILITY__MACHINE-LEARNING-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Continuum BioTwin Observatory",
+          "rootName": "COMPBIO__C10__CONTINUUM_BIOTWIN_OBSERVATORY",
+          "code": "C10",
+          "representedSourceCount": 140,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 140,
+          "authoredBatchedSources": 140,
+          "expectedRuntimeBatchSources": 140,
+          "mandatoryArchitecturalSources": 20,
+          "representedMandatorySources": 20,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.84,
-            6.705
+            17.577,
+            13.131,
+            14.955
           ],
           "failures": []
         },
         {
           "districtId": "computational-biology-labs",
-          "name": "District Cooling Plant",
-          "rootName": "computational-biology-labs__FACILITY__DISTRICT-COOLING-PLANT",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "Proteus Fold",
+          "rootName": "COMPBIO__C3__PROTEUS_FOLD",
+          "code": "C3",
+          "representedSourceCount": 100,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
+          "visibleBatchSources": 100,
+          "authoredBatchedSources": 100,
+          "expectedRuntimeBatchSources": 100,
+          "mandatoryArchitecturalSources": 22,
+          "representedMandatorySources": 22,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            4.184,
-            6.63
+            12.8,
+            14.351,
+            11.933
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Pangenome Meridian",
+          "rootName": "COMPBIO__C4__PANGENOME_MERIDIAN",
+          "code": "C4",
+          "representedSourceCount": 94,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 94,
+          "authoredBatchedSources": 94,
+          "expectedRuntimeBatchSources": 94,
+          "mandatoryArchitecturalSources": 65,
+          "representedMandatorySources": 65,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.537,
+            6.9,
+            10.835
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Immunome Exchange",
+          "rootName": "COMPBIO__C7__IMMUNOME_EXCHANGE",
+          "code": "C7",
+          "representedSourceCount": 235,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 235,
+          "authoredBatchedSources": 235,
+          "expectedRuntimeBatchSources": 235,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.411,
+            12.83,
+            18.606
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Morphospace Atlas",
+          "rootName": "COMPBIO__C5__MORPHOSPACE_ATLAS",
+          "code": "C5",
+          "representedSourceCount": 171,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 171,
+          "authoredBatchedSources": 171,
+          "expectedRuntimeBatchSources": 171,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            22.098,
+            6.68,
+            15.363
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Kinetica Dynamics Array",
+          "rootName": "COMPBIO__C8__KINETICA_DYNAMICS_ARRAY",
+          "code": "C8",
+          "representedSourceCount": 203,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 203,
+          "authoredBatchedSources": 203,
+          "expectedRuntimeBatchSources": 203,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.318,
+            8.919,
+            18.312
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Aion Evolution Engine",
+          "rootName": "COMPBIO__C9__AION_EVOLUTION_ENGINE",
+          "code": "C9",
+          "representedSourceCount": 141,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 141,
+          "authoredBatchedSources": 141,
+          "expectedRuntimeBatchSources": 141,
+          "mandatoryArchitecturalSources": 19,
+          "representedMandatorySources": 19,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.8,
+            9.977,
+            23.823
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "computational-biology-labs",
+          "name": "Regula Loom",
+          "rootName": "COMPBIO__C6__REGULA_LOOM",
+          "code": "C6",
+          "representedSourceCount": 169,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 168,
+          "authoredBatchedSources": 168,
+          "expectedRuntimeBatchSources": 168,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            23.136,
+            12.9,
+            16.2
           ],
           "failures": []
         }

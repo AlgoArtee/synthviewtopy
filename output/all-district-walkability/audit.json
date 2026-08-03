@@ -12,7 +12,7 @@
     "preciseObstacleCount": 319,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 84,
+    "broadOnlyMarginsAvoided": 87,
     "movementProbeCount": 131,
     "failedDistricts": [],
     "districtResults": [
@@ -137,7 +137,7 @@
         "id": "computational-biology-labs",
         "sampleCount": 564,
         "clearCount": 564,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 3,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []

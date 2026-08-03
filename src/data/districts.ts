@@ -283,10 +283,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [-18, 0, 10],
     footprint: [10, 7],
     height: 13,
-    archetype: "research-data-center",
+    archetype: "inference-spine-computational-biology-campus",
     accent: "#61BFFF",
     palette: ["#101B2B", "#273F63", "#B9C9DD", "#61BFFF"],
-    description: "A high-performance computing campus uses deep facade fins, visible cooling loops, and collaborative analysis rooms.",
+    description: "Ten frontier-research landmarks progress from virtual cells, causal perturbation and generative biomolecules through graph genomes, spatial tissues, regulatory grammar, immune recognition, dynamics, evolution and predictive biological digital twins.",
   },
   {
     id: "robotics-labs",

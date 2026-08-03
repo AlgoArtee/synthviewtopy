@@ -33,6 +33,7 @@ npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
 npm run test:proteomics         # Audit the five-building Proteomics Labs District exterior package
+npm run test:computational-biology # Audit the ten-building Computational Biology Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
 npm run test:particle-physics # Audit the fifteen-building Particle Physics Labs District exterior package
@@ -150,6 +151,15 @@ The north-western inner-ring Proteomics Labs District is an exterior-only folded
 - **The Interactome Constellation** assembles nine faceted nodes into a compact research settlement linked by sixteen bridges and cross-links. A suspended 96-disc interaction cloud, coloured hub joints, and responsive court markers make the network readable without a conventional monumental front.
 - **The Amino-Pore Sequencing Veil** forms the Genomics-facing frontier from two long porous membrane walls, 240 independently lit pores, paired Primary Pore rings, an open sequencing canyon, and a rotated crystalline data prism carrying an irregular single-chain signal motif.
 - The grounded **Polypeptide Walk** carries three molecular-backbone lights, four branching side-chain paths, and five exact approaches through 36 heterogeneous cell gardens and nine specimen-tree islands. The 1,494-element package stays inside its inner-ring sector with zero facility-envelope overlaps, uses 24 runtime draw calls and approximately 66,000 triangles, and participates in HLOD streaming, revision-12 persistence migration, selection, deterministic animation, deep text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the exterior specification.
+
+## Computational Biology Labs District
+
+The outer-ring Computational Biology Labs District is a ten-building exterior campus organized as a continuous model-to-observation system. Black basalt, graphite and pale titanium, mineral ceramic, white UHPC, violet-black electrochromic glass, translucent photovoltaic glass, and restrained iridescent metal unify ten distinct scientific silhouettes.
+
+- **Cellularis Nexus**, **Causa Array**, and **Proteus Fold** establish cell-state inference, causal intervention, and protein-folding research through displaced shells, a counterfactual slab void, twin folded towers, contact lattices, and validation landscapes.
+- **Pangenome Meridian**, **Morphospace Atlas**, and **Regula Loom** translate graph genomes, tissue sections, and context-dependent regulation into five branching bars, six offset tissue plates, three veil towers, section breaks, enhancer bridges, and cellular relief.
+- **Immunome Exchange**, **Kinetica Dynamics Array**, **Aion Evolution Engine**, and **Continuum BioTwin Observatory** complete the district with a crescent Recognition Court, trajectory ribbons, a phylogenetic canyon, eighteen Thermal Reef towers, nested biological-scale terraces, and the Systems Tower.
+- The 32-metre **Inference Spine** carries three signal lines, five branching paths, a Cartesian grid, an 87-part courier track, six animated couriers, eighteen sensor masts, thirty-six validation domains, ten heat exchangers, and exact approaches to every building. The 1,887-mesh package stays within its outer-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, revision-13 persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the exterior specification.
 
 ## Particle Physics Labs District
 
@@ -311,6 +321,7 @@ Hold **Shift** while clicking **Export scene** to download `YouTopy_Lab_Island.p
 | `src/world/molecularBiologyDistrict.ts` | Ten-facility molecular-biology exterior, Molecular Meridian circulation, interaction plazas, information-light network, sensor landscapes, and deterministic scientific animation |
 | `src/world/inorganicChemistryLabsDistrict.ts` | Fifteen-facility mineral-and-lattice Inorganic Chemistry exterior, Valence Avenue circulation, selective node lighting, process machinery, and deterministic scientific animation |
 | `src/world/particlePhysicsLabsDistrict.ts` | Fifteen-facility Particle Physics exterior, central convention ring, event-track circulation, low-signal garden, northern theory ridge, fortified Data Coast, and deterministic data pulses |
+| `src/world/computationalBiologyLabsDistrict.ts` | Ten-facility Computational Biology exterior, Inference Spine circulation, validation landscapes, scale transitions, and deterministic scientific signals |
 | `src/world/academicDistrict.ts` | Reusable Gothic building shells, furnished interiors, gate, quadrangles, garden, canal, service areas, hidden discoveries, semantic access, and optimization metadata |
 | `src/world/academicFountain.ts` | Modular Well of Infinite Knowledge geometry, Seshat/infinity/ring sculpture, procedural materials, water animation, camera/scene modes, LOD, collision, restoration, debug, state, and resource disposal |
 | `src/world/academicSurfaceTextures.ts` | Cached deterministic limestone, brick, slate, oak, and leaf-strewn path albedo/height patterns |

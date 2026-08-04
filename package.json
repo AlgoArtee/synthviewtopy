@@ -16,6 +16,7 @@
     "test:full-island-performance": "node scripts/full-island-performance-usability-smoke.mjs",
     "test:current-build-reset": "node scripts/current-build-reset-smoke.mjs",
     "test:entry-logistics": "node scripts/entry-logistics-smoke.mjs",
+    "test:roads": "node scripts/all-road-network-smoke.mjs",
     "test:security": "node scripts/security-district-smoke.mjs",
     "test:secret-labs": "node scripts/secret-labs-district-smoke.mjs",
     "test:medical-labs": "node scripts/medical-labs-district-smoke.mjs",

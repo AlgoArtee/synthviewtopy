@@ -27,6 +27,9 @@ const unitBox = new THREE.BoxGeometry(1, 1, 1);
 const unitCylinder = new THREE.CylinderGeometry(0.5, 0.5, 1, 12);
 const lowPolyCrown = new THREE.IcosahedronGeometry(0.5, 1);
 const up = new THREE.Vector3(0, 1, 0);
+const ACADEMIC_GROUND_PATH_THICKNESS = 0.006;
+const ACADEMIC_GROUND_PATH_SURFACE_LOCAL_Y = 0.006;
+const RADIAL_DELIMITER_ROAD_WIDTH = 1.65;
 
 interface AcademicMaterials {
   limestone: THREE.MeshPhysicalMaterial;
@@ -281,15 +284,20 @@ function addGroundPath(
 ) {
   const length = Math.max(start.distanceTo(end), 0.01);
   const direction = end.clone().sub(start);
-  const geometry = tileAcademicPathGeometry(new THREE.BoxGeometry(width, 0.006, length));
+  const geometry = tileAcademicPathGeometry(new THREE.BoxGeometry(width, ACADEMIC_GROUND_PATH_THICKNESS, length));
   const path = prepare(new THREE.Mesh(geometry, material), districtId);
   path.name = name;
-  path.position.set((start.x + end.x) * 0.5, 0.003, (start.z + end.z) * 0.5);
+  path.position.set(
+    (start.x + end.x) * 0.5,
+    ACADEMIC_GROUND_PATH_SURFACE_LOCAL_Y - ACADEMIC_GROUND_PATH_THICKNESS * 0.5,
+    (start.z + end.z) * 0.5,
+  );
   path.rotation.y = Math.atan2(direction.x, direction.z);
   path.userData.navObstacle = false;
   path.userData.walkable = true;
   parent.add(path);
   path.userData.naturalGroundPath = true;
+  path.userData.pathSurfaceLocalY = ACADEMIC_GROUND_PATH_SURFACE_LOCAL_Y;
   path.userData.roadEndpoints = { start: start.toArray(), end: end.toArray() };
   return path;
 }
@@ -1161,6 +1169,8 @@ function createCollegiateGothicBoundary(
 
   const tundraGateCenter = tundraSide.point(domeGateRadius);
   const desertGateCenter = desertSide.point(domeGateRadius);
+  const tundraRadialCenterline = sectorPoint(domeGateRadius, -halfAngle);
+  const desertRadialCenterline = sectorPoint(domeGateRadius, halfAngle);
   const rearGateCenter = rearPoint(0);
   createOpenGate({
     name: 'ACADEMIC__TUNDRA_DOME_GARDEN_ENTRANCE',
@@ -1192,23 +1202,53 @@ function createCollegiateGothicBoundary(
     monumental: true,
   });
 
-  const tundraSpur = addGroundPath(
-    boundary,
-    definition.id,
+  const addRadialGatePath = (
+    name: string,
+    roadId: string,
+    gateCenter: THREE.Vector3,
+    radialCenterline: THREE.Vector3,
+    inward: THREE.Vector3,
+  ) => {
+    // Hand the earth paving to the shared arterial at its exact centreline.
+    // The delimiter road draws above the half-width overlap, so the local path
+    // meets the asphalt cleanly without bleeding into the neighbouring cell.
+    const campusEnd = gateCenter.clone().addScaledVector(inward, 2.4);
+    const path = addGroundPath(
+      boundary,
+      definition.id,
+      name,
+      campusEnd,
+      radialCenterline,
+      0.48,
+      materials.earthPath,
+    );
+    path.userData.academicBoundaryAccessPath = true;
+    path.userData.localCampusRoad = true;
+    path.userData.districtTransition = true;
+    path.userData.radialDelimiterRoadId = roadId;
+    path.userData.radialDelimiterWidthWorldUnits = RADIAL_DELIMITER_ROAD_WIDTH;
+    path.userData.radialDelimiterCenterlineLocal = radialCenterline.toArray();
+    path.userData.radialDelimiterCenterlineGapWorldUnits = 0;
+    path.userData.radialDelimiterEdgeGapWorldUnits = 0;
+    path.userData.radialDelimiterOverlapWorldUnits = RADIAL_DELIMITER_ROAD_WIDTH * 0.5;
+    path.userData.pathSurfaceWorldY = definition.position[1]
+      + ISLAND_SURFACE_Y
+      + ACADEMIC_GROUND_PATH_SURFACE_LOCAL_Y;
+    return path;
+  };
+  addRadialGatePath(
     'ACADEMIC__TUNDRA_DOME_GARDEN_GATE_PATH',
-    tundraGateCenter.clone().addScaledVector(tundraSide.inward, 2.4),
-    tundraGateCenter.clone().addScaledVector(tundraSide.inward, -2.4),
-    0.48,
-    materials.earthPath,
+    'arterial-radial-axis-3',
+    tundraGateCenter,
+    tundraRadialCenterline,
+    tundraSide.inward,
   );
-  const desertSpur = addGroundPath(
-    boundary,
-    definition.id,
+  addRadialGatePath(
     'ACADEMIC__DESERT_DOME_GARDEN_GATE_PATH',
-    desertGateCenter.clone().addScaledVector(desertSide.inward, 2.4),
-    desertGateCenter.clone().addScaledVector(desertSide.inward, -2.4),
-    0.48,
-    materials.earthPath,
+    'arterial-radial-axis-2',
+    desertGateCenter,
+    desertRadialCenterline,
+    desertSide.inward,
   );
   const railSpur = addGroundPath(
     boundary,
@@ -1219,7 +1259,7 @@ function createCollegiateGothicBoundary(
     0.58,
     materials.earthPath,
   );
-  [tundraSpur, desertSpur, railSpur].forEach((path) => {
+  [railSpur].forEach((path) => {
     path.userData.academicBoundaryAccessPath = true;
     path.userData.localCampusRoad = true;
   });

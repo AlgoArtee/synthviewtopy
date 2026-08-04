@@ -138,6 +138,7 @@ import {
   createOcean,
   createSkyDome,
   createTransitNetwork,
+  configureDistrictRingJunctions,
   type SkyDome,
   type WaterSurface,
 } from './environment';
@@ -147,6 +148,7 @@ import {
 } from './globalEnvironmentBatching';
 import { WorldStreamingManager, isEffectivelyVisible } from './worldStreaming';
 import type { StreamingSnapshot } from './worldStreaming';
+import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import {
   UNREAL_DATA_LAYERS,
   UNREAL_WORLD_MANIFEST_SCHEMA,
@@ -1364,10 +1366,6 @@ export class IslandWorld {
     createTransitNetwork(this.transitNetworkRoot, biomes);
     createIndustrialPort(this.industrialPortRoot);
     createBridgeAndCity(this.bridgeRoot, this.cityRoot);
-    this.globalEnvironmentBatching = batchGlobalEnvironmentGeometry([
-      this.islandShellRoot,
-      this.transitRoot,
-    ]);
     // Preserve the public collection-level metadata used by diagnostics and
     // saved automation while keeping Production export components separable.
     Object.assign(
@@ -1376,6 +1374,16 @@ export class IslandWorld {
       this.bridgeRoot.userData,
     );
     this.createDistrictsAndBiomes();
+    configureDistrictRingJunctions(
+      this.transitNetworkRoot,
+      districts
+        .map((definition) => this.objectGroups.get(definition.id))
+        .filter((group): group is THREE.Group => group instanceof THREE.Group),
+    );
+    this.globalEnvironmentBatching = batchGlobalEnvironmentGeometry([
+      this.islandShellRoot,
+      this.transitRoot,
+    ]);
     this.refreshAuthoredRuntimeInteriors();
 
     this.selectionBox = new THREE.Box3Helper(this.selectionBounds, new THREE.Color('#b7f34b'));
@@ -8069,7 +8077,12 @@ export class IslandWorld {
 
       for (const districtId of ['entry-commercial', 'logistics']) {
         const districtGroup = this.objectGroups.get(districtId);
-        if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
+        const districtDefinition = districts.find((candidate) => candidate.id === districtId);
+        if (districtGroup && districtDefinition) {
+          refreshEntryLogisticsRoadNetwork(districtGroup);
+          finalizeDistrictRoadNetwork(districtGroup, districtDefinition, { force: true });
+          visuallyMutatedPackageIds.add(districtId);
+        }
       }
     } finally {
       restoreStaticAuthority();
@@ -8221,7 +8234,22 @@ export class IslandWorld {
   private refreshEntryLogisticsRoads(definition: SceneDefinition) {
     if (definition.category !== 'entry-logistics-building') return;
     const districtGroup = this.objectGroups.get(definition.parentDistrictId);
-    if (districtGroup) refreshEntryLogisticsRoadNetwork(districtGroup);
+    const districtDefinition = districts.find((candidate) => candidate.id === definition.parentDistrictId);
+    if (!districtGroup || !districtDefinition) return;
+    const packageId = this.worldStreaming.findPackageId(districtGroup);
+    const restoreAuthority = packageId
+      ? this.worldStreaming.mountPackageAuthoritySources(packageId)
+      : null;
+    try {
+      refreshEntryLogisticsRoadNetwork(districtGroup);
+      finalizeDistrictRoadNetwork(districtGroup, districtDefinition, { force: true });
+    } finally {
+      restoreAuthority?.();
+    }
+    if (packageId) {
+      this.worldStreaming.rebuildPackageRuntimeBatches(packageId);
+      this.configureRuntimePickingLayers(districtGroup);
+    }
   }
 
   beginImportPlacement() {
@@ -9233,6 +9261,32 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedComputationalBiology = selectedPackageId === 'computational-biology-labs'
       ? this.objectGroups.get('computational-biology-labs')?.userData.computationalBiologyLabsDistrict
       : null;
+    const districtRoadNetworks = districts.map((definition) => ({
+      id: definition.id,
+      network: this.objectGroups.get(definition.id)?.userData.districtRoadNetwork as {
+        routeCount?: number;
+        connectorCount?: number;
+        ringConnectorCount?: number;
+        connectedRingIds?: readonly string[];
+        routes?: readonly unknown[];
+      } | undefined,
+    }));
+    const roadNetworkRouteCount = districtRoadNetworks.reduce((sum, record) => (
+      sum + Number(record.network?.routeCount ?? record.network?.routes?.length ?? 0)
+    ), 0);
+    const roadNetworkConnectorCount = districtRoadNetworks.reduce((sum, record) => (
+      sum + Number(record.network?.connectorCount ?? record.network?.ringConnectorCount ?? 0)
+    ), 0);
+    const roadNetworkConnectedDistricts = districtRoadNetworks.filter((record) => (
+      Number(record.network?.routeCount ?? record.network?.routes?.length ?? 0) > 0
+      && (
+        Number(record.network?.ringConnectorCount ?? record.network?.connectorCount ?? 0) > 0
+        || (record.network?.connectedRingIds?.length ?? 0) > 0
+        || record.id === 'academic-libraries-theoretical-labs'
+        || record.id === 'entry-commercial'
+        || record.id === 'logistics'
+      )
+    )).length;
     const relevantPackageIds = new Set<string>([
       ...(selectedPackageId ? [selectedPackageId] : []),
       ...(streaming.fullIslandDetailProgress.currentPackageId ? [streaming.fullIslandDetailProgress.currentPackageId] : []),
@@ -9325,6 +9379,16 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
           || definition.category === 'authored-exterior-building'
         )).length,
         selectableDefinitions: this.definitions.size,
+      },
+      roadNetwork: {
+        hierarchy: 'district streets -> ring arterials -> delimiter spokes',
+        arterialRingCount: Number(this.transitNetworkRoot.userData.masterplan?.districtRingRoadCount ?? 5),
+        arterialSpokeCount: Number(this.transitNetworkRoot.userData.masterplan?.radialRoadRayCount ?? 6),
+        districtNetworkCount: districtRoadNetworks.filter((record) => Boolean(record.network)).length,
+        connectedDistrictCount: roadNetworkConnectedDistricts,
+        routeCount: roadNetworkRouteCount,
+        connectorCount: roadNetworkConnectorCount,
+        planHlodVisible: true,
       },
       selected: selected ? {
         id: selected.id,

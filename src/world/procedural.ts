@@ -39,6 +39,7 @@ import { buildBiochemistryLabsDistrict } from './biochemistryLabsDistrict';
 import { buildOrganicChemistryLabsDistrict } from './organicChemistryLabsDistrict';
 import { buildInorganicChemistryLabsDistrict } from './inorganicChemistryLabsDistrict';
 import { buildParticlePhysicsLabsDistrict } from './particlePhysicsLabsDistrict';
+import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
 
@@ -2767,6 +2768,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }
 
+  finalizeDistrictRoadNetwork(group, definition);
   tagExplicitDistrictMicrodetail(group);
   group.traverse((child) => {
     if (!child.userData.individualSelectableId) child.userData.selectableId = definition.id;

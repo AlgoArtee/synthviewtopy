@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.js';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { BiomeDefinition } from '../data/districts';
 import { BIOME_PLAN_POSITIONS, COASTAL_RAIL_INSET, DISTRICT_ROAD_RADII, ISLAND_POINTS, ISLAND_RADIUS, ISLAND_SURFACE_Y, MASTERPLAN_RESCALE, metresToWorldUnits } from '../config/island';
 
@@ -9,6 +10,11 @@ const ROAD_THICKNESS = 0.012;
 const ROAD_CENTER_Y = ROAD_SURFACE_Y - ROAD_THICKNESS * 0.5;
 const ROAD_MARKING_THICKNESS = 0.003;
 const ROAD_MARKING_CENTER_Y = ROAD_SURFACE_Y + ROAD_MARKING_THICKNESS * 0.5;
+const RADIAL_ARTERIAL_WIDTH = 1.65;
+const RING_CURB_JUNCTION_CLEARANCE = 0.35;
+const RING_CURB_JUNCTION_OPENING_WIDTH = RADIAL_ARTERIAL_WIDTH + RING_CURB_JUNCTION_CLEARANCE * 2;
+const CENTRAL_PLAZA_RADIUS = DISTRICT_ROAD_RADII[0] - 3.4;
+const LEGACY_CENTRAL_PLAZA_Y = 1.835;
 const COASTAL_RAIL_SLEEPER_HEIGHT = metresToWorldUnits(0.12);
 const COASTAL_RAIL_CENTER_Y = ROAD_SURFACE_Y + metresToWorldUnits(0.14);
 const COASTAL_RAIL_HEIGHT = metresToWorldUnits(0.16);
@@ -96,6 +102,37 @@ function annularSectorGeometry(
   geometry.setIndex(indices);
   geometry.computeBoundingSphere();
   return geometry;
+}
+
+function segmentedRingCurbGeometry(
+  radius: number,
+  profileRadius: number,
+  openingAngles: readonly number[],
+  openingWidth: number,
+) {
+  const fullTurn = Math.PI * 2;
+  const normalizedAngles = openingAngles
+    .map((angle) => ((angle % fullTurn) + fullTurn) % fullTurn)
+    .sort((left, right) => left - right);
+  const openingHalfAngle = Math.asin(Math.min(0.99, openingWidth * 0.5 / radius));
+  const arcGeometries = normalizedAngles.flatMap((angle, index) => {
+    const nextAngle = normalizedAngles[(index + 1) % normalizedAngles.length]
+      + (index === normalizedAngles.length - 1 ? fullTurn : 0);
+    const arcStart = angle + openingHalfAngle;
+    const arcLength = nextAngle - openingHalfAngle - arcStart;
+    // Nearby district mouths can legitimately form one wider junction. In
+    // that case their angular openings overlap and no curb arc belongs between
+    // them; never feed a negative sweep into TorusGeometry.
+    if (arcLength <= 0.0001) return [];
+    const tubularSegments = Math.max(12, Math.ceil(256 * arcLength / fullTurn));
+    const geometry = new THREE.TorusGeometry(radius, profileRadius, 8, tubularSegments, arcLength);
+    geometry.rotateZ(arcStart);
+    return [geometry];
+  });
+  const merged = mergeGeometries(arcGeometries, false);
+  arcGeometries.forEach((geometry) => geometry.dispose());
+  if (!merged) throw new Error('Failed to build segmented arterial-ring curb geometry.');
+  return merged;
 }
 
 function roadSegment(start: THREE.Vector3, end: THREE.Vector3, width: number, material: THREE.Material, height = 0.1) {
@@ -399,13 +436,23 @@ export function createIslandShell(target: THREE.Group) {
   target.add(exportOcean);
 
   const innerPlateau = new THREE.Mesh(
-    new THREE.CylinderGeometry(DISTRICT_ROAD_RADII[0] - 3, DISTRICT_ROAD_RADII[0] - 3, 0.18, 128),
+    new THREE.CylinderGeometry(
+      DISTRICT_ROAD_RADII[0] - 3,
+      DISTRICT_ROAD_RADII[0] - 3,
+      ROAD_THICKNESS,
+      128,
+    ),
     new THREE.MeshPhysicalMaterial({ color: '#182829', roughness: 0.48, metalness: 0.26, clearcoat: 0.32 }),
   );
   innerPlateau.name = 'Central campus plateau';
-  innerPlateau.position.y = ISLAND_SURFACE_Y;
+  innerPlateau.position.y = ROAD_CENTER_Y;
   innerPlateau.receiveShadow = true;
-  innerPlateau.userData.walkable = true;
+  innerPlateau.userData = {
+    walkable: true,
+    arterialDatum: true,
+    surfaceElevation: ROAD_SURFACE_Y,
+    surfaceKind: 'central-arterial-plateau',
+  };
   target.add(innerPlateau);
 
   const coastalBand = new THREE.LineLoop(
@@ -524,6 +571,30 @@ export function createIslandShell(target: THREE.Group) {
 }
 
 export function createTransitNetwork(target: THREE.Group, biomes: readonly BiomeDefinition[]) {
+  const biomeMap = new Map(biomes.map((biome) => [biome.id, biome]));
+  const axes: ReadonlyArray<[string, string]> = [
+    ['alpine-dome', 'savanna-dome'],
+    ['tropical-rainforest-dome', 'desert-dome'],
+    ['temperate-deciduous-forest-dome', 'tundra-dome'],
+  ];
+  const radialAxes = axes.map(([startId, endId], index) => {
+    const startBiome = biomeMap.get(startId)!;
+    const endBiome = biomeMap.get(endId)!;
+    return {
+      roadId: `arterial-radial-axis-${index + 1}`,
+      startId,
+      endId,
+      start: new THREE.Vector3(startBiome.position[0], ROAD_CENTER_Y, startBiome.position[2]),
+      end: new THREE.Vector3(endBiome.position[0], ROAD_CENTER_Y, endBiome.position[2]),
+    };
+  });
+  const fullTurn = Math.PI * 2;
+  const spokeIntersectionAngles = radialAxes
+    .flatMap(({ start, end }) => [Math.atan2(start.z, start.x), Math.atan2(end.z, end.x)])
+    .map((angle) => ((angle % fullTurn) + fullTurn) % fullTurn)
+    .sort((left, right) => left - right);
+  const ringRoadIds = DISTRICT_ROAD_RADII.map((_, index) => `arterial-ring-${index + 1}`);
+  const radialRoadIds = radialAxes.map(({ roadId }) => roadId);
   target.name = 'INFRASTRUCTURE__TRANSIT_NETWORK';
   target.userData.masterplan = {
     islandRadius: ISLAND_RADIUS,
@@ -532,6 +603,12 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     districtDelimiterModel: 'shared-ring-roads-and-six-spokes',
     districtRingRoadCount: DISTRICT_ROAD_RADII.length,
     radialRoadRayCount: 6,
+    arterialRoadCount: ringRoadIds.length + radialRoadIds.length,
+    arterialRoadIds: [...ringRoadIds, ...radialRoadIds],
+    arterialSurfaceY: ROAD_SURFACE_Y,
+    radialRoadWidth: RADIAL_ARTERIAL_WIDTH,
+    ringCurbJunctionOpeningWidth: RING_CURB_JUNCTION_OPENING_WIDTH,
+    spokeIntersectionAngles: [...spokeIntersectionAngles],
   };
   const roadMaterial = new THREE.MeshPhysicalMaterial({
     color: '#142429',
@@ -579,6 +656,12 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
   curbMaterial.userData.groundRoadDepthMode = true;
   DISTRICT_ROAD_RADII.forEach((radius, index) => {
     const width = index === DISTRICT_ROAD_RADII.length - 1 ? 1.85 : 1.55;
+    const roadId = ringRoadIds[index];
+    const centerlineSampleCount = 64;
+    const centerline = Array.from({ length: centerlineSampleCount + 1 }, (_, sampleIndex) => {
+      const angle = sampleIndex / centerlineSampleCount * fullTurn;
+      return [Math.cos(angle) * radius, ROAD_SURFACE_Y, Math.sin(angle) * radius];
+    });
     const ringGeometry = new THREE.RingGeometry(radius - width * 0.5, radius + width * 0.5, 256);
     ringGeometry.rotateX(-Math.PI / 2);
     const road = new THREE.Mesh(ringGeometry, roadMaterial);
@@ -586,7 +669,23 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     road.position.y = ROAD_SURFACE_Y;
     road.renderOrder = 1;
     road.receiveShadow = true;
-    road.userData = { walkable: true, districtDelimiter: true, roadType: 'ring' };
+    road.userData = {
+      walkable: true,
+      districtDelimiter: true,
+      roadType: 'ring',
+      transitRoad: true,
+      roadId,
+      roadClass: 'arterial-ring',
+      roadWidth: width,
+      width,
+      ringRadius: radius,
+      centerlineType: 'ring',
+      centerlineRadius: radius,
+      centerlineY: ROAD_SURFACE_Y,
+      centerline,
+      junctionCount: spokeIntersectionAngles.length,
+      junctionAngles: [...spokeIntersectionAngles],
+    };
     target.add(road);
     const guideRadius = 0.045;
     const guideVerticalScale = 0.08;
@@ -596,13 +695,19 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     guide.scale.z = guideVerticalScale;
     guide.position.y = ROAD_SURFACE_Y + guideRadius * guideVerticalScale;
     guide.renderOrder = 1;
+    guide.userData = { transitGuide: true, roadId: `${roadId}-guide`, parentRoadId: roadId };
     target.add(guide);
     for (const curbOffset of [-width * 0.5, width * 0.5]) {
       const curbRadius = radius + curbOffset;
       const curbRadiusProfile = 0.04;
       const curbVerticalScale = 0.15;
       const curb = new THREE.Mesh(
-        new THREE.TorusGeometry(curbRadius, curbRadiusProfile, 8, 256),
+        segmentedRingCurbGeometry(
+          curbRadius,
+          curbRadiusProfile,
+          spokeIntersectionAngles,
+          RING_CURB_JUNCTION_OPENING_WIDTH,
+        ),
         curbMaterial,
       );
       curb.name = `Ring road ${index + 1} curb ${curbOffset < 0 ? 'inner' : 'outer'}`;
@@ -610,6 +715,16 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
       curb.scale.z = curbVerticalScale;
       curb.position.y = ROAD_SURFACE_Y + curbRadiusProfile * curbVerticalScale;
       curb.renderOrder = 1;
+      curb.userData = {
+        transitCurb: true,
+        parentRoadId: roadId,
+        curbSide: curbOffset < 0 ? 'inner' : 'outer',
+        curbRadius,
+        curbProfileRadius: curbRadiusProfile,
+        junctionOpeningCount: spokeIntersectionAngles.length,
+        junctionOpeningAngles: [...spokeIntersectionAngles],
+        junctionOpeningWidth: RING_CURB_JUNCTION_OPENING_WIDTH,
+      };
       target.add(curb);
     }
     const pod = new THREE.Mesh(
@@ -722,21 +837,30 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     physicalDepth: true,
   };
 
-  const biomeMap = new Map(biomes.map((biome) => [biome.id, biome]));
-  const axes: ReadonlyArray<[string, string]> = [
-    ['alpine-dome', 'savanna-dome'],
-    ['tropical-rainforest-dome', 'desert-dome'],
-    ['temperate-deciduous-forest-dome', 'tundra-dome'],
-  ];
-  axes.forEach(([startId, endId], index) => {
-    const startBiome = biomeMap.get(startId)!;
-    const endBiome = biomeMap.get(endId)!;
-    const start = new THREE.Vector3(startBiome.position[0], ROAD_CENTER_Y, startBiome.position[2]);
-    const end = new THREE.Vector3(endBiome.position[0], ROAD_CENTER_Y, endBiome.position[2]);
-    const road = roadSegment(start, end, 1.65, roadMaterial, ROAD_THICKNESS);
+  radialAxes.forEach(({ roadId, startId, endId, start, end }, index) => {
+    const centerlineStart = [start.x, ROAD_SURFACE_Y, start.z];
+    const centerlineEnd = [end.x, ROAD_SURFACE_Y, end.z];
+    const road = roadSegment(start, end, RADIAL_ARTERIAL_WIDTH, roadMaterial, ROAD_THICKNESS);
     road.name = `Radial district boundary road ${index + 1}`;
     road.renderOrder = 1;
-    road.userData = { walkable: true, districtDelimiter: true, roadType: 'radial' };
+    road.userData = {
+      walkable: true,
+      districtDelimiter: true,
+      roadType: 'radial',
+      transitRoad: true,
+      roadId,
+      roadClass: 'arterial-radial-axis',
+      roadWidth: RADIAL_ARTERIAL_WIDTH,
+      width: RADIAL_ARTERIAL_WIDTH,
+      axisIndex: index + 1,
+      axisBiomeIds: [startId, endId],
+      centerlineType: 'segment',
+      centerlineStart,
+      centerlineEnd,
+      centerlineY: ROAD_SURFACE_Y,
+      centerline: [centerlineStart, centerlineEnd],
+      ringIntersectionRadii: [...DISTRICT_ROAD_RADII],
+    };
     target.add(road);
     const guide = roadSegment(
       new THREE.Vector3(start.x, ROAD_MARKING_CENTER_Y, start.z),
@@ -747,6 +871,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     );
     guide.name = `Biome axis light ${index + 1}`;
     guide.renderOrder = 1;
+    guide.userData = { transitGuide: true, roadId: `${roadId}-guide`, parentRoadId: roadId };
     target.add(guide);
   });
 
@@ -757,14 +882,24 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     clearcoat: 0.72,
     clearcoatRoughness: 0.18,
     side: THREE.DoubleSide,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1,
   });
-  const plaza = new THREE.Mesh(new THREE.CircleGeometry(DISTRICT_ROAD_RADII[0] - 3.4, 128), plazaMaterial);
+  const plaza = new THREE.Mesh(new THREE.CircleGeometry(CENTRAL_PLAZA_RADIUS, 128), plazaMaterial);
   plaza.name = 'Corporate Core futuristic plaza';
   plaza.rotation.x = -Math.PI / 2;
-  plaza.position.y = 1.835;
+  plaza.position.y = ROAD_SURFACE_Y;
   plaza.receiveShadow = true;
-  plaza.userData.walkable = true;
+  plaza.userData = {
+    walkable: true,
+    arterialDatum: true,
+    surfaceElevation: ROAD_SURFACE_Y,
+    connectedArterialRoadIds: [...radialRoadIds],
+  };
   target.add(plaza);
+
+  const plazaElevationDelta = ROAD_SURFACE_Y - LEGACY_CENTRAL_PLAZA_Y;
 
   for (const [radius, color] of [[18, '#35d8ff'], [28, '#ff4ecb'], [37, '#62f5ff']] as const) {
     const ring = new THREE.Mesh(
@@ -773,7 +908,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     );
     ring.name = `Corporate plaza luminous orbit ${radius}`;
     ring.rotation.x = Math.PI / 2;
-    ring.position.y = 1.92;
+    ring.position.y = 1.92 + plazaElevationDelta;
     target.add(ring);
   }
   for (let index = 0; index < 12; index += 1) {
@@ -787,7 +922,7 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
       }),
     );
     beacon.name = `Corporate plaza data beacon ${index + 1}`;
-    beacon.position.set(Math.cos(angle) * radius, 2.55, Math.sin(angle) * radius);
+    beacon.position.set(Math.cos(angle) * radius, 2.55 + plazaElevationDelta, Math.sin(angle) * radius);
     target.add(beacon);
   }
   for (let index = 0; index < 6; index += 1) {
@@ -819,10 +954,115 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     );
     hologram.position.y = 3.25;
     pavilion.add(hologram);
-    pavilion.position.set(Math.cos(angle) * 31, 0, Math.sin(angle) * 31);
+    pavilion.position.set(Math.cos(angle) * 31, plazaElevationDelta, Math.sin(angle) * 31);
     pavilion.rotation.y = -angle;
     target.add(pavilion);
   }
+}
+
+type DistrictRoadRouteMetadata = {
+  width?: number;
+  roadClass?: string;
+  endpointKinds?: readonly string[];
+  centerline?: readonly (readonly number[])[];
+};
+
+type DistrictRoadNetworkMetadata = {
+  existingNetworkException?: boolean;
+  routes?: readonly DistrictRoadRouteMetadata[];
+};
+
+/**
+ * Open the ornamental ring curbs at every live district-street mouth. This is
+ * called after district generation but before global batching, so curb
+ * geometry and the connector graph use exactly the same junction angles.
+ */
+export function configureDistrictRingJunctions(
+  transitNetwork: THREE.Group,
+  districtGroups: Iterable<THREE.Group>,
+) {
+  const spokeAngles = Array.isArray(transitNetwork.userData.masterplan?.spokeIntersectionAngles)
+    ? transitNetwork.userData.masterplan.spokeIntersectionAngles as number[]
+    : [];
+  const rings = transitNetwork.children
+    .filter((object): object is THREE.Mesh => (
+      object instanceof THREE.Mesh
+      && object.userData.roadType === 'ring'
+      && Number.isFinite(object.userData.ringRadius)
+    ))
+    .map((road) => ({
+      roadId: String(road.userData.roadId),
+      radius: Number(road.userData.ringRadius),
+      width: Number(road.userData.width),
+      angles: [...spokeAngles],
+      openingWidth: RING_CURB_JUNCTION_OPENING_WIDTH,
+    }));
+  const point = new THREE.Vector3();
+  for (const district of districtGroups) {
+    const network = district.userData.districtRoadNetwork as DistrictRoadNetworkMetadata | undefined;
+    if (!network?.routes?.length) continue;
+    district.updateWorldMatrix(true, false);
+    for (const route of network.routes) {
+      if (!Array.isArray(route.centerline) || route.centerline.length < 2) continue;
+      const routeWidth = Number(route.width);
+      for (const [endpointIndex, raw] of [route.centerline[0], route.centerline.at(-1)].entries()) {
+        if (!raw || raw.length < 3) continue;
+        point.set(Number(raw[0]), Number(raw[1]), Number(raw[2])).applyMatrix4(district.matrixWorld);
+        const radius = Math.hypot(point.x, point.z);
+        rings.forEach((ring) => {
+          const overlapTolerance = ring.width * 0.5
+              + (Number.isFinite(routeWidth) ? routeWidth * 0.5 : 0)
+              + 0.04;
+          if (Math.abs(radius - ring.radius) > overlapTolerance) return;
+          const endpointKind = String(route.endpointKinds?.[endpointIndex] ?? '').toLowerCase();
+          const roadClass = String(route.roadClass ?? '').toLowerCase();
+          if (!roadClass.includes('connector')
+            && !roadClass.includes('transition')
+            && !endpointKind.includes('ring')
+            && !endpointKind.includes('boundary')
+            && network.existingNetworkException !== true) return;
+          ring.angles.push(Math.atan2(point.z, point.x));
+          if (Number.isFinite(routeWidth)) {
+            ring.openingWidth = Math.max(
+              ring.openingWidth,
+              routeWidth + RING_CURB_JUNCTION_CLEARANCE * 2,
+            );
+          }
+        });
+      }
+    }
+  }
+
+  rings.forEach((ring) => {
+    const fullTurn = Math.PI * 2;
+    const normalized = ring.angles
+      .map((angle) => ((angle % fullTurn) + fullTurn) % fullTurn)
+      .sort((left, right) => left - right)
+      .filter((angle, index, values) => (
+        index === 0 || Math.abs(angle - values[index - 1]) * ring.radius > 0.08
+      ));
+    transitNetwork.traverse((object) => {
+      if (!(object instanceof THREE.Mesh)
+        || object.userData.transitCurb !== true
+        || object.userData.parentRoadId !== ring.roadId) return;
+      const replacement = segmentedRingCurbGeometry(
+        Number(object.userData.curbRadius),
+        Number(object.userData.curbProfileRadius ?? 0.04),
+        normalized,
+        ring.openingWidth,
+      );
+      object.geometry.dispose();
+      object.geometry = replacement;
+      object.userData.junctionOpeningCount = normalized.length;
+      object.userData.junctionOpeningAngles = [...normalized];
+      object.userData.junctionOpeningWidth = ring.openingWidth;
+      object.userData.districtJunctionOpenings = true;
+    });
+  });
+  transitNetwork.userData.masterplan.districtJunctionCurbOpeningCount = rings.reduce(
+    (sum, ring) => sum + Math.max(0, ring.angles.length - spokeAngles.length),
+    0,
+  );
 }
 
 function createCargoShip(name: string, color: string, length: number) {

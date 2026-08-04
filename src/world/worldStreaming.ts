@@ -132,6 +132,7 @@ export interface StreamingSnapshot {
 interface StreamingPackage {
   id: string;
   kind: StreamedPackageKind;
+  definition: StreamedWorldDefinition;
   detailEnvelope: THREE.Group;
   detailRoot: THREE.Group;
   midProxy: THREE.Object3D;
@@ -571,7 +572,132 @@ function makeProxyMaterial(
   });
 }
 
-function makeDistrictMidProxy(definition: StreamedWorldDefinition) {
+type ProxyRoadRoute = {
+  roadId?: string;
+  roadClass?: string;
+  width?: number;
+  centerline?: readonly (readonly number[])[];
+};
+
+type ProxyRoadNetwork = {
+  routes?: readonly ProxyRoadRoute[];
+};
+
+/**
+ * Keeps the authored circulation hierarchy legible while a district is using
+ * its lightweight HLOD.  Road coordinates are recorded in district-local
+ * space by the shared road finalizer, which is the same coordinate system as
+ * the proxy root.  Combining every route in one indexed mesh adds only one
+ * draw call per visible district and avoids the former Plan-mode condition in
+ * which all local streets vanished as soon as Detail was disabled.
+ */
+function makeDistrictRoadProxy(
+  definition: StreamedWorldDefinition,
+  detailRoot: THREE.Group,
+  level: 'mid' | 'far',
+  podium?: { halfWidth: number; halfDepth: number; top: number },
+) {
+  const network = detailRoot.userData.districtRoadNetwork as ProxyRoadNetwork | undefined;
+  const routes = network?.routes?.filter((route) => (
+    Array.isArray(route.centerline)
+    && route.centerline.length >= 2
+    && Number.isFinite(route.width)
+    && Number(route.width) > 0
+  )) ?? [];
+  if (!routes.length) return null;
+
+  const positions: number[] = [];
+  const normals: number[] = [];
+  const uvs: number[] = [];
+  const indices: number[] = [];
+  const routeIds: string[] = [];
+  routes.forEach((route, routeIndex) => {
+    const centerline = route.centerline!;
+    const widthScale = level === 'far' ? 0.94 : 1;
+    const halfWidth = Math.max(0.12, Number(route.width) * widthScale * 0.5);
+    const baseVertex = positions.length / 3;
+    centerline.forEach((rawPoint, pointIndex) => {
+      const previous = centerline[Math.max(0, pointIndex - 1)];
+      const next = centerline[Math.min(centerline.length - 1, pointIndex + 1)];
+      const tangentX = Number(next[0] ?? 0) - Number(previous[0] ?? 0);
+      const tangentZ = Number(next[2] ?? 0) - Number(previous[2] ?? 0);
+      const tangentLength = Math.hypot(tangentX, tangentZ) || 1;
+      const normalX = -tangentZ / tangentLength;
+      const normalZ = tangentX / tangentLength;
+      const x = Number(rawPoint[0] ?? 0);
+      const z = Number(rawPoint[2] ?? 0);
+      // Proxy streets are visual only.  Keep them just above the terrain while
+      // retaining authored grades so junctions remain readable in oblique HLOD.
+      const authoredY = Math.max(0.008, Number(rawPoint[1] ?? 0.008)) + 0.001;
+      // The mid HLOD has a shallow podium that otherwise depth-occludes the
+      // whole local street graph. Project only the portion crossing that
+      // podium onto its top; roads outside retain their authored grade and
+      // exact arterial handoff elevation.
+      const insidePodium = podium
+        && Math.abs(x) <= podium.halfWidth + halfWidth
+        && Math.abs(z) <= podium.halfDepth + halfWidth;
+      const podiumEdgeDistance = insidePodium && podium
+        ? Math.min(
+          podium.halfWidth + halfWidth - Math.abs(x),
+          podium.halfDepth + halfWidth - Math.abs(z),
+        )
+        : 0;
+      const liftBlend = THREE.MathUtils.smoothstep(podiumEdgeDistance, 0, 1.5);
+      const y = insidePodium && podium
+        ? THREE.MathUtils.lerp(authoredY, Math.max(authoredY, podium.top + 0.002), liftBlend)
+        : authoredY;
+      positions.push(
+        x + normalX * halfWidth, y, z + normalZ * halfWidth,
+        x - normalX * halfWidth, y, z - normalZ * halfWidth,
+      );
+      normals.push(0, 1, 0, 0, 1, 0);
+      const routeT = pointIndex / Math.max(1, centerline.length - 1);
+      uvs.push(routeT, 0, routeT, 1);
+      if (pointIndex < centerline.length - 1) {
+        const offset = baseVertex + pointIndex * 2;
+        indices.push(offset, offset + 2, offset + 1, offset + 1, offset + 2, offset + 3);
+      }
+    });
+    routeIds.push(route.roadId ?? `${definition.id}:proxy-road:${routeIndex + 1}`);
+  });
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+  geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normals, 3));
+  geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+  geometry.setIndex(indices);
+  geometry.computeBoundingBox();
+  geometry.computeBoundingSphere();
+  const material = new THREE.MeshStandardMaterial({
+    name: `${definition.name} ${level} HLOD road network`,
+    color: level === 'far' ? '#334448' : '#3d5054',
+    emissive: '#0b1d20',
+    emissiveIntensity: level === 'far' ? 0.22 : 0.16,
+    roughness: 0.92,
+    metalness: 0.04,
+    polygonOffset: true,
+    polygonOffsetFactor: -2,
+    polygonOffsetUnits: -2,
+    side: THREE.DoubleSide,
+    // A far HLOD is one monolithic silhouette, so normal depth testing would
+    // hide every street crossing its footprint. At that distance the road
+    // layer is intentionally a cartographic schematic.
+    depthTest: true,
+    depthWrite: true,
+  });
+  const roads = new THREE.Mesh(geometry, material);
+  roads.name = `${definition.id.toUpperCase().replaceAll('-', '_')}__${level.toUpperCase()}_HLOD_ROAD_NETWORK`;
+  roads.renderOrder = level === 'far' ? 4 : 2;
+  roads.userData.proxyRoadNetwork = true;
+  roads.userData.transitRoad = true;
+  roads.userData.roadClass = 'hlod-schematic';
+  roads.userData.routeIds = routeIds;
+  roads.userData.routeCount = routeIds.length;
+  applyProxyMetadata(roads, definition, level);
+  return roads;
+}
+
+function makeDistrictMidProxy(definition: StreamedWorldDefinition, detailRoot: THREE.Group) {
   const root = new THREE.Group();
   root.name = `STREAMING_MID_HLOD__${definition.id.toUpperCase().replaceAll('-', '_')}`;
   root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
@@ -584,6 +710,13 @@ function makeDistrictMidProxy(definition: StreamedWorldDefinition) {
   podium.scale.set(definition.footprint[0] * 0.8, podiumHeight, definition.footprint[1] * 0.78);
   applyProxyMetadata(podium, definition, 'mid');
   root.add(podium);
+
+  const roadNetwork = makeDistrictRoadProxy(definition, detailRoot, 'mid', {
+    halfWidth: podium.scale.x * 0.5,
+    halfDepth: podium.scale.z * 0.5,
+    top: podiumHeight,
+  });
+  if (roadNetwork) root.add(roadNetwork);
 
   // All recognizable building masses share one draw call. Per-instance color
   // keeps authored district palettes without cloning materials.
@@ -631,7 +764,7 @@ function makeDistrictMidProxy(definition: StreamedWorldDefinition) {
   bands.userData.instanceSemanticIds = [1, 2, 3].map((index) => `${definition.id}:mid-accent:${index}`);
   applyProxyMetadata(bands, definition, 'mid');
   root.add(bands);
-  root.userData.estimatedDrawCalls = 3;
+  root.userData.estimatedDrawCalls = 3 + (roadNetwork ? 1 : 0);
   return root;
 }
 
@@ -649,11 +782,19 @@ function makeBiomeMidProxy(definition: StreamedWorldDefinition) {
   return root;
 }
 
-function makeFarProxy(definition: StreamedWorldDefinition, kind: StreamedPackageKind) {
+function makeFarProxy(
+  definition: StreamedWorldDefinition,
+  kind: StreamedPackageKind,
+  detailRoot?: THREE.Group,
+) {
   const root = new THREE.Group();
   root.name = `STREAMING_FAR_HLOD__${definition.id.toUpperCase().replaceAll('-', '_')}`;
   root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
   applyProxyMetadata(root, definition, 'far');
+  const roadNetwork = kind === 'district' && detailRoot
+    ? makeDistrictRoadProxy(definition, detailRoot, 'far')
+    : null;
+  if (roadNetwork) root.add(roadNetwork);
   const geometry = kind === 'biome' ? proxyBiomeGeometry : proxyBoxGeometry;
   const silhouette = new THREE.Mesh(geometry, makeProxyMaterial(definition, 0, 'far'));
   if (kind === 'biome') {
@@ -673,7 +814,7 @@ function makeFarProxy(definition: StreamedWorldDefinition, kind: StreamedPackage
     applyProxyMetadata(accent, definition, 'far');
     root.add(accent);
   }
-  root.userData.estimatedDrawCalls = kind === 'district' ? 2 : 1;
+  root.userData.estimatedDrawCalls = (kind === 'district' ? 2 : 1) + (roadNetwork ? 1 : 0);
   return root;
 }
 
@@ -2105,6 +2246,19 @@ export class WorldStreamingManager {
     onWarmStart: () => void,
   ) => void | Promise<void>) | null = null;
 
+  private setPlanRoadOverlay(enabled: boolean) {
+    this.packages.forEach((pkg) => {
+      pkg.farProxy.traverse((object) => {
+        if (!(object instanceof THREE.Mesh) || object.userData.proxyRoadNetwork !== true) return;
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach((material) => {
+          material.depthTest = !enabled;
+          material.depthWrite = !enabled;
+        });
+      });
+    });
+  }
+
   constructor() {
     this.vistaRoot.name = 'STREAMING__EXTERIOR_VISTA_PROXIES';
     this.vistaRoot.userData.exportExcluded = true;
@@ -2157,8 +2311,8 @@ export class WorldStreamingManager {
     }
     detailRoot.userData.runtimeBatchRebuildRequired = false;
 
-    const midProxy = kind === 'district' ? makeDistrictMidProxy(definition) : makeBiomeMidProxy(definition);
-    const farProxy = makeFarProxy(definition, kind);
+    const midProxy = kind === 'district' ? makeDistrictMidProxy(definition, detailRoot) : makeBiomeMidProxy(definition);
+    const farProxy = makeFarProxy(definition, kind, detailRoot);
     this.vistaRoot.add(midProxy, farProxy);
     detailRoot.updateMatrixWorld(true);
     const detailAnchorObjects: THREE.Object3D[] = [];
@@ -2170,6 +2324,7 @@ export class WorldStreamingManager {
     this.packages.set(definition.id, {
       id: definition.id,
       kind,
+      definition,
       detailEnvelope,
       detailRoot,
       midProxy,
@@ -2222,6 +2377,7 @@ export class WorldStreamingManager {
     for (const proxy of [previous.midProxy, previous.farProxy]) {
       proxy.traverse((object) => {
         if (!(object instanceof THREE.Mesh)) return;
+        if (object.userData.proxyRoadNetwork === true) object.geometry.dispose();
         const materials = Array.isArray(object.material) ? object.material : [object.material];
         materials.forEach((material) => material.dispose());
       });
@@ -2359,6 +2515,47 @@ export class WorldStreamingManager {
     return Boolean(pkg?.runtimeBatches.some((record) => record.rebuildRequired));
   }
 
+  /** Rebuild the one-mesh road schematics after an authored road refresh. */
+  refreshDistrictRoadProxies(id: string) {
+    const pkg = this.packages.get(id);
+    if (!pkg || pkg.kind !== 'district') return false;
+    const replaceRoadLayer = (root: THREE.Object3D, level: 'mid' | 'far') => {
+      const oldRoads = root.children.filter((child) => child.userData.proxyRoadNetwork === true);
+      oldRoads.forEach((object) => {
+        object.removeFromParent();
+        if (!(object instanceof THREE.Mesh)) return;
+        object.geometry.dispose();
+        const materials = Array.isArray(object.material) ? object.material : [object.material];
+        materials.forEach((material) => material.dispose());
+      });
+      const podiumHeight = Math.max(0.24, pkg.definition.height * 0.1);
+      const roads = makeDistrictRoadProxy(
+        pkg.definition,
+        pkg.detailRoot,
+        level,
+        level === 'mid' ? {
+          halfWidth: pkg.definition.footprint[0] * 0.8 * 0.5,
+          halfDepth: pkg.definition.footprint[1] * 0.78 * 0.5,
+          top: podiumHeight,
+        } : undefined,
+      );
+      if (roads) root.add(roads);
+      if (roads && level === 'far' && this.lastMode === 'plan') {
+        const materials = Array.isArray(roads.material) ? roads.material : [roads.material];
+        materials.forEach((material) => {
+          material.depthTest = false;
+          material.depthWrite = false;
+        });
+      }
+      root.userData.estimatedDrawCalls = (level === 'mid' ? 3 : 2) + (roads ? 1 : 0);
+      root.updateMatrixWorld(true);
+      return Boolean(roads);
+    };
+    replaceRoadLayer(pkg.midProxy, 'mid');
+    replaceRoadLayer(pkg.farProxy, 'far');
+    return true;
+  }
+
   getPackagesRequiringRuntimeBatchRebuild(): readonly string[] {
     return Array.from(this.packages.values())
       .filter((pkg) => pkg.runtimeBatches.some((record) => record.rebuildRequired))
@@ -2403,6 +2600,7 @@ export class WorldStreamingManager {
       pkg.microSources = rebuilt.microSources;
       pkg.renderImportance = rebuilt.renderImportance;
       pkg.estimatedCost = estimatePackageCost(pkg.detailRoot);
+      this.refreshDistrictRoadProxies(id);
       restoreOldAuthority();
       syncRuntimeBatches(pkg);
       pkg.detailRoot.userData.runtimeBatchRebuildRequired = false;
@@ -2998,6 +3196,7 @@ export class WorldStreamingManager {
 
   update(context: StreamingUpdateContext) {
     if (this.productionVisibilityState) return false;
+    if (context.mode !== this.lastMode) this.setPlanRoadOverlay(context.mode === 'plan');
     if (context.visiblePackageIds !== this.lastVisiblePackageIds) {
       this.lastVisiblePackageIds.length = 0;
       if (context.visiblePackageIds) this.lastVisiblePackageIds.push(...context.visiblePackageIds);
@@ -3395,11 +3594,14 @@ export class WorldStreamingManager {
       if (pkg.authorityMountDepth === 0) this.mountPackageAuthoritySources(pkg.id);
     });
     const materials = new Set<THREE.Material>();
+    const roadGeometries = new Set<THREE.BufferGeometry>();
     this.vistaRoot.traverse((object) => {
       if (!(object instanceof THREE.Mesh)) return;
+      if (object.userData.proxyRoadNetwork === true) roadGeometries.add(object.geometry);
       const objectMaterials = Array.isArray(object.material) ? object.material : [object.material];
       objectMaterials.forEach((material) => materials.add(material));
     });
+    roadGeometries.forEach((geometry) => geometry.dispose());
     materials.forEach((material) => material.dispose());
     this.vistaRoot.clear();
     this.loadedPackageIds.clear();

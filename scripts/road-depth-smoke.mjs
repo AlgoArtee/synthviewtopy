@@ -25,23 +25,31 @@ const roadAudit = await page.evaluate(() => {
   const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
   const primaryRoadName = /^(District boundary ring road|Hexagonal coastal rail bed|Radial district boundary road)/;
   const records = [];
-  world.transitRoot.traverse((child) => {
-    if (!child.isMesh || !roadName.test(child.name)) return;
-    child.updateWorldMatrix(true, false);
-    child.geometry.computeBoundingBox();
-    const bounds = child.geometry.boundingBox.clone().applyMatrix4(child.matrixWorld);
-    const materials = Array.isArray(child.material) ? child.material : [child.material];
-    records.push({
-      name: child.name,
-      primarySurface: primaryRoadName.test(child.name),
-      minY: bounds.min.y,
-      maxY: bounds.max.y,
-      height: bounds.max.y - bounds.min.y,
-      materials: materials.map((material) => ({
-        depthTest: material.depthTest,
-        depthWrite: material.depthWrite,
-        polygonOffset: material.polygonOffset,
-      })),
+  const visited = new Set();
+  [
+    world.transitNetworkRoot,
+    world.transitRoot,
+    world.globalEnvironmentBatching?.authorityRoot,
+  ].filter(Boolean).forEach((root) => {
+    root.traverse((child) => {
+      if (visited.has(child) || !child.isMesh || !roadName.test(child.name)) return;
+      visited.add(child);
+      child.updateWorldMatrix(true, false);
+      child.geometry.computeBoundingBox();
+      const bounds = child.geometry.boundingBox.clone().applyMatrix4(child.matrixWorld);
+      const materials = Array.isArray(child.material) ? child.material : [child.material];
+      records.push({
+        name: child.name,
+        primarySurface: primaryRoadName.test(child.name),
+        minY: bounds.min.y,
+        maxY: bounds.max.y,
+        height: bounds.max.y - bounds.min.y,
+        materials: materials.map((material) => ({
+          depthTest: material.depthTest,
+          depthWrite: material.depthWrite,
+          polygonOffset: material.polygonOffset,
+        })),
+      });
     });
   });
   return records;
@@ -121,7 +129,9 @@ await page.screenshot({ path: `${outputDirectory}/tropical-interior.png` });
 
 const walkAudit = await page.evaluate(() => {
   const world = window.labIsland;
-  const road = world.scene.getObjectByName('Radial district boundary road 1');
+  const authorityRoot = world.globalEnvironmentBatching?.authorityRoot;
+  const road = authorityRoot?.getObjectByName('Radial district boundary road 1')
+    ?? world.scene.getObjectByName('Radial district boundary road 1');
   if (!road) throw new Error('Representative radial road was unavailable');
   road.updateWorldMatrix(true, false);
   const depth = road.geometry.parameters.depth;
@@ -140,8 +150,9 @@ const walkAudit = await page.evaluate(() => {
   world.walkController.grounded = true;
   const invalidWalkDepthObjects = [];
   const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
-  world.transitRoot.traverse((child) => {
-    if (!child.isMesh || !roadName.test(child.name)) return;
+  world.globalEnvironmentBatching.batches.forEach((child) => {
+    const sourceNames = child.userData.batchSourceNames ?? [];
+    if (!sourceNames.some((name) => roadName.test(name))) return;
     const materials = Array.isArray(child.material) ? child.material : [child.material];
     if (materials.some((material) => material.depthTest !== true || material.depthWrite !== true)) {
       invalidWalkDepthObjects.push(child.name);
@@ -167,10 +178,11 @@ const exploreDepthRestored = await page.evaluate(() => {
   world.setMode('explore');
   const roadName = /^(District boundary ring road|Autonomous transit guide|Ring road \d+ curb|Hexagonal coastal rail bed|Radial district boundary road|Biome axis light)/;
   const invalid = [];
-  world.transitRoot.traverse((child) => {
-    if (!child.isMesh || !roadName.test(child.name)) return;
+  world.globalEnvironmentBatching.batches.forEach((child) => {
+    const sourceNames = child.userData.batchSourceNames ?? [];
+    if (!sourceNames.some((name) => roadName.test(name))) return;
     const materials = Array.isArray(child.material) ? child.material : [child.material];
-    const physicalRailBed = child.name.startsWith('Hexagonal coastal rail bed');
+    const physicalRailBed = sourceNames.some((name) => name.startsWith('Hexagonal coastal rail bed'));
     if (materials.some((material) => (
       physicalRailBed
         ? material.depthTest !== true || material.depthWrite !== true

@@ -61,6 +61,8 @@ const WELCOME_DISTRICT_BOUNDARY_ANGLE = 300;
 const WELCOME_FRONT_JUNCTION_DISTANCE = 18;
 const WELCOME_LOGISTICS_SPLIT_DISTANCE = 34;
 const WELCOME_ARRIVAL_ALIGNMENT_DISTANCE = 42;
+/** Exact top datum shared by the five arterial rings and six delimiter spokes. */
+const ARTERIAL_ROAD_SURFACE_TOP = metresToWorldUnits(0.06);
 const ROAD_SURFACE_TOP = metresToWorldUnits(0.34);
 const WELCOME_ENTRY_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.01);
 const WELCOME_LOGISTICS_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.04);
@@ -1042,7 +1044,7 @@ function roadDecalMaterial(source: THREE.Material, depthPriority: number) {
 function roadRibbonGeometry(
   points: readonly RoadPoint[],
   widthStart: number,
-  elevation: number,
+  elevation: number | readonly number[],
   widthEnd = widthStart,
 ) {
   const positions: number[] = [];
@@ -1066,9 +1068,12 @@ function roadRibbonGeometry(
     miter.normalize();
     const miterScale = halfWidth / Math.max(0.45, Math.abs(miter.dot(outgoingNormal)));
     const offset = miter.multiplyScalar(miterScale);
+    const pointElevation = typeof elevation === 'number'
+      ? elevation
+      : Number(elevation[index] ?? elevation.at(-1) ?? ROAD_SURFACE_TOP);
     positions.push(
-      current.x + offset.x, elevation, current.z + offset.z,
-      current.x - offset.x, elevation, current.z - offset.z,
+      current.x + offset.x, pointElevation, current.z + offset.z,
+      current.x - offset.x, pointElevation, current.z - offset.z,
     );
     if (index < points.length - 1) {
       const vertex = index * 2;
@@ -1080,6 +1085,33 @@ function roadRibbonGeometry(
   geometry.setIndex(indices);
   geometry.computeVertexNormals();
   return geometry;
+}
+
+function roadRouteElevations(route: RoadRoute, campusElevation: number) {
+  if (route.districtTransition !== true || route.points.length < 2) return null;
+  const boundaryIndexes = route.points
+    .map((point, index) => (/district-ring/i.test(point.id) ? index : -1))
+    .filter((index) => index >= 0);
+  if (!boundaryIndexes.length) return null;
+
+  const cumulative = [0];
+  for (let index = 1; index < route.points.length; index += 1) {
+    cumulative.push(
+      cumulative[index - 1]
+      + route.points[index].position.distanceTo(route.points[index - 1].position),
+    );
+  }
+  // A sixty-metre throat makes the 28 cm district datum change effectively
+  // imperceptible while preserving the exact authored street farther inside.
+  const gradeLength = metresToWorldUnits(60);
+  return route.points.map((_, index) => {
+    const distanceToBoundary = Math.min(...boundaryIndexes.map((boundaryIndex) => (
+      Math.abs(cumulative[index] - cumulative[boundaryIndex])
+    )));
+    const linearT = THREE.MathUtils.clamp(distanceToBoundary / gradeLength, 0, 1);
+    const smoothT = linearT * linearT * (3 - 2 * linearT);
+    return THREE.MathUtils.lerp(ARTERIAL_ROAD_SURFACE_TOP, campusElevation, smoothT);
+  });
 }
 
 function dashedLaneDividerGeometry(
@@ -1167,8 +1199,9 @@ function addContinuousRoadRibbon(
   const widthStart = route.widthStart ?? style.width;
   const widthEnd = route.widthEnd ?? widthStart;
   const roadTop = ROAD_SURFACE_TOP + (route.surfaceOffset ?? 0);
+  const routeElevations = roadRouteElevations(route, roadTop);
   const surface = new THREE.Mesh(
-    roadRibbonGeometry(route.points, widthStart, roadTop, widthEnd),
+    roadRibbonGeometry(route.points, widthStart, routeElevations ?? roadTop, widthEnd),
     roadDecalMaterial(style.surface, depthPriority),
   );
   surface.name = `${districtId.toUpperCase()}__${route.id.toUpperCase()}__CONTINUOUS_SURFACE`;
@@ -1183,6 +1216,11 @@ function addContinuousRoadRibbon(
     widthEnd,
     surfaceOffset: route.surfaceOffset ?? 0,
     surfaceElevation: roadTop,
+    surfaceElevationRange: routeElevations
+      ? [Math.min(...routeElevations), Math.max(...routeElevations)]
+      : [roadTop, roadTop],
+    arterialSurfaceElevation: routeElevations ? ARTERIAL_ROAD_SURFACE_TOP : undefined,
+    gradedDistrictTransition: Boolean(routeElevations),
     ownedRoadMaterial: true,
     terrainDepthBias: true,
     logisticsPlatform: route.logisticsPlatform === true,

@@ -1,0 +1,1275 @@
+{
+  "audit": {
+    "districtCount": 35,
+    "totalRoutes": 523,
+    "arterials": {
+      "ringCount": 5,
+      "radialAxisCount": 3,
+      "rings": [
+        {
+          "id": "arterial-ring-1",
+          "radius": 84,
+          "datumY": 1.6159999999999999,
+          "width": 1.55
+        },
+        {
+          "id": "arterial-ring-2",
+          "radius": 126,
+          "datumY": 1.6159999999999999,
+          "width": 1.55
+        },
+        {
+          "id": "arterial-ring-3",
+          "radius": 177,
+          "datumY": 1.6159999999999999,
+          "width": 1.55
+        },
+        {
+          "id": "arterial-ring-4",
+          "radius": 240,
+          "datumY": 1.6159999999999999,
+          "width": 1.55
+        },
+        {
+          "id": "arterial-ring-5",
+          "radius": 309,
+          "datumY": 1.6159999999999999,
+          "width": 1.85
+        }
+      ],
+      "radialAxes": [
+        {
+          "id": "arterial-radial-axis-1",
+          "width": 1.65,
+          "pointCount": 2
+        },
+        {
+          "id": "arterial-radial-axis-2",
+          "width": 1.65,
+          "pointCount": 2
+        },
+        {
+          "id": "arterial-radial-axis-3",
+          "width": 1.65,
+          "pointCount": 2
+        }
+      ]
+    },
+    "seamCount": 57,
+    "maximumRadiusGap": 0.000059678473590452086,
+    "maximumYGap": 2.220446049250313e-16,
+    "obstacleCollisionCount": 0,
+    "obstacleResults": [],
+    "academicRadialConnections": [
+      {
+        "routeId": "academic-libraries-theoretical-labs__academic-tundra-dome-garden-gate-path",
+        "arterialId": "arterial-radial-axis-3",
+        "endpointIndex": 1,
+        "centerlineGap": 0.00002213650612528663,
+        "edgeGap": -1.0649778634938747,
+        "yGap": 0
+      },
+      {
+        "routeId": "academic-libraries-theoretical-labs__academic-desert-dome-garden-gate-path",
+        "arterialId": "arterial-radial-axis-2",
+        "endpointIndex": 1,
+        "centerlineGap": 0.00002213650612528663,
+        "edgeGap": -1.0649778634938747,
+        "yGap": 0
+      }
+    ],
+    "ringCurbs": {
+      "count": 10,
+      "junctionChecks": 114,
+      "minimumOpeningCount": 15
+    },
+    "worstSeam": {
+      "districtId": "dark-center-lab-megabuilding",
+      "connectorId": "dark-center-lab-megabuilding__ring_84.000-connector",
+      "arterialId": "arterial-ring-1",
+      "endpointIndex": 1,
+      "endpoint": [
+        36.9311,
+        1.616,
+        75.44590000000001
+      ],
+      "centerline": [
+        [
+          53.1662,
+          1.6420000000000001,
+          26.8855
+        ],
+        [
+          52.8208,
+          1.6420000000000001,
+          27.9187
+        ],
+        [
+          52.4753,
+          1.6420000000000001,
+          28.951900000000002
+        ],
+        [
+          52.1299,
+          1.6419000000000001,
+          29.985100000000003
+        ],
+        [
+          51.7845,
+          1.6419000000000001,
+          31.018300000000004
+        ],
+        [
+          51.4391,
+          1.6417000000000002,
+          32.0515
+        ],
+        [
+          51.0936,
+          1.6416000000000002,
+          33.0847
+        ],
+        [
+          50.7482,
+          1.6413000000000002,
+          34.1179
+        ],
+        [
+          50.4028,
+          1.641,
+          35.1511
+        ],
+        [
+          50.0573,
+          1.6407,
+          36.1843
+        ],
+        [
+          49.7119,
+          1.6402,
+          37.2175
+        ],
+        [
+          49.3665,
+          1.6397000000000002,
+          38.2507
+        ],
+        [
+          49.0211,
+          1.6392,
+          39.283899999999996
+        ],
+        [
+          48.6756,
+          1.6385,
+          40.317099999999996
+        ],
+        [
+          48.3302,
+          1.6378000000000001,
+          41.3503
+        ],
+        [
+          47.9848,
+          1.6371,
+          42.3835
+        ],
+        [
+          47.6394,
+          1.6363,
+          43.4167
+        ],
+        [
+          47.2939,
+          1.6354000000000002,
+          44.4499
+        ],
+        [
+          46.9485,
+          1.6345,
+          45.4831
+        ],
+        [
+          46.6031,
+          1.6336000000000002,
+          46.5163
+        ],
+        [
+          46.2577,
+          1.6326,
+          47.5495
+        ],
+        [
+          45.9122,
+          1.6316000000000002,
+          48.582699999999996
+        ],
+        [
+          45.5668,
+          1.6306,
+          49.615899999999996
+        ],
+        [
+          45.2214,
+          1.6295000000000002,
+          50.6491
+        ],
+        [
+          44.8759,
+          1.6285,
+          51.6823
+        ],
+        [
+          44.5305,
+          1.6274000000000002,
+          52.7155
+        ],
+        [
+          44.1851,
+          1.6264,
+          53.7487
+        ],
+        [
+          43.8397,
+          1.6254000000000002,
+          54.7819
+        ],
+        [
+          43.4942,
+          1.6244,
+          55.8151
+        ],
+        [
+          43.1488,
+          1.6235000000000002,
+          56.8483
+        ],
+        [
+          42.8034,
+          1.6226,
+          57.881499999999996
+        ],
+        [
+          42.458,
+          1.6217000000000001,
+          58.914699999999996
+        ],
+        [
+          42.1125,
+          1.6209,
+          59.9479
+        ],
+        [
+          41.7671,
+          1.6202,
+          60.9811
+        ],
+        [
+          41.4217,
+          1.6195000000000002,
+          62.0143
+        ],
+        [
+          41.0763,
+          1.6188,
+          63.0475
+        ],
+        [
+          40.7308,
+          1.6183,
+          64.08070000000001
+        ],
+        [
+          40.3854,
+          1.6178000000000001,
+          65.1139
+        ],
+        [
+          40.04,
+          1.6173000000000002,
+          66.14710000000001
+        ],
+        [
+          39.6945,
+          1.617,
+          67.1803
+        ],
+        [
+          39.3491,
+          1.6167,
+          68.2135
+        ],
+        [
+          39.0037,
+          1.6164,
+          69.2467
+        ],
+        [
+          38.6583,
+          1.6163,
+          70.27990000000001
+        ],
+        [
+          38.3128,
+          1.6161,
+          71.3131
+        ],
+        [
+          37.9674,
+          1.6161,
+          72.3463
+        ],
+        [
+          37.622,
+          1.616,
+          73.37950000000001
+        ],
+        [
+          37.2766,
+          1.616,
+          74.4127
+        ],
+        [
+          36.9311,
+          1.616,
+          75.44590000000001
+        ]
+      ],
+      "endpointRadius": 83.99994032152641,
+      "arterialRadius": 84,
+      "radiusGap": 0.000059678473590452086,
+      "yGap": 2.220446049250313e-16
+    },
+    "representativeSeam": {
+      "districtId": "molecular-biology-labs",
+      "connectorId": "molecular-biology-labs__ring_177.000-connector",
+      "arterialId": "arterial-ring-3",
+      "endpointIndex": 1,
+      "endpoint": [
+        177,
+        1.616,
+        0
+      ],
+      "centerline": [
+        [
+          169.26,
+          1.6460000000000001,
+          0
+        ],
+        [
+          169.8554,
+          1.6459000000000001,
+          0
+        ],
+        [
+          170.45080000000002,
+          1.6451,
+          0
+        ],
+        [
+          171.0462,
+          1.6435000000000002,
+          0
+        ],
+        [
+          171.6415,
+          1.6408,
+          0
+        ],
+        [
+          172.2369,
+          1.6373000000000002,
+          0
+        ],
+        [
+          172.8323,
+          1.6332,
+          0
+        ],
+        [
+          173.42770000000002,
+          1.6288,
+          0
+        ],
+        [
+          174.0231,
+          1.6247,
+          0
+        ],
+        [
+          174.6185,
+          1.6212000000000002,
+          0
+        ],
+        [
+          175.2138,
+          1.6185,
+          0
+        ],
+        [
+          175.8092,
+          1.6169,
+          0
+        ],
+        [
+          176.4046,
+          1.6161,
+          0
+        ],
+        [
+          177,
+          1.616,
+          0
+        ]
+      ],
+      "endpointRadius": 177,
+      "arterialRadius": 177,
+      "radiusGap": 0,
+      "yGap": 2.220446049250313e-16,
+      "radialApproachAlignment": 1
+    },
+    "districtResults": [
+      {
+        "id": "synthetic-quantum-biosystems",
+        "ring": "core",
+        "routeCount": 7,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "dark-center-lab-megabuilding",
+        "ring": "core",
+        "routeCount": 8,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "corporate-core",
+        "ring": "core",
+        "routeCount": 7,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "toxicology-labs",
+        "ring": "inner",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "pharmacology-labs",
+        "ring": "inner",
+        "routeCount": 9,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "microbiology-labs",
+        "ring": "inner",
+        "routeCount": 14,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "genomics-labs",
+        "ring": "inner",
+        "routeCount": 12,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "proteomics-labs",
+        "ring": "inner",
+        "routeCount": 12,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "omics-labs",
+        "ring": "inner",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "electronics-microelectronics-labs",
+        "ring": "middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "medical-labs",
+        "ring": "middle",
+        "routeCount": 10,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "molecular-biology-labs",
+        "ring": "middle",
+        "routeCount": 19,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "biochemistry-labs",
+        "ring": "middle",
+        "routeCount": 18,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "computational-biology-labs",
+        "ring": "middle",
+        "routeCount": 27,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "robotics-labs",
+        "ring": "middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "marketing",
+        "ring": "outer-middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "scientific-art-labs",
+        "ring": "outer-middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "even-hour-hotel",
+        "ring": "outer-middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "astronomy-astrobiology-labs",
+        "ring": "outer-middle",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "secret-labs",
+        "ring": "outer-middle",
+        "routeCount": 13,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "bioanalytics-lab",
+        "ring": "outer-middle",
+        "routeCount": 22,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "organic-chemistry-labs",
+        "ring": "outer-middle",
+        "routeCount": 19,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "luxury-entertainment",
+        "ring": "outer",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "scientist-residential",
+        "ring": "outer",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "materials-science-lab",
+        "ring": "outer",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "security",
+        "ring": "outer",
+        "routeCount": 8,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "forensic-cyberforensic-lab",
+        "ring": "outer",
+        "routeCount": 23,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "inorganic-chemistry",
+        "ring": "outer",
+        "routeCount": 25,
+        "connectorCount": 2,
+        "expectedConnectorCount": 2,
+        "connectorExempt": false,
+        "connectedRingCount": 2,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "financial-funding",
+        "ring": "perimeter",
+        "routeCount": 7,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "logistics",
+        "ring": "perimeter",
+        "routeCount": 31,
+        "connectorCount": 0,
+        "expectedConnectorCount": 1,
+        "connectorExempt": true,
+        "connectedRingCount": 0,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "entry-commercial",
+        "ring": "perimeter",
+        "routeCount": 37,
+        "connectorCount": 0,
+        "expectedConnectorCount": 1,
+        "connectorExempt": true,
+        "connectedRingCount": 0,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "environmental-science-labs",
+        "ring": "perimeter",
+        "routeCount": 7,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": true,
+        "collectorCount": 1,
+        "localApproachCount": 4,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "academic-libraries-theoretical-labs",
+        "ring": "perimeter",
+        "routeCount": 57,
+        "connectorCount": 0,
+        "expectedConnectorCount": 1,
+        "connectorExempt": true,
+        "connectedRingCount": 0,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "industrial-labs",
+        "ring": "perimeter",
+        "routeCount": 19,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      },
+      {
+        "id": "particle-physics-labs",
+        "ring": "perimeter",
+        "routeCount": 24,
+        "connectorCount": 1,
+        "expectedConnectorCount": 1,
+        "connectorExempt": false,
+        "connectedRingCount": 1,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
+        "maximumApproachGap": 0
+      }
+    ],
+    "failures": []
+  },
+  "dynamicRefreshAudit": {
+    "available": true,
+    "networkReplaced": true,
+    "routesChanged": true,
+    "proxyReplaced": true,
+    "proxyChanged": true,
+    "vertexCountStable": true,
+    "restored": true
+  },
+  "planProxyAudit": {
+    "count": 35,
+    "roads": [
+      {
+        "name": "SYNTHETIC_QUANTUM_BIOSYSTEMS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "DARK_CENTER_LAB_MEGABUILDING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "CORPORATE_CORE__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "TOXICOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PHARMACOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MICROBIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "GENOMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PROTEOMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "OMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ELECTRONICS_MICROELECTRONICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MEDICAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MOLECULAR_BIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "BIOCHEMISTRY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "COMPUTATIONAL_BIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ROBOTICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MARKETING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SCIENTIFIC_ART_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "EVEN_HOUR_HOTEL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ASTRONOMY_ASTROBIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SECRET_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "BIOANALYTICS_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ORGANIC_CHEMISTRY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "LUXURY_ENTERTAINMENT__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SCIENTIST_RESIDENTIAL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MATERIALS_SCIENCE_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SECURITY__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "FORENSIC_CYBERFORENSIC_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "INORGANIC_CHEMISTRY__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "FINANCIAL_FUNDING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "LOGISTICS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ENTRY_COMMERCIAL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ENVIRONMENTAL_SCIENCE_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ACADEMIC_LIBRARIES_THEORETICAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "INDUSTRIAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PARTICLE_PHYSICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      }
+    ]
+  },
+  "exploreProxyAudit": {
+    "count": 35,
+    "roads": [
+      {
+        "name": "SYNTHETIC_QUANTUM_BIOSYSTEMS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "DARK_CENTER_LAB_MEGABUILDING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "CORPORATE_CORE__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "TOXICOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PHARMACOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MICROBIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "GENOMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PROTEOMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "OMICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ELECTRONICS_MICROELECTRONICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MEDICAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MOLECULAR_BIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "BIOCHEMISTRY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "COMPUTATIONAL_BIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ROBOTICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MARKETING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SCIENTIFIC_ART_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "EVEN_HOUR_HOTEL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ASTRONOMY_ASTROBIOLOGY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SECRET_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "BIOANALYTICS_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ORGANIC_CHEMISTRY_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "LUXURY_ENTERTAINMENT__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SCIENTIST_RESIDENTIAL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "MATERIALS_SCIENCE_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "SECURITY__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "FORENSIC_CYBERFORENSIC_LAB__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "INORGANIC_CHEMISTRY__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "FINANCIAL_FUNDING__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "LOGISTICS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ENTRY_COMMERCIAL__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ENVIRONMENTAL_SCIENCE_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "ACADEMIC_LIBRARIES_THEORETICAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "INDUSTRIAL_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      },
+      {
+        "name": "PARTICLE_PHYSICS_LABS__FAR_HLOD_ROAD_NETWORK",
+        "depthTest": true,
+        "depthWrite": true
+      }
+    ]
+  },
+  "representativeCamera": {
+    "mode": "explore",
+    "position": [
+      187,
+      23.616,
+      20
+    ],
+    "target": [
+      173,
+      1.6159999999999997,
+      0
+    ],
+    "distance": 32.863353450309965
+  },
+  "browserErrors": [],
+  "failures": []
+}

@@ -39,6 +39,7 @@ import { buildBiochemistryLabsDistrict } from './biochemistryLabsDistrict';
 import { buildOrganicChemistryLabsDistrict } from './organicChemistryLabsDistrict';
 import { buildInorganicChemistryLabsDistrict } from './inorganicChemistryLabsDistrict';
 import { buildParticlePhysicsLabsDistrict } from './particlePhysicsLabsDistrict';
+import { buildAstronomyAstrobiologyLabsDistrict } from './astronomyAstrobiologyLabsDistrict';
 import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
@@ -2293,6 +2294,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     return;
   }
 
+  if (definition.id === 'astronomy-astrobiology-labs') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('ASTRO__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
   if (definition.id === 'entry-commercial' || definition.id === 'logistics') {
     const program = group.userData.entryLogisticsProgram as {
       plannedBuildings?: string[];
@@ -2565,6 +2576,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isOrganicChemistryLabsDistrict = definition.id === 'organic-chemistry-labs';
   const isInorganicChemistryLabsDistrict = definition.id === 'inorganic-chemistry';
   const isParticlePhysicsLabsDistrict = definition.id === 'particle-physics-labs';
+  const isAstronomyAstrobiologyLabsDistrict = definition.id === 'astronomy-astrobiology-labs';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
@@ -2596,6 +2608,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
           : isInorganicChemistryLabsDistrict
             ? metresToWorldUnits(0.08)
           : isParticlePhysicsLabsDistrict
+            ? metresToWorldUnits(0.08)
+          : isAstronomyAstrobiologyLabsDistrict
             ? metresToWorldUnits(0.08)
       : DISTRICT_FINISHED_FLOOR_Y;
   const accessRampLength = isIndustrialDistrict
@@ -2667,8 +2681,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     plot.userData.districtDelimiterAccess = true;
   }
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
-  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict) group.add(plot);
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict) group.add(plot);
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict) {
     addAccessRamp(
       group,
       definition.id,
@@ -2681,7 +2695,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     );
   }
 
-  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict) {
     const inset = new THREE.LineSegments(
       new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
       new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
@@ -2720,6 +2734,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
     case 'physics':
       if (definition.id === 'particle-physics-labs') buildParticlePhysicsLabsDistrict(group, definition);
+      else if (definition.id === 'astronomy-astrobiology-labs') buildAstronomyAstrobiologyLabsDistrict(group, definition);
       else buildPhysics(group, definition, height);
       break;
     case 'security':
@@ -2802,6 +2817,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       ? 14.6
       : definition.id === 'particle-physics-labs'
       ? 15.4
+      : definition.id === 'astronomy-astrobiology-labs'
+      ? 16.2
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };
 }

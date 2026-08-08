@@ -356,7 +356,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "observatory-research-campus",
     accent: "#8A9DFF",
     palette: ["#11162A", "#2D3761", "#C4CAE6", "#8A9DFF"],
-    description: "Telescope domes, antenna decks, and sealed planetary greenhouses form a compact observatory campus.",
+    description: "Fifteen dark-sky facilities progress from precision astronomy and planetary defense through exoplanet science to ocean worlds, origins-of-life research, and experimental astrobiology along the Ecliptic Walk.",
   },
   {
     id: "secret-labs",

@@ -1,29 +1,29 @@
 {
   "defaultAudit": {
     "stats": {
-      "visibleMeshes": 121,
-      "geometries": 47,
-      "rendererGeometries": 42,
-      "triangles": 330428,
-      "drawCalls": 116,
+      "visibleMeshes": 156,
+      "geometries": 82,
+      "rendererGeometries": 78,
+      "triangles": 352640,
+      "drawCalls": 152,
       "textureCount": 1,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 16.7,
-        "p95": 53.7,
-        "above33Percent": 8.33,
-        "above50Percent": 8.33
+        "p50": 16.6,
+        "p95": 47.5,
+        "above33Percent": 7.89,
+        "above50Percent": 5.26
       },
       "frameTiming": {
-        "cpuP50Ms": 3.8,
-        "cpuP95Ms": 7.4,
-        "cpuUpdateP50Ms": 0.9,
-        "cpuUpdateP95Ms": 1.7,
-        "cpuRenderP50Ms": 2.9,
-        "cpuRenderP95Ms": 5.7,
-        "gpuP50Ms": 7.14,
-        "gpuP95Ms": 8.34,
+        "cpuP50Ms": 4.2,
+        "cpuP95Ms": 6.6,
+        "cpuUpdateP50Ms": 1,
+        "cpuUpdateP95Ms": 1.8,
+        "cpuRenderP50Ms": 3.2,
+        "cpuRenderP95Ms": 4.8,
+        "gpuP50Ms": 6.19,
+        "gpuP95Ms": 7.14,
         "hoverPickP95Ms": 0,
         "bottleneck": "balanced",
         "targetFps": 30
@@ -41,7 +41,7 @@
         },
         "transmissionResolutionScale": 1,
         "recoveryPhase": "ready",
-        "shaderProgramCount": 13,
+        "shaderProgramCount": 14,
         "gpuTimerSupported": true
       },
       "activeAnimationNodes": 3,
@@ -100,9 +100,9 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 61,
         "batchOccupancy": {
-          "capacity": 43490,
+          "capacity": 45188,
           "active": 611,
-          "ratio": 0.01404920671418717
+          "ratio": 0.013521288837744535
         },
         "microdetail": {
           "total": 320,
@@ -111,7 +111,7 @@
         },
         "collisionResidentCellCount": 1259,
         "navigationResidencyRevision": 0,
-        "detachedAuthoringSourceCount": 25276,
+        "detachedAuthoringSourceCount": 26887,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -127,14 +127,14 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 725,
-          "batchedSourceCount": 25276,
-          "retainedSourceCount": 27204,
-          "estimatedGeometryBytes": 80509676,
-          "estimatedTextureBytes": 189339601,
-          "instancedBatchCount": 155,
+          "batchCount": 747,
+          "batchedSourceCount": 26887,
+          "retainedSourceCount": 28811,
+          "estimatedGeometryBytes": 84351036,
+          "estimatedTextureBytes": 187247691,
+          "instancedBatchCount": 159,
           "batchedMeshBatchCount": 114,
-          "mergedBatchCount": 456,
+          "mergedBatchCount": 474,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
           "largestBatchIndices": 224496,
@@ -163,17 +163,17 @@
             "distanceMetres": 11556,
             "estimatedCost": {
               "drawCalls": 13,
-              "triangles": 5144,
+              "triangles": 5526,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 44,
+              "mandatory": 52,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 40,
+              "capacity": 48,
               "active": 0,
               "ratio": 0
             }
@@ -196,17 +196,17 @@
             "distanceMetres": 11423,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5892,
+              "triangles": 6274,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 80,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 74,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -229,17 +229,17 @@
             "distanceMetres": 11277,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 3376,
+              "triangles": 3758,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 53,
+              "mandatory": 61,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 46,
+              "capacity": 54,
               "active": 0,
               "ratio": 0
             }
@@ -262,17 +262,17 @@
             "distanceMetres": 12489,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 5692,
+              "triangles": 6126,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 64,
+              "mandatory": 75,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 60,
+              "capacity": 71,
               "active": 0,
               "ratio": 0
             }
@@ -295,17 +295,17 @@
             "distanceMetres": 11537,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 215692,
+              "triangles": 215872,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1040,
+              "mandatory": 1046,
               "micro": 36,
               "visibleMicro": 0,
               "culledMicro": 36
             },
             "batchOccupancy": {
-              "capacity": 1073,
+              "capacity": 1079,
               "active": 0,
               "ratio": 0
             }
@@ -328,17 +328,17 @@
             "distanceMetres": 10561,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 180768,
+              "triangles": 180958,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 917,
+              "mandatory": 923,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 910,
+              "capacity": 916,
               "active": 0,
               "ratio": 0
             }
@@ -361,17 +361,17 @@
             "distanceMetres": 10339,
             "estimatedCost": {
               "drawCalls": 34,
-              "triangles": 101984,
+              "triangles": 102164,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1103,
+              "mandatory": 1109,
               "micro": 13,
               "visibleMicro": 0,
               "culledMicro": 13
             },
             "batchOccupancy": {
-              "capacity": 1114,
+              "capacity": 1120,
               "active": 0,
               "ratio": 0
             }
@@ -394,17 +394,17 @@
             "distanceMetres": 10894,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 66060,
+              "triangles": 66240,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1473,
+              "mandatory": 1479,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1470,
+              "capacity": 1476,
               "active": 0,
               "ratio": 0
             }
@@ -427,17 +427,17 @@
             "distanceMetres": 12202,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 5488,
+              "triangles": 5926,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 68,
+              "mandatory": 79,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 63,
+              "capacity": 74,
               "active": 0,
               "ratio": 0
             }
@@ -460,17 +460,17 @@
             "distanceMetres": 12944,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 3100,
+              "triangles": 3556,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 47,
+              "mandatory": 58,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -493,17 +493,17 @@
             "distanceMetres": 11481,
             "estimatedCost": {
               "drawCalls": 28,
-              "triangles": 187496,
+              "triangles": 187676,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 977,
+              "mandatory": 983,
               "micro": 8,
               "visibleMicro": 0,
               "culledMicro": 8
             },
             "batchOccupancy": {
-              "capacity": 979,
+              "capacity": 985,
               "active": 0,
               "ratio": 0
             }
@@ -526,17 +526,17 @@
             "distanceMetres": 10054,
             "estimatedCost": {
               "drawCalls": 23,
-              "triangles": 140436,
+              "triangles": 140616,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1054,
+              "mandatory": 1060,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1051,
+              "capacity": 1057,
               "active": 0,
               "ratio": 0
             }
@@ -558,18 +558,18 @@
             "pinned": false,
             "distanceMetres": 9847,
             "estimatedCost": {
-              "drawCalls": 26,
-              "triangles": 174854,
+              "drawCalls": 25,
+              "triangles": 175036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1256,
+              "mandatory": 1262,
               "micro": 31,
               "visibleMicro": 0,
               "culledMicro": 31
             },
             "batchOccupancy": {
-              "capacity": 1285,
+              "capacity": 1292,
               "active": 0,
               "ratio": 0
             }
@@ -592,17 +592,17 @@
             "distanceMetres": 10471,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 65090,
+              "triangles": 65350,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1859,
+              "mandatory": 1865,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1855,
+              "capacity": 1861,
               "active": 0,
               "ratio": 0
             }
@@ -625,17 +625,17 @@
             "distanceMetres": 12543,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 3580,
+              "triangles": 4036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 55,
+              "mandatory": 66,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 47,
+              "capacity": 58,
               "active": 0,
               "ratio": 0
             }
@@ -658,17 +658,17 @@
             "distanceMetres": 13489,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7078,
+              "triangles": 7596,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 77,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 71,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -691,17 +691,17 @@
             "distanceMetres": 13502,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5724,
+              "triangles": 6230,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 58,
+              "mandatory": 69,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 53,
+              "capacity": 64,
               "active": 0,
               "ratio": 0
             }
@@ -724,17 +724,17 @@
             "distanceMetres": 12972,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 5906,
+              "triangles": 6418,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 83,
+              "mandatory": 94,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 77,
+              "capacity": 88,
               "active": 0,
               "ratio": 0
             }
@@ -746,7 +746,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11031,
+            "priorityScore": -10112,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -754,20 +754,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11031,
+            "distanceMetres": 10112,
             "estimatedCost": {
-              "drawCalls": 13,
-              "triangles": 3728,
+              "drawCalls": 30,
+              "triangles": 80804,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 39,
+              "mandatory": 1406,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 34,
+              "capacity": 1402,
               "active": 0,
               "ratio": 0
             }
@@ -790,17 +790,17 @@
             "distanceMetres": 11447,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 175208,
+              "triangles": 175388,
               "animationNodes": 23
             },
             "renderImportance": {
-              "mandatory": 1623,
+              "mandatory": 1629,
               "micro": 21,
               "visibleMicro": 21,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1621,
+              "capacity": 1627,
               "active": 0,
               "ratio": 0
             }
@@ -823,17 +823,17 @@
             "distanceMetres": 9450,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 206572,
+              "triangles": 206752,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1944,
+              "mandatory": 1950,
               "micro": 41,
               "visibleMicro": 0,
               "culledMicro": 41
             },
             "batchOccupancy": {
-              "capacity": 1982,
+              "capacity": 1988,
               "active": 0,
               "ratio": 0
             }
@@ -856,17 +856,17 @@
             "distanceMetres": 9219,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 142544,
+              "triangles": 142734,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1503,
+              "mandatory": 1509,
               "micro": 136,
               "visibleMicro": 0,
               "culledMicro": 136
             },
             "batchOccupancy": {
-              "capacity": 1638,
+              "capacity": 1644,
               "active": 0,
               "ratio": 0
             }
@@ -889,17 +889,17 @@
             "distanceMetres": 14152,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7322,
+              "triangles": 7850,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 87,
+              "mandatory": 98,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 82,
+              "capacity": 93,
               "active": 0,
               "ratio": 0
             }
@@ -922,17 +922,17 @@
             "distanceMetres": 13482,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 6506,
+              "triangles": 7034,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 74,
+              "mandatory": 85,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 68,
+              "capacity": 79,
               "active": 0,
               "ratio": 0
             }
@@ -955,17 +955,17 @@
             "distanceMetres": 10973,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2688,
+              "triangles": 3216,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 48,
+              "mandatory": 59,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -987,18 +987,18 @@
             "pinned": false,
             "distanceMetres": 11614,
             "estimatedCost": {
-              "drawCalls": 15,
-              "triangles": 22868,
+              "drawCalls": 14,
+              "triangles": 23048,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 811,
+              "mandatory": 817,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 809,
+              "capacity": 815,
               "active": 0,
               "ratio": 0
             }
@@ -1021,17 +1021,17 @@
             "distanceMetres": 9010,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 180100,
+              "triangles": 180280,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 2056,
+              "mandatory": 2062,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 2049,
+              "capacity": 2055,
               "active": 0,
               "ratio": 0
             }
@@ -1054,17 +1054,17 @@
             "distanceMetres": 8522,
             "estimatedCost": {
               "drawCalls": 45,
-              "triangles": 193108,
+              "triangles": 193288,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 423,
+              "mandatory": 429,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1508,
+              "capacity": 1516,
               "active": 0,
               "ratio": 0
             }
@@ -1087,17 +1087,17 @@
             "distanceMetres": 15019,
             "estimatedCost": {
               "drawCalls": 19,
-              "triangles": 7330,
+              "triangles": 7858,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 92,
+              "mandatory": 100,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 86,
+              "capacity": 94,
               "active": 0,
               "ratio": 0
             }
@@ -1186,17 +1186,17 @@
             "distanceMetres": 14181,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2784,
+              "triangles": 3312,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 49,
+              "mandatory": 57,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 45,
+              "capacity": 53,
               "active": 0,
               "ratio": 0
             }
@@ -1251,18 +1251,18 @@
             "pinned": false,
             "distanceMetres": 10958,
             "estimatedCost": {
-              "drawCalls": 87,
-              "triangles": 181040,
+              "drawCalls": 88,
+              "triangles": 181352,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 1129,
+              "mandatory": 1132,
               "micro": 17,
               "visibleMicro": 0,
               "culledMicro": 17
             },
             "batchOccupancy": {
-              "capacity": 7707,
+              "capacity": 7709,
               "active": 0,
               "ratio": 0
             }
@@ -1284,18 +1284,18 @@
             "pinned": false,
             "distanceMetres": 7593,
             "estimatedCost": {
-              "drawCalls": 29,
-              "triangles": 75368,
-              "animationNodes": 3
+              "drawCalls": 31,
+              "triangles": 75458,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 830,
+              "mandatory": 833,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1344,
+              "capacity": 1435,
               "active": 0,
               "ratio": 0
             }
@@ -1527,29 +1527,29 @@
   },
   "defaultCloseAudit": {
     "stats": {
-      "visibleMeshes": 155,
-      "geometries": 72,
-      "rendererGeometries": 77,
-      "triangles": 510840,
+      "visibleMeshes": 189,
+      "geometries": 106,
+      "rendererGeometries": 116,
+      "triangles": 532428,
       "drawCalls": 1,
       "textureCount": 6,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
         "p50": 16.7,
-        "p95": 25.6,
-        "above33Percent": 4.17,
-        "above50Percent": 4.17
+        "p95": 19.8,
+        "above33Percent": 4.26,
+        "above50Percent": 4.26
       },
       "frameTiming": {
         "cpuP50Ms": 4,
-        "cpuP95Ms": 4.7,
-        "cpuUpdateP50Ms": 1,
+        "cpuP95Ms": 5.2,
+        "cpuUpdateP50Ms": 0.9,
         "cpuUpdateP95Ms": 1.3,
-        "cpuRenderP50Ms": 3,
-        "cpuRenderP95Ms": 3.4,
-        "gpuP50Ms": 1.27,
-        "gpuP95Ms": 1.29,
+        "cpuRenderP50Ms": 3.1,
+        "cpuRenderP95Ms": 3.9,
+        "gpuP50Ms": 1.17,
+        "gpuP95Ms": 2.07,
         "hoverPickP95Ms": 0,
         "bottleneck": "cpu",
         "targetFps": 30
@@ -1567,7 +1567,7 @@
         },
         "transmissionResolutionScale": 1,
         "recoveryPhase": "ready",
-        "shaderProgramCount": 40,
+        "shaderProgramCount": 41,
         "gpuTimerSupported": true
       },
       "activeAnimationNodes": 14,
@@ -1626,18 +1626,18 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 92,
         "batchOccupancy": {
-          "capacity": 43490,
-          "active": 2660,
-          "ratio": 0.06116348585881812
+          "capacity": 45188,
+          "active": 2666,
+          "ratio": 0.0589979640612552
         },
         "microdetail": {
           "total": 320,
           "visible": 0,
           "culled": 320
         },
-        "collisionResidentCellCount": 1502,
+        "collisionResidentCellCount": 1504,
         "navigationResidencyRevision": 3,
-        "detachedAuthoringSourceCount": 25276,
+        "detachedAuthoringSourceCount": 26887,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -1657,14 +1657,14 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 725,
-          "batchedSourceCount": 25276,
-          "retainedSourceCount": 27204,
-          "estimatedGeometryBytes": 80509676,
-          "estimatedTextureBytes": 189339601,
-          "instancedBatchCount": 155,
+          "batchCount": 747,
+          "batchedSourceCount": 26887,
+          "retainedSourceCount": 28811,
+          "estimatedGeometryBytes": 84351036,
+          "estimatedTextureBytes": 187247691,
+          "instancedBatchCount": 159,
           "batchedMeshBatchCount": 114,
-          "mergedBatchCount": 456,
+          "mergedBatchCount": 474,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
           "largestBatchIndices": 224496,
@@ -1693,17 +1693,17 @@
             "distanceMetres": 11556,
             "estimatedCost": {
               "drawCalls": 13,
-              "triangles": 5144,
+              "triangles": 5526,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 44,
+              "mandatory": 52,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 40,
+              "capacity": 48,
               "active": 0,
               "ratio": 0
             }
@@ -1726,17 +1726,17 @@
             "distanceMetres": 11423,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5892,
+              "triangles": 6274,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 80,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 74,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -1759,17 +1759,17 @@
             "distanceMetres": 11277,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 3376,
+              "triangles": 3758,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 53,
+              "mandatory": 61,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 46,
+              "capacity": 54,
               "active": 0,
               "ratio": 0
             }
@@ -1792,17 +1792,17 @@
             "distanceMetres": 12489,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 5692,
+              "triangles": 6126,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 64,
+              "mandatory": 75,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 60,
+              "capacity": 71,
               "active": 0,
               "ratio": 0
             }
@@ -1825,17 +1825,17 @@
             "distanceMetres": 11537,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 215692,
+              "triangles": 215872,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1040,
+              "mandatory": 1046,
               "micro": 36,
               "visibleMicro": 0,
               "culledMicro": 36
             },
             "batchOccupancy": {
-              "capacity": 1073,
+              "capacity": 1079,
               "active": 0,
               "ratio": 0
             }
@@ -1858,17 +1858,17 @@
             "distanceMetres": 10561,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 180768,
+              "triangles": 180958,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 917,
+              "mandatory": 923,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 910,
+              "capacity": 916,
               "active": 0,
               "ratio": 0
             }
@@ -1891,17 +1891,17 @@
             "distanceMetres": 10339,
             "estimatedCost": {
               "drawCalls": 34,
-              "triangles": 101984,
+              "triangles": 102164,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1103,
+              "mandatory": 1109,
               "micro": 13,
               "visibleMicro": 0,
               "culledMicro": 13
             },
             "batchOccupancy": {
-              "capacity": 1114,
+              "capacity": 1120,
               "active": 0,
               "ratio": 0
             }
@@ -1924,17 +1924,17 @@
             "distanceMetres": 10894,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 66060,
+              "triangles": 66240,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1473,
+              "mandatory": 1479,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1470,
+              "capacity": 1476,
               "active": 0,
               "ratio": 0
             }
@@ -1957,17 +1957,17 @@
             "distanceMetres": 12202,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 5488,
+              "triangles": 5926,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 68,
+              "mandatory": 79,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 63,
+              "capacity": 74,
               "active": 0,
               "ratio": 0
             }
@@ -1990,17 +1990,17 @@
             "distanceMetres": 12944,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 3100,
+              "triangles": 3556,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 47,
+              "mandatory": 58,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -2023,17 +2023,17 @@
             "distanceMetres": 11481,
             "estimatedCost": {
               "drawCalls": 28,
-              "triangles": 187496,
+              "triangles": 187676,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 977,
+              "mandatory": 983,
               "micro": 8,
               "visibleMicro": 0,
               "culledMicro": 8
             },
             "batchOccupancy": {
-              "capacity": 979,
+              "capacity": 985,
               "active": 0,
               "ratio": 0
             }
@@ -2056,17 +2056,17 @@
             "distanceMetres": 10054,
             "estimatedCost": {
               "drawCalls": 23,
-              "triangles": 140436,
+              "triangles": 140616,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1054,
+              "mandatory": 1060,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1051,
+              "capacity": 1057,
               "active": 0,
               "ratio": 0
             }
@@ -2088,18 +2088,18 @@
             "pinned": false,
             "distanceMetres": 9847,
             "estimatedCost": {
-              "drawCalls": 26,
-              "triangles": 174854,
+              "drawCalls": 25,
+              "triangles": 175036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1256,
+              "mandatory": 1262,
               "micro": 31,
               "visibleMicro": 0,
               "culledMicro": 31
             },
             "batchOccupancy": {
-              "capacity": 1285,
+              "capacity": 1292,
               "active": 0,
               "ratio": 0
             }
@@ -2122,17 +2122,17 @@
             "distanceMetres": 10471,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 65090,
+              "triangles": 65350,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1859,
+              "mandatory": 1865,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1855,
+              "capacity": 1861,
               "active": 0,
               "ratio": 0
             }
@@ -2155,17 +2155,17 @@
             "distanceMetres": 12543,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 3580,
+              "triangles": 4036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 55,
+              "mandatory": 66,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 47,
+              "capacity": 58,
               "active": 0,
               "ratio": 0
             }
@@ -2188,17 +2188,17 @@
             "distanceMetres": 13489,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7078,
+              "triangles": 7596,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 77,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 71,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -2221,17 +2221,17 @@
             "distanceMetres": 13502,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5724,
+              "triangles": 6230,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 58,
+              "mandatory": 69,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 53,
+              "capacity": 64,
               "active": 0,
               "ratio": 0
             }
@@ -2254,17 +2254,17 @@
             "distanceMetres": 12972,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 5906,
+              "triangles": 6418,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 83,
+              "mandatory": 94,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 77,
+              "capacity": 88,
               "active": 0,
               "ratio": 0
             }
@@ -2276,7 +2276,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11031,
+            "priorityScore": -10112,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -2284,20 +2284,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11031,
+            "distanceMetres": 10112,
             "estimatedCost": {
-              "drawCalls": 13,
-              "triangles": 3728,
+              "drawCalls": 30,
+              "triangles": 80804,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 39,
+              "mandatory": 1406,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 34,
+              "capacity": 1402,
               "active": 0,
               "ratio": 0
             }
@@ -2320,17 +2320,17 @@
             "distanceMetres": 11447,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 175208,
+              "triangles": 175388,
               "animationNodes": 23
             },
             "renderImportance": {
-              "mandatory": 1623,
+              "mandatory": 1629,
               "micro": 21,
               "visibleMicro": 21,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1621,
+              "capacity": 1627,
               "active": 0,
               "ratio": 0
             }
@@ -2353,17 +2353,17 @@
             "distanceMetres": 9450,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 206572,
+              "triangles": 206752,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1944,
+              "mandatory": 1950,
               "micro": 41,
               "visibleMicro": 0,
               "culledMicro": 41
             },
             "batchOccupancy": {
-              "capacity": 1982,
+              "capacity": 1988,
               "active": 0,
               "ratio": 0
             }
@@ -2386,17 +2386,17 @@
             "distanceMetres": 9219,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 142544,
+              "triangles": 142734,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1503,
+              "mandatory": 1509,
               "micro": 136,
               "visibleMicro": 0,
               "culledMicro": 136
             },
             "batchOccupancy": {
-              "capacity": 1638,
+              "capacity": 1644,
               "active": 0,
               "ratio": 0
             }
@@ -2419,17 +2419,17 @@
             "distanceMetres": 14152,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7322,
+              "triangles": 7850,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 87,
+              "mandatory": 98,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 82,
+              "capacity": 93,
               "active": 0,
               "ratio": 0
             }
@@ -2452,17 +2452,17 @@
             "distanceMetres": 13482,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 6506,
+              "triangles": 7034,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 74,
+              "mandatory": 85,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 68,
+              "capacity": 79,
               "active": 0,
               "ratio": 0
             }
@@ -2485,17 +2485,17 @@
             "distanceMetres": 10973,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2688,
+              "triangles": 3216,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 48,
+              "mandatory": 59,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -2517,18 +2517,18 @@
             "pinned": false,
             "distanceMetres": 11614,
             "estimatedCost": {
-              "drawCalls": 15,
-              "triangles": 22868,
+              "drawCalls": 14,
+              "triangles": 23048,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 811,
+              "mandatory": 817,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 809,
+              "capacity": 815,
               "active": 0,
               "ratio": 0
             }
@@ -2551,18 +2551,18 @@
             "distanceMetres": 9010,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 180100,
+              "triangles": 180280,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 2056,
+              "mandatory": 2062,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 2049,
-              "active": 2049,
+              "capacity": 2055,
+              "active": 2055,
               "ratio": 1
             }
           },
@@ -2584,17 +2584,17 @@
             "distanceMetres": 8522,
             "estimatedCost": {
               "drawCalls": 45,
-              "triangles": 193108,
+              "triangles": 193288,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 423,
+              "mandatory": 429,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1508,
+              "capacity": 1516,
               "active": 0,
               "ratio": 0
             }
@@ -2617,17 +2617,17 @@
             "distanceMetres": 15019,
             "estimatedCost": {
               "drawCalls": 19,
-              "triangles": 7330,
+              "triangles": 7858,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 92,
+              "mandatory": 100,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 86,
+              "capacity": 94,
               "active": 0,
               "ratio": 0
             }
@@ -2716,17 +2716,17 @@
             "distanceMetres": 14181,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2784,
+              "triangles": 3312,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 49,
+              "mandatory": 57,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 45,
+              "capacity": 53,
               "active": 0,
               "ratio": 0
             }
@@ -2781,18 +2781,18 @@
             "pinned": false,
             "distanceMetres": 10958,
             "estimatedCost": {
-              "drawCalls": 87,
-              "triangles": 181040,
+              "drawCalls": 88,
+              "triangles": 181352,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 1129,
+              "mandatory": 1132,
               "micro": 17,
               "visibleMicro": 0,
               "culledMicro": 17
             },
             "batchOccupancy": {
-              "capacity": 7707,
+              "capacity": 7709,
               "active": 0,
               "ratio": 0
             }
@@ -2814,18 +2814,18 @@
             "pinned": false,
             "distanceMetres": 7593,
             "estimatedCost": {
-              "drawCalls": 29,
-              "triangles": 75368,
-              "animationNodes": 3
+              "drawCalls": 31,
+              "triangles": 75458,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 830,
+              "mandatory": 833,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1344,
+              "capacity": 1435,
               "active": 0,
               "ratio": 0
             }
@@ -3054,29 +3054,29 @@
   },
   "fullAudit": {
     "stats": {
-      "visibleMeshes": 1091,
-      "geometries": 930,
-      "rendererGeometries": 976,
-      "triangles": 3053377,
-      "drawCalls": 1204,
-      "textureCount": 371,
+      "visibleMeshes": 1109,
+      "geometries": 948,
+      "rendererGeometries": 1033,
+      "triangles": 3145799,
+      "drawCalls": 1221,
+      "textureCount": 373,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 96.9,
-        "p95": 116,
-        "above33Percent": 91.67,
-        "above50Percent": 58.33
+        "p50": 102.7,
+        "p95": 224.3,
+        "above33Percent": 80,
+        "above50Percent": 70
       },
       "frameTiming": {
-        "cpuP50Ms": 93.5,
-        "cpuP95Ms": 101.4,
-        "cpuUpdateP50Ms": 74.3,
-        "cpuUpdateP95Ms": 78.4,
-        "cpuRenderP50Ms": 19.2,
-        "cpuRenderP95Ms": 23,
-        "gpuP50Ms": 17.24,
-        "gpuP95Ms": 17.24,
+        "cpuP50Ms": 19.4,
+        "cpuP95Ms": 100.4,
+        "cpuUpdateP50Ms": 1.3,
+        "cpuUpdateP95Ms": 78.9,
+        "cpuRenderP50Ms": 18.1,
+        "cpuRenderP95Ms": 21.5,
+        "gpuP50Ms": 14.26,
+        "gpuP95Ms": 14.26,
         "hoverPickP95Ms": 0,
         "bottleneck": "cpu",
         "targetFps": 60
@@ -3088,13 +3088,13 @@
         "transmissionPassActive": false,
         "mediumFullMaterialTier": {
           "active": true,
-          "runtimeMeshCount": 256,
-          "canonicalMaterialCount": 152,
+          "runtimeMeshCount": 251,
+          "canonicalMaterialCount": 147,
           "skippedCustomPhysicalMaterials": 7
         },
         "transmissionResolutionScale": 1,
         "recoveryPhase": "ready",
-        "shaderProgramCount": 113,
+        "shaderProgramCount": 118,
         "gpuTimerSupported": true
       },
       "activeAnimationNodes": 120,
@@ -3107,8 +3107,8 @@
         "transmissionPassActive": false,
         "mediumFullMaterialTier": {
           "active": true,
-          "runtimeMeshCount": 256,
-          "canonicalMaterialCount": 152,
+          "runtimeMeshCount": 251,
+          "canonicalMaterialCount": 147,
           "skippedCustomPhysicalMaterials": 7
         },
         "recoveryPhase": "ready",
@@ -3151,20 +3151,20 @@
           "percent": 100
         },
         "renderProfile": "full-island",
-        "liveRenderObjectCount": 2653,
+        "liveRenderObjectCount": 2671,
         "batchOccupancy": {
-          "capacity": 43490,
-          "active": 42360,
-          "ratio": 0.9740170154058404
+          "capacity": 45188,
+          "active": 44058,
+          "ratio": 0.9749933610693104
         },
         "microdetail": {
           "total": 320,
           "visible": 21,
           "culled": 299
         },
-        "collisionResidentCellCount": 4933,
+        "collisionResidentCellCount": 5538,
         "navigationResidencyRevision": 43,
-        "detachedAuthoringSourceCount": 25276,
+        "detachedAuthoringSourceCount": 26887,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 41,
@@ -3264,14 +3264,14 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 725,
-          "batchedSourceCount": 25276,
-          "retainedSourceCount": 27204,
-          "estimatedGeometryBytes": 80509676,
-          "estimatedTextureBytes": 189339601,
-          "instancedBatchCount": 155,
+          "batchCount": 747,
+          "batchedSourceCount": 26887,
+          "retainedSourceCount": 28811,
+          "estimatedGeometryBytes": 84351036,
+          "estimatedTextureBytes": 187247691,
+          "instancedBatchCount": 159,
           "batchedMeshBatchCount": 114,
-          "mergedBatchCount": 456,
+          "mergedBatchCount": 474,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
           "largestBatchIndices": 224496,
@@ -3300,18 +3300,18 @@
             "distanceMetres": 11556,
             "estimatedCost": {
               "drawCalls": 13,
-              "triangles": 5144,
+              "triangles": 5526,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 44,
+              "mandatory": 52,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 40,
-              "active": 40,
+              "capacity": 48,
+              "active": 48,
               "ratio": 1
             }
           },
@@ -3333,18 +3333,18 @@
             "distanceMetres": 11423,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5892,
+              "triangles": 6274,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 80,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 74,
-              "active": 74,
+              "capacity": 82,
+              "active": 82,
               "ratio": 1
             }
           },
@@ -3366,18 +3366,18 @@
             "distanceMetres": 11277,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 3376,
+              "triangles": 3758,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 53,
+              "mandatory": 61,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 46,
-              "active": 46,
+              "capacity": 54,
+              "active": 54,
               "ratio": 1
             }
           },
@@ -3399,18 +3399,18 @@
             "distanceMetres": 12489,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 5692,
+              "triangles": 6126,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 64,
+              "mandatory": 75,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 60,
-              "active": 60,
+              "capacity": 71,
+              "active": 71,
               "ratio": 1
             }
           },
@@ -3432,19 +3432,19 @@
             "distanceMetres": 11815,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 215692,
+              "triangles": 215872,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1040,
+              "mandatory": 1046,
               "micro": 36,
               "visibleMicro": 0,
               "culledMicro": 36
             },
             "batchOccupancy": {
-              "capacity": 1073,
-              "active": 1037,
-              "ratio": 0.9664492078285182
+              "capacity": 1079,
+              "active": 1043,
+              "ratio": 0.9666357738646896
             }
           },
           {
@@ -3465,18 +3465,18 @@
             "distanceMetres": 10776,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 180768,
+              "triangles": 180958,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 917,
+              "mandatory": 923,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 910,
-              "active": 910,
+              "capacity": 916,
+              "active": 916,
               "ratio": 1
             }
           },
@@ -3498,19 +3498,19 @@
             "distanceMetres": 10442,
             "estimatedCost": {
               "drawCalls": 34,
-              "triangles": 101984,
+              "triangles": 102164,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1103,
+              "mandatory": 1109,
               "micro": 13,
               "visibleMicro": 0,
               "culledMicro": 13
             },
             "batchOccupancy": {
-              "capacity": 1114,
-              "active": 1101,
-              "ratio": 0.9883303411131059
+              "capacity": 1120,
+              "active": 1107,
+              "ratio": 0.9883928571428572
             }
           },
           {
@@ -3531,18 +3531,18 @@
             "distanceMetres": 11199,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 66060,
+              "triangles": 66240,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1473,
+              "mandatory": 1479,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1470,
-              "active": 1470,
+              "capacity": 1476,
+              "active": 1476,
               "ratio": 1
             }
           },
@@ -3564,18 +3564,18 @@
             "distanceMetres": 12202,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 5488,
+              "triangles": 5926,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 68,
+              "mandatory": 79,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 63,
-              "active": 63,
+              "capacity": 74,
+              "active": 74,
               "ratio": 1
             }
           },
@@ -3597,18 +3597,18 @@
             "distanceMetres": 12944,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 3100,
+              "triangles": 3556,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 47,
+              "mandatory": 58,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
-              "active": 41,
+              "capacity": 52,
+              "active": 52,
               "ratio": 1
             }
           },
@@ -3630,19 +3630,19 @@
             "distanceMetres": 11997,
             "estimatedCost": {
               "drawCalls": 28,
-              "triangles": 187496,
+              "triangles": 187676,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 977,
+              "mandatory": 983,
               "micro": 8,
               "visibleMicro": 0,
               "culledMicro": 8
             },
             "batchOccupancy": {
-              "capacity": 979,
-              "active": 971,
-              "ratio": 0.9918283963227783
+              "capacity": 985,
+              "active": 977,
+              "ratio": 0.9918781725888325
             }
           },
           {
@@ -3663,18 +3663,18 @@
             "distanceMetres": 10491,
             "estimatedCost": {
               "drawCalls": 23,
-              "triangles": 140436,
+              "triangles": 140616,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1054,
+              "mandatory": 1060,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1051,
-              "active": 1051,
+              "capacity": 1057,
+              "active": 1057,
               "ratio": 1
             }
           },
@@ -3695,20 +3695,20 @@
             "pinned": false,
             "distanceMetres": 9992,
             "estimatedCost": {
-              "drawCalls": 26,
-              "triangles": 174854,
+              "drawCalls": 25,
+              "triangles": 175036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1256,
+              "mandatory": 1262,
               "micro": 31,
               "visibleMicro": 0,
               "culledMicro": 31
             },
             "batchOccupancy": {
-              "capacity": 1285,
-              "active": 1254,
-              "ratio": 0.9758754863813229
+              "capacity": 1292,
+              "active": 1261,
+              "ratio": 0.9760061919504643
             }
           },
           {
@@ -3729,18 +3729,18 @@
             "distanceMetres": 11112,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 65090,
+              "triangles": 65350,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1859,
+              "mandatory": 1865,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1855,
-              "active": 1855,
+              "capacity": 1861,
+              "active": 1861,
               "ratio": 1
             }
           },
@@ -3762,18 +3762,18 @@
             "distanceMetres": 12543,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 3580,
+              "triangles": 4036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 55,
+              "mandatory": 66,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 47,
-              "active": 47,
+              "capacity": 58,
+              "active": 58,
               "ratio": 1
             }
           },
@@ -3795,18 +3795,18 @@
             "distanceMetres": 13489,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7078,
+              "triangles": 7596,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 77,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 71,
-              "active": 71,
+              "capacity": 82,
+              "active": 82,
               "ratio": 1
             }
           },
@@ -3828,18 +3828,18 @@
             "distanceMetres": 13502,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5724,
+              "triangles": 6230,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 58,
+              "mandatory": 69,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 53,
-              "active": 53,
+              "capacity": 64,
+              "active": 64,
               "ratio": 1
             }
           },
@@ -3861,18 +3861,18 @@
             "distanceMetres": 12972,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 5906,
+              "triangles": 6418,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 83,
+              "mandatory": 94,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 77,
-              "active": 77,
+              "capacity": 88,
+              "active": 88,
               "ratio": 1
             }
           },
@@ -3893,19 +3893,19 @@
             "pinned": false,
             "distanceMetres": 11031,
             "estimatedCost": {
-              "drawCalls": 13,
-              "triangles": 3728,
+              "drawCalls": 30,
+              "triangles": 80804,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 39,
+              "mandatory": 1406,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 34,
-              "active": 34,
+              "capacity": 1402,
+              "active": 1402,
               "ratio": 1
             }
           },
@@ -3927,18 +3927,18 @@
             "distanceMetres": 12240,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 175208,
+              "triangles": 175388,
               "animationNodes": 23
             },
             "renderImportance": {
-              "mandatory": 1623,
+              "mandatory": 1629,
               "micro": 21,
               "visibleMicro": 21,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1621,
-              "active": 1621,
+              "capacity": 1627,
+              "active": 1627,
               "ratio": 1
             }
           },
@@ -3960,19 +3960,19 @@
             "distanceMetres": 10160,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 206572,
+              "triangles": 206752,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1944,
+              "mandatory": 1950,
               "micro": 41,
               "visibleMicro": 0,
               "culledMicro": 41
             },
             "batchOccupancy": {
-              "capacity": 1982,
-              "active": 1941,
-              "ratio": 0.979313824419778
+              "capacity": 1988,
+              "active": 1947,
+              "ratio": 0.9793762575452716
             }
           },
           {
@@ -3993,19 +3993,19 @@
             "distanceMetres": 9442,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 142544,
+              "triangles": 142734,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1503,
+              "mandatory": 1509,
               "micro": 136,
               "visibleMicro": 0,
               "culledMicro": 136
             },
             "batchOccupancy": {
-              "capacity": 1638,
-              "active": 1502,
-              "ratio": 0.9169719169719169
+              "capacity": 1644,
+              "active": 1508,
+              "ratio": 0.9172749391727494
             }
           },
           {
@@ -4026,18 +4026,18 @@
             "distanceMetres": 14152,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7322,
+              "triangles": 7850,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 87,
+              "mandatory": 98,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 82,
-              "active": 82,
+              "capacity": 93,
+              "active": 93,
               "ratio": 1
             }
           },
@@ -4059,18 +4059,18 @@
             "distanceMetres": 13482,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 6506,
+              "triangles": 7034,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 74,
+              "mandatory": 85,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 68,
-              "active": 68,
+              "capacity": 79,
+              "active": 79,
               "ratio": 1
             }
           },
@@ -4092,18 +4092,18 @@
             "distanceMetres": 10973,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2688,
+              "triangles": 3216,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 48,
+              "mandatory": 59,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
-              "active": 41,
+              "capacity": 52,
+              "active": 52,
               "ratio": 1
             }
           },
@@ -4124,19 +4124,19 @@
             "pinned": false,
             "distanceMetres": 12548,
             "estimatedCost": {
-              "drawCalls": 15,
-              "triangles": 22868,
+              "drawCalls": 14,
+              "triangles": 23048,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 811,
+              "mandatory": 817,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 809,
-              "active": 809,
+              "capacity": 815,
+              "active": 815,
               "ratio": 1
             }
           },
@@ -4158,18 +4158,18 @@
             "distanceMetres": 9804,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 180100,
+              "triangles": 180280,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 2056,
+              "mandatory": 2062,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 2049,
-              "active": 2049,
+              "capacity": 2055,
+              "active": 2055,
               "ratio": 1
             }
           },
@@ -4191,18 +4191,18 @@
             "distanceMetres": 8808,
             "estimatedCost": {
               "drawCalls": 45,
-              "triangles": 193108,
+              "triangles": 193288,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 423,
+              "mandatory": 429,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1508,
-              "active": 1508,
+              "capacity": 1516,
+              "active": 1516,
               "ratio": 1
             }
           },
@@ -4224,18 +4224,18 @@
             "distanceMetres": 15019,
             "estimatedCost": {
               "drawCalls": 19,
-              "triangles": 7330,
+              "triangles": 7858,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 92,
+              "mandatory": 100,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 86,
-              "active": 86,
+              "capacity": 94,
+              "active": 94,
               "ratio": 1
             }
           },
@@ -4323,18 +4323,18 @@
             "distanceMetres": 14181,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2784,
+              "triangles": 3312,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 49,
+              "mandatory": 57,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 45,
-              "active": 45,
+              "capacity": 53,
+              "active": 53,
               "ratio": 1
             }
           },
@@ -4388,20 +4388,20 @@
             "pinned": false,
             "distanceMetres": 10958,
             "estimatedCost": {
-              "drawCalls": 87,
-              "triangles": 181040,
+              "drawCalls": 88,
+              "triangles": 181352,
               "animationNodes": 4
             },
             "renderImportance": {
-              "mandatory": 1129,
+              "mandatory": 1132,
               "micro": 17,
               "visibleMicro": 0,
               "culledMicro": 17
             },
             "batchOccupancy": {
-              "capacity": 7707,
-              "active": 7705,
-              "ratio": 0.9997404956533021
+              "capacity": 7709,
+              "active": 7707,
+              "ratio": 0.999740562978337
             }
           },
           {
@@ -4421,19 +4421,19 @@
             "pinned": false,
             "distanceMetres": 7970,
             "estimatedCost": {
-              "drawCalls": 29,
-              "triangles": 75368,
-              "animationNodes": 3
+              "drawCalls": 31,
+              "triangles": 75458,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 830,
+              "mandatory": 833,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1344,
-              "active": 1344,
+              "capacity": 1435,
+              "active": 1435,
               "ratio": 1
             }
           },
@@ -4661,26 +4661,26 @@
     "nonReadyPackages": [],
     "suppressedMeshes": 0,
     "liveAuthoredSources": 0,
-    "markedRuntimeObjects": 1001,
-    "metadataAnchorCount": 276,
-    "trueRuntimeBatchCount": 725,
+    "markedRuntimeObjects": 1034,
+    "metadataAnchorCount": 287,
+    "trueRuntimeBatchCount": 747,
     "stableBuildings": {
-      "count": 275,
-      "uniqueCount": 275,
+      "count": 286,
+      "uniqueCount": 286,
       "categoryCounts": {
-        "authored-exterior-building": 241,
+        "authored-exterior-building": 252,
         "entry-logistics-building": 20,
         "academic-building": 14
       },
       "missingObjectGroups": [],
-      "resolvedByBatchMetadata": 275,
+      "resolvedByBatchMetadata": 286,
       "missingBatchMetadata": []
     },
-    "hiddenSourceCollisionCount": 3201,
+    "hiddenSourceCollisionCount": 3678,
     "collisionSpatialIndex": {
       "cellSizeWorld": 8,
       "cellSizeMetres": 80,
-      "occupiedCellCount": 4933,
+      "occupiedCellCount": 5538,
       "residentCellCount": 0,
       "residentCandidates": {
         "walkables": 0,
@@ -4691,8 +4691,8 @@
         "barriers": 0
       },
       "totalCandidates": {
-        "walkables": 882,
-        "obstacles": 2429,
+        "walkables": 1143,
+        "obstacles": 2641,
         "accessBounds": 75,
         "underwalkAccessVolumes": 2,
         "underwalkSurfaces": 2,
@@ -4708,33 +4708,33 @@
   },
   "compactTextAudit": {
     "elapsedSamples": [
+      0.10000000149011612,
+      0.10000000149011612,
+      0.10000000149011612,
+      0.09999999403953552,
+      0.10000000149011612,
+      0,
+      0.10000000149011612,
+      0.10000000149011612,
+      0,
+      0.09999999403953552,
+      0.10000000149011612,
+      0.10000000149011612,
+      0.10000000149011612,
+      0,
+      0.10000000149011612,
       0,
       0,
       0.09999999403953552,
-      0,
-      0.09999999403953552,
-      0,
-      0,
-      0,
-      0.10000002384185791,
-      0.09999999403953552,
-      0,
-      0.09999999403953552,
-      0,
-      0,
-      0.09999999403953552,
-      0,
-      0.09999999403953552,
-      0.10000002384185791,
-      0,
+      0.10000000149011612,
       0
     ],
-    "largestBytes": 2941,
+    "largestBytes": 3233,
     "largestPreparationMs": 0.1,
     "relevantPackageCount": 1,
     "includesPackageArray": false,
-    "authoredBuildingCount": 275,
-    "p95Ms": 0.10000002384185791
+    "authoredBuildingCount": 286,
+    "p95Ms": 0.10000000149011612
   },
   "warningAudit": {
     "checked": true,
@@ -4743,27 +4743,27 @@
   },
   "offAudit": {
     "stats": {
-      "visibleMeshes": 151,
-      "geometries": 72,
-      "rendererGeometries": 239,
-      "triangles": 510504,
-      "drawCalls": 155,
-      "textureCount": 371,
+      "visibleMeshes": 185,
+      "geometries": 106,
+      "rendererGeometries": 280,
+      "triangles": 532092,
+      "drawCalls": 189,
+      "textureCount": 373,
       "quality": "medium",
       "effectivePixelRatio": 1,
       "frameTimeMs": {
-        "p50": 31.2,
-        "p95": 31.2,
+        "p50": 29.1,
+        "p95": 29.1,
         "above33Percent": 0,
         "above50Percent": 0
       },
       "frameTiming": {
-        "cpuP50Ms": 18.8,
-        "cpuP95Ms": 18.8,
-        "cpuUpdateP50Ms": 0.8,
-        "cpuUpdateP95Ms": 0.8,
-        "cpuRenderP50Ms": 18,
-        "cpuRenderP95Ms": 18,
+        "cpuP50Ms": 18.7,
+        "cpuP95Ms": 18.7,
+        "cpuUpdateP50Ms": 1.1,
+        "cpuUpdateP95Ms": 1.1,
+        "cpuRenderP50Ms": 17.6,
+        "cpuRenderP95Ms": 17.6,
         "gpuP50Ms": 0,
         "gpuP95Ms": 0,
         "hoverPickP95Ms": 0,
@@ -4778,12 +4778,12 @@
         "mediumFullMaterialTier": {
           "active": false,
           "runtimeMeshCount": 0,
-          "canonicalMaterialCount": 152,
+          "canonicalMaterialCount": 147,
           "skippedCustomPhysicalMaterials": 0
         },
         "transmissionResolutionScale": 1,
         "recoveryPhase": "ready",
-        "shaderProgramCount": 43,
+        "shaderProgramCount": 46,
         "gpuTimerSupported": true
       },
       "activeAnimationNodes": 14,
@@ -4797,7 +4797,7 @@
         "mediumFullMaterialTier": {
           "active": false,
           "runtimeMeshCount": 0,
-          "canonicalMaterialCount": 152,
+          "canonicalMaterialCount": 147,
           "skippedCustomPhysicalMaterials": 0
         },
         "recoveryPhase": "ready",
@@ -4842,18 +4842,18 @@
         "renderProfile": "streamed",
         "liveRenderObjectCount": 92,
         "batchOccupancy": {
-          "capacity": 43490,
-          "active": 2660,
-          "ratio": 0.06116348585881812
+          "capacity": 45188,
+          "active": 2666,
+          "ratio": 0.0589979640612552
         },
         "microdetail": {
           "total": 320,
           "visible": 0,
           "culled": 320
         },
-        "collisionResidentCellCount": 1502,
+        "collisionResidentCellCount": 1504,
         "navigationResidencyRevision": 44,
-        "detachedAuthoringSourceCount": 25276,
+        "detachedAuthoringSourceCount": 26887,
         "normalRenderAuthoredSourceCount": 0,
         "totalPackages": 41,
         "cacheCapacity": 8,
@@ -4880,14 +4880,14 @@
         "gpuBatching": {
           "backend": "batched-mesh-multi-draw",
           "multiDrawSupported": true,
-          "batchCount": 725,
-          "batchedSourceCount": 25276,
-          "retainedSourceCount": 27204,
-          "estimatedGeometryBytes": 80509676,
-          "estimatedTextureBytes": 189339601,
-          "instancedBatchCount": 155,
+          "batchCount": 747,
+          "batchedSourceCount": 26887,
+          "retainedSourceCount": 28811,
+          "estimatedGeometryBytes": 84351036,
+          "estimatedTextureBytes": 187247691,
+          "instancedBatchCount": 159,
           "batchedMeshBatchCount": 114,
-          "mergedBatchCount": 456,
+          "mergedBatchCount": 474,
           "largestBatchInstances": 6599,
           "largestBatchVertices": 44930,
           "largestBatchIndices": 224496,
@@ -4916,17 +4916,17 @@
             "distanceMetres": 11556,
             "estimatedCost": {
               "drawCalls": 13,
-              "triangles": 5144,
+              "triangles": 5526,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 44,
+              "mandatory": 52,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 40,
+              "capacity": 48,
               "active": 0,
               "ratio": 0
             }
@@ -4949,17 +4949,17 @@
             "distanceMetres": 11423,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5892,
+              "triangles": 6274,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 80,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 74,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -4982,17 +4982,17 @@
             "distanceMetres": 11277,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 3376,
+              "triangles": 3758,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 53,
+              "mandatory": 61,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 46,
+              "capacity": 54,
               "active": 0,
               "ratio": 0
             }
@@ -5015,17 +5015,17 @@
             "distanceMetres": 12489,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 5692,
+              "triangles": 6126,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 64,
+              "mandatory": 75,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 60,
+              "capacity": 71,
               "active": 0,
               "ratio": 0
             }
@@ -5048,17 +5048,17 @@
             "distanceMetres": 11537,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 215692,
+              "triangles": 215872,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1040,
+              "mandatory": 1046,
               "micro": 36,
               "visibleMicro": 0,
               "culledMicro": 36
             },
             "batchOccupancy": {
-              "capacity": 1073,
+              "capacity": 1079,
               "active": 0,
               "ratio": 0
             }
@@ -5081,17 +5081,17 @@
             "distanceMetres": 10561,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 180768,
+              "triangles": 180958,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 917,
+              "mandatory": 923,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 910,
+              "capacity": 916,
               "active": 0,
               "ratio": 0
             }
@@ -5114,17 +5114,17 @@
             "distanceMetres": 10339,
             "estimatedCost": {
               "drawCalls": 34,
-              "triangles": 101984,
+              "triangles": 102164,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1103,
+              "mandatory": 1109,
               "micro": 13,
               "visibleMicro": 0,
               "culledMicro": 13
             },
             "batchOccupancy": {
-              "capacity": 1114,
+              "capacity": 1120,
               "active": 0,
               "ratio": 0
             }
@@ -5147,17 +5147,17 @@
             "distanceMetres": 10894,
             "estimatedCost": {
               "drawCalls": 24,
-              "triangles": 66060,
+              "triangles": 66240,
               "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 1473,
+              "mandatory": 1479,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1470,
+              "capacity": 1476,
               "active": 0,
               "ratio": 0
             }
@@ -5180,17 +5180,17 @@
             "distanceMetres": 12202,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 5488,
+              "triangles": 5926,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 68,
+              "mandatory": 79,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 63,
+              "capacity": 74,
               "active": 0,
               "ratio": 0
             }
@@ -5213,17 +5213,17 @@
             "distanceMetres": 12944,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 3100,
+              "triangles": 3556,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 47,
+              "mandatory": 58,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -5246,17 +5246,17 @@
             "distanceMetres": 11481,
             "estimatedCost": {
               "drawCalls": 28,
-              "triangles": 187496,
+              "triangles": 187676,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 977,
+              "mandatory": 983,
               "micro": 8,
               "visibleMicro": 0,
               "culledMicro": 8
             },
             "batchOccupancy": {
-              "capacity": 979,
+              "capacity": 985,
               "active": 0,
               "ratio": 0
             }
@@ -5279,17 +5279,17 @@
             "distanceMetres": 10054,
             "estimatedCost": {
               "drawCalls": 23,
-              "triangles": 140436,
+              "triangles": 140616,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1054,
+              "mandatory": 1060,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1051,
+              "capacity": 1057,
               "active": 0,
               "ratio": 0
             }
@@ -5311,18 +5311,18 @@
             "pinned": false,
             "distanceMetres": 9847,
             "estimatedCost": {
-              "drawCalls": 26,
-              "triangles": 174854,
+              "drawCalls": 25,
+              "triangles": 175036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1256,
+              "mandatory": 1262,
               "micro": 31,
               "visibleMicro": 0,
               "culledMicro": 31
             },
             "batchOccupancy": {
-              "capacity": 1285,
+              "capacity": 1292,
               "active": 0,
               "ratio": 0
             }
@@ -5345,17 +5345,17 @@
             "distanceMetres": 10471,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 65090,
+              "triangles": 65350,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1859,
+              "mandatory": 1865,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1855,
+              "capacity": 1861,
               "active": 0,
               "ratio": 0
             }
@@ -5378,17 +5378,17 @@
             "distanceMetres": 12543,
             "estimatedCost": {
               "drawCalls": 16,
-              "triangles": 3580,
+              "triangles": 4036,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 55,
+              "mandatory": 66,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 47,
+              "capacity": 58,
               "active": 0,
               "ratio": 0
             }
@@ -5411,17 +5411,17 @@
             "distanceMetres": 13489,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7078,
+              "triangles": 7596,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 77,
+              "mandatory": 88,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 71,
+              "capacity": 82,
               "active": 0,
               "ratio": 0
             }
@@ -5444,17 +5444,17 @@
             "distanceMetres": 13502,
             "estimatedCost": {
               "drawCalls": 14,
-              "triangles": 5724,
+              "triangles": 6230,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 58,
+              "mandatory": 69,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 53,
+              "capacity": 64,
               "active": 0,
               "ratio": 0
             }
@@ -5477,17 +5477,17 @@
             "distanceMetres": 12972,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 5906,
+              "triangles": 6418,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 83,
+              "mandatory": 94,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 77,
+              "capacity": 88,
               "active": 0,
               "ratio": 0
             }
@@ -5499,7 +5499,7 @@
             "lifecyclePhase": "queued",
             "loadProgress": 0,
             "priorityReason": "background",
-            "priorityScore": -11031,
+            "priorityScore": -10112,
             "visibleCandidate": false,
             "visualLevel": "far",
             "detailResident": false,
@@ -5507,20 +5507,20 @@
             "midVisible": false,
             "farVisible": true,
             "pinned": false,
-            "distanceMetres": 11031,
+            "distanceMetres": 10112,
             "estimatedCost": {
-              "drawCalls": 13,
-              "triangles": 3728,
+              "drawCalls": 30,
+              "triangles": 80804,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 39,
+              "mandatory": 1406,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 34,
+              "capacity": 1402,
               "active": 0,
               "ratio": 0
             }
@@ -5543,17 +5543,17 @@
             "distanceMetres": 11447,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 175208,
+              "triangles": 175388,
               "animationNodes": 23
             },
             "renderImportance": {
-              "mandatory": 1623,
+              "mandatory": 1629,
               "micro": 21,
               "visibleMicro": 21,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1621,
+              "capacity": 1627,
               "active": 0,
               "ratio": 0
             }
@@ -5576,17 +5576,17 @@
             "distanceMetres": 9450,
             "estimatedCost": {
               "drawCalls": 29,
-              "triangles": 206572,
+              "triangles": 206752,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1944,
+              "mandatory": 1950,
               "micro": 41,
               "visibleMicro": 0,
               "culledMicro": 41
             },
             "batchOccupancy": {
-              "capacity": 1982,
+              "capacity": 1988,
               "active": 0,
               "ratio": 0
             }
@@ -5609,17 +5609,17 @@
             "distanceMetres": 9219,
             "estimatedCost": {
               "drawCalls": 42,
-              "triangles": 142544,
+              "triangles": 142734,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 1503,
+              "mandatory": 1509,
               "micro": 136,
               "visibleMicro": 0,
               "culledMicro": 136
             },
             "batchOccupancy": {
-              "capacity": 1638,
+              "capacity": 1644,
               "active": 0,
               "ratio": 0
             }
@@ -5642,17 +5642,17 @@
             "distanceMetres": 14152,
             "estimatedCost": {
               "drawCalls": 18,
-              "triangles": 7322,
+              "triangles": 7850,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 87,
+              "mandatory": 98,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 82,
+              "capacity": 93,
               "active": 0,
               "ratio": 0
             }
@@ -5675,17 +5675,17 @@
             "distanceMetres": 13482,
             "estimatedCost": {
               "drawCalls": 17,
-              "triangles": 6506,
+              "triangles": 7034,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 74,
+              "mandatory": 85,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 68,
+              "capacity": 79,
               "active": 0,
               "ratio": 0
             }
@@ -5708,17 +5708,17 @@
             "distanceMetres": 10973,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2688,
+              "triangles": 3216,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 48,
+              "mandatory": 59,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 41,
+              "capacity": 52,
               "active": 0,
               "ratio": 0
             }
@@ -5740,18 +5740,18 @@
             "pinned": false,
             "distanceMetres": 11614,
             "estimatedCost": {
-              "drawCalls": 15,
-              "triangles": 22868,
+              "drawCalls": 14,
+              "triangles": 23048,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 811,
+              "mandatory": 817,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 809,
+              "capacity": 815,
               "active": 0,
               "ratio": 0
             }
@@ -5774,18 +5774,18 @@
             "distanceMetres": 9010,
             "estimatedCost": {
               "drawCalls": 32,
-              "triangles": 180100,
+              "triangles": 180280,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 2056,
+              "mandatory": 2062,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 2049,
-              "active": 2049,
+              "capacity": 2055,
+              "active": 2055,
               "ratio": 1
             }
           },
@@ -5807,17 +5807,17 @@
             "distanceMetres": 8522,
             "estimatedCost": {
               "drawCalls": 45,
-              "triangles": 193108,
+              "triangles": 193288,
               "animationNodes": 5
             },
             "renderImportance": {
-              "mandatory": 423,
+              "mandatory": 429,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1508,
+              "capacity": 1516,
               "active": 0,
               "ratio": 0
             }
@@ -5840,17 +5840,17 @@
             "distanceMetres": 15019,
             "estimatedCost": {
               "drawCalls": 19,
-              "triangles": 7330,
+              "triangles": 7858,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 92,
+              "mandatory": 100,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 86,
+              "capacity": 94,
               "active": 0,
               "ratio": 0
             }
@@ -5939,17 +5939,17 @@
             "distanceMetres": 14181,
             "estimatedCost": {
               "drawCalls": 15,
-              "triangles": 2784,
+              "triangles": 3312,
               "animationNodes": 0
             },
             "renderImportance": {
-              "mandatory": 49,
+              "mandatory": 57,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 45,
+              "capacity": 53,
               "active": 0,
               "ratio": 0
             }
@@ -6004,18 +6004,18 @@
             "pinned": false,
             "distanceMetres": 10958,
             "estimatedCost": {
-              "drawCalls": 87,
-              "triangles": 181040,
+              "drawCalls": 88,
+              "triangles": 181352,
               "animationNodes": 4
             },
             "renderImportance": {
-              "mandatory": 1129,
+              "mandatory": 1132,
               "micro": 17,
               "visibleMicro": 0,
               "culledMicro": 17
             },
             "batchOccupancy": {
-              "capacity": 7707,
+              "capacity": 7709,
               "active": 0,
               "ratio": 0
             }
@@ -6037,18 +6037,18 @@
             "pinned": false,
             "distanceMetres": 7593,
             "estimatedCost": {
-              "drawCalls": 29,
-              "triangles": 75368,
-              "animationNodes": 3
+              "drawCalls": 31,
+              "triangles": 75458,
+              "animationNodes": 1
             },
             "renderImportance": {
-              "mandatory": 830,
+              "mandatory": 833,
               "micro": 0,
               "visibleMicro": 0,
               "culledMicro": 0
             },
             "batchOccupancy": {
-              "capacity": 1344,
+              "capacity": 1435,
               "active": 0,
               "ratio": 0
             }

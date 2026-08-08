@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2653,
+    "liveRenderObjectCount": 2671,
     "batchOccupancy": {
-      "capacity": 43490,
-      "active": 42360,
-      "ratio": 0.9740170154058404
+      "capacity": 45188,
+      "active": 44058,
+      "ratio": 0.9749933610693104
     },
     "microdetail": {
       "total": 320,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 25276,
+    "detachedAuthoringSourceCount": 26887,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 725,
-      "batchedSourceCount": 25276,
-      "retainedSourceCount": 27204,
-      "estimatedGeometryBytes": 80509676,
-      "estimatedTextureBytes": 189339601,
-      "instancedBatchCount": 155,
+      "batchCount": 747,
+      "batchedSourceCount": 26887,
+      "retainedSourceCount": 28811,
+      "estimatedGeometryBytes": 84351036,
+      "estimatedTextureBytes": 187247691,
+      "instancedBatchCount": 159,
       "batchedMeshBatchCount": 114,
-      "mergedBatchCount": 456,
+      "mergedBatchCount": 474,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -184,18 +184,18 @@
         "distanceMetres": 11556,
         "estimatedCost": {
           "drawCalls": 13,
-          "triangles": 5144,
+          "triangles": 5526,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 44,
+          "mandatory": 52,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 40,
-          "active": 40,
+          "capacity": 48,
+          "active": 48,
           "ratio": 1
         }
       },
@@ -217,18 +217,18 @@
         "distanceMetres": 11423,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 5892,
+          "triangles": 6274,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 80,
+          "mandatory": 88,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 74,
-          "active": 74,
+          "capacity": 82,
+          "active": 82,
           "ratio": 1
         }
       },
@@ -250,18 +250,18 @@
         "distanceMetres": 11277,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 3376,
+          "triangles": 3758,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 53,
+          "mandatory": 61,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 46,
-          "active": 46,
+          "capacity": 54,
+          "active": 54,
           "ratio": 1
         }
       },
@@ -283,18 +283,18 @@
         "distanceMetres": 12489,
         "estimatedCost": {
           "drawCalls": 16,
-          "triangles": 5692,
+          "triangles": 6126,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 64,
+          "mandatory": 75,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 60,
-          "active": 60,
+          "capacity": 71,
+          "active": 71,
           "ratio": 1
         }
       },
@@ -316,19 +316,19 @@
         "distanceMetres": 11815,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 215692,
+          "triangles": 215872,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1040,
+          "mandatory": 1046,
           "micro": 36,
           "visibleMicro": 0,
           "culledMicro": 36
         },
         "batchOccupancy": {
-          "capacity": 1073,
-          "active": 1037,
-          "ratio": 0.9664492078285182
+          "capacity": 1079,
+          "active": 1043,
+          "ratio": 0.9666357738646896
         }
       },
       {
@@ -349,18 +349,18 @@
         "distanceMetres": 10776,
         "estimatedCost": {
           "drawCalls": 29,
-          "triangles": 180768,
+          "triangles": 180958,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 917,
+          "mandatory": 923,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 910,
-          "active": 910,
+          "capacity": 916,
+          "active": 916,
           "ratio": 1
         }
       },
@@ -382,19 +382,19 @@
         "distanceMetres": 10442,
         "estimatedCost": {
           "drawCalls": 34,
-          "triangles": 101984,
+          "triangles": 102164,
           "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 1103,
+          "mandatory": 1109,
           "micro": 13,
           "visibleMicro": 0,
           "culledMicro": 13
         },
         "batchOccupancy": {
-          "capacity": 1114,
-          "active": 1101,
-          "ratio": 0.9883303411131059
+          "capacity": 1120,
+          "active": 1107,
+          "ratio": 0.9883928571428572
         }
       },
       {
@@ -415,18 +415,18 @@
         "distanceMetres": 11199,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 66060,
+          "triangles": 66240,
           "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 1473,
+          "mandatory": 1479,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1470,
-          "active": 1470,
+          "capacity": 1476,
+          "active": 1476,
           "ratio": 1
         }
       },
@@ -448,18 +448,18 @@
         "distanceMetres": 12202,
         "estimatedCost": {
           "drawCalls": 17,
-          "triangles": 5488,
+          "triangles": 5926,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 68,
+          "mandatory": 79,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 63,
-          "active": 63,
+          "capacity": 74,
+          "active": 74,
           "ratio": 1
         }
       },
@@ -481,18 +481,18 @@
         "distanceMetres": 12944,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 3100,
+          "triangles": 3556,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 47,
+          "mandatory": 58,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 41,
-          "active": 41,
+          "capacity": 52,
+          "active": 52,
           "ratio": 1
         }
       },
@@ -514,19 +514,19 @@
         "distanceMetres": 11997,
         "estimatedCost": {
           "drawCalls": 28,
-          "triangles": 187496,
+          "triangles": 187676,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 977,
+          "mandatory": 983,
           "micro": 8,
           "visibleMicro": 0,
           "culledMicro": 8
         },
         "batchOccupancy": {
-          "capacity": 979,
-          "active": 971,
-          "ratio": 0.9918283963227783
+          "capacity": 985,
+          "active": 977,
+          "ratio": 0.9918781725888325
         }
       },
       {
@@ -547,18 +547,18 @@
         "distanceMetres": 10491,
         "estimatedCost": {
           "drawCalls": 23,
-          "triangles": 140436,
+          "triangles": 140616,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1054,
+          "mandatory": 1060,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1051,
-          "active": 1051,
+          "capacity": 1057,
+          "active": 1057,
           "ratio": 1
         }
       },
@@ -579,20 +579,20 @@
         "pinned": false,
         "distanceMetres": 9992,
         "estimatedCost": {
-          "drawCalls": 26,
-          "triangles": 174854,
+          "drawCalls": 25,
+          "triangles": 175036,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1256,
+          "mandatory": 1262,
           "micro": 31,
           "visibleMicro": 0,
           "culledMicro": 31
         },
         "batchOccupancy": {
-          "capacity": 1285,
-          "active": 1254,
-          "ratio": 0.9758754863813229
+          "capacity": 1292,
+          "active": 1261,
+          "ratio": 0.9760061919504643
         }
       },
       {
@@ -613,18 +613,18 @@
         "distanceMetres": 11112,
         "estimatedCost": {
           "drawCalls": 32,
-          "triangles": 65090,
+          "triangles": 65350,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1859,
+          "mandatory": 1865,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1855,
-          "active": 1855,
+          "capacity": 1861,
+          "active": 1861,
           "ratio": 1
         }
       },
@@ -646,18 +646,18 @@
         "distanceMetres": 12543,
         "estimatedCost": {
           "drawCalls": 16,
-          "triangles": 3580,
+          "triangles": 4036,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 55,
+          "mandatory": 66,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 47,
-          "active": 47,
+          "capacity": 58,
+          "active": 58,
           "ratio": 1
         }
       },
@@ -679,18 +679,18 @@
         "distanceMetres": 13489,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 7078,
+          "triangles": 7596,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 77,
+          "mandatory": 88,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 71,
-          "active": 71,
+          "capacity": 82,
+          "active": 82,
           "ratio": 1
         }
       },
@@ -712,18 +712,18 @@
         "distanceMetres": 13502,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 5724,
+          "triangles": 6230,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 58,
+          "mandatory": 69,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 53,
-          "active": 53,
+          "capacity": 64,
+          "active": 64,
           "ratio": 1
         }
       },
@@ -745,18 +745,18 @@
         "distanceMetres": 12972,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 5906,
+          "triangles": 6418,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 83,
+          "mandatory": 94,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 77,
-          "active": 77,
+          "capacity": 88,
+          "active": 88,
           "ratio": 1
         }
       },
@@ -777,19 +777,19 @@
         "pinned": false,
         "distanceMetres": 11031,
         "estimatedCost": {
-          "drawCalls": 13,
-          "triangles": 3728,
+          "drawCalls": 30,
+          "triangles": 80804,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 39,
+          "mandatory": 1406,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 34,
-          "active": 34,
+          "capacity": 1402,
+          "active": 1402,
           "ratio": 1
         }
       },
@@ -811,18 +811,18 @@
         "distanceMetres": 12240,
         "estimatedCost": {
           "drawCalls": 42,
-          "triangles": 175208,
+          "triangles": 175388,
           "animationNodes": 23
         },
         "renderImportance": {
-          "mandatory": 1623,
+          "mandatory": 1629,
           "micro": 21,
           "visibleMicro": 8,
           "culledMicro": 13
         },
         "batchOccupancy": {
-          "capacity": 1621,
-          "active": 1621,
+          "capacity": 1627,
+          "active": 1627,
           "ratio": 1
         }
       },
@@ -844,19 +844,19 @@
         "distanceMetres": 10160,
         "estimatedCost": {
           "drawCalls": 29,
-          "triangles": 206572,
+          "triangles": 206752,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1944,
+          "mandatory": 1950,
           "micro": 41,
           "visibleMicro": 0,
           "culledMicro": 41
         },
         "batchOccupancy": {
-          "capacity": 1982,
-          "active": 1941,
-          "ratio": 0.979313824419778
+          "capacity": 1988,
+          "active": 1947,
+          "ratio": 0.9793762575452716
         }
       },
       {
@@ -877,19 +877,19 @@
         "distanceMetres": 9442,
         "estimatedCost": {
           "drawCalls": 42,
-          "triangles": 142544,
+          "triangles": 142734,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1503,
+          "mandatory": 1509,
           "micro": 136,
           "visibleMicro": 0,
           "culledMicro": 136
         },
         "batchOccupancy": {
-          "capacity": 1638,
-          "active": 1502,
-          "ratio": 0.9169719169719169
+          "capacity": 1644,
+          "active": 1508,
+          "ratio": 0.9172749391727494
         }
       },
       {
@@ -910,18 +910,18 @@
         "distanceMetres": 14152,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 7322,
+          "triangles": 7850,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 87,
+          "mandatory": 98,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 82,
-          "active": 82,
+          "capacity": 93,
+          "active": 93,
           "ratio": 1
         }
       },
@@ -943,18 +943,18 @@
         "distanceMetres": 13482,
         "estimatedCost": {
           "drawCalls": 17,
-          "triangles": 6506,
+          "triangles": 7034,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 74,
+          "mandatory": 85,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 68,
-          "active": 68,
+          "capacity": 79,
+          "active": 79,
           "ratio": 1
         }
       },
@@ -976,18 +976,18 @@
         "distanceMetres": 10973,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 2688,
+          "triangles": 3216,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 48,
+          "mandatory": 59,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 41,
-          "active": 41,
+          "capacity": 52,
+          "active": 52,
           "ratio": 1
         }
       },
@@ -1008,19 +1008,19 @@
         "pinned": false,
         "distanceMetres": 12548,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 22868,
+          "drawCalls": 14,
+          "triangles": 23048,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 811,
+          "mandatory": 817,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 809,
-          "active": 809,
+          "capacity": 815,
+          "active": 815,
           "ratio": 1
         }
       },
@@ -1042,18 +1042,18 @@
         "distanceMetres": 9804,
         "estimatedCost": {
           "drawCalls": 32,
-          "triangles": 180100,
+          "triangles": 180280,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 2056,
+          "mandatory": 2062,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 2049,
-          "active": 2049,
+          "capacity": 2055,
+          "active": 2055,
           "ratio": 1
         }
       },
@@ -1075,18 +1075,18 @@
         "distanceMetres": 8808,
         "estimatedCost": {
           "drawCalls": 45,
-          "triangles": 193108,
+          "triangles": 193288,
           "animationNodes": 5
         },
         "renderImportance": {
-          "mandatory": 423,
+          "mandatory": 429,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1508,
-          "active": 1508,
+          "capacity": 1516,
+          "active": 1516,
           "ratio": 1
         }
       },
@@ -1108,18 +1108,18 @@
         "distanceMetres": 15019,
         "estimatedCost": {
           "drawCalls": 19,
-          "triangles": 7330,
+          "triangles": 7858,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 92,
+          "mandatory": 100,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 86,
-          "active": 86,
+          "capacity": 94,
+          "active": 94,
           "ratio": 1
         }
       },
@@ -1207,18 +1207,18 @@
         "distanceMetres": 14181,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 2784,
+          "triangles": 3312,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 49,
+          "mandatory": 57,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 45,
-          "active": 45,
+          "capacity": 53,
+          "active": 53,
           "ratio": 1
         }
       },
@@ -1272,20 +1272,20 @@
         "pinned": false,
         "distanceMetres": 10958,
         "estimatedCost": {
-          "drawCalls": 102,
-          "triangles": 182428,
+          "drawCalls": 103,
+          "triangles": 182740,
           "animationNodes": 20
         },
         "renderImportance": {
-          "mandatory": 1129,
+          "mandatory": 1132,
           "micro": 17,
           "visibleMicro": 0,
           "culledMicro": 17
         },
         "batchOccupancy": {
-          "capacity": 7707,
-          "active": 7705,
-          "ratio": 0.9997404956533021
+          "capacity": 7709,
+          "active": 7707,
+          "ratio": 0.999740562978337
         }
       },
       {
@@ -1305,19 +1305,19 @@
         "pinned": false,
         "distanceMetres": 7970,
         "estimatedCost": {
-          "drawCalls": 29,
-          "triangles": 75368,
-          "animationNodes": 3
+          "drawCalls": 31,
+          "triangles": 75458,
+          "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 830,
+          "mandatory": 833,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1344,
-          "active": 1344,
+          "capacity": 1435,
+          "active": 1435,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 275,
+  "buildingCount": 286,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -1559,18 +1559,18 @@
         "distanceMetres": 11556,
         "estimatedCost": {
           "drawCalls": 13,
-          "triangles": 5144,
+          "triangles": 5526,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 44,
+          "mandatory": 52,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 40,
-          "active": 40,
+          "capacity": 48,
+          "active": 48,
           "ratio": 1
         }
       },
@@ -1685,18 +1685,18 @@
         "distanceMetres": 11423,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 5892,
+          "triangles": 6274,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 80,
+          "mandatory": 88,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 74,
-          "active": 74,
+          "capacity": 82,
+          "active": 82,
           "ratio": 1
         }
       },
@@ -1811,18 +1811,18 @@
         "distanceMetres": 11277,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 3376,
+          "triangles": 3758,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 53,
+          "mandatory": 61,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 46,
-          "active": 46,
+          "capacity": 54,
+          "active": 54,
           "ratio": 1
         }
       },
@@ -1937,18 +1937,18 @@
         "distanceMetres": 12489,
         "estimatedCost": {
           "drawCalls": 16,
-          "triangles": 5692,
+          "triangles": 6126,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 64,
+          "mandatory": 75,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 60,
-          "active": 60,
+          "capacity": 71,
+          "active": 71,
           "ratio": 1
         }
       },
@@ -2063,19 +2063,19 @@
         "distanceMetres": 11815,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 215692,
+          "triangles": 215872,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1040,
+          "mandatory": 1046,
           "micro": 36,
           "visibleMicro": 0,
           "culledMicro": 36
         },
         "batchOccupancy": {
-          "capacity": 1073,
-          "active": 1037,
-          "ratio": 0.9664492078285182
+          "capacity": 1079,
+          "active": 1043,
+          "ratio": 0.9666357738646896
         }
       },
       "buildingReports": [
@@ -2210,18 +2210,18 @@
         "distanceMetres": 10776,
         "estimatedCost": {
           "drawCalls": 29,
-          "triangles": 180768,
+          "triangles": 180958,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 917,
+          "mandatory": 923,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 910,
-          "active": 910,
+          "capacity": 916,
+          "active": 916,
           "ratio": 1
         }
       },
@@ -2357,19 +2357,19 @@
         "distanceMetres": 10442,
         "estimatedCost": {
           "drawCalls": 34,
-          "triangles": 101984,
+          "triangles": 102164,
           "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 1103,
+          "mandatory": 1109,
           "micro": 13,
           "visibleMicro": 0,
           "culledMicro": 13
         },
         "batchOccupancy": {
-          "capacity": 1114,
-          "active": 1101,
-          "ratio": 0.9883303411131059
+          "capacity": 1120,
+          "active": 1107,
+          "ratio": 0.9883928571428572
         }
       },
       "buildingReports": [
@@ -2504,18 +2504,18 @@
         "distanceMetres": 11199,
         "estimatedCost": {
           "drawCalls": 24,
-          "triangles": 66060,
+          "triangles": 66240,
           "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 1473,
+          "mandatory": 1479,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1470,
-          "active": 1470,
+          "capacity": 1476,
+          "active": 1476,
           "ratio": 1
         }
       },
@@ -2651,18 +2651,18 @@
         "distanceMetres": 12202,
         "estimatedCost": {
           "drawCalls": 17,
-          "triangles": 5488,
+          "triangles": 5926,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 68,
+          "mandatory": 79,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 63,
-          "active": 63,
+          "capacity": 74,
+          "active": 74,
           "ratio": 1
         }
       },
@@ -2777,18 +2777,18 @@
         "distanceMetres": 12944,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 3100,
+          "triangles": 3556,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 47,
+          "mandatory": 58,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 41,
-          "active": 41,
+          "capacity": 52,
+          "active": 52,
           "ratio": 1
         }
       },
@@ -2903,19 +2903,19 @@
         "distanceMetres": 11997,
         "estimatedCost": {
           "drawCalls": 28,
-          "triangles": 187496,
+          "triangles": 187676,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 977,
+          "mandatory": 983,
           "micro": 8,
           "visibleMicro": 0,
           "culledMicro": 8
         },
         "batchOccupancy": {
-          "capacity": 979,
-          "active": 971,
-          "ratio": 0.9918283963227783
+          "capacity": 985,
+          "active": 977,
+          "ratio": 0.9918781725888325
         }
       },
       "buildingReports": [
@@ -3155,18 +3155,18 @@
         "distanceMetres": 10491,
         "estimatedCost": {
           "drawCalls": 23,
-          "triangles": 140436,
+          "triangles": 140616,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1054,
+          "mandatory": 1060,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1051,
-          "active": 1051,
+          "capacity": 1057,
+          "active": 1057,
           "ratio": 1
         }
       },
@@ -3406,20 +3406,20 @@
         "pinned": false,
         "distanceMetres": 9992,
         "estimatedCost": {
-          "drawCalls": 26,
-          "triangles": 174854,
+          "drawCalls": 25,
+          "triangles": 175036,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1256,
+          "mandatory": 1262,
           "micro": 31,
           "visibleMicro": 0,
           "culledMicro": 31
         },
         "batchOccupancy": {
-          "capacity": 1285,
-          "active": 1254,
-          "ratio": 0.9758754863813229
+          "capacity": 1292,
+          "active": 1261,
+          "ratio": 0.9760061919504643
         }
       },
       "buildingReports": [
@@ -3659,18 +3659,18 @@
         "distanceMetres": 11112,
         "estimatedCost": {
           "drawCalls": 32,
-          "triangles": 65090,
+          "triangles": 65350,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1859,
+          "mandatory": 1865,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1855,
-          "active": 1855,
+          "capacity": 1861,
+          "active": 1861,
           "ratio": 1
         }
       },
@@ -3911,18 +3911,18 @@
         "distanceMetres": 12543,
         "estimatedCost": {
           "drawCalls": 16,
-          "triangles": 3580,
+          "triangles": 4036,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 55,
+          "mandatory": 66,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 47,
-          "active": 47,
+          "capacity": 58,
+          "active": 58,
           "ratio": 1
         }
       },
@@ -4037,18 +4037,18 @@
         "distanceMetres": 13489,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 7078,
+          "triangles": 7596,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 77,
+          "mandatory": 88,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 71,
-          "active": 71,
+          "capacity": 82,
+          "active": 82,
           "ratio": 1
         }
       },
@@ -4163,18 +4163,18 @@
         "distanceMetres": 13502,
         "estimatedCost": {
           "drawCalls": 14,
-          "triangles": 5724,
+          "triangles": 6230,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 58,
+          "mandatory": 69,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 53,
-          "active": 53,
+          "capacity": 64,
+          "active": 64,
           "ratio": 1
         }
       },
@@ -4289,18 +4289,18 @@
         "distanceMetres": 12972,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 5906,
+          "triangles": 6418,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 83,
+          "mandatory": 94,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 77,
-          "active": 77,
+          "capacity": 88,
+          "active": 88,
           "ratio": 1
         }
       },
@@ -4395,8 +4395,8 @@
     {
       "districtId": "astronomy-astrobiology-labs",
       "name": "Astronomy & Astrobiology Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 15,
+      "discoveredCount": 15,
       "packageState": {
         "id": "astronomy-astrobiology-labs",
         "kind": "district",
@@ -4414,104 +4414,335 @@
         "pinned": false,
         "distanceMetres": 11031,
         "estimatedCost": {
-          "drawCalls": 13,
-          "triangles": 3728,
+          "drawCalls": 30,
+          "triangles": 80804,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 39,
+          "mandatory": 1406,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 34,
-          "active": 34,
+          "capacity": 1402,
+          "active": 1402,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "astronomy-astrobiology-labs",
-          "name": "Optical Telescope Observatory",
-          "rootName": "astronomy-astrobiology-labs__FACILITY__OPTICAL-TELESCOPE-OBSERVATORY",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "The Coronagraph Crown",
+          "rootName": "ASTRO__A1__CORONAGRAPH_CROWN",
+          "code": "A1",
+          "representedSourceCount": 70,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
+          "visibleBatchSources": 70,
+          "authoredBatchedSources": 70,
+          "expectedRuntimeBatchSources": 70,
           "mandatoryArchitecturalSources": 1,
           "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.042,
-            8.19
+            16.315,
+            4.75,
+            22.361
           ],
           "failures": []
         },
         {
           "districtId": "astronomy-astrobiology-labs",
-          "name": "Astrobiology Containment Laboratory",
-          "rootName": "astronomy-astrobiology-labs__FACILITY__ASTROBIOLOGY-CONTAINMENT-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Chronos Array",
+          "rootName": "ASTRO__A2__CHRONOS_ARRAY",
+          "code": "A2",
+          "representedSourceCount": 97,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 97,
+          "authoredBatchedSources": 97,
+          "expectedRuntimeBatchSources": 97,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.312,
-            8.265
+            18.483,
+            5.669,
+            13.731
           ],
           "failures": []
         },
         {
           "districtId": "astronomy-astrobiology-labs",
-          "name": "Planetary Habitat Greenhouse",
-          "rootName": "astronomy-astrobiology-labs__FACILITY__PLANETARY-HABITAT-GREENHOUSE",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Concordance Spire",
+          "rootName": "ASTRO__A3__CONCORDANCE_SPIRE",
+          "code": "A3",
+          "representedSourceCount": 58,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 58,
+          "authoredBatchedSources": 58,
+          "expectedRuntimeBatchSources": 58,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.168,
-            8.265
+            14,
+            17.166,
+            14
           ],
           "failures": []
         },
         {
           "districtId": "astronomy-astrobiology-labs",
-          "name": "Radio Astronomy Pavilion",
-          "rootName": "astronomy-astrobiology-labs__FACILITY__RADIO-ASTRONOMY-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Hydrogen Horizon House",
+          "rootName": "ASTRO__A4__HYDROGEN_HORIZON_HOUSE",
+          "code": "A4",
+          "representedSourceCount": 67,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 67,
+          "authoredBatchedSources": 67,
+          "expectedRuntimeBatchSources": 67,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.246,
-            8.265
+            17.423,
+            2.224,
+            15.058
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Heliomagnetic Bastion",
+          "rootName": "ASTRO__A5__HELIOMAGNETIC_BASTION",
+          "code": "A5",
+          "representedSourceCount": 61,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 61,
+          "authoredBatchedSources": 61,
+          "expectedRuntimeBatchSources": 61,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.241,
+            15.26,
+            16.845
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Parallax Foundry",
+          "rootName": "ASTRO__A6__PARALLAX_FOUNDRY",
+          "code": "A6",
+          "representedSourceCount": 49,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 49,
+          "authoredBatchedSources": 49,
+          "expectedRuntimeBatchSources": 49,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            24,
+            6.245,
+            9.89
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "Asterion Shield",
+          "rootName": "ASTRO__A7__ASTERION_SHIELD",
+          "code": "A7",
+          "representedSourceCount": 51,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 51,
+          "authoredBatchedSources": 51,
+          "expectedRuntimeBatchSources": 51,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15.2,
+            8.359,
+            23
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Noctis Signal Vault",
+          "rootName": "ASTRO__A8__NOCTIS_SIGNAL_VAULT",
+          "code": "A8",
+          "representedSourceCount": 49,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 49,
+          "authoredBatchedSources": 49,
+          "expectedRuntimeBatchSources": 49,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.1,
+            7.46,
+            23.976
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Aether Spectrum Gardens",
+          "rootName": "ASTRO__A9__AETHER_SPECTRUM_GARDENS",
+          "code": "A9",
+          "representedSourceCount": 120,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 120,
+          "authoredBatchedSources": 120,
+          "expectedRuntimeBatchSources": 120,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.95,
+            5.019,
+            14.369
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Cryocean Institute",
+          "rootName": "ASTRO__A10__CRYOCEAN_INSTITUTE",
+          "code": "A10",
+          "representedSourceCount": 63,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 63,
+          "authoredBatchedSources": 63,
+          "expectedRuntimeBatchSources": 63,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.052,
+            8.317,
+            16.952
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "Genesis Ventworks",
+          "rootName": "ASTRO__A11__GENESIS_VENTWORKS",
+          "code": "A11",
+          "representedSourceCount": 83,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 83,
+          "authoredBatchedSources": 83,
+          "expectedRuntimeBatchSources": 83,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15.4,
+            8.649,
+            18.5
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Aegis Exomaterial Sanctuary",
+          "rootName": "ASTRO__A12__AEGIS_EXOMATERIAL_SANCTUARY",
+          "code": "A12",
+          "representedSourceCount": 30,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 30,
+          "authoredBatchedSources": 30,
+          "expectedRuntimeBatchSources": 30,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.58,
+            6.265,
+            17.24
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Extremis Analog Ecologies Campus",
+          "rootName": "ASTRO__A13__EXTREMIS_ANALOG_ECOLOGIES_CAMPUS",
+          "code": "A13",
+          "representedSourceCount": 82,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 82,
+          "authoredBatchedSources": 82,
+          "expectedRuntimeBatchSources": 82,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.8,
+            5.295,
+            16.9
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Chirality Ark",
+          "rootName": "ASTRO__A14__CHIRALITY_ARK",
+          "code": "A14",
+          "representedSourceCount": 216,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 216,
+          "authoredBatchedSources": 216,
+          "expectedRuntimeBatchSources": 216,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.05,
+            12.788,
+            17.24
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "astronomy-astrobiology-labs",
+          "name": "The Protostellar Loom",
+          "rootName": "ASTRO__A15__PROTOSTELLAR_LOOM",
+          "code": "A15",
+          "representedSourceCount": 111,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 111,
+          "authoredBatchedSources": 111,
+          "expectedRuntimeBatchSources": 111,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.334,
+            6.459,
+            21.256
           ],
           "failures": []
         }
@@ -4541,18 +4772,18 @@
         "distanceMetres": 12240,
         "estimatedCost": {
           "drawCalls": 42,
-          "triangles": 175208,
+          "triangles": 175388,
           "animationNodes": 23
         },
         "renderImportance": {
-          "mandatory": 1623,
+          "mandatory": 1629,
           "micro": 21,
           "visibleMicro": 8,
           "culledMicro": 13
         },
         "batchOccupancy": {
-          "capacity": 1621,
-          "active": 1621,
+          "capacity": 1627,
+          "active": 1627,
           "ratio": 1
         }
       },
@@ -4898,19 +5129,19 @@
         "distanceMetres": 10160,
         "estimatedCost": {
           "drawCalls": 29,
-          "triangles": 206572,
+          "triangles": 206752,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1944,
+          "mandatory": 1950,
           "micro": 41,
           "visibleMicro": 0,
           "culledMicro": 41
         },
         "batchOccupancy": {
-          "capacity": 1982,
-          "active": 1941,
-          "ratio": 0.979313824419778
+          "capacity": 1988,
+          "active": 1947,
+          "ratio": 0.9793762575452716
         }
       },
       "buildingReports": [
@@ -5255,19 +5486,19 @@
         "distanceMetres": 9442,
         "estimatedCost": {
           "drawCalls": 42,
-          "triangles": 142544,
+          "triangles": 142734,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1503,
+          "mandatory": 1509,
           "micro": 136,
           "visibleMicro": 0,
           "culledMicro": 136
         },
         "batchOccupancy": {
-          "capacity": 1638,
-          "active": 1502,
-          "ratio": 0.9169719169719169
+          "capacity": 1644,
+          "active": 1508,
+          "ratio": 0.9172749391727494
         }
       },
       "buildingReports": [
@@ -5507,18 +5738,18 @@
         "distanceMetres": 14152,
         "estimatedCost": {
           "drawCalls": 18,
-          "triangles": 7322,
+          "triangles": 7850,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 87,
+          "mandatory": 98,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 82,
-          "active": 82,
+          "capacity": 93,
+          "active": 93,
           "ratio": 1
         }
       },
@@ -5633,18 +5864,18 @@
         "distanceMetres": 13482,
         "estimatedCost": {
           "drawCalls": 17,
-          "triangles": 6506,
+          "triangles": 7034,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 74,
+          "mandatory": 85,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 68,
-          "active": 68,
+          "capacity": 79,
+          "active": 79,
           "ratio": 1
         }
       },
@@ -5759,18 +5990,18 @@
         "distanceMetres": 10973,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 2688,
+          "triangles": 3216,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 48,
+          "mandatory": 59,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 41,
-          "active": 41,
+          "capacity": 52,
+          "active": 52,
           "ratio": 1
         }
       },
@@ -5884,19 +6115,19 @@
         "pinned": false,
         "distanceMetres": 12548,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 22868,
+          "drawCalls": 14,
+          "triangles": 23048,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 811,
+          "mandatory": 817,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 809,
-          "active": 809,
+          "capacity": 815,
+          "active": 815,
           "ratio": 1
         }
       },
@@ -6242,18 +6473,18 @@
         "distanceMetres": 9804,
         "estimatedCost": {
           "drawCalls": 32,
-          "triangles": 180100,
+          "triangles": 180280,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 2056,
+          "mandatory": 2062,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 2049,
-          "active": 2049,
+          "capacity": 2055,
+          "active": 2055,
           "ratio": 1
         }
       },
@@ -6599,18 +6830,18 @@
         "distanceMetres": 8808,
         "estimatedCost": {
           "drawCalls": 45,
-          "triangles": 193108,
+          "triangles": 193288,
           "animationNodes": 5
         },
         "renderImportance": {
-          "mandatory": 423,
+          "mandatory": 429,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1508,
-          "active": 1508,
+          "capacity": 1516,
+          "active": 1516,
           "ratio": 1
         }
       },
@@ -6726,10 +6957,10 @@
           "rootName": "INORGCHEM__I6__NITROGEN_TRIPLE_BOND_FORGE",
           "code": "I6",
           "representedSourceCount": 49,
-          "directVisibleMeshes": 2,
-          "visibleBatchSources": 47,
-          "authoredBatchedSources": 47,
-          "expectedRuntimeBatchSources": 47,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 48,
+          "authoredBatchedSources": 48,
+          "expectedRuntimeBatchSources": 48,
           "mandatoryArchitecturalSources": 45,
           "representedMandatorySources": 45,
           "missingBatchRepresentations": [],
@@ -6956,18 +7187,18 @@
         "distanceMetres": 15019,
         "estimatedCost": {
           "drawCalls": 19,
-          "triangles": 7330,
+          "triangles": 7858,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 92,
+          "mandatory": 100,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 86,
-          "active": 86,
+          "capacity": 94,
+          "active": 94,
           "ratio": 1
         }
       },
@@ -7586,18 +7817,18 @@
         "distanceMetres": 14181,
         "estimatedCost": {
           "drawCalls": 15,
-          "triangles": 2784,
+          "triangles": 3312,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 49,
+          "mandatory": 57,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 45,
-          "active": 45,
+          "capacity": 53,
+          "active": 53,
           "ratio": 1
         }
       },
@@ -8047,20 +8278,20 @@
         "pinned": false,
         "distanceMetres": 10958,
         "estimatedCost": {
-          "drawCalls": 102,
-          "triangles": 182428,
+          "drawCalls": 103,
+          "triangles": 182740,
           "animationNodes": 20
         },
         "renderImportance": {
-          "mandatory": 1129,
+          "mandatory": 1132,
           "micro": 17,
           "visibleMicro": 0,
           "culledMicro": 17
         },
         "batchOccupancy": {
-          "capacity": 7707,
-          "active": 7705,
-          "ratio": 0.9997404956533021
+          "capacity": 7709,
+          "active": 7707,
+          "ratio": 0.999740562978337
         }
       },
       "buildingReports": [
@@ -8446,19 +8677,19 @@
         "pinned": false,
         "distanceMetres": 7970,
         "estimatedCost": {
-          "drawCalls": 29,
-          "triangles": 75368,
-          "animationNodes": 3
+          "drawCalls": 31,
+          "triangles": 75458,
+          "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 830,
+          "mandatory": 833,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1344,
-          "active": 1344,
+          "capacity": 1435,
+          "active": 1435,
           "ratio": 1
         }
       },
@@ -8510,11 +8741,11 @@
           "name": "The Event Loom",
           "rootName": "PARTICLE__P3__EVENT_LOOM",
           "code": "P3",
-          "representedSourceCount": 137,
-          "directVisibleMeshes": 1,
-          "visibleBatchSources": 136,
-          "authoredBatchedSources": 136,
-          "expectedRuntimeBatchSources": 136,
+          "representedSourceCount": 153,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 153,
+          "authoredBatchedSources": 153,
+          "expectedRuntimeBatchSources": 153,
           "mandatoryArchitecturalSources": 1,
           "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
@@ -8574,10 +8805,10 @@
           "rootName": "PARTICLE__P6__OSCILLA",
           "code": "P6",
           "representedSourceCount": 84,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 84,
-          "authoredBatchedSources": 84,
-          "expectedRuntimeBatchSources": 84,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 83,
+          "authoredBatchedSources": 83,
+          "expectedRuntimeBatchSources": 83,
           "mandatoryArchitecturalSources": 1,
           "representedMandatorySources": 1,
           "missingBatchRepresentations": [],

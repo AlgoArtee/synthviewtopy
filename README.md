@@ -38,6 +38,7 @@ npm run test:computational-biology # Audit the ten-building Computational Biolog
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
 npm run test:particle-physics # Audit the fifteen-building Particle Physics Labs District exterior package
+npm run test:astronomy-astrobiology # Audit the fifteen-building Astronomy / Astrobiology Labs District exterior package
 npm run test:roads            # Audit all district graphs, arterial seams, obstacle clearance, curbs, and Plan HLOD roads
 npm run test:district-walkability # Probe every district delimiter and current generic entrance in WALK
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
@@ -173,6 +174,15 @@ The south-eastern perimeter Particle Physics Labs District is a fifteen-building
 - The low-signal garden groups incomplete black-ring **Noctis**, cruciform **Symmetria**, and the six isolated volumes beneath **The Quantum Silence Pavilion** with sparse landscaping and embedded fibre-optic points.
 - The northern theory ridge progresses from crystalline **Amplituhedron House** through the seven displaced regimes of **The Renormalization Tower** to the dark-to-pale expansion of **Genesis Spiral**.
 - Event Track Promenade, Theory Ridge Path, Data Coast Service Road, Probability Field Spine, four curved operational links, and fifteen exact approaches form 23 grounded routes. Shared primitive geometry, instanced facade/landscape fields, low-segment curves, HLOD/full-island batching, selective animation, and sparse linear lighting keep the district performance-conscious while preserving every building's authored silhouette. Interiors remain intentionally deferred by the exterior specification.
+
+## Astronomy / Astrobiology Labs District
+
+The south-western outer-middle ring is a fifteen-building dark-sky campus whose scientific gradient progresses from precision astronomy, time-domain observations, multi-messenger coordination, radio cosmology, space weather, metrology, and planetary defense toward biosignatures, ocean worlds, origins of life, protected samples, extremophiles, alternative biochemistry, and planet-forming disks.
+
+- **The Coronagraph Crown**, **The Chronos Array**, **Concordance Spire**, **Hydrogen Horizon House**, and **The Heliomagnetic Bastion** establish the precision-observation edge with aperture petals, robotic telescope capsules, braided messenger shafts, a calibration antenna field, and structural magnetic-field arches.
+- **The Parallax Foundry**, **Asterion Shield**, **The Noctis Signal Vault**, **The Aether Spectrum Gardens**, and **The Cryocean Institute** form the engineering, planetary-defense, anomalous-signal, exoplanet-atmosphere, and ocean-world transition through an isolated metrology spine, impact court, conductive cage, atmospheric shells, and pressure-split ice plates.
+- **Genesis Ventworks**, **The Aegis Exomaterial Sanctuary**, **The Extremis Analog Ecologies Campus**, **The Chirality Ark**, and **The Protostellar Loom** complete the astrobiology arc with mineral chimneys, nested contamination shells, five environmental pods, opposed molecular crescents, and asymmetric planet-forming spiral arms.
+- The black-basalt **Ecliptic Walk**, five crossings, **Orrery Court**, Dark-Sky Service Route, orbital inlays, and fifteen exact approaches form 21 grounded routes. The 1,433-mesh, approximately 143,000-triangle package has zero facility-envelope overlaps or sector violations, uses shielded red maintenance lighting, and participates in HLOD streaming, revision-14 persistence migration, text-state inspection, WALK navigation, selection, and GLB export. Interiors remain intentionally deferred by the supplied exterior specification.
 
 ## Inorganic Chemistry Labs District
 

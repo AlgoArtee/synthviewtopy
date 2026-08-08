@@ -286,6 +286,8 @@ const GPU_PULSE_PROFILES = new Set([
   'biochemistry-emissive-pulse',
   'organic-chemistry-emissive-pulse',
   'inorganic-chemistry-emissive-pulse',
+  'particle-physics-emissive-pulse',
+  'astronomy-astrobiology-emissive-pulse',
 ]);
 
 interface ProductionVisibilityState {

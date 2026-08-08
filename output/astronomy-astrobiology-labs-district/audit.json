@@ -1,0 +1,1045 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Astronomy / Astrobiology Labs District",
+      "mapLabel": "Astronomy & Astrobiology Labs",
+      "architecturalLanguage": "dark-sky scientific architecture, optically black ceramic, pale non-reflective shells, precision metals, exposed calibration machinery, planetary analogue landscapes, and restrained shielded signals",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "A1",
+          "name": "The Coronagraph Crown",
+          "subtitle": "Habitable-World Direct-Imaging and Exoplanet Spectroscopy Institute",
+          "purpose": "High-contrast imaging, coronagraphs, starshades, wavefront control, and atmospheric spectroscopy",
+          "placementZone": "Western precision-astronomy edge",
+          "footprintMetres": [
+            168,
+            148
+          ],
+          "heightMetres": 36,
+          "exteriorMotif": "black basalt disc, twelve white aperture petals, artificial-eclipse portal, and full-scale starshade canopy"
+        },
+        {
+          "code": "A2",
+          "name": "The Chronos Array",
+          "subtitle": "Time-Domain Astronomy and Transient-Sky Laboratory",
+          "purpose": "Rapid identification and follow-up of transient and moving astronomical phenomena",
+          "placementZone": "Western transient-observation band",
+          "footprintMetres": [
+            182,
+            104
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seven advancing wedge volumes, kinetic shutters, robotic telescope capsules, and Alert Meridian"
+        },
+        {
+          "code": "A3",
+          "name": "Concordance Spire",
+          "subtitle": "Multi-Messenger Astronomy Coordination Center",
+          "purpose": "Combining light, gravitational waves, neutrinos, and cosmic particles",
+          "placementZone": "Central coordination landmark",
+          "footprintMetres": [
+            92,
+            92
+          ],
+          "heightMetres": 138,
+          "exteriorMotif": "four braided triangular shafts around an open void and a suspended convergence ring"
+        },
+        {
+          "code": "A4",
+          "name": "Hydrogen Horizon House",
+          "subtitle": "Cosmic Dawn and 21-Centimetre Cosmology Laboratory",
+          "purpose": "Cosmic-dawn neutral-hydrogen instrumentation, interference characterization, and signal extraction",
+          "placementZone": "Radio-quiet western-southern edge",
+          "footprintMetres": [
+            176,
+            88
+          ],
+          "heightMetres": 19,
+          "exteriorMotif": "part-buried embankment, 160-metre copper-mesh roof blade, and low calibration antenna field"
+        },
+        {
+          "code": "A5",
+          "name": "The Heliomagnetic Bastion",
+          "subtitle": "Stellar Activity, Space Weather and Star–Planet Interaction Institute",
+          "purpose": "Stellar magnetism, flares, coronal activity, radiation environments, and planetary atmospheric effects",
+          "placementZone": "Southern stellar-physics edge",
+          "footprintMetres": [
+            152,
+            142
+          ],
+          "heightMetres": 62,
+          "exteriorMotif": "circular gold-and-black bastion beneath structural magnetic-field arches and an eclipsed solar tower"
+        },
+        {
+          "code": "A6",
+          "name": "The Parallax Foundry",
+          "subtitle": "Space Interferometry, Precision Astrometry and Telescope Metrology Center",
+          "purpose": "Ultra-stable optics, precision alignment, wavefront control, and optical/infrared interferometry",
+          "placementZone": "Material-science transition",
+          "footprintMetres": [
+            198,
+            112
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "two exact white calibration halls divided by an isolated silver metrology spine"
+        },
+        {
+          "code": "A7",
+          "name": "Asterion Shield",
+          "subtitle": "Planetary Defense and Small-Body Dynamics Complex",
+          "purpose": "Near-Earth-object discovery, tracking, risk calculation, reconnaissance, and deflection studies",
+          "placementZone": "Industrial-facing service edge",
+          "footprintMetres": [
+            164,
+            132
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "layered inclined deflection wall, stepped instrument terraces, impact-crater forecourt, and suspended aggregate"
+        },
+        {
+          "code": "A8",
+          "name": "The Noctis Signal Vault",
+          "subtitle": "Technosignature and Anomalous-Signal Research Institute",
+          "purpose": "Technosignature searches and rigorous rejection of terrestrial interference and natural explanations",
+          "placementZone": "Central low-interference zone",
+          "footprintMetres": [
+            126,
+            108
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "windowless black monolith inside a distorted conductive-mesh cage with a sunken antenna court"
+        },
+        {
+          "code": "A9",
+          "name": "The Aether Spectrum Gardens",
+          "subtitle": "Exoplanet Atmosphere and Biosignature Validation Laboratory",
+          "purpose": "Atmospheric retrieval, climate and photochemical modeling, and biosignature validation",
+          "placementZone": "Astronomy-to-astrobiology transition",
+          "footprintMetres": [
+            158,
+            132
+          ],
+          "heightMetres": 55,
+          "exteriorMotif": "five misaligned atmospheric shells, spectral barcode fins, eclipse entrance, and planetary landscape cells"
+        },
+        {
+          "code": "A10",
+          "name": "The Cryocean Institute",
+          "subtitle": "Ocean-World Habitability and Ice-Shell Exploration Laboratory",
+          "purpose": "Subsurface oceans, ice-water-rock chemistry, plume sampling, and autonomous life-detection systems",
+          "placementZone": "Forest-facing ocean-world transition",
+          "footprintMetres": [
+            158,
+            138
+          ],
+          "heightMetres": 68,
+          "exteriorMotif": "pressure-split ice plates, buried moon sphere, cryobot mast, black-water channels, and cyan fissures"
+        },
+        {
+          "code": "A11",
+          "name": "Genesis Ventworks",
+          "subtitle": "Prebiotic Chemistry and Origins-of-Life Laboratory",
+          "purpose": "Hydrothermal systems, mineral-mediated chemistry, early metabolism, and water-rock interactions",
+          "placementZone": "Eastern experimental-astrobiology band",
+          "footprintMetres": [
+            154,
+            132
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "mineral chimney cluster, branching patinated pipes, chemical-gradient pools, and a vent-arch entrance"
+        },
+        {
+          "code": "A12",
+          "name": "The Aegis Exomaterial Sanctuary",
+          "subtitle": "Extraterrestrial Sample Curation and Planetary-Protection Facility",
+          "purpose": "Secure receipt, quarantine, curation, and contamination-controlled study of returned samples",
+          "placementZone": "Sterile controlled-transfer zone",
+          "footprintMetres": [
+            166,
+            118
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "three nested sealed shells, sterile aggregate rings, retractable bridge, transfer collars, and status band"
+        },
+        {
+          "code": "A13",
+          "name": "The Extremis Analog Ecologies Campus",
+          "subtitle": "Extremophile and Planetary-Environment Simulation Complex",
+          "purpose": "Extreme cold, heat, radiation, acidity, salinity, desiccation, and Mars-analogue ecology",
+          "placementZone": "Forest-facing ecological-gradient zone",
+          "footprintMetres": [
+            184,
+            142
+          ],
+          "heightMetres": 47,
+          "exteriorMotif": "five distinct environmental pods connected by a raised service spine and rover test loop"
+        },
+        {
+          "code": "A14",
+          "name": "The Chirality Ark",
+          "subtitle": "Alternative Biochemistry and Synthetic Astrobiology Institute",
+          "purpose": "Protocells, alternative molecular systems, nonstandard solvents, molecular handedness, and biochemical universality",
+          "placementZone": "Eastern synthetic-astrobiology transition",
+          "footprintMetres": [
+            172,
+            138
+          ],
+          "heightMetres": 59,
+          "exteriorMotif": "opposed interlocking crescent volumes, reversed bioceramic scales, and adaptive membrane canopy"
+        },
+        {
+          "code": "A15",
+          "name": "The Protostellar Loom",
+          "subtitle": "Planet Formation and Astrochemical Evolution Laboratory",
+          "purpose": "Planet-forming disks, dust, ice, gas, molecular chemistry, and delivery of prebiotic material",
+          "placementZone": "Astrochemistry bridge toward material science",
+          "footprintMetres": [
+            188,
+            154
+          ],
+          "heightMetres": 63,
+          "exteriorMotif": "dark protostellar core, asymmetric segmented spiral arms, disk-gap landscape, and millimetre receivers"
+        }
+      ],
+      "zones": {
+        "precisionAstronomyAndDefense": [
+          "The Coronagraph Crown",
+          "The Chronos Array",
+          "Hydrogen Horizon House",
+          "The Heliomagnetic Bastion",
+          "The Parallax Foundry",
+          "Asterion Shield"
+        ],
+        "astronomicalDataAndSignals": [
+          "Concordance Spire",
+          "The Noctis Signal Vault",
+          "The Aether Spectrum Gardens"
+        ],
+        "experimentalAstrobiology": [
+          "The Cryocean Institute",
+          "Genesis Ventworks",
+          "The Aegis Exomaterial Sanctuary",
+          "The Extremis Analog Ecologies Campus",
+          "The Chirality Ark",
+          "The Protostellar Loom"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "ASTRO__ECLIPTIC_WALK",
+        "publicCourt": "ASTRO__ORRERY_COURT",
+        "radialCrossings": 5,
+        "darkSkyServiceRoute": true,
+        "exactBuildingApproaches": 15
+      },
+      "darkSkyProtocol": {
+        "shieldedGroundLights": true,
+        "redMaintenanceIllumination": true,
+        "electrochromicGlazing": true,
+        "upwardAdvertisingLight": false,
+        "observingBlackoutReady": true
+      },
+      "signatureSystems": {
+        "coronagraphPetals": 12,
+        "chronosFrames": 7,
+        "messengerShafts": 4,
+        "hydrogenCalibrationAntennas": 36,
+        "magneticFieldArches": 7,
+        "atmosphericShells": 5,
+        "cryoceanIcePlates": 6,
+        "extremisPods": 5,
+        "chiralityCrescents": 2,
+        "protostellarArms": 2
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Coronagraph Crown",
+        "The Chronos Array",
+        "Concordance Spire",
+        "Hydrogen Horizon House",
+        "The Heliomagnetic Bastion",
+        "The Parallax Foundry",
+        "Asterion Shield",
+        "The Noctis Signal Vault",
+        "The Aether Spectrum Gardens",
+        "The Cryocean Institute",
+        "Genesis Ventworks",
+        "The Aegis Exomaterial Sanctuary",
+        "The Extremis Analog Ecologies Campus",
+        "The Chirality Ark",
+        "The Protostellar Loom"
+      ],
+      "plannedObjects": [
+        "Ecliptic Walk",
+        "Orrery Court",
+        "Dark-Sky Service Route",
+        "Orbital Inlays",
+        "Star Catalogue Markers",
+        "Atmospheric Monitoring Stations"
+      ],
+      "realizedFeatureTags": [
+        "the-coronagraph-crown",
+        "the-chronos-array",
+        "concordance-spire",
+        "hydrogen-horizon-house",
+        "the-heliomagnetic-bastion",
+        "the-parallax-foundry",
+        "asterion-shield",
+        "the-noctis-signal-vault",
+        "the-aether-spectrum-gardens",
+        "the-cryocean-institute",
+        "genesis-ventworks",
+        "the-aegis-exomaterial-sanctuary",
+        "the-extremis-analog-ecologies-campus",
+        "the-chirality-ark",
+        "the-protostellar-loom"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 182,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 21,
+      "radialCoverage": 0.97,
+      "angularCoverage": 0.98,
+      "exteriorOnly": true,
+      "eclipticWalkNarrative": true,
+      "darkSkyCompliant": true
+    },
+    "facilityCount": 15,
+    "codes": [
+      "A1",
+      "A2",
+      "A3",
+      "A4",
+      "A5",
+      "A6",
+      "A7",
+      "A8",
+      "A9",
+      "A10",
+      "A11",
+      "A12",
+      "A13",
+      "A14",
+      "A15"
+    ],
+    "meshCount": 1433,
+    "triangles": 142880,
+    "uniqueNames": 1475,
+    "materialNames": [
+      "",
+      "Astrobiology acidic mineral composite",
+      "Astrobiology black experimental water",
+      "Astrobiology crystalline saline ceramic",
+      "Astrobiology cyan subsurface trace",
+      "Astrobiology frosted ice ceramic",
+      "Astrobiology patinated bronze",
+      "Astrobiology polarizing bioceramic",
+      "Astrobiology simulated regolith",
+      "Astrobiology sterile pale aggregate",
+      "Astrobiology translucent aerogel",
+      "Astronomy amber calibration trace",
+      "Astronomy conductive electromagnetic mesh",
+      "Astronomy dark radio-quiet gravel",
+      "Astronomy graphite technical panel",
+      "Astronomy light-absorbing black ceramic",
+      "Astronomy non-reflective white ceramic",
+      "Astronomy oxidized copper mesh",
+      "Astronomy polished volcanic basalt",
+      "Astronomy precision silver metal",
+      "Astronomy rejected-signal white trace",
+      "Astronomy satin titanium",
+      "Astronomy shielded red maintenance light",
+      "Astronomy smoked electrochromic glass",
+      "Heliomagnetic glare-free gold ceramic"
+    ],
+    "animations": {
+      "astronomy-astrobiology-emissive-pulse": 104,
+      "astronomy-astrobiology-rotation": 31
+    },
+    "prefixCounts": {
+      "ASTRO__A1__APERTURE_PETAL_": 12,
+      "ASTRO__A2__OFFSET_TIME_FRAME_": 7,
+      "ASTRO__A3__MESSENGER_SHAFT_": 32,
+      "ASTRO__A4__CALIBRATION_BLADE_ANTENNA_": 36,
+      "ASTRO__A5__MAGNETIC_FIELD_ARCH_": 7,
+      "ASTRO__A9__ATMOSPHERIC_ELLIPTICAL_SHELL_": 5,
+      "ASTRO__A10__PRESSURE_SPLIT_ICE_PLATE_": 6,
+      "ASTRO__A13__OUTDOOR_ANALOG_LANDSCAPE_": 5,
+      "ASTRO__A14__LEFT_HANDED_CRESCENT_SEGMENT_": 24,
+      "ASTRO__A14__RIGHT_HANDED_CRESCENT_SEGMENT_": 24,
+      "ASTRO__A15__DUST_RICH_SPIRAL_SEGMENT_": 34,
+      "ASTRO__A15__ICE_RICH_SPIRAL_SEGMENT_": 28
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "A1",
+        "name": "The Coronagraph Crown",
+        "min": [
+          -28.415241102722987,
+          1.6660000000000001,
+          177.72331528665313
+        ],
+        "max": [
+          -11.716761133060357,
+          6.416,
+          200.2308930502997
+        ]
+      },
+      {
+        "code": "A2",
+        "name": "The Chronos Array",
+        "min": [
+          -65.30523531219572,
+          1.6479356107880112,
+          176.5308181261798
+        ],
+        "max": [
+          -45.251982505141555,
+          7.317369715226052,
+          193.3196951412504
+        ]
+      },
+      {
+        "code": "A3",
+        "name": "Concordance Spire",
+        "min": [
+          -95.2327036787016,
+          1.606,
+          164.7361813852134
+        ],
+        "max": [
+          -81.91948520246922,
+          18.771678707730718,
+          178.04939986144575
+        ]
+      },
+      {
+        "code": "A4",
+        "name": "Hydrogen Horizon House",
+        "min": [
+          -130.30821806028965,
+          1.492141595434727,
+          142.56217583442157
+        ],
+        "max": [
+          -109.04865191668834,
+          3.716,
+          163.65992998447555
+        ]
+      },
+      {
+        "code": "A5",
+        "name": "The Heliomagnetic Bastion",
+        "min": [
+          -154.37324822018613,
+          -1.644000114440919,
+          117.90250919382206
+        ],
+        "max": [
+          -135.46207332930604,
+          13.61600011444092,
+          136.81368408470212
+        ]
+      },
+      {
+        "code": "A6",
+        "name": "The Parallax Foundry",
+        "min": [
+          -52.66428457209838,
+          1.7210000000000003,
+          197.77816146724047
+        ],
+        "max": [
+          -29.116625692363797,
+          7.966,
+          211.12388391321002
+        ]
+      },
+      {
+        "code": "A7",
+        "name": "Asterion Shield",
+        "min": [
+          -86.9589859454958,
+          1.2068245929762216,
+          180.64609493750518
+        ],
+        "max": [
+          -68.7584726325627,
+          9.565999999999999,
+          204.93094066742287
+        ]
+      },
+      {
+        "code": "A8",
+        "name": "The Noctis Signal Vault",
+        "min": [
+          -122.00578937530427,
+          1.205804347625563,
+          167.76113816082378
+        ],
+        "max": [
+          -103.70529235775106,
+          8.666,
+          187.1019027108074
+        ]
+      },
+      {
+        "code": "A9",
+        "name": "The Aether Spectrum Gardens",
+        "min": [
+          -148.84456944356268,
+          1.496591553654886,
+          138.94447148564421
+        ],
+        "max": [
+          -130.4928698703905,
+          6.516000000000001,
+          157.27648905984324
+        ]
+      },
+      {
+        "code": "A10",
+        "name": "The Cryocean Institute",
+        "min": [
+          -178.04188843847956,
+          1.1171537318444003,
+          110.21942684485839
+        ],
+        "max": [
+          -155.87723151001194,
+          9.434463395302904,
+          132.1621206976568
+        ]
+      },
+      {
+        "code": "A11",
+        "name": "Genesis Ventworks",
+        "min": [
+          -29.21450339706836,
+          1.6623697654397134,
+          210.00905223804978
+        ],
+        "max": [
+          -12.860796959000805,
+          10.310947560596944,
+          229.25003531795252
+        ]
+      },
+      {
+        "code": "A12",
+        "name": "The Aegis Exomaterial Sanctuary",
+        "min": [
+          -75.45547245486645,
+          1.451,
+          205.70407038468983
+        ],
+        "max": [
+          -53.998612663974576,
+          7.716000000000001,
+          227.1609301755817
+        ]
+      },
+      {
+        "code": "A13",
+        "name": "The Extremis Analog Ecologies Campus",
+        "min": [
+          -116.76398261777803,
+          1.671,
+          187.98200431357844
+        ],
+        "max": [
+          -95.06612390911067,
+          6.966,
+          209.8397509122408
+        ]
+      },
+      {
+        "code": "A14",
+        "name": "The Chirality Ark",
+        "min": [
+          -155.0016837146157,
+          -1.978242095947265,
+          160.4838667484126
+        ],
+        "max": [
+          -130.72836613020667,
+          10.810003009796143,
+          184.75718433282162
+        ]
+      },
+      {
+        "code": "A15",
+        "name": "The Protostellar Loom",
+        "min": [
+          -183.88515779851585,
+          1.5068141517639142,
+          132.13975076271728
+        ],
+        "max": [
+          -155.48026354337938,
+          7.966000000000001,
+          160.54464501785375
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "ASTRO__ECLIPTIC_WALK",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__ECLIPTIC_CROSSING_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__ECLIPTIC_CROSSING_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__ECLIPTIC_CROSSING_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__ECLIPTIC_CROSSING_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__ECLIPTIC_CROSSING_5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A10",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A11",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A12",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A13",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A14",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ASTRO__BUILDING_APPROACH_A15",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -61.95024299621578,
+      1.6459999984502793,
+      199.08394538595488
+    ],
+    "roadNext": [
+      -67.53515434265132,
+      1.6459999984502793,
+      197.25935374929716
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "buildingCount": 15,
+      "circulation": {
+        "primaryPromenade": "ASTRO__ECLIPTIC_WALK",
+        "publicCourt": "ASTRO__ORRERY_COURT",
+        "radialCrossings": 5,
+        "darkSkyServiceRoute": true,
+        "exactBuildingApproaches": 15
+      },
+      "darkSkyProtocol": {
+        "shieldedGroundLights": true,
+        "redMaintenanceIllumination": true,
+        "electrochromicGlazing": true,
+        "upwardAdvertisingLight": false,
+        "observingBlackoutReady": true
+      },
+      "signatureSystems": {
+        "coronagraphPetals": 12,
+        "chronosFrames": 7,
+        "messengerShafts": 4,
+        "hydrogenCalibrationAntennas": 36,
+        "magneticFieldArches": 7,
+        "atmosphericShells": 5,
+        "cryoceanIcePlates": 6,
+        "extremisPods": 5,
+        "chiralityCrescents": 2,
+        "protostellarArms": 2
+      }
+    },
+    "specializedRevision": 14,
+    "deepDistrict": {
+      "identity": "Astronomy / Astrobiology Labs District",
+      "mapLabel": "Astronomy & Astrobiology Labs",
+      "architecturalLanguage": "dark-sky scientific architecture, optically black ceramic, pale non-reflective shells, precision metals, exposed calibration machinery, planetary analogue landscapes, and restrained shielded signals",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "A1",
+          "name": "The Coronagraph Crown",
+          "subtitle": "Habitable-World Direct-Imaging and Exoplanet Spectroscopy Institute",
+          "purpose": "High-contrast imaging, coronagraphs, starshades, wavefront control, and atmospheric spectroscopy",
+          "placementZone": "Western precision-astronomy edge",
+          "footprintMetres": [
+            168,
+            148
+          ],
+          "heightMetres": 36,
+          "exteriorMotif": "black basalt disc, twelve white aperture petals, artificial-eclipse portal, and full-scale starshade canopy"
+        },
+        {
+          "code": "A2",
+          "name": "The Chronos Array",
+          "subtitle": "Time-Domain Astronomy and Transient-Sky Laboratory",
+          "purpose": "Rapid identification and follow-up of transient and moving astronomical phenomena",
+          "placementZone": "Western transient-observation band",
+          "footprintMetres": [
+            182,
+            104
+          ],
+          "heightMetres": 42,
+          "exteriorMotif": "seven advancing wedge volumes, kinetic shutters, robotic telescope capsules, and Alert Meridian"
+        },
+        {
+          "code": "A3",
+          "name": "Concordance Spire",
+          "subtitle": "Multi-Messenger Astronomy Coordination Center",
+          "purpose": "Combining light, gravitational waves, neutrinos, and cosmic particles",
+          "placementZone": "Central coordination landmark",
+          "footprintMetres": [
+            92,
+            92
+          ],
+          "heightMetres": 138,
+          "exteriorMotif": "four braided triangular shafts around an open void and a suspended convergence ring"
+        },
+        {
+          "code": "A4",
+          "name": "Hydrogen Horizon House",
+          "subtitle": "Cosmic Dawn and 21-Centimetre Cosmology Laboratory",
+          "purpose": "Cosmic-dawn neutral-hydrogen instrumentation, interference characterization, and signal extraction",
+          "placementZone": "Radio-quiet western-southern edge",
+          "footprintMetres": [
+            176,
+            88
+          ],
+          "heightMetres": 19,
+          "exteriorMotif": "part-buried embankment, 160-metre copper-mesh roof blade, and low calibration antenna field"
+        },
+        {
+          "code": "A5",
+          "name": "The Heliomagnetic Bastion",
+          "subtitle": "Stellar Activity, Space Weather and Star–Planet Interaction Institute",
+          "purpose": "Stellar magnetism, flares, coronal activity, radiation environments, and planetary atmospheric effects",
+          "placementZone": "Southern stellar-physics edge",
+          "footprintMetres": [
+            152,
+            142
+          ],
+          "heightMetres": 62,
+          "exteriorMotif": "circular gold-and-black bastion beneath structural magnetic-field arches and an eclipsed solar tower"
+        },
+        {
+          "code": "A6",
+          "name": "The Parallax Foundry",
+          "subtitle": "Space Interferometry, Precision Astrometry and Telescope Metrology Center",
+          "purpose": "Ultra-stable optics, precision alignment, wavefront control, and optical/infrared interferometry",
+          "placementZone": "Material-science transition",
+          "footprintMetres": [
+            198,
+            112
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "two exact white calibration halls divided by an isolated silver metrology spine"
+        },
+        {
+          "code": "A7",
+          "name": "Asterion Shield",
+          "subtitle": "Planetary Defense and Small-Body Dynamics Complex",
+          "purpose": "Near-Earth-object discovery, tracking, risk calculation, reconnaissance, and deflection studies",
+          "placementZone": "Industrial-facing service edge",
+          "footprintMetres": [
+            164,
+            132
+          ],
+          "heightMetres": 67,
+          "exteriorMotif": "layered inclined deflection wall, stepped instrument terraces, impact-crater forecourt, and suspended aggregate"
+        },
+        {
+          "code": "A8",
+          "name": "The Noctis Signal Vault",
+          "subtitle": "Technosignature and Anomalous-Signal Research Institute",
+          "purpose": "Technosignature searches and rigorous rejection of terrestrial interference and natural explanations",
+          "placementZone": "Central low-interference zone",
+          "footprintMetres": [
+            126,
+            108
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "windowless black monolith inside a distorted conductive-mesh cage with a sunken antenna court"
+        },
+        {
+          "code": "A9",
+          "name": "The Aether Spectrum Gardens",
+          "subtitle": "Exoplanet Atmosphere and Biosignature Validation Laboratory",
+          "purpose": "Atmospheric retrieval, climate and photochemical modeling, and biosignature validation",
+          "placementZone": "Astronomy-to-astrobiology transition",
+          "footprintMetres": [
+            158,
+            132
+          ],
+          "heightMetres": 55,
+          "exteriorMotif": "five misaligned atmospheric shells, spectral barcode fins, eclipse entrance, and planetary landscape cells"
+        },
+        {
+          "code": "A10",
+          "name": "The Cryocean Institute",
+          "subtitle": "Ocean-World Habitability and Ice-Shell Exploration Laboratory",
+          "purpose": "Subsurface oceans, ice-water-rock chemistry, plume sampling, and autonomous life-detection systems",
+          "placementZone": "Forest-facing ocean-world transition",
+          "footprintMetres": [
+            158,
+            138
+          ],
+          "heightMetres": 68,
+          "exteriorMotif": "pressure-split ice plates, buried moon sphere, cryobot mast, black-water channels, and cyan fissures"
+        },
+        {
+          "code": "A11",
+          "name": "Genesis Ventworks",
+          "subtitle": "Prebiotic Chemistry and Origins-of-Life Laboratory",
+          "purpose": "Hydrothermal systems, mineral-mediated chemistry, early metabolism, and water-rock interactions",
+          "placementZone": "Eastern experimental-astrobiology band",
+          "footprintMetres": [
+            154,
+            132
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "mineral chimney cluster, branching patinated pipes, chemical-gradient pools, and a vent-arch entrance"
+        },
+        {
+          "code": "A12",
+          "name": "The Aegis Exomaterial Sanctuary",
+          "subtitle": "Extraterrestrial Sample Curation and Planetary-Protection Facility",
+          "purpose": "Secure receipt, quarantine, curation, and contamination-controlled study of returned samples",
+          "placementZone": "Sterile controlled-transfer zone",
+          "footprintMetres": [
+            166,
+            118
+          ],
+          "heightMetres": 43,
+          "exteriorMotif": "three nested sealed shells, sterile aggregate rings, retractable bridge, transfer collars, and status band"
+        },
+        {
+          "code": "A13",
+          "name": "The Extremis Analog Ecologies Campus",
+          "subtitle": "Extremophile and Planetary-Environment Simulation Complex",
+          "purpose": "Extreme cold, heat, radiation, acidity, salinity, desiccation, and Mars-analogue ecology",
+          "placementZone": "Forest-facing ecological-gradient zone",
+          "footprintMetres": [
+            184,
+            142
+          ],
+          "heightMetres": 47,
+          "exteriorMotif": "five distinct environmental pods connected by a raised service spine and rover test loop"
+        },
+        {
+          "code": "A14",
+          "name": "The Chirality Ark",
+          "subtitle": "Alternative Biochemistry and Synthetic Astrobiology Institute",
+          "purpose": "Protocells, alternative molecular systems, nonstandard solvents, molecular handedness, and biochemical universality",
+          "placementZone": "Eastern synthetic-astrobiology transition",
+          "footprintMetres": [
+            172,
+            138
+          ],
+          "heightMetres": 59,
+          "exteriorMotif": "opposed interlocking crescent volumes, reversed bioceramic scales, and adaptive membrane canopy"
+        },
+        {
+          "code": "A15",
+          "name": "The Protostellar Loom",
+          "subtitle": "Planet Formation and Astrochemical Evolution Laboratory",
+          "purpose": "Planet-forming disks, dust, ice, gas, molecular chemistry, and delivery of prebiotic material",
+          "placementZone": "Astrochemistry bridge toward material science",
+          "footprintMetres": [
+            188,
+            154
+          ],
+          "heightMetres": 63,
+          "exteriorMotif": "dark protostellar core, asymmetric segmented spiral arms, disk-gap landscape, and millimetre receivers"
+        }
+      ],
+      "zones": {
+        "precisionAstronomyAndDefense": [
+          "The Coronagraph Crown",
+          "The Chronos Array",
+          "Hydrogen Horizon House",
+          "The Heliomagnetic Bastion",
+          "The Parallax Foundry",
+          "Asterion Shield"
+        ],
+        "astronomicalDataAndSignals": [
+          "Concordance Spire",
+          "The Noctis Signal Vault",
+          "The Aether Spectrum Gardens"
+        ],
+        "experimentalAstrobiology": [
+          "The Cryocean Institute",
+          "Genesis Ventworks",
+          "The Aegis Exomaterial Sanctuary",
+          "The Extremis Analog Ecologies Campus",
+          "The Chirality Ark",
+          "The Protostellar Loom"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "ASTRO__ECLIPTIC_WALK",
+        "publicCourt": "ASTRO__ORRERY_COURT",
+        "radialCrossings": 5,
+        "darkSkyServiceRoute": true,
+        "exactBuildingApproaches": 15
+      },
+      "darkSkyProtocol": {
+        "shieldedGroundLights": true,
+        "redMaintenanceIllumination": true,
+        "electrochromicGlazing": true,
+        "upwardAdvertisingLight": false,
+        "observingBlackoutReady": true
+      },
+      "signatureSystems": {
+        "coronagraphPetals": 12,
+        "chronosFrames": 7,
+        "messengerShafts": 4,
+        "hydrogenCalibrationAntennas": 36,
+        "magneticFieldArches": 7,
+        "atmosphericShells": 5,
+        "cryoceanIcePlates": 6,
+        "extremisPods": 5,
+        "chiralityCrescents": 2,
+        "protostellarArms": 2
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "astronomy-astrobiology-labs",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 30,
+        "triangles": 80804,
+        "animationNodes": 0
+      },
+      "renderImportance": {
+        "mandatory": 1406,
+        "micro": 0,
+        "visibleMicro": 0,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 1402,
+        "active": 1402,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999975845,
+    "grounded": true,
+    "position": [
+      -62.105,
+      1.808,
+      199.033
+    ]
+  },
+  "errors": []
+}

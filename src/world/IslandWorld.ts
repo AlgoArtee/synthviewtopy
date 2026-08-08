@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 14;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 15;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -182,6 +182,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'inorganic-chemistry': 10,
   'particle-physics-labs': 11,
   'astronomy-astrobiology-labs': 14,
+  'materials-science-lab': 15,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -200,6 +201,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'inorganic-chemistry-emissive-pulse',
   'particle-physics-emissive-pulse',
   'astronomy-astrobiology-emissive-pulse',
+  'materials-science-emissive-pulse',
 ]);
 
 /**
@@ -3946,6 +3948,24 @@ export class IslandWorld {
           );
         }
       } else if (object.userData.animate === 'astronomy-astrobiology-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.004);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'materials-science-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.004) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.12),
+            Number(object.userData.maxIntensity ?? 3.2),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'materials-science-rotation') {
         const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
         const step = delta * Number(object.userData.speed ?? 0.004);
         if (axis === 'x') object.rotation.x += step;
@@ -9284,6 +9304,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
+    const selectedMaterialsScience = selectedPackageId === 'materials-science-lab'
+      ? this.objectGroups.get('materials-science-lab')?.userData.materialsScienceLabsDistrict
+      : null;
     const districtRoadNetworks = districts.map((definition) => ({
       id: definition.id,
       network: this.objectGroups.get(definition.id)?.userData.districtRoadNetwork as {
@@ -9446,6 +9469,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         darkSkyProtocol: selectedAstronomyAstrobiology.darkSkyProtocol,
         signatureSystems: selectedAstronomyAstrobiology.signatureSystems,
       } : null,
+      materialsScienceLabsDistrict: selectedMaterialsScience ? {
+        buildingCount: selectedMaterialsScience.buildingCount,
+        circulation: selectedMaterialsScience.circulation,
+        zones: selectedMaterialsScience.zones,
+        signatureSystems: selectedMaterialsScience.signatureSystems,
+      } : null,
       preparationMs: Number((performance.now() - startedAt).toFixed(3)),
     };
   }
@@ -9471,6 +9500,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
     const particlePhysicsLabsDistrict = this.objectGroups.get('particle-physics-labs')?.userData.particlePhysicsLabsDistrict ?? null;
     const astronomyAstrobiologyLabsDistrict = this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict ?? null;
+    const materialsScienceLabsDistrict = this.objectGroups.get('materials-science-lab')?.userData.materialsScienceLabsDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -9629,6 +9659,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       inorganicChemistryLabsDistrict,
       particlePhysicsLabsDistrict,
       astronomyAstrobiologyLabsDistrict,
+      materialsScienceLabsDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

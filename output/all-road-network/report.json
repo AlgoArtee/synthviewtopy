@@ -1,7 +1,7 @@
 {
   "audit": {
     "districtCount": 35,
-    "totalRoutes": 523,
+    "totalRoutes": 550,
     "arterials": {
       "ringCount": 5,
       "radialAxisCount": 3,
@@ -666,14 +666,14 @@
       {
         "id": "astronomy-astrobiology-labs",
         "ring": "outer-middle",
-        "routeCount": 8,
+        "routeCount": 18,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
         "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -744,14 +744,14 @@
       {
         "id": "materials-science-lab",
         "ring": "outer",
-        "routeCount": 8,
+        "routeCount": 25,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -885,7 +885,10 @@
         "maximumApproachGap": 0
       }
     ],
-    "failures": []
+    "failures": [
+      "Generic district astronomy-astrobiology-labs has no collector loop",
+      "Generic district astronomy-astrobiology-labs has no local approaches"
+    ]
   },
   "dynamicRefreshAudit": {
     "available": true,
@@ -1271,5 +1274,8 @@
     "distance": 32.863353450309965
   },
   "browserErrors": [],
-  "failures": []
+  "failures": [
+    "Generic district astronomy-astrobiology-labs has no collector loop",
+    "Generic district astronomy-astrobiology-labs has no local approaches"
+  ]
 }

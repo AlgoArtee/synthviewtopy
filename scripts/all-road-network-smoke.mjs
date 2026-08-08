@@ -33,6 +33,7 @@ const SPECIALIZED_NETWORKS = [
   'organic-chemistry-labs',
   'inorganic-chemistry',
   'particle-physics-labs',
+  'materials-science-lab',
 ];
 
 await mkdir(OUTPUT, { recursive: true });

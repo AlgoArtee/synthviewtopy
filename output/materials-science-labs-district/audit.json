@@ -1,0 +1,1096 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Material Science Labs District — The Matter Crescent",
+      "mapLabel": "Materials Science Labs",
+      "architecturalLanguage": "a physical catalogue of possible matter using dark structural frames, pale mineral paving, replaceable alloy and ceramic cassettes, responsive polymers, porous membranes, bio-derived composites, precise luminous passports, and exposed scientific infrastructure",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "The Matter Compiler",
+          "subtitle": "Autonomous Materials Discovery Foundry",
+          "purpose": "AI-guided discovery, robotic synthesis, high-throughput experimentation, computational materials design, and closed-loop optimization",
+          "placementZone": "Inner Precision Arc civic anchor",
+          "footprintMetres": [
+            184,
+            164
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "six interlocking hexagonal blocks around an open void, replaceable material cassettes, robotic transfer slots, cantilevered entry, and circular roof gantry"
+        },
+        {
+          "code": "M2",
+          "name": "Laminaris Institute",
+          "subtitle": "Two-Dimensional and Moiré Materials Laboratory",
+          "purpose": "Graphene-class systems, transition-metal dichalcogenides, van der Waals heterostructures, moiré materials, and atomically thin electronics",
+          "placementZone": "Inner Precision Arc layered-matter edge",
+          "footprintMetres": [
+            166,
+            122
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "seven ultra-thin floating plates, interference-coated glass, membrane canopy, flexible wind ribbons, and luminous layer edges"
+        },
+        {
+          "code": "M3",
+          "name": "Topologica Hall",
+          "subtitle": "Quantum, Superconducting and Spin Materials Institute",
+          "purpose": "Quantum materials, topological phases, superconductors, spintronics, magnetic textures, and strongly correlated matter",
+          "placementZone": "Inner Precision Arc quiet quantum sector",
+          "footprintMetres": [
+            172,
+            138
+          ],
+          "heightMetres": 34,
+          "exteriorMotif": "two graphite crescent wings around an inaccessible void, a continuous twisted metallic ribbon, reflecting basin, and three cryogenic towers"
+        },
+        {
+          "code": "M4",
+          "name": "Morphostructure Pavilion",
+          "subtitle": "Programmable and Mechanical Metamaterials Laboratory",
+          "purpose": "Architected matter, auxetic structures, mechanical metamaterials, shape-memory systems, liquid-crystal elastomers, and trainable materials",
+          "placementZone": "Central Adaptive Belt western gateway",
+          "footprintMetres": [
+            176,
+            146
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "five-storey oval inside a reconfigurable cellular exoskeleton, auxetic canopy, metamaterial columns, and articulated roof scales"
+        },
+        {
+          "code": "M5",
+          "name": "Polyphase Forge",
+          "subtitle": "High-Entropy and Complex-Concentrated Alloys Center",
+          "purpose": "High-entropy alloys, multi-principal-element systems, refractory alloys, metallic glasses, and compositionally complex nanoparticles",
+          "placementZone": "Outer Forge Front industrial gateway",
+          "footprintMetres": [
+            190,
+            148
+          ],
+          "heightMetres": 66,
+          "exteriorMotif": "eight rotated ingot-like volumes in distinct metal finishes, exposure strips, triangular entrance, quench towers, and alloy test court"
+        },
+        {
+          "code": "M6",
+          "name": "Aegis Bastion",
+          "subtitle": "Extreme-Environment, Fusion and Radiation Materials Laboratory",
+          "purpose": "Fusion, radiation damage, plasma-facing components, hypersonic heating, high-pressure environments, severe corrosion, and long-duration space exposure",
+          "placementZone": "Outer Forge Front astronomy-facing boundary",
+          "footprintMetres": [
+            182,
+            150
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "three nested technical shells, numbered sacrificial armour fields, zigzag blast-wall approach, circular portal, and shielded test yard"
+        },
+        {
+          "code": "M7",
+          "name": "Ceramatrix Works",
+          "subtitle": "Ultrahigh-Temperature Ceramics and Composite Materials Center",
+          "purpose": "Ultrahigh-temperature ceramics, ceramic-matrix composites, thermal barriers, structural ceramics, and woven reinforcement systems",
+          "placementZone": "Outer Forge Front ceramic-production center",
+          "footprintMetres": [
+            188,
+            142
+          ],
+          "heightMetres": 61,
+          "exteriorMotif": "leaning interlocking shell arches, woven ceramic ribs, thermal-tile sawteeth, long ceramic entrance blade, and fracture court"
+        },
+        {
+          "code": "M8",
+          "name": "The Ion Vault",
+          "subtitle": "Solid-State Battery and Ionic Materials Institute",
+          "purpose": "Solid electrolytes, ion-conducting ceramics, metal-anode interfaces, multivalent systems, electrochemical materials, and grid-scale storage chemistry",
+          "placementZone": "Central Adaptive Belt energy interface",
+          "footprintMetres": [
+            178,
+            126
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "five offset ceramic cell volumes, dark compression frames, electrochromic bands, transparent bridge entrance, heat channels, and migrating interface light"
+        },
+        {
+          "code": "M9",
+          "name": "Photon Weave Institute",
+          "subtitle": "Photonic, Optoelectronic and Wide-Bandgap Materials Laboratory",
+          "purpose": "Photonic materials, optical metasurfaces, transparent electronics, wide-bandgap semiconductors, quantum emitters, and structural colour",
+          "placementZone": "Inner Precision Arc optical landmark",
+          "footprintMetres": [
+            148,
+            126
+          ],
+          "heightMetres": 78,
+          "exteriorMotif": "eight-storey prism wrapped in optical fins, triangular corner voids with reflective thread meshes, inverted-prism entry, and heliostat crown"
+        },
+        {
+          "code": "M10",
+          "name": "Porosium Towers",
+          "subtitle": "Porous Frameworks, Membranes and Atmospheric Materials Center",
+          "purpose": "Metal-organic frameworks, covalent organic frameworks, selective membranes, gas separation, atmospheric water capture, carbon sorbents, and molecular sieves",
+          "placementZone": "Central Adaptive Belt forest-facing collector",
+          "footprintMetres": [
+            170,
+            142
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "unequal porous towers with progressively opening cellular exoskeletons, flared collector crowns, condensation columns, and membrane ribbons"
+        },
+        {
+          "code": "M11",
+          "name": "Symbiomatter Conservatory",
+          "subtitle": "Living, Biofabricated and Bio-Inspired Materials Laboratory",
+          "purpose": "Mycelium composites, bacterial cellulose, engineered living materials, biomineralization, adaptive bio-composites, and biologically assisted manufacturing",
+          "placementZone": "Forest Transition beside the Temperate Deciduous Forest Dome",
+          "footprintMetres": [
+            186,
+            154
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "low branching pavilions beneath leaf-vein roofs, replaceable grown wall blocks, monitored living panels, braided arch, and constructed wetlands"
+        },
+        {
+          "code": "M12",
+          "name": "Vitrimer House",
+          "subtitle": "Self-Healing, Reprocessable and Adaptive Polymer Institute",
+          "purpose": "Vitrimers, self-healing polymers, reversible networks, recyclable thermosets, soft actuators, and stress-responsive materials",
+          "placementZone": "Central Adaptive Belt forest transition",
+          "footprintMetres": [
+            158,
+            128
+          ],
+          "heightMetres": 36,
+          "exteriorMotif": "three continuous rounded volumes under translucent elastomer membranes, visible healed scars, seam entry, responsive polymer alley, and inflated roof ridges"
+        },
+        {
+          "code": "M13",
+          "name": "Fourth-Form Foundry",
+          "subtitle": "Additive, Gradient and 4D Manufacturing Center",
+          "purpose": "Multi-material additive manufacturing, large-scale printing, graded materials, embedded electronics, 4D-printed structures, and robotic fabrication",
+          "placementZone": "Outer Forge Front freight-oriented fabrication edge",
+          "footprintMetres": [
+            208,
+            160
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "long hall crossed by a continuous printed branching exoskeleton, coarse-to-fine layer gradient, immense segmented doors, spiral canopy, and mobile gantry printers"
+        },
+        {
+          "code": "M14",
+          "name": "Second-Life Materials Exchange",
+          "subtitle": "Circular Materials, Deconstruction and Urban Mining Institute",
+          "purpose": "Material recovery, reversible construction, selective disassembly, critical-material recycling, remanufacturing, and circular product systems",
+          "placementZone": "Outer Forge Front circular-materials yard",
+          "footprintMetres": [
+            190,
+            148
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "three stepped halls assembled on a strict reuse grid, visible reversible connectors and passports, turbine-blade arch, deconstruction court, and removable roof cassettes"
+        },
+        {
+          "code": "M15",
+          "name": "Atomic Cartography Observatory",
+          "subtitle": "Atom-Resolved Characterization and Materials Imaging Center",
+          "purpose": "Electron microscopy, atom-probe techniques, ultrafast characterization, spectroscopy, nanoscale tomography, and in-situ materials observation",
+          "placementZone": "Inner Precision Arc vibration-isolated eastern end",
+          "footprintMetres": [
+            172,
+            126
+          ],
+          "heightMetres": 27,
+          "exteriorMotif": "low pale instrument-like volume floating above a black isolation base and moat, five independent polished pods, aligned bridge entry, metrology mast, and atomic light grid"
+        }
+      ],
+      "zones": {
+        "innerPrecisionArc": [
+          "The Matter Compiler",
+          "Laminaris Institute",
+          "Topologica Hall",
+          "Photon Weave Institute",
+          "Atomic Cartography Observatory"
+        ],
+        "centralAdaptiveBelt": [
+          "Morphostructure Pavilion",
+          "The Ion Vault",
+          "Porosium Towers",
+          "Vitrimer House"
+        ],
+        "outerForgeFront": [
+          "Polyphase Forge",
+          "Aegis Bastion",
+          "Ceramatrix Works",
+          "Fourth-Form Foundry",
+          "Second-Life Materials Exchange"
+        ],
+        "forestTransition": [
+          "Porosium Towers",
+          "Symbiomatter Conservatory",
+          "Vitrimer House"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "MATTER__MATTER_CRESCENT",
+        "adaptiveBeltRoute": "MATTER__ADAPTIVE_BELT_ROUTE",
+        "forgeFreightRoute": "MATTER__OUTER_FORGE_FREIGHT_ROUTE",
+        "phaseDiagramPlaza": true,
+        "crystallographicCrossings": 5,
+        "exactBuildingApproaches": 15
+      },
+      "signatureSystems": {
+        "compilerHexBlocks": 6,
+        "laminarPlates": 7,
+        "topologicalCrescents": 2,
+        "morphostructureCellMembers": 72,
+        "polyphaseVolumes": 8,
+        "aegisShells": 3,
+        "ceramatrixArches": 7,
+        "ionCellVolumes": 5,
+        "photonOpticalFins": 96,
+        "porousTowerCount": 2,
+        "symbiomatterPavilions": 5,
+        "vitrimerVolumes": 3,
+        "fourthFormGantryPrinters": 3,
+        "secondLifeHalls": 3,
+        "atomicInstrumentPods": 5
+      },
+      "materialPassportGrid": true,
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Matter Compiler",
+        "Laminaris Institute",
+        "Topologica Hall",
+        "Morphostructure Pavilion",
+        "Polyphase Forge",
+        "Aegis Bastion",
+        "Ceramatrix Works",
+        "The Ion Vault",
+        "Photon Weave Institute",
+        "Porosium Towers",
+        "Symbiomatter Conservatory",
+        "Vitrimer House",
+        "Fourth-Form Foundry",
+        "Second-Life Materials Exchange",
+        "Atomic Cartography Observatory"
+      ],
+      "plannedObjects": [
+        "Matter Crescent",
+        "Phase Diagram Plaza",
+        "Adaptive Belt Route",
+        "Outer Forge Freight Route",
+        "Crystallographic Crossings",
+        "Exposure Specimen Fields",
+        "Silver Grass Landscape"
+      ],
+      "realizedFeatureTags": [
+        "the-matter-compiler",
+        "laminaris-institute",
+        "topologica-hall",
+        "morphostructure-pavilion",
+        "polyphase-forge",
+        "aegis-bastion",
+        "ceramatrix-works",
+        "the-ion-vault",
+        "photon-weave-institute",
+        "porosium-towers",
+        "symbiomatter-conservatory",
+        "vitrimer-house",
+        "fourth-form-foundry",
+        "second-life-materials-exchange",
+        "atomic-cartography-observatory"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 254,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 23,
+      "radialCoverage": 0.97,
+      "angularCoverage": 0.98,
+      "exteriorOnly": true,
+      "matterCrescentNarrative": true,
+      "circularMaterialLifecycle": true
+    },
+    "facilityCount": 15,
+    "codes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "M8",
+      "M9",
+      "M10",
+      "M11",
+      "M12",
+      "M13",
+      "M14",
+      "M15"
+    ],
+    "meshCount": 2731,
+    "triangles": 174028,
+    "uniqueNames": 2786,
+    "materialNames": [
+      "Blue-black oxidized metal",
+      "Brushed satin alloy",
+      "Contained living-material panel",
+      "Dark chromium alloy plate",
+      "Dark graded technical gravel",
+      "Extreme-material amber warning line",
+      "Fibrous mycelium block",
+      "Graphite technical ceramic",
+      "Interference-coated research glass",
+      "Ionic and photonic cyan interface light",
+      "Ivory ion-conducting ceramic",
+      "Light-absorbing black mineral composite",
+      "Living-material warm green signal",
+      "Localized violet interference glass",
+      "Material passport white light",
+      "Matter Crescent dark structural frame",
+      "Matter Crescent pale mineral paving",
+      "Moiré violet edge light",
+      "Pale biofabricated composite",
+      "Pale mineral ceramic",
+      "Recovered masonry cassette",
+      "Responsive translucent polymer membrane",
+      "Scorched refractory tile",
+      "Silver technical grass",
+      "Stable copper-brown alloy",
+      "Still black process water",
+      "Structural-colour optical surface",
+      "Ultrahigh-temperature ceramic"
+    ],
+    "animations": {
+      "materials-science-emissive-pulse": 582,
+      "materials-science-rotation": 4
+    },
+    "prefixCounts": {
+      "MATTER__M1__INTERLOCKING_HEXAGONAL_BLOCK_": 6,
+      "MATTER__M1__REPLACEABLE_MATERIAL_CASSETTE_": 276,
+      "MATTER__M2__FLOATING_ATOMIC_PLATE_": 7,
+      "MATTER__M4__RECONFIGURABLE_CELL_MEMBER_": 72,
+      "MATTER__M5__INTERLOCKED_METALLURGICAL_PHASE_": 8,
+      "MATTER__M7__INTERLOCKING_CERAMIC_SHELL_ARCH_": 7,
+      "MATTER__M8__SOLID_STATE_CELL_VOLUME_": 5,
+      "MATTER__M9__MICROTEXTURED_OPTICAL_FIN_": 96,
+      "MATTER__M10__POROUS_TOWER_CORE_": 2,
+      "MATTER__M11__BIOFABRICATED_PAVILION_": 5,
+      "MATTER__M12__MOULDED_CONTINUOUS_VOLUME_": 3,
+      "MATTER__M13__GANTRY_PRINTER_BEAM_": 3,
+      "MATTER__M14__REUSED_STRUCTURAL_FRAME_HALL_": 3,
+      "MATTER__M15__POLISHED_INSTRUMENT_POD_": 5,
+      "MATTER__M15__ATOMIC_FACADE_LIGHT_": 56
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "M1",
+        "name": "The Matter Compiler",
+        "min": [
+          -137.20599988423385,
+          1.666,
+          207.82918656579116
+        ],
+        "max": [
+          -115.70600011576605,
+          10.396,
+          230.19994456391166
+        ]
+      },
+      {
+        "code": "M2",
+        "name": "Laminaris Institute",
+        "min": [
+          -41.98699309324515,
+          1.6860000000000004,
+          241.24410839334715
+        ],
+        "max": [
+          -23.34300556106841,
+          7.026792540883083,
+          258.4615096118332
+        ]
+      },
+      {
+        "code": "M3",
+        "name": "Topologica Hall",
+        "min": [
+          -88.98774691228307,
+          1.666,
+          231.25474214488275
+        ],
+        "max": [
+          -73.24170136544048,
+          7.906000000000001,
+          247.21499891760232
+        ]
+      },
+      {
+        "code": "M4",
+        "name": "Morphostructure Pavilion",
+        "min": [
+          -45.47615949951998,
+          1.4260000381469728,
+          262.2010741290123
+        ],
+        "max": [
+          -25.430261036512576,
+          7.021076718149836,
+          279.86204630585155
+        ]
+      },
+      {
+        "code": "M5",
+        "name": "Polyphase Forge",
+        "min": [
+          -48.004418623536104,
+          1.1989823691888581,
+          281.68099492735826
+        ],
+        "max": [
+          -28.63317269058396,
+          9.966000000000001,
+          301.85025467107823
+        ]
+      },
+      {
+        "code": "M6",
+        "name": "Aegis Bastion",
+        "min": [
+          -105.5978155440858,
+          1.048815653467936,
+          265.77657808404285
+        ],
+        "max": [
+          -83.45503315519812,
+          7.29661987985919,
+          291.6730817585215
+        ]
+      },
+      {
+        "code": "M7",
+        "name": "Ceramatrix Works",
+        "min": [
+          -158.04540831103233,
+          1.6273733017668321,
+          244.30089876633664
+        ],
+        "max": [
+          -136.9335689980358,
+          11.301,
+          265.69407364165124
+        ]
+      },
+      {
+        "code": "M8",
+        "name": "The Ion Vault",
+        "min": [
+          -82.64343437251208,
+          1.659439027324494,
+          255.43763073184897
+        ],
+        "max": [
+          -63.60399515643749,
+          10.461,
+          274.0103772946485
+        ]
+      },
+      {
+        "code": "M9",
+        "name": "Photon Weave Institute",
+        "min": [
+          -174.72905061931564,
+          1.7157732279930613,
+          179.91827900474695
+        ],
+        "max": [
+          -157.3166553792243,
+          13.966000000000001,
+          197.95233987669639
+        ]
+      },
+      {
+        "code": "M10",
+        "name": "Porosium Towers",
+        "min": [
+          -216.37421955580442,
+          1.666,
+          168.7491861378468
+        ],
+        "max": [
+          -197.103708144407,
+          14.746231575753026,
+          187.6717133658479
+        ]
+      },
+      {
+        "code": "M11",
+        "name": "Symbiomatter Conservatory",
+        "min": [
+          -178.97018771977758,
+          1.6960000000000002,
+          202.6438144319533
+        ],
+        "max": [
+          -157.03652861007254,
+          5.442985438258243,
+          225.4571926488405
+        ]
+      },
+      {
+        "code": "M12",
+        "name": "Vitrimer House",
+        "min": [
+          -133.48722591264055,
+          1.696929664893853,
+          236.18081923677542
+        ],
+        "max": [
+          -114.88310314214613,
+          6.012731878506679,
+          254.618239915078
+        ]
+      },
+      {
+        "code": "M13",
+        "name": "Fourth-Form Foundry",
+        "min": [
+          -246.26870541001213,
+          1.4926742973712859,
+          165.8568803906791
+        ],
+        "max": [
+          -219.38498660199375,
+          10.516,
+          191.65499530505832
+        ]
+      },
+      {
+        "code": "M14",
+        "name": "Second-Life Materials Exchange",
+        "min": [
+          -207.48615598262884,
+          1.666,
+          212.8277379222541
+        ],
+        "max": [
+          -186.3336663420085,
+          6.766,
+          234.94409459836012
+        ]
+      },
+      {
+        "code": "M15",
+        "name": "Atomic Cartography Observatory",
+        "min": [
+          -211.08665618568102,
+          1.8626301270574332,
+          143.51661587114563
+        ],
+        "max": [
+          -191.27112208786644,
+          9.406,
+          164.34064917026086
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "MATTER__MATTER_CRESCENT",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__ADAPTIVE_BELT_ROUTE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__OUTER_FORGE_FREIGHT_ROUTE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__CRYSTAL_AXIS_CROSSING_1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__CRYSTAL_AXIS_CROSSING_2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__CRYSTAL_AXIS_CROSSING_3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__CRYSTAL_AXIS_CROSSING_4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__CRYSTAL_AXIS_CROSSING_5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M10",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M11",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M12",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M13",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M14",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "MATTER__BUILDING_APPROACH_M15",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -78.7363777160644,
+      1.6459999984502793,
+      254.3688092877725
+    ],
+    "roadNext": [
+      -85.92024803161615,
+      1.6459999984502793,
+      252.03297287725005
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "buildingCount": 15,
+      "circulation": {
+        "primaryPromenade": "MATTER__MATTER_CRESCENT",
+        "adaptiveBeltRoute": "MATTER__ADAPTIVE_BELT_ROUTE",
+        "forgeFreightRoute": "MATTER__OUTER_FORGE_FREIGHT_ROUTE",
+        "phaseDiagramPlaza": true,
+        "crystallographicCrossings": 5,
+        "exactBuildingApproaches": 15
+      },
+      "zones": {
+        "innerPrecisionArc": [
+          "The Matter Compiler",
+          "Laminaris Institute",
+          "Topologica Hall",
+          "Photon Weave Institute",
+          "Atomic Cartography Observatory"
+        ],
+        "centralAdaptiveBelt": [
+          "Morphostructure Pavilion",
+          "The Ion Vault",
+          "Porosium Towers",
+          "Vitrimer House"
+        ],
+        "outerForgeFront": [
+          "Polyphase Forge",
+          "Aegis Bastion",
+          "Ceramatrix Works",
+          "Fourth-Form Foundry",
+          "Second-Life Materials Exchange"
+        ],
+        "forestTransition": [
+          "Porosium Towers",
+          "Symbiomatter Conservatory",
+          "Vitrimer House"
+        ]
+      },
+      "signatureSystems": {
+        "compilerHexBlocks": 6,
+        "laminarPlates": 7,
+        "topologicalCrescents": 2,
+        "morphostructureCellMembers": 72,
+        "polyphaseVolumes": 8,
+        "aegisShells": 3,
+        "ceramatrixArches": 7,
+        "ionCellVolumes": 5,
+        "photonOpticalFins": 96,
+        "porousTowerCount": 2,
+        "symbiomatterPavilions": 5,
+        "vitrimerVolumes": 3,
+        "fourthFormGantryPrinters": 3,
+        "secondLifeHalls": 3,
+        "atomicInstrumentPods": 5
+      }
+    },
+    "specializedRevision": 15,
+    "deepDistrict": {
+      "identity": "Material Science Labs District — The Matter Crescent",
+      "mapLabel": "Materials Science Labs",
+      "architecturalLanguage": "a physical catalogue of possible matter using dark structural frames, pale mineral paving, replaceable alloy and ceramic cassettes, responsive polymers, porous membranes, bio-derived composites, precise luminous passports, and exposed scientific infrastructure",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "M1",
+          "name": "The Matter Compiler",
+          "subtitle": "Autonomous Materials Discovery Foundry",
+          "purpose": "AI-guided discovery, robotic synthesis, high-throughput experimentation, computational materials design, and closed-loop optimization",
+          "placementZone": "Inner Precision Arc civic anchor",
+          "footprintMetres": [
+            184,
+            164
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "six interlocking hexagonal blocks around an open void, replaceable material cassettes, robotic transfer slots, cantilevered entry, and circular roof gantry"
+        },
+        {
+          "code": "M2",
+          "name": "Laminaris Institute",
+          "subtitle": "Two-Dimensional and Moiré Materials Laboratory",
+          "purpose": "Graphene-class systems, transition-metal dichalcogenides, van der Waals heterostructures, moiré materials, and atomically thin electronics",
+          "placementZone": "Inner Precision Arc layered-matter edge",
+          "footprintMetres": [
+            166,
+            122
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "seven ultra-thin floating plates, interference-coated glass, membrane canopy, flexible wind ribbons, and luminous layer edges"
+        },
+        {
+          "code": "M3",
+          "name": "Topologica Hall",
+          "subtitle": "Quantum, Superconducting and Spin Materials Institute",
+          "purpose": "Quantum materials, topological phases, superconductors, spintronics, magnetic textures, and strongly correlated matter",
+          "placementZone": "Inner Precision Arc quiet quantum sector",
+          "footprintMetres": [
+            172,
+            138
+          ],
+          "heightMetres": 34,
+          "exteriorMotif": "two graphite crescent wings around an inaccessible void, a continuous twisted metallic ribbon, reflecting basin, and three cryogenic towers"
+        },
+        {
+          "code": "M4",
+          "name": "Morphostructure Pavilion",
+          "subtitle": "Programmable and Mechanical Metamaterials Laboratory",
+          "purpose": "Architected matter, auxetic structures, mechanical metamaterials, shape-memory systems, liquid-crystal elastomers, and trainable materials",
+          "placementZone": "Central Adaptive Belt western gateway",
+          "footprintMetres": [
+            176,
+            146
+          ],
+          "heightMetres": 48,
+          "exteriorMotif": "five-storey oval inside a reconfigurable cellular exoskeleton, auxetic canopy, metamaterial columns, and articulated roof scales"
+        },
+        {
+          "code": "M5",
+          "name": "Polyphase Forge",
+          "subtitle": "High-Entropy and Complex-Concentrated Alloys Center",
+          "purpose": "High-entropy alloys, multi-principal-element systems, refractory alloys, metallic glasses, and compositionally complex nanoparticles",
+          "placementZone": "Outer Forge Front industrial gateway",
+          "footprintMetres": [
+            190,
+            148
+          ],
+          "heightMetres": 66,
+          "exteriorMotif": "eight rotated ingot-like volumes in distinct metal finishes, exposure strips, triangular entrance, quench towers, and alloy test court"
+        },
+        {
+          "code": "M6",
+          "name": "Aegis Bastion",
+          "subtitle": "Extreme-Environment, Fusion and Radiation Materials Laboratory",
+          "purpose": "Fusion, radiation damage, plasma-facing components, hypersonic heating, high-pressure environments, severe corrosion, and long-duration space exposure",
+          "placementZone": "Outer Forge Front astronomy-facing boundary",
+          "footprintMetres": [
+            182,
+            150
+          ],
+          "heightMetres": 58,
+          "exteriorMotif": "three nested technical shells, numbered sacrificial armour fields, zigzag blast-wall approach, circular portal, and shielded test yard"
+        },
+        {
+          "code": "M7",
+          "name": "Ceramatrix Works",
+          "subtitle": "Ultrahigh-Temperature Ceramics and Composite Materials Center",
+          "purpose": "Ultrahigh-temperature ceramics, ceramic-matrix composites, thermal barriers, structural ceramics, and woven reinforcement systems",
+          "placementZone": "Outer Forge Front ceramic-production center",
+          "footprintMetres": [
+            188,
+            142
+          ],
+          "heightMetres": 61,
+          "exteriorMotif": "leaning interlocking shell arches, woven ceramic ribs, thermal-tile sawteeth, long ceramic entrance blade, and fracture court"
+        },
+        {
+          "code": "M8",
+          "name": "The Ion Vault",
+          "subtitle": "Solid-State Battery and Ionic Materials Institute",
+          "purpose": "Solid electrolytes, ion-conducting ceramics, metal-anode interfaces, multivalent systems, electrochemical materials, and grid-scale storage chemistry",
+          "placementZone": "Central Adaptive Belt energy interface",
+          "footprintMetres": [
+            178,
+            126
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "five offset ceramic cell volumes, dark compression frames, electrochromic bands, transparent bridge entrance, heat channels, and migrating interface light"
+        },
+        {
+          "code": "M9",
+          "name": "Photon Weave Institute",
+          "subtitle": "Photonic, Optoelectronic and Wide-Bandgap Materials Laboratory",
+          "purpose": "Photonic materials, optical metasurfaces, transparent electronics, wide-bandgap semiconductors, quantum emitters, and structural colour",
+          "placementZone": "Inner Precision Arc optical landmark",
+          "footprintMetres": [
+            148,
+            126
+          ],
+          "heightMetres": 78,
+          "exteriorMotif": "eight-storey prism wrapped in optical fins, triangular corner voids with reflective thread meshes, inverted-prism entry, and heliostat crown"
+        },
+        {
+          "code": "M10",
+          "name": "Porosium Towers",
+          "subtitle": "Porous Frameworks, Membranes and Atmospheric Materials Center",
+          "purpose": "Metal-organic frameworks, covalent organic frameworks, selective membranes, gas separation, atmospheric water capture, carbon sorbents, and molecular sieves",
+          "placementZone": "Central Adaptive Belt forest-facing collector",
+          "footprintMetres": [
+            170,
+            142
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "unequal porous towers with progressively opening cellular exoskeletons, flared collector crowns, condensation columns, and membrane ribbons"
+        },
+        {
+          "code": "M11",
+          "name": "Symbiomatter Conservatory",
+          "subtitle": "Living, Biofabricated and Bio-Inspired Materials Laboratory",
+          "purpose": "Mycelium composites, bacterial cellulose, engineered living materials, biomineralization, adaptive bio-composites, and biologically assisted manufacturing",
+          "placementZone": "Forest Transition beside the Temperate Deciduous Forest Dome",
+          "footprintMetres": [
+            186,
+            154
+          ],
+          "heightMetres": 38,
+          "exteriorMotif": "low branching pavilions beneath leaf-vein roofs, replaceable grown wall blocks, monitored living panels, braided arch, and constructed wetlands"
+        },
+        {
+          "code": "M12",
+          "name": "Vitrimer House",
+          "subtitle": "Self-Healing, Reprocessable and Adaptive Polymer Institute",
+          "purpose": "Vitrimers, self-healing polymers, reversible networks, recyclable thermosets, soft actuators, and stress-responsive materials",
+          "placementZone": "Central Adaptive Belt forest transition",
+          "footprintMetres": [
+            158,
+            128
+          ],
+          "heightMetres": 36,
+          "exteriorMotif": "three continuous rounded volumes under translucent elastomer membranes, visible healed scars, seam entry, responsive polymer alley, and inflated roof ridges"
+        },
+        {
+          "code": "M13",
+          "name": "Fourth-Form Foundry",
+          "subtitle": "Additive, Gradient and 4D Manufacturing Center",
+          "purpose": "Multi-material additive manufacturing, large-scale printing, graded materials, embedded electronics, 4D-printed structures, and robotic fabrication",
+          "placementZone": "Outer Forge Front freight-oriented fabrication edge",
+          "footprintMetres": [
+            208,
+            160
+          ],
+          "heightMetres": 52,
+          "exteriorMotif": "long hall crossed by a continuous printed branching exoskeleton, coarse-to-fine layer gradient, immense segmented doors, spiral canopy, and mobile gantry printers"
+        },
+        {
+          "code": "M14",
+          "name": "Second-Life Materials Exchange",
+          "subtitle": "Circular Materials, Deconstruction and Urban Mining Institute",
+          "purpose": "Material recovery, reversible construction, selective disassembly, critical-material recycling, remanufacturing, and circular product systems",
+          "placementZone": "Outer Forge Front circular-materials yard",
+          "footprintMetres": [
+            190,
+            148
+          ],
+          "heightMetres": 46,
+          "exteriorMotif": "three stepped halls assembled on a strict reuse grid, visible reversible connectors and passports, turbine-blade arch, deconstruction court, and removable roof cassettes"
+        },
+        {
+          "code": "M15",
+          "name": "Atomic Cartography Observatory",
+          "subtitle": "Atom-Resolved Characterization and Materials Imaging Center",
+          "purpose": "Electron microscopy, atom-probe techniques, ultrafast characterization, spectroscopy, nanoscale tomography, and in-situ materials observation",
+          "placementZone": "Inner Precision Arc vibration-isolated eastern end",
+          "footprintMetres": [
+            172,
+            126
+          ],
+          "heightMetres": 27,
+          "exteriorMotif": "low pale instrument-like volume floating above a black isolation base and moat, five independent polished pods, aligned bridge entry, metrology mast, and atomic light grid"
+        }
+      ],
+      "zones": {
+        "innerPrecisionArc": [
+          "The Matter Compiler",
+          "Laminaris Institute",
+          "Topologica Hall",
+          "Photon Weave Institute",
+          "Atomic Cartography Observatory"
+        ],
+        "centralAdaptiveBelt": [
+          "Morphostructure Pavilion",
+          "The Ion Vault",
+          "Porosium Towers",
+          "Vitrimer House"
+        ],
+        "outerForgeFront": [
+          "Polyphase Forge",
+          "Aegis Bastion",
+          "Ceramatrix Works",
+          "Fourth-Form Foundry",
+          "Second-Life Materials Exchange"
+        ],
+        "forestTransition": [
+          "Porosium Towers",
+          "Symbiomatter Conservatory",
+          "Vitrimer House"
+        ]
+      },
+      "circulation": {
+        "primaryPromenade": "MATTER__MATTER_CRESCENT",
+        "adaptiveBeltRoute": "MATTER__ADAPTIVE_BELT_ROUTE",
+        "forgeFreightRoute": "MATTER__OUTER_FORGE_FREIGHT_ROUTE",
+        "phaseDiagramPlaza": true,
+        "crystallographicCrossings": 5,
+        "exactBuildingApproaches": 15
+      },
+      "signatureSystems": {
+        "compilerHexBlocks": 6,
+        "laminarPlates": 7,
+        "topologicalCrescents": 2,
+        "morphostructureCellMembers": 72,
+        "polyphaseVolumes": 8,
+        "aegisShells": 3,
+        "ceramatrixArches": 7,
+        "ionCellVolumes": 5,
+        "photonOpticalFins": 96,
+        "porousTowerCount": 2,
+        "symbiomatterPavilions": 5,
+        "vitrimerVolumes": 3,
+        "fourthFormGantryPrinters": 3,
+        "secondLifeHalls": 3,
+        "atomicInstrumentPods": 5
+      },
+      "materialPassportGrid": true,
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "materials-science-lab",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 36,
+        "triangles": 117222,
+        "animationNodes": 2
+      },
+      "renderImportance": {
+        "mandatory": 2643,
+        "micro": 54,
+        "visibleMicro": 54,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 2695,
+        "active": 2695,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000011733,
+    "grounded": true,
+    "position": [
+      -78.891,
+      1.808,
+      254.319
+    ]
+  },
+  "errors": []
+}

@@ -7,7 +7,7 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-const TARGET_BUILDING_COUNT = 286;
+const TARGET_BUILDING_COUNT = 297;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -241,13 +241,13 @@ try {
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
     || fullAudit.stats.drawCalls > 1_500
-    // The fifteen-building Astronomy / Astrobiology campus replaces four
-    // generic anchors and brings the audited full-island baseline to 747 GPU
-    // batches and about 3.15M triangles. Preserve a small regression margin
-    // above that authored baseline while keeping the draw-call ceiling fixed.
-    || fullStreaming.gpuBatching.batchCount > 755
+    // The fifteen-building Materials Science campus replaces four generic
+    // anchors and brings the audited full-island baseline to 772 GPU batches
+    // and about 3.26M triangles. Preserve a small regression margin above that
+    // authored baseline while keeping the draw-call ceiling fixed.
+    || fullStreaming.gpuBatching.batchCount > 790
     || fullAudit.stats.textureCount > 400
-    || fullAudit.stats.triangles > 3_250_000
+    || fullAudit.stats.triangles > 3_350_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0

@@ -33,6 +33,7 @@
     "test:inorganic-chemistry": "node scripts/inorganic-chemistry-labs-district-smoke.mjs",
     "test:particle-physics": "node scripts/particle-physics-labs-district-smoke.mjs",
     "test:astronomy-astrobiology": "node scripts/astronomy-astrobiology-labs-district-smoke.mjs",
+    "test:materials-science": "node scripts/materials-science-labs-district-smoke.mjs",
     "test:authored-exterior-selection": "node scripts/authored-exterior-selection-persistence-smoke.mjs",
     "test:district-walkability": "node scripts/all-district-walkability-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",

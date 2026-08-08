@@ -35,20 +35,20 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2671,
+    "liveRenderObjectCount": 2691,
     "batchOccupancy": {
-      "capacity": 45188,
-      "active": 44058,
-      "ratio": 0.9749933610693104
+      "capacity": 47831,
+      "active": 46647,
+      "ratio": 0.975246179256131
     },
     "microdetail": {
-      "total": 320,
+      "total": 374,
       "visible": 8,
-      "culled": 312
+      "culled": 366
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 26887,
+    "detachedAuthoringSourceCount": 29530,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 747,
-      "batchedSourceCount": 26887,
-      "retainedSourceCount": 28811,
-      "estimatedGeometryBytes": 84351036,
-      "estimatedTextureBytes": 187247691,
-      "instancedBatchCount": 159,
-      "batchedMeshBatchCount": 114,
-      "mergedBatchCount": 474,
+      "batchCount": 772,
+      "batchedSourceCount": 29530,
+      "retainedSourceCount": 31449,
+      "estimatedGeometryBytes": 87041496,
+      "estimatedTextureBytes": 185155781,
+      "instancedBatchCount": 170,
+      "batchedMeshBatchCount": 115,
+      "mergedBatchCount": 487,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -975,20 +975,20 @@
         "pinned": false,
         "distanceMetres": 10973,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3216,
-          "animationNodes": 0
+          "drawCalls": 36,
+          "triangles": 117222,
+          "animationNodes": 2
         },
         "renderImportance": {
-          "mandatory": 59,
-          "micro": 0,
+          "mandatory": 2643,
+          "micro": 54,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 54
         },
         "batchOccupancy": {
-          "capacity": 52,
-          "active": 52,
-          "ratio": 1
+          "capacity": 2695,
+          "active": 2641,
+          "ratio": 0.9799628942486085
         }
       },
       {
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 286,
+  "buildingCount": 297,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -5970,8 +5970,8 @@
     {
       "districtId": "materials-science-lab",
       "name": "Materials Science Lab District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 15,
+      "discoveredCount": 15,
       "packageState": {
         "id": "materials-science-lab",
         "kind": "district",
@@ -5989,104 +5989,335 @@
         "pinned": false,
         "distanceMetres": 10973,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3216,
-          "animationNodes": 0
+          "drawCalls": 36,
+          "triangles": 117222,
+          "animationNodes": 2
         },
         "renderImportance": {
-          "mandatory": 59,
-          "micro": 0,
+          "mandatory": 2643,
+          "micro": 54,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 54
         },
         "batchOccupancy": {
-          "capacity": 52,
-          "active": 52,
-          "ratio": 1
+          "capacity": 2695,
+          "active": 2641,
+          "ratio": 0.9799628942486085
         }
       },
       "buildingReports": [
         {
           "districtId": "materials-science-lab",
-          "name": "Structural Materials Test Hall",
-          "rootName": "materials-science-lab__FACILITY__STRUCTURAL-MATERIALS-TEST-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Matter Compiler",
+          "rootName": "MATTER__M1__MATTER_COMPILER",
+          "code": "M1",
+          "representedSourceCount": 577,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "visibleBatchSources": 577,
+          "authoredBatchedSources": 577,
+          "expectedRuntimeBatchSources": 577,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.305,
-            8.931
+            18.043,
+            8.73,
+            18.945
           ],
           "failures": []
         },
         {
           "districtId": "materials-science-lab",
-          "name": "High-Temperature Furnace Block",
-          "rootName": "materials-science-lab__FACILITY__HIGH-TEMPERATURE-FURNACE-BLOCK",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "Laminaris Institute",
+          "rootName": "MATTER__M2__LAMINARIS_INSTITUTE",
+          "code": "M2",
+          "representedSourceCount": 53,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
+          "visibleBatchSources": 53,
+          "authoredBatchedSources": 53,
+          "expectedRuntimeBatchSources": 53,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.97,
-            8.2
+            17.601,
+            5.341,
+            16.288
           ],
           "failures": []
         },
         {
           "districtId": "materials-science-lab",
-          "name": "Advanced Composites Laboratory",
-          "rootName": "materials-science-lab__FACILITY__ADVANCED-COMPOSITES-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Topologica Hall",
+          "rootName": "MATTER__M3__TOPOLOGICA_HALL",
+          "code": "M3",
+          "representedSourceCount": 177,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 177,
+          "authoredBatchedSources": 177,
+          "expectedRuntimeBatchSources": 177,
+          "mandatoryArchitecturalSources": 4,
+          "representedMandatorySources": 4,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.364,
-            8.275
+            14.907,
+            6.24,
+            15.535
           ],
           "failures": []
         },
         {
           "districtId": "materials-science-lab",
-          "name": "Specimen Preparation Hangar",
-          "rootName": "materials-science-lab__FACILITY__SPECIMEN-PREPARATION-HANGAR",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Morphostructure Pavilion",
+          "rootName": "MATTER__M4__MORPHOSTRUCTURE_PAVILION",
+          "code": "M4",
+          "representedSourceCount": 126,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 126,
+          "authoredBatchedSources": 126,
+          "expectedRuntimeBatchSources": 126,
+          "mandatoryArchitecturalSources": 41,
+          "representedMandatorySources": 41,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.706,
-            8.931
+            19.8,
+            5.595,
+            17.014
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Polyphase Forge",
+          "rootName": "MATTER__M5__POLYPHASE_FORGE",
+          "code": "M5",
+          "representedSourceCount": 88,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 88,
+          "authoredBatchedSources": 88,
+          "expectedRuntimeBatchSources": 88,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.994,
+            8.767,
+            18.933
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Aegis Bastion",
+          "rootName": "MATTER__M6__AEGIS_BASTION",
+          "code": "M6",
+          "representedSourceCount": 113,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 113,
+          "authoredBatchedSources": 113,
+          "expectedRuntimeBatchSources": 113,
+          "mandatoryArchitecturalSources": 4,
+          "representedMandatorySources": 4,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.93,
+            6.248,
+            23.79
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Ceramatrix Works",
+          "rootName": "MATTER__M7__CERAMATRIX_WORKS",
+          "code": "M7",
+          "representedSourceCount": 91,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 91,
+          "authoredBatchedSources": 91,
+          "expectedRuntimeBatchSources": 91,
+          "mandatoryArchitecturalSources": 39,
+          "representedMandatorySources": 39,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.24,
+            9.674,
+            16.388
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "The Ion Vault",
+          "rootName": "MATTER__M8__ION_VAULT",
+          "code": "M8",
+          "representedSourceCount": 38,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 38,
+          "authoredBatchedSources": 38,
+          "expectedRuntimeBatchSources": 38,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.64,
+            8.802,
+            16.7
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Photon Weave Institute",
+          "rootName": "MATTER__M9__PHOTON_WEAVE_INSTITUTE",
+          "code": "M9",
+          "representedSourceCount": 170,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 170,
+          "authoredBatchedSources": 170,
+          "expectedRuntimeBatchSources": 170,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.5,
+            12.25,
+            17.265
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Porosium Towers",
+          "rootName": "MATTER__M10__POROSIUM_TOWERS",
+          "code": "M10",
+          "representedSourceCount": 245,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 245,
+          "authoredBatchedSources": 245,
+          "expectedRuntimeBatchSources": 245,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.738,
+            13.08,
+            13.688
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Symbiomatter Conservatory",
+          "rootName": "MATTER__M11__SYMBIOMATTER_CONSERVATORY",
+          "code": "M11",
+          "representedSourceCount": 197,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 197,
+          "authoredBatchedSources": 197,
+          "expectedRuntimeBatchSources": 197,
+          "mandatoryArchitecturalSources": 55,
+          "representedMandatorySources": 55,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.529,
+            3.747,
+            17.629
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Vitrimer House",
+          "rootName": "MATTER__M12__VITRIMER_HOUSE",
+          "code": "M12",
+          "representedSourceCount": 65,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 65,
+          "authoredBatchedSources": 65,
+          "expectedRuntimeBatchSources": 65,
+          "mandatoryArchitecturalSources": 9,
+          "representedMandatorySources": 9,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.009,
+            4.316,
+            15.253
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Fourth-Form Foundry",
+          "rootName": "MATTER__M13__FOURTH_FORM_FOUNDRY",
+          "code": "M13",
+          "representedSourceCount": 133,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 133,
+          "authoredBatchedSources": 133,
+          "expectedRuntimeBatchSources": 133,
+          "mandatoryArchitecturalSources": 31,
+          "representedMandatorySources": 31,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.6,
+            9.023,
+            21.94
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Second-Life Materials Exchange",
+          "rootName": "MATTER__M14__SECOND_LIFE_MATERIALS_EXCHANGE",
+          "code": "M14",
+          "representedSourceCount": 276,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 276,
+          "authoredBatchedSources": 276,
+          "expectedRuntimeBatchSources": 276,
+          "mandatoryArchitecturalSources": 113,
+          "representedMandatorySources": 113,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.4,
+            5.1,
+            19.79
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "materials-science-lab",
+          "name": "Atomic Cartography Observatory",
+          "rootName": "MATTER__M15__ATOMIC_CARTOGRAPHY_OBSERVATORY",
+          "code": "M15",
+          "representedSourceCount": 88,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 86,
+          "authoredBatchedSources": 86,
+          "expectedRuntimeBatchSources": 86,
+          "mandatoryArchitecturalSources": 57,
+          "representedMandatorySources": 57,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.198,
+            7.543,
+            16.921
           ],
           "failures": []
         }

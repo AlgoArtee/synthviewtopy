@@ -99,7 +99,6 @@ const GENERIC_DISTRICT_IDS = new Set([
   'astronomy-astrobiology-labs',
   'luxury-entertainment',
   'scientist-residential',
-  'materials-science-lab',
   'financial-funding',
   'environmental-science-labs',
 ]);
@@ -135,6 +134,7 @@ const ROUTE_FLAG_KEYS = [
   'organicChemistryRoute',
   'inorganicChemistryRoute',
   'particlePhysicsRoute',
+  'materialsScienceRoute',
 ] as const;
 
 // Match semantic name tokens, not arbitrary substrings: the previous broad

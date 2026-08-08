@@ -175,6 +175,15 @@ The south-eastern perimeter Particle Physics Labs District is a fifteen-building
 - The northern theory ridge progresses from crystalline **Amplituhedron House** through the seven displaced regimes of **The Renormalization Tower** to the dark-to-pale expansion of **Genesis Spiral**.
 - Event Track Promenade, Theory Ridge Path, Data Coast Service Road, Probability Field Spine, four curved operational links, and fifteen exact approaches form 23 grounded routes. Shared primitive geometry, instanced facade/landscape fields, low-segment curves, HLOD/full-island batching, selective animation, and sparse linear lighting keep the district performance-conscious while preserving every building's authored silhouette. Interiors remain intentionally deferred by the exterior specification.
 
+## Industrial District Labs
+
+The southern perimeter Industrial District is a fifteen-facility production landscape arranged around the Production Meridian. Blackened steel, basalt, soot-stained ceramic, white process vessels, amber guidance light, and exposed pipe-and-conveyor infrastructure distinguish it from the neighboring research campuses.
+
+- **Shift Meridian**, **Continuous Works**, **Black Kiln**, **Vacuum Casting Cathedral**, and **Metamaterial Loomworks** form the logistics, continuous-production, induction, vacuum-casting, and precision-fabrication front.
+- **Cryogenic Forming Plant**, **Additive Megafabrication Yard**, **Autonomous Microfactory Hive**, **Biogenic Materials Foundry**, and **Machine Genesis Hall** expose their forming ports, gantry printers, cellular production units, bioreactors, machine datum grids, and calibration doors to the main works route.
+- **Destructive Testing Monolith**, **Platform Zero**, **Thermal Recovery & Process Power Station**, **Closed-Loop Reclamation Works**, and **Building Ø** complete the heavy-test, rail-logistics, energy-recovery, reclamation, and classified perimeter sequence.
+- Production Meridian, the credential route, seawall loop, five crossings, fifteen exact approaches, seven enclosed conveyors, eighteen pipe-rack spans, and Platform Zero's rail fan form the district circulation and process skyline. The previous automatic industrial building is preserved as a relocated **Legacy Automatic Works Annex**, while its coastal railway connection remains in its canonical alignment. The authored package participates in HLOD streaming, revision-16 persistence migration, selection, deterministic process animation, deep text-state inspection, WALK navigation, and GLB export.
+
 ## Astronomy / Astrobiology Labs District
 
 The south-western outer-middle ring is a fifteen-building dark-sky campus whose scientific gradient progresses from precision astronomy, time-domain observations, multi-messenger coordination, radio cosmology, space weather, metrology, and planetary defense toward biosignatures, ocean worlds, origins of life, protected samples, extremophiles, alternative biochemistry, and planet-forming disks.
@@ -333,6 +342,7 @@ Hold **Shift** while clicking **Export scene** to download `YouTopy_Lab_Island.p
 | `src/world/securityDistrict.ts` | Fifteen-facility Aegis Arc exterior, curved security roads, embedded lighting, plazas, transparent landscaping, and district metadata |
 | `src/world/molecularBiologyDistrict.ts` | Ten-facility molecular-biology exterior, Molecular Meridian circulation, interaction plazas, information-light network, sensor landscapes, and deterministic scientific animation |
 | `src/world/inorganicChemistryLabsDistrict.ts` | Fifteen-facility mineral-and-lattice Inorganic Chemistry exterior, Valence Avenue circulation, selective node lighting, process machinery, and deterministic scientific animation |
+| `src/world/industrialLabsDistrict.ts` | Fifteen-facility Industrial production landscape, Production Meridian, rail fan, pipe and conveyor skyline, deterministic process animation, and relocated legacy annex |
 | `src/world/particlePhysicsLabsDistrict.ts` | Fifteen-facility Particle Physics exterior, central convention ring, event-track circulation, low-signal garden, northern theory ridge, fortified Data Coast, and deterministic data pulses |
 | `src/world/computationalBiologyLabsDistrict.ts` | Ten-facility Computational Biology exterior, Inference Spine circulation, validation landscapes, scale transitions, and deterministic scientific signals |
 | `src/world/academicDistrict.ts` | Reusable Gothic building shells, furnished interiors, gate, quadrangles, garden, canal, service areas, hidden discoveries, semantic access, and optimization metadata |

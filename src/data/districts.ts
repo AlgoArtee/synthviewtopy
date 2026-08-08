@@ -562,10 +562,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [-29, 0, 28],
     footprint: [30, 18],
     height: 12,
-    archetype: "evacuated-automatic-industrial-campus",
+    archetype: "classified-continuous-production-landscape",
     accent: "#C4783B",
     palette: ["#182126", "#485052", "#9AA09D", "#C4783B"],
-    description: "A rain-darkened manufacturing district appears abruptly evacuated while isolated pumps, refrigeration, signals, and warning systems continue operating automatically.",
+    description: "Fifteen classified production facilities form one continuous machine landscape of assembly halls, foundries, vacuum vessels, fabrication yards, freight platforms, process power, reclamation systems, and unexplained reserve manufacturing; the earlier evacuated works survives as a relocated legacy annex.",
   },
   {
     id: "particle-physics-labs",

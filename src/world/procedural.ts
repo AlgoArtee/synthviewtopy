@@ -22,7 +22,7 @@ import {
   getAcademicSlateTextures,
   tileAcademicPathGeometry,
 } from './academicSurfaceTextures';
-import { buildIndustrialDistrict } from './industrialDistrict';
+import { buildIndustrialLabsDistrict } from './industrialLabsDistrict';
 import { buildEntryCommercialDistrict, buildLogisticsDistrict } from './entryLogisticsDistrict';
 import { buildSecurityDistrict } from './securityDistrict';
 import { buildSecretLabsDistrict } from './secretLabsDistrict';
@@ -2135,10 +2135,11 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
       child.userData.districtId = definition.id;
     });
     group.userData.population = {
+      ...(group.userData.population ?? {}),
       plannedFacilities: plan.facilities.map((facility) => facility.name),
       plannedObjects: plan.objects.map((object) => object.name),
-      realizedFacilityCount: 12,
-      realizedObjectCount: 32,
+      realizedFacilityCount: Number(group.userData.population?.realizedFacilityCount ?? plan.facilities.length + 1),
+      realizedObjectCount: Number(group.userData.population?.realizedObjectCount ?? 32),
       existingRichCampus: true,
       distinct: true,
     };
@@ -2765,7 +2766,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
     case 'infrastructure':
       if (definition.id === 'logistics') buildLogisticsDistrict(group, definition);
-      else if (definition.id === 'industrial-labs') buildIndustrialDistrict(group, definition);
+      else if (definition.id === 'industrial-labs') buildIndustrialLabsDistrict(group, definition);
       else buildInfrastructure(group, definition, height);
       break;
     case 'academic':

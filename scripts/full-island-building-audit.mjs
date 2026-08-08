@@ -95,23 +95,19 @@ try {
         if (metadataFacility) rawCandidates.push(object);
       });
 
-      // The legacy industrial campus predates facility metadata. Its authored
-      // building groups are direct district children with substantial opaque
-      // obstacle geometry; small vehicle/prop groups are deliberately excluded.
-      if (districtId === 'industrial-labs') {
-        district.children.forEach((object) => {
-          if (!object.isGroup || rawCandidates.includes(object)) return;
-          const bounds = new world.selectionBounds.constructor().setFromObject(object, true);
-          const size = bounds.getSize(world.camera.position.clone());
-          let primaryObstacleMeshes = 0;
-          object.traverse((child) => {
-            if (child.isMesh && child.userData.navObstacle === true) primaryObstacleMeshes += 1;
-          });
-          if (primaryObstacleMeshes > 0 && size.y >= 1.15 && Math.max(size.x, size.z) >= 1.2) rawCandidates.push(object);
-        });
+      // The preserved legacy annex predates batched facility metadata. Add its
+      // named root explicitly without treating process infrastructure as a lab.
+      const hasAuthoredIndustrialLegacy = rawCandidates.some((object) => (
+        object.userData.preservedExistingBuilding === true
+        || object.name === 'INDUSTRIAL__LEGACY_AUTOMATIC_WORKS_ANNEX'
+      ));
+      if (districtId === 'industrial-labs' && !hasAuthoredIndustrialLegacy) {
+        const legacyAnnex = district.getObjectByName('INDUSTRIAL__LEGACY_AUTOMATIC_WORKS_ANNEX');
+        if (legacyAnnex?.isGroup) rawCandidates.push(legacyAnnex);
       }
 
       const buildings = rawCandidates.filter((candidate) => {
+        if (candidate.name === 'INDUSTRIAL_NEW__DISTRICT_PRODUCTION_INFRASTRUCTURE') return false;
         let cursor = candidate.parent;
         while (cursor && cursor !== district) {
           if (rawCandidates.includes(cursor)) return false;

@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 15;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 16;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -183,6 +183,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'particle-physics-labs': 11,
   'astronomy-astrobiology-labs': 14,
   'materials-science-lab': 15,
+  'industrial-labs': 16,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -9307,6 +9308,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedMaterialsScience = selectedPackageId === 'materials-science-lab'
       ? this.objectGroups.get('materials-science-lab')?.userData.materialsScienceLabsDistrict
       : null;
+    const selectedIndustrialDistrict = selectedPackageId === 'industrial-labs'
+      ? this.objectGroups.get('industrial-labs')?.userData.industrialDistrict
+      : null;
     const districtRoadNetworks = districts.map((definition) => ({
       id: definition.id,
       network: this.objectGroups.get(definition.id)?.userData.districtRoadNetwork as {
@@ -9474,6 +9478,15 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         circulation: selectedMaterialsScience.circulation,
         zones: selectedMaterialsScience.zones,
         signatureSystems: selectedMaterialsScience.signatureSystems,
+      } : null,
+      industrialDistrict: selectedIndustrialDistrict ? {
+        buildingCount: selectedIndustrialDistrict.buildingCount,
+        preservedLegacyBuildingCount: selectedIndustrialDistrict.preservedLegacyBuildingCount,
+        facilities: selectedIndustrialDistrict.facilities,
+        circulation: selectedIndustrialDistrict.circulation,
+        zones: selectedIndustrialDistrict.zones,
+        signatureSystems: selectedIndustrialDistrict.signatureSystems,
+        legacyAnnex: selectedIndustrialDistrict.legacyAnnex,
       } : null,
       preparationMs: Number((performance.now() - startedAt).toFixed(3)),
     };

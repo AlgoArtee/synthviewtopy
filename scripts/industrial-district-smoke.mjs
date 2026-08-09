@@ -281,7 +281,7 @@ if (audit.sectorViolations.length) throw new Error(`Industrial facilities cross 
 if (audit.animated.length < 7) throw new Error(`Industrial automatic systems are too limited: ${audit.animated.join(', ')}`);
 if (audit.population?.realizedFacilityCount !== 16 || audit.industrial?.buildingCount !== 15 || audit.industrial?.preservedLegacyBuildingCount !== 1) throw new Error(`Industrial population metadata is incorrect: ${JSON.stringify({ population: audit.population, industrial: audit.industrial })}`);
 if (audit.textState.industrialDistrict?.buildingCount !== 15 || audit.textState.industrialDistrict?.facilities?.length !== 15) throw new Error(`Text state does not expose the complete fifteen-facility district: ${JSON.stringify(audit.textState.industrialDistrict)}`);
-if (audit.specializedRevision !== 16) throw new Error(`Expected specialized layout revision 16, received ${audit.specializedRevision}`);
+if (audit.specializedRevision !== 17) throw new Error(`Expected specialized layout revision 17, received ${audit.specializedRevision}`);
 if (!audit.railExtension?.coastalRailwayPreserved || audit.railExtension?.connectionPoints?.length !== 2) throw new Error(`Coastal railway or relocated legacy metadata is incomplete: ${JSON.stringify(audit.railExtension)}`);
 if (Math.abs(audit.walk.eyeClearance - 0.162) > 0.002 || !audit.walk.grounded || audit.walk.moved < 0.16) throw new Error(`Industrial WALK validation failed: ${JSON.stringify(audit.walk)}`);
 if (consoleErrors.length) throw new Error(`Browser console errors: ${consoleErrors.join(' | ')}`);

@@ -27,6 +27,7 @@
     "test:forensic": "node scripts/forensic-cyberforensic-district-smoke.mjs",
     "test:genomics": "node scripts/genomics-labs-district-smoke.mjs",
     "test:proteomics": "node scripts/proteomics-labs-district-smoke.mjs",
+    "test:omics": "node scripts/omics-labs-district-smoke.mjs",
     "test:computational-biology": "node scripts/computational-biology-labs-district-smoke.mjs",
     "test:biochemistry": "node scripts/biochemistry-labs-district-smoke.mjs",
     "test:organic-chemistry": "node scripts/organic-chemistry-labs-district-smoke.mjs",

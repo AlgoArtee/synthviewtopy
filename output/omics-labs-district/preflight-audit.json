@@ -1,0 +1,544 @@
+{
+  "program": {
+    "identity": "Omics Labs District",
+    "scientificSequence": [
+      "Map",
+      "Perturb",
+      "Expose",
+      "Measure Flux",
+      "Integrate"
+    ],
+    "architecturalLanguage": "integration, causality, time, biological context, exposed scientific infrastructure, and restrained operational signals",
+    "buildingCount": 5,
+    "buildings": [
+      {
+        "code": "O1",
+        "name": "The Atlas Loom",
+        "subtitle": "Single-Cell and Spatial Multi-Omics Institute",
+        "purpose": "Single-cell multiomes, spatial molecular mapping, lineage reconstruction, in-situ sequencing, and three-dimensional tissue atlases",
+        "placementZone": "Map gateway at the coordinate-grid threshold",
+        "footprintMetres": [
+          154,
+          102
+        ],
+        "heightMetres": 70,
+        "exteriorMotif": "three asymmetrical tissue ribbons woven around Atlas Court, cut by glass fissures and four breathing cryogenic towers",
+        "continuumStage": "Map"
+      },
+      {
+        "code": "O2",
+        "name": "The Perturbome Foundry",
+        "subtitle": "Causal Omics and Functional Screening Complex",
+        "purpose": "CRISPR screens, Perturb-seq, lineage barcoding, combinatorial perturbation, organoid screening, and causal genotype-to-phenotype reconstruction",
+        "placementZone": "Perturbation and sterile-logistics belt",
+        "footprintMetres": [
+          194,
+          68
+        ],
+        "heightMetres": 58,
+        "exteriorMotif": "replaceable black research cartridges fixed to a silver exoskeleton and cut by the triangular Null Gate",
+        "continuumStage": "Perturb"
+      },
+      {
+        "code": "O3",
+        "name": "The Exposome Exchange",
+        "subtitle": "Environmental, Microbiome and Host-Response Observatory",
+        "purpose": "Human and environmental exposomics, microbiome-host interaction, airborne surveillance, wastewater monitoring, and climate-associated molecular response",
+        "placementZone": "Open environmental interface",
+        "footprintMetres": [
+          136,
+          124
+        ],
+        "heightMetres": 61,
+        "exteriorMotif": "an incomplete rising ring with a responsive sampling veil, ecological court, and five tuning-fork intake towers",
+        "continuumStage": "Expose"
+      },
+      {
+        "code": "O4",
+        "name": "The Flux Cathedral",
+        "subtitle": "Metabolomics, Lipidomics, Glycomics and Isotope-Tracing Center",
+        "purpose": "Time-resolved metabolomics, lipidomics, glycomics, stable-isotope tracing, flux reconstruction, and mass-spectrometry imaging",
+        "placementZone": "Instrument and cryogenic service front",
+        "footprintMetres": [
+          132,
+          124
+        ],
+        "heightMetres": 112,
+        "exteriorMotif": "a tilted hollow analytical ring crossed by smaller trajectories, moving reference loops, and crystalline cooling towers",
+        "continuumStage": "Measure Flux"
+      },
+      {
+        "code": "O5",
+        "name": "The Convergence Vault",
+        "subtitle": "Longitudinal Pan-Omics Archive and Biological Digital-Twin Observatory",
+        "purpose": "Pan-omic integration, longitudinal cohorts, biological digital twins, population reference atlases, federated datasets, provenance, and predictive modeling",
+        "placementZone": "Terminal archival ridge",
+        "footprintMetres": [
+          182,
+          118
+        ],
+        "heightMetres": 64,
+        "exteriorMotif": "a partly buried stepped wedge of chronological strata beneath the black Chronome Needle",
+        "continuumStage": "Integrate"
+      }
+    ],
+    "circulation": {
+      "primaryRoute": "OMICS__OMIC_CONTINUUM",
+      "stages": 5,
+      "exactBuildingApproaches": 5,
+      "sampleTransitPathPoints": 49,
+      "transparentElevatedTransit": true
+    },
+    "signatureSystems": {
+      "atlasWings": 3,
+      "atlasFacadeCells": 270,
+      "cryogenicServiceTowers": 4,
+      "perturbationModules": 12,
+      "barcodeFins": 96,
+      "exposomeRingSegments": 24,
+      "atmosphericIntakeTowers": 5,
+      "ecologicalBands": 7,
+      "chromatographicFins": 96,
+      "crystallineCoolingTowers": 6,
+      "chronologicalGrooves": 64,
+      "chronomeBands": 36,
+      "thermalStrataFins": 32,
+      "autonomousCapsules": 10
+    },
+    "materials": [
+      "pale ivory cellular ceramic",
+      "matte black titanium",
+      "responsive metallic sampling mesh",
+      "brushed stainless steel",
+      "pale mineral concrete",
+      "black electrochromic glass"
+    ],
+    "lighting": [
+      "cool-white analytical",
+      "causal amber",
+      "context cyan",
+      "longitudinal violet"
+    ],
+    "exteriorOnly": true
+  },
+  "population": {
+    "plannedFacilities": [
+      "The Atlas Loom",
+      "The Perturbome Foundry",
+      "The Exposome Exchange",
+      "The Flux Cathedral",
+      "The Convergence Vault"
+    ],
+    "plannedObjects": [
+      "Omic Continuum",
+      "Transparent Autonomous Sample Transit",
+      "Environmental Calibration Masts",
+      "Sterile Sample Transfer Hatches",
+      "Stage-Specific Paving"
+    ],
+    "realizedFeatureTags": [
+      "the-atlas-loom",
+      "the-perturbome-foundry",
+      "the-exposome-exchange",
+      "the-flux-cathedral",
+      "the-convergence-vault"
+    ],
+    "realizedFacilityCount": 5,
+    "realizedObjectCount": 342,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 6,
+    "radialCoverage": 0.94,
+    "angularCoverage": 0.96,
+    "exteriorOnly": true,
+    "omicContinuumNarrative": true
+  },
+  "topLevelNames": [
+    "OMICS__DISTRICT_INTEGRATION_INFRASTRUCTURE",
+    "OMICS__DISTRICT_CONTEXT_AND_CALIBRATION_LANDSCAPE",
+    "OMICS__O1__ATLAS_LOOM",
+    "OMICS__O2__PERTURBOME_FOUNDRY",
+    "OMICS__O3__EXPOSOME_EXCHANGE",
+    "OMICS__O4__FLUX_CATHEDRAL",
+    "OMICS__O5__CONVERGENCE_VAULT",
+    "DISTRICT_ROADS__GENERATED_NETWORK"
+  ],
+  "codes": [
+    "O1",
+    "O2",
+    "O3",
+    "O4",
+    "O5"
+  ],
+  "facilityCount": 5,
+  "meshCount": 1680,
+  "triangleCount": 80536,
+  "uniqueNames": 1681,
+  "scaledMeshParentDetails": [],
+  "materialNames": [
+    "Omic Continuum dark chronological paving",
+    "Omic Continuum pale coordinate paving",
+    "Omic Continuum porous environmental mineral",
+    "Omics black electrochromic glass",
+    "Omics brushed silver titanium",
+    "Omics brushed stainless steel",
+    "Omics causal amber signal",
+    "Omics coastal ecological grass",
+    "Omics context cyan signal",
+    "Omics cool-white analytical light",
+    "Omics dark geological basalt",
+    "Omics longitudinal violet signal",
+    "Omics matte black titanium",
+    "Omics monitored mineral soil",
+    "Omics oxidized structural steel",
+    "Omics pale ivory cellular ceramic",
+    "Omics pale mineral concrete",
+    "Omics pale translucent calibration ceramic",
+    "Omics responsive environmental mesh",
+    "Omics shallow monitoring water",
+    "Omics smooth white utility enclosure",
+    "Omics sterile pale gravel",
+    "Omics transparent sterile sample glass"
+  ],
+  "animations": {
+    "omics-emissive-pulse": 354,
+    "omics-sample-transit": 10,
+    "omics-rotation": 5
+  },
+  "prefixCounts": {
+    "OMICS__O1__VORONOI_CELL_PANEL_": 270,
+    "OMICS__O2__MOLECULAR_BARCODE_FIN_": 96,
+    "OMICS__O3__RISING_INCOMPLETE_RING_SEGMENT_": 24,
+    "OMICS__O3__ENVIRONMENTAL_COLLECTION_PLATE_": 96,
+    "OMICS__O4__CHROMATOGRAPHIC_FACADE_FIN_": 96,
+    "OMICS__O5__CHRONOLOGICAL_CONCRETE_GROOVE_": 64,
+    "OMICS__O5__CHRONOME_TIME_BAND_": 36,
+    "OMICS__AUTONOMOUS_CRYOGENIC_CAPSULE_": 10
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "facilityBoxes": [
+    {
+      "code": "O1",
+      "min": [
+        -98.61449221626296,
+        1.666,
+        28.198655299749795
+      ],
+      "max": [
+        -84.55055440672729,
+        8.23363139784336,
+        45.210508158212384
+      ]
+    },
+    {
+      "code": "O2",
+      "min": [
+        -115.30882860608361,
+        1.6624002419811383,
+        11.897130994954232
+      ],
+      "max": [
+        -102.66745301302339,
+        7.331,
+        32.315957083648534
+      ]
+    },
+    {
+      "code": "O3",
+      "min": [
+        -105.65183012065134,
+        1.666,
+        -4.964066736539207
+      ],
+      "max": [
+        -92.87811592537125,
+        9.456000000000001,
+        7.162171661575793
+      ]
+    },
+    {
+      "code": "O4",
+      "min": [
+        -117.20070713904059,
+        0.9360664236984921,
+        -27.15951327866142
+      ],
+      "max": [
+        -101.12309851612541,
+        13.556724808418881,
+        -12.808002388418236
+      ]
+    },
+    {
+      "code": "O5",
+      "min": [
+        -100.03922695255895,
+        1.6610000000000005,
+        -51.10454793149942
+      ],
+      "max": [
+        -81.70413135445709,
+        12.666,
+        -29.904044892272005
+      ]
+    }
+  ],
+  "routeAudit": [
+    {
+      "name": "OMICS__OMIC_CONTINUUM",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "OMICS__BUILDING_APPROACH_O1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "OMICS__BUILDING_APPROACH_O2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "OMICS__BUILDING_APPROACH_O3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "OMICS__BUILDING_APPROACH_O4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "OMICS__BUILDING_APPROACH_O5",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "roadPoint": [
+    -105,
+    1.6459999984502793,
+    1.2858791391047208e-14
+  ],
+  "roadGround": 1.8860000000000001,
+  "textDistrict": {
+    "identity": "Omics Labs District",
+    "scientificSequence": [
+      "Map",
+      "Perturb",
+      "Expose",
+      "Measure Flux",
+      "Integrate"
+    ],
+    "architecturalLanguage": "integration, causality, time, biological context, exposed scientific infrastructure, and restrained operational signals",
+    "buildingCount": 5,
+    "buildings": [
+      {
+        "code": "O1",
+        "name": "The Atlas Loom",
+        "subtitle": "Single-Cell and Spatial Multi-Omics Institute",
+        "purpose": "Single-cell multiomes, spatial molecular mapping, lineage reconstruction, in-situ sequencing, and three-dimensional tissue atlases",
+        "placementZone": "Map gateway at the coordinate-grid threshold",
+        "footprintMetres": [
+          154,
+          102
+        ],
+        "heightMetres": 70,
+        "exteriorMotif": "three asymmetrical tissue ribbons woven around Atlas Court, cut by glass fissures and four breathing cryogenic towers",
+        "continuumStage": "Map"
+      },
+      {
+        "code": "O2",
+        "name": "The Perturbome Foundry",
+        "subtitle": "Causal Omics and Functional Screening Complex",
+        "purpose": "CRISPR screens, Perturb-seq, lineage barcoding, combinatorial perturbation, organoid screening, and causal genotype-to-phenotype reconstruction",
+        "placementZone": "Perturbation and sterile-logistics belt",
+        "footprintMetres": [
+          194,
+          68
+        ],
+        "heightMetres": 58,
+        "exteriorMotif": "replaceable black research cartridges fixed to a silver exoskeleton and cut by the triangular Null Gate",
+        "continuumStage": "Perturb"
+      },
+      {
+        "code": "O3",
+        "name": "The Exposome Exchange",
+        "subtitle": "Environmental, Microbiome and Host-Response Observatory",
+        "purpose": "Human and environmental exposomics, microbiome-host interaction, airborne surveillance, wastewater monitoring, and climate-associated molecular response",
+        "placementZone": "Open environmental interface",
+        "footprintMetres": [
+          136,
+          124
+        ],
+        "heightMetres": 61,
+        "exteriorMotif": "an incomplete rising ring with a responsive sampling veil, ecological court, and five tuning-fork intake towers",
+        "continuumStage": "Expose"
+      },
+      {
+        "code": "O4",
+        "name": "The Flux Cathedral",
+        "subtitle": "Metabolomics, Lipidomics, Glycomics and Isotope-Tracing Center",
+        "purpose": "Time-resolved metabolomics, lipidomics, glycomics, stable-isotope tracing, flux reconstruction, and mass-spectrometry imaging",
+        "placementZone": "Instrument and cryogenic service front",
+        "footprintMetres": [
+          132,
+          124
+        ],
+        "heightMetres": 112,
+        "exteriorMotif": "a tilted hollow analytical ring crossed by smaller trajectories, moving reference loops, and crystalline cooling towers",
+        "continuumStage": "Measure Flux"
+      },
+      {
+        "code": "O5",
+        "name": "The Convergence Vault",
+        "subtitle": "Longitudinal Pan-Omics Archive and Biological Digital-Twin Observatory",
+        "purpose": "Pan-omic integration, longitudinal cohorts, biological digital twins, population reference atlases, federated datasets, provenance, and predictive modeling",
+        "placementZone": "Terminal archival ridge",
+        "footprintMetres": [
+          182,
+          118
+        ],
+        "heightMetres": 64,
+        "exteriorMotif": "a partly buried stepped wedge of chronological strata beneath the black Chronome Needle",
+        "continuumStage": "Integrate"
+      }
+    ],
+    "circulation": {
+      "primaryRoute": "OMICS__OMIC_CONTINUUM",
+      "stages": 5,
+      "exactBuildingApproaches": 5,
+      "sampleTransitPathPoints": 49,
+      "transparentElevatedTransit": true
+    },
+    "signatureSystems": {
+      "atlasWings": 3,
+      "atlasFacadeCells": 270,
+      "cryogenicServiceTowers": 4,
+      "perturbationModules": 12,
+      "barcodeFins": 96,
+      "exposomeRingSegments": 24,
+      "atmosphericIntakeTowers": 5,
+      "ecologicalBands": 7,
+      "chromatographicFins": 96,
+      "crystallineCoolingTowers": 6,
+      "chronologicalGrooves": 64,
+      "chronomeBands": 36,
+      "thermalStrataFins": 32,
+      "autonomousCapsules": 10
+    },
+    "materials": [
+      "pale ivory cellular ceramic",
+      "matte black titanium",
+      "responsive metallic sampling mesh",
+      "brushed stainless steel",
+      "pale mineral concrete",
+      "black electrochromic glass"
+    ],
+    "lighting": [
+      "cool-white analytical",
+      "causal amber",
+      "context cyan",
+      "longitudinal violet"
+    ],
+    "exteriorOnly": true
+  },
+  "specializedRevision": 17,
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "compactDistrict": {
+    "buildingCount": 5,
+    "scientificSequence": [
+      "Map",
+      "Perturb",
+      "Expose",
+      "Measure Flux",
+      "Integrate"
+    ],
+    "circulation": {
+      "primaryRoute": "OMICS__OMIC_CONTINUUM",
+      "stages": 5,
+      "exactBuildingApproaches": 5,
+      "sampleTransitPathPoints": 49,
+      "transparentElevatedTransit": true
+    },
+    "signatureSystems": {
+      "atlasWings": 3,
+      "atlasFacadeCells": 270,
+      "cryogenicServiceTowers": 4,
+      "perturbationModules": 12,
+      "barcodeFins": 96,
+      "exposomeRingSegments": 24,
+      "atmosphericIntakeTowers": 5,
+      "ecologicalBands": 7,
+      "chromatographicFins": 96,
+      "crystallineCoolingTowers": 6,
+      "chronologicalGrooves": 64,
+      "chronomeBands": 36,
+      "thermalStrataFins": 32,
+      "autonomousCapsules": 10
+    }
+  },
+  "compactSelected": {
+    "id": "omics-labs",
+    "name": "Omics Labs District",
+    "category": "bioscience",
+    "packageId": "omics-labs",
+    "state": {
+      "position": {
+        "x": -105,
+        "y": 1.61,
+        "z": 1.2858791391047208e-14
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#6DD9D0",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    }
+  },
+  "streaming": {
+    "id": "omics-labs",
+    "kind": "district",
+    "loadState": "loaded",
+    "lifecyclePhase": "ready",
+    "loadProgress": 1,
+    "priorityReason": "selected",
+    "priorityScore": 1000000,
+    "visibleCandidate": true,
+    "visualLevel": "detail",
+    "detailResident": true,
+    "proxyVisible": false,
+    "midVisible": false,
+    "farVisible": false,
+    "pinned": true,
+    "distanceMetres": 0,
+    "estimatedCost": {
+      "drawCalls": 28,
+      "triangles": 82324,
+      "animationNodes": 2
+    },
+    "renderImportance": {
+      "mandatory": 1687,
+      "micro": 0,
+      "visibleMicro": 0,
+      "culledMicro": 0
+    },
+    "batchOccupancy": {
+      "capacity": 1680,
+      "active": 1680,
+      "ratio": 1
+    }
+  }
+}

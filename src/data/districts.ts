@@ -206,16 +206,16 @@ const districtBlueprints: readonly DistrictDefinition[] = [
   },
   {
     id: "omics-labs",
-    name: "OMICS Labs District",
+    name: "Omics Labs District",
     category: "bioscience",
     ring: "inner",
     position: [-13, 0, -0.5],
     footprint: [8, 7],
     height: 12,
-    archetype: "integrated-omics-campus",
+    archetype: "causal-contextual-pan-omics-landscape",
     accent: "#6DD9D0",
-    palette: ["#0E2221", "#24504E", "#C1E0DD", "#6DD9D0"],
-    description: "Linked wet-lab and computation pavilions integrate multi-omics workflows around a shared atrium.",
+    palette: ["#10171A", "#A5AFAD", "#E9E6D9", "#6DD9D0"],
+    description: "Five integrated-omics landmarks map living systems, perturb their causes, expose them to environmental context, measure molecular flux, and converge longitudinal evidence into biological digital twins.",
   },
 
   // Middle ring: applied laboratory and engineering campuses.

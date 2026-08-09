@@ -231,16 +231,17 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'omics-labs': {
     facilities: [
-      { name: 'Integrated Multi-Omics Laboratory', form: 'lab-block' },
-      { name: 'Cross-Platform Analysis Hall', form: 'hall' },
-      { name: 'Shared Informatics Atrium', form: 'pavilion' },
-      { name: 'Sample Integration Vault', form: 'service-building' },
+      { name: 'The Atlas Loom', form: 'hall' },
+      { name: 'The Perturbome Foundry', form: 'lab-block' },
+      { name: 'The Exposome Exchange', form: 'observatory' },
+      { name: 'The Flux Cathedral', form: 'observatory' },
+      { name: 'The Convergence Vault', form: 'service-building' },
     ],
     objects: [
-      { name: 'Automated Aliquot Robots', kind: 'robot' },
-      { name: 'Cross-Omics Instrument Pods', kind: 'instrument' },
-      { name: 'Federated Data Totems', kind: 'signage' },
-      { name: 'Shared Cryostorage Bank', kind: 'storage' },
+      { name: 'Omic Continuum', kind: 'signage' },
+      { name: 'Autonomous Cryogenic Sample Transit', kind: 'robot' },
+      { name: 'Environmental Calibration Masts', kind: 'instrument' },
+      { name: 'Sterile Sample-Transfer Hatches', kind: 'storage' },
     ],
   },
   'electronics-microelectronics-labs': {

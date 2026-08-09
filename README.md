@@ -34,6 +34,7 @@ npm run preview   # Preview the production bundle locally
 npm run test:streaming          # Verify balanced Explore/Walk rendering and inside-only interiors
 npm run test:genomics           # Audit the five-building Genomics Labs District exterior package
 npm run test:proteomics         # Audit the five-building Proteomics Labs District exterior package
+npm run test:omics              # Audit the five-building Omics Labs District exterior package
 npm run test:computational-biology # Audit the ten-building Computational Biology Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
@@ -155,6 +156,17 @@ The north-western inner-ring Proteomics Labs District is an exterior-only folded
 - **The Interactome Constellation** assembles nine faceted nodes into a compact research settlement linked by sixteen bridges and cross-links. A suspended 96-disc interaction cloud, coloured hub joints, and responsive court markers make the network readable without a conventional monumental front.
 - **The Amino-Pore Sequencing Veil** forms the Genomics-facing frontier from two long porous membrane walls, 240 independently lit pores, paired Primary Pore rings, an open sequencing canyon, and a rotated crystalline data prism carrying an irregular single-chain signal motif.
 - The grounded **Polypeptide Walk** carries three molecular-backbone lights, four branching side-chain paths, and five exact approaches through 36 heterogeneous cell gardens and nine specimen-tree islands. The 1,494-element package stays inside its inner-ring sector with zero facility-envelope overlaps, uses 24 runtime draw calls and approximately 66,000 triangles, and participates in HLOD streaming, revision-12 persistence migration, selection, deterministic animation, deep text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the exterior specification.
+
+## Omics Labs District
+
+The western inner-ring Omics Labs District is an exterior-only integration landscape organized as **Map → Perturb → Expose → Measure Flux → Integrate**. Pale cellular ceramic, matte black titanium, responsive sampling mesh, stainless steel, mineral concrete, black electrochromic glass, and four restrained signal colors unify five deliberately different institutions.
+
+- **The Atlas Loom** weaves three asymmetrical seven-storey tissue wings around a stainless coordinate-grid court. Two hundred seventy irregular cellular facade panels, six glass fissures, organelle screens, capillary water, an elevated crossing, and four breathing cryogenic towers turn spatial multi-omics into architecture.
+- **The Perturbome Foundry** fixes twelve replaceable black research cartridges and ninety-six barcode fins to a silver exoskeleton. The triangular Null Gate, sterile logistics bays, decontamination couplers, calibration plaza, filtration stacks, and drone docks expose the machinery of causal screening.
+- **The Exposome Exchange** forms a rising incomplete ring around seven monitored ecological bands. Twenty-four responsive veil segments, ninety-six collection plates, raised sensor walkways, seawater channels, climate terraces, and five tuning-fork atmospheric towers create a controlled leak between laboratory and environment.
+- **The Flux Cathedral** raises a tilted hollow analytical ring above a vibration-isolated geological plinth. Ninety-six chromatographic fins, three intersecting trajectories, controlled apertures, reaction-basin contours, service monoliths, reference loops, and six crystalline cooling towers express unequal rates of molecular change.
+- **The Convergence Vault** buries a stepped archive wedge beneath five chronological terraces and the black Chronome Needle. Sixty-four deliberately interrupted grooves, thirty-six validation bands, four utility towers, the perspective colonnade, Reference Garden, photovoltaic terraces, and thirty-two thermal strata fins express accumulation, uncertainty, and time.
+- The grounded **Omic Continuum** changes from coordinate grids through barcode, porous, reaction, and chronological paving, with five exact approaches. A transparent elevated bundle exposes parallel temperature-controlled channels and ten autonomous cryogenic capsules between the institutions. The specialized district participates in HLOD streaming, revision-17 persistence migration, per-building selection/editing, deterministic operational animation, compact/deep text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the supplied exterior specification.
 
 ## Computational Biology Labs District
 

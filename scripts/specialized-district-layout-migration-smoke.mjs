@@ -7,13 +7,14 @@ const OUTPUT = process.env.SPECIALIZED_DISTRICT_LAYOUT_OUTPUT
 const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'toxicology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'environmental-science-labs', 'industrial-labs', 'scientist-residential', 'even-hour-hotel'];
+const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'toxicology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'electronics-microelectronics-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'environmental-science-labs', 'industrial-labs', 'scientist-residential', 'even-hour-hotel'];
 const roadNames = {
   security: 'SECURITY__MAIN_CURVED_BOULEVARD',
   'secret-labs': 'SECRET__BIOLOGICAL_ARC',
   'medical-labs': 'MEDICAL__DIAGNOSTIC_CRESCENT',
   'pharmacology-labs': 'PHARMACOLOGY__DOSE_RESPONSE_PROMENADE',
   'toxicology-labs': 'TOXICOLOGY__DOSE_RESPONSE_PROMENADE',
+  'electronics-microelectronics-labs': 'ELECTRONICS__SIGNAL_SPINE',
   'microbiology-labs': 'MICROBIOLOGY__INNER_COLONY_ARC',
   'molecular-biology-labs': 'MOLECULAR__MOLECULAR_MERIDIAN',
   'bioanalytics-lab': 'BIOANALYTICS__ANALYTICAL_CRESCENT',
@@ -193,7 +194,7 @@ try {
   if (audit.roadViolations.length) {
     throw new Error(`Migrated roads left their sector cells: ${JSON.stringify(audit.roadViolations.slice(0, 12))}`);
   }
-  if (audit.storedRevision !== 26 || audit.textRevision !== 26) {
+  if (audit.storedRevision !== 27 || audit.textRevision !== 27) {
     throw new Error(`Migration revision was not persisted: ${JSON.stringify({ stored: audit.storedRevision, text: audit.textRevision })}`);
   }
   if (audit.planningViolations !== 0) throw new Error(`Master-plan cell violations remain: ${audit.planningViolations}`);

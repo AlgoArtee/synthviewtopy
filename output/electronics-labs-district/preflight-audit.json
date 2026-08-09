@@ -1,0 +1,810 @@
+{
+  "program": {
+    "identity": "Electronics / Micro-Electronics Labs District — The Signal Spine",
+    "mapLabel": "Electronics / Micro-Electronics Labs",
+    "architecturalLanguage": "graphite ceramic, pale technical porcelain, titanium, oxidized copper, black glass, controlled photonic coatings, and translucent fluoropolymer enlarged into a semiconductor ecosystem rather than applied motherboard ornament",
+    "buildingCount": 10,
+    "buildings": [
+      {
+        "code": "EL1",
+        "name": "Fabrica Ångström",
+        "subtitle": "Advanced Logic Foundry",
+        "focus": "Stacked CFET logic, nanosheet and forksheet devices, backside contacting, advanced power delivery, and heterogeneous semiconductor channels",
+        "placementZone": "Secure inner logic arc",
+        "footprintMetres": [
+          218,
+          126
+        ],
+        "heightMetres": 66,
+        "exteriorSignature": "two immense transistor volumes divided by a dielectric seam, eight structural gate loops, dense forksheet fins, backside copper power delivery, and disciplined white air-handling crowns"
+      },
+      {
+        "code": "EL2",
+        "name": "The Interposer Exchange",
+        "subtitle": "Chiplet and 3D Integration Complex",
+        "focus": "Heterogeneous chiplets, advanced packaging, silicon interposers, hybrid bonding, high-bandwidth memory, and high-density interfaces",
+        "placementZone": "Modular packaging edge",
+        "footprintMetres": [
+          194,
+          152
+        ],
+        "heightMetres": 82,
+        "exteriorSignature": "eight heterogeneous chiplet buildings on a routed substrate podium, ribbed data bridges, glass microbump columns, and an asynchronous roofscape"
+      },
+      {
+        "code": "EL3",
+        "name": "Lumen Weave Institute",
+        "subtitle": "Photonic and Optoelectronic Circuits",
+        "focus": "Silicon photonics, optical interconnects, integrated lasers, modulation, sensing, and electronic-photonic integration",
+        "placementZone": "Scientific Art-facing photonic edge",
+        "footprintMetres": [
+          176,
+          132
+        ],
+        "heightMetres": 58,
+        "exteriorSignature": "two curved iridescent wings forming an incomplete ring resonator, etched waveguides, a continuous pearlescent ribbon, calibration domes, and black optical pools"
+      },
+      {
+        "code": "EL4",
+        "name": "Kelvin Null Center",
+        "subtitle": "Cryogenic Control Electronics",
+        "focus": "Cryogenic CMOS control, low-noise signal generation, qubit readout, calibration, and reduced-wiring quantum interfaces",
+        "placementZone": "Protected cryogenic interface",
+        "footprintMetres": [
+          142,
+          136
+        ],
+        "heightMetres": 94,
+        "exteriorSignature": "three visually separated thermal cylinders, heavy maintenance rings, vacuum-jacketed umbilicals, helium recovery vessels, radiator fins, and a concentric frost plaza"
+      },
+      {
+        "code": "EL5",
+        "name": "Synaptic Stack Laboratory",
+        "subtitle": "Neuromorphic and Memristive Electronics",
+        "focus": "Memristors, artificial synapses, analog neural hardware, event-driven computation, and three-dimensional memory-compute integration",
+        "placementZone": "Central adaptive-compute belt",
+        "footprintMetres": [
+          172,
+          134
+        ],
+        "heightMetres": 118,
+        "exteriorSignature": "three oxide-red dendritic wings beneath a graphite matrix tower, slow electrochromic memory fields, a repeatedly branching canopy, and pressure-responsive pavement nodes"
+      },
+      {
+        "code": "EL6",
+        "name": "The Spin-Orbit Vault",
+        "subtitle": "Magnetic Memory and Spintronic Systems",
+        "focus": "MRAM, magnetic tunnel junctions, spin-orbit switching, antiferromagnetic devices, spintronic memristors, and magnetic neural hardware",
+        "placementZone": "Magnetically quiet central domain",
+        "footprintMetres": [
+          154,
+          142
+        ],
+        "heightMetres": 52,
+        "exteriorSignature": "a low ferrite core behind two incomplete domain walls, fixed moiré fins, radial roof fields, tangential entrances, and slowly reorienting plaza stones"
+      },
+      {
+        "code": "EL7",
+        "name": "Aegis Power Bastion",
+        "subtitle": "Wide- and Ultra-Wide-Bandgap Electronics",
+        "focus": "Silicon carbide, gallium nitride, gallium oxide, diamond, high-field packaging, thermal management, grid conversion, and pulsed power",
+        "placementZone": "Outer-clearance power test boundary",
+        "footprintMetres": [
+          204,
+          148
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "two heat-sink laboratory bastions around a shielded test canyon, glass-fronted copper busbars, ceramic buttresses, radiator towers, and grounded artificial-tree masts"
+      },
+      {
+        "code": "EL8",
+        "name": "The Terahertz Metrology Spire",
+        "subtitle": "RF, Millimeter-Wave and Submillimeter Electronics",
+        "focus": "High-frequency circuits, on-wafer characterization, terahertz calibration, phased arrays, over-the-air measurements, and traceable metrology",
+        "placementZone": "Perimeter high-frequency clearance",
+        "footprintMetres": [
+          144,
+          126
+        ],
+        "heightMetres": 168,
+        "exteriorSignature": "a faceted square-to-octagonal tower with phased-array crown and needle radome above three black anechoic courts, a surveyed calibration line, and twisting waveguide bridges"
+      },
+      {
+        "code": "EL9",
+        "name": "The Adaptive Skin Pavilion",
+        "subtitle": "Flexible, Printed and Biointegrated Electronics",
+        "focus": "Stretchable circuits, organic conductors, electronic skin, flexible neural interfaces, tissue-conformal sensors, and biohybrid devices",
+        "placementZone": "Soft Scientific Art interface",
+        "footprintMetres": [
+          184,
+          136
+        ],
+        "heightMetres": 42,
+        "exteriorSignature": "a low folded translucent membrane over branching frames, conductive inner meshes, fibre canopies, warm-water basins, bioswales, and protected printed sensor ribbons"
+      },
+      {
+        "code": "EL10",
+        "name": "Sensorium Hive",
+        "subtitle": "MEMS, NEMS and In-Sensor Computing Laboratory",
+        "focus": "MEMS and NEMS, multifunctional sensor arrays, event-driven vision, analog edge processing, and devices that sense and compute together",
+        "placementZone": "Instrumented environmental edge",
+        "footprintMetres": [
+          188,
+          148
+        ],
+        "heightMetres": 62,
+        "exteriorSignature": "twelve modality-specific hexagonal and circular sensing volumes around an open calibration field, a cable-borne sensor canopy, microclimate needles, and branching test paths"
+      }
+    ],
+    "technologicalProgression": [
+      "soft and photonic systems",
+      "sensing and neuromorphic systems",
+      "spintronic and chiplet integration",
+      "advanced logic and cryogenic control",
+      "power electronics and high-frequency metrology"
+    ],
+    "circulation": {
+      "primaryRoute": "ELECTRONICS__SIGNAL_SPINE",
+      "signalTraceTypes": [
+        "power",
+        "data",
+        "timing",
+        "cooling",
+        "optical"
+      ],
+      "bondPadPlazas": 10,
+      "utilityUndercroftCuts": 10,
+      "backsideServiceArc": "ELECTRONICS__BACKSIDE_POWER_DELIVERY_SERVICE_ARC",
+      "automatedMaterialTransferArc": "ELECTRONICS__AUTOMATED_MATERIAL_TRANSFER_ARC",
+      "exactBuildingApproaches": 10
+    },
+    "signatureSystems": {
+      "angstromGateLoops": 8,
+      "angstromForksheetFins": 22,
+      "interposerChiplets": 8,
+      "interposerMicrobumps": 28,
+      "lumenCurvedWingSegments": 26,
+      "kelvinThermalShells": 3,
+      "synapticDendriticWings": 3,
+      "spinOrbitMoireFins": 72,
+      "aegisHeatSinkFins": 60,
+      "terahertzShieldingFacets": 72,
+      "adaptiveMembraneFields": 3,
+      "sensoriumSensingVolumes": 12
+    },
+    "lightingProtocol": {
+      "diagnosticColorOnly": true,
+      "broadFacadeWash": false,
+      "animatedOpticalTraffic": true,
+      "emergencyRoutesRedOnly": true,
+      "normalStateRestrained": true
+    },
+    "exteriorOnly": true
+  },
+  "population": {
+    "plannedFacilities": [
+      "Fabrica Ångström",
+      "The Interposer Exchange",
+      "Lumen Weave Institute",
+      "Kelvin Null Center",
+      "Synaptic Stack Laboratory",
+      "The Spin-Orbit Vault",
+      "Aegis Power Bastion",
+      "The Terahertz Metrology Spire",
+      "The Adaptive Skin Pavilion",
+      "Sensorium Hive"
+    ],
+    "plannedObjects": [
+      "Signal Spine",
+      "power/data/timing/cooling/optical traces",
+      "bond-pad plazas",
+      "glass-covered utility undercroft cuts",
+      "backside power-delivery service arc",
+      "automated material transfer arc",
+      "basalt and moss component beds",
+      "reflecting cooling channels",
+      "alignment fiducials"
+    ],
+    "realizedFeatureTags": [
+      "fabrica-angstrom",
+      "the-interposer-exchange",
+      "lumen-weave-institute",
+      "kelvin-null-center",
+      "synaptic-stack-laboratory",
+      "the-spin-orbit-vault",
+      "aegis-power-bastion",
+      "the-terahertz-metrology-spire",
+      "the-adaptive-skin-pavilion",
+      "sensorium-hive"
+    ],
+    "realizedFacilityCount": 10,
+    "realizedObjectCount": 196,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 13,
+    "radialCoverage": 0.97,
+    "angularCoverage": 0.93,
+    "exteriorOnly": true,
+    "semiconductorEcosystemNarrative": true,
+    "backsideUtilitySeparation": true,
+    "signalSpineWalkable": true
+  },
+  "facilityCount": 10,
+  "codes": [
+    "EL1",
+    "EL2",
+    "EL3",
+    "EL4",
+    "EL5",
+    "EL6",
+    "EL7",
+    "EL8",
+    "EL9",
+    "EL10"
+  ],
+  "meshCount": 1756,
+  "triangles": 176512,
+  "uniqueNames": 1812,
+  "materialNames": [
+    "Electronics anti-reflective black research glass",
+    "Electronics black basalt gravel",
+    "Electronics black calibration water",
+    "Electronics blue-black photovoltaic field",
+    "Electronics clipped dark moss",
+    "Electronics clipped silver grass",
+    "Electronics cold-white diagnostic light",
+    "Electronics dark service paving",
+    "Electronics deep oxide-red neural ceramic",
+    "Electronics ferrite-grain magnetic ceramic",
+    "Electronics flexible conductive mesh",
+    "Electronics frosted stainless steel",
+    "Electronics graphite technical ceramic",
+    "Electronics iridescent photonic coating",
+    "Electronics light-absorbing black glass ceramic",
+    "Electronics low-iron photonic glass",
+    "Electronics optical cyan signal",
+    "Electronics oxidized copper service alloy",
+    "Electronics pale technical porcelain",
+    "Electronics photonic violet signal",
+    "Electronics satin titanium",
+    "Electronics temporary amber diagnostic",
+    "Electronics translucent fluoropolymer membrane",
+    "Electronics violet-grey photonic panel",
+    "Electronics white dielectric ceramic",
+    "Signal Spine pale technical stone"
+  ],
+  "animations": {
+    "electronics-emissive-pulse": 312,
+    "electronics-rotation": 28
+  },
+  "signatureCounts": {
+    "gateLoops": 8,
+    "chiplets": 8,
+    "lumenWingSegments": 26,
+    "kelvinShells": 3,
+    "synapticWings": 3,
+    "spinMoireFins": 72,
+    "aegisHeatSinkFins": 60,
+    "terahertzFacets": 72,
+    "adaptiveMembranes": 3,
+    "sensoriumVolumes": 12,
+    "bondPads": 10,
+    "undercroftCuts": 10
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "facilityBoxes": [
+    {
+      "code": "EL1",
+      "name": "Fabrica Ångström",
+      "min": [
+        -119.80715267248901,
+        1.6659999999999988,
+        -90.98775720930217
+      ],
+      "max": [
+        -98.81419956503537,
+        9.946,
+        -68.41682000499588
+      ]
+    },
+    {
+      "code": "EL2",
+      "name": "The Interposer Exchange",
+      "min": [
+        -145.26670678687674,
+        1.606,
+        -108.97234953178454
+      ],
+      "max": [
+        -123.9092294770957,
+        9.455718170166016,
+        -88.05911013985674
+      ]
+    },
+    {
+      "code": "EL3",
+      "name": "Lumen Weave Institute",
+      "min": [
+        -96.81854682195889,
+        1.6860000000000002,
+        -109.3029160986351
+      ],
+      "max": [
+        -77.63528548013439,
+        6.8260000000000005,
+        -90.77182521857414
+      ]
+    },
+    {
+      "code": "EL4",
+      "name": "Kelvin Null Center",
+      "min": [
+        -123.75607799903628,
+        1.5401154211759551,
+        -139.22341191680854
+      ],
+      "max": [
+        -94.88421628329121,
+        10.416,
+        -110.35155020106347
+      ]
+    },
+    {
+      "code": "EL5",
+      "name": "Synaptic Stack Laboratory",
+      "min": [
+        -77.77781536623502,
+        1.716000000000001,
+        -126.9602804735558
+      ],
+      "max": [
+        -59.40608555650683,
+        15.336,
+        -109.41775357077225
+      ]
+    },
+    {
+      "code": "EL6",
+      "name": "The Spin-Orbit Vault",
+      "min": [
+        -92.66278755101824,
+        1.6709999982118593,
+        -151.59393651164365
+      ],
+      "max": [
+        -69.18573392525676,
+        8.991,
+        -128.73896612888763
+      ]
+    },
+    {
+      "code": "EL7",
+      "name": "Aegis Power Bastion",
+      "min": [
+        -61.57312653271147,
+        1.6860000000000002,
+        -163.95934578620333
+      ],
+      "max": [
+        -40.15775543298736,
+        12.116,
+        -145.04656487934187
+      ]
+    },
+    {
+      "code": "EL8",
+      "name": "The Terahertz Metrology Spire",
+      "min": [
+        -25.932925339160068,
+        1.696,
+        -169.54910710338658
+      ],
+      "max": [
+        -10.035693617186805,
+        23.96599997615814,
+        -149.90891899862498
+      ]
+    },
+    {
+      "code": "EL9",
+      "name": "The Adaptive Skin Pavilion",
+      "min": [
+        -53.067368121652144,
+        1.49364371658777,
+        -141.21073102315785
+      ],
+      "max": [
+        -33.70175413007273,
+        6.046,
+        -120.64270241246335
+      ]
+    },
+    {
+      "code": "EL10",
+      "name": "Sensorium Hive",
+      "min": [
+        -25.870435631659674,
+        1.6860000000000002,
+        -148.29548955162736
+      ],
+      "max": [
+        -6.55537097877119,
+        8.016,
+        -129.2852354510084
+      ]
+    }
+  ],
+  "routeAudit": [
+    {
+      "name": "ELECTRONICS__SIGNAL_SPINE",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL3",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL4",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL5",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL6",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL7",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL8",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL9",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ELECTRONICS__BUILDING_APPROACH_EL10",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "serviceRouteAudit": [
+    {
+      "name": "ELECTRONICS__BACKSIDE_POWER_DELIVERY_SERVICE_ARC",
+      "resident": true,
+      "walkable": false
+    },
+    {
+      "name": "ELECTRONICS__AUTOMATED_MATERIAL_TRANSFER_ARC",
+      "resident": true,
+      "walkable": false
+    }
+  ],
+  "roadPoint": [
+    -70.95083594322212,
+    1.6459999984502793,
+    -133.85898876237744
+  ],
+  "roadNext": [
+    -67.95087027549751,
+    1.6459999984502793,
+    -135.40653336095684
+  ],
+  "roadGround": 1.6459999984502793,
+  "textDistrict": {
+    "buildingCount": 10,
+    "technologicalProgression": [
+      "soft and photonic systems",
+      "sensing and neuromorphic systems",
+      "spintronic and chiplet integration",
+      "advanced logic and cryogenic control",
+      "power electronics and high-frequency metrology"
+    ],
+    "circulation": {
+      "primaryRoute": "ELECTRONICS__SIGNAL_SPINE",
+      "signalTraceTypes": [
+        "power",
+        "data",
+        "timing",
+        "cooling",
+        "optical"
+      ],
+      "bondPadPlazas": 10,
+      "utilityUndercroftCuts": 10,
+      "backsideServiceArc": "ELECTRONICS__BACKSIDE_POWER_DELIVERY_SERVICE_ARC",
+      "automatedMaterialTransferArc": "ELECTRONICS__AUTOMATED_MATERIAL_TRANSFER_ARC",
+      "exactBuildingApproaches": 10
+    },
+    "signatureSystems": {
+      "angstromGateLoops": 8,
+      "angstromForksheetFins": 22,
+      "interposerChiplets": 8,
+      "interposerMicrobumps": 28,
+      "lumenCurvedWingSegments": 26,
+      "kelvinThermalShells": 3,
+      "synapticDendriticWings": 3,
+      "spinOrbitMoireFins": 72,
+      "aegisHeatSinkFins": 60,
+      "terahertzShieldingFacets": 72,
+      "adaptiveMembraneFields": 3,
+      "sensoriumSensingVolumes": 12
+    },
+    "lightingProtocol": {
+      "diagnosticColorOnly": true,
+      "broadFacadeWash": false,
+      "animatedOpticalTraffic": true,
+      "emergencyRoutesRedOnly": true,
+      "normalStateRestrained": true
+    }
+  },
+  "selected": {
+    "id": "electronics-microelectronics-labs",
+    "name": "Electronics & Microelectronics Labs District",
+    "category": "engineering",
+    "packageId": "electronics-microelectronics-labs",
+    "state": {
+      "position": {
+        "x": -75.75000000000007,
+        "y": 1.61,
+        "z": -131.2028486733424
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": true,
+      "accent": "#8FEAFF",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    }
+  },
+  "specializedRevision": 27,
+  "deepDistrict": {
+    "identity": "Electronics / Micro-Electronics Labs District — The Signal Spine",
+    "mapLabel": "Electronics / Micro-Electronics Labs",
+    "architecturalLanguage": "graphite ceramic, pale technical porcelain, titanium, oxidized copper, black glass, controlled photonic coatings, and translucent fluoropolymer enlarged into a semiconductor ecosystem rather than applied motherboard ornament",
+    "buildingCount": 10,
+    "buildings": [
+      {
+        "code": "EL1",
+        "name": "Fabrica Ångström",
+        "subtitle": "Advanced Logic Foundry",
+        "focus": "Stacked CFET logic, nanosheet and forksheet devices, backside contacting, advanced power delivery, and heterogeneous semiconductor channels",
+        "placementZone": "Secure inner logic arc",
+        "footprintMetres": [
+          218,
+          126
+        ],
+        "heightMetres": 66,
+        "exteriorSignature": "two immense transistor volumes divided by a dielectric seam, eight structural gate loops, dense forksheet fins, backside copper power delivery, and disciplined white air-handling crowns"
+      },
+      {
+        "code": "EL2",
+        "name": "The Interposer Exchange",
+        "subtitle": "Chiplet and 3D Integration Complex",
+        "focus": "Heterogeneous chiplets, advanced packaging, silicon interposers, hybrid bonding, high-bandwidth memory, and high-density interfaces",
+        "placementZone": "Modular packaging edge",
+        "footprintMetres": [
+          194,
+          152
+        ],
+        "heightMetres": 82,
+        "exteriorSignature": "eight heterogeneous chiplet buildings on a routed substrate podium, ribbed data bridges, glass microbump columns, and an asynchronous roofscape"
+      },
+      {
+        "code": "EL3",
+        "name": "Lumen Weave Institute",
+        "subtitle": "Photonic and Optoelectronic Circuits",
+        "focus": "Silicon photonics, optical interconnects, integrated lasers, modulation, sensing, and electronic-photonic integration",
+        "placementZone": "Scientific Art-facing photonic edge",
+        "footprintMetres": [
+          176,
+          132
+        ],
+        "heightMetres": 58,
+        "exteriorSignature": "two curved iridescent wings forming an incomplete ring resonator, etched waveguides, a continuous pearlescent ribbon, calibration domes, and black optical pools"
+      },
+      {
+        "code": "EL4",
+        "name": "Kelvin Null Center",
+        "subtitle": "Cryogenic Control Electronics",
+        "focus": "Cryogenic CMOS control, low-noise signal generation, qubit readout, calibration, and reduced-wiring quantum interfaces",
+        "placementZone": "Protected cryogenic interface",
+        "footprintMetres": [
+          142,
+          136
+        ],
+        "heightMetres": 94,
+        "exteriorSignature": "three visually separated thermal cylinders, heavy maintenance rings, vacuum-jacketed umbilicals, helium recovery vessels, radiator fins, and a concentric frost plaza"
+      },
+      {
+        "code": "EL5",
+        "name": "Synaptic Stack Laboratory",
+        "subtitle": "Neuromorphic and Memristive Electronics",
+        "focus": "Memristors, artificial synapses, analog neural hardware, event-driven computation, and three-dimensional memory-compute integration",
+        "placementZone": "Central adaptive-compute belt",
+        "footprintMetres": [
+          172,
+          134
+        ],
+        "heightMetres": 118,
+        "exteriorSignature": "three oxide-red dendritic wings beneath a graphite matrix tower, slow electrochromic memory fields, a repeatedly branching canopy, and pressure-responsive pavement nodes"
+      },
+      {
+        "code": "EL6",
+        "name": "The Spin-Orbit Vault",
+        "subtitle": "Magnetic Memory and Spintronic Systems",
+        "focus": "MRAM, magnetic tunnel junctions, spin-orbit switching, antiferromagnetic devices, spintronic memristors, and magnetic neural hardware",
+        "placementZone": "Magnetically quiet central domain",
+        "footprintMetres": [
+          154,
+          142
+        ],
+        "heightMetres": 52,
+        "exteriorSignature": "a low ferrite core behind two incomplete domain walls, fixed moiré fins, radial roof fields, tangential entrances, and slowly reorienting plaza stones"
+      },
+      {
+        "code": "EL7",
+        "name": "Aegis Power Bastion",
+        "subtitle": "Wide- and Ultra-Wide-Bandgap Electronics",
+        "focus": "Silicon carbide, gallium nitride, gallium oxide, diamond, high-field packaging, thermal management, grid conversion, and pulsed power",
+        "placementZone": "Outer-clearance power test boundary",
+        "footprintMetres": [
+          204,
+          148
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "two heat-sink laboratory bastions around a shielded test canyon, glass-fronted copper busbars, ceramic buttresses, radiator towers, and grounded artificial-tree masts"
+      },
+      {
+        "code": "EL8",
+        "name": "The Terahertz Metrology Spire",
+        "subtitle": "RF, Millimeter-Wave and Submillimeter Electronics",
+        "focus": "High-frequency circuits, on-wafer characterization, terahertz calibration, phased arrays, over-the-air measurements, and traceable metrology",
+        "placementZone": "Perimeter high-frequency clearance",
+        "footprintMetres": [
+          144,
+          126
+        ],
+        "heightMetres": 168,
+        "exteriorSignature": "a faceted square-to-octagonal tower with phased-array crown and needle radome above three black anechoic courts, a surveyed calibration line, and twisting waveguide bridges"
+      },
+      {
+        "code": "EL9",
+        "name": "The Adaptive Skin Pavilion",
+        "subtitle": "Flexible, Printed and Biointegrated Electronics",
+        "focus": "Stretchable circuits, organic conductors, electronic skin, flexible neural interfaces, tissue-conformal sensors, and biohybrid devices",
+        "placementZone": "Soft Scientific Art interface",
+        "footprintMetres": [
+          184,
+          136
+        ],
+        "heightMetres": 42,
+        "exteriorSignature": "a low folded translucent membrane over branching frames, conductive inner meshes, fibre canopies, warm-water basins, bioswales, and protected printed sensor ribbons"
+      },
+      {
+        "code": "EL10",
+        "name": "Sensorium Hive",
+        "subtitle": "MEMS, NEMS and In-Sensor Computing Laboratory",
+        "focus": "MEMS and NEMS, multifunctional sensor arrays, event-driven vision, analog edge processing, and devices that sense and compute together",
+        "placementZone": "Instrumented environmental edge",
+        "footprintMetres": [
+          188,
+          148
+        ],
+        "heightMetres": 62,
+        "exteriorSignature": "twelve modality-specific hexagonal and circular sensing volumes around an open calibration field, a cable-borne sensor canopy, microclimate needles, and branching test paths"
+      }
+    ],
+    "technologicalProgression": [
+      "soft and photonic systems",
+      "sensing and neuromorphic systems",
+      "spintronic and chiplet integration",
+      "advanced logic and cryogenic control",
+      "power electronics and high-frequency metrology"
+    ],
+    "circulation": {
+      "primaryRoute": "ELECTRONICS__SIGNAL_SPINE",
+      "signalTraceTypes": [
+        "power",
+        "data",
+        "timing",
+        "cooling",
+        "optical"
+      ],
+      "bondPadPlazas": 10,
+      "utilityUndercroftCuts": 10,
+      "backsideServiceArc": "ELECTRONICS__BACKSIDE_POWER_DELIVERY_SERVICE_ARC",
+      "automatedMaterialTransferArc": "ELECTRONICS__AUTOMATED_MATERIAL_TRANSFER_ARC",
+      "exactBuildingApproaches": 10
+    },
+    "signatureSystems": {
+      "angstromGateLoops": 8,
+      "angstromForksheetFins": 22,
+      "interposerChiplets": 8,
+      "interposerMicrobumps": 28,
+      "lumenCurvedWingSegments": 26,
+      "kelvinThermalShells": 3,
+      "synapticDendriticWings": 3,
+      "spinOrbitMoireFins": 72,
+      "aegisHeatSinkFins": 60,
+      "terahertzShieldingFacets": 72,
+      "adaptiveMembraneFields": 3,
+      "sensoriumSensingVolumes": 12
+    },
+    "lightingProtocol": {
+      "diagnosticColorOnly": true,
+      "broadFacadeWash": false,
+      "animatedOpticalTraffic": true,
+      "emergencyRoutesRedOnly": true,
+      "normalStateRestrained": true
+    },
+    "exteriorOnly": true
+  },
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "streaming": {
+    "id": "electronics-microelectronics-labs",
+    "kind": "district",
+    "loadState": "loaded",
+    "lifecyclePhase": "ready",
+    "loadProgress": 1,
+    "priorityReason": "selected",
+    "priorityScore": 1000000,
+    "visibleCandidate": true,
+    "visualLevel": "detail",
+    "detailResident": true,
+    "proxyVisible": false,
+    "midVisible": false,
+    "farVisible": false,
+    "pinned": true,
+    "distanceMetres": 0,
+    "estimatedCost": {
+      "drawCalls": 33,
+      "triangles": 106788,
+      "animationNodes": 1
+    },
+    "renderImportance": {
+      "mandatory": 1708,
+      "micro": 18,
+      "visibleMicro": 18,
+      "culledMicro": 0
+    },
+    "batchOccupancy": {
+      "capacity": 1723,
+      "active": 1723,
+      "ratio": 1
+    }
+  }
+}

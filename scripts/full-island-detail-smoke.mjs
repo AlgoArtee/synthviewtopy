@@ -7,8 +7,8 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-// 360 planned facilities plus the retained substantial Industrial annex anchor.
-const TARGET_BUILDING_COUNT = 361;
+// 367 planned facilities plus the retained substantial Industrial annex anchor.
+const TARGET_BUILDING_COUNT = 368;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -242,12 +242,12 @@ try {
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
     || fullAudit.stats.drawCalls > 1_500
-    // The Living Transect's ten authored institutes bring the measured island
-    // baseline to 854 GPU batches, 453 textures, and about 3.695M triangles.
+    // The Electronics Labs' ten authored institutes bring the measured island
+    // baseline to 894 GPU batches, 490 textures, and about 4.072M triangles.
     // Preserve a narrow margin above that verified baseline.
-    || fullStreaming.gpuBatching.batchCount > 860
-    || fullAudit.stats.textureCount > 460
-    || fullAudit.stats.triangles > 3_750_000
+    || fullStreaming.gpuBatching.batchCount > 900
+    || fullAudit.stats.textureCount > 500
+    || fullAudit.stats.triangles > 4_125_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0

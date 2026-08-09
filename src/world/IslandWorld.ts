@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 26;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 27;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -179,6 +179,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'omics-labs': 17,
   'computational-biology-labs': 13,
   'robotics-labs': 18,
+  'electronics-microelectronics-labs': 27,
   'biochemistry-labs': 8,
   'organic-chemistry-labs': 9,
   'inorganic-chemistry': 10,
@@ -205,6 +206,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'omics-emissive-pulse',
   'computational-biology-emissive-pulse',
   'robotics-emissive-pulse',
+  'electronics-emissive-pulse',
   'biochemistry-emissive-pulse',
   'organic-chemistry-emissive-pulse',
   'inorganic-chemistry-emissive-pulse',
@@ -4038,6 +4040,24 @@ export class IslandWorld {
       } else if (object.userData.animate === 'materials-science-rotation') {
         const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
         const step = delta * Number(object.userData.speed ?? 0.004);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'electronics-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.002) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.08),
+            Number(object.userData.maxIntensity ?? 2.6),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'electronics-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.002);
         if (axis === 'x') object.rotation.x += step;
         else if (axis === 'z') object.rotation.z += step;
         else object.rotation.y += step;
@@ -9431,6 +9451,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedRobotics = selectedPackageId === 'robotics-labs'
       ? this.objectGroups.get('robotics-labs')?.userData.roboticsLabsDistrict
       : null;
+    const selectedElectronics = selectedPackageId === 'electronics-microelectronics-labs'
+      ? this.objectGroups.get('electronics-microelectronics-labs')?.userData.electronicsLabsDistrict
+      : null;
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
@@ -9620,6 +9643,13 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         signatureSystems: selectedRobotics.signatureSystems,
         operationalRule: selectedRobotics.operationalRule,
       } : null,
+      electronicsLabsDistrict: selectedElectronics ? {
+        buildingCount: selectedElectronics.buildingCount,
+        technologicalProgression: selectedElectronics.technologicalProgression,
+        circulation: selectedElectronics.circulation,
+        signatureSystems: selectedElectronics.signatureSystems,
+        lightingProtocol: selectedElectronics.lightingProtocol,
+      } : null,
       astronomyAstrobiologyLabsDistrict: selectedAstronomyAstrobiology ? {
         buildingCount: selectedAstronomyAstrobiology.buildingCount,
         circulation: selectedAstronomyAstrobiology.circulation,
@@ -9693,6 +9723,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const omicsLabsDistrict = this.objectGroups.get('omics-labs')?.userData.omicsLabsDistrict ?? null;
     const computationalBiologyLabsDistrict = this.objectGroups.get('computational-biology-labs')?.userData.computationalBiologyLabsDistrict ?? null;
     const roboticsLabsDistrict = this.objectGroups.get('robotics-labs')?.userData.roboticsLabsDistrict ?? null;
+    const electronicsLabsDistrict = this.objectGroups.get('electronics-microelectronics-labs')?.userData.electronicsLabsDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9858,6 +9889,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       omicsLabsDistrict,
       computationalBiologyLabsDistrict,
       roboticsLabsDistrict,
+      electronicsLabsDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

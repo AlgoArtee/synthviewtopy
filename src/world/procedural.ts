@@ -47,6 +47,7 @@ import { buildMaterialsScienceLabsDistrict } from './materialsScienceLabsDistric
 import { buildEnvironmentalScienceLabsDistrict } from './environmentalScienceLabsDistrict';
 import { buildToxicologyLabsDistrict } from './toxicologyLabsDistrict';
 import { buildEverHourDistrict, buildResidentialScientistsDistrict } from './residentialEverHourDistrict';
+import { buildMarketingDistrict, buildScientificArtLabsDistrict } from './artMarketingDistrict';
 import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
@@ -2133,6 +2134,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     boundedByTwoConcentricCircles: true,
   };
 
+  if (definition.id === 'scientific-art-labs' || definition.id === 'marketing') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('ARTMARK__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
   if (definition.id === 'scientist-residential' || definition.id === 'even-hour-hotel') {
     group.traverse((child) => {
       if (!child.name.startsWith('LIVEWORK__')) return;
@@ -2662,6 +2673,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isEnvironmentalScienceLabsDistrict = definition.id === 'environmental-science-labs';
   const isToxicologyLabsDistrict = definition.id === 'toxicology-labs';
   const isResidentialEverHourDistrict = definition.id === 'scientist-residential' || definition.id === 'even-hour-hotel';
+  const isArtMarketingDistrict = definition.id === 'scientific-art-labs' || definition.id === 'marketing';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
@@ -2709,6 +2721,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
           : isToxicologyLabsDistrict
             ? metresToWorldUnits(0.08)
           : isResidentialEverHourDistrict
+            ? metresToWorldUnits(0.08)
+          : isArtMarketingDistrict
             ? metresToWorldUnits(0.08)
       : DISTRICT_FINISHED_FLOOR_Y;
   const accessRampLength = isIndustrialDistrict
@@ -2780,8 +2794,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     plot.userData.districtDelimiterAccess = true;
   }
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
-  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) group.add(plot);
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) group.add(plot);
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) {
     addAccessRamp(
       group,
       definition.id,
@@ -2794,7 +2808,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     );
   }
 
-  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) {
+  if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) {
     const inset = new THREE.LineSegments(
       new THREE.EdgesGeometry(new RoundedBoxGeometry(width * 0.95, finishedFloorY, depth * 0.95, 2, Math.min(0.26, finishedFloorY * 0.4))),
       new THREE.LineBasicMaterial({ color: definition.accent, transparent: true, opacity: 0.35 }),
@@ -2852,6 +2866,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       if (definition.id === 'entry-commercial') buildEntryCommercialDistrict(group, definition);
       else if (definition.id === 'even-hour-hotel') buildEverHourDistrict(group, definition);
       else if (definition.id === 'scientist-residential') buildResidentialScientistsDistrict(group, definition);
+      else if (definition.id === 'scientific-art-labs') buildScientificArtLabsDistrict(group, definition);
+      else if (definition.id === 'marketing') buildMarketingDistrict(group, definition);
       else buildCivic(group, definition, height, random);
       break;
     case 'infrastructure':
@@ -2868,7 +2884,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) {
     addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
   }
   if (definition.id === 'academic-libraries-theoretical-labs') {
@@ -2878,14 +2894,14 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       academicPrimaryAccess.userData.servesFacility = 'Blackwood University Great Hall';
     }
   }
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) addDistrictSignature(group, definition, height, random);
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) addDistrictSignature(group, definition, height, random);
   populateDistrictSectorCampus(group, definition, random);
-  if (!isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) addCyberpunkDistrictLife(group, definition, height);
+  if (!isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) addCyberpunkDistrictLife(group, definition, height);
 
   const lampAccent = markAccent(
     new THREE.MeshStandardMaterial({ color: definition.accent, emissive: definition.accent, emissiveIntensity: 3 }),
   );
-  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict) {
+  if (definition.id !== 'industrial-labs' && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict) {
     addLamp(group, definition.id, -width * 0.43, -depth * 0.41, lampAccent);
     addLamp(group, definition.id, width * 0.43, depth * 0.41, lampAccent);
   }

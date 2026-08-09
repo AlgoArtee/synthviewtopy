@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 27;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 28;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -191,6 +191,8 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'industrial-labs': 16,
   'scientist-residential': 24,
   'even-hour-hotel': 21,
+  'scientific-art-labs': 28,
+  marketing: 28,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -216,6 +218,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'environmental-science-emissive-pulse',
   'toxicology-emissive-pulse',
   'residential-ever-hour-emissive-pulse',
+  'art-marketing-emissive-pulse',
 ]);
 
 /**
@@ -4058,6 +4061,24 @@ export class IslandWorld {
       } else if (object.userData.animate === 'electronics-rotation') {
         const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
         const step = delta * Number(object.userData.speed ?? 0.002);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'art-marketing-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.0015) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.05),
+            Number(object.userData.maxIntensity ?? 2.5),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'art-marketing-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.0015);
         if (axis === 'x') object.rotation.x += step;
         else if (axis === 'z') object.rotation.z += step;
         else object.rotation.y += step;
@@ -9454,6 +9475,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedElectronics = selectedPackageId === 'electronics-microelectronics-labs'
       ? this.objectGroups.get('electronics-microelectronics-labs')?.userData.electronicsLabsDistrict
       : null;
+    const selectedScientificArt = selectedPackageId === 'scientific-art-labs'
+      ? this.objectGroups.get('scientific-art-labs')?.userData.scientificArtLabsDistrict
+      : null;
+    const selectedMarketing = selectedPackageId === 'marketing'
+      ? this.objectGroups.get('marketing')?.userData.marketingDistrict
+      : null;
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
@@ -9650,6 +9677,20 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         signatureSystems: selectedElectronics.signatureSystems,
         lightingProtocol: selectedElectronics.lightingProtocol,
       } : null,
+      scientificArtLabsDistrict: selectedScientificArt ? {
+        buildingCount: selectedScientificArt.buildingCount,
+        translationRole: selectedScientificArt.translationRole,
+        circulation: selectedScientificArt.circulation,
+        signatureSystems: selectedScientificArt.signatureSystems,
+        integratedMediaRule: selectedScientificArt.integratedMediaRule,
+      } : null,
+      marketingDistrict: selectedMarketing ? {
+        buildingCount: selectedMarketing.buildingCount,
+        translationRole: selectedMarketing.translationRole,
+        circulation: selectedMarketing.circulation,
+        signatureSystems: selectedMarketing.signatureSystems,
+        integratedMediaRule: selectedMarketing.integratedMediaRule,
+      } : null,
       astronomyAstrobiologyLabsDistrict: selectedAstronomyAstrobiology ? {
         buildingCount: selectedAstronomyAstrobiology.buildingCount,
         circulation: selectedAstronomyAstrobiology.circulation,
@@ -9724,6 +9765,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const computationalBiologyLabsDistrict = this.objectGroups.get('computational-biology-labs')?.userData.computationalBiologyLabsDistrict ?? null;
     const roboticsLabsDistrict = this.objectGroups.get('robotics-labs')?.userData.roboticsLabsDistrict ?? null;
     const electronicsLabsDistrict = this.objectGroups.get('electronics-microelectronics-labs')?.userData.electronicsLabsDistrict ?? null;
+    const scientificArtLabsDistrict = this.objectGroups.get('scientific-art-labs')?.userData.scientificArtLabsDistrict ?? null;
+    const marketingDistrict = this.objectGroups.get('marketing')?.userData.marketingDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9890,6 +9933,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       computationalBiologyLabsDistrict,
       roboticsLabsDistrict,
       electronicsLabsDistrict,
+      scientificArtLabsDistrict,
+      marketingDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

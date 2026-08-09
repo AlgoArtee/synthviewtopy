@@ -315,7 +315,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "communications-media-pavilion",
     accent: "#FF6FB5",
     palette: ["#251624", "#59334E", "#E1C6D5", "#FF6FB5"],
-    description: "A communications pavilion uses media facades, broadcast studios, and flexible public event terraces.",
+    description: "The outward-facing half of the Scientific Art and Marketing translation district contains seven civic media institutions along the Spectrum Spine, using directional integrated media, restrained signal lighting, and public evidence infrastructure.",
   },
   {
     id: "scientific-art-labs",
@@ -328,7 +328,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "science-art-studio-campus",
     accent: "#FF76D6",
     palette: ["#23182A", "#51375F", "#E4D2E6", "#FF76D6"],
-    description: "Sculptural studios, fabrication galleries, and kinetic installations turn research processes into public art.",
+    description: "The inward-facing half of the Scientific Art and Marketing translation district contains eight experimental institutes along the Spectrum Spine, turning scientific knowledge into images, objects, sound, living displays, light, materials, and abstraction.",
   },
   {
     id: "even-hour-hotel",

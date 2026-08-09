@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2904,
+    "liveRenderObjectCount": 2927,
     "batchOccupancy": {
-      "capacity": 63955,
-      "active": 62297,
-      "ratio": 0.9740755218513018
+      "capacity": 64963,
+      "active": 63305,
+      "ratio": 0.9744777796591906
     },
     "microdetail": {
       "total": 896,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 45654,
+    "detachedAuthoringSourceCount": 46662,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 909,
-      "batchedSourceCount": 45654,
-      "retainedSourceCount": 47649,
-      "estimatedGeometryBytes": 103077468,
-      "estimatedTextureBytes": 179141543,
-      "instancedBatchCount": 249,
-      "batchedMeshBatchCount": 176,
-      "mergedBatchCount": 484,
+      "batchCount": 915,
+      "batchedSourceCount": 46662,
+      "retainedSourceCount": 48674,
+      "estimatedGeometryBytes": 106192148,
+      "estimatedTextureBytes": 203634310,
+      "instancedBatchCount": 246,
+      "batchedMeshBatchCount": 187,
+      "mergedBatchCount": 482,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -909,19 +909,19 @@
         "pinned": false,
         "distanceMetres": 14152,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 7850,
+          "drawCalls": 42,
+          "triangles": 116848,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 98,
+          "mandatory": 1123,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 93,
-          "active": 93,
+          "capacity": 1101,
+          "active": 1101,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 374,
+  "buildingCount": 390,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -6558,8 +6558,8 @@
     {
       "districtId": "luxury-entertainment",
       "name": "Luxury & Entertainment District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 20,
+      "discoveredCount": 20,
       "packageState": {
         "id": "luxury-entertainment",
         "kind": "district",
@@ -6577,104 +6577,440 @@
         "pinned": false,
         "distanceMetres": 14152,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 7850,
+          "drawCalls": 42,
+          "triangles": 116848,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 98,
+          "mandatory": 1123,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 93,
-          "active": 93,
+          "capacity": 1101,
+          "active": 1101,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "luxury-entertainment",
-          "name": "Waterfront Culinary Hall",
-          "rootName": "luxury-entertainment__FACILITY__WATERFRONT-CULINARY-HALL",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Aurelia Crown",
+          "rootName": "ENTERTAINMENT__E01__THE_AURELIA_CROWN",
+          "code": "E01",
+          "representedSourceCount": 28,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 27,
+          "authoredBatchedSources": 27,
+          "expectedRuntimeBatchSources": 27,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.313,
-            8.931
+            8.743,
+            7.53,
+            9.337
           ],
           "failures": []
         },
         {
           "districtId": "luxury-entertainment",
-          "name": "Island Performance Pavilion",
-          "rootName": "luxury-entertainment__FACILITY__ISLAND-PERFORMANCE-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "Tidal Glass",
+          "rootName": "ENTERTAINMENT__E02__TIDAL_GLASS",
+          "code": "E02",
+          "representedSourceCount": 36,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 35,
+          "authoredBatchedSources": 35,
+          "expectedRuntimeBatchSources": 35,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.058,
-            8.275
+            11.578,
+            3.833,
+            9.35
           ],
           "failures": []
         },
         {
           "districtId": "luxury-entertainment",
-          "name": "Premium Guest Hotel",
-          "rootName": "luxury-entertainment__FACILITY__PREMIUM-GUEST-HOTEL",
-          "code": null,
-          "representedSourceCount": 7,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 7,
-          "authoredBatchedSources": 7,
-          "expectedRuntimeBatchSources": 7,
-          "mandatoryArchitecturalSources": 4,
-          "representedMandatorySources": 4,
+          "name": "The Helix Table",
+          "rootName": "ENTERTAINMENT__E03__THE_HELIX_TABLE",
+          "code": "E03",
+          "representedSourceCount": 63,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 62,
+          "authoredBatchedSources": 62,
+          "expectedRuntimeBatchSources": 62,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.938,
-            5.612,
-            8.487
+            7.262,
+            7.482,
+            7.302
           ],
           "failures": []
         },
         {
           "districtId": "luxury-entertainment",
-          "name": "Terraced Leisure Club",
-          "rootName": "luxury-entertainment__FACILITY__TERRACED-LEISURE-CLUB",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "name": "Ember & Ice",
+          "rootName": "ENTERTAINMENT__E04__EMBER_ICE",
+          "code": "E04",
+          "representedSourceCount": 30,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 29,
+          "authoredBatchedSources": 29,
+          "expectedRuntimeBatchSources": 29,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.465,
+            6.03,
+            7.024
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "The Orion Room",
+          "rootName": "ENTERTAINMENT__E05__THE_ORION_ROOM",
+          "code": "E05",
+          "representedSourceCount": 56,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 55,
+          "authoredBatchedSources": 55,
+          "expectedRuntimeBatchSources": 55,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.4,
+            4.588,
+            9.4
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Velvet Circuit",
+          "rootName": "ENTERTAINMENT__E06__VELVET_CIRCUIT",
+          "code": "E06",
+          "representedSourceCount": 81,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 80,
+          "authoredBatchedSources": 80,
+          "expectedRuntimeBatchSources": 80,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8,
+            6.2,
+            8.831
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Pulse Cathedral",
+          "rootName": "ENTERTAINMENT__E07__PULSE_CATHEDRAL",
+          "code": "E07",
+          "representedSourceCount": 34,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 33,
+          "authoredBatchedSources": 33,
+          "expectedRuntimeBatchSources": 33,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.41,
-            8.275
+            12.943,
+            13.312,
+            8.85
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Halo Nine",
+          "rootName": "ENTERTAINMENT__E08__HALO_NINE",
+          "code": "E08",
+          "representedSourceCount": 25,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 24,
+          "authoredBatchedSources": 24,
+          "expectedRuntimeBatchSources": 24,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.9,
+            15.138,
+            12.639
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Eclipse Cabaret",
+          "rootName": "ENTERTAINMENT__E09__ECLIPSE_CABARET",
+          "code": "E09",
+          "representedSourceCount": 26,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 25,
+          "authoredBatchedSources": 25,
+          "expectedRuntimeBatchSources": 25,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.432,
+            11.162,
+            7.849
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Aurora Grand Cinema",
+          "rootName": "ENTERTAINMENT__E10__AURORA_GRAND_CINEMA",
+          "code": "E10",
+          "representedSourceCount": 46,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 45,
+          "authoredBatchedSources": 45,
+          "expectedRuntimeBatchSources": 45,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.18,
+            7.36,
+            9.995
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Horizon Screen Gardens",
+          "rootName": "ENTERTAINMENT__E11__HORIZON_SCREEN_GARDENS",
+          "code": "E11",
+          "representedSourceCount": 29,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 28,
+          "authoredBatchedSources": 28,
+          "expectedRuntimeBatchSources": 28,
+          "mandatoryArchitecturalSources": 3,
+          "representedMandatorySources": 3,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.035,
+            4.218,
+            10.68
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Meridian Pool Palace",
+          "rootName": "ENTERTAINMENT__E12__MERIDIAN_POOL_PALACE",
+          "code": "E12",
+          "representedSourceCount": 37,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 36,
+          "authoredBatchedSources": 36,
+          "expectedRuntimeBatchSources": 36,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.95,
+            6.628,
+            11.85
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Neon Grotto Aquaclub",
+          "rootName": "ENTERTAINMENT__E13__NEON_GROTTO_AQUACLUB",
+          "code": "E13",
+          "representedSourceCount": 45,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 44,
+          "authoredBatchedSources": 44,
+          "expectedRuntimeBatchSources": 44,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.6,
+            3.952,
+            10.139
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "The Prismarium",
+          "rootName": "ENTERTAINMENT__E14__THE_PRISMARIUM",
+          "code": "E14",
+          "representedSourceCount": 48,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 46,
+          "authoredBatchedSources": 46,
+          "expectedRuntimeBatchSources": 46,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.512,
+            8.76,
+            10.9
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Synesthesia Hall",
+          "rootName": "ENTERTAINMENT__E15__SYNESTHESIA_HALL",
+          "code": "E15",
+          "representedSourceCount": 93,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 92,
+          "authoredBatchedSources": 92,
+          "expectedRuntimeBatchSources": 92,
+          "mandatoryArchitecturalSources": 14,
+          "representedMandatorySources": 14,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.436,
+            4.925,
+            8.525
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Zero-G Ballroom",
+          "rootName": "ENTERTAINMENT__E16__ZERO_G_BALLROOM",
+          "code": "E16",
+          "representedSourceCount": 20,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 19,
+          "authoredBatchedSources": 19,
+          "expectedRuntimeBatchSources": 19,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.8,
+            11.54,
+            12.131
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Dream Arcade",
+          "rootName": "ENTERTAINMENT__E17__DREAM_ARCADE",
+          "code": "E17",
+          "representedSourceCount": 59,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 58,
+          "authoredBatchedSources": 58,
+          "expectedRuntimeBatchSources": 58,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            9.355,
+            8.457,
+            7.597
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Probability Palace",
+          "rootName": "ENTERTAINMENT__E18__PROBABILITY_PALACE",
+          "code": "E18",
+          "representedSourceCount": 85,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 84,
+          "authoredBatchedSources": 84,
+          "expectedRuntimeBatchSources": 84,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.485,
+            11.69,
+            10.073
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "Chrono Carousel",
+          "rootName": "ENTERTAINMENT__E19__CHRONO_CAROUSEL",
+          "code": "E19",
+          "representedSourceCount": 72,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 71,
+          "authoredBatchedSources": 71,
+          "expectedRuntimeBatchSources": 71,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.837,
+            12.96,
+            15.228
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "luxury-entertainment",
+          "name": "The Phantom Menagerie",
+          "rootName": "ENTERTAINMENT__E20__THE_PHANTOM_MENAGERIE",
+          "code": "E20",
+          "representedSourceCount": 68,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 67,
+          "authoredBatchedSources": 67,
+          "expectedRuntimeBatchSources": 67,
+          "mandatoryArchitecturalSources": 10,
+          "representedMandatorySources": 10,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.635,
+            7.6,
+            9.396
           ],
           "failures": []
         }

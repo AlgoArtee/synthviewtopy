@@ -1,0 +1,1302 @@
+{
+  "facilityCount": 20,
+  "codes": [
+    "E01",
+    "E02",
+    "E03",
+    "E04",
+    "E05",
+    "E06",
+    "E07",
+    "E08",
+    "E09",
+    "E10",
+    "E11",
+    "E12",
+    "E13",
+    "E14",
+    "E15",
+    "E16",
+    "E17",
+    "E18",
+    "E19",
+    "E20"
+  ],
+  "boxes": [
+    {
+      "code": "E01",
+      "name": "The Aurelia Crown",
+      "min": [
+        -237.64386836613994,
+        1.6380000017881395,
+        -166.9984782697146
+      ],
+      "max": [
+        -225.56778742126602,
+        9.168378889995406,
+        -154.98670234648807
+      ]
+    },
+    {
+      "code": "E02",
+      "name": "Tidal Glass",
+      "min": [
+        -37.29454660371593,
+        1.6754999999254943,
+        -300.66231378258146
+      ],
+      "max": [
+        -25.027413765724365,
+        5.508000000298023,
+        -290.31835647648575
+      ]
+    },
+    {
+      "code": "E03",
+      "name": "The Helix Table",
+      "min": [
+        -203.12403881570324,
+        1.6379999046325686,
+        -203.10315939341018
+      ],
+      "max": [
+        -195.82589759912074,
+        9.119906968952423,
+        -195.8114649941232
+      ]
+    },
+    {
+      "code": "E04",
+      "name": "Ember & Ice",
+      "min": [
+        -222.76398980616975,
+        1.4677204373076627,
+        -157.0461179560193
+      ],
+      "max": [
+        -211.8651597340389,
+        7.4979999833107,
+        -145.43337726544013
+      ]
+    },
+    {
+      "code": "E05",
+      "name": "The Orion Room",
+      "min": [
+        -188.31119896770966,
+        1.6704999999254944,
+        -196.1149965890579
+      ],
+      "max": [
+        -178.3031973679676,
+        6.259637839374701,
+        -186.02373666698034
+      ]
+    },
+    {
+      "code": "E06",
+      "name": "Velvet Circuit",
+      "min": [
+        -147.3620089211766,
+        1.638000095367432,
+        -229.02688569125516
+      ],
+      "max": [
+        -137.05770013872427,
+        7.837999904632569,
+        -218.03439253956975
+      ]
+    },
+    {
+      "code": "E07",
+      "name": "Pulse Cathedral",
+      "min": [
+        -248.24758529113674,
+        0.925698828422223,
+        -182.74971574074846
+      ],
+      "max": [
+        -233.86182199678208,
+        14.238,
+        -167.52327180538214
+      ]
+    },
+    {
+      "code": "E08",
+      "name": "Halo Nine",
+      "min": [
+        -206.47844770903166,
+        1.6380000953674312,
+        -228.53167000641852
+      ],
+      "max": [
+        -192.2698632323393,
+        16.775743513286116,
+        -214.32319439207018
+      ]
+    },
+    {
+      "code": "E09",
+      "name": "Eclipse Cabaret",
+      "min": [
+        -166.0852712334488,
+        -1.0164899114834025,
+        -236.04265226319146
+      ],
+      "max": [
+        -155.792836811899,
+        10.14580694867004,
+        -225.8361201922379
+      ]
+    },
+    {
+      "code": "E10",
+      "name": "Aurora Grand Cinema",
+      "min": [
+        -123.84480202188047,
+        1.4880000071525574,
+        -261.86736121599137
+      ],
+      "max": [
+        -111.01249535559273,
+        8.847999957084657,
+        -249.76270288465642
+      ]
+    },
+    {
+      "code": "E11",
+      "name": "Horizon Screen Gardens",
+      "min": [
+        -200.0517365117416,
+        1.6204793463336586,
+        -163.37916900619717
+      ],
+      "max": [
+        -185.754943297932,
+        5.837999904632569,
+        -149.24424477330388
+      ]
+    },
+    {
+      "code": "E12",
+      "name": "Meridian Pool Palace",
+      "min": [
+        -153.9738322158684,
+        1.638,
+        -208.71983915379406
+      ],
+      "max": [
+        -138.0851195812307,
+        8.265994234859944,
+        -192.64971645794637
+      ]
+    },
+    {
+      "code": "E13",
+      "name": "Neon Grotto Aquaclub",
+      "min": [
+        -96.04658139832844,
+        1.6704999999254944,
+        -238.56420425268723
+      ],
+      "max": [
+        -82.89039305278759,
+        5.622801626205445,
+        -226.40441302169245
+      ]
+    },
+    {
+      "code": "E14",
+      "name": "The Prismarium",
+      "min": [
+        -76.29073524603015,
+        1.0880000953674314,
+        -278.73912176385403
+      ],
+      "max": [
+        -64.01512529463793,
+        9.787999904632567,
+        -265.9841942128937
+      ]
+    },
+    {
+      "code": "E15",
+      "name": "Synesthesia Hall",
+      "min": [
+        -30.0947512676632,
+        1.620025712375636,
+        -284.85773417669293
+      ],
+      "max": [
+        -17.158533898980675,
+        6.5454084327701665,
+        -275.41950577130297
+      ]
+    },
+    {
+      "code": "E16",
+      "name": "Zero-G Ballroom",
+      "min": [
+        -100.63434346238236,
+        0.018228019341016477,
+        -253.0246619872433
+      ],
+      "max": [
+        -89.18599205277249,
+        11.557771980658984,
+        -241.47421831979443
+      ]
+    },
+    {
+      "code": "E17",
+      "name": "Dream Arcade",
+      "min": [
+        -53.84220965293365,
+        1.4508359377403741,
+        -264.0404093794757
+      ],
+      "max": [
+        -44.97341493298249,
+        9.908000004768372,
+        -255.81096886119292
+      ]
+    },
+    {
+      "code": "E18",
+      "name": "Probability Palace",
+      "min": [
+        -154.90621268101478,
+        1.1379999523162843,
+        -262.8358040472659
+      ],
+      "max": [
+        -142.07144974791595,
+        12.828490470593989,
+        -250.46961028463335
+      ]
+    },
+    {
+      "code": "E19",
+      "name": "Chrono Carousel",
+      "min": [
+        -99.96924673703303,
+        0.45814188015688107,
+        -289.992185526322
+      ],
+      "max": [
+        -84.13564463188794,
+        13.417858119843117,
+        -272.80537854335967
+      ]
+    },
+    {
+      "code": "E20",
+      "name": "The Phantom Menagerie",
+      "min": [
+        -32.796951856998604,
+        1.638000005722046,
+        -253.30140251718592
+      ],
+      "max": [
+        -19.32895176590468,
+        9.238,
+        -242.7095044875387
+      ]
+    }
+  ],
+  "meshes": 1143,
+  "triangles": 233440,
+  "uniqueNames": 1208,
+  "materials": [
+    "Entertainment amber architectural neon",
+    "Entertainment bioluminescent green",
+    "Entertainment black reflecting water",
+    "Entertainment burgundy anodized ribbon",
+    "Entertainment champagne titanium",
+    "Entertainment crimson structural neon",
+    "Entertainment cyan structural neon",
+    "Entertainment dark brushed titanium",
+    "Entertainment dark iridescent metal",
+    "Entertainment electric blue structural neon",
+    "Entertainment low-iron smoked glass",
+    "Entertainment luminous foliage",
+    "Entertainment magenta structural neon",
+    "Entertainment matte black ceramic",
+    "Entertainment oxidized copper",
+    "Entertainment pale polished stone",
+    "Entertainment pearl white ceramic",
+    "Entertainment polished nickel",
+    "Entertainment polished obsidian glass ceramic",
+    "Entertainment sign AURELIA",
+    "Entertainment sign AURORA GRAND",
+    "Entertainment sign CHRONO CAROUSEL",
+    "Entertainment sign DREAM ARCADE",
+    "Entertainment sign ECLIPSE CABARET",
+    "Entertainment sign EMBER / ICE",
+    "Entertainment sign HALO NINE",
+    "Entertainment sign HELIX",
+    "Entertainment sign HORIZON SCREEN GARDENS",
+    "Entertainment sign MERIDIAN",
+    "Entertainment sign NEON GROTTO",
+    "Entertainment sign PHANTOM MENAGERIE",
+    "Entertainment sign PRISMARIUM",
+    "Entertainment sign PROBABILITY PALACE",
+    "Entertainment sign PULSE",
+    "Entertainment sign SYNESTHESIA",
+    "Entertainment sign THE ORION ROOM",
+    "Entertainment sign TIDAL GLASS",
+    "Entertainment sign VELVET CIRCUIT",
+    "Entertainment sign ZERO-G",
+    "Entertainment smoked gold glass",
+    "Entertainment ultraviolet structural neon",
+    "Entertainment warm white architectural neon",
+    "Entertainment wet-look black basalt"
+  ],
+  "animations": {
+    "entertainment-emissive-pulse": 22,
+    "entertainment-rotation": 12
+  },
+  "missingRoots": [],
+  "boundaryViolations": [],
+  "overlaps": [],
+  "routes": [
+    {
+      "name": "ENTERTAINMENT__LUMEN_BOULEVARD",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E01__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E02__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E03__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E04__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E05__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E06__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E07__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E08__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E09__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E10__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E11__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E12__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E13__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E14__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E15__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E16__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E17__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E18__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E19__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__E20__LUMEN_APPROACH",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__HALO_WALK_SEGMENT_1",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__HALO_WALK_SEGMENT_2",
+      "resident": true,
+      "walkable": true
+    },
+    {
+      "name": "ENTERTAINMENT__HALO_WALK_SEGMENT_3",
+      "resident": true,
+      "walkable": true
+    }
+  ],
+  "roadPoint": [
+    -131.85434699058544,
+    1.6319999998807908,
+    -239.9715550591805
+  ],
+  "roadNext": [
+    -116.35697555542004,
+    1.6319999998807908,
+    -247.85675341390157
+  ],
+  "roadGround": 1.6319999998807908,
+  "program": {
+    "name": "The Luminous Crescent",
+    "buildingCount": 20,
+    "buildings": [
+      {
+        "code": "E01",
+        "name": "The Aurelia Crown",
+        "subtitle": "flagship fine-dining landmark",
+        "zone": "art-marketing",
+        "form": "rotating-elliptical-plate-tower",
+        "footprintMetres": [
+          104,
+          82
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "five off-axis champagne-titanium ellipses, gold glass, orbital sculptures, reflecting pools, and a floating roof halo"
+      },
+      {
+        "code": "E02",
+        "name": "Tidal Glass",
+        "subtitle": "ocean-facing marine dining pavilion",
+        "zone": "outer-northern",
+        "form": "photovoltaic-wave-pavilion",
+        "footprintMetres": [
+          138,
+          82
+        ],
+        "heightMetres": 32,
+        "exteriorSignature": "one photovoltaic-glass wave, white marine ribs, algae lantern columns, water channels, and mist-projected media"
+      },
+      {
+        "code": "E03",
+        "name": "The Helix Table",
+        "subtitle": "experimental gastronomy complex",
+        "zone": "art-marketing",
+        "form": "twin-helical-garden-towers",
+        "footprintMetres": [
+          106,
+          86
+        ],
+        "heightMetres": 74,
+        "exteriorSignature": "twisting pearl and iridescent towers, spiral promenade, irregular bridges, hydroponic void, roof fins, and luminous mist ring"
+      },
+      {
+        "code": "E04",
+        "name": "Ember & Ice",
+        "subtitle": "dual-concept luxury restaurant",
+        "zone": "residential-quiet",
+        "form": "contrasting-courtyard-wings",
+        "footprintMetres": [
+          116,
+          78
+        ],
+        "heightMetres": 43,
+        "exteriorSignature": "fissured copper volcanic wing, crystalline water-glass wing, diamond portal, thermal courtyard rill, and opposed roof crowns"
+      },
+      {
+        "code": "E05",
+        "name": "The Orion Room",
+        "subtitle": "observatory cocktail bar",
+        "zone": "residential-quiet",
+        "form": "obsidian-oval-observatory",
+        "footprintMetres": [
+          88,
+          62
+        ],
+        "heightMetres": 28,
+        "exteriorSignature": "star-field obsidian oval in black water, faceted dome, tilted orbital ring, bridge approach, and coordinate fins"
+      },
+      {
+        "code": "E06",
+        "name": "Velvet Circuit",
+        "subtitle": "cocktail club, jazz venue and salon",
+        "zone": "residential-quiet",
+        "form": "kinetic-ribbon-salon",
+        "footprintMetres": [
+          82,
+          68
+        ],
+        "heightMetres": 67,
+        "exteriorSignature": "burgundy-to-violet mechanical curtain, star canopy, brass guide line, smoked floating balconies, and acoustic garden wall"
+      },
+      {
+        "code": "E07",
+        "name": "Pulse Cathedral",
+        "subtitle": "primary electronic-music venue",
+        "zone": "outer-northern",
+        "form": "acoustic-cathedral-club",
+        "footprintMetres": [
+          126,
+          104
+        ],
+        "heightMetres": 112,
+        "exteriorSignature": "black central nave, programmable waveform glazing, functional buttresses, monumental blue arch, colonnade, and three beacon spires"
+      },
+      {
+        "code": "E08",
+        "name": "Halo Nine",
+        "subtitle": "elevated skyline club",
+        "zone": "outer-northern",
+        "form": "ring-on-slender-tower",
+        "footprintMetres": [
+          92,
+          92
+        ],
+        "heightMetres": 154,
+        "exteriorSignature": "graphite shaft, rotating electrochromic summit ring, secondary sky halo, nine reflecting pools, and Halo Walk bridge"
+      },
+      {
+        "code": "E09",
+        "name": "Eclipse Cabaret",
+        "subtitle": "cabaret, dance and theatrical venue",
+        "zone": "art-marketing",
+        "form": "sphere-and-mechanical-crescent",
+        "footprintMetres": [
+          102,
+          88
+        ],
+        "heightMetres": 58,
+        "exteriorSignature": "void-black sphere, polished nickel crescent curtain, equatorial light, fan forecourt, holographic moon, and red stair columns"
+      },
+      {
+        "code": "E10",
+        "name": "Aurora Grand Cinema",
+        "subtitle": "luxury cinema and premiere venue",
+        "zone": "art-marketing",
+        "form": "streamlined-deco-cinema-palace",
+        "footprintMetres": [
+          132,
+          90
+        ],
+        "heightMetres": 57,
+        "exteriorSignature": "stepped screening volumes, monumental mirrored arch, aurora fins, shutter canopy, lenticular panels, and event fountain plaza"
+      },
+      {
+        "code": "E11",
+        "name": "Horizon Screen Gardens",
+        "subtitle": "luxury open-air cinema",
+        "zone": "tropical-ecological",
+        "form": "terraced-landscape-cinema",
+        "footprintMetres": [
+          142,
+          102
+        ],
+        "heightMetres": 42,
+        "exteriorSignature": "retractable screen between black towers, landscaped brass-lit terraces, bubble pods, four projection obelisks, and curved glass entrance pavilion"
+      },
+      {
+        "code": "E12",
+        "name": "Meridian Pool Palace",
+        "subtitle": "grand covered aquatic terraces",
+        "zone": "tropical-ecological",
+        "form": "triple-transparent-vaults",
+        "footprintMetres": [
+          138,
+          96
+        ],
+        "heightMetres": 46,
+        "exteriorSignature": "three droplet vaults, titanium ribs, aquatic projection, roof mist oculus, disc bars, water-veiled entrance, and heated promenade"
+      },
+      {
+        "code": "E13",
+        "name": "Neon Grotto Aquaclub",
+        "subtitle": "covered lagoon and aquatic nightlife",
+        "zone": "tropical-ecological",
+        "form": "luminous-volcanic-shells",
+        "footprintMetres": [
+          124,
+          94
+        ],
+        "heightMetres": 41,
+        "exteriorSignature": "rough black interlocking shells, magenta-cobalt fissures, basin bridge, ringed cliff bars, waterfalls, humid ridges, and luminous ecology loop"
+      },
+      {
+        "code": "E14",
+        "name": "The Prismarium",
+        "subtitle": "volumetric and holographic theatre",
+        "zone": "art-marketing",
+        "form": "crystalline-shell-suspended-cube",
+        "footprintMetres": [
+          94,
+          86
+        ],
+        "heightMetres": 61,
+        "exteriorSignature": "dichroic faceted crystal around an apparently unsupported black cube, optical plaza, four projection pylons, and mirrored roof prisms"
+      },
+      {
+        "code": "E15",
+        "name": "Synesthesia Hall",
+        "subtitle": "multisensory experimental concert hall",
+        "zone": "art-marketing",
+        "form": "kinetic-waveform-hall",
+        "footprintMetres": [
+          126,
+          82
+        ],
+        "heightMetres": 51,
+        "exteriorSignature": "fluid waveform roof, responsive overlapping ceramic-metal panels, confined mist channel, depth-aligned sign, mirrored trough canopy, and vibration benches"
+      },
+      {
+        "code": "E16",
+        "name": "Zero-G Ballroom",
+        "subtitle": "aerial and orbital performance venue",
+        "zone": "residential-quiet",
+        "form": "suspended-gyroscopic-sphere",
+        "footprintMetres": [
+          98,
+          94
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "pearl sphere above a reflecting basin, three slowly rotating titanium rings, coordinate-grid light, four concealed pylons, and twin equatorial bridges"
+      },
+      {
+        "code": "E17",
+        "name": "Dream Arcade",
+        "subtitle": "neuroadaptive mixed-reality arcade",
+        "zone": "residential-quiet",
+        "form": "stacked-capsule-cluster",
+        "footprintMetres": [
+          100,
+          82
+        ],
+        "heightMetres": 86,
+        "exteriorSignature": "irregular chrome, violet, pearl, mirror and blue capsules around a digital waterfall, external tubes, portals, pixel sign, and glitch service tower"
+      },
+      {
+        "code": "E18",
+        "name": "Probability Palace",
+        "subtitle": "luxury strategic gaming venue",
+        "zone": "outer-northern",
+        "form": "interlocking-probability-volumes",
+        "footprintMetres": [
+          120,
+          94
+        ],
+        "heightMetres": 76,
+        "exteriorSignature": "improbable sliding black-glass volumes, champagne probability screens, randomized light lines, mirrored entrance matrix, algorithmic jets, and intersecting frame crown"
+      },
+      {
+        "code": "E19",
+        "name": "Chrono Carousel",
+        "subtitle": "kinetic temporal simulation palace",
+        "zone": "outer-northern",
+        "form": "mechanical-orbital-carousel",
+        "footprintMetres": [
+          114,
+          106
+        ],
+        "heightMetres": 103,
+        "exteriorSignature": "engraved bronze time tower, three mechanical rings with seed capsules, counter-rotating iris pavilion, concentric time tracks, and clock-like amber sign"
+      },
+      {
+        "code": "E20",
+        "name": "The Phantom Menagerie",
+        "subtitle": "mixed-reality speculative-life park",
+        "zone": "tropical-ecological",
+        "form": "biological-mirror-landscape",
+        "footprintMetres": [
+          142,
+          88
+        ],
+        "heightMetres": 43,
+        "exteriorSignature": "low black mirror bar, bioluminescent tears, translucent biome cells, fern wetlands, black-tree holographic emitters, and vegetation-to-digital transition"
+      }
+    ],
+    "zones": {
+      "outerNorthern": [
+        "Tidal Glass",
+        "Pulse Cathedral",
+        "Halo Nine",
+        "Probability Palace",
+        "Chrono Carousel"
+      ],
+      "artMarketing": [
+        "The Aurelia Crown",
+        "The Helix Table",
+        "Eclipse Cabaret",
+        "Aurora Grand Cinema",
+        "The Prismarium",
+        "Synesthesia Hall"
+      ],
+      "residentialQuiet": [
+        "Ember & Ice",
+        "The Orion Room",
+        "Velvet Circuit",
+        "Zero-G Ballroom",
+        "Dream Arcade"
+      ],
+      "tropicalEcological": [
+        "Horizon Screen Gardens",
+        "Meridian Pool Palace",
+        "Neon Grotto Aquaclub",
+        "The Phantom Menagerie"
+      ]
+    },
+    "circulation": {
+      "lumenBoulevard": "curved walkable primary route",
+      "haloWalk": "three open-air elevated bridge segments linking four skyline landmarks",
+      "buildingApproaches": 20,
+      "accessibleRoutesIntegrated": true
+    },
+    "publicRealm": {
+      "luminousTrees": 32,
+      "reflectingPools": 12,
+      "paving": "wet-look black basalt with champagne-metal edge",
+      "tropicalTransition": true,
+      "residentialDarkSkyEdge": true
+    },
+    "signatureSystems": {
+      "aureliaEllipticalFloors": 5,
+      "tidalWaveScales": 11,
+      "helixPromenadeSegments": 30,
+      "velvetKineticRibbons": 42,
+      "pulseAcousticButtresses": 8,
+      "haloReflectingPools": 9,
+      "synesthesiaResponsivePanels": 70,
+      "dreamCapsules": 12,
+      "chronoTimeRings": 3,
+      "phantomBiomeCells": 4
+    },
+    "architecturalPalette": [
+      "champagne titanium",
+      "black ceramic",
+      "polished stone",
+      "low-iron glass",
+      "electrochromic walls",
+      "structural neon",
+      "wet-look black paving",
+      "reflecting water",
+      "kinetic metal screens"
+    ],
+    "lightingProtocol": "integrated structural neon; retractable or restrained daylight media; warm downward-directed residential edge; localized ecological and dark-sky shields",
+    "acousticProtocol": "large clubs on the outer north boundary; acoustic buttresses, landscape buffers, directional lighting, and quiet inner venues protect guest, residential, and ecological neighbors",
+    "exteriorOnly": true
+  },
+  "compact": {
+    "buildingCount": 20,
+    "zones": {
+      "outerNorthern": [
+        "Tidal Glass",
+        "Pulse Cathedral",
+        "Halo Nine",
+        "Probability Palace",
+        "Chrono Carousel"
+      ],
+      "artMarketing": [
+        "The Aurelia Crown",
+        "The Helix Table",
+        "Eclipse Cabaret",
+        "Aurora Grand Cinema",
+        "The Prismarium",
+        "Synesthesia Hall"
+      ],
+      "residentialQuiet": [
+        "Ember & Ice",
+        "The Orion Room",
+        "Velvet Circuit",
+        "Zero-G Ballroom",
+        "Dream Arcade"
+      ],
+      "tropicalEcological": [
+        "Horizon Screen Gardens",
+        "Meridian Pool Palace",
+        "Neon Grotto Aquaclub",
+        "The Phantom Menagerie"
+      ]
+    },
+    "circulation": {
+      "lumenBoulevard": "curved walkable primary route",
+      "haloWalk": "three open-air elevated bridge segments linking four skyline landmarks",
+      "buildingApproaches": 20,
+      "accessibleRoutesIntegrated": true
+    },
+    "signatureSystems": {
+      "aureliaEllipticalFloors": 5,
+      "tidalWaveScales": 11,
+      "helixPromenadeSegments": 30,
+      "velvetKineticRibbons": 42,
+      "pulseAcousticButtresses": 8,
+      "haloReflectingPools": 9,
+      "synesthesiaResponsivePanels": 70,
+      "dreamCapsules": 12,
+      "chronoTimeRings": 3,
+      "phantomBiomeCells": 4
+    },
+    "lightingProtocol": "integrated structural neon; retractable or restrained daylight media; warm downward-directed residential edge; localized ecological and dark-sky shields",
+    "acousticProtocol": "large clubs on the outer north boundary; acoustic buttresses, landscape buffers, directional lighting, and quiet inner venues protect guest, residential, and ecological neighbors"
+  },
+  "deepProgram": {
+    "name": "The Luminous Crescent",
+    "buildingCount": 20,
+    "buildings": [
+      {
+        "code": "E01",
+        "name": "The Aurelia Crown",
+        "subtitle": "flagship fine-dining landmark",
+        "zone": "art-marketing",
+        "form": "rotating-elliptical-plate-tower",
+        "footprintMetres": [
+          104,
+          82
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "five off-axis champagne-titanium ellipses, gold glass, orbital sculptures, reflecting pools, and a floating roof halo"
+      },
+      {
+        "code": "E02",
+        "name": "Tidal Glass",
+        "subtitle": "ocean-facing marine dining pavilion",
+        "zone": "outer-northern",
+        "form": "photovoltaic-wave-pavilion",
+        "footprintMetres": [
+          138,
+          82
+        ],
+        "heightMetres": 32,
+        "exteriorSignature": "one photovoltaic-glass wave, white marine ribs, algae lantern columns, water channels, and mist-projected media"
+      },
+      {
+        "code": "E03",
+        "name": "The Helix Table",
+        "subtitle": "experimental gastronomy complex",
+        "zone": "art-marketing",
+        "form": "twin-helical-garden-towers",
+        "footprintMetres": [
+          106,
+          86
+        ],
+        "heightMetres": 74,
+        "exteriorSignature": "twisting pearl and iridescent towers, spiral promenade, irregular bridges, hydroponic void, roof fins, and luminous mist ring"
+      },
+      {
+        "code": "E04",
+        "name": "Ember & Ice",
+        "subtitle": "dual-concept luxury restaurant",
+        "zone": "residential-quiet",
+        "form": "contrasting-courtyard-wings",
+        "footprintMetres": [
+          116,
+          78
+        ],
+        "heightMetres": 43,
+        "exteriorSignature": "fissured copper volcanic wing, crystalline water-glass wing, diamond portal, thermal courtyard rill, and opposed roof crowns"
+      },
+      {
+        "code": "E05",
+        "name": "The Orion Room",
+        "subtitle": "observatory cocktail bar",
+        "zone": "residential-quiet",
+        "form": "obsidian-oval-observatory",
+        "footprintMetres": [
+          88,
+          62
+        ],
+        "heightMetres": 28,
+        "exteriorSignature": "star-field obsidian oval in black water, faceted dome, tilted orbital ring, bridge approach, and coordinate fins"
+      },
+      {
+        "code": "E06",
+        "name": "Velvet Circuit",
+        "subtitle": "cocktail club, jazz venue and salon",
+        "zone": "residential-quiet",
+        "form": "kinetic-ribbon-salon",
+        "footprintMetres": [
+          82,
+          68
+        ],
+        "heightMetres": 67,
+        "exteriorSignature": "burgundy-to-violet mechanical curtain, star canopy, brass guide line, smoked floating balconies, and acoustic garden wall"
+      },
+      {
+        "code": "E07",
+        "name": "Pulse Cathedral",
+        "subtitle": "primary electronic-music venue",
+        "zone": "outer-northern",
+        "form": "acoustic-cathedral-club",
+        "footprintMetres": [
+          126,
+          104
+        ],
+        "heightMetres": 112,
+        "exteriorSignature": "black central nave, programmable waveform glazing, functional buttresses, monumental blue arch, colonnade, and three beacon spires"
+      },
+      {
+        "code": "E08",
+        "name": "Halo Nine",
+        "subtitle": "elevated skyline club",
+        "zone": "outer-northern",
+        "form": "ring-on-slender-tower",
+        "footprintMetres": [
+          92,
+          92
+        ],
+        "heightMetres": 154,
+        "exteriorSignature": "graphite shaft, rotating electrochromic summit ring, secondary sky halo, nine reflecting pools, and Halo Walk bridge"
+      },
+      {
+        "code": "E09",
+        "name": "Eclipse Cabaret",
+        "subtitle": "cabaret, dance and theatrical venue",
+        "zone": "art-marketing",
+        "form": "sphere-and-mechanical-crescent",
+        "footprintMetres": [
+          102,
+          88
+        ],
+        "heightMetres": 58,
+        "exteriorSignature": "void-black sphere, polished nickel crescent curtain, equatorial light, fan forecourt, holographic moon, and red stair columns"
+      },
+      {
+        "code": "E10",
+        "name": "Aurora Grand Cinema",
+        "subtitle": "luxury cinema and premiere venue",
+        "zone": "art-marketing",
+        "form": "streamlined-deco-cinema-palace",
+        "footprintMetres": [
+          132,
+          90
+        ],
+        "heightMetres": 57,
+        "exteriorSignature": "stepped screening volumes, monumental mirrored arch, aurora fins, shutter canopy, lenticular panels, and event fountain plaza"
+      },
+      {
+        "code": "E11",
+        "name": "Horizon Screen Gardens",
+        "subtitle": "luxury open-air cinema",
+        "zone": "tropical-ecological",
+        "form": "terraced-landscape-cinema",
+        "footprintMetres": [
+          142,
+          102
+        ],
+        "heightMetres": 42,
+        "exteriorSignature": "retractable screen between black towers, landscaped brass-lit terraces, bubble pods, four projection obelisks, and curved glass entrance pavilion"
+      },
+      {
+        "code": "E12",
+        "name": "Meridian Pool Palace",
+        "subtitle": "grand covered aquatic terraces",
+        "zone": "tropical-ecological",
+        "form": "triple-transparent-vaults",
+        "footprintMetres": [
+          138,
+          96
+        ],
+        "heightMetres": 46,
+        "exteriorSignature": "three droplet vaults, titanium ribs, aquatic projection, roof mist oculus, disc bars, water-veiled entrance, and heated promenade"
+      },
+      {
+        "code": "E13",
+        "name": "Neon Grotto Aquaclub",
+        "subtitle": "covered lagoon and aquatic nightlife",
+        "zone": "tropical-ecological",
+        "form": "luminous-volcanic-shells",
+        "footprintMetres": [
+          124,
+          94
+        ],
+        "heightMetres": 41,
+        "exteriorSignature": "rough black interlocking shells, magenta-cobalt fissures, basin bridge, ringed cliff bars, waterfalls, humid ridges, and luminous ecology loop"
+      },
+      {
+        "code": "E14",
+        "name": "The Prismarium",
+        "subtitle": "volumetric and holographic theatre",
+        "zone": "art-marketing",
+        "form": "crystalline-shell-suspended-cube",
+        "footprintMetres": [
+          94,
+          86
+        ],
+        "heightMetres": 61,
+        "exteriorSignature": "dichroic faceted crystal around an apparently unsupported black cube, optical plaza, four projection pylons, and mirrored roof prisms"
+      },
+      {
+        "code": "E15",
+        "name": "Synesthesia Hall",
+        "subtitle": "multisensory experimental concert hall",
+        "zone": "art-marketing",
+        "form": "kinetic-waveform-hall",
+        "footprintMetres": [
+          126,
+          82
+        ],
+        "heightMetres": 51,
+        "exteriorSignature": "fluid waveform roof, responsive overlapping ceramic-metal panels, confined mist channel, depth-aligned sign, mirrored trough canopy, and vibration benches"
+      },
+      {
+        "code": "E16",
+        "name": "Zero-G Ballroom",
+        "subtitle": "aerial and orbital performance venue",
+        "zone": "residential-quiet",
+        "form": "suspended-gyroscopic-sphere",
+        "footprintMetres": [
+          98,
+          94
+        ],
+        "heightMetres": 72,
+        "exteriorSignature": "pearl sphere above a reflecting basin, three slowly rotating titanium rings, coordinate-grid light, four concealed pylons, and twin equatorial bridges"
+      },
+      {
+        "code": "E17",
+        "name": "Dream Arcade",
+        "subtitle": "neuroadaptive mixed-reality arcade",
+        "zone": "residential-quiet",
+        "form": "stacked-capsule-cluster",
+        "footprintMetres": [
+          100,
+          82
+        ],
+        "heightMetres": 86,
+        "exteriorSignature": "irregular chrome, violet, pearl, mirror and blue capsules around a digital waterfall, external tubes, portals, pixel sign, and glitch service tower"
+      },
+      {
+        "code": "E18",
+        "name": "Probability Palace",
+        "subtitle": "luxury strategic gaming venue",
+        "zone": "outer-northern",
+        "form": "interlocking-probability-volumes",
+        "footprintMetres": [
+          120,
+          94
+        ],
+        "heightMetres": 76,
+        "exteriorSignature": "improbable sliding black-glass volumes, champagne probability screens, randomized light lines, mirrored entrance matrix, algorithmic jets, and intersecting frame crown"
+      },
+      {
+        "code": "E19",
+        "name": "Chrono Carousel",
+        "subtitle": "kinetic temporal simulation palace",
+        "zone": "outer-northern",
+        "form": "mechanical-orbital-carousel",
+        "footprintMetres": [
+          114,
+          106
+        ],
+        "heightMetres": 103,
+        "exteriorSignature": "engraved bronze time tower, three mechanical rings with seed capsules, counter-rotating iris pavilion, concentric time tracks, and clock-like amber sign"
+      },
+      {
+        "code": "E20",
+        "name": "The Phantom Menagerie",
+        "subtitle": "mixed-reality speculative-life park",
+        "zone": "tropical-ecological",
+        "form": "biological-mirror-landscape",
+        "footprintMetres": [
+          142,
+          88
+        ],
+        "heightMetres": 43,
+        "exteriorSignature": "low black mirror bar, bioluminescent tears, translucent biome cells, fern wetlands, black-tree holographic emitters, and vegetation-to-digital transition"
+      }
+    ],
+    "zones": {
+      "outerNorthern": [
+        "Tidal Glass",
+        "Pulse Cathedral",
+        "Halo Nine",
+        "Probability Palace",
+        "Chrono Carousel"
+      ],
+      "artMarketing": [
+        "The Aurelia Crown",
+        "The Helix Table",
+        "Eclipse Cabaret",
+        "Aurora Grand Cinema",
+        "The Prismarium",
+        "Synesthesia Hall"
+      ],
+      "residentialQuiet": [
+        "Ember & Ice",
+        "The Orion Room",
+        "Velvet Circuit",
+        "Zero-G Ballroom",
+        "Dream Arcade"
+      ],
+      "tropicalEcological": [
+        "Horizon Screen Gardens",
+        "Meridian Pool Palace",
+        "Neon Grotto Aquaclub",
+        "The Phantom Menagerie"
+      ]
+    },
+    "circulation": {
+      "lumenBoulevard": "curved walkable primary route",
+      "haloWalk": "three open-air elevated bridge segments linking four skyline landmarks",
+      "buildingApproaches": 20,
+      "accessibleRoutesIntegrated": true
+    },
+    "publicRealm": {
+      "luminousTrees": 32,
+      "reflectingPools": 12,
+      "paving": "wet-look black basalt with champagne-metal edge",
+      "tropicalTransition": true,
+      "residentialDarkSkyEdge": true
+    },
+    "signatureSystems": {
+      "aureliaEllipticalFloors": 5,
+      "tidalWaveScales": 11,
+      "helixPromenadeSegments": 30,
+      "velvetKineticRibbons": 42,
+      "pulseAcousticButtresses": 8,
+      "haloReflectingPools": 9,
+      "synesthesiaResponsivePanels": 70,
+      "dreamCapsules": 12,
+      "chronoTimeRings": 3,
+      "phantomBiomeCells": 4
+    },
+    "architecturalPalette": [
+      "champagne titanium",
+      "black ceramic",
+      "polished stone",
+      "low-iron glass",
+      "electrochromic walls",
+      "structural neon",
+      "wet-look black paving",
+      "reflecting water",
+      "kinetic metal screens"
+    ],
+    "lightingProtocol": "integrated structural neon; retractable or restrained daylight media; warm downward-directed residential edge; localized ecological and dark-sky shields",
+    "acousticProtocol": "large clubs on the outer north boundary; acoustic buttresses, landscape buffers, directional lighting, and quiet inner venues protect guest, residential, and ecological neighbors",
+    "exteriorOnly": true
+  },
+  "specializedRevision": 29,
+  "planning": {
+    "boundedDistricts": 35,
+    "populatedDistricts": 35,
+    "distinctDistricts": 35,
+    "filledBiomeDomes": 6,
+    "cellViolations": 0
+  },
+  "population": {
+    "plannedFacilities": [
+      "The Aurelia Crown",
+      "Tidal Glass",
+      "The Helix Table",
+      "Ember & Ice",
+      "The Orion Room",
+      "Velvet Circuit",
+      "Pulse Cathedral",
+      "Halo Nine",
+      "Eclipse Cabaret",
+      "Aurora Grand Cinema",
+      "Horizon Screen Gardens",
+      "Meridian Pool Palace",
+      "Neon Grotto Aquaclub",
+      "The Prismarium",
+      "Synesthesia Hall",
+      "Zero-G Ballroom",
+      "Dream Arcade",
+      "Probability Palace",
+      "Chrono Carousel",
+      "The Phantom Menagerie"
+    ],
+    "plannedObjects": [
+      "Lumen Boulevard",
+      "Halo Walk",
+      "luminous tree allée",
+      "reflecting pool chain",
+      "twenty exact building approaches"
+    ],
+    "realizedFeatureTags": [
+      "the-aurelia-crown",
+      "tidal-glass",
+      "the-helix-table",
+      "ember-ice",
+      "the-orion-room",
+      "velvet-circuit",
+      "pulse-cathedral",
+      "halo-nine",
+      "eclipse-cabaret",
+      "aurora-grand-cinema",
+      "horizon-screen-gardens",
+      "meridian-pool-palace",
+      "neon-grotto-aquaclub",
+      "the-prismarium",
+      "synesthesia-hall",
+      "zero-g-ballroom",
+      "dream-arcade",
+      "probability-palace",
+      "chrono-carousel",
+      "the-phantom-menagerie"
+    ],
+    "realizedFacilityCount": 20,
+    "realizedObjectCount": 136,
+    "distinct": true,
+    "asymmetricCampus": true,
+    "localRoadCount": 24,
+    "radialCoverage": 0.96,
+    "angularCoverage": 0.96,
+    "exteriorOnly": true,
+    "luminousCrescentNarrative": true,
+    "lumenBoulevardWalkable": true,
+    "haloWalkOpenAir": true
+  },
+  "signatureCounts": {
+    "aureliaFloors": 5,
+    "tidalScales": 11,
+    "helixPromenade": 30,
+    "velvetRibbons": 42,
+    "pulseButtresses": 8,
+    "haloPools": 9,
+    "synesthesiaPanels": 70,
+    "dreamCapsules": 12,
+    "chronoRings": 3,
+    "phantomCells": 4
+  }
+}

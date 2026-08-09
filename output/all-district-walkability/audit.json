@@ -12,7 +12,7 @@
     "preciseObstacleCount": 807,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 109,
+    "broadOnlyMarginsAvoided": 121,
     "movementProbeCount": 131,
     "failedDistricts": [],
     "districtResults": [
@@ -155,7 +155,7 @@
         "id": "marketing",
         "sampleCount": 756,
         "clearCount": 756,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 6,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -218,7 +218,7 @@
         "id": "luxury-entertainment",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 6,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []

@@ -408,10 +408,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [-37, 0, -14],
     footprint: [13, 8],
     height: 13,
-    archetype: "waterfront-leisure-district",
+    archetype: "luminous-crescent-entertainment-city",
     accent: "#FF76A9",
-    palette: ["#281820", "#614050", "#E8CFD9", "#FF76A9"],
-    description: "Terraced restaurants, performance venues, and premium guest suites create a lively waterfront leisure quarter.",
+    palette: ["#090A0E", "#B7905A", "#E8E3DA", "#FF76A9"],
+    description: "The Luminous Crescent arrays twenty exterior-only dining, nightlife, cinema, aquatic, performance, gaming, and mixed-reality landmarks around Lumen Boulevard and the open-air Halo Walk, with loud skyline venues outside and quieter landscaped edges toward residences and the Tropical Dome.",
   },
   {
     id: "scientist-residential",

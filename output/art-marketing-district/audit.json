@@ -1,0 +1,911 @@
+{
+  "audit": {
+    "programs": {
+      "scientificArt": {
+        "identity": "Scientific Art and Marketing District",
+        "translationRole": "scientific work becomes images, objects, experiences, narratives, and identities before moving outward to public audiences",
+        "totalBuildingCount": 15,
+        "scientificArtBuildingCount": 8,
+        "marketingBuildingCount": 7,
+        "commonPalette": [
+          "black titanium",
+          "low-iron glass",
+          "pearlescent ceramic",
+          "brushed aluminum",
+          "translucent photovoltaic panels",
+          "dichroic films",
+          "pale geopolymer stone"
+        ],
+        "integratedMediaRule": "media surfaces are directional, brightness-limited, abstract, and architecturally integrated",
+        "exteriorOnly": true,
+        "side": "Scientific Art",
+        "buildingCount": 8,
+        "buildings": [
+          {
+            "code": "SA1",
+            "name": "The Parallax Institute for Scientific Visualization",
+            "subtitle": "Principal Scientific Art Landmark",
+            "purpose": "Scientific visualization, data sculpture, immersive representation, and abstract public interpretation",
+            "placementZone": "Inner laboratory-facing crescent",
+            "footprintMetres": [
+              184,
+              116
+            ],
+            "heightMetres": 72,
+            "exteriorSignature": "a sheared crescent of smoked glass, rotating dichroic fins, spectrometer roof vanes, and a gravitational-lensing coordinate forecourt"
+          },
+          {
+            "code": "SA2",
+            "name": "The Morphogenesis Fabrication Hall",
+            "subtitle": "Algorithmic Sculpture and Robotic Construction",
+            "purpose": "Algorithmic sculpture, computational craft, generative architecture, and large-scale scientific art fabrication",
+            "placementZone": "Fabrication and service edge",
+            "footprintMetres": [
+              196,
+              128
+            ],
+            "heightMetres": 48,
+            "exteriorSignature": "an asymmetrical ceramic shell with branching structural ribs, rail-borne maintenance robots, reaction-diffusion screens, and a changing fabrication yard"
+          },
+          {
+            "code": "SA3",
+            "name": "The Chromaflux Bioart Conservatory",
+            "subtitle": "Living Display Infrastructure",
+            "purpose": "Bioart, living pigments, photobioreactors, contained microbial displays, and wetland interpretation",
+            "placementZone": "Inward wetland court",
+            "footprintMetres": [
+              172,
+              132
+            ],
+            "heightMetres": 44,
+            "exteriorSignature": "seven unequal greenhouse pods, visible biological service modules, pivoting leaf shades, and a bridged wetland channel"
+          },
+          {
+            "code": "SA4",
+            "name": "The Resonance Foundry",
+            "subtitle": "Sonification and Experimental Acoustics",
+            "purpose": "Scientific sonification, psychoacoustics, instrument design, auditory data representation, and sound installation art",
+            "placementZone": "Acoustically shielded fabrication belt",
+            "footprintMetres": [
+              156,
+              126
+            ],
+            "heightMetres": 62,
+            "exteriorSignature": "five offset acoustic volumes, projecting silver baffles, monumental wind instruments, whisper dishes, and a suspended frequency ring"
+          },
+          {
+            "code": "SA5",
+            "name": "The Lumen Observatory for Photonic Art",
+            "subtitle": "Photonics Translation Institute",
+            "purpose": "Photonic art, controlled daylight instruments, spectral projection, and atmospheric visual media",
+            "placementZone": "Electronics-facing photonic boundary",
+            "footprintMetres": [
+              162,
+              116
+            ],
+            "heightMetres": 112,
+            "exteriorSignature": "a matte ceramic research bar crossed by a prism tower, rotating mirrored shutters, public heliostats, and dark-sky directional beams"
+          },
+          {
+            "code": "SA6",
+            "name": "The Atlas of Invisible Worlds",
+            "subtitle": "Microscopy and Imaging Gallery",
+            "purpose": "Microscopy, medical imaging, nanoscale landscapes, molecular visualization, and scanning arts",
+            "placementZone": "Central specimen plaza",
+            "footprintMetres": [
+              168,
+              122
+            ],
+            "heightMetres": 78,
+            "exteriorSignature": "six displaced microscope-slide volumes, relief specimen panels, objective-lens apertures, a pin-shadow data screen, and an enlarged nanoscale landscape"
+          },
+          {
+            "code": "SA7",
+            "name": "The Archive of Future Materials",
+            "subtitle": "Conservation and Exposure Archive",
+            "purpose": "Scientific art conservation, experimental pigments, responsive textiles, smart coatings, and technological preservation",
+            "placementZone": "Durable inner archive edge",
+            "footprintMetres": [
+              176,
+              124
+            ],
+            "heightMetres": 54,
+            "exteriorSignature": "a severe geopolymer monolith, permanent material exposure strips, graded titanium mesh, north-light sawteeth, and sparse mineral gardens"
+          },
+          {
+            "code": "SA8",
+            "name": "The Null Field Gallery",
+            "subtitle": "Simulation, Silence and Perception Limits",
+            "purpose": "Simulation, cosmology, artificial realities, darkness, silence, and mathematical abstraction",
+            "placementZone": "Secret-ring interface",
+            "footprintMetres": [
+              158,
+              112
+            ],
+            "heightMetres": 38,
+            "exteriorSignature": "a partially buried nonreflective black monolith, one continuous datum line, a narrowing void entrance, still reflecting water, and near-total night disappearance"
+          }
+        ],
+        "circulation": {
+          "primaryRoute": "ARTMARK__SA__SPECTRUM_SPINE_INNER_HALF",
+          "sharedBoulevard": "Spectrum Spine",
+          "prismForum": true,
+          "translationGarden": true,
+          "unfinishedPromenade": true,
+          "exactBuildingApproaches": 8
+        },
+        "architecturalLanguage": "experimental, irregular, materially expressive, optically ambiguous, and laboratory-facing",
+        "signatureSystems": {
+          "parallaxDichroicFins": 72,
+          "morphogenesisShellPanels": 32,
+          "chromafluxPods": 7,
+          "resonanceVolumes": 5,
+          "lumenMirroredShutters": 30,
+          "atlasSlides": 6,
+          "archiveWeatheringStrips": 24,
+          "nullDatumSegments": 34
+        }
+      },
+      "marketing": {
+        "identity": "Scientific Art and Marketing District",
+        "translationRole": "scientific work becomes images, objects, experiences, narratives, and identities before moving outward to public audiences",
+        "totalBuildingCount": 15,
+        "scientificArtBuildingCount": 8,
+        "marketingBuildingCount": 7,
+        "commonPalette": [
+          "black titanium",
+          "low-iron glass",
+          "pearlescent ceramic",
+          "brushed aluminum",
+          "translucent photovoltaic panels",
+          "dichroic films",
+          "pale geopolymer stone"
+        ],
+        "integratedMediaRule": "media surfaces are directional, brightness-limited, abstract, and architecturally integrated",
+        "exteriorOnly": true,
+        "side": "Marketing",
+        "buildingCount": 7,
+        "buildings": [
+          {
+            "code": "M1",
+            "name": "Signal House",
+            "subtitle": "Strategy and Institutional Identity",
+            "purpose": "Institutional identity, public campaigns, scientific communication, partnerships, recruitment, and visitor orientation",
+            "placementZone": "Public northern gateway",
+            "footprintMetres": [
+              172,
+              112
+            ],
+            "heightMetres": 104,
+            "exteriorSignature": "a tapered waveform slab, encoded ceramic fins, integrated identity bands, a radial wayfinding plaza, and a rotating communications mast"
+          },
+          {
+            "code": "M2",
+            "name": "The Launch Array",
+            "subtitle": "Announcements and Public Demonstrations",
+            "purpose": "Research announcements, prototype unveilings, institutional ceremonies, media events, and public briefings",
+            "placementZone": "Outer ceremonial event field",
+            "footprintMetres": [
+              188,
+              142
+            ],
+            "heightMetres": 46,
+            "exteriorSignature": "a shallow circular dish, rotating aluminum ring panels, eight radial canopies, a retractable luminous membrane, and launch-site camera masts"
+          },
+          {
+            "code": "M3",
+            "name": "The Narrative Engine Media Foundry",
+            "subtitle": "Scientific Media Production",
+            "purpose": "Scientific filmmaking, documentary production, animation, research journalism, public explainers, and synthetic capture",
+            "placementZone": "Production-facing central belt",
+            "footprintMetres": [
+              182,
+              128
+            ],
+            "heightMetres": 86,
+            "exteriorSignature": "stacked black production boxes around a translucent lantern, exposed camera gantries, a calibration wall, and a stepped media square"
+          },
+          {
+            "code": "M4",
+            "name": "The Audience Dynamics Observatory",
+            "subtitle": "Perception and Trust Research",
+            "purpose": "Research into how scientific information is perceived, trusted, rejected, misunderstood, and shared",
+            "placementZone": "Instrumented elliptical plaza",
+            "footprintMetres": [
+              184,
+              136
+            ],
+            "heightMetres": 58,
+            "exteriorSignature": "two observing crescent buildings, responsive electrochromic cells, explicit sensor masts, pressure-lit water bridges, and interference fins"
+          },
+          {
+            "code": "M5",
+            "name": "The Prototype Identity Works",
+            "subtitle": "Physical Campaign and Exhibition Systems",
+            "purpose": "Exhibition structures, signage, packaging, product identities, demonstration kits, and limited-edition fabrication",
+            "placementZone": "Flexible materials catalogue edge",
+            "footprintMetres": [
+              190,
+              126
+            ],
+            "heightMetres": 54,
+            "exteriorSignature": "a sawtooth industrial hall with replaceable three-storey material panels, prototype towers, and a screened modular fabrication yard"
+          },
+          {
+            "code": "M6",
+            "name": "The Beacon Exchange Tower",
+            "subtitle": "Global Scientific Communications",
+            "purpose": "International media coordination, multilingual deployment, institutional partnerships, event synchronization, and external research networks",
+            "placementZone": "Western orientation landmark",
+            "footprintMetres": [
+              146,
+              122
+            ],
+            "heightMetres": 172,
+            "exteriorSignature": "a pale central shaft wrapped by five offset perforated rings, a directional media membrane, seven radial paths, and a slow-pulse communications mast"
+          },
+          {
+            "code": "M7",
+            "name": "The Evidence Commons",
+            "subtitle": "Public Verification and Correction Hall",
+            "purpose": "Public scientific dialogue, claim verification, research transparency, correction notices, campaign ethics, and open data",
+            "placementZone": "Civic public-facing terminus",
+            "footprintMetres": [
+              192,
+              132
+            ],
+            "heightMetres": 52,
+            "exteriorSignature": "a calm raised civic hall, stacked evidence columns, provenance bands, a decision-tree canopy, stepped debate plaza, and the Correction Bell"
+          }
+        ],
+        "circulation": {
+          "primaryRoute": "ARTMARK__M__SPECTRUM_SPINE_OUTER_HALF",
+          "sharedBoulevard": "Spectrum Spine",
+          "prismForum": true,
+          "translationGarden": true,
+          "unfinishedPromenade": true,
+          "exactBuildingApproaches": 7
+        },
+        "architecturalLanguage": "legible, civic, public-facing, media-literate, and resistant to billboard architecture",
+        "signatureSystems": {
+          "signalWaveSegments": 16,
+          "launchRadialCanopies": 8,
+          "narrativeProductionVolumes": 6,
+          "audienceResponsiveCells": 84,
+          "identityMaterialPanels": 10,
+          "beaconOffsetRings": 5,
+          "evidenceColumns": 32
+        }
+      }
+    },
+    "populations": [
+      {
+        "plannedFacilities": [
+          "The Parallax Institute for Scientific Visualization",
+          "The Morphogenesis Fabrication Hall",
+          "The Chromaflux Bioart Conservatory",
+          "The Resonance Foundry",
+          "The Lumen Observatory for Photonic Art",
+          "The Atlas of Invisible Worlds",
+          "The Archive of Future Materials",
+          "The Null Field Gallery"
+        ],
+        "plannedObjects": [
+          "Spectrum Spine",
+          "Prism Forum",
+          "Translation Garden",
+          "Unfinished Promenade",
+          "Directional Media Bands",
+          "Exact Building Approaches"
+        ],
+        "realizedFeatureTags": [
+          "the-parallax-institute-for-scientific-visualization",
+          "the-morphogenesis-fabrication-hall",
+          "the-chromaflux-bioart-conservatory",
+          "the-resonance-foundry",
+          "the-lumen-observatory-for-photonic-art",
+          "the-atlas-of-invisible-worlds",
+          "the-archive-of-future-materials",
+          "the-null-field-gallery"
+        ],
+        "realizedFacilityCount": 8,
+        "realizedObjectCount": 68,
+        "distinct": true,
+        "asymmetricCampus": true,
+        "localRoadCount": 10,
+        "radialCoverage": 0.49,
+        "angularCoverage": 0.98,
+        "exteriorOnly": true,
+        "artMarketingTranslationNarrative": true,
+        "spectrumSpineWalkable": true,
+        "sharedPublicRealm": true
+      },
+      {
+        "plannedFacilities": [
+          "Signal House",
+          "The Launch Array",
+          "The Narrative Engine Media Foundry",
+          "The Audience Dynamics Observatory",
+          "The Prototype Identity Works",
+          "The Beacon Exchange Tower",
+          "The Evidence Commons"
+        ],
+        "plannedObjects": [
+          "Spectrum Spine",
+          "Prism Forum",
+          "Translation Garden",
+          "Unfinished Promenade",
+          "Directional Media Bands",
+          "Exact Building Approaches"
+        ],
+        "realizedFeatureTags": [
+          "signal-house",
+          "the-launch-array",
+          "the-narrative-engine-media-foundry",
+          "the-audience-dynamics-observatory",
+          "the-prototype-identity-works",
+          "the-beacon-exchange-tower",
+          "the-evidence-commons"
+        ],
+        "realizedFacilityCount": 7,
+        "realizedObjectCount": 66,
+        "distinct": true,
+        "asymmetricCampus": true,
+        "localRoadCount": 9,
+        "radialCoverage": 0.93,
+        "angularCoverage": 0.98,
+        "exteriorOnly": true,
+        "artMarketingTranslationNarrative": true,
+        "spectrumSpineWalkable": true,
+        "sharedPublicRealm": true
+      }
+    ],
+    "facilityCount": 15,
+    "codes": [
+      "M1",
+      "M2",
+      "M3",
+      "M4",
+      "M5",
+      "M6",
+      "M7",
+      "SA1",
+      "SA2",
+      "SA3",
+      "SA4",
+      "SA5",
+      "SA6",
+      "SA7",
+      "SA8"
+    ],
+    "meshCount": 1514,
+    "triangles": 163650,
+    "uniqueNames": 1564,
+    "materialNames": [
+      "Art Marketing black reflecting water",
+      "Art Marketing black titanium",
+      "Art Marketing brushed aluminum",
+      "Art Marketing controlled oxide material",
+      "Art Marketing dark living substrate",
+      "Art Marketing dichroic interference film",
+      "Art Marketing measured amber light",
+      "Art Marketing narrow neutral light",
+      "Art Marketing nonreflective black ceramic",
+      "Art Marketing pale geopolymer stone",
+      "Art Marketing pearlescent ceramic",
+      "Art Marketing perforated titanium mesh",
+      "Art Marketing rough volcanic basalt",
+      "Art Marketing smoked low-iron glass",
+      "Art Marketing spectral cyan light",
+      "Art Marketing spectral violet light",
+      "Art Marketing translucent photovoltaic glass",
+      "Chromaflux living amber photobioreactor",
+      "Chromaflux living green photobioreactor",
+      "Chromaflux living violet photobioreactor"
+    ],
+    "animations": {
+      "art-marketing-emissive-pulse": 196,
+      "art-marketing-rotation": 16
+    },
+    "signatureCounts": {
+      "parallaxFins": 72,
+      "shellPanels": 32,
+      "chromafluxPods": 7,
+      "resonanceVolumes": 5,
+      "lumenShutters": 30,
+      "atlasSlides": 6,
+      "archiveStrips": 24,
+      "nullDatums": 34,
+      "signalSegments": 16,
+      "launchCanopies": 8,
+      "narrativeVolumes": 6,
+      "audienceCells": 84,
+      "identityPanels": 10,
+      "beaconRings": 5,
+      "evidenceColumns": 32
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "SA1",
+        "districtId": "scientific-art-labs",
+        "name": "The Parallax Institute for Scientific Visualization",
+        "min": [
+          -164.52467985787075,
+          1.6571651474501055,
+          -122.70518594024355
+        ],
+        "max": [
+          -147.31306443656044,
+          10.237789249490971,
+          -103.25934411938876
+        ]
+      },
+      {
+        "code": "SA2",
+        "districtId": "scientific-art-labs",
+        "name": "The Morphogenesis Fabrication Hall",
+        "min": [
+          -161.7598268692176,
+          1.2812445258047456,
+          -146.97550663937247
+        ],
+        "max": [
+          -139.61441550802172,
+          7.814189936551873,
+          -124.26716281795983
+        ]
+      },
+      {
+        "code": "SA3",
+        "districtId": "scientific-art-labs",
+        "name": "The Chromaflux Bioart Conservatory",
+        "min": [
+          -135.5488804933451,
+          1.2060000190734845,
+          -159.8042789649013
+        ],
+        "max": [
+          -108.1685010799869,
+          7.187283333819463,
+          -132.42389955154312
+        ]
+      },
+      {
+        "code": "SA4",
+        "districtId": "scientific-art-labs",
+        "name": "The Resonance Foundry",
+        "min": [
+          -123.40216039094096,
+          1.5804080372548266,
+          -178.7684874195896
+        ],
+        "max": [
+          -104.18659582688706,
+          12.966608186440352,
+          -160.36976640223642
+        ]
+      },
+      {
+        "code": "SA5",
+        "districtId": "scientific-art-labs",
+        "name": "The Lumen Observatory for Photonic Art",
+        "min": [
+          -97.89669581835707,
+          1.666,
+          -181.16811367783293
+        ],
+        "max": [
+          -79.66673830522595,
+          12.865999904632568,
+          -160.7966413146633
+        ]
+      },
+      {
+        "code": "SA6",
+        "districtId": "scientific-art-labs",
+        "name": "The Atlas of Invisible Worlds",
+        "min": [
+          -76.5475038145223,
+          1.246000010728835,
+          -205.76450310013757
+        ],
+        "max": [
+          -54.58168297123018,
+          8.389079890012741,
+          -183.35694516896868
+        ]
+      },
+      {
+        "code": "SA7",
+        "districtId": "scientific-art-labs",
+        "name": "The Archive of Future Materials",
+        "min": [
+          -49.00453498344365,
+          1.699600521087647,
+          -193.12364235945913
+        ],
+        "max": [
+          -29.98289993630482,
+          9.666,
+          -179.6918324189634
+        ]
+      },
+      {
+        "code": "SA8",
+        "districtId": "scientific-art-labs",
+        "name": "The Null Field Gallery",
+        "min": [
+          -29.610202249918757,
+          1.3407859239578248,
+          -208.6270187511664
+        ],
+        "max": [
+          -12.53990282964607,
+          5.116,
+          -191.18525154239373
+        ]
+      },
+      {
+        "code": "M1",
+        "districtId": "marketing",
+        "name": "Signal House",
+        "min": [
+          -190.55475710445148,
+          1.666,
+          -142.9583055109894
+        ],
+        "max": [
+          -172.09631643866993,
+          11.841896339620403,
+          -122.34367814754152
+        ]
+      },
+      {
+        "code": "M2",
+        "districtId": "marketing",
+        "name": "The Launch Array",
+        "min": [
+          -171.61115058254708,
+          1.661,
+          -173.04607696449446
+        ],
+        "max": [
+          -145.57319940565995,
+          7.126,
+          -147.00774370096585
+        ]
+      },
+      {
+        "code": "M3",
+        "districtId": "marketing",
+        "name": "The Narrative Engine Media Foundry",
+        "min": [
+          -145.68562509518344,
+          1.666,
+          -188.5811678318448
+        ],
+        "max": [
+          -126.61036948924402,
+          12.666,
+          -169.3445320086137
+        ]
+      },
+      {
+        "code": "M4",
+        "districtId": "marketing",
+        "name": "The Audience Dynamics Observatory",
+        "min": [
+          -125.1081515261848,
+          1.30600001311302,
+          -207.57367499881894
+        ],
+        "max": [
+          -100.19184847381504,
+          6.465999999999999,
+          -182.6573719464492
+        ]
+      },
+      {
+        "code": "M5",
+        "districtId": "marketing",
+        "name": "The Prototype Identity Works",
+        "min": [
+          -98.15063339397963,
+          1.6659999523162838,
+          -215.84679588393757
+        ],
+        "max": [
+          -76.76408603482645,
+          7.413859006775295,
+          -197.22374742711787
+        ]
+      },
+      {
+        "code": "M6",
+        "districtId": "marketing",
+        "name": "The Beacon Exchange Tower",
+        "min": [
+          -71.27261674250511,
+          1.665999904632569,
+          -226.14358063990423
+        ],
+        "max": [
+          -51.639839250036346,
+          25.466,
+          -206.77814677847982
+        ]
+      },
+      {
+        "code": "M7",
+        "districtId": "marketing",
+        "name": "The Evidence Commons",
+        "min": [
+          -44.446521206783764,
+          1.666,
+          -230.3694755619602
+        ],
+        "max": [
+          -20.124899526277737,
+          7.891,
+          -209.90970458058538
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "ARTMARK__SA__SPECTRUM_SPINE_INNER_HALF",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA1__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA2__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA3__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA4__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA5__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA6__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA7__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__SA8__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M__SPECTRUM_SPINE_OUTER_HALF",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M1__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M2__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M3__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M4__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M5__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M6__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ARTMARK__M7__BUILDING_APPROACH",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -100.59872789767373,
+      1.6459999984502793,
+      -181.8032571121969
+    ],
+    "roadNext": [
+      -95.26387186434853,
+      1.6459999984502793,
+      -184.6546050354757
+    ],
+    "roadGround": 1.6099999999999859,
+    "scientificText": {
+      "buildingCount": 8,
+      "translationRole": "scientific work becomes images, objects, experiences, narratives, and identities before moving outward to public audiences",
+      "circulation": {
+        "primaryRoute": "ARTMARK__SA__SPECTRUM_SPINE_INNER_HALF",
+        "sharedBoulevard": "Spectrum Spine",
+        "prismForum": true,
+        "translationGarden": true,
+        "unfinishedPromenade": true,
+        "exactBuildingApproaches": 8
+      },
+      "signatureSystems": {
+        "parallaxDichroicFins": 72,
+        "morphogenesisShellPanels": 32,
+        "chromafluxPods": 7,
+        "resonanceVolumes": 5,
+        "lumenMirroredShutters": 30,
+        "atlasSlides": 6,
+        "archiveWeatheringStrips": 24,
+        "nullDatumSegments": 34
+      },
+      "integratedMediaRule": "media surfaces are directional, brightness-limited, abstract, and architecturally integrated"
+    },
+    "marketingText": {
+      "buildingCount": 7,
+      "translationRole": "scientific work becomes images, objects, experiences, narratives, and identities before moving outward to public audiences",
+      "circulation": {
+        "primaryRoute": "ARTMARK__M__SPECTRUM_SPINE_OUTER_HALF",
+        "sharedBoulevard": "Spectrum Spine",
+        "prismForum": true,
+        "translationGarden": true,
+        "unfinishedPromenade": true,
+        "exactBuildingApproaches": 7
+      },
+      "signatureSystems": {
+        "signalWaveSegments": 16,
+        "launchRadialCanopies": 8,
+        "narrativeProductionVolumes": 6,
+        "audienceResponsiveCells": 84,
+        "identityMaterialPanels": 10,
+        "beaconOffsetRings": 5,
+        "evidenceColumns": 32
+      },
+      "integratedMediaRule": "media surfaces are directional, brightness-limited, abstract, and architecturally integrated"
+    },
+    "selected": {
+      "id": "marketing",
+      "name": "Marketing District",
+      "category": "commercial",
+      "packageId": "marketing",
+      "state": {
+        "position": {
+          "x": -88.10582968191393,
+          "y": 1.61,
+          "z": -192.43982247981205
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
+        "accent": "#FF6FB5",
+        "styleCustomized": false,
+        "collisionEnabled": true,
+        "interactions": []
+      }
+    },
+    "specializedRevision": 28,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": [
+      {
+        "id": "scientific-art-labs",
+        "kind": "district",
+        "loadState": "loaded",
+        "lifecyclePhase": "ready",
+        "loadProgress": 1,
+        "priorityReason": "background",
+        "priorityScore": -13100,
+        "visibleCandidate": false,
+        "visualLevel": "far",
+        "detailResident": false,
+        "proxyVisible": true,
+        "midVisible": false,
+        "farVisible": true,
+        "pinned": false,
+        "distanceMetres": 13100,
+        "estimatedCost": {
+          "drawCalls": 22,
+          "triangles": 56814,
+          "animationNodes": 0
+        },
+        "renderImportance": {
+          "mandatory": 829,
+          "micro": 0,
+          "visibleMicro": 0,
+          "culledMicro": 0
+        },
+        "batchOccupancy": {
+          "capacity": 828,
+          "active": 0,
+          "ratio": 0
+        }
+      },
+      {
+        "id": "marketing",
+        "kind": "district",
+        "loadState": "loaded",
+        "lifecyclePhase": "ready",
+        "loadProgress": 1,
+        "priorityReason": "selected",
+        "priorityScore": 986613,
+        "visibleCandidate": true,
+        "visualLevel": "detail",
+        "detailResident": true,
+        "proxyVisible": false,
+        "midVisible": false,
+        "farVisible": false,
+        "pinned": true,
+        "distanceMetres": 13387,
+        "estimatedCost": {
+          "drawCalls": 19,
+          "triangles": 42374,
+          "animationNodes": 0
+        },
+        "renderImportance": {
+          "mandatory": 647,
+          "micro": 0,
+          "visibleMicro": 0,
+          "culledMicro": 0
+        },
+        "batchOccupancy": {
+          "capacity": 645,
+          "active": 645,
+          "ratio": 1
+        }
+      }
+    ]
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000040155,
+    "grounded": true,
+    "position": [
+      -100.455,
+      1.808,
+      -181.88
+    ]
+  },
+  "errors": []
+}

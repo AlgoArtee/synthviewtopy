@@ -8,11 +8,11 @@
       240.00000011029104,
       309.0000001583075
     ],
-    "obstacleCount": 498,
-    "preciseObstacleCount": 489,
+    "obstacleCount": 807,
+    "preciseObstacleCount": 807,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 99,
+    "broadOnlyMarginsAvoided": 109,
     "movementProbeCount": 131,
     "failedDistricts": [],
     "districtResults": [
@@ -101,7 +101,7 @@
         "id": "electronics-microelectronics-labs",
         "sampleCount": 564,
         "clearCount": 564,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 14,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -155,7 +155,7 @@
         "id": "marketing",
         "sampleCount": 756,
         "clearCount": 756,
-        "broadOnlyMarginsAvoided": 9,
+        "broadOnlyMarginsAvoided": 0,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -164,7 +164,7 @@
         "id": "scientific-art-labs",
         "sampleCount": 756,
         "clearCount": 756,
-        "broadOnlyMarginsAvoided": 9,
+        "broadOnlyMarginsAvoided": 14,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []

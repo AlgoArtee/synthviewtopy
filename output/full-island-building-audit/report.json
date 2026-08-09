@@ -35,20 +35,20 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2879,
+    "liveRenderObjectCount": 2904,
     "batchOccupancy": {
-      "capacity": 60921,
-      "active": 59281,
-      "ratio": 0.9730798903497972
+      "capacity": 63955,
+      "active": 62297,
+      "ratio": 0.9740755218513018
     },
     "microdetail": {
-      "total": 878,
+      "total": 896,
       "visible": 8,
-      "culled": 870
+      "culled": 888
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 42620,
+    "detachedAuthoringSourceCount": 45654,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 873,
-      "batchedSourceCount": 42620,
-      "retainedSourceCount": 44626,
-      "estimatedGeometryBytes": 97197100,
-      "estimatedTextureBytes": 186027412,
-      "instancedBatchCount": 235,
-      "batchedMeshBatchCount": 156,
-      "mergedBatchCount": 482,
+      "batchCount": 909,
+      "batchedSourceCount": 45654,
+      "retainedSourceCount": 47649,
+      "estimatedGeometryBytes": 103077468,
+      "estimatedTextureBytes": 179141543,
+      "instancedBatchCount": 249,
+      "batchedMeshBatchCount": 176,
+      "mergedBatchCount": 484,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -283,19 +283,19 @@
         "distanceMetres": 12489,
         "estimatedCost": {
           "drawCalls": 27,
-          "triangles": 108838,
+          "triangles": 112022,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1760,
+          "mandatory": 1796,
           "micro": 24,
           "visibleMicro": 0,
           "culledMicro": 24
         },
         "batchOccupancy": {
-          "capacity": 1781,
-          "active": 1757,
-          "ratio": 0.9865244244806288
+          "capacity": 1817,
+          "active": 1793,
+          "ratio": 0.9867914144193726
         }
       },
       {
@@ -480,20 +480,20 @@
         "pinned": false,
         "distanceMetres": 12944,
         "estimatedCost": {
-          "drawCalls": 14,
-          "triangles": 3556,
-          "animationNodes": 0
+          "drawCalls": 33,
+          "triangles": 106788,
+          "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 58,
-          "micro": 0,
+          "mandatory": 1708,
+          "micro": 18,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 18
         },
         "batchOccupancy": {
-          "capacity": 52,
-          "active": 52,
-          "ratio": 1
+          "capacity": 1723,
+          "active": 1705,
+          "ratio": 0.9895531050493326
         }
       },
       {
@@ -678,19 +678,19 @@
         "pinned": false,
         "distanceMetres": 13489,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 7596,
+          "drawCalls": 19,
+          "triangles": 42374,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 88,
+          "mandatory": 647,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 82,
-          "active": 82,
+          "capacity": 645,
+          "active": 645,
           "ratio": 1
         }
       },
@@ -711,19 +711,19 @@
         "pinned": false,
         "distanceMetres": 13502,
         "estimatedCost": {
-          "drawCalls": 14,
-          "triangles": 6230,
+          "drawCalls": 22,
+          "triangles": 56814,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 69,
+          "mandatory": 829,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 64,
-          "active": 64,
+          "capacity": 828,
+          "active": 828,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 361,
+  "buildingCount": 374,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -1937,19 +1937,19 @@
         "distanceMetres": 12489,
         "estimatedCost": {
           "drawCalls": 27,
-          "triangles": 108838,
+          "triangles": 112022,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1760,
+          "mandatory": 1796,
           "micro": 24,
           "visibleMicro": 0,
           "culledMicro": 24
         },
         "batchOccupancy": {
-          "capacity": 1781,
-          "active": 1757,
-          "ratio": 0.9865244244806288
+          "capacity": 1817,
+          "active": 1793,
+          "ratio": 0.9867914144193726
         }
       },
       "buildingReports": [
@@ -1979,19 +1979,19 @@
           "name": "MIMESIS",
           "rootName": "TOXICOLOGY__T2__MIMESIS",
           "code": "T2",
-          "representedSourceCount": 301,
+          "representedSourceCount": 337,
           "directVisibleMeshes": 1,
-          "visibleBatchSources": 300,
-          "authoredBatchedSources": 300,
-          "expectedRuntimeBatchSources": 300,
-          "mandatoryArchitecturalSources": 53,
-          "representedMandatorySources": 53,
+          "visibleBatchSources": 336,
+          "authoredBatchedSources": 336,
+          "expectedRuntimeBatchSources": 336,
+          "mandatoryArchitecturalSources": 88,
+          "representedMandatorySources": 88,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
             15.336,
             5.788,
-            12.529
+            12.669
           ],
           "failures": []
         },
@@ -2799,8 +2799,8 @@
     {
       "districtId": "electronics-microelectronics-labs",
       "name": "Electronics & Microelectronics Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 10,
+      "discoveredCount": 10,
       "packageState": {
         "id": "electronics-microelectronics-labs",
         "kind": "district",
@@ -2818,104 +2818,230 @@
         "pinned": false,
         "distanceMetres": 12944,
         "estimatedCost": {
-          "drawCalls": 14,
-          "triangles": 3556,
-          "animationNodes": 0
+          "drawCalls": 33,
+          "triangles": 106788,
+          "animationNodes": 1
         },
         "renderImportance": {
-          "mandatory": 58,
-          "micro": 0,
+          "mandatory": 1708,
+          "micro": 18,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 18
         },
         "batchOccupancy": {
-          "capacity": 52,
-          "active": 52,
-          "ratio": 1
+          "capacity": 1723,
+          "active": 1705,
+          "ratio": 0.9895531050493326
         }
       },
       "buildingReports": [
         {
           "districtId": "electronics-microelectronics-labs",
-          "name": "Semiconductor Cleanroom Fab",
-          "rootName": "electronics-microelectronics-labs__FACILITY__SEMICONDUCTOR-CLEANROOM-FAB",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Fabrica Ångström",
+          "rootName": "ELECTRONICS__EL1__FABRICA_ANGSTROM",
+          "code": "EL1",
+          "representedSourceCount": 93,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 93,
+          "authoredBatchedSources": 93,
+          "expectedRuntimeBatchSources": 93,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            4.277,
-            7.235
+            20.2,
+            8.28,
+            12.63
           ],
           "failures": []
         },
         {
           "districtId": "electronics-microelectronics-labs",
-          "name": "Nanoelectronics Laboratory",
-          "rootName": "electronics-microelectronics-labs__FACILITY__NANOELECTRONICS-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Interposer Exchange",
+          "rootName": "ELECTRONICS__EL2__INTERPOSER_EXCHANGE",
+          "code": "EL2",
+          "representedSourceCount": 181,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 181,
+          "authoredBatchedSources": 181,
+          "expectedRuntimeBatchSources": 181,
+          "mandatoryArchitecturalSources": 16,
+          "representedMandatorySources": 16,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.904,
-            6.705
+            17.4,
+            7.85,
+            14.35
           ],
           "failures": []
         },
         {
           "districtId": "electronics-microelectronics-labs",
-          "name": "Photolithography Service Plant",
-          "rootName": "electronics-microelectronics-labs__FACILITY__PHOTOLITHOGRAPHY-SERVICE-PLANT",
-          "code": null,
-          "representedSourceCount": 1,
+          "name": "Lumen Weave Institute",
+          "rootName": "ELECTRONICS__EL3__LUMEN_WEAVE_INSTITUTE",
+          "code": "EL3",
+          "representedSourceCount": 134,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 1,
-          "authoredBatchedSources": 1,
-          "expectedRuntimeBatchSources": 1,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
+          "visibleBatchSources": 134,
+          "authoredBatchedSources": 134,
+          "expectedRuntimeBatchSources": 134,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            4.064,
-            6.63
+            15.979,
+            5.14,
+            14.308
           ],
           "failures": []
         },
         {
           "districtId": "electronics-microelectronics-labs",
-          "name": "Device Packaging Pavilion",
-          "rootName": "electronics-microelectronics-labs__FACILITY__DEVICE-PACKAGING-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Kelvin Null Center",
+          "rootName": "ELECTRONICS__EL4__KELVIN_NULL_CENTER",
+          "code": "EL4",
+          "representedSourceCount": 71,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "visibleBatchSources": 71,
+          "authoredBatchedSources": 71,
+          "expectedRuntimeBatchSources": 71,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20.46,
+            8.876,
+            20.46
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "Synaptic Stack Laboratory",
+          "rootName": "ELECTRONICS__EL5__SYNAPTIC_STACK_LABORATORY",
+          "code": "EL5",
+          "representedSourceCount": 166,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 166,
+          "authoredBatchedSources": 166,
+          "expectedRuntimeBatchSources": 166,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.408,
+            13.62,
+            19.516
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "The Spin-Orbit Vault",
+          "rootName": "ELECTRONICS__EL6__SPIN_ORBIT_VAULT",
+          "code": "EL6",
+          "representedSourceCount": 159,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 158,
+          "authoredBatchedSources": 158,
+          "expectedRuntimeBatchSources": 158,
+          "mandatoryArchitecturalSources": 89,
+          "representedMandatorySources": 89,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.053,
+            7.32,
+            18.04
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "Aegis Power Bastion",
+          "rootName": "ELECTRONICS__EL7__AEGIS_POWER_BASTION",
+          "code": "EL7",
+          "representedSourceCount": 169,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 169,
+          "authoredBatchedSources": 169,
+          "expectedRuntimeBatchSources": 169,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.45,
+            10.43,
+            14.74
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "The Terahertz Metrology Spire",
+          "rootName": "ELECTRONICS__EL8__TERAHERTZ_METROLOGY_SPIRE",
+          "code": "EL8",
+          "representedSourceCount": 174,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 174,
+          "authoredBatchedSources": 174,
+          "expectedRuntimeBatchSources": 174,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.263,
-            6.705
+            15.729,
+            22.27,
+            19.572
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "The Adaptive Skin Pavilion",
+          "rootName": "ELECTRONICS__EL9__ADAPTIVE_SKIN_PAVILION",
+          "code": "EL9",
+          "representedSourceCount": 102,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 102,
+          "authoredBatchedSources": 102,
+          "expectedRuntimeBatchSources": 102,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.644,
+            4.552,
+            17.078
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "electronics-microelectronics-labs",
+          "name": "Sensorium Hive",
+          "rootName": "ELECTRONICS__EL10__SENSORIUM_HIVE",
+          "code": "EL10",
+          "representedSourceCount": 275,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 275,
+          "authoredBatchedSources": 275,
+          "expectedRuntimeBatchSources": 275,
+          "mandatoryArchitecturalSources": 12,
+          "representedMandatorySources": 12,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.226,
+            6.33,
+            19.178
           ],
           "failures": []
         }
@@ -4185,8 +4311,8 @@
     {
       "districtId": "marketing",
       "name": "Marketing District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 7,
+      "discoveredCount": 7,
       "packageState": {
         "id": "marketing",
         "kind": "district",
@@ -4204,104 +4330,167 @@
         "pinned": false,
         "distanceMetres": 13489,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 7596,
+          "drawCalls": 19,
+          "triangles": 42374,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 88,
+          "mandatory": 647,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 82,
-          "active": 82,
+          "capacity": 645,
+          "active": 645,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "marketing",
-          "name": "Science Communications Pavilion",
-          "rootName": "marketing__FACILITY__SCIENCE-COMMUNICATIONS-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Signal House",
+          "rootName": "ARTMARK__M1__SIGNAL_HOUSE",
+          "code": "M1",
+          "representedSourceCount": 87,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 87,
+          "authoredBatchedSources": 87,
+          "expectedRuntimeBatchSources": 87,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.829,
-            8.265
+            20.268,
+            10.176,
+            13.741
           ],
           "failures": []
         },
         {
           "districtId": "marketing",
-          "name": "Broadcast Production Studio",
-          "rootName": "marketing__FACILITY__BROADCAST-PRODUCTION-STUDIO",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Launch Array",
+          "rootName": "ARTMARK__M2__LAUNCH_ARRAY",
+          "code": "M2",
+          "representedSourceCount": 83,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 83,
+          "authoredBatchedSources": 83,
+          "expectedRuntimeBatchSources": 83,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.467,
-            8.265
+            25.88,
+            5.465,
+            25.94
           ],
           "failures": []
         },
         {
           "districtId": "marketing",
-          "name": "Public Demonstration Hall",
-          "rootName": "marketing__FACILITY__PUBLIC-DEMONSTRATION-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Narrative Engine Media Foundry",
+          "rootName": "ARTMARK__M3__NARRATIVE_ENGINE_MEDIA_FOUNDRY",
+          "code": "M3",
+          "representedSourceCount": 38,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 38,
+          "authoredBatchedSources": 38,
+          "expectedRuntimeBatchSources": 38,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.136,
-            8.92
+            17.969,
+            11,
+            15.27
           ],
           "failures": []
         },
         {
           "districtId": "marketing",
-          "name": "Campaign Administration House",
-          "rootName": "marketing__FACILITY__CAMPAIGN-ADMINISTRATION-HOUSE",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Audience Dynamics Observatory",
+          "rootName": "ARTMARK__M4__AUDIENCE_DYNAMICS_OBSERVATORY",
+          "code": "M4",
+          "representedSourceCount": 138,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 137,
+          "authoredBatchedSources": 137,
+          "expectedRuntimeBatchSources": 137,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            4.655,
-            8.265
+            18.24,
+            5.16,
+            18.24
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "marketing",
+          "name": "The Prototype Identity Works",
+          "rootName": "ARTMARK__M5__PROTOTYPE_IDENTITY_WORKS",
+          "code": "M5",
+          "representedSourceCount": 38,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 38,
+          "authoredBatchedSources": 38,
+          "expectedRuntimeBatchSources": 38,
+          "mandatoryArchitecturalSources": 20,
+          "representedMandatorySources": 20,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.6,
+            5.748,
+            13.864
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "marketing",
+          "name": "The Beacon Exchange Tower",
+          "rootName": "ARTMARK__M6__BEACON_EXCHANGE_TOWER",
+          "code": "M6",
+          "representedSourceCount": 54,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 54,
+          "authoredBatchedSources": 54,
+          "expectedRuntimeBatchSources": 54,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.166,
+            23.8,
+            19.659
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "marketing",
+          "name": "The Evidence Commons",
+          "rootName": "ARTMARK__M7__EVIDENCE_COMMONS",
+          "code": "M7",
+          "representedSourceCount": 137,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 136,
+          "authoredBatchedSources": 136,
+          "expectedRuntimeBatchSources": 136,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            22.825,
+            6.225,
+            18.52
           ],
           "failures": []
         }
@@ -4311,8 +4500,8 @@
     {
       "districtId": "scientific-art-labs",
       "name": "Scientific Art Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 8,
+      "discoveredCount": 8,
       "packageState": {
         "id": "scientific-art-labs",
         "kind": "district",
@@ -4330,104 +4519,188 @@
         "pinned": false,
         "distanceMetres": 13502,
         "estimatedCost": {
-          "drawCalls": 14,
-          "triangles": 6230,
+          "drawCalls": 22,
+          "triangles": 56814,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 69,
+          "mandatory": 829,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 64,
-          "active": 64,
+          "capacity": 828,
+          "active": 828,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "scientific-art-labs",
-          "name": "Bio-Art Studio",
-          "rootName": "scientific-art-labs__FACILITY__BIO-ART-STUDIO",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Parallax Institute for Scientific Visualization",
+          "rootName": "ARTMARK__SA1__PARALLAX_INSTITUTE",
+          "code": "SA1",
+          "representedSourceCount": 114,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 114,
+          "authoredBatchedSources": 114,
+          "expectedRuntimeBatchSources": 114,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.284,
-            8.265
+            19.163,
+            8.581,
+            10.318
           ],
           "failures": []
         },
         {
           "districtId": "scientific-art-labs",
-          "name": "Digital Fabrication Hall",
-          "rootName": "scientific-art-labs__FACILITY__DIGITAL-FABRICATION-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Morphogenesis Fabrication Hall",
+          "rootName": "ARTMARK__SA2__MORPHOGENESIS_FABRICATION_HALL",
+          "code": "SA2",
+          "representedSourceCount": 77,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 77,
+          "authoredBatchedSources": 77,
+          "expectedRuntimeBatchSources": 77,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            4.533,
-            8.92
+            19.756,
+            6.533,
+            14.873
           ],
           "failures": []
         },
         {
           "districtId": "scientific-art-labs",
-          "name": "Kinetic Research Gallery",
-          "rootName": "scientific-art-labs__FACILITY__KINETIC-RESEARCH-GALLERY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Chromaflux Bioart Conservatory",
+          "rootName": "ARTMARK__SA3__CHROMAFLUX_BIOART_CONSERVATORY",
+          "code": "SA3",
+          "representedSourceCount": 80,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 80,
+          "authoredBatchedSources": 80,
+          "expectedRuntimeBatchSources": 80,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.084,
-            8.265
+            19.984,
+            5.981,
+            19.984
           ],
           "failures": []
         },
         {
           "districtId": "scientific-art-labs",
-          "name": "Materials Atelier",
-          "rootName": "scientific-art-labs__FACILITY__MATERIALS-ATELIER",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Resonance Foundry",
+          "rootName": "ARTMARK__SA4__RESONANCE_FOUNDRY",
+          "code": "SA4",
+          "representedSourceCount": 58,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 58,
+          "authoredBatchedSources": 58,
+          "expectedRuntimeBatchSources": 58,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.049,
-            8.265
+            16.738,
+            11.386,
+            12.673
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientific-art-labs",
+          "name": "The Lumen Observatory for Photonic Art",
+          "rootName": "ARTMARK__SA5__LUMEN_OBSERVATORY",
+          "code": "SA5",
+          "representedSourceCount": 97,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 97,
+          "authoredBatchedSources": 97,
+          "expectedRuntimeBatchSources": 97,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.929,
+            11.2,
+            13.953
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientific-art-labs",
+          "name": "The Atlas of Invisible Worlds",
+          "rootName": "ARTMARK__SA6__ATLAS_OF_INVISIBLE_WORLDS",
+          "code": "SA6",
+          "representedSourceCount": 184,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 184,
+          "authoredBatchedSources": 184,
+          "expectedRuntimeBatchSources": 184,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.779,
+            7.143,
+            19.837
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientific-art-labs",
+          "name": "The Archive of Future Materials",
+          "rootName": "ARTMARK__SA7__ARCHIVE_OF_FUTURE_MATERIALS",
+          "code": "SA7",
+          "representedSourceCount": 99,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 99,
+          "authoredBatchedSources": 99,
+          "expectedRuntimeBatchSources": 99,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.464,
+            7.966,
+            10.152
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientific-art-labs",
+          "name": "The Null Field Gallery",
+          "rootName": "ARTMARK__SA8__NULL_FIELD_GALLERY",
+          "code": "SA8",
+          "representedSourceCount": 46,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 46,
+          "authoredBatchedSources": 46,
+          "expectedRuntimeBatchSources": 46,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15.8,
+            3.775,
+            16.02
           ],
           "failures": []
         }

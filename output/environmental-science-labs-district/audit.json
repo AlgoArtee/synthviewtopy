@@ -1,0 +1,794 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Environmental Science Labs District — The Living Transect",
+      "mapLabel": "Environmental Science Labs",
+      "architecturalLanguage": "buildings as enlarged scientific instruments operating across ocean, atmosphere, water, soil, ecosystems, contaminants, carbon, climate adaptation, robotics, and planetary modelling",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "E1",
+          "name": "Tellus Earth Systems Convergence",
+          "subtitle": "Planetary Modelling and Integrated Observation",
+          "focus": "Planetary modelling, environmental digital twins, and integrated Earth observation",
+          "scientificSequence": 10,
+          "footprintMetres": [
+            216,
+            176
+          ],
+          "heightMetres": 46,
+          "exteriorSignature": "three incomplete elliptical contour rings around a geological world court and instrumented skeletal globe"
+        },
+        {
+          "code": "E2",
+          "name": "Aeolian Atmospheric Observatory",
+          "subtitle": "Atmospheric Chemistry and Cloud Physics",
+          "focus": "Greenhouse gases, aerosols, cloud microphysics, and marine-atmosphere sampling",
+          "scientificSequence": 2,
+          "footprintMetres": [
+            154,
+            146
+          ],
+          "heightMetres": 105,
+          "exteriorSignature": "rounded three-bladed atmospheric tower with five instrument halos, aerostat apron, and calibration mast forest"
+        },
+        {
+          "code": "E3",
+          "name": "Hydrological Extremes Institute",
+          "subtitle": "Flood, Drought and Groundwater Systems",
+          "focus": "Floods, droughts, groundwater, isotope hydrology, and watershed prediction",
+          "scientificSequence": 3,
+          "footprintMetres": [
+            208,
+            172
+          ],
+          "heightMetres": 44,
+          "exteriorSignature": "seven descending watershed terraces cut by an artificial ravine, exposed flumes, and a floodable plaza"
+        },
+        {
+          "code": "E4",
+          "name": "Littoral Exchange Laboratory",
+          "subtitle": "Ocean-Land Interface Research",
+          "focus": "Coastal dynamics, ocean acidification, marine ecology, and land-sea exchange",
+          "scientificSequence": 1,
+          "footprintMetres": [
+            226,
+            252
+          ],
+          "heightMetres": 34,
+          "exteriorSignature": "segmented semi-submerged shoreline crescent, tidal basins, habitat breakwater, research pier, and Exchange Disc"
+        },
+        {
+          "code": "E5",
+          "name": "Biotic Continuum Observatory",
+          "subtitle": "Biodiversity and Ecosystem Monitoring",
+          "focus": "Biodiversity genomics, environmental DNA, acoustic ecology, and species migration",
+          "scientificSequence": 5,
+          "footprintMetres": [
+            210,
+            164
+          ],
+          "heightMetres": 40,
+          "exteriorSignature": "branching elevated phylogenetic structure, habitat corridors, dome bridges, ecological roof strips, and Biodiversity Mast"
+        },
+        {
+          "code": "E6",
+          "name": "Critical Zone and Rhizosphere Institute",
+          "subtitle": "Soil, Roots and Subsurface Ecosystems",
+          "focus": "Soil systems, root ecology, weathering, nutrient cycles, and subsurface microbiology",
+          "scientificSequence": 4,
+          "footprintMetres": [
+            202,
+            174
+          ],
+          "heightMetres": 38,
+          "exteriorSignature": "partially buried geological terraces, exposed soil-profile court, core towers, boreholes, and instrumented root columns"
+        },
+        {
+          "code": "E7",
+          "name": "Carbon Transformation Foundry",
+          "subtitle": "Carbon Removal and Biogeochemical Engineering",
+          "focus": "Direct air capture, mineralization, enhanced weathering, and carbon-cycle engineering",
+          "scientificSequence": 7,
+          "footprintMetres": [
+            218,
+            176
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "dark mineralized laboratory, six modular capture towers, three mineral silos, exposed pipes, and weathering yard"
+        },
+        {
+          "code": "E8",
+          "name": "Anthropocene Forensics Centre",
+          "subtitle": "Emerging Pollutant Source Attribution",
+          "focus": "PFAS, microplastics, nanoplastics, environmental exposomics, and source attribution",
+          "scientificSequence": 6,
+          "footprintMetres": [
+            196,
+            148
+          ],
+          "heightMetres": 36,
+          "exteriorSignature": "sealed recycled-glass black monolith split by five pathway fissures and crowned by a dense sampler field"
+        },
+        {
+          "code": "E9",
+          "name": "Climate Resilience Proving House",
+          "subtitle": "Adaptation Systems Test Complex",
+          "focus": "Flood, heat, drought, wildfire, storm, and infrastructure-failure adaptation",
+          "scientificSequence": 8,
+          "footprintMetres": [
+            232,
+            182
+          ],
+          "heightMetres": 42,
+          "exteriorSignature": "reinforced test spine with twelve replaceable facade bays, travelling storm frame, flood plaza, and Heat Canyon"
+        },
+        {
+          "code": "E10",
+          "name": "Gaia Field Systems Fleetworks",
+          "subtitle": "Autonomous Observation and Ecosystem Repair",
+          "focus": "Environmental drones, autonomous boats, field robots, sensing networks, and ecosystem restoration",
+          "scientificSequence": 9,
+          "footprintMetres": [
+            220,
+            174
+          ],
+          "heightMetres": 36,
+          "exteriorSignature": "low boomerang robotic hangar around a launch court, operational roof, calibration facade, canal door, and communications mast"
+        }
+      ],
+      "scientificSequence": [
+        "Littoral Exchange Laboratory",
+        "Aeolian Atmospheric Observatory",
+        "Hydrological Extremes Institute",
+        "Critical Zone and Rhizosphere Institute",
+        "Biotic Continuum Observatory",
+        "Anthropocene Forensics Centre",
+        "Carbon Transformation Foundry",
+        "Climate Resilience Proving House",
+        "Gaia Field Systems Fleetworks",
+        "Tellus Earth Systems Convergence"
+      ],
+      "circulation": {
+        "primaryRoute": "ENVSCI__TRANSECT_WALK",
+        "coveredResearchWalkways": 2,
+        "recessedUtilityRoute": "ENVSCI__RECESSED_AUTONOMOUS_UTILITY_ROUTE",
+        "visibleStormwaterChannel": true,
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "tellusContourRings": 3,
+        "aeolianInstrumentHalos": 5,
+        "hydrologicalTerraces": 7,
+        "littoralTidalBasins": 6,
+        "bioticBranches": 4,
+        "criticalZoneCoreTowers": 6,
+        "carbonCaptureTowers": 6,
+        "anthropocenePathwayFissures": 5,
+        "resilienceFacadeBays": 12,
+        "gaiaLandingPads": 8
+      },
+      "landscapes": {
+        "coastalPlots": 8,
+        "wetlandBasins": 8,
+        "ecologicalObservationZones": 8,
+        "soilPlots": 8,
+        "mineralWeatheringBeds": 8,
+        "aerosolCollectors": 24,
+        "calibrationTargets": 12
+      },
+      "darkSkyProtocol": {
+        "wildlifeSafeLighting": true,
+        "shieldedLowLevelLighting": true,
+        "upwardAdvertisingLight": false,
+        "activeInstrumentLightsOnly": true
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Tellus Earth Systems Convergence",
+        "Aeolian Atmospheric Observatory",
+        "Hydrological Extremes Institute",
+        "Littoral Exchange Laboratory",
+        "Biotic Continuum Observatory",
+        "Critical Zone and Rhizosphere Institute",
+        "Carbon Transformation Foundry",
+        "Anthropocene Forensics Centre",
+        "Climate Resilience Proving House",
+        "Gaia Field Systems Fleetworks"
+      ],
+      "plannedObjects": [
+        "Transect Walk",
+        "covered elevated research walkways",
+        "recessed utility route",
+        "instrumented wetlands",
+        "climate-controlled soil plots",
+        "atmospheric sensor fields",
+        "long-term ecological observation zones",
+        "mineral weathering beds",
+        "aerosol collectors",
+        "satellite calibration targets"
+      ],
+      "realizedFeatureTags": [
+        "tellus-earth-systems-convergence",
+        "aeolian-atmospheric-observatory",
+        "hydrological-extremes-institute",
+        "littoral-exchange-laboratory",
+        "biotic-continuum-observatory",
+        "critical-zone-and-rhizosphere-institute",
+        "carbon-transformation-foundry",
+        "anthropocene-forensics-centre",
+        "climate-resilience-proving-house",
+        "gaia-field-systems-fleetworks"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 217,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 13,
+      "radialCoverage": 0.97,
+      "angularCoverage": 0.69,
+      "exteriorOnly": true,
+      "livingTransectNarrative": true,
+      "westToEastScientificSequence": true,
+      "darkSkyCompliant": true
+    },
+    "facilityCount": 10,
+    "codes": [
+      "E1",
+      "E2",
+      "E3",
+      "E4",
+      "E5",
+      "E6",
+      "E7",
+      "E8",
+      "E9",
+      "E10"
+    ],
+    "meshCount": 1308,
+    "triangles": 104810,
+    "uniqueNames": 1358,
+    "materialNames": [
+      "Biosphere green status light",
+      "Bird-safe electrochromic research glass",
+      "Blue-black photovoltaic membrane",
+      "Calibration white instrument light",
+      "Climate-controlled soil plot",
+      "Dark basalt composite",
+      "Dark critical-zone clay composite",
+      "Dark porous utility concrete",
+      "Environmental pale photocatalytic ceramic",
+      "Hydrological cyan gauge light",
+      "Instrumented rammed mineral earth",
+      "Instrumented wetland vegetation",
+      "Mineralized industrial-waste concrete",
+      "Monitored environmental water",
+      "Monitored transect vegetation",
+      "Pale carbonate research concrete",
+      "Pale permeable transect paving",
+      "Recycled-glass black forensic ceramic",
+      "Salt-resistant satin titanium",
+      "Translucent fluoropolymer instrument shield",
+      "Weathered scientific steel",
+      "Wildlife-safe amber instrument light"
+    ],
+    "animations": {
+      "environmental-science-emissive-pulse": 63,
+      "environmental-science-rotation": 24
+    },
+    "prefixCounts": {
+      "ENVSCI__E1__CONTOUR_RING_": 57,
+      "ENVSCI__E2__INSTRUMENT_HALO_": 5,
+      "ENVSCI__E3__WATERSHED_TERRACE_": 7,
+      "ENVSCI__E4__TIDAL_BASIN_": 12,
+      "ENVSCI__E5__BRANCHING_ECOLOGICAL_WING_": 4,
+      "ENVSCI__E6__GEOLOGICAL_CORE_TOWER_": 6,
+      "ENVSCI__E7__MODULAR_DIRECT_AIR_CAPTURE_TOWER_": 6,
+      "ENVSCI__E8__SAMPLER_CROWN_COLLECTOR_": 72,
+      "ENVSCI__E9__REPLACEABLE_FACADE_TEST_BAY_": 12,
+      "ENVSCI__E10__ROOF_DRONE_LANDING_PAD_": 8
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "E1",
+        "name": "Tellus Earth Systems Convergence",
+        "min": [
+          -330.64100617383957,
+          1.7060000000000002,
+          -53.39103351520313
+        ],
+        "max": [
+          -311.3072732861322,
+          7.374135779300781,
+          -32.835450655044795
+        ]
+      },
+      {
+        "code": "E2",
+        "name": "Aeolian Atmospheric Observatory",
+        "min": [
+          -395.9705786434481,
+          1.666,
+          87.26252393959159
+        ],
+        "max": [
+          -371.64363407144225,
+          18.116,
+          105.68583433923268
+        ]
+      },
+      {
+        "code": "E3",
+        "name": "Hydrological Extremes Institute",
+        "min": [
+          -376.1483075064986,
+          1.666,
+          50.81498008702456
+        ],
+        "max": [
+          -348.8095498511457,
+          5.906,
+          71.14539621735418
+        ]
+      },
+      {
+        "code": "E4",
+        "name": "Littoral Exchange Laboratory",
+        "min": [
+          -400.7507452074709,
+          1.181323944091797,
+          -106.75094270615728
+        ],
+        "max": [
+          -367.1968479302193,
+          5.516,
+          -79.82097534074728
+        ]
+      },
+      {
+        "code": "E5",
+        "name": "Biotic Continuum Observatory",
+        "min": [
+          -383.0916189945848,
+          1.6660000000000001,
+          -10.450877705255586
+        ],
+        "max": [
+          -356.5556170544584,
+          8.666,
+          14.6752855599647
+        ]
+      },
+      {
+        "code": "E6",
+        "name": "Critical Zone and Rhizosphere Institute",
+        "min": [
+          -375.8138387908877,
+          1.326,
+          -70.88736416330909
+        ],
+        "max": [
+          -349.60779674566754,
+          6.966,
+          -49.52723583729933
+        ]
+      },
+      {
+        "code": "E7",
+        "name": "Carbon Transformation Foundry",
+        "min": [
+          -348.98520584436,
+          1.666,
+          -94.94796429665223
+        ],
+        "max": [
+          -323.4510124953841,
+          8.866,
+          -73.06325201488127
+        ]
+      },
+      {
+        "code": "E8",
+        "name": "Anthropocene Forensics Centre",
+        "min": [
+          -354.2554969674217,
+          1.6360000000000001,
+          -33.75304697428177
+        ],
+        "max": [
+          -333.9441768746183,
+          8.666,
+          -13.063291604290953
+        ]
+      },
+      {
+        "code": "E9",
+        "name": "Climate Resilience Proving House",
+        "min": [
+          -349.01326741148273,
+          1.666,
+          72.86915153128942
+        ],
+        "max": [
+          -323.2747895040562,
+          9.766000190734864,
+          98.54435817432355
+        ]
+      },
+      {
+        "code": "E10",
+        "name": "Gaia Field Systems Fleetworks",
+        "min": [
+          -334.89323672391214,
+          1.616,
+          30.60965362014445
+        ],
+        "max": [
+          -310.67402153649215,
+          8.441,
+          55.433884120525725
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "ENVSCI__TRANSECT_WALK",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ENVSCI__BUILDING_APPROACH_E10",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -386.98780632019043,
+      1.6459999984502793,
+      4.4393446469091554e-14
+    ],
+    "roadNext": [
+      -389.14058113098145,
+      1.6459999984502793,
+      4.4393446469091554e-14
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "buildingCount": 10,
+      "scientificSequence": [
+        "Littoral Exchange Laboratory",
+        "Aeolian Atmospheric Observatory",
+        "Hydrological Extremes Institute",
+        "Critical Zone and Rhizosphere Institute",
+        "Biotic Continuum Observatory",
+        "Anthropocene Forensics Centre",
+        "Carbon Transformation Foundry",
+        "Climate Resilience Proving House",
+        "Gaia Field Systems Fleetworks",
+        "Tellus Earth Systems Convergence"
+      ],
+      "circulation": {
+        "primaryRoute": "ENVSCI__TRANSECT_WALK",
+        "coveredResearchWalkways": 2,
+        "recessedUtilityRoute": "ENVSCI__RECESSED_AUTONOMOUS_UTILITY_ROUTE",
+        "visibleStormwaterChannel": true,
+        "exactBuildingApproaches": 10
+      },
+      "landscapes": {
+        "coastalPlots": 8,
+        "wetlandBasins": 8,
+        "ecologicalObservationZones": 8,
+        "soilPlots": 8,
+        "mineralWeatheringBeds": 8,
+        "aerosolCollectors": 24,
+        "calibrationTargets": 12
+      },
+      "signatureSystems": {
+        "tellusContourRings": 3,
+        "aeolianInstrumentHalos": 5,
+        "hydrologicalTerraces": 7,
+        "littoralTidalBasins": 6,
+        "bioticBranches": 4,
+        "criticalZoneCoreTowers": 6,
+        "carbonCaptureTowers": 6,
+        "anthropocenePathwayFissures": 5,
+        "resilienceFacadeBays": 12,
+        "gaiaLandingPads": 8
+      },
+      "darkSkyProtocol": {
+        "wildlifeSafeLighting": true,
+        "shieldedLowLevelLighting": true,
+        "upwardAdvertisingLight": false,
+        "activeInstrumentLightsOnly": true
+      }
+    },
+    "specializedRevision": 25,
+    "deepDistrict": {
+      "identity": "Environmental Science Labs District — The Living Transect",
+      "mapLabel": "Environmental Science Labs",
+      "architecturalLanguage": "buildings as enlarged scientific instruments operating across ocean, atmosphere, water, soil, ecosystems, contaminants, carbon, climate adaptation, robotics, and planetary modelling",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "E1",
+          "name": "Tellus Earth Systems Convergence",
+          "subtitle": "Planetary Modelling and Integrated Observation",
+          "focus": "Planetary modelling, environmental digital twins, and integrated Earth observation",
+          "scientificSequence": 10,
+          "footprintMetres": [
+            216,
+            176
+          ],
+          "heightMetres": 46,
+          "exteriorSignature": "three incomplete elliptical contour rings around a geological world court and instrumented skeletal globe"
+        },
+        {
+          "code": "E2",
+          "name": "Aeolian Atmospheric Observatory",
+          "subtitle": "Atmospheric Chemistry and Cloud Physics",
+          "focus": "Greenhouse gases, aerosols, cloud microphysics, and marine-atmosphere sampling",
+          "scientificSequence": 2,
+          "footprintMetres": [
+            154,
+            146
+          ],
+          "heightMetres": 105,
+          "exteriorSignature": "rounded three-bladed atmospheric tower with five instrument halos, aerostat apron, and calibration mast forest"
+        },
+        {
+          "code": "E3",
+          "name": "Hydrological Extremes Institute",
+          "subtitle": "Flood, Drought and Groundwater Systems",
+          "focus": "Floods, droughts, groundwater, isotope hydrology, and watershed prediction",
+          "scientificSequence": 3,
+          "footprintMetres": [
+            208,
+            172
+          ],
+          "heightMetres": 44,
+          "exteriorSignature": "seven descending watershed terraces cut by an artificial ravine, exposed flumes, and a floodable plaza"
+        },
+        {
+          "code": "E4",
+          "name": "Littoral Exchange Laboratory",
+          "subtitle": "Ocean-Land Interface Research",
+          "focus": "Coastal dynamics, ocean acidification, marine ecology, and land-sea exchange",
+          "scientificSequence": 1,
+          "footprintMetres": [
+            226,
+            252
+          ],
+          "heightMetres": 34,
+          "exteriorSignature": "segmented semi-submerged shoreline crescent, tidal basins, habitat breakwater, research pier, and Exchange Disc"
+        },
+        {
+          "code": "E5",
+          "name": "Biotic Continuum Observatory",
+          "subtitle": "Biodiversity and Ecosystem Monitoring",
+          "focus": "Biodiversity genomics, environmental DNA, acoustic ecology, and species migration",
+          "scientificSequence": 5,
+          "footprintMetres": [
+            210,
+            164
+          ],
+          "heightMetres": 40,
+          "exteriorSignature": "branching elevated phylogenetic structure, habitat corridors, dome bridges, ecological roof strips, and Biodiversity Mast"
+        },
+        {
+          "code": "E6",
+          "name": "Critical Zone and Rhizosphere Institute",
+          "subtitle": "Soil, Roots and Subsurface Ecosystems",
+          "focus": "Soil systems, root ecology, weathering, nutrient cycles, and subsurface microbiology",
+          "scientificSequence": 4,
+          "footprintMetres": [
+            202,
+            174
+          ],
+          "heightMetres": 38,
+          "exteriorSignature": "partially buried geological terraces, exposed soil-profile court, core towers, boreholes, and instrumented root columns"
+        },
+        {
+          "code": "E7",
+          "name": "Carbon Transformation Foundry",
+          "subtitle": "Carbon Removal and Biogeochemical Engineering",
+          "focus": "Direct air capture, mineralization, enhanced weathering, and carbon-cycle engineering",
+          "scientificSequence": 7,
+          "footprintMetres": [
+            218,
+            176
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "dark mineralized laboratory, six modular capture towers, three mineral silos, exposed pipes, and weathering yard"
+        },
+        {
+          "code": "E8",
+          "name": "Anthropocene Forensics Centre",
+          "subtitle": "Emerging Pollutant Source Attribution",
+          "focus": "PFAS, microplastics, nanoplastics, environmental exposomics, and source attribution",
+          "scientificSequence": 6,
+          "footprintMetres": [
+            196,
+            148
+          ],
+          "heightMetres": 36,
+          "exteriorSignature": "sealed recycled-glass black monolith split by five pathway fissures and crowned by a dense sampler field"
+        },
+        {
+          "code": "E9",
+          "name": "Climate Resilience Proving House",
+          "subtitle": "Adaptation Systems Test Complex",
+          "focus": "Flood, heat, drought, wildfire, storm, and infrastructure-failure adaptation",
+          "scientificSequence": 8,
+          "footprintMetres": [
+            232,
+            182
+          ],
+          "heightMetres": 42,
+          "exteriorSignature": "reinforced test spine with twelve replaceable facade bays, travelling storm frame, flood plaza, and Heat Canyon"
+        },
+        {
+          "code": "E10",
+          "name": "Gaia Field Systems Fleetworks",
+          "subtitle": "Autonomous Observation and Ecosystem Repair",
+          "focus": "Environmental drones, autonomous boats, field robots, sensing networks, and ecosystem restoration",
+          "scientificSequence": 9,
+          "footprintMetres": [
+            220,
+            174
+          ],
+          "heightMetres": 36,
+          "exteriorSignature": "low boomerang robotic hangar around a launch court, operational roof, calibration facade, canal door, and communications mast"
+        }
+      ],
+      "scientificSequence": [
+        "Littoral Exchange Laboratory",
+        "Aeolian Atmospheric Observatory",
+        "Hydrological Extremes Institute",
+        "Critical Zone and Rhizosphere Institute",
+        "Biotic Continuum Observatory",
+        "Anthropocene Forensics Centre",
+        "Carbon Transformation Foundry",
+        "Climate Resilience Proving House",
+        "Gaia Field Systems Fleetworks",
+        "Tellus Earth Systems Convergence"
+      ],
+      "circulation": {
+        "primaryRoute": "ENVSCI__TRANSECT_WALK",
+        "coveredResearchWalkways": 2,
+        "recessedUtilityRoute": "ENVSCI__RECESSED_AUTONOMOUS_UTILITY_ROUTE",
+        "visibleStormwaterChannel": true,
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "tellusContourRings": 3,
+        "aeolianInstrumentHalos": 5,
+        "hydrologicalTerraces": 7,
+        "littoralTidalBasins": 6,
+        "bioticBranches": 4,
+        "criticalZoneCoreTowers": 6,
+        "carbonCaptureTowers": 6,
+        "anthropocenePathwayFissures": 5,
+        "resilienceFacadeBays": 12,
+        "gaiaLandingPads": 8
+      },
+      "landscapes": {
+        "coastalPlots": 8,
+        "wetlandBasins": 8,
+        "ecologicalObservationZones": 8,
+        "soilPlots": 8,
+        "mineralWeatheringBeds": 8,
+        "aerosolCollectors": 24,
+        "calibrationTargets": 12
+      },
+      "darkSkyProtocol": {
+        "wildlifeSafeLighting": true,
+        "shieldedLowLevelLighting": true,
+        "upwardAdvertisingLight": false,
+        "activeInstrumentLightsOnly": true
+      },
+      "exteriorOnly": true
+    },
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "environmental-science-labs",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 25,
+        "triangles": 67132,
+        "animationNodes": 8
+      },
+      "renderImportance": {
+        "mandatory": 1252,
+        "micro": 33,
+        "visibleMicro": 33,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 1283,
+        "active": 1283,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000070486,
+    "grounded": true,
+    "position": [
+      -387.15,
+      1.808,
+      0
+    ]
+  },
+  "errors": []
+}

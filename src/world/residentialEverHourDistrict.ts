@@ -753,6 +753,7 @@ function addOrganicLaneNetwork(infrastructure: THREE.Group, definition: District
       ];
   const networkPoints = continuum.map((point) => point.clone());
   const laneNames: string[] = [];
+  const lanePaths: THREE.Vector3[][] = [];
   laneControls.forEach(({ id, controls }) => {
     const points = corneredDistrictPath(definition, controls);
     const lane = ribbon(infrastructure, `LIVEWORK__${prefix}__ORGANIC_LANE__${id}`, points, laneWidth, laneMaterial, definition.id);
@@ -766,6 +767,7 @@ function addOrganicLaneNetwork(infrastructure: THREE.Group, definition: District
     }
     networkPoints.push(...densifyPolyline(points));
     laneNames.push(lane.name);
+    lanePaths.push(points);
   });
   if (kind === 'residential') {
     const pocketRoutes: readonly { readonly id: string; readonly hierarchy: string; readonly controls: readonly (readonly [number, number])[] }[] = [
@@ -782,9 +784,10 @@ function addOrganicLaneNetwork(infrastructure: THREE.Group, definition: District
       const light = ribbon(infrastructure, `LIVEWORK__RESIDENTIAL__CYBERPUNK_LANE_CENTERLIGHT__${id}`, neonPoints, 0.06, [m.neonCyan, m.neonMagenta, m.neonViolet][routeIndex % 3], definition.id);
       light.userData.routeStyle = 'cyberpunk-neon-organic-lane-light'; light.userData.networkHierarchy = hierarchy; light.userData.greenHighlightedResidentialPocket = true;
       networkPoints.push(...densifyPolyline(points)); laneNames.push(lane.name);
+      lanePaths.push(points);
     });
   }
-  return { networkPoints, laneNames };
+  return { networkPoints, laneNames, lanePaths };
 }
 
 function addContinuumWalk(infrastructure: THREE.Group, definition: DistrictDefinition, kind: DistrictKind, m: Materials) {
@@ -807,6 +810,122 @@ function addContinuumWalk(infrastructure: THREE.Group, definition: DistrictDefin
     for (let support = 0; support <= 8; support += 1) { const p = start.clone().lerp(end, support / 8); const tangent = end.clone().sub(start).setY(0).normalize(); const normal = new THREE.Vector3(-tangent.z, 0, tangent.x); for (const side of [-1, 1]) { const base = p.clone().addScaledVector(normal, side * 0.86); pipe(infrastructure, `LIVEWORK__${prefix}__${coverNames[cover]}_SUPPORT_${support + 1}_${side < 0 ? 'L' : 'R'}`, base.clone().setY(FLOOR_Y), base.clone().setY(0.48), kind === 'residential' ? 0.055 : 0.045, coverMaterials[cover], districtId, true); } }
   }
   return points;
+}
+
+function addNightLightingNetwork(
+  infrastructure: THREE.Group,
+  definition: DistrictDefinition,
+  kind: DistrictKind,
+  continuum: readonly THREE.Vector3[],
+  lanePaths: readonly (readonly THREE.Vector3[])[],
+  m: Materials,
+) {
+  const districtId = definition.id;
+  const prefix = kind === 'residential' ? 'RESIDENTIAL' : 'EVER_HOUR';
+  const network = new THREE.Group();
+  network.name = `LIVEWORK__${prefix}__NIGHT_LIGHTING_NETWORK`;
+  infrastructure.add(network);
+
+  const structural = kind === 'residential' ? m.cyberpunkAlloy : m.blackSteel;
+  const accentLights = kind === 'residential'
+    ? [m.neonCyan, m.neonMagenta, m.neonViolet] as const
+    : [m.goldLight, m.silverLight, m.amber] as const;
+  const promenadeLampCount = kind === 'residential' ? 24 : 28;
+  const promenadeLightCount = promenadeLampCount * 2;
+  for (let station = 0; station < promenadeLampCount; station += 1) {
+    const pointIndex = Math.round(4 + station * (continuum.length - 9) / Math.max(1, promenadeLampCount - 1));
+    const point = continuum[pointIndex];
+    const previous = continuum[Math.max(0, pointIndex - 1)];
+    const next = continuum[Math.min(continuum.length - 1, pointIndex + 1)];
+    const tangent = next.clone().sub(previous).setY(0).normalize();
+    const normal = new THREE.Vector3(-tangent.z, 0, tangent.x);
+    for (const side of [-1, 1]) {
+      const sideName = side < 0 ? 'L' : 'R';
+      const lightMaterial = accentLights[(station + (side < 0 ? 0 : 1)) % accentLights.length];
+      const base = point.clone().addScaledVector(normal, side * 1.16).setY(FLOOR_Y);
+      const mastTop = base.clone().setY(kind === 'residential' ? 0.48 : 0.54);
+      const lantern = mastTop.clone().addScaledVector(normal, -side * 0.18).setY(mastTop.y - 0.015);
+      pipe(network, `LIVEWORK__${prefix}__PROMENADE_LAMP_${station + 1}_${sideName}__MAST`, base, mastTop, 0.018, structural, districtId);
+      pipe(network, `LIVEWORK__${prefix}__PROMENADE_LAMP_${station + 1}_${sideName}__ARM`, mastTop, lantern, 0.014, kind === 'residential' ? lightMaterial : m.champagne, districtId);
+      ellipsoid(network, `LIVEWORK__${prefix}__PROMENADE_LAMP_${station + 1}_${sideName}__LANTERN`, [0.12, 0.075, 0.12], lightMaterial, [lantern.x, lantern.y, lantern.z], districtId);
+      cylinder(network, `LIVEWORK__${prefix}__PROMENADE_LAMP_${station + 1}_${sideName}__GROUND_GLOW`, 0.24, 0.012, lightMaterial, [base.x, FLOOR_Y + 0.008, base.z], districtId, false, 16);
+      if (station % 3 === 0) torus(network, `LIVEWORK__${prefix}__PROMENADE_LAMP_${station + 1}_${sideName}__HALO`, 0.13, 0.018, lightMaterial, [lantern.x, lantern.y, lantern.z], districtId, [Math.PI / 2, 0, 0]);
+    }
+  }
+
+  const laneLightsPerPath = kind === 'residential' ? 2 : 3;
+  let laneLightTreeCount = 0;
+  lanePaths.forEach((path, pathIndex) => {
+    for (let lightIndex = 0; lightIndex < laneLightsPerPath; lightIndex += 1) {
+      const pathT = (lightIndex + 1) / (laneLightsPerPath + 1);
+      const pointIndex = Math.max(1, Math.min(path.length - 2, Math.round(pathT * (path.length - 1))));
+      const point = path[pointIndex];
+      const tangent = path[pointIndex + 1].clone().sub(path[pointIndex - 1]).setY(0).normalize();
+      const normal = new THREE.Vector3(-tangent.z, 0, tangent.x);
+      const side = (pathIndex + lightIndex) % 2 === 0 ? -1 : 1;
+      const base = point.clone().addScaledVector(normal, side * (kind === 'residential' ? 0.48 : 0.55)).setY(FLOOR_Y);
+      const top = base.clone().setY(0.4 + (laneLightTreeCount % 3) * 0.04);
+      const lightMaterial = accentLights[(pathIndex + lightIndex) % accentLights.length];
+      const treeName = `LIVEWORK__${prefix}__LANE_LIGHT_TREE_${laneLightTreeCount + 1}`;
+      pipe(network, `${treeName}__TRUNK`, base, top, 0.02, structural, districtId);
+      for (const branch of [-1, 1]) {
+        const branchEnd = top.clone().addScaledVector(tangent, branch * 0.17).addScaledVector(normal, -side * 0.07).setY(top.y + 0.07);
+        pipe(network, `${treeName}__LUMINOUS_BRANCH_${branch < 0 ? 'A' : 'B'}`, top, branchEnd, 0.014, lightMaterial, districtId);
+        ellipsoid(network, `${treeName}__LANTERN_${branch < 0 ? 'A' : 'B'}`, [0.085, 0.06, 0.085], lightMaterial, [branchEnd.x, branchEnd.y, branchEnd.z], districtId);
+      }
+      cylinder(network, `${treeName}__GROUND_GLOW`, 0.19, 0.01, lightMaterial, [base.x, FLOOR_Y + 0.007, base.z], districtId, false, 16);
+      laneLightTreeCount += 1;
+    }
+  });
+
+  const illuminatedGateCount = kind === 'residential' ? 7 : 9;
+  for (let gate = 0; gate < illuminatedGateCount; gate += 1) {
+    const pointIndex = Math.round(10 + gate * (continuum.length - 21) / Math.max(1, illuminatedGateCount - 1));
+    const point = continuum[pointIndex];
+    const tangent = continuum[Math.min(continuum.length - 1, pointIndex + 1)].clone().sub(continuum[Math.max(0, pointIndex - 1)]).setY(0).normalize();
+    const normal = new THREE.Vector3(-tangent.z, 0, tangent.x);
+    const leftBase = point.clone().addScaledVector(normal, -1.28).setY(FLOOR_Y);
+    const rightBase = point.clone().addScaledVector(normal, 1.28).setY(FLOOR_Y);
+    const leftTop = leftBase.clone().setY(kind === 'residential' ? 0.78 : 0.88);
+    const rightTop = rightBase.clone().setY(leftTop.y);
+    const lightMaterial = accentLights[gate % accentLights.length];
+    const gateName = `LIVEWORK__${prefix}__ILLUMINATED_WALK_GATE_${gate + 1}`;
+    pipe(network, `${gateName}__POST_L`, leftBase, leftTop, 0.025, structural, districtId);
+    pipe(network, `${gateName}__POST_R`, rightBase, rightTop, 0.025, structural, districtId);
+    slabBetween(network, `${gateName}__CROWN`, leftTop, rightTop, 0.13, 0.1, kind === 'residential' ? m.holographicGlass : m.opalineGlass, districtId);
+    const lightLeft = leftTop.clone().addScaledVector(normal, 0.15).setY(leftTop.y - 0.07);
+    const lightRight = rightTop.clone().addScaledVector(normal, -0.15).setY(rightTop.y - 0.07);
+    slabBetween(network, `${gateName}__UNDERSIDE_LIGHT`, lightLeft, lightRight, 0.07, 0.045, lightMaterial, districtId);
+    for (const side of [-1, 1]) {
+      const blade = point.clone().addScaledVector(normal, side * 1.2).setY(leftTop.y * 0.56);
+      box(network, `${gateName}__WAYFINDING_BLADE_${side < 0 ? 'L' : 'R'}`, [0.075, 0.44, 0.18], lightMaterial, [blade.x, blade.y, blade.z], districtId, false, [0, -definition.sector!.centerAngle, 0]);
+    }
+  }
+
+  const skylineBeaconCount = kind === 'residential' ? 12 : 14;
+  for (let beacon = 0; beacon < skylineBeaconCount; beacon += 1) {
+    const edgeT = beacon % 2 === 0 ? 0.075 : 0.925;
+    const radialT = 0.1 + Math.floor(beacon / 2) * 0.8 / Math.max(1, Math.ceil(skylineBeaconCount / 2) - 1);
+    const position = pointInDistrict(definition, radialT, edgeT, FLOOR_Y);
+    const height = (kind === 'residential' ? 1.75 : 2.05) + (beacon % 4) * 0.16;
+    const lightMaterial = accentLights[beacon % accentLights.length];
+    const beaconName = `LIVEWORK__${prefix}__SKYLINE_BEACON_${beacon + 1}`;
+    cylinder(network, `${beaconName}__MAST`, 0.12, height, structural, [position.x, FLOOR_Y + height * 0.5, position.z], districtId, false, 8);
+    for (let ring = 0; ring < 3; ring += 1) torus(network, `${beaconName}__LIGHT_RING_${ring + 1}`, 0.22 + ring * 0.07, 0.025, ring === 1 ? accentLights[(beacon + 1) % accentLights.length] : lightMaterial, [position.x, FLOOR_Y + height - 0.24 + ring * 0.12, position.z], districtId, [Math.PI / 2, 0, 0]);
+    pulse(ellipsoid(network, `${beaconName}__CROWN_LIGHT`, [0.16, 0.2, 0.16], lightMaterial.clone(), [position.x, FLOOR_Y + height + 0.18, position.z], districtId), 0.0012 + beacon * 0.00004, beacon * 0.37, 0.65, 3.4);
+  }
+
+  const emitterCount = promenadeLightCount * 2 + laneLightTreeCount * 5 + illuminatedGateCount * 3 + skylineBeaconCount * 4;
+  network.userData.nightLightingNetwork = {
+    theme: kind === 'residential' ? 'cyan-magenta-violet inhabited constellation' : 'pale-gold warm-silver all-hour hospitality',
+    promenadeLights: promenadeLightCount,
+    laneLightTrees: laneLightTreeCount,
+    illuminatedWalkGates: illuminatedGateCount,
+    skylineBeacons: skylineBeaconCount,
+    emissiveElements: emitterCount,
+    nonBlocking: true,
+  };
+  return network;
 }
 
 function addResidentialCyberpunkPublicRealm(district: THREE.Group, definition: DistrictDefinition, m: Materials) {
@@ -927,7 +1046,7 @@ function addApproaches(infrastructure: THREE.Group, facilities: readonly THREE.G
 function buildDistrict(district: THREE.Group, definition: DistrictDefinition, kind: DistrictKind) {
   if (!definition.sector) throw new Error(`${definition.name} requires a masterplan sector`);
   const m = createMaterials(kind); const program = kind === 'residential' ? RESIDENTIAL_SCIENTISTS_BUILDING_PROGRAM : EVER_HOUR_BUILDING_PROGRAM; const infrastructure = new THREE.Group(); infrastructure.name = `LIVEWORK__${kind === 'residential' ? 'RESIDENTIAL' : 'EVER_HOUR'}__INTEGRATED_INFRASTRUCTURE`; district.add(infrastructure);
-  const continuum = addContinuumWalk(infrastructure, definition, kind, m); const laneNetwork = addOrganicLaneNetwork(infrastructure, definition, kind, continuum, m); addServiceRoutes(infrastructure, definition, kind, m); const landscape = addSharedLandscape(district, definition, kind, m); if (kind === 'residential') addResidentialCyberpunkPublicRealm(district, definition, m);
+  const continuum = addContinuumWalk(infrastructure, definition, kind, m); const laneNetwork = addOrganicLaneNetwork(infrastructure, definition, kind, continuum, m); addServiceRoutes(infrastructure, definition, kind, m); const nightLighting = addNightLightingNetwork(infrastructure, definition, kind, continuum, laneNetwork.lanePaths, m); const landscape = addSharedLandscape(district, definition, kind, m); if (kind === 'residential') addResidentialCyberpunkPublicRealm(district, definition, m);
   const facilities = program.map((record) => {
     const placement = organicPlacement(record, kind);
     const building = kind === 'residential' ? createResidentialFacility(record, m) : createEverHourFacility(record, m); building.position.copy(pointInDistrict(definition, placement.radialT, placement.angularT, FLOOR_Y + 0.02));
@@ -944,6 +1063,7 @@ function buildDistrict(district: THREE.Group, definition: DistrictDefinition, ki
     lightGradient: 'active north -> warm central pedestrian light -> shielded red and low amber south toward Astronomy',
     noiseGradient: 'quiet west and outer housing -> community -> hotels -> dining and retail -> bookable laboratories -> Robotics',
     exteriorOnly: true,
+    nightLighting: nightLighting.userData.nightLightingNetwork,
   };
   const metadata = {
     ...shared,
@@ -962,7 +1082,7 @@ function buildDistrict(district: THREE.Group, definition: DistrictDefinition, ki
   else district.userData.everHourDistrict = metadata;
   district.userData.population = {
     plannedFacilities: program.map((record) => record.name),
-    plannedObjects: [...metadata.parks, 'Continuum Walk', 'covered public landscapes', 'separated service lanes', 'Passage Gardens', ...(kind === 'residential' ? ['cyberpunk neon public realm', 'three inner expansion promenades', 'green-pocket residential weave', 'three green-pocket corner courts'] : [])],
+    plannedObjects: [...metadata.parks, 'Continuum Walk', 'covered public landscapes', 'separated service lanes', 'Passage Gardens', 'district-wide night lighting network', ...(kind === 'residential' ? ['cyberpunk neon public realm', 'three inner expansion promenades', 'green-pocket residential weave', 'three green-pocket corner courts'] : [])],
     realizedFeatureTags: program.map((record) => record.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')),
     realizedFacilityCount: facilities.length,
     realizedObjectCount: infrastructure.children.length + landscape.children.length,

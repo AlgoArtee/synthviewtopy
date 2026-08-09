@@ -290,6 +290,7 @@ const GPU_PULSE_PROFILES = new Set([
   'astronomy-astrobiology-emissive-pulse',
   'materials-science-emissive-pulse',
   'environmental-science-emissive-pulse',
+  'toxicology-emissive-pulse',
   'residential-ever-hour-emissive-pulse',
 ]);
 

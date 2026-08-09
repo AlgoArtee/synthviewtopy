@@ -21,7 +21,23 @@
         "R17",
         "R18",
         "R19",
-        "R20"
+        "R20",
+        "R21",
+        "R22",
+        "R23",
+        "R24",
+        "R25",
+        "R26",
+        "R27",
+        "R28",
+        "R29",
+        "R30",
+        "R31",
+        "R32",
+        "R33",
+        "R34",
+        "R35",
+        "R36"
       ],
       "names": [
         "Meridian Crescent Residences",
@@ -43,7 +59,23 @@
         "The Common Table Market Hall",
         "Nocturne Cafe and Reading Pavilion",
         "Night Clinic and Pharmacy",
-        "Seedling House"
+        "Seedling House",
+        "Neon Horizon Arcology",
+        "Quantum Terrace Megablock",
+        "Outerlight Scientist Residences",
+        "Southline Habitat Stack",
+        "Chromatic Skybridge Apartments",
+        "Continuum Gate Residences",
+        "Nightshift Vertical Quarter",
+        "Western Aurora Residences",
+        "Neon Orchard Apartments",
+        "Helix Coast Habitat",
+        "Lumina Family Terraces",
+        "Parallax Garden Towers",
+        "Midnight Researcher Housing",
+        "Coastal Circuit Residences",
+        "Prism Commons Apartments",
+        "Outer Meridian Residential Gate"
       ],
       "selectableIds": [
         "scientist-residential__building-meridian-crescent-residences",
@@ -65,11 +97,27 @@
         "scientist-residential__building-the-common-table-market-hall",
         "scientist-residential__building-nocturne-cafe-and-reading-pavilion",
         "scientist-residential__building-night-clinic-and-pharmacy",
-        "scientist-residential__building-seedling-house"
+        "scientist-residential__building-seedling-house",
+        "scientist-residential__building-neon-horizon-arcology",
+        "scientist-residential__building-quantum-terrace-megablock",
+        "scientist-residential__building-outerlight-scientist-residences",
+        "scientist-residential__building-southline-habitat-stack",
+        "scientist-residential__building-chromatic-skybridge-apartments",
+        "scientist-residential__building-continuum-gate-residences",
+        "scientist-residential__building-nightshift-vertical-quarter",
+        "scientist-residential__building-western-aurora-residences",
+        "scientist-residential__building-neon-orchard-apartments",
+        "scientist-residential__building-helix-coast-habitat",
+        "scientist-residential__building-lumina-family-terraces",
+        "scientist-residential__building-parallax-garden-towers",
+        "scientist-residential__building-midnight-researcher-housing",
+        "scientist-residential__building-coastal-circuit-residences",
+        "scientist-residential__building-prism-commons-apartments",
+        "scientist-residential__building-outer-meridian-residential-gate"
       ],
-      "facilityCount": 20,
-      "meshCount": 989,
-      "triangleCount": 37164,
+      "facilityCount": 36,
+      "meshCount": 3885,
+      "triangleCount": 162740,
       "materialNames": [
         "Continuum Walk dark weatherproof paving",
         "Continuum Walk pale weatherproof paving",
@@ -77,7 +125,6 @@
         "Ever Hour champagne metal",
         "Ever Hour dark basalt",
         "Ever Hour matte titanium",
-        "Ever Hour opaline glass",
         "Live-work amber laboratory status",
         "Live-work charcoal acoustic ceramic",
         "Live-work cyan laboratory status",
@@ -91,25 +138,33 @@
         "Live-work reddish ceramic",
         "Live-work shallow reflecting water",
         "Live-work textured concrete",
-        "Live-work transparent canopy glass",
-        "Live-work transparent photovoltaic glass",
         "Live-work ultraviolet laboratory status",
         "Live-work warm black brick",
         "Live-work weathered bronze",
         "Live-work weathered copper",
         "Residential compacted mineral garden lane",
-        "Residential dark green glass",
-        "Residential inhabited amber window"
+        "Residential cyberpunk black-violet alloy",
+        "Residential cyberpunk cyan neon",
+        "Residential cyberpunk magenta neon",
+        "Residential cyberpunk violet neon",
+        "Residential inhabited amber window",
+        "Residential opaque cyan canopy panel",
+        "Residential opaque cyan-violet holographic panel",
+        "Residential opaque indigo glazing",
+        "Residential opaque opaline panel",
+        "Residential opaque photovoltaic panel"
       ],
       "animations": {
-        "residential-ever-hour-emissive-pulse": 17,
-        "residential-ever-hour-rotation": 4
+        "residential-ever-hour-rotation": 4,
+        "residential-ever-hour-emissive-pulse": 26
       },
       "boundaryViolations": [],
       "overlaps": [],
+      "environmentalTerritoryIntrusions": [],
       "topLevelNames": [
         "LIVEWORK__RESIDENTIAL__INTEGRATED_INFRASTRUCTURE",
         "LIVEWORK__RESIDENTIAL__PUBLIC_LANDSCAPES",
+        "LIVEWORK__RESIDENTIAL__CYBERPUNK_NEON_PUBLIC_REALM",
         "LIVEWORK__RESIDENTIAL__R01__MERIDIAN_CRESCENT_RESIDENCES",
         "LIVEWORK__RESIDENTIAL__R02__HELIX_TERRACES",
         "LIVEWORK__RESIDENTIAL__R03__CIRCADIAN_HOUSE",
@@ -130,6 +185,22 @@
         "LIVEWORK__RESIDENTIAL__R18__NOCTURNE_CAFE_AND_READING_PAVILION",
         "LIVEWORK__RESIDENTIAL__R19__NIGHT_CLINIC_AND_PHARMACY",
         "LIVEWORK__RESIDENTIAL__R20__SEEDLING_HOUSE",
+        "LIVEWORK__RESIDENTIAL__R21__NEON_HORIZON_ARCOLOGY",
+        "LIVEWORK__RESIDENTIAL__R22__QUANTUM_TERRACE_MEGABLOCK",
+        "LIVEWORK__RESIDENTIAL__R23__OUTERLIGHT_SCIENTIST_RESIDENCES",
+        "LIVEWORK__RESIDENTIAL__R24__SOUTHLINE_HABITAT_STACK",
+        "LIVEWORK__RESIDENTIAL__R25__CHROMATIC_SKYBRIDGE_APARTMENTS",
+        "LIVEWORK__RESIDENTIAL__R26__CONTINUUM_GATE_RESIDENCES",
+        "LIVEWORK__RESIDENTIAL__R27__NIGHTSHIFT_VERTICAL_QUARTER",
+        "LIVEWORK__RESIDENTIAL__R28__WESTERN_AURORA_RESIDENCES",
+        "LIVEWORK__RESIDENTIAL__R29__NEON_ORCHARD_APARTMENTS",
+        "LIVEWORK__RESIDENTIAL__R30__HELIX_COAST_HABITAT",
+        "LIVEWORK__RESIDENTIAL__R31__LUMINA_FAMILY_TERRACES",
+        "LIVEWORK__RESIDENTIAL__R32__PARALLAX_GARDEN_TOWERS",
+        "LIVEWORK__RESIDENTIAL__R33__MIDNIGHT_RESEARCHER_HOUSING",
+        "LIVEWORK__RESIDENTIAL__R34__COASTAL_CIRCUIT_RESIDENCES",
+        "LIVEWORK__RESIDENTIAL__R35__PRISM_COMMONS_APARTMENTS",
+        "LIVEWORK__RESIDENTIAL__R36__OUTER_MERIDIAN_RESIDENTIAL_GATE",
         "DISTRICT_ROADS__GENERATED_NETWORK"
       ],
       "program": {
@@ -137,8 +208,8 @@
         "continuumDirection": "planted residences -> community facilities -> hotels -> conference buildings -> bookable laboratories -> Robotics Labs",
         "circulation": {
           "primaryRoute": "LIVEWORK__RESIDENTIAL__CONTINUUM_WALK",
-          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> alternating cornered crosswalks -> short dogleg entrance branches",
-          "neighborhoodLaneCount": 8,
+          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> green-pocket weave and corner courts -> short dogleg entrance branches",
+          "neighborhoodLaneCount": 15,
           "neighborhoodLanes": [
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ROOTLINE_GARDEN_SPINE",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_INNER_SPINE",
@@ -147,19 +218,87 @@
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_CROSSWALK_WEST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ARCHIVE_CROSSWALK_EAST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__POOL_COMMONS_CROSSWALK_WEST",
-            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST"
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__OUTER_ARCOLOGY_CRESCENT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__SOUTHLINE_NEON_PROMENADE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__CONTINUUM_GATE_NEON_WALK",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_RESIDENTIAL_WEAVE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_INNER_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_MIDDLE_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_OUTER_COURT"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 20,
+          "exactBuildingApproaches": 36,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
         "lightGradient": "active north -> warm central pedestrian light -> shielded red and low amber south toward Astronomy",
         "noiseGradient": "quiet west and outer housing -> community -> hotels -> dining and retail -> bookable laboratories -> Robotics",
         "exteriorOnly": true,
+        "nightLighting": {
+          "theme": "cyan-magenta-violet inhabited constellation",
+          "promenadeLights": 48,
+          "laneLightTrees": 30,
+          "illuminatedWalkGates": 7,
+          "skylineBeacons": 12,
+          "emissiveElements": 315,
+          "nonBlocking": true
+        },
         "identity": "Residential District for Scientists",
-        "districtCharacter": "quiet, green, domestic, permanent, and visibly inhabited",
-        "buildingCount": 20,
+        "districtCharacter": "organic, permanent, densely inhabited cyberpunk neighborhood with cyan, magenta, and violet neon layered over dark ecological gardens",
+        "architecturalStyle": "super-futuristic cyberpunk neon scientist housing, retaining the original diverse domestic and civic silhouettes",
+        "expansionBands": {
+          "outerCrescent": [
+            "R21",
+            "R22",
+            "R23"
+          ],
+          "southernPerimeter": [
+            "R24",
+            "R25"
+          ],
+          "innerContinuumEdge": [
+            "R26",
+            "R27"
+          ],
+          "greenHighlightedNorthwesternPocket": [
+            "R28",
+            "R29",
+            "R30",
+            "R31",
+            "R32",
+            "R33",
+            "R34",
+            "R35",
+            "R36"
+          ]
+        },
+        "greenHighlightedResidentialPocket": {
+          "occupied": true,
+          "insideCanonicalResidentialSector": true,
+          "environmentalSciencePerimeterVacated": true,
+          "normalizedRadialRange": [
+            0.08,
+            0.99
+          ],
+          "normalizedAngularRange": [
+            0.93,
+            0.995
+          ],
+          "localRouteCount": 4,
+          "housingCodes": [
+            "R28",
+            "R29",
+            "R30",
+            "R31",
+            "R32",
+            "R33",
+            "R34",
+            "R35",
+            "R36"
+          ]
+        },
+        "buildingCount": 36,
         "buildings": [
           {
             "code": "R01",
@@ -440,6 +579,230 @@
             ],
             "heightMetres": 11,
             "lighting": "small warm colored entrance lights"
+          },
+          {
+            "code": "R21",
+            "name": "Neon Horizon Arcology",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "high-capacity permanent apartments for local scientists and their families",
+            "exteriorMotif": "three staggered black-alloy apartment towers with suspended cyan bridges, magenta balcony rails, luminous service cores, rooftop gardens, and an orbital communications crown",
+            "placementZone": "red-contour outer crescent south",
+            "footprintMetres": [
+              86,
+              50
+            ],
+            "heightMetres": 105,
+            "lighting": "cyan vertical cores with magenta inhabited balcony bands"
+          },
+          {
+            "code": "R22",
+            "name": "Quantum Terrace Megablock",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "dense adaptable homes for laboratory teams and multigenerational scientist households",
+            "exteriorMotif": "offset violet apartment slabs rising from a public undercroft with two aerial garden streets, holographic address fins, and a radiant quantum-loop crown",
+            "placementZone": "red-contour outer crescent center",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 118,
+            "lighting": "violet sky terraces, cyan windows, and animated magenta wayfinding"
+          },
+          {
+            "code": "R23",
+            "name": "Outerlight Scientist Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "large long-term apartment quarter for senior researchers, resident engineers, and shared households",
+            "exteriorMotif": "three asymmetrical indigo towers with stepped dwelling pods, luminous exoskeleton rails, high sky gardens, and a faceted neon observatory deck",
+            "placementZone": "red-contour outer crescent north",
+            "footprintMetres": [
+              88,
+              50
+            ],
+            "heightMetres": 98,
+            "lighting": "cool cyan exoskeleton with violet and rose apartment lights"
+          },
+          {
+            "code": "R24",
+            "name": "Southline Habitat Stack",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "shift-friendly vertical apartments for local scientists working in southern research districts",
+            "exteriorMotif": "slender paired habitat stacks above a shielded night plaza with chamfered skybridges, magenta lift cores, and low-glare cyan residential bands",
+            "placementZone": "red-contour southern perimeter west",
+            "footprintMetres": [
+              54,
+              126
+            ],
+            "heightMetres": 110,
+            "lighting": "shielded violet and cyan bands with a magenta arrival portal"
+          },
+          {
+            "code": "R25",
+            "name": "Chromatic Skybridge Apartments",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "large family and cooperative apartments spanning the southern residential edge",
+            "exteriorMotif": "three narrow high-rise blocks linked by inhabited chromatic skybridges, suspended gardens, photovoltaic fins, and a prismatic rooftop beacon",
+            "placementZone": "red-contour southern perimeter east",
+            "footprintMetres": [
+              56,
+              118
+            ],
+            "heightMetres": 94,
+            "lighting": "alternating cyan, violet, and rose skybridge light"
+          },
+          {
+            "code": "R26",
+            "name": "Continuum Gate Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "permanent scientist apartments at the live-work transition to the Ever Hour district",
+            "exteriorMotif": "two tall graphite apartment towers and one lower social tower around an open neon gate, with elevated communal laboratories and luminous circulation bridges",
+            "placementZone": "red-contour inner Continuum edge south",
+            "footprintMetres": [
+              90,
+              48
+            ],
+            "heightMetres": 104,
+            "lighting": "cyan gate, magenta circulation rails, and violet residential windows"
+          },
+          {
+            "code": "R27",
+            "name": "Nightshift Vertical Quarter",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "twenty-four-hour apartment quarter for nocturnal and rotating local research staff",
+            "exteriorMotif": "three irregular midnight towers with protected sleep pods, neon wintergardens, suspended reading rooms, and a crown calibrated to the residential circadian cycle",
+            "placementZone": "red-contour inner Continuum edge north",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 122,
+            "lighting": "deep violet facade with cyan circulation and sparse rose occupancy signals"
+          },
+          {
+            "code": "R28",
+            "name": "Western Aurora Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "permanent apartments in the northwestern Residential pocket",
+            "exteriorMotif": "two staggered graphite dwelling slabs, a lower commons house, cyan wintergardens, magenta balcony ribbons, and a planted photovoltaic crown",
+            "placementZone": "green-contour Residential edge inner gate",
+            "footprintMetres": [
+              104,
+              58
+            ],
+            "heightMetres": 78,
+            "lighting": "cyan circulation cores with rose inhabited terraces"
+          },
+          {
+            "code": "R29",
+            "name": "Neon Orchard Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "family apartments with shared gardens inside the Residential boundary",
+            "exteriorMotif": "paired indigo residential bars around a neon orchard court with suspended play decks, luminous lift towers, and violet garden bridges",
+            "placementZone": "green-contour Residential edge orchard court",
+            "footprintMetres": [
+              110,
+              60
+            ],
+            "heightMetres": 72,
+            "lighting": "violet garden bridges and cyan entry lanterns"
+          },
+          {
+            "code": "R30",
+            "name": "Helix Coast Habitat",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "adaptable homes for coastal and environmental research teams within the Residential district",
+            "exteriorMotif": "three offset apartment terraces stepping around an open climate court with holographic screens, diagonal exoskeletons, and a rotating-looking static helix crown",
+            "placementZone": "green-contour Residential edge climate court",
+            "footprintMetres": [
+              112,
+              62
+            ],
+            "heightMetres": 88,
+            "lighting": "alternating cyan and magenta climate-status bands"
+          },
+          {
+            "code": "R31",
+            "name": "Lumina Family Terraces",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "large multigenerational homes with childcare and common rooms",
+            "exteriorMotif": "stepped black-violet family terraces linked by broad luminous conservatories, rooftop allotments, and sheltered neon arrival courts",
+            "placementZone": "green-contour Residential edge family court",
+            "footprintMetres": [
+              116,
+              64
+            ],
+            "heightMetres": 82,
+            "lighting": "warm rose occupancy signals within cool cyan frames"
+          },
+          {
+            "code": "R32",
+            "name": "Parallax Garden Towers",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "high-capacity scientist apartments overlooking the Environmental Science transition without occupying it",
+            "exteriorMotif": "two misaligned residential towers with a transparent central garden spine, sky lounges, photovoltaic fins, and long cyan balcony edges",
+            "placementZone": "green-contour Residential edge garden court",
+            "footprintMetres": [
+              102,
+              58
+            ],
+            "heightMetres": 96,
+            "lighting": "cyan balcony edges with violet garden spine"
+          },
+          {
+            "code": "R33",
+            "name": "Midnight Researcher Housing",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "quiet shielded apartments for rotating and nocturnal researchers",
+            "exteriorMotif": "dark acoustic dwelling slabs around a recessed night garden with protected magenta windows, cyan service cores, and a low-glare orbital roof marker",
+            "placementZone": "green-contour Residential edge night court",
+            "footprintMetres": [
+              100,
+              56
+            ],
+            "heightMetres": 92,
+            "lighting": "shielded violet and magenta windows with cyan emergency wayfinding"
+          },
+          {
+            "code": "R34",
+            "name": "Coastal Circuit Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "permanent homes at the Residential ecological interface",
+            "exteriorMotif": "circuit-like stepped apartment bars, an elevated communal laboratory bridge, prismatic rain collectors, and neon-lined planted terraces",
+            "placementZone": "green-contour Residential edge circuit court",
+            "footprintMetres": [
+              108,
+              58
+            ],
+            "heightMetres": 84,
+            "lighting": "cyan circuit traces and violet terrace beacons"
+          },
+          {
+            "code": "R35",
+            "name": "Prism Commons Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "cooperative apartments and shared work rooms inside the Residential district",
+            "exteriorMotif": "faceted dark residential wings flanking a translucent prismatic commons, with staggered sky decks, rooftop gardens, and magenta wayfinding fins",
+            "placementZone": "green-contour Residential edge prism court",
+            "footprintMetres": [
+              110,
+              60
+            ],
+            "heightMetres": 86,
+            "lighting": "prismatic cyan-violet commons glow and rose balcony rails"
+          },
+          {
+            "code": "R36",
+            "name": "Outer Meridian Residential Gate",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "apartment landmark at the outer end of the northwestern Residential pocket",
+            "exteriorMotif": "three slender midnight apartment stacks framing an open meridian gate with twin inhabited skybridges, a vertical cyan beacon, and a circular magenta crown",
+            "placementZone": "green-contour Residential edge outer gate",
+            "footprintMetres": [
+              118,
+              62
+            ],
+            "heightMetres": 102,
+            "lighting": "vertical cyan meridian with magenta crown and violet apartment bands"
           }
         ],
         "parks": [
@@ -454,7 +817,7 @@
           "stone colonnades",
           "timber-and-glass canopies"
         ],
-        "operatingRule": "western district looks inhabited"
+        "operatingRule": "the entire western district glows as an inhabited cyberpunk neighborhood without becoming a rectilinear grid"
       },
       "population": {
         "plannedFacilities": [
@@ -477,7 +840,23 @@
           "The Common Table Market Hall",
           "Nocturne Cafe and Reading Pavilion",
           "Night Clinic and Pharmacy",
-          "Seedling House"
+          "Seedling House",
+          "Neon Horizon Arcology",
+          "Quantum Terrace Megablock",
+          "Outerlight Scientist Residences",
+          "Southline Habitat Stack",
+          "Chromatic Skybridge Apartments",
+          "Continuum Gate Residences",
+          "Nightshift Vertical Quarter",
+          "Western Aurora Residences",
+          "Neon Orchard Apartments",
+          "Helix Coast Habitat",
+          "Lumina Family Terraces",
+          "Parallax Garden Towers",
+          "Midnight Researcher Housing",
+          "Coastal Circuit Residences",
+          "Prism Commons Apartments",
+          "Outer Meridian Residential Gate"
         ],
         "plannedObjects": [
           "Long Horizon Park",
@@ -488,7 +867,12 @@
           "Continuum Walk",
           "covered public landscapes",
           "separated service lanes",
-          "Passage Gardens"
+          "Passage Gardens",
+          "district-wide night lighting network",
+          "cyberpunk neon public realm",
+          "three inner expansion promenades",
+          "green-pocket residential weave",
+          "three green-pocket corner courts"
         ],
         "realizedFeatureTags": [
           "meridian-crescent-residences",
@@ -510,13 +894,29 @@
           "the-common-table-market-hall",
           "nocturne-cafe-and-reading-pavilion",
           "night-clinic-and-pharmacy",
-          "seedling-house"
+          "seedling-house",
+          "neon-horizon-arcology",
+          "quantum-terrace-megablock",
+          "outerlight-scientist-residences",
+          "southline-habitat-stack",
+          "chromatic-skybridge-apartments",
+          "continuum-gate-residences",
+          "nightshift-vertical-quarter",
+          "western-aurora-residences",
+          "neon-orchard-apartments",
+          "helix-coast-habitat",
+          "lumina-family-terraces",
+          "parallax-garden-towers",
+          "midnight-researcher-housing",
+          "coastal-circuit-residences",
+          "prism-commons-apartments",
+          "outer-meridian-residential-gate"
         ],
-        "realizedFacilityCount": 20,
-        "realizedObjectCount": 118,
+        "realizedFacilityCount": 36,
+        "realizedObjectCount": 157,
         "distinct": true,
         "asymmetricCampus": true,
-        "localRoadCount": 30,
+        "localRoadCount": 53,
         "radialCoverage": 0.94,
         "angularCoverage": 0.93,
         "liveWorkVisitIntegrated": true,
@@ -527,8 +927,8 @@
         "continuumDirection": "planted residences -> community facilities -> hotels -> conference buildings -> bookable laboratories -> Robotics Labs",
         "circulation": {
           "primaryRoute": "LIVEWORK__RESIDENTIAL__CONTINUUM_WALK",
-          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> alternating cornered crosswalks -> short dogleg entrance branches",
-          "neighborhoodLaneCount": 8,
+          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> green-pocket weave and corner courts -> short dogleg entrance branches",
+          "neighborhoodLaneCount": 15,
           "neighborhoodLanes": [
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ROOTLINE_GARDEN_SPINE",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_INNER_SPINE",
@@ -537,19 +937,87 @@
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_CROSSWALK_WEST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ARCHIVE_CROSSWALK_EAST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__POOL_COMMONS_CROSSWALK_WEST",
-            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST"
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__OUTER_ARCOLOGY_CRESCENT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__SOUTHLINE_NEON_PROMENADE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__CONTINUUM_GATE_NEON_WALK",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_RESIDENTIAL_WEAVE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_INNER_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_MIDDLE_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_OUTER_COURT"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 20,
+          "exactBuildingApproaches": 36,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
         "lightGradient": "active north -> warm central pedestrian light -> shielded red and low amber south toward Astronomy",
         "noiseGradient": "quiet west and outer housing -> community -> hotels -> dining and retail -> bookable laboratories -> Robotics",
         "exteriorOnly": true,
+        "nightLighting": {
+          "theme": "cyan-magenta-violet inhabited constellation",
+          "promenadeLights": 48,
+          "laneLightTrees": 30,
+          "illuminatedWalkGates": 7,
+          "skylineBeacons": 12,
+          "emissiveElements": 315,
+          "nonBlocking": true
+        },
         "identity": "Residential District for Scientists",
-        "districtCharacter": "quiet, green, domestic, permanent, and visibly inhabited",
-        "buildingCount": 20,
+        "districtCharacter": "organic, permanent, densely inhabited cyberpunk neighborhood with cyan, magenta, and violet neon layered over dark ecological gardens",
+        "architecturalStyle": "super-futuristic cyberpunk neon scientist housing, retaining the original diverse domestic and civic silhouettes",
+        "expansionBands": {
+          "outerCrescent": [
+            "R21",
+            "R22",
+            "R23"
+          ],
+          "southernPerimeter": [
+            "R24",
+            "R25"
+          ],
+          "innerContinuumEdge": [
+            "R26",
+            "R27"
+          ],
+          "greenHighlightedNorthwesternPocket": [
+            "R28",
+            "R29",
+            "R30",
+            "R31",
+            "R32",
+            "R33",
+            "R34",
+            "R35",
+            "R36"
+          ]
+        },
+        "greenHighlightedResidentialPocket": {
+          "occupied": true,
+          "insideCanonicalResidentialSector": true,
+          "environmentalSciencePerimeterVacated": true,
+          "normalizedRadialRange": [
+            0.08,
+            0.99
+          ],
+          "normalizedAngularRange": [
+            0.93,
+            0.995
+          ],
+          "localRouteCount": 4,
+          "housingCodes": [
+            "R28",
+            "R29",
+            "R30",
+            "R31",
+            "R32",
+            "R33",
+            "R34",
+            "R35",
+            "R36"
+          ]
+        },
+        "buildingCount": 36,
         "buildings": [
           {
             "code": "R01",
@@ -830,6 +1298,230 @@
             ],
             "heightMetres": 11,
             "lighting": "small warm colored entrance lights"
+          },
+          {
+            "code": "R21",
+            "name": "Neon Horizon Arcology",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "high-capacity permanent apartments for local scientists and their families",
+            "exteriorMotif": "three staggered black-alloy apartment towers with suspended cyan bridges, magenta balcony rails, luminous service cores, rooftop gardens, and an orbital communications crown",
+            "placementZone": "red-contour outer crescent south",
+            "footprintMetres": [
+              86,
+              50
+            ],
+            "heightMetres": 105,
+            "lighting": "cyan vertical cores with magenta inhabited balcony bands"
+          },
+          {
+            "code": "R22",
+            "name": "Quantum Terrace Megablock",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "dense adaptable homes for laboratory teams and multigenerational scientist households",
+            "exteriorMotif": "offset violet apartment slabs rising from a public undercroft with two aerial garden streets, holographic address fins, and a radiant quantum-loop crown",
+            "placementZone": "red-contour outer crescent center",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 118,
+            "lighting": "violet sky terraces, cyan windows, and animated magenta wayfinding"
+          },
+          {
+            "code": "R23",
+            "name": "Outerlight Scientist Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "large long-term apartment quarter for senior researchers, resident engineers, and shared households",
+            "exteriorMotif": "three asymmetrical indigo towers with stepped dwelling pods, luminous exoskeleton rails, high sky gardens, and a faceted neon observatory deck",
+            "placementZone": "red-contour outer crescent north",
+            "footprintMetres": [
+              88,
+              50
+            ],
+            "heightMetres": 98,
+            "lighting": "cool cyan exoskeleton with violet and rose apartment lights"
+          },
+          {
+            "code": "R24",
+            "name": "Southline Habitat Stack",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "shift-friendly vertical apartments for local scientists working in southern research districts",
+            "exteriorMotif": "slender paired habitat stacks above a shielded night plaza with chamfered skybridges, magenta lift cores, and low-glare cyan residential bands",
+            "placementZone": "red-contour southern perimeter west",
+            "footprintMetres": [
+              54,
+              126
+            ],
+            "heightMetres": 110,
+            "lighting": "shielded violet and cyan bands with a magenta arrival portal"
+          },
+          {
+            "code": "R25",
+            "name": "Chromatic Skybridge Apartments",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "large family and cooperative apartments spanning the southern residential edge",
+            "exteriorMotif": "three narrow high-rise blocks linked by inhabited chromatic skybridges, suspended gardens, photovoltaic fins, and a prismatic rooftop beacon",
+            "placementZone": "red-contour southern perimeter east",
+            "footprintMetres": [
+              56,
+              118
+            ],
+            "heightMetres": 94,
+            "lighting": "alternating cyan, violet, and rose skybridge light"
+          },
+          {
+            "code": "R26",
+            "name": "Continuum Gate Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "permanent scientist apartments at the live-work transition to the Ever Hour district",
+            "exteriorMotif": "two tall graphite apartment towers and one lower social tower around an open neon gate, with elevated communal laboratories and luminous circulation bridges",
+            "placementZone": "red-contour inner Continuum edge south",
+            "footprintMetres": [
+              90,
+              48
+            ],
+            "heightMetres": 104,
+            "lighting": "cyan gate, magenta circulation rails, and violet residential windows"
+          },
+          {
+            "code": "R27",
+            "name": "Nightshift Vertical Quarter",
+            "form": "cyberpunk-scientist-megablock",
+            "purpose": "twenty-four-hour apartment quarter for nocturnal and rotating local research staff",
+            "exteriorMotif": "three irregular midnight towers with protected sleep pods, neon wintergardens, suspended reading rooms, and a crown calibrated to the residential circadian cycle",
+            "placementZone": "red-contour inner Continuum edge north",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 122,
+            "lighting": "deep violet facade with cyan circulation and sparse rose occupancy signals"
+          },
+          {
+            "code": "R28",
+            "name": "Western Aurora Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "permanent apartments in the northwestern Residential pocket",
+            "exteriorMotif": "two staggered graphite dwelling slabs, a lower commons house, cyan wintergardens, magenta balcony ribbons, and a planted photovoltaic crown",
+            "placementZone": "green-contour Residential edge inner gate",
+            "footprintMetres": [
+              104,
+              58
+            ],
+            "heightMetres": 78,
+            "lighting": "cyan circulation cores with rose inhabited terraces"
+          },
+          {
+            "code": "R29",
+            "name": "Neon Orchard Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "family apartments with shared gardens inside the Residential boundary",
+            "exteriorMotif": "paired indigo residential bars around a neon orchard court with suspended play decks, luminous lift towers, and violet garden bridges",
+            "placementZone": "green-contour Residential edge orchard court",
+            "footprintMetres": [
+              110,
+              60
+            ],
+            "heightMetres": 72,
+            "lighting": "violet garden bridges and cyan entry lanterns"
+          },
+          {
+            "code": "R30",
+            "name": "Helix Coast Habitat",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "adaptable homes for coastal and environmental research teams within the Residential district",
+            "exteriorMotif": "three offset apartment terraces stepping around an open climate court with holographic screens, diagonal exoskeletons, and a rotating-looking static helix crown",
+            "placementZone": "green-contour Residential edge climate court",
+            "footprintMetres": [
+              112,
+              62
+            ],
+            "heightMetres": 88,
+            "lighting": "alternating cyan and magenta climate-status bands"
+          },
+          {
+            "code": "R31",
+            "name": "Lumina Family Terraces",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "large multigenerational homes with childcare and common rooms",
+            "exteriorMotif": "stepped black-violet family terraces linked by broad luminous conservatories, rooftop allotments, and sheltered neon arrival courts",
+            "placementZone": "green-contour Residential edge family court",
+            "footprintMetres": [
+              116,
+              64
+            ],
+            "heightMetres": 82,
+            "lighting": "warm rose occupancy signals within cool cyan frames"
+          },
+          {
+            "code": "R32",
+            "name": "Parallax Garden Towers",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "high-capacity scientist apartments overlooking the Environmental Science transition without occupying it",
+            "exteriorMotif": "two misaligned residential towers with a transparent central garden spine, sky lounges, photovoltaic fins, and long cyan balcony edges",
+            "placementZone": "green-contour Residential edge garden court",
+            "footprintMetres": [
+              102,
+              58
+            ],
+            "heightMetres": 96,
+            "lighting": "cyan balcony edges with violet garden spine"
+          },
+          {
+            "code": "R33",
+            "name": "Midnight Researcher Housing",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "quiet shielded apartments for rotating and nocturnal researchers",
+            "exteriorMotif": "dark acoustic dwelling slabs around a recessed night garden with protected magenta windows, cyan service cores, and a low-glare orbital roof marker",
+            "placementZone": "green-contour Residential edge night court",
+            "footprintMetres": [
+              100,
+              56
+            ],
+            "heightMetres": 92,
+            "lighting": "shielded violet and magenta windows with cyan emergency wayfinding"
+          },
+          {
+            "code": "R34",
+            "name": "Coastal Circuit Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "permanent homes at the Residential ecological interface",
+            "exteriorMotif": "circuit-like stepped apartment bars, an elevated communal laboratory bridge, prismatic rain collectors, and neon-lined planted terraces",
+            "placementZone": "green-contour Residential edge circuit court",
+            "footprintMetres": [
+              108,
+              58
+            ],
+            "heightMetres": 84,
+            "lighting": "cyan circuit traces and violet terrace beacons"
+          },
+          {
+            "code": "R35",
+            "name": "Prism Commons Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "cooperative apartments and shared work rooms inside the Residential district",
+            "exteriorMotif": "faceted dark residential wings flanking a translucent prismatic commons, with staggered sky decks, rooftop gardens, and magenta wayfinding fins",
+            "placementZone": "green-contour Residential edge prism court",
+            "footprintMetres": [
+              110,
+              60
+            ],
+            "heightMetres": 86,
+            "lighting": "prismatic cyan-violet commons glow and rose balcony rails"
+          },
+          {
+            "code": "R36",
+            "name": "Outer Meridian Residential Gate",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "purpose": "apartment landmark at the outer end of the northwestern Residential pocket",
+            "exteriorMotif": "three slender midnight apartment stacks framing an open meridian gate with twin inhabited skybridges, a vertical cyan beacon, and a circular magenta crown",
+            "placementZone": "green-contour Residential edge outer gate",
+            "footprintMetres": [
+              118,
+              62
+            ],
+            "heightMetres": 102,
+            "lighting": "vertical cyan meridian with magenta crown and violet apartment bands"
           }
         ],
         "parks": [
@@ -844,14 +1536,14 @@
           "stone colonnades",
           "timber-and-glass canopies"
         ],
-        "operatingRule": "western district looks inhabited"
+        "operatingRule": "the entire western district glows as an inhabited cyberpunk neighborhood without becoming a rectilinear grid"
       },
       "compactDistrict": {
-        "buildingCount": 20,
+        "buildingCount": 36,
         "circulation": {
           "primaryRoute": "LIVEWORK__RESIDENTIAL__CONTINUUM_WALK",
-          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> alternating cornered crosswalks -> short dogleg entrance branches",
-          "neighborhoodLaneCount": 8,
+          "hierarchy": "Continuum Walk -> meandering neighborhood spines -> green-pocket weave and corner courts -> short dogleg entrance branches",
+          "neighborhoodLaneCount": 15,
           "neighborhoodLanes": [
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ROOTLINE_GARDEN_SPINE",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_INNER_SPINE",
@@ -860,10 +1552,17 @@
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__COMMONS_CROSSWALK_WEST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ARCHIVE_CROSSWALK_EAST",
             "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__POOL_COMMONS_CROSSWALK_WEST",
-            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST"
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__OUTER_ARCOLOGY_CRESCENT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__SOUTHLINE_NEON_PROMENADE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__CONTINUUM_GATE_NEON_WALK",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_RESIDENTIAL_WEAVE",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_INNER_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_MIDDLE_COURT",
+            "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_OUTER_COURT"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 20,
+          "exactBuildingApproaches": 36,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
@@ -879,7 +1578,7 @@
           "stone colonnades",
           "timber-and-glass canopies"
         ],
-        "operatingRule": "western district looks inhabited"
+        "operatingRule": "the entire western district glows as an inhabited cyberpunk neighborhood without becoming a rectilinear grid"
       },
       "compactSelected": {
         "id": "scientist-residential",
@@ -897,13 +1596,29 @@
           "visible": true,
           "visibilityIntent": "visible",
           "effectiveVisible": true,
-          "accent": "#F2B86B",
+          "accent": "#55F4FF",
           "styleCustomized": false,
           "collisionEnabled": true,
           "interactions": []
         }
       },
-      "revision": 20,
+      "nightLighting": {
+        "metadata": {
+          "theme": "cyan-magenta-violet inhabited constellation",
+          "promenadeLights": 48,
+          "laneLightTrees": 30,
+          "illuminatedWalkGates": 7,
+          "skylineBeacons": 12,
+          "emissiveElements": 315,
+          "nonBlocking": true
+        },
+        "promenadeLanterns": 48,
+        "laneLightTrees": 30,
+        "illuminatedWalkGates": 7,
+        "skylineBeacons": 12,
+        "blockingMeshes": []
+      },
+      "revision": 25,
       "planning": {
         "boundedDistricts": 35,
         "populatedDistricts": 35,
@@ -918,7 +1633,7 @@
         "lifecyclePhase": "ready",
         "loadProgress": 1,
         "priorityReason": "selected",
-        "priorityScore": 987324,
+        "priorityScore": 987543,
         "visibleCandidate": true,
         "visualLevel": "detail",
         "detailResident": true,
@@ -926,29 +1641,335 @@
         "midVisible": false,
         "farVisible": false,
         "pinned": true,
-        "distanceMetres": 12676,
+        "distanceMetres": 12457,
         "estimatedCost": {
-          "drawCalls": 23,
-          "triangles": 37292,
+          "drawCalls": 41,
+          "triangles": 163748,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 993,
-          "micro": 0,
-          "visibleMicro": 0,
+          "mandatory": 3773,
+          "micro": 120,
+          "visibleMicro": 120,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 989,
-          "active": 989,
+          "capacity": 3885,
+          "active": 3885,
           "ratio": 1
         }
+      },
+      "flagship": null,
+      "cyberpunk": {
+        "envelopeCount": 36,
+        "opaqueArchitectureCount": 36,
+        "transparentBuildingMaterials": [],
+        "publicRealm": true,
+        "laneCenterlights": 15,
+        "greenPocketRoads": 4,
+        "megablocks": [
+          {
+            "code": "R21",
+            "name": "Neon Horizon Arcology",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              86,
+              50
+            ],
+            "heightMetres": 105,
+            "normalizedRadial": 0.985,
+            "normalizedAngular": 0.24,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour outer crescent south"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R22",
+            "name": "Quantum Terrace Megablock",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 118,
+            "normalizedRadial": 0.985,
+            "normalizedAngular": 0.51,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour outer crescent center"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R23",
+            "name": "Outerlight Scientist Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              88,
+              50
+            ],
+            "heightMetres": 98,
+            "normalizedRadial": 0.985,
+            "normalizedAngular": 0.79,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour outer crescent north"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R24",
+            "name": "Southline Habitat Stack",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              54,
+              126
+            ],
+            "heightMetres": 110,
+            "normalizedRadial": 0.3,
+            "normalizedAngular": 0.012,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour southern perimeter west"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R25",
+            "name": "Chromatic Skybridge Apartments",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              56,
+              118
+            ],
+            "heightMetres": 94,
+            "normalizedRadial": 0.68,
+            "normalizedAngular": 0.012,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour southern perimeter east"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R26",
+            "name": "Continuum Gate Residences",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              90,
+              48
+            ],
+            "heightMetres": 104,
+            "normalizedRadial": 0.012,
+            "normalizedAngular": 0.31,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour inner Continuum edge south"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          },
+          {
+            "code": "R27",
+            "name": "Nightshift Vertical Quarter",
+            "form": "cyberpunk-scientist-megablock",
+            "footprintMetres": [
+              96,
+              48
+            ],
+            "heightMetres": 122,
+            "normalizedRadial": 0.012,
+            "normalizedAngular": 0.72,
+            "signature": {
+              "towerCount": 3,
+              "skybridgeCount": 2,
+              "apartmentBalconyBands": 96,
+              "expansionBand": "red-contour inner Continuum edge north"
+            },
+            "towerCount": 3,
+            "skybridgeCount": 2
+          }
+        ],
+        "greenPocketResidences": [
+          {
+            "code": "R28",
+            "name": "Western Aurora Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 78,
+            "radius": 250.392,
+            "normalizedRadial": 0.08,
+            "normalizedAngular": 0.995,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge inner gate"
+            }
+          },
+          {
+            "code": "R29",
+            "name": "Neon Orchard Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 72,
+            "radius": 257.28000000000003,
+            "normalizedRadial": 0.2,
+            "normalizedAngular": 0.93,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge orchard court"
+            }
+          },
+          {
+            "code": "R30",
+            "name": "Helix Coast Habitat",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 88,
+            "radius": 264.168,
+            "normalizedRadial": 0.32,
+            "normalizedAngular": 0.995,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge climate court"
+            }
+          },
+          {
+            "code": "R31",
+            "name": "Lumina Family Terraces",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 82,
+            "radius": 267.612,
+            "normalizedRadial": 0.38,
+            "normalizedAngular": 0.93,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge family court"
+            }
+          },
+          {
+            "code": "R32",
+            "name": "Parallax Garden Towers",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 96,
+            "radius": 277.94399999999996,
+            "normalizedRadial": 0.56,
+            "normalizedAngular": 0.995,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge garden court"
+            }
+          },
+          {
+            "code": "R33",
+            "name": "Midnight Researcher Housing",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 92,
+            "radius": 284.832,
+            "normalizedRadial": 0.68,
+            "normalizedAngular": 0.93,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge night court"
+            }
+          },
+          {
+            "code": "R34",
+            "name": "Coastal Circuit Residences",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 84,
+            "radius": 291.71999999999997,
+            "normalizedRadial": 0.8,
+            "normalizedAngular": 0.995,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge circuit court"
+            }
+          },
+          {
+            "code": "R35",
+            "name": "Prism Commons Apartments",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 86,
+            "radius": 297.4599999999999,
+            "normalizedRadial": 0.9,
+            "normalizedAngular": 0.93,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 1,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge prism court"
+            }
+          },
+          {
+            "code": "R36",
+            "name": "Outer Meridian Residential Gate",
+            "form": "cyberpunk-residential-edge-ensemble",
+            "heightMetres": 102,
+            "radius": 302.62600000000003,
+            "normalizedRadial": 0.99,
+            "normalizedAngular": 0.995,
+            "ring": "outer",
+            "greenHighlightedResidentialPocket": true,
+            "signature": {
+              "apartmentSlabCount": 2,
+              "skybridgeCount": 2,
+              "inhabitedBalconyBands": 48,
+              "pocketZone": "green-contour Residential edge outer gate"
+            }
+          }
+        ]
       },
       "routes": {
         "continuum": true,
         "continuumWidth": 1.899999976158142,
         "service": true,
-        "approaches": 20,
+        "approaches": 36,
         "organicLanes": [
           {
             "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__ROOTLINE_GARDEN_SPINE",
@@ -988,6 +2009,41 @@
           {
             "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__FAMILY_GARDEN_CROSSWALK_EAST",
             "hierarchy": "cornered-crosswalk",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__OUTER_ARCOLOGY_CRESCENT",
+            "hierarchy": "cornered-crosswalk",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__SOUTHLINE_NEON_PROMENADE",
+            "hierarchy": "cornered-crosswalk",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__CONTINUUM_GATE_NEON_WALK",
+            "hierarchy": "cornered-crosswalk",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_RESIDENTIAL_WEAVE",
+            "hierarchy": "green-pocket-weave",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_INNER_COURT",
+            "hierarchy": "green-pocket-court",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_MIDDLE_COURT",
+            "hierarchy": "green-pocket-court",
+            "style": "shared-organic-campus-lane"
+          },
+          {
+            "name": "LIVEWORK__RESIDENTIAL__ORGANIC_LANE__GREEN_POCKET_OUTER_COURT",
+            "hierarchy": "green-pocket-court",
             "style": "shared-organic-campus-lane"
           }
         ],
@@ -1074,17 +2130,17 @@
           },
           {
             "code": "R11",
-            "turnCount": 2,
-            "routeLength": 15.832363328478122,
-            "directDistance": 10.869507095008546,
-            "routePointCount": 6,
-            "width": 0.4400005340576172
+            "turnCount": 1,
+            "routeLength": 0.7500407431771056,
+            "directDistance": 0.6094028688795493,
+            "routePointCount": 4,
+            "width": 0.44000135691704634
           },
           {
             "code": "R12",
             "turnCount": 2,
-            "routeLength": 13.875331583908721,
-            "directDistance": 9.534752824770438,
+            "routeLength": 2.128180990082529,
+            "directDistance": 1.8946684933311453,
             "routePointCount": 6,
             "width": 0.4399986267089844
           },
@@ -1122,11 +2178,11 @@
           },
           {
             "code": "R17",
-            "turnCount": 2,
-            "routeLength": 12.49660997385881,
-            "directDistance": 9.577277430594675,
-            "routePointCount": 6,
-            "width": 0.44000244140625
+            "turnCount": 1,
+            "routeLength": 0.8073174790892865,
+            "directDistance": 0.4118155096813165,
+            "routePointCount": 4,
+            "width": 0.43999942936877023
           },
           {
             "code": "R18",
@@ -1138,11 +2194,11 @@
           },
           {
             "code": "R19",
-            "turnCount": 2,
-            "routeLength": 6.249994127341116,
-            "directDistance": 4.045885230192255,
-            "routePointCount": 6,
-            "width": 0.44000244140625
+            "turnCount": 1,
+            "routeLength": 1.3873072924696783,
+            "directDistance": 1.3739840071002734,
+            "routePointCount": 4,
+            "width": 0.43999466055423464
           },
           {
             "code": "R20",
@@ -1151,6 +2207,134 @@
             "directDistance": 2.060677226299922,
             "routePointCount": 6,
             "width": 0.4400005340576172
+          },
+          {
+            "code": "R21",
+            "turnCount": 2,
+            "routeLength": 3.5050095129524084,
+            "directDistance": 1.953613341039767,
+            "routePointCount": 6,
+            "width": 0.4400005340576172
+          },
+          {
+            "code": "R22",
+            "turnCount": 2,
+            "routeLength": 2.8137451280818904,
+            "directDistance": 1.5379763664232469,
+            "routePointCount": 6,
+            "width": 0.4400005340576172
+          },
+          {
+            "code": "R23",
+            "turnCount": 2,
+            "routeLength": 3.0464411338653288,
+            "directDistance": 1.5910110025388877,
+            "routePointCount": 6,
+            "width": 0.4399995803833008
+          },
+          {
+            "code": "R24",
+            "turnCount": 2,
+            "routeLength": 8.491059541285505,
+            "directDistance": 5.641880293085359,
+            "routePointCount": 6,
+            "width": 0.4399986267089844
+          },
+          {
+            "code": "R25",
+            "turnCount": 2,
+            "routeLength": 11.256492258144798,
+            "directDistance": 8.110054694296572,
+            "routePointCount": 6,
+            "width": 0.4400005340576172
+          },
+          {
+            "code": "R26",
+            "turnCount": 2,
+            "routeLength": 4.571860931871643,
+            "directDistance": 3.0157050934015013,
+            "routePointCount": 6,
+            "width": 0.4400005340576172
+          },
+          {
+            "code": "R27",
+            "turnCount": 2,
+            "routeLength": 4.46764831902811,
+            "directDistance": 3.0267185479778216,
+            "routePointCount": 6,
+            "width": 0.44000244140625
+          },
+          {
+            "code": "R28",
+            "turnCount": 2,
+            "routeLength": 3.8843678398882684,
+            "directDistance": 2.3727397812299285,
+            "routePointCount": 6,
+            "width": 0.4399986267089844
+          },
+          {
+            "code": "R29",
+            "turnCount": 2,
+            "routeLength": 1.452377263194051,
+            "directDistance": 0.5157332217973523,
+            "routePointCount": 6,
+            "width": 0.43999481201171875
+          },
+          {
+            "code": "R30",
+            "turnCount": 2,
+            "routeLength": 7.132143885556709,
+            "directDistance": 4.638574833036611,
+            "routePointCount": 6,
+            "width": 0.4399986267089844
+          },
+          {
+            "code": "R31",
+            "turnCount": 2,
+            "routeLength": 7.144106200979699,
+            "directDistance": 4.255784976769142,
+            "routePointCount": 6,
+            "width": 0.44000244140625
+          },
+          {
+            "code": "R32",
+            "turnCount": 2,
+            "routeLength": 7.544412373692479,
+            "directDistance": 5.6263604868775055,
+            "routePointCount": 6,
+            "width": 0.4400005340576172
+          },
+          {
+            "code": "R33",
+            "turnCount": 2,
+            "routeLength": 7.8620645905962,
+            "directDistance": 4.705277901646444,
+            "routePointCount": 6,
+            "width": 0.44000244140625
+          },
+          {
+            "code": "R34",
+            "turnCount": 2,
+            "routeLength": 10.344386649172918,
+            "directDistance": 7.640508699012077,
+            "routePointCount": 6,
+            "width": 0.43999481201171875
+          },
+          {
+            "code": "R35",
+            "turnCount": 1,
+            "routeLength": 0.9089138240398816,
+            "directDistance": 0.9080127446189992,
+            "routePointCount": 4,
+            "width": 0.4400020275099737
+          },
+          {
+            "code": "R36",
+            "turnCount": 2,
+            "routeLength": 5.51862262572267,
+            "directDistance": 3.584923615758024,
+            "routePointCount": 6,
+            "width": 0.4399995803833008
           }
         ],
         "organicPlacements": [
@@ -1293,6 +2477,118 @@
             "radialJitter": -0.030773982669222044,
             "angularJitter": 0.014815898696076468,
             "rotationOffset": 0.2527589328755688
+          },
+          {
+            "code": "R21",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.09
+          },
+          {
+            "code": "R22",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.115
+          },
+          {
+            "code": "R23",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.13
+          },
+          {
+            "code": "R24",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.025
+          },
+          {
+            "code": "R25",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.035
+          },
+          {
+            "code": "R26",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.12
+          },
+          {
+            "code": "R27",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.105
+          },
+          {
+            "code": "R28",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.11
+          },
+          {
+            "code": "R29",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.14
+          },
+          {
+            "code": "R30",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.08
+          },
+          {
+            "code": "R31",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.16
+          },
+          {
+            "code": "R32",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.18
+          },
+          {
+            "code": "R33",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.09
+          },
+          {
+            "code": "R34",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.13
+          },
+          {
+            "code": "R35",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": -0.18
+          },
+          {
+            "code": "R36",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0.055
           }
         ],
         "outerEndpoint": [
@@ -1336,7 +2632,8 @@
         "H19",
         "H20",
         "H21",
-        "H22"
+        "H22",
+        "H23"
       ],
       "names": [
         "Ever Hour Exchange Hotel",
@@ -1360,7 +2657,8 @@
         "Afterlight Sky Restaurant",
         "Minute Market",
         "Null Hour Arcade Mall",
-        "Orbit Supply Court"
+        "Orbit Supply Court",
+        "The Ever Hour"
       ],
       "selectableIds": [
         "even-hour-hotel__building-ever-hour-exchange-hotel",
@@ -1384,11 +2682,12 @@
         "even-hour-hotel__building-afterlight-sky-restaurant",
         "even-hour-hotel__building-minute-market",
         "even-hour-hotel__building-null-hour-arcade-mall",
-        "even-hour-hotel__building-orbit-supply-court"
+        "even-hour-hotel__building-orbit-supply-court",
+        "even-hour-hotel__building-the-ever-hour"
       ],
-      "facilityCount": 22,
-      "meshCount": 1155,
-      "triangleCount": 59650,
+      "facilityCount": 23,
+      "meshCount": 1996,
+      "triangleCount": 158644,
       "materialNames": [
         "Continuum Walk dark weatherproof paving",
         "Continuum Walk pale weatherproof paving",
@@ -1426,11 +2725,12 @@
         "Residential inhabited amber window"
       ],
       "animations": {
-        "residential-ever-hour-emissive-pulse": 104,
-        "residential-ever-hour-rotation": 25
+        "residential-ever-hour-emissive-pulse": 119,
+        "residential-ever-hour-rotation": 29
       },
       "boundaryViolations": [],
       "overlaps": [],
+      "environmentalTerritoryIntrusions": [],
       "topLevelNames": [
         "LIVEWORK__EVER_HOUR__INTEGRATED_INFRASTRUCTURE",
         "LIVEWORK__EVER_HOUR__PUBLIC_LANDSCAPES",
@@ -1456,6 +2756,7 @@
         "LIVEWORK__EVER_HOUR__H20__MINUTE_MARKET",
         "LIVEWORK__EVER_HOUR__H21__NULL_HOUR_ARCADE_MALL",
         "LIVEWORK__EVER_HOUR__H22__ORBIT_SUPPLY_COURT",
+        "LIVEWORK__EVER_HOUR__H23__THE_EVER_HOUR",
         "DISTRICT_ROADS__GENERATED_NETWORK"
       ],
       "program": {
@@ -1477,16 +2778,26 @@
             "LIVEWORK__EVER_HOUR__ORGANIC_LANE__AFTERLIGHT_CROSSWALK_WEST"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 22,
+          "exactBuildingApproaches": 23,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
         "lightGradient": "active north -> warm central pedestrian light -> shielded red and low amber south toward Astronomy",
         "noiseGradient": "quiet west and outer housing -> community -> hotels -> dining and retail -> bookable laboratories -> Robotics",
         "exteriorOnly": true,
+        "nightLighting": {
+          "theme": "pale-gold warm-silver all-hour hospitality",
+          "promenadeLights": 56,
+          "laneLightTrees": 27,
+          "illuminatedWalkGates": 9,
+          "skylineBeacons": 14,
+          "emissiveElements": 330,
+          "nonBlocking": true
+        },
         "identity": "Ever Hour / Guest Scientists District",
         "districtCharacter": "dense, public, continuously operating, and visibly awake",
-        "buildingCount": 22,
+        "architecturalStyle": "all-hour scientific hospitality",
+        "buildingCount": 23,
         "buildings": [
           {
             "code": "H01",
@@ -1795,6 +3106,20 @@
             ],
             "heightMetres": 11,
             "lighting": "animated transit and route band"
+          },
+          {
+            "code": "H23",
+            "name": "The Ever Hour",
+            "form": "four-quadrant-grand-hotel",
+            "purpose": "flagship all-hour hotel, arrival hall, sky lobby, observatory lounge, and civic heart of the guest district",
+            "exteriorMotif": "four monumental basalt and bronze-glass hotel towers around the public Continuum crossing, joined by elevated opaline sky lobbies beneath an illuminated time crown and THE EVER HOUR facade",
+            "placementZone": "exact civic middle of the Ever Hour District",
+            "footprintMetres": [
+              196,
+              132
+            ],
+            "heightMetres": 132,
+            "lighting": "continuous pale-gold room bands, opaline sky lobbies, illuminated name facade, and slow astronomical crown"
           }
         ],
         "parks": [
@@ -1834,7 +3159,8 @@
           "Afterlight Sky Restaurant",
           "Minute Market",
           "Null Hour Arcade Mall",
-          "Orbit Supply Court"
+          "Orbit Supply Court",
+          "The Ever Hour"
         ],
         "plannedObjects": [
           "Rain Court",
@@ -1845,7 +3171,8 @@
           "Continuum Walk",
           "covered public landscapes",
           "separated service lanes",
-          "Passage Gardens"
+          "Passage Gardens",
+          "district-wide night lighting network"
         ],
         "realizedFeatureTags": [
           "ever-hour-exchange-hotel",
@@ -1869,13 +3196,14 @@
           "afterlight-sky-restaurant",
           "minute-market",
           "null-hour-arcade-mall",
-          "orbit-supply-court"
+          "orbit-supply-court",
+          "the-ever-hour"
         ],
-        "realizedFacilityCount": 22,
-        "realizedObjectCount": 134,
+        "realizedFacilityCount": 23,
+        "realizedObjectCount": 136,
         "distinct": true,
         "asymmetricCampus": true,
-        "localRoadCount": 34,
+        "localRoadCount": 35,
         "radialCoverage": 0.94,
         "angularCoverage": 0.93,
         "liveWorkVisitIntegrated": true,
@@ -1900,16 +3228,26 @@
             "LIVEWORK__EVER_HOUR__ORGANIC_LANE__AFTERLIGHT_CROSSWALK_WEST"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 22,
+          "exactBuildingApproaches": 23,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
         "lightGradient": "active north -> warm central pedestrian light -> shielded red and low amber south toward Astronomy",
         "noiseGradient": "quiet west and outer housing -> community -> hotels -> dining and retail -> bookable laboratories -> Robotics",
         "exteriorOnly": true,
+        "nightLighting": {
+          "theme": "pale-gold warm-silver all-hour hospitality",
+          "promenadeLights": 56,
+          "laneLightTrees": 27,
+          "illuminatedWalkGates": 9,
+          "skylineBeacons": 14,
+          "emissiveElements": 330,
+          "nonBlocking": true
+        },
         "identity": "Ever Hour / Guest Scientists District",
         "districtCharacter": "dense, public, continuously operating, and visibly awake",
-        "buildingCount": 22,
+        "architecturalStyle": "all-hour scientific hospitality",
+        "buildingCount": 23,
         "buildings": [
           {
             "code": "H01",
@@ -2218,6 +3556,20 @@
             ],
             "heightMetres": 11,
             "lighting": "animated transit and route band"
+          },
+          {
+            "code": "H23",
+            "name": "The Ever Hour",
+            "form": "four-quadrant-grand-hotel",
+            "purpose": "flagship all-hour hotel, arrival hall, sky lobby, observatory lounge, and civic heart of the guest district",
+            "exteriorMotif": "four monumental basalt and bronze-glass hotel towers around the public Continuum crossing, joined by elevated opaline sky lobbies beneath an illuminated time crown and THE EVER HOUR facade",
+            "placementZone": "exact civic middle of the Ever Hour District",
+            "footprintMetres": [
+              196,
+              132
+            ],
+            "heightMetres": 132,
+            "lighting": "continuous pale-gold room bands, opaline sky lobbies, illuminated name facade, and slow astronomical crown"
           }
         ],
         "parks": [
@@ -2235,7 +3587,7 @@
         "operatingRule": "eastern district looks awake"
       },
       "compactDistrict": {
-        "buildingCount": 22,
+        "buildingCount": 23,
         "circulation": {
           "primaryRoute": "LIVEWORK__EVER_HOUR__CONTINUUM_WALK",
           "hierarchy": "Continuum Walk -> meandering neighborhood spines -> alternating cornered crosswalks -> short dogleg entrance branches",
@@ -2252,7 +3604,7 @@
             "LIVEWORK__EVER_HOUR__ORGANIC_LANE__AFTERLIGHT_CROSSWALK_WEST"
           ],
           "coveredSequenceCount": 3,
-          "exactBuildingApproaches": 22,
+          "exactBuildingApproaches": 23,
           "southernServiceLane": true,
           "publicServiceSeparation": true
         },
@@ -2292,7 +3644,23 @@
           "interactions": []
         }
       },
-      "revision": 20,
+      "nightLighting": {
+        "metadata": {
+          "theme": "pale-gold warm-silver all-hour hospitality",
+          "promenadeLights": 56,
+          "laneLightTrees": 27,
+          "illuminatedWalkGates": 9,
+          "skylineBeacons": 14,
+          "emissiveElements": 330,
+          "nonBlocking": true
+        },
+        "promenadeLanterns": 56,
+        "laneLightTrees": 27,
+        "illuminatedWalkGates": 9,
+        "skylineBeacons": 14,
+        "blockingMeshes": []
+      },
+      "revision": 25,
       "planning": {
         "boundedDistricts": 35,
         "populatedDistricts": 35,
@@ -2317,27 +3685,60 @@
         "pinned": true,
         "distanceMetres": 12257,
         "estimatedCost": {
-          "drawCalls": 28,
-          "triangles": 60450,
+          "drawCalls": 31,
+          "triangles": 158676,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 1157,
-          "micro": 0,
-          "visibleMicro": 0,
+          "mandatory": 1762,
+          "micro": 235,
+          "visibleMicro": 235,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 1155,
-          "active": 1155,
+          "capacity": 1996,
+          "active": 1996,
           "ratio": 1
         }
       },
+      "flagship": {
+        "code": "H23",
+        "name": "The Ever Hour",
+        "purpose": "flagship all-hour hotel, arrival hall, sky lobby, observatory lounge, and civic heart of the guest district",
+        "form": "four-quadrant-grand-hotel",
+        "footprintMetres": [
+          196,
+          132
+        ],
+        "heightMetres": 132,
+        "actualSize": [
+          18.816,
+          18.54009828606318,
+          13.91900000000001
+        ],
+        "normalizedRadial": 0.53,
+        "normalizedAngular": 0.5,
+        "rotationOffset": 0,
+        "publicPassages": {
+          "continuumWidth": 3.5280000000000014,
+          "crosswalkWidth": 2.7720000000000002,
+          "openAtGround": true
+        },
+        "wordmark": {
+          "text": "THE EVER HOUR",
+          "pixelCount": 111
+        },
+        "towerQuadrants": 4,
+        "skyLobbies": 2,
+        "crownRings": 4,
+        "passageIntrusions": []
+      },
+      "cyberpunk": null,
       "routes": {
         "continuum": true,
         "continuumWidth": 1.899999976158142,
         "service": true,
-        "approaches": 22,
+        "approaches": 23,
         "organicLanes": [
           {
             "name": "LIVEWORK__EVER_HOUR__ORGANIC_LANE__CHRONOGARDEN_GUEST_SPINE",
@@ -2509,8 +3910,8 @@
           {
             "code": "H16",
             "turnCount": 2,
-            "routeLength": 10.146206523534362,
-            "directDistance": 8.62776490766837,
+            "routeLength": 11.904382280883894,
+            "directDistance": 10.017156829741387,
             "routePointCount": 6,
             "width": 0.5199995040893555
           },
@@ -2561,6 +3962,14 @@
             "directDistance": 2.3902721493536894,
             "routePointCount": 6,
             "width": 0.5200004577636719
+          },
+          {
+            "code": "H23",
+            "turnCount": 1,
+            "routeLength": 0.8490000000000073,
+            "directDistance": 0.8490000000000073,
+            "routePointCount": 4,
+            "width": 0.5199999809265137
           }
         ],
         "organicPlacements": [
@@ -2673,7 +4082,7 @@
             "code": "H16",
             "deterministic": true,
             "radialJitter": 0.011140280537559777,
-            "angularJitter": -0.024661203278033228,
+            "angularJitter": 0.11533879672196679,
             "rotationOffset": 0.21567765223219013
           },
           {
@@ -2717,6 +4126,13 @@
             "radialJitter": 0.014880524626400632,
             "angularJitter": -0.03402150474421228,
             "rotationOffset": 0.24837038953098728
+          },
+          {
+            "code": "H23",
+            "deterministic": true,
+            "radialJitter": 0,
+            "angularJitter": 0,
+            "rotationOffset": 0
           }
         ],
         "outerEndpoint": [
@@ -2741,9 +4157,9 @@
   "seamGap": 8.104628079763643e-15,
   "walkAudits": {
     "scientist-residential": {
-      "ground": 1.6459999984502793,
+      "ground": 1.6640000014007092,
       "eyeClearance": 0.16199999999999992,
-      "moved": 0.16349388382058952,
+      "moved": 0.16250000000070486,
       "grounded": true,
       "position": [
         -274.337,
@@ -2762,6 +4178,27 @@
         0
       ]
     }
+  },
+  "flagshipWalk": {
+    "start": [
+      -201.942,
+      1.8260000014007092,
+      2.3924164998758085e-14
+    ],
+    "end": [
+      -219.49755555555157,
+      1.826000001400709,
+      2.7994982755717108e-14
+    ],
+    "startGround": 1.6640000014007092,
+    "progress": 17.555555555551564,
+    "lateral": 1.727013593871375e-16,
+    "endLocal": [
+      -1.727013593871375e-16,
+      0.1600000014007088,
+      -9.45555555555157
+    ],
+    "grounded": true
   },
   "errors": []
 }

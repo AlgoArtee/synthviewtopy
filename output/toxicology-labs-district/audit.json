@@ -1,0 +1,611 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Toxicology Labs District — Dose, Mechanism and Countermeasure",
+      "mapLabel": "Toxicology Labs",
+      "architecturalLanguage": "immaculate ceramic scientific instruments, graphite containment structures, visible filtration, compartmentalized sample logistics, and limited status lighting without radioactive-lime spectacle",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "T1",
+          "name": "EXPOSOMA",
+          "subtitle": "Institute for Total Exposure Cartography",
+          "focus": "Exposomics, biomonitoring, wearable exposure sensors, non-targeted chemical analysis, and lifetime exposure reconstruction",
+          "scientificSequence": 1,
+          "footprintMetres": [
+            154,
+            92
+          ],
+          "heightMetres": 29,
+          "exteriorSignature": "five offset elliptical exposure rings, titanium analytical ribbons, bioindicator forecourt, and an environmental Sampling Crown"
+        },
+        {
+          "code": "T2",
+          "name": "MIMESIS",
+          "subtitle": "Human Microphysiology Toxicology Arc",
+          "focus": "Organs-on-chips, human organoids, tissue models, barrier toxicology, developmental neurotoxicity, immunotoxicology, and inhalation testing",
+          "scientificSequence": 2,
+          "footprintMetres": [
+            152,
+            102
+          ],
+          "heightMetres": 42,
+          "exteriorSignature": "three-part crescent with microfluidic facade, capillary colonnade, capillary bridges, roof-slide lanterns, and closed landscape stream"
+        },
+        {
+          "code": "T3",
+          "name": "CAUSALITY ARRAY",
+          "subtitle": "Centre for Computational Toxicology and Adverse-Outcome Modelling",
+          "focus": "AI toxicity prediction, read-across, high-throughput screening, mechanistic toxicology, and adverse-outcome pathway construction",
+          "scientificSequence": 3,
+          "footprintMetres": [
+            126,
+            104
+          ],
+          "heightMetres": 102,
+          "exteriorSignature": "three leaning graphite prisms around a triangular void, causal-network facade, 96-port Assay Deck, and Outcome Beacon"
+        },
+        {
+          "code": "T4",
+          "name": "PALIMPSEST",
+          "subtitle": "Persistent Contaminants and Mixture Toxicology Vault",
+          "focus": "Persistent pollutants, PFAS, endocrine disruptors, microplastics, nanomaterials, mixtures, bioaccumulation, and long-duration effects",
+          "scientificSequence": 4,
+          "footprintMetres": [
+            168,
+            94
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "seven-segment basalt containment bastion, descending Half-Life Wall, dual shell, filtration organ pipes, and recessed sealed docks"
+        },
+        {
+          "code": "T5",
+          "name": "MERIDIAN",
+          "subtitle": "Toxicokinetics, Countermeasure and Rapid Response Centre",
+          "focus": "ADME, toxicokinetic modelling, in-vitro-to-in-vivo extrapolation, rapid toxicant identification, countermeasures, and incident support",
+          "scientificSequence": 5,
+          "footprintMetres": [
+            144,
+            116
+          ],
+          "heightMetres": 68,
+          "exteriorSignature": "four unequal toxicokinetic wings around the Dose Clock, decay apertures, three response lanes, decontamination blades, drone pads, and Half-Life Circuit"
+        }
+      ],
+      "scientificSequence": [
+        "EXPOSOMA",
+        "MIMESIS",
+        "CAUSALITY ARRAY",
+        "PALIMPSEST",
+        "MERIDIAN"
+      ],
+      "functionalSequence": [
+        "detect exposure",
+        "model causality",
+        "reproduce human effects",
+        "investigate persistent mixtures",
+        "develop countermeasures"
+      ],
+      "circulation": {
+        "primaryRoute": "TOXICOLOGY__DOSE_RESPONSE_PROMENADE",
+        "restrictedOuterServiceRoad": "TOXICOLOGY__RESTRICTED_OUTER_SERVICE_ROAD",
+        "sealedSampleCourierLane": "TOXICOLOGY__SEALED_SAMPLE_COURIER_LANE",
+        "emergencyAccessAvenue": "TOXICOLOGY__MERIDIAN_EMERGENCY_ACCESS_AVENUE",
+        "exactBuildingApproaches": 5,
+        "publicServiceSeparation": true
+      },
+      "signatureSystems": {
+        "exposomaExposureRings": 5,
+        "exposomaSamplingInstruments": 32,
+        "mimesisCrescentSystems": 3,
+        "mimesisCapillaryColumns": 18,
+        "causalityPrismTowers": 3,
+        "causalityAssayPorts": 96,
+        "palimpsestVaultSegments": 7,
+        "palimpsestFiltrationTowers": 7,
+        "meridianToxicokineticWings": 4,
+        "meridianDecontaminationCanopies": 3
+      },
+      "containmentLandscape": {
+        "bioindicatorGardens": 20,
+        "monitoringBasins": 12,
+        "perimeterExposureSensors": 10,
+        "independentAirHandlingTowers": 12,
+        "wasteIsolationGates": 5
+      },
+      "lightingProtocol": {
+        "normal": "cold white",
+        "maintenance": "limited amber",
+        "containment": "deep red perimeter markers",
+        "instrumentGreenOnly": true,
+        "radioactiveLimeWash": false
+      },
+      "neighbourInterfaces": {
+        "pharmacologyBridge": "TOXICOLOGY__T5__PHARMACOLOGY_ENCLOSED_BRIDGE",
+        "medicalCourierBridge": "TOXICOLOGY__T5__MEDICAL_SECURE_COURIER_BRIDGE",
+        "omicsEvidenceInterface": true
+      },
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "EXPOSOMA",
+        "MIMESIS",
+        "CAUSALITY ARRAY",
+        "PALIMPSEST",
+        "MERIDIAN"
+      ],
+      "plannedObjects": [
+        "Dose–Response Promenade",
+        "restricted outer service road",
+        "sealed sample courier lane",
+        "Meridian emergency access avenue",
+        "bioindicator gardens",
+        "closed-loop monitoring basins",
+        "independent air-handling towers",
+        "waste-transfer isolation gates",
+        "sample delivery docks",
+        "decontamination frames"
+      ],
+      "realizedFeatureTags": [
+        "exposoma",
+        "mimesis",
+        "causality-array",
+        "palimpsest",
+        "meridian"
+      ],
+      "realizedFacilityCount": 5,
+      "realizedObjectCount": 164,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 9,
+      "radialCoverage": 0.96,
+      "angularCoverage": 0.96,
+      "exteriorOnly": true,
+      "doseMechanismCountermeasureNarrative": true,
+      "publicServiceSeparation": true,
+      "humanRelevantMethods": true
+    },
+    "facilityCount": 5,
+    "codes": [
+      "T1",
+      "T2",
+      "T3",
+      "T4",
+      "T5"
+    ],
+    "meshCount": 1844,
+    "triangles": 171976,
+    "uniqueNames": 1885,
+    "materialNames": [
+      "Dose Response Promenade pale sealed paving",
+      "Toxicology analytical stainless steel",
+      "Toxicology black mineral observation gravel",
+      "Toxicology closed-loop wetland vegetation",
+      "Toxicology cobalt microfluidic node light",
+      "Toxicology cold white system light",
+      "Toxicology dark basalt armour composite",
+      "Toxicology deep cobalt ceramic",
+      "Toxicology deep red containment marker",
+      "Toxicology electrochromic graphite glass",
+      "Toxicology graphite containment metal",
+      "Toxicology immaculate pale technical ceramic",
+      "Toxicology limited amber status light",
+      "Toxicology low silver response grass",
+      "Toxicology low-iron research glass",
+      "Toxicology mineral-inclusion laminated glass",
+      "Toxicology monitored closed-loop water",
+      "Toxicology monitored lichen bioindicator",
+      "Toxicology monitored moss bioindicator",
+      "Toxicology narrow green instrument indicator",
+      "Toxicology non-porous restricted service slab",
+      "Toxicology pale ultra-high-performance concrete",
+      "Toxicology polished black causal resin",
+      "Toxicology restrained oxidized copper",
+      "Toxicology tensioned satin titanium",
+      "Toxicology translucent filtration shell",
+      "Toxicology weathered containment steel"
+    ],
+    "animations": {
+      "toxicology-emissive-pulse": 49,
+      "toxicology-rotation": 1
+    },
+    "signatureCounts": {
+      "exposureRings": 5,
+      "samplingInstruments": 32,
+      "crescentSystems": 3,
+      "capillaryColumns": 18,
+      "mimesisServiceSpines": 1,
+      "mimesisLanternDecks": 2,
+      "mimesisLanternDeckColumns": 12,
+      "mimesisTowerBaseFlanges": 8,
+      "causalPrisms": 3,
+      "assayPanels": 96,
+      "bastionSegments": 7,
+      "filtrationTowers": 7,
+      "toxicokineticWings": 4,
+      "decontaminationCanopies": 3
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "T1",
+        "name": "EXPOSOMA",
+        "min": [
+          -77.01678131804027,
+          1.6163837826848027,
+          -75.85114602564124
+        ],
+        "max": [
+          -58.16711189945935,
+          7.816,
+          -57.044409859800716
+        ]
+      },
+      {
+        "code": "T2",
+        "name": "MIMESIS",
+        "min": [
+          -56.878946971853516,
+          1.7180000010728838,
+          -91.15722603626612
+        ],
+        "max": [
+          -37.961510569971196,
+          7.506,
+          -73.12246655445072
+        ]
+      },
+      {
+        "code": "T3",
+        "name": "CAUSALITY ARRAY",
+        "min": [
+          -80.15619708223268,
+          1.6860000000000002,
+          -94.48234171834655
+        ],
+        "max": [
+          -64.27688121986888,
+          13.426,
+          -78.31209435112814
+        ]
+      },
+      {
+        "code": "T4",
+        "name": "PALIMPSEST",
+        "min": [
+          -53.95427734126256,
+          1.6660000000000001,
+          -116.08221417958075
+        ],
+        "max": [
+          -32.04310757833904,
+          9.326,
+          -92.28530001015396
+        ]
+      },
+      {
+        "code": "T5",
+        "name": "MERIDIAN",
+        "min": [
+          -27.074791750704527,
+          1.6660000000000001,
+          -104.31347299572509
+        ],
+        "max": [
+          -8.158483003638546,
+          10.766,
+          -85.43303821863914
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "TOXICOLOGY__DOSE_RESPONSE_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "TOXICOLOGY__BUILDING_APPROACH_T1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "TOXICOLOGY__BUILDING_APPROACH_T2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "TOXICOLOGY__BUILDING_APPROACH_T3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "TOXICOLOGY__BUILDING_APPROACH_T4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "TOXICOLOGY__BUILDING_APPROACH_T5",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "serviceRouteAudit": [
+      {
+        "name": "TOXICOLOGY__RESTRICTED_OUTER_SERVICE_ROAD",
+        "resident": true,
+        "walkable": false
+      },
+      {
+        "name": "TOXICOLOGY__SEALED_SAMPLE_COURIER_LANE",
+        "resident": true,
+        "walkable": false
+      },
+      {
+        "name": "TOXICOLOGY__MERIDIAN_EMERGENCY_ACCESS_AVENUE",
+        "resident": true,
+        "walkable": false
+      }
+    ],
+    "roadPoint": [
+      -57.704590797424366,
+      1.6499999991059304,
+      -73.41029038320588
+    ],
+    "roadNext": [
+      -56.25984537601476,
+      1.6499999991059304,
+      -74.52328743825959
+    ],
+    "roadGround": 1.6499999991059304,
+    "compactDistrict": {
+      "buildingCount": 5,
+      "scientificSequence": [
+        "EXPOSOMA",
+        "MIMESIS",
+        "CAUSALITY ARRAY",
+        "PALIMPSEST",
+        "MERIDIAN"
+      ],
+      "functionalSequence": [
+        "detect exposure",
+        "model causality",
+        "reproduce human effects",
+        "investigate persistent mixtures",
+        "develop countermeasures"
+      ],
+      "circulation": {
+        "primaryRoute": "TOXICOLOGY__DOSE_RESPONSE_PROMENADE",
+        "restrictedOuterServiceRoad": "TOXICOLOGY__RESTRICTED_OUTER_SERVICE_ROAD",
+        "sealedSampleCourierLane": "TOXICOLOGY__SEALED_SAMPLE_COURIER_LANE",
+        "emergencyAccessAvenue": "TOXICOLOGY__MERIDIAN_EMERGENCY_ACCESS_AVENUE",
+        "exactBuildingApproaches": 5,
+        "publicServiceSeparation": true
+      },
+      "signatureSystems": {
+        "exposomaExposureRings": 5,
+        "exposomaSamplingInstruments": 32,
+        "mimesisCrescentSystems": 3,
+        "mimesisCapillaryColumns": 18,
+        "causalityPrismTowers": 3,
+        "causalityAssayPorts": 96,
+        "palimpsestVaultSegments": 7,
+        "palimpsestFiltrationTowers": 7,
+        "meridianToxicokineticWings": 4,
+        "meridianDecontaminationCanopies": 3
+      },
+      "lightingProtocol": {
+        "normal": "cold white",
+        "maintenance": "limited amber",
+        "containment": "deep red perimeter markers",
+        "instrumentGreenOnly": true,
+        "radioactiveLimeWash": false
+      }
+    },
+    "compactSelected": {
+      "id": "toxicology-labs",
+      "name": "Toxicology Labs District",
+      "category": "bioscience",
+      "packageId": "toxicology-labs",
+      "state": {
+        "position": {
+          "x": -52.50000000000005,
+          "y": 1.61,
+          "z": -90.93266739736603
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
+        "accent": "#FFD28A",
+        "styleCustomized": false,
+        "collisionEnabled": true,
+        "interactions": []
+      }
+    },
+    "deepDistrict": {
+      "identity": "Toxicology Labs District — Dose, Mechanism and Countermeasure",
+      "mapLabel": "Toxicology Labs",
+      "architecturalLanguage": "immaculate ceramic scientific instruments, graphite containment structures, visible filtration, compartmentalized sample logistics, and limited status lighting without radioactive-lime spectacle",
+      "buildingCount": 5,
+      "buildings": [
+        {
+          "code": "T1",
+          "name": "EXPOSOMA",
+          "subtitle": "Institute for Total Exposure Cartography",
+          "focus": "Exposomics, biomonitoring, wearable exposure sensors, non-targeted chemical analysis, and lifetime exposure reconstruction",
+          "scientificSequence": 1,
+          "footprintMetres": [
+            154,
+            92
+          ],
+          "heightMetres": 29,
+          "exteriorSignature": "five offset elliptical exposure rings, titanium analytical ribbons, bioindicator forecourt, and an environmental Sampling Crown"
+        },
+        {
+          "code": "T2",
+          "name": "MIMESIS",
+          "subtitle": "Human Microphysiology Toxicology Arc",
+          "focus": "Organs-on-chips, human organoids, tissue models, barrier toxicology, developmental neurotoxicity, immunotoxicology, and inhalation testing",
+          "scientificSequence": 2,
+          "footprintMetres": [
+            152,
+            102
+          ],
+          "heightMetres": 42,
+          "exteriorSignature": "three-part crescent with microfluidic facade, capillary colonnade, capillary bridges, roof-slide lanterns, and closed landscape stream"
+        },
+        {
+          "code": "T3",
+          "name": "CAUSALITY ARRAY",
+          "subtitle": "Centre for Computational Toxicology and Adverse-Outcome Modelling",
+          "focus": "AI toxicity prediction, read-across, high-throughput screening, mechanistic toxicology, and adverse-outcome pathway construction",
+          "scientificSequence": 3,
+          "footprintMetres": [
+            126,
+            104
+          ],
+          "heightMetres": 102,
+          "exteriorSignature": "three leaning graphite prisms around a triangular void, causal-network facade, 96-port Assay Deck, and Outcome Beacon"
+        },
+        {
+          "code": "T4",
+          "name": "PALIMPSEST",
+          "subtitle": "Persistent Contaminants and Mixture Toxicology Vault",
+          "focus": "Persistent pollutants, PFAS, endocrine disruptors, microplastics, nanomaterials, mixtures, bioaccumulation, and long-duration effects",
+          "scientificSequence": 4,
+          "footprintMetres": [
+            168,
+            94
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "seven-segment basalt containment bastion, descending Half-Life Wall, dual shell, filtration organ pipes, and recessed sealed docks"
+        },
+        {
+          "code": "T5",
+          "name": "MERIDIAN",
+          "subtitle": "Toxicokinetics, Countermeasure and Rapid Response Centre",
+          "focus": "ADME, toxicokinetic modelling, in-vitro-to-in-vivo extrapolation, rapid toxicant identification, countermeasures, and incident support",
+          "scientificSequence": 5,
+          "footprintMetres": [
+            144,
+            116
+          ],
+          "heightMetres": 68,
+          "exteriorSignature": "four unequal toxicokinetic wings around the Dose Clock, decay apertures, three response lanes, decontamination blades, drone pads, and Half-Life Circuit"
+        }
+      ],
+      "scientificSequence": [
+        "EXPOSOMA",
+        "MIMESIS",
+        "CAUSALITY ARRAY",
+        "PALIMPSEST",
+        "MERIDIAN"
+      ],
+      "functionalSequence": [
+        "detect exposure",
+        "model causality",
+        "reproduce human effects",
+        "investigate persistent mixtures",
+        "develop countermeasures"
+      ],
+      "circulation": {
+        "primaryRoute": "TOXICOLOGY__DOSE_RESPONSE_PROMENADE",
+        "restrictedOuterServiceRoad": "TOXICOLOGY__RESTRICTED_OUTER_SERVICE_ROAD",
+        "sealedSampleCourierLane": "TOXICOLOGY__SEALED_SAMPLE_COURIER_LANE",
+        "emergencyAccessAvenue": "TOXICOLOGY__MERIDIAN_EMERGENCY_ACCESS_AVENUE",
+        "exactBuildingApproaches": 5,
+        "publicServiceSeparation": true
+      },
+      "signatureSystems": {
+        "exposomaExposureRings": 5,
+        "exposomaSamplingInstruments": 32,
+        "mimesisCrescentSystems": 3,
+        "mimesisCapillaryColumns": 18,
+        "causalityPrismTowers": 3,
+        "causalityAssayPorts": 96,
+        "palimpsestVaultSegments": 7,
+        "palimpsestFiltrationTowers": 7,
+        "meridianToxicokineticWings": 4,
+        "meridianDecontaminationCanopies": 3
+      },
+      "containmentLandscape": {
+        "bioindicatorGardens": 20,
+        "monitoringBasins": 12,
+        "perimeterExposureSensors": 10,
+        "independentAirHandlingTowers": 12,
+        "wasteIsolationGates": 5
+      },
+      "lightingProtocol": {
+        "normal": "cold white",
+        "maintenance": "limited amber",
+        "containment": "deep red perimeter markers",
+        "instrumentGreenOnly": true,
+        "radioactiveLimeWash": false
+      },
+      "neighbourInterfaces": {
+        "pharmacologyBridge": "TOXICOLOGY__T5__PHARMACOLOGY_ENCLOSED_BRIDGE",
+        "medicalCourierBridge": "TOXICOLOGY__T5__MEDICAL_SECURE_COURIER_BRIDGE",
+        "omicsEvidenceInterface": true
+      },
+      "exteriorOnly": true
+    },
+    "specializedRevision": 26,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "toxicology-labs",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 27,
+        "triangles": 112022,
+        "animationNodes": 0
+      },
+      "renderImportance": {
+        "mandatory": 1796,
+        "micro": 24,
+        "visibleMicro": 24,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 1817,
+        "active": 1817,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6499999991059304,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16250000000014247,
+    "grounded": true,
+    "position": [
+      -57.576,
+      1.812,
+      -73.509
+    ]
+  },
+  "errors": []
+}

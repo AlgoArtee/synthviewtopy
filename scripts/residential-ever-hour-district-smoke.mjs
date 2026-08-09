@@ -107,6 +107,7 @@ try {
       const routePrefix = `LIVEWORK__${expected.prefix}`;
       const continuum = lookup(`${routePrefix}__CONTINUUM_WALK`);
       const service = lookup(`${routePrefix}__CONTROLLED_SOUTHERN_SERVICE_LANE`);
+      const nightLightingNetwork = lookup(`${routePrefix}__NIGHT_LIGHTING_NETWORK`);
       const approaches = expected.codes.map((code) => lookup(`${routePrefix}__BUILDING_APPROACH_${code}`));
       const organicLanes = [];
       authorityRoot.traverse((object) => { if (object.name.startsWith(`${routePrefix}__ORGANIC_LANE__`)) organicLanes.push(object); });
@@ -244,6 +245,18 @@ try {
         textDistrict: text[expected.metadata],
         compactDistrict: compact[expected.metadata],
         compactSelected: compact.selected,
+        nightLighting: {
+          metadata: nightLightingNetwork?.userData.nightLightingNetwork,
+          promenadeLanterns: names.filter((name) => name.startsWith(`${routePrefix}__PROMENADE_LAMP_`) && name.endsWith('__LANTERN')).length,
+          laneLightTrees: names.filter((name) => name.startsWith(`${routePrefix}__LANE_LIGHT_TREE_`) && name.endsWith('__TRUNK')).length,
+          illuminatedWalkGates: names.filter((name) => name.startsWith(`${routePrefix}__ILLUMINATED_WALK_GATE_`) && name.endsWith('__CROWN')).length,
+          skylineBeacons: names.filter((name) => name.startsWith(`${routePrefix}__SKYLINE_BEACON_`) && name.endsWith('__MAST')).length,
+          blockingMeshes: (() => {
+            const blocking = [];
+            nightLightingNetwork?.traverse((object) => { if (object.isMesh && object.userData.navObstacle === true) blocking.push(object.name); });
+            return blocking;
+          })(),
+        },
         revision: text.masterplan.specializedDistrictLayoutRevision,
         planning: text.planning,
         streaming: world.worldStreaming.getSnapshot().packages.find((entry) => entry.id === districtId),
@@ -286,8 +299,18 @@ try {
     if (audit.routes.organicPlacements.length !== expected.count || audit.routes.organicPlacements.some((placement) => placement.deterministic !== true) || audit.routes.organicPlacements.filter((placement) => Math.abs(placement.rotationOffset) > 0.08).length < Math.floor(expected.count * 0.6)) throw new Error(`${districtId} building placement remains regimented: ${JSON.stringify(audit.routes.organicPlacements)}`);
     if (audit.program?.buildingCount !== expected.count || audit.textDistrict?.buildingCount !== expected.count || audit.compactDistrict?.buildingCount !== expected.count) throw new Error(`${districtId} text metadata is incomplete`);
     if (audit.population?.realizedFacilityCount !== expected.count || audit.population?.liveWorkVisitIntegrated !== true) throw new Error(`${districtId} population metadata is incomplete`);
-    if (audit.revision !== 24 || audit.planning?.cellViolations !== 0 || !audit.streaming?.detailResident || audit.compactSelected?.packageId !== districtId) throw new Error(`${districtId} integration failed: ${JSON.stringify({ revision: audit.revision, planning: audit.planning, streaming: audit.streaming, selected: audit.compactSelected })}`);
+    if (audit.revision !== 26 || audit.planning?.cellViolations !== 0 || !audit.streaming?.detailResident || audit.compactSelected?.packageId !== districtId) throw new Error(`${districtId} integration failed: ${JSON.stringify({ revision: audit.revision, planning: audit.planning, streaming: audit.streaming, selected: audit.compactSelected })}`);
     if ((audit.animations['residential-ever-hour-emissive-pulse'] ?? 0) < 6 || (audit.animations['residential-ever-hour-rotation'] ?? 0) < 1) throw new Error(`${districtId} operational animation is incomplete: ${JSON.stringify(audit.animations)}`);
+    const expectedNightLighting = districtId === 'scientist-residential'
+      ? { promenadeLanterns: 48, laneLightTrees: 30, illuminatedWalkGates: 7, skylineBeacons: 12, minimumEmitters: 260 }
+      : { promenadeLanterns: 56, laneLightTrees: 27, illuminatedWalkGates: 9, skylineBeacons: 14, minimumEmitters: 290 };
+    if (audit.nightLighting.promenadeLanterns !== expectedNightLighting.promenadeLanterns
+      || audit.nightLighting.laneLightTrees !== expectedNightLighting.laneLightTrees
+      || audit.nightLighting.illuminatedWalkGates !== expectedNightLighting.illuminatedWalkGates
+      || audit.nightLighting.skylineBeacons !== expectedNightLighting.skylineBeacons
+      || audit.nightLighting.metadata?.emissiveElements < expectedNightLighting.minimumEmitters
+      || audit.nightLighting.metadata?.nonBlocking !== true
+      || audit.nightLighting.blockingMeshes.length) throw new Error(`${districtId} night lighting network is incomplete or blocks WALK: ${JSON.stringify(audit.nightLighting)}`);
     if (audit.topLevelNames.some((name) => !name.startsWith('LIVEWORK__') && name !== 'DISTRICT_ROADS__GENERATED_NETWORK')) throw new Error(`Generic placeholder leaked into ${districtId}: ${audit.topLevelNames.join(', ')}`);
   }
   const residentialCyberpunk = audits['scientist-residential'].cyberpunk;

@@ -152,17 +152,20 @@ export const DISTRICT_CAMPUS_PLANS = {
   },
   'toxicology-labs': {
     facilities: [
-      { name: 'Acute Exposure Laboratory', form: 'lab-block' },
-      { name: 'Decontamination Portal House', form: 'service-building' },
-      { name: 'Hazardous Sample Vault', form: 'subterranean-bunker' },
-      { name: 'Air Scrubber Plant', form: 'utility-plant' },
+      { name: 'EXPOSOMA', form: 'lab-block' },
+      { name: 'MIMESIS', form: 'hall' },
+      { name: 'CAUSALITY ARRAY', form: 'tower' },
+      { name: 'PALIMPSEST', form: 'subterranean-bunker' },
+      { name: 'MERIDIAN', form: 'lab-block' },
     ],
     objects: [
-      { name: 'Negative-Pressure Scrubber Stacks', kind: 'process-equipment' },
-      { name: 'Sealed Specimen Canisters', kind: 'storage' },
-      { name: 'Emergency Wash Stations', kind: 'medical-equipment' },
-      { name: 'Contamination Warning Beacons', kind: 'signage' },
+      { name: 'Dose-Response Promenade', kind: 'street-furniture' },
+      { name: 'Independent Air-Handling Towers', kind: 'process-equipment' },
+      { name: 'Sealed Sample Courier Lane', kind: 'robot' },
+      { name: 'Bioindicator Gardens', kind: 'garden' },
       { name: 'Perimeter Exposure Sensors', kind: 'security' },
+      { name: 'Waste-Transfer Isolation Gates', kind: 'storage' },
+      { name: 'Decontamination Blade Canopies', kind: 'medical-equipment' },
     ],
   },
   'pharmacology-labs': {

@@ -1,7 +1,7 @@
 {
   "audit": {
     "districtCount": 35,
-    "totalRoutes": 550,
+    "totalRoutes": 637,
     "arterials": {
       "ringCount": 5,
       "radialAxisCount": 3,
@@ -476,9 +476,9 @@
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -536,14 +536,14 @@
       {
         "id": "omics-labs",
         "ring": "inner",
-        "routeCount": 8,
+        "routeCount": 7,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -614,14 +614,14 @@
       {
         "id": "robotics-labs",
         "ring": "middle",
-        "routeCount": 8,
+        "routeCount": 12,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -653,14 +653,14 @@
       {
         "id": "even-hour-hotel",
         "ring": "outer-middle",
-        "routeCount": 8,
+        "routeCount": 29,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -671,7 +671,7 @@
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
+        "generic": false,
         "collectorCount": 0,
         "localApproachCount": 0,
         "maximumApproachGap": 0
@@ -731,14 +731,14 @@
       {
         "id": "scientist-residential",
         "ring": "outer",
-        "routeCount": 8,
+        "routeCount": 50,
         "connectorCount": 2,
         "expectedConnectorCount": 2,
         "connectorExempt": false,
         "connectedRingCount": 2,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -835,14 +835,14 @@
       {
         "id": "environmental-science-labs",
         "ring": "perimeter",
-        "routeCount": 7,
+        "routeCount": 11,
         "connectorCount": 1,
         "expectedConnectorCount": 1,
         "connectorExempt": false,
         "connectedRingCount": 1,
-        "generic": true,
-        "collectorCount": 1,
-        "localApproachCount": 4,
+        "generic": false,
+        "collectorCount": 0,
+        "localApproachCount": 0,
         "maximumApproachGap": 0
       },
       {
@@ -861,7 +861,7 @@
       {
         "id": "industrial-labs",
         "ring": "perimeter",
-        "routeCount": 19,
+        "routeCount": 36,
         "connectorCount": 1,
         "expectedConnectorCount": 1,
         "connectorExempt": false,
@@ -885,10 +885,7 @@
         "maximumApproachGap": 0
       }
     ],
-    "failures": [
-      "Generic district astronomy-astrobiology-labs has no collector loop",
-      "Generic district astronomy-astrobiology-labs has no local approaches"
-    ]
+    "failures": []
   },
   "dynamicRefreshAudit": {
     "available": true,
@@ -1274,8 +1271,5 @@
     "distance": 32.863353450309965
   },
   "browserErrors": [],
-  "failures": [
-    "Generic district astronomy-astrobiology-labs has no collector loop",
-    "Generic district astronomy-astrobiology-labs has no local approaches"
-  ]
+  "failures": []
 }

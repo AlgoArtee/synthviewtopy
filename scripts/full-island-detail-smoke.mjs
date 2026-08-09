@@ -7,7 +7,8 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-const TARGET_BUILDING_COUNT = 304;
+// 354 planned facilities plus the retained substantial Industrial annex anchor.
+const TARGET_BUILDING_COUNT = 355;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -241,13 +242,12 @@ try {
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
     || fullAudit.stats.drawCalls > 1_500
-    // The ten-building Robotics campus replaces four generic anchors and brings
-    // the audited full-island baseline to 813 GPU batches, 428 textures, and
-    // about 3.49M triangles. Preserve a narrow regression margin above that
-    // authored baseline while keeping the draw-call and animation ceilings fixed.
-    || fullStreaming.gpuBatching.batchCount > 825
+    // The 59-building Residential / Ever Hour continuum brings the measured
+    // authored baseline to 844 GPU batches, 439 textures, and about 3.631M
+    // triangles. Preserve a narrow margin above that verified baseline.
+    || fullStreaming.gpuBatching.batchCount > 845
     || fullAudit.stats.textureCount > 440
-    || fullAudit.stats.triangles > 3_550_000
+    || fullAudit.stats.triangles > 3_650_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0

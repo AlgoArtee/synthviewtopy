@@ -1,0 +1,273 @@
+{
+  "restored": {
+    "security": {
+      "position": {
+        "x": 137.24999999999983,
+        "y": 1.61,
+        "z": -237.72397333882853
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "secret-labs": {
+      "position": {
+        "x": 104.24999999999986,
+        "y": 1.61,
+        "z": -180.56629668905555
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "medical-labs": {
+      "position": {
+        "x": 75.7499999999999,
+        "y": 1.61,
+        "z": -131.20284867334252
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "pharmacology-labs": {
+      "position": {
+        "x": 52.49999999999993,
+        "y": 1.61,
+        "z": -90.9326673973661
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "microbiology-labs": {
+      "position": {
+        "x": 105,
+        "y": 1.61,
+        "z": 0
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "molecular-biology-labs": {
+      "position": {
+        "x": 151.5,
+        "y": 1.61,
+        "z": 0
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "bioanalytics-lab": {
+      "position": {
+        "x": 208.5,
+        "y": 1.61,
+        "z": 0
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "forensic-cyberforensic-lab": {
+      "position": {
+        "x": 274.5,
+        "y": 1.61,
+        "z": 0
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "genomics-labs": {
+      "position": {
+        "x": 52.500000000000014,
+        "y": 1.61,
+        "z": 90.93266739736605
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "proteomics-labs": {
+      "position": {
+        "x": -52.49999999999998,
+        "y": 1.61,
+        "z": 90.93266739736606
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "omics-labs": {
+      "position": {
+        "x": -105,
+        "y": 1.61,
+        "z": 1.2858791391047208e-14
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "computational-biology-labs": {
+      "position": {
+        "x": -75.74999999999997,
+        "y": 1.61,
+        "z": 131.20284867334246
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "robotics-labs": {
+      "position": {
+        "x": -151.5,
+        "y": 1.61,
+        "z": 1.85533990070824e-14
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "biochemistry-labs": {
+      "position": {
+        "x": 75.75000000000001,
+        "y": 1.61,
+        "z": 131.20284867334246
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "organic-chemistry-labs": {
+      "position": {
+        "x": 104.25000000000003,
+        "y": 1.61,
+        "z": 180.56629668905543
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "inorganic-chemistry": {
+      "position": {
+        "x": 137.25000000000003,
+        "y": 1.61,
+        "z": 237.7239733388284
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "particle-physics-labs": {
+      "position": {
+        "x": 181.25000000000003,
+        "y": 1.61,
+        "z": 313.93420887185897
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "astronomy-astrobiology-labs": {
+      "position": {
+        "x": -104.24999999999996,
+        "y": 1.61,
+        "z": 180.56629668905546
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "materials-science-lab": {
+      "position": {
+        "x": -137.24999999999994,
+        "y": 1.61,
+        "z": 237.72397333882842
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "industrial-labs": {
+      "position": {
+        "x": -181.24999999999991,
+        "y": 1.61,
+        "z": 313.934208871859
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "scientist-residential": {
+      "position": {
+        "x": -274.5,
+        "y": 1.61,
+        "z": 3.361655463659485e-14
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    },
+    "even-hour-hotel": {
+      "position": {
+        "x": -208.5,
+        "y": 1.61,
+        "z": 2.5533885762222313e-14
+      },
+      "rotationY": 0,
+      "scale": 1,
+      "positionError": 0,
+      "rotationError": 0,
+      "scaleError": 0
+    }
+  },
+  "boundaryViolations": [],
+  "roadViolations": [],
+  "storedRevision": 21,
+  "textRevision": 21,
+  "planningViolations": 0
+}

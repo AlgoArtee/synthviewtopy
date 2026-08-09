@@ -7,7 +7,7 @@ const OUTPUT = process.env.SPECIALIZED_DISTRICT_LAYOUT_OUTPUT
 const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'industrial-labs'];
+const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'industrial-labs', 'scientist-residential', 'even-hour-hotel'];
 const roadNames = {
   security: 'SECURITY__MAIN_CURVED_BOULEVARD',
   'secret-labs': 'SECRET__BIOLOGICAL_ARC',
@@ -29,6 +29,8 @@ const roadNames = {
   'astronomy-astrobiology-labs': 'ASTRO__ECLIPTIC_WALK',
   'materials-science-lab': 'MATTER__MATTER_CRESCENT',
   'industrial-labs': 'INDUSTRIAL_NEW__PRODUCTION_MERIDIAN',
+  'scientist-residential': 'LIVEWORK__RESIDENTIAL__CONTINUUM_WALK',
+  'even-hour-hotel': 'LIVEWORK__EVER_HOUR__CONTINUUM_WALK',
 };
 
 await mkdir(OUTPUT, { recursive: true });
@@ -189,7 +191,7 @@ try {
   if (audit.roadViolations.length) {
     throw new Error(`Migrated roads left their sector cells: ${JSON.stringify(audit.roadViolations.slice(0, 12))}`);
   }
-  if (audit.storedRevision !== 18 || audit.textRevision !== 18) {
+  if (audit.storedRevision !== 24 || audit.textRevision !== 24) {
     throw new Error(`Migration revision was not persisted: ${JSON.stringify({ stored: audit.storedRevision, text: audit.textRevision })}`);
   }
   if (audit.planningViolations !== 0) throw new Error(`Master-plan cell violations remain: ${audit.planningViolations}`);

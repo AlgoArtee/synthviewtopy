@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 18;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 24;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -186,6 +186,8 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'astronomy-astrobiology-labs': 14,
   'materials-science-lab': 15,
   'industrial-labs': 16,
+  'scientist-residential': 24,
+  'even-hour-hotel': 21,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -207,6 +209,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'particle-physics-emissive-pulse',
   'astronomy-astrobiology-emissive-pulse',
   'materials-science-emissive-pulse',
+  'residential-ever-hour-emissive-pulse',
 ]);
 
 /**
@@ -4031,6 +4034,24 @@ export class IslandWorld {
       } else if (object.userData.animate === 'materials-science-rotation') {
         const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
         const step = delta * Number(object.userData.speed ?? 0.004);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'residential-ever-hour-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.004) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.18),
+            Number(object.userData.maxIntensity ?? 2.8),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'residential-ever-hour-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.002);
         if (axis === 'x') object.rotation.x += step;
         else if (axis === 'z') object.rotation.z += step;
         else object.rotation.y += step;
@@ -9379,6 +9400,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedIndustrialDistrict = selectedPackageId === 'industrial-labs'
       ? this.objectGroups.get('industrial-labs')?.userData.industrialDistrict
       : null;
+    const selectedResidentialScientists = selectedPackageId === 'scientist-residential'
+      ? this.objectGroups.get('scientist-residential')?.userData.residentialScientistsDistrict
+      : null;
+    const selectedEverHour = selectedPackageId === 'even-hour-hotel'
+      ? this.objectGroups.get('even-hour-hotel')?.userData.everHourDistrict
+      : null;
     const districtRoadNetworks = districts.map((definition) => ({
       id: definition.id,
       network: this.objectGroups.get(definition.id)?.userData.districtRoadNetwork as {
@@ -9559,6 +9586,20 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         zones: selectedMaterialsScience.zones,
         signatureSystems: selectedMaterialsScience.signatureSystems,
       } : null,
+      residentialScientistsDistrict: selectedResidentialScientists ? {
+        buildingCount: selectedResidentialScientists.buildingCount,
+        circulation: selectedResidentialScientists.circulation,
+        parks: selectedResidentialScientists.parks,
+        coveredWalkTypes: selectedResidentialScientists.coveredWalkTypes,
+        operatingRule: selectedResidentialScientists.operatingRule,
+      } : null,
+      everHourDistrict: selectedEverHour ? {
+        buildingCount: selectedEverHour.buildingCount,
+        circulation: selectedEverHour.circulation,
+        parks: selectedEverHour.parks,
+        coveredWalkTypes: selectedEverHour.coveredWalkTypes,
+        operatingRule: selectedEverHour.operatingRule,
+      } : null,
       industrialDistrict: selectedIndustrialDistrict ? {
         buildingCount: selectedIndustrialDistrict.buildingCount,
         preservedLegacyBuildingCount: selectedIndustrialDistrict.preservedLegacyBuildingCount,
@@ -9596,6 +9637,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const particlePhysicsLabsDistrict = this.objectGroups.get('particle-physics-labs')?.userData.particlePhysicsLabsDistrict ?? null;
     const astronomyAstrobiologyLabsDistrict = this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict ?? null;
     const materialsScienceLabsDistrict = this.objectGroups.get('materials-science-lab')?.userData.materialsScienceLabsDistrict ?? null;
+    const residentialScientistsDistrict = this.objectGroups.get('scientist-residential')?.userData.residentialScientistsDistrict ?? null;
+    const everHourDistrict = this.objectGroups.get('even-hour-hotel')?.userData.everHourDistrict ?? null;
     const entryDistrict = this.objectGroups.get('entry-commercial')?.userData.entryLogisticsProgram ?? null;
     const logisticsDistrict = this.objectGroups.get('logistics')?.userData.entryLogisticsProgram ?? null;
     const academicGroup = this.objectGroups.get('academic-libraries-theoretical-labs');
@@ -9757,6 +9800,8 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       particlePhysicsLabsDistrict,
       astronomyAstrobiologyLabsDistrict,
       materialsScienceLabsDistrict,
+      residentialScientistsDistrict,
+      everHourDistrict,
       entryDistrict,
       logisticsDistrict,
       academicDistrict: academicGroup ? {

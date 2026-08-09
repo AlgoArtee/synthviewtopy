@@ -30,6 +30,7 @@
     "test:omics": "node scripts/omics-labs-district-smoke.mjs",
     "test:computational-biology": "node scripts/computational-biology-labs-district-smoke.mjs",
     "test:robotics": "node scripts/robotics-labs-district-smoke.mjs",
+    "test:residential-ever-hour": "node scripts/residential-ever-hour-district-smoke.mjs",
     "test:biochemistry": "node scripts/biochemistry-labs-district-smoke.mjs",
     "test:organic-chemistry": "node scripts/organic-chemistry-labs-district-smoke.mjs",
     "test:inorganic-chemistry": "node scripts/inorganic-chemistry-labs-district-smoke.mjs",

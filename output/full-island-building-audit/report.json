@@ -35,20 +35,20 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2691,
+    "liveRenderObjectCount": 2839,
     "batchOccupancy": {
-      "capacity": 47831,
-      "active": 46647,
-      "ratio": 0.975246179256131
+      "capacity": 54227,
+      "active": 52999,
+      "ratio": 0.9773544544230733
     },
     "microdetail": {
-      "total": 374,
+      "total": 466,
       "visible": 8,
-      "culled": 366
+      "culled": 458
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 29530,
+    "detachedAuthoringSourceCount": 35926,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 772,
-      "batchedSourceCount": 29530,
-      "retainedSourceCount": 31449,
-      "estimatedGeometryBytes": 87041496,
-      "estimatedTextureBytes": 185155781,
-      "instancedBatchCount": 170,
-      "batchedMeshBatchCount": 115,
-      "mergedBatchCount": 487,
+      "batchCount": 833,
+      "batchedSourceCount": 35926,
+      "retainedSourceCount": 37932,
+      "estimatedGeometryBytes": 91793652,
+      "estimatedTextureBytes": 190211232,
+      "instancedBatchCount": 213,
+      "batchedMeshBatchCount": 137,
+      "mergedBatchCount": 483,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -447,19 +447,19 @@
         "pinned": false,
         "distanceMetres": 12202,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 5926,
-          "animationNodes": 0
+          "drawCalls": 28,
+          "triangles": 82324,
+          "animationNodes": 2
         },
         "renderImportance": {
-          "mandatory": 79,
+          "mandatory": 1687,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 74,
-          "active": 74,
+          "capacity": 1680,
+          "active": 1680,
           "ratio": 1
         }
       },
@@ -645,20 +645,20 @@
         "pinned": false,
         "distanceMetres": 12543,
         "estimatedCost": {
-          "drawCalls": 16,
-          "triangles": 4036,
-          "animationNodes": 0
+          "drawCalls": 24,
+          "triangles": 93604,
+          "animationNodes": 3
         },
         "renderImportance": {
-          "mandatory": 66,
-          "micro": 0,
+          "mandatory": 1539,
+          "micro": 8,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 8
         },
         "batchOccupancy": {
-          "capacity": 58,
-          "active": 58,
-          "ratio": 1
+          "capacity": 1547,
+          "active": 1539,
+          "ratio": 0.9948287007110537
         }
       },
       {
@@ -744,19 +744,19 @@
         "pinned": false,
         "distanceMetres": 12972,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 6418,
+          "drawCalls": 28,
+          "triangles": 60286,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 94,
+          "mandatory": 1148,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 88,
-          "active": 88,
+          "capacity": 1146,
+          "active": 1146,
           "ratio": 1
         }
       },
@@ -942,19 +942,19 @@
         "pinned": false,
         "distanceMetres": 13482,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 7034,
+          "drawCalls": 23,
+          "triangles": 37180,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 85,
+          "mandatory": 985,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 79,
-          "active": 79,
+          "capacity": 981,
+          "active": 981,
           "ratio": 1
         }
       },
@@ -1272,20 +1272,20 @@
         "pinned": false,
         "distanceMetres": 10958,
         "estimatedCost": {
-          "drawCalls": 103,
-          "triangles": 182740,
-          "animationNodes": 20
+          "drawCalls": 220,
+          "triangles": 246294,
+          "animationNodes": 105
         },
         "renderImportance": {
-          "mandatory": 1132,
-          "micro": 17,
+          "mandatory": 2488,
+          "micro": 101,
           "visibleMicro": 0,
-          "culledMicro": 17
+          "culledMicro": 101
         },
         "batchOccupancy": {
-          "capacity": 7709,
-          "active": 7707,
-          "ratio": 0.999740562978337
+          "capacity": 9050,
+          "active": 9012,
+          "ratio": 0.9958011049723757
         }
       },
       {
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 297,
+  "buildingCount": 337,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -2630,9 +2630,9 @@
     },
     {
       "districtId": "omics-labs",
-      "name": "OMICS Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "name": "Omics Labs District",
+      "expectedCount": 5,
+      "discoveredCount": 5,
       "packageState": {
         "id": "omics-labs",
         "kind": "district",
@@ -2650,104 +2650,125 @@
         "pinned": false,
         "distanceMetres": 12202,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 5926,
-          "animationNodes": 0
+          "drawCalls": 28,
+          "triangles": 82324,
+          "animationNodes": 2
         },
         "renderImportance": {
-          "mandatory": 79,
+          "mandatory": 1687,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 74,
-          "active": 74,
+          "capacity": 1680,
+          "active": 1680,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "omics-labs",
-          "name": "Integrated Multi-Omics Laboratory",
-          "rootName": "omics-labs__FACILITY__INTEGRATED-MULTI-OMICS-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Atlas Loom",
+          "rootName": "OMICS__O1__ATLAS_LOOM",
+          "code": "O1",
+          "representedSourceCount": 451,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 450,
+          "authoredBatchedSources": 450,
+          "expectedRuntimeBatchSources": 450,
+          "mandatoryArchitecturalSources": 44,
+          "representedMandatorySources": 44,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            11.545,
-            4.502,
-            5.535
+            14.6,
+            6.568,
+            9.3
           ],
           "failures": []
         },
         {
           "districtId": "omics-labs",
-          "name": "Cross-Platform Analysis Hall",
-          "rootName": "omics-labs__FACILITY__CROSS-PLATFORM-ANALYSIS-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Perturbome Foundry",
+          "rootName": "OMICS__O2__PERTURBOME_FOUNDRY",
+          "code": "O2",
+          "representedSourceCount": 229,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 229,
+          "authoredBatchedSources": 229,
+          "expectedRuntimeBatchSources": 229,
+          "mandatoryArchitecturalSources": 25,
+          "representedMandatorySources": 25,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.931,
-            3.884,
-            5.972
+            19,
+            5.669,
+            9.045
           ],
           "failures": []
         },
         {
           "districtId": "omics-labs",
-          "name": "Shared Informatics Atrium",
-          "rootName": "omics-labs__FACILITY__SHARED-INFORMATICS-ATRIUM",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "The Exposome Exchange",
+          "rootName": "OMICS__O3__EXPOSOME_EXCHANGE",
+          "code": "O3",
+          "representedSourceCount": 271,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 271,
+          "authoredBatchedSources": 271,
+          "expectedRuntimeBatchSources": 271,
+          "mandatoryArchitecturalSources": 19,
+          "representedMandatorySources": 19,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.19,
-            2.541,
-            5.535
+            12.006,
+            7.79,
+            12.66
           ],
           "failures": []
         },
         {
           "districtId": "omics-labs",
-          "name": "Sample Integration Vault",
-          "rootName": "omics-labs__FACILITY__SAMPLE-INTEGRATION-VAULT",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Flux Cathedral",
+          "rootName": "OMICS__O4__FLUX_CATHEDRAL",
+          "code": "O4",
+          "representedSourceCount": 162,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 160,
+          "authoredBatchedSources": 160,
+          "expectedRuntimeBatchSources": 160,
+          "mandatoryArchitecturalSources": 111,
+          "representedMandatorySources": 111,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.159,
-            5.535
+            12,
+            12.621,
+            14.148
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "omics-labs",
+          "name": "The Convergence Vault",
+          "rootName": "OMICS__O5__CONVERGENCE_VAULT",
+          "code": "O5",
+          "representedSourceCount": 226,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 226,
+          "authoredBatchedSources": 226,
+          "expectedRuntimeBatchSources": 226,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.8,
+            11.005,
+            12.14
           ],
           "failures": []
         }
@@ -3891,8 +3912,8 @@
     {
       "districtId": "robotics-labs",
       "name": "Robotics Labs District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 10,
+      "discoveredCount": 10,
       "packageState": {
         "id": "robotics-labs",
         "kind": "district",
@@ -3910,104 +3931,230 @@
         "pinned": false,
         "distanceMetres": 12543,
         "estimatedCost": {
-          "drawCalls": 16,
-          "triangles": 4036,
-          "animationNodes": 0
+          "drawCalls": 24,
+          "triangles": 93604,
+          "animationNodes": 3
         },
         "renderImportance": {
-          "mandatory": 66,
-          "micro": 0,
+          "mandatory": 1539,
+          "micro": 8,
           "visibleMicro": 0,
-          "culledMicro": 0
+          "culledMicro": 8
         },
         "batchOccupancy": {
-          "capacity": 58,
-          "active": 58,
-          "ratio": 1
+          "capacity": 1547,
+          "active": 1539,
+          "ratio": 0.9948287007110537
         }
       },
       "buildingReports": [
         {
           "districtId": "robotics-labs",
-          "name": "Autonomous Systems Assembly Hangar",
-          "rootName": "robotics-labs__FACILITY__AUTONOMOUS-SYSTEMS-ASSEMBLY-HANGAR",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Corpus Nexus",
+          "rootName": "ROBOTICS__R1__CORPUS_NEXUS",
+          "code": "R1",
+          "representedSourceCount": 114,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 114,
+          "authoredBatchedSources": 114,
+          "expectedRuntimeBatchSources": 114,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.711,
-            7.235
+            13.07,
+            16.11,
+            10.21
           ],
           "failures": []
         },
         {
           "districtId": "robotics-labs",
-          "name": "Human-Robot Interaction Laboratory",
-          "rootName": "robotics-labs__FACILITY__HUMAN-ROBOT-INTERACTION-LABORATORY",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Tactus Hall",
+          "rootName": "ROBOTICS__R2__TACTUS_HALL",
+          "code": "R2",
+          "representedSourceCount": 236,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 236,
+          "authoredBatchedSources": 236,
+          "expectedRuntimeBatchSources": 236,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.062,
-            6.705
+            18.621,
+            3.925,
+            10.01
           ],
           "failures": []
         },
         {
           "districtId": "robotics-labs",
-          "name": "Mobility Test Hall",
-          "rootName": "robotics-labs__FACILITY__MOBILITY-TEST-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Myomer Pavilion",
+          "rootName": "ROBOTICS__R3__MYOMER_PAVILION",
+          "code": "R3",
+          "representedSourceCount": 114,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 114,
+          "authoredBatchedSources": 114,
+          "expectedRuntimeBatchSources": 114,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.52,
-            7.235
+            17.23,
+            4.8,
+            9.92
           ],
           "failures": []
         },
         {
           "districtId": "robotics-labs",
-          "name": "Robotics Control Pavilion",
-          "rootName": "robotics-labs__FACILITY__ROBOTICS-CONTROL-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Murmuration Array",
+          "rootName": "ROBOTICS__R4__MURMURATION_ARRAY",
+          "code": "R4",
+          "representedSourceCount": 240,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 240,
+          "authoredBatchedSources": 240,
+          "expectedRuntimeBatchSources": 240,
+          "mandatoryArchitecturalSources": 12,
+          "representedMandatorySources": 12,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.172,
-            6.705
+            13.82,
+            11.502,
+            12.353
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Symbiont Conservatory",
+          "rootName": "ROBOTICS__R5__SYMBIONT_CONSERVATORY",
+          "code": "R5",
+          "representedSourceCount": 93,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 93,
+          "authoredBatchedSources": 93,
+          "expectedRuntimeBatchSources": 93,
+          "mandatoryArchitecturalSources": 33,
+          "representedMandatorySources": 33,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15,
+            7.115,
+            13.068
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Magnetotaxis Vault",
+          "rootName": "ROBOTICS__R6__MAGNETOTAXIS_VAULT",
+          "code": "R6",
+          "representedSourceCount": 116,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 116,
+          "authoredBatchedSources": 116,
+          "expectedRuntimeBatchSources": 116,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            25.702,
+            7.212,
+            25.706
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Avatar Spine",
+          "rootName": "ROBOTICS__R7__AVATAR_SPINE",
+          "code": "R7",
+          "representedSourceCount": 82,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 82,
+          "authoredBatchedSources": 82,
+          "expectedRuntimeBatchSources": 82,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.044,
+            19.625,
+            10.775
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Terminus Range",
+          "rootName": "ROBOTICS__R8__TERMINUS_RANGE",
+          "code": "R8",
+          "representedSourceCount": 98,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 98,
+          "authoredBatchedSources": 98,
+          "expectedRuntimeBatchSources": 98,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.224,
+            8.581,
+            15.855
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Autopoiesis Yard",
+          "rootName": "ROBOTICS__R9__AUTOPOIESIS_YARD",
+          "code": "R9",
+          "representedSourceCount": 97,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 97,
+          "authoredBatchedSources": 97,
+          "expectedRuntimeBatchSources": 97,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.984,
+            7.892,
+            15.046
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "robotics-labs",
+          "name": "Palingenesis Works",
+          "rootName": "ROBOTICS__R10__PALINGENESIS_WORKS",
+          "code": "R10",
+          "representedSourceCount": 172,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 172,
+          "authoredBatchedSources": 172,
+          "expectedRuntimeBatchSources": 172,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.418,
+            7.8,
+            17.355
           ],
           "failures": []
         }
@@ -4269,8 +4416,8 @@
     {
       "districtId": "even-hour-hotel",
       "name": "Ever Hour Hotel & Guest Scientists District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 22,
+      "discoveredCount": 22,
       "packageState": {
         "id": "even-hour-hotel",
         "kind": "district",
@@ -4288,104 +4435,482 @@
         "pinned": false,
         "distanceMetres": 12972,
         "estimatedCost": {
-          "drawCalls": 18,
-          "triangles": 6418,
+          "drawCalls": 28,
+          "triangles": 60286,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 94,
+          "mandatory": 1148,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 88,
-          "active": 88,
+          "capacity": 1146,
+          "active": 1146,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "even-hour-hotel",
-          "name": "Ever Hour Research Hotel",
-          "rootName": "even-hour-hotel__FACILITY__EVER-HOUR-RESEARCH-HOTEL",
-          "code": null,
-          "representedSourceCount": 7,
+          "name": "Ever Hour Exchange Hotel",
+          "rootName": "LIVEWORK__EVER_HOUR__H01__EVER_HOUR_EXCHANGE_HOTEL",
+          "code": "H01",
+          "representedSourceCount": 155,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 154,
+          "authoredBatchedSources": 154,
+          "expectedRuntimeBatchSources": 154,
+          "mandatoryArchitecturalSources": 14,
+          "representedMandatorySources": 14,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.248,
+            6.855,
+            7.156
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Meridian Visiting Scholars Hotel",
+          "rootName": "LIVEWORK__EVER_HOUR__H02__MERIDIAN_VISITING_SCHOLARS_HOTEL",
+          "code": "H02",
+          "representedSourceCount": 71,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 7,
-          "authoredBatchedSources": 7,
-          "expectedRuntimeBatchSources": 7,
+          "visibleBatchSources": 71,
+          "authoredBatchedSources": 71,
+          "expectedRuntimeBatchSources": 71,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.864,
+            4.41,
+            6
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Interim House",
+          "rootName": "LIVEWORK__EVER_HOUR__H03__INTERIM_HOUSE",
+          "code": "H03",
+          "representedSourceCount": 68,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 68,
+          "authoredBatchedSources": 68,
+          "expectedRuntimeBatchSources": 68,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.05,
+            2.3,
+            5.698
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Null Hour Transit Lodge",
+          "rootName": "LIVEWORK__EVER_HOUR__H04__NULL_HOUR_TRANSIT_LODGE",
+          "code": "H04",
+          "representedSourceCount": 77,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 77,
+          "authoredBatchedSources": 77,
+          "expectedRuntimeBatchSources": 77,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.632,
+            2.75,
+            4.8
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Fellows' Cloister Guesthouse",
+          "rootName": "LIVEWORK__EVER_HOUR__H05__FELLOWS_CLOISTER_GUESTHOUSE",
+          "code": "H05",
+          "representedSourceCount": 13,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 13,
+          "authoredBatchedSources": 13,
+          "expectedRuntimeBatchSources": 13,
           "mandatoryArchitecturalSources": 4,
           "representedMandatorySources": 4,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.938,
-            5.548,
-            8.477
+            9.228,
+            2.115,
+            6.532
           ],
           "failures": []
         },
         {
           "districtId": "even-hour-hotel",
-          "name": "Visiting Scientists Residence",
-          "rootName": "even-hour-hotel__FACILITY__VISITING-SCIENTISTS-RESIDENCE",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Scientific Interchange Forum",
+          "rootName": "LIVEWORK__EVER_HOUR__H06__SCIENTIFIC_INTERCHANGE_FORUM",
+          "code": "H06",
+          "representedSourceCount": 33,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 33,
+          "authoredBatchedSources": 33,
+          "expectedRuntimeBatchSources": 33,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.083,
-            8.265
+            12.616,
+            2.338,
+            9.424
           ],
           "failures": []
         },
         {
           "districtId": "even-hour-hotel",
-          "name": "International Conference Hall",
-          "rootName": "even-hour-hotel__FACILITY__INTERNATIONAL-CONFERENCE-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Access and Protocol House",
+          "rootName": "LIVEWORK__EVER_HOUR__H07__ACCESS_AND_PROTOCOL_HOUSE",
+          "code": "H07",
+          "representedSourceCount": 12,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 12,
+          "authoredBatchedSources": 12,
+          "expectedRuntimeBatchSources": 12,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            4.489,
-            8.92
+            6.912,
+            1.6,
+            5.2
           ],
           "failures": []
         },
         {
           "districtId": "even-hour-hotel",
-          "name": "Sky Lounge Pavilion",
-          "rootName": "even-hour-hotel__FACILITY__SKY-LOUNGE-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Benchlight Laboratory Arcade",
+          "rootName": "LIVEWORK__EVER_HOUR__H08__BENCHLIGHT_LABORATORY_ARCADE",
+          "code": "H08",
+          "representedSourceCount": 59,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "visibleBatchSources": 59,
+          "authoredBatchedSources": 59,
+          "expectedRuntimeBatchSources": 59,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.312,
+            2.375,
+            6.92
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "The Instrument Lantern",
+          "rootName": "LIVEWORK__EVER_HOUR__H09__THE_INSTRUMENT_LANTERN",
+          "code": "H09",
+          "representedSourceCount": 21,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 21,
+          "authoredBatchedSources": 21,
+          "expectedRuntimeBatchSources": 21,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.802,
+            3.255,
+            6.8
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "QuickMatter Materials and Chemistry Studios",
+          "rootName": "LIVEWORK__EVER_HOUR__H10__QUICKMATTER_MATERIALS_AND_CHEMISTRY_STUDIOS",
+          "code": "H10",
+          "representedSourceCount": 31,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 31,
+          "authoredBatchedSources": 31,
+          "expectedRuntimeBatchSources": 31,
+          "mandatoryArchitecturalSources": 20,
+          "representedMandatorySources": 20,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.2,
+            2.815,
+            5.287
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "BioMinute Sample Laboratories",
+          "rootName": "LIVEWORK__EVER_HOUR__H11__BIOMINUTE_SAMPLE_LABORATORIES",
+          "code": "H11",
+          "representedSourceCount": 11,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 11,
+          "authoredBatchedSources": 11,
+          "expectedRuntimeBatchSources": 11,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.529,
-            8.265
+            8.4,
+            2.5,
+            8.894
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Circuit Yard Electronics and Robotics Studios",
+          "rootName": "LIVEWORK__EVER_HOUR__H12__CIRCUIT_YARD_ELECTRONICS_AND_ROBOTICS_STUDIOS",
+          "code": "H12",
+          "representedSourceCount": 44,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 44,
+          "authoredBatchedSources": 44,
+          "expectedRuntimeBatchSources": 44,
+          "mandatoryArchitecturalSources": 15,
+          "representedMandatorySources": 15,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.843,
+            1.804,
+            7.332
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "DryLab 24",
+          "rootName": "LIVEWORK__EVER_HOUR__H13__DRYLAB_24",
+          "code": "H13",
+          "representedSourceCount": 26,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 25,
+          "authoredBatchedSources": 25,
+          "expectedRuntimeBatchSources": 25,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            6.272,
+            3,
+            6.272
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Aqua Meridian Covered Pool",
+          "rootName": "LIVEWORK__EVER_HOUR__H14__AQUA_MERIDIAN_COVERED_POOL",
+          "code": "H14",
+          "representedSourceCount": 17,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 17,
+          "authoredBatchedSources": 17,
+          "expectedRuntimeBatchSources": 17,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.8,
+            4.399,
+            7.8
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Blue Hour Recovery Baths",
+          "rootName": "LIVEWORK__EVER_HOUR__H15__BLUE_HOUR_RECOVERY_BATHS",
+          "code": "H15",
+          "representedSourceCount": 31,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 31,
+          "authoredBatchedSources": 31,
+          "expectedRuntimeBatchSources": 31,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            6.39,
+            2.25,
+            6.56
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Orbit Leisure Pavilion",
+          "rootName": "LIVEWORK__EVER_HOUR__H16__ORBIT_LEISURE_PAVILION",
+          "code": "H16",
+          "representedSourceCount": 28,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 28,
+          "authoredBatchedSources": 28,
+          "expectedRuntimeBatchSources": 28,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.804,
+            1.68,
+            8.656
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "The Perpetual Table",
+          "rootName": "LIVEWORK__EVER_HOUR__H17__THE_PERPETUAL_TABLE",
+          "code": "H17",
+          "representedSourceCount": 45,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 45,
+          "authoredBatchedSources": 45,
+          "expectedRuntimeBatchSources": 45,
+          "mandatoryArchitecturalSources": 14,
+          "representedMandatorySources": 14,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.064,
+            2.68,
+            5.67
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "The Greenhouse Refectory",
+          "rootName": "LIVEWORK__EVER_HOUR__H18__THE_GREENHOUSE_REFECTORY",
+          "code": "H18",
+          "representedSourceCount": 25,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 25,
+          "authoredBatchedSources": 25,
+          "expectedRuntimeBatchSources": 25,
+          "mandatoryArchitecturalSources": 4,
+          "representedMandatorySources": 4,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            9.6,
+            2.633,
+            6.4
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Afterlight Sky Restaurant",
+          "rootName": "LIVEWORK__EVER_HOUR__H19__AFTERLIGHT_SKY_RESTAURANT",
+          "code": "H19",
+          "representedSourceCount": 7,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 7,
+          "authoredBatchedSources": 7,
+          "expectedRuntimeBatchSources": 7,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.2,
+            2.54,
+            5.4
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Minute Market",
+          "rootName": "LIVEWORK__EVER_HOUR__H20__MINUTE_MARKET",
+          "code": "H20",
+          "representedSourceCount": 26,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 26,
+          "authoredBatchedSources": 26,
+          "expectedRuntimeBatchSources": 26,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.712,
+            1.177,
+            7.712
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Null Hour Arcade Mall",
+          "rootName": "LIVEWORK__EVER_HOUR__H21__NULL_HOUR_ARCADE_MALL",
+          "code": "H21",
+          "representedSourceCount": 28,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 28,
+          "authoredBatchedSources": 28,
+          "expectedRuntimeBatchSources": 28,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            6.474,
+            2.87,
+            6.909
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "even-hour-hotel",
+          "name": "Orbit Supply Court",
+          "rootName": "LIVEWORK__EVER_HOUR__H22__ORBIT_SUPPLY_COURT",
+          "code": "H22",
+          "representedSourceCount": 50,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 50,
+          "authoredBatchedSources": 50,
+          "expectedRuntimeBatchSources": 50,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.484,
+            4.28,
+            8.484
           ],
           "failures": []
         }
@@ -5844,8 +6369,8 @@
     {
       "districtId": "scientist-residential",
       "name": "Scientists' Residential District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 20,
+      "discoveredCount": 20,
       "packageState": {
         "id": "scientist-residential",
         "kind": "district",
@@ -5863,104 +6388,440 @@
         "pinned": false,
         "distanceMetres": 13482,
         "estimatedCost": {
-          "drawCalls": 17,
-          "triangles": 7034,
+          "drawCalls": 23,
+          "triangles": 37180,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 85,
+          "mandatory": 985,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 79,
-          "active": 79,
+          "capacity": 981,
+          "active": 981,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "scientist-residential",
-          "name": "Modular Scientist Residences",
-          "rootName": "scientist-residential__FACILITY__MODULAR-SCIENTIST-RESIDENCES",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Meridian Crescent Residences",
+          "rootName": "LIVEWORK__RESIDENTIAL__R01__MERIDIAN_CRESCENT_RESIDENCES",
+          "code": "R01",
+          "representedSourceCount": 184,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 184,
+          "authoredBatchedSources": 184,
+          "expectedRuntimeBatchSources": 184,
+          "mandatoryArchitecturalSources": 14,
+          "representedMandatorySources": 14,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            4.506,
-            8.275
+            13.873,
+            2.982,
+            5.808
           ],
           "failures": []
         },
         {
           "districtId": "scientist-residential",
-          "name": "Neighborhood Childcare Pavilion",
-          "rootName": "scientist-residential__FACILITY__NEIGHBORHOOD-CHILDCARE-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Helix Terraces",
+          "rootName": "LIVEWORK__RESIDENTIAL__R02__HELIX_TERRACES",
+          "code": "R02",
+          "representedSourceCount": 58,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 58,
+          "authoredBatchedSources": 58,
+          "expectedRuntimeBatchSources": 58,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            2.959,
-            8.275
+            10.464,
+            2.769,
+            5.92
           ],
           "failures": []
         },
         {
           "districtId": "scientist-residential",
-          "name": "Resident Workshop Hall",
-          "rootName": "scientist-residential__FACILITY__RESIDENT-WORKSHOP-HALL",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Circadian House",
+          "rootName": "LIVEWORK__RESIDENTIAL__R03__CIRCADIAN_HOUSE",
+          "code": "R03",
+          "representedSourceCount": 69,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "visibleBatchSources": 69,
+          "authoredBatchedSources": 69,
+          "expectedRuntimeBatchSources": 69,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            4.317,
-            8.931
+            8.2,
+            2.62,
+            7.97
           ],
           "failures": []
         },
         {
           "districtId": "scientist-residential",
-          "name": "Community Food Greenhouse",
-          "rootName": "scientist-residential__FACILITY__COMMUNITY-FOOD-GREENHOUSE",
-          "code": null,
-          "representedSourceCount": 3,
+          "name": "Rootline Garden Homes",
+          "rootName": "LIVEWORK__RESIDENTIAL__R04__ROOTLINE_GARDEN_HOMES",
+          "code": "R04",
+          "representedSourceCount": 22,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "visibleBatchSources": 22,
+          "authoredBatchedSources": 22,
+          "expectedRuntimeBatchSources": 22,
+          "mandatoryArchitecturalSources": 6,
+          "representedMandatorySources": 6,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.348,
+            2.12,
+            6.344
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Lattice Twin Residences",
+          "rootName": "LIVEWORK__RESIDENTIAL__R05__LATTICE_TWIN_RESIDENCES",
+          "code": "R05",
+          "representedSourceCount": 35,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 35,
+          "authoredBatchedSources": 35,
+          "expectedRuntimeBatchSources": 35,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.728,
+            4.45,
+            4.338
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Parallax Long-Stay Apartments",
+          "rootName": "LIVEWORK__RESIDENTIAL__R06__PARALLAX_LONG_STAY_APARTMENTS",
+          "code": "R06",
+          "representedSourceCount": 77,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 77,
+          "authoredBatchedSources": 77,
+          "expectedRuntimeBatchSources": 77,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.758,
+            2.89,
+            6.804
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Archive Court Residences",
+          "rootName": "LIVEWORK__RESIDENTIAL__R07__ARCHIVE_COURT_RESIDENCES",
+          "code": "R07",
+          "representedSourceCount": 14,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 14,
+          "authoredBatchedSources": 14,
+          "expectedRuntimeBatchSources": 14,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            9.2,
+            2.185,
+            7.255
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Orbit Family Blocks",
+          "rootName": "LIVEWORK__RESIDENTIAL__R08__ORBIT_FAMILY_BLOCKS",
+          "code": "R08",
+          "representedSourceCount": 14,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 14,
+          "authoredBatchedSources": 14,
+          "expectedRuntimeBatchSources": 14,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.102,
+            2.24,
+            8.261
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Commons Cooperative",
+          "rootName": "LIVEWORK__RESIDENTIAL__R09__COMMONS_COOPERATIVE",
+          "code": "R09",
+          "representedSourceCount": 32,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 32,
+          "authoredBatchedSources": 32,
+          "expectedRuntimeBatchSources": 32,
+          "mandatoryArchitecturalSources": 24,
+          "representedMandatorySources": 24,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            9.2,
+            2.27,
+            6.429
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Horizon Accessible Residences",
+          "rootName": "LIVEWORK__RESIDENTIAL__R10__HORIZON_ACCESSIBLE_RESIDENCES",
+          "code": "R10",
+          "representedSourceCount": 10,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 10,
+          "authoredBatchedSources": 10,
+          "expectedRuntimeBatchSources": 10,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.34,
+            1.977,
+            8.366
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Resident Commons Hall",
+          "rootName": "LIVEWORK__RESIDENTIAL__R11__RESIDENT_COMMONS_HALL",
+          "code": "R11",
+          "representedSourceCount": 17,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 17,
+          "authoredBatchedSources": 17,
+          "expectedRuntimeBatchSources": 17,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.6,
+            2.616,
+            9.896
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Neighborhood Laboratory House",
+          "rootName": "LIVEWORK__RESIDENTIAL__R12__NEIGHBORHOOD_LABORATORY_HOUSE",
+          "code": "R12",
+          "representedSourceCount": 18,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 18,
+          "authoredBatchedSources": 18,
+          "expectedRuntimeBatchSources": 18,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.6,
+            2.155,
+            6.025
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Fabrication Mews",
+          "rootName": "LIVEWORK__RESIDENTIAL__R13__FABRICATION_MEWS",
+          "code": "R13",
+          "representedSourceCount": 33,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 33,
+          "authoredBatchedSources": 33,
+          "expectedRuntimeBatchSources": 33,
+          "mandatoryArchitecturalSources": 16,
+          "representedMandatorySources": 16,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.8,
+            1.587,
+            4.936
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Solstice Covered Pool",
+          "rootName": "LIVEWORK__RESIDENTIAL__R14__SOLSTICE_COVERED_POOL",
+          "code": "R14",
+          "representedSourceCount": 20,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 20,
+          "authoredBatchedSources": 20,
+          "expectedRuntimeBatchSources": 20,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            8.6,
+            3.691,
+            8.6
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Wintergarden Recreation Hall",
+          "rootName": "LIVEWORK__RESIDENTIAL__R15__WINTERGARDEN_RECREATION_HALL",
+          "code": "R15",
+          "representedSourceCount": 15,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 15,
+          "authoredBatchedSources": 15,
+          "expectedRuntimeBatchSources": 15,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            3.168,
-            8.275
+            9.8,
+            3.02,
+            8.028
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Resident Loop Mall",
+          "rootName": "LIVEWORK__RESIDENTIAL__R16__RESIDENT_LOOP_MALL",
+          "code": "R16",
+          "representedSourceCount": 24,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 24,
+          "authoredBatchedSources": 24,
+          "expectedRuntimeBatchSources": 24,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.584,
+            1.177,
+            7.584
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "The Common Table Market Hall",
+          "rootName": "LIVEWORK__RESIDENTIAL__R17__THE_COMMON_TABLE_MARKET_HALL",
+          "code": "R17",
+          "representedSourceCount": 43,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 43,
+          "authoredBatchedSources": 43,
+          "expectedRuntimeBatchSources": 43,
+          "mandatoryArchitecturalSources": 11,
+          "representedMandatorySources": 11,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.641,
+            2.7,
+            5.616
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Nocturne Cafe and Reading Pavilion",
+          "rootName": "LIVEWORK__RESIDENTIAL__R18__NOCTURNE_CAFE_AND_READING_PAVILION",
+          "code": "R18",
+          "representedSourceCount": 6,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 6,
+          "authoredBatchedSources": 6,
+          "expectedRuntimeBatchSources": 6,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            6.4,
+            1.16,
+            6.256
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Night Clinic and Pharmacy",
+          "rootName": "LIVEWORK__RESIDENTIAL__R19__NIGHT_CLINIC_AND_PHARMACY",
+          "code": "R19",
+          "representedSourceCount": 29,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 29,
+          "authoredBatchedSources": 29,
+          "expectedRuntimeBatchSources": 29,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.2,
+            1.82,
+            6.828
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "scientist-residential",
+          "name": "Seedling House",
+          "rootName": "LIVEWORK__RESIDENTIAL__R20__SEEDLING_HOUSE",
+          "code": "R20",
+          "representedSourceCount": 12,
+          "directVisibleMeshes": 4,
+          "visibleBatchSources": 8,
+          "authoredBatchedSources": 8,
+          "expectedRuntimeBatchSources": 8,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            7.409,
+            1.45,
+            5.618
           ],
           "failures": []
         }
@@ -8490,8 +9351,8 @@
     {
       "districtId": "industrial-labs",
       "name": "Industrial Labs District",
-      "expectedCount": 12,
-      "discoveredCount": 17,
+      "expectedCount": 16,
+      "discoveredCount": 16,
       "packageState": {
         "id": "industrial-labs",
         "kind": "district",
@@ -8509,377 +9370,356 @@
         "pinned": false,
         "distanceMetres": 10958,
         "estimatedCost": {
-          "drawCalls": 103,
-          "triangles": 182740,
-          "animationNodes": 20
+          "drawCalls": 220,
+          "triangles": 246294,
+          "animationNodes": 105
         },
         "renderImportance": {
-          "mandatory": 1132,
-          "micro": 17,
+          "mandatory": 2488,
+          "micro": 101,
           "visibleMicro": 0,
-          "culledMicro": 17
+          "culledMicro": 101
         },
         "batchOccupancy": {
-          "capacity": 7709,
-          "active": 7707,
-          "ratio": 0.999740562978337
+          "capacity": 9050,
+          "active": 9012,
+          "ratio": 0.9958011049723757
         }
       },
       "buildingReports": [
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__NEXUS_LOGISTICS_WEST",
-          "rootName": "INDUSTRIAL__NEXUS_LOGISTICS_WEST",
-          "code": null,
-          "representedSourceCount": 68,
-          "directVisibleMeshes": 1,
-          "visibleBatchSources": 67,
-          "authoredBatchedSources": 67,
-          "expectedRuntimeBatchSources": 67,
-          "mandatoryArchitecturalSources": 14,
-          "representedMandatorySources": 14,
+          "name": "Legacy Automatic Works Annex",
+          "rootName": "INDUSTRIAL__LEGACY_AUTOMATIC_WORKS_ANNEX",
+          "code": "LEGACY-04",
+          "representedSourceCount": 945,
+          "directVisibleMeshes": 41,
+          "visibleBatchSources": 904,
+          "authoredBatchedSources": 904,
+          "expectedRuntimeBatchSources": 904,
+          "mandatoryArchitecturalSources": 208,
+          "representedMandatorySources": 206,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            5.238,
-            3.315,
-            3.239
+            29.519,
+            8.542,
+            17.36
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__UNIT_4B_PROCESS_BLOCK",
-          "rootName": "INDUSTRIAL__UNIT_4B_PROCESS_BLOCK",
-          "code": null,
-          "representedSourceCount": 73,
-          "directVisibleMeshes": 1,
-          "visibleBatchSources": 72,
-          "authoredBatchedSources": 72,
-          "expectedRuntimeBatchSources": 72,
-          "mandatoryArchitecturalSources": 15,
-          "representedMandatorySources": 15,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            5.388,
-            5.05,
-            3.17
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__GREY_FOUNDRY_EAST",
-          "rootName": "INDUSTRIAL__GREY_FOUNDRY_EAST",
-          "code": null,
-          "representedSourceCount": 62,
-          "directVisibleMeshes": 1,
-          "visibleBatchSources": 61,
-          "authoredBatchedSources": 61,
-          "expectedRuntimeBatchSources": 61,
-          "mandatoryArchitecturalSources": 62,
-          "representedMandatorySources": 62,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            5.138,
-            4.7,
-            3.189
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__ASSEMBLY_WORKS_EAST",
-          "rootName": "INDUSTRIAL__ASSEMBLY_WORKS_EAST",
-          "code": null,
-          "representedSourceCount": 71,
-          "directVisibleMeshes": 1,
-          "visibleBatchSources": 70,
-          "authoredBatchedSources": 70,
-          "expectedRuntimeBatchSources": 70,
-          "mandatoryArchitecturalSources": 14,
-          "representedMandatorySources": 14,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            5.238,
-            3.69,
-            3.27
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__NORTH_REAR_FACTORY",
-          "rootName": "INDUSTRIAL__NORTH_REAR_FACTORY",
-          "code": null,
-          "representedSourceCount": 71,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 71,
-          "authoredBatchedSources": 71,
-          "expectedRuntimeBatchSources": 71,
-          "mandatoryArchitecturalSources": 17,
-          "representedMandatorySources": 17,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            6.238,
-            4.2,
-            2.239
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__SOUTH_REAR_FACTORY",
-          "rootName": "INDUSTRIAL__SOUTH_REAR_FACTORY",
-          "code": null,
+          "name": "The Shift Meridian",
+          "rootName": "INDUSTRIAL_NEW__I01__SHIFT_MERIDIAN",
+          "code": "01-A",
           "representedSourceCount": 72,
+          "directVisibleMeshes": 19,
+          "visibleBatchSources": 53,
+          "authoredBatchedSources": 53,
+          "expectedRuntimeBatchSources": 53,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            26.6,
+            4.71,
+            9.55
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Continuous Works",
+          "rootName": "INDUSTRIAL_NEW__I02__CONTINUOUS_WORKS",
+          "code": "48-CW",
+          "representedSourceCount": 90,
           "directVisibleMeshes": 0,
-          "visibleBatchSources": 72,
-          "authoredBatchedSources": 72,
-          "expectedRuntimeBatchSources": 72,
-          "mandatoryArchitecturalSources": 15,
-          "representedMandatorySources": 15,
+          "visibleBatchSources": 90,
+          "authoredBatchedSources": 90,
+          "expectedRuntimeBatchSources": 90,
+          "mandatoryArchitecturalSources": 32,
+          "representedMandatorySources": 32,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            6.138,
-            3.94,
-            2.32
+            39.4,
+            8.885,
+            11.475
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__MAIN_MANUFACTURING_HALL",
-          "rootName": "INDUSTRIAL__MAIN_MANUFACTURING_HALL",
-          "code": null,
-          "representedSourceCount": 72,
-          "directVisibleMeshes": 3,
-          "visibleBatchSources": 69,
-          "authoredBatchedSources": 69,
-          "expectedRuntimeBatchSources": 69,
-          "mandatoryArchitecturalSources": 44,
-          "representedMandatorySources": 42,
+          "name": "The Black Kiln",
+          "rootName": "INDUSTRIAL_NEW__I03__BLACK_KILN",
+          "code": "03-EM",
+          "representedSourceCount": 41,
+          "directVisibleMeshes": 13,
+          "visibleBatchSources": 28,
+          "authoredBatchedSources": 28,
+          "expectedRuntimeBatchSources": 28,
+          "mandatoryArchitecturalSources": 5,
+          "representedMandatorySources": 5,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            5.645,
-            2.412,
-            3.024
+            14.5,
+            9.215,
+            12.7
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__ABANDONED_WAREHOUSE",
-          "rootName": "INDUSTRIAL__ABANDONED_WAREHOUSE",
-          "code": null,
-          "representedSourceCount": 48,
-          "directVisibleMeshes": 12,
-          "visibleBatchSources": 36,
-          "authoredBatchedSources": 36,
-          "expectedRuntimeBatchSources": 36,
-          "mandatoryArchitecturalSources": 13,
-          "representedMandatorySources": 13,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            5.52,
-            1.57,
-            3.211
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__BRICK_POWER_STATION",
-          "rootName": "INDUSTRIAL__BRICK_POWER_STATION",
-          "code": null,
+          "name": "The Vacuum Casting Cathedral",
+          "rootName": "INDUSTRIAL_NEW__I04__VACUUM_CASTING_CATHEDRAL",
+          "code": "04-VC",
           "representedSourceCount": 42,
           "directVisibleMeshes": 1,
           "visibleBatchSources": 41,
           "authoredBatchedSources": 41,
           "expectedRuntimeBatchSources": 41,
-          "mandatoryArchitecturalSources": 0,
-          "representedMandatorySources": 0,
+          "mandatoryArchitecturalSources": 3,
+          "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            2.389,
-            8.33,
-            3.21
+            15.254,
+            10.459,
+            7.286
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__ADMINISTRATION_BUILDING",
-          "rootName": "INDUSTRIAL__ADMINISTRATION_BUILDING",
-          "code": null,
-          "representedSourceCount": 16,
-          "directVisibleMeshes": 3,
-          "visibleBatchSources": 13,
-          "authoredBatchedSources": 13,
-          "expectedRuntimeBatchSources": 13,
-          "mandatoryArchitecturalSources": 0,
-          "representedMandatorySources": 0,
+          "name": "The Metamaterial Loomworks",
+          "rootName": "INDUSTRIAL_NEW__I05__METAMATERIAL_LOOMWORKS",
+          "code": "05-MW",
+          "representedSourceCount": 79,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 79,
+          "authoredBatchedSources": 79,
+          "expectedRuntimeBatchSources": 79,
+          "mandatoryArchitecturalSources": 61,
+          "representedMandatorySources": 61,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            2.729,
-            2.451,
-            1.51
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__BOILER_HOUSE",
-          "rootName": "INDUSTRIAL__BOILER_HOUSE",
-          "code": null,
-          "representedSourceCount": 16,
-          "directVisibleMeshes": 3,
-          "visibleBatchSources": 13,
-          "authoredBatchedSources": 13,
-          "expectedRuntimeBatchSources": 13,
-          "mandatoryArchitecturalSources": 0,
-          "representedMandatorySources": 0,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            1.603,
+            20.988,
             6.1,
-            1.375
+            10.43
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__RAIL_MAINTENANCE_SHED",
-          "rootName": "INDUSTRIAL__RAIL_MAINTENANCE_SHED",
-          "code": null,
-          "representedSourceCount": 13,
+          "name": "The Cryogenic Forming Plant",
+          "rootName": "INDUSTRIAL_NEW__I06__CRYOGENIC_FORMING_PLANT",
+          "code": "06-K",
+          "representedSourceCount": 35,
+          "directVisibleMeshes": 6,
+          "visibleBatchSources": 29,
+          "authoredBatchedSources": 29,
+          "expectedRuntimeBatchSources": 29,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.81,
+            7.74,
+            13.676
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Additive Megafabrication Yard",
+          "rootName": "INDUSTRIAL_NEW__I07__ADDITIVE_MEGAFABRICATION_YARD",
+          "code": "07-AM",
+          "representedSourceCount": 50,
+          "directVisibleMeshes": 5,
+          "visibleBatchSources": 45,
+          "authoredBatchedSources": 45,
+          "expectedRuntimeBatchSources": 45,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            23.43,
+            7.24,
+            17.55
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Autonomous Microfactory Hive",
+          "rootName": "INDUSTRIAL_NEW__I08__AUTONOMOUS_MICROFACTORY_HIVE",
+          "code": "08-36",
+          "representedSourceCount": 194,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 194,
+          "authoredBatchedSources": 194,
+          "expectedRuntimeBatchSources": 194,
+          "mandatoryArchitecturalSources": 36,
+          "representedMandatorySources": 36,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.5,
+            5.145,
+            15.748
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Biogenic Materials Foundry",
+          "rootName": "INDUSTRIAL_NEW__I09__BIOGENIC_MATERIALS_FOUNDRY",
+          "code": "09-BG",
+          "representedSourceCount": 64,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 64,
+          "authoredBatchedSources": 64,
+          "expectedRuntimeBatchSources": 64,
+          "mandatoryArchitecturalSources": 27,
+          "representedMandatorySources": 27,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            19.5,
+            6.449,
+            21.1
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Machine Genesis Hall",
+          "rootName": "INDUSTRIAL_NEW__I10__MACHINE_GENESIS_HALL",
+          "code": "10-MG",
+          "representedSourceCount": 86,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 86,
+          "authoredBatchedSources": 86,
+          "expectedRuntimeBatchSources": 86,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            18.7,
+            6.85,
+            16.68
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Destructive Testing Monolith",
+          "rootName": "INDUSTRIAL_NEW__I11__DESTRUCTIVE_TESTING_MONOLITH",
+          "code": "11-DT",
+          "representedSourceCount": 78,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 78,
+          "authoredBatchedSources": 78,
+          "expectedRuntimeBatchSources": 78,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            22.725,
+            13.01,
+            19.731
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "Platform Zero",
+          "rootName": "INDUSTRIAL_NEW__I12__PLATFORM_ZERO",
+          "code": "0",
+          "representedSourceCount": 91,
           "directVisibleMeshes": 1,
-          "visibleBatchSources": 12,
-          "authoredBatchedSources": 12,
-          "expectedRuntimeBatchSources": 12,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            3.64,
-            1.73,
-            1.86
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__COLD_STORAGE_FACILITY",
-          "rootName": "INDUSTRIAL__COLD_STORAGE_FACILITY",
-          "code": null,
-          "representedSourceCount": 31,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 31,
-          "authoredBatchedSources": 31,
-          "expectedRuntimeBatchSources": 31,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            2.609,
-            2.041,
-            3.265
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__RECYCLING_SORTING_HALL",
-          "rootName": "INDUSTRIAL__RECYCLING_SORTING_HALL",
-          "code": null,
-          "representedSourceCount": 21,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 21,
-          "authoredBatchedSources": 21,
-          "expectedRuntimeBatchSources": 21,
-          "mandatoryArchitecturalSources": 1,
-          "representedMandatorySources": 1,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            2.11,
-            1.43,
-            1.58
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__STORAGE_SILOS",
-          "rootName": "INDUSTRIAL__STORAGE_SILOS",
-          "code": null,
-          "representedSourceCount": 95,
-          "directVisibleMeshes": 3,
-          "visibleBatchSources": 92,
-          "authoredBatchedSources": 92,
-          "expectedRuntimeBatchSources": 92,
-          "mandatoryArchitecturalSources": 8,
-          "representedMandatorySources": 8,
-          "missingBatchRepresentations": [],
-          "semanticOwnershipFailures": [],
-          "bounds": [
-            2.21,
-            3.702,
-            0.744
-          ],
-          "failures": []
-        },
-        {
-          "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__SECURITY_CHECKPOINT",
-          "rootName": "INDUSTRIAL__SECURITY_CHECKPOINT",
-          "code": null,
-          "representedSourceCount": 17,
-          "directVisibleMeshes": 3,
-          "visibleBatchSources": 14,
-          "authoredBatchedSources": 14,
-          "expectedRuntimeBatchSources": 14,
+          "visibleBatchSources": 90,
+          "authoredBatchedSources": 90,
+          "expectedRuntimeBatchSources": 90,
           "mandatoryArchitecturalSources": 0,
           "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            1.29,
-            1.888,
-            1.01
+            28,
+            5.46,
+            13.4
           ],
           "failures": []
         },
         {
           "districtId": "industrial-labs",
-          "name": "INDUSTRIAL__MAINTENANCE_TUNNEL_ENTRANCE",
-          "rootName": "INDUSTRIAL__MAINTENANCE_TUNNEL_ENTRANCE",
-          "code": null,
-          "representedSourceCount": 18,
-          "directVisibleMeshes": 2,
-          "visibleBatchSources": 16,
-          "authoredBatchedSources": 16,
-          "expectedRuntimeBatchSources": 16,
+          "name": "The Thermal Recovery and Process Power Station",
+          "rootName": "INDUSTRIAL_NEW__I13__THERMAL_RECOVERY_STATION",
+          "code": "13-TR",
+          "representedSourceCount": 141,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 141,
+          "authoredBatchedSources": 141,
+          "expectedRuntimeBatchSources": 141,
+          "mandatoryArchitecturalSources": 49,
+          "representedMandatorySources": 49,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            24.257,
+            9.278,
+            17.12
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "The Closed-Loop Reclamation Works",
+          "rootName": "INDUSTRIAL_NEW__I14__CLOSED_LOOP_RECLAMATION_WORKS",
+          "code": "14-CL",
+          "representedSourceCount": 56,
+          "directVisibleMeshes": 0,
+          "visibleBatchSources": 56,
+          "authoredBatchedSources": 56,
+          "expectedRuntimeBatchSources": 56,
           "mandatoryArchitecturalSources": 0,
           "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            1.7,
-            1.382,
-            1.964
+            19,
+            11.81,
+            19.1
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "industrial-labs",
+          "name": "Building Ø",
+          "rootName": "INDUSTRIAL_NEW__I15__BUILDING_NULL",
+          "code": "Ø",
+          "representedSourceCount": 118,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 117,
+          "authoredBatchedSources": 117,
+          "expectedRuntimeBatchSources": 117,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            20,
+            5.275,
+            24.047
           ],
           "failures": []
         }

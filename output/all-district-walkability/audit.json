@@ -8,11 +8,11 @@
       240.00000011029104,
       309.0000001583075
     ],
-    "obstacleCount": 485,
-    "preciseObstacleCount": 485,
+    "obstacleCount": 498,
+    "preciseObstacleCount": 489,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 87,
+    "broadOnlyMarginsAvoided": 99,
     "movementProbeCount": 131,
     "failedDistricts": [],
     "districtResults": [
@@ -92,7 +92,7 @@
         "id": "omics-labs",
         "sampleCount": 410,
         "clearCount": 410,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 9,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []
@@ -227,7 +227,7 @@
         "id": "scientist-residential",
         "sampleCount": 956,
         "clearCount": 956,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 3,
         "movementProbeCount": 4,
         "movementFailures": [],
         "failures": []

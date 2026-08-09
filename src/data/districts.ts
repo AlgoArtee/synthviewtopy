@@ -295,11 +295,11 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     ring: "middle",
     position: [-21.5, 0, -0.5],
     footprint: [11, 8],
-    height: 12,
-    archetype: "robotics-hangar-campus",
-    accent: "#FF9D52",
-    palette: ["#241B15", "#59412E", "#CFC5B8", "#FF9D52"],
-    description: "Assembly hangars open onto fenced outdoor test courts populated by autonomous vehicles and robotic arms.",
+    height: 18,
+    archetype: "kinematic-walk-advanced-robotics-campus",
+    accent: "#6DE0E2",
+    palette: ["#151B1E", "#676B6B", "#DEDDD5", "#6DE0E2"],
+    description: "Ten behaviorally expressive robotics institutes turn embodied intelligence, dexterity, soft and biohybrid machines, swarms, microrobotics, telepresence, disaster response, construction, and self-repair into one active machine-test district along the Kinematic Walk.",
   },
 
   // Outer-middle ring: culture, hospitality, analytics, and restricted research.

@@ -1,0 +1,913 @@
+{
+  "audit": {
+    "program": {
+      "identity": "Robotics Labs District",
+      "architecturalLanguage": "architecture behaves robotically through functional test infrastructure, adaptive skins, replaceable modules, active docking, responsive structures, and exterior machine circulation without figurative robot ornament",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "R1",
+          "name": "Corpus Nexus",
+          "subtitle": "Embodied Intelligence and Humanoid Robotics Institute",
+          "purpose": "Whole-body embodied AI, humanoid locomotion, mobile manipulation, robot foundation models, and sim-to-real learning",
+          "placementZone": "OMICS-facing embodied-intelligence gateway",
+          "footprintMetres": [
+            128,
+            96
+          ],
+          "heightMetres": 176,
+          "exteriorMotif": "seven rotated slabs around an inclined spine and articulated titanium exoskeleton above hostile urban terrain",
+          "operationalMovement": "load-transfer signals, camera booms, terrace maintenance cranes, and vertical-locomotion trials"
+        },
+        {
+          "code": "R2",
+          "name": "Tactus Hall",
+          "subtitle": "Robotic Skin, Dexterity and Manipulation Laboratory",
+          "purpose": "Robotic hands, multimodal tactile sensing, artificial skin, compliant grasping, in-hand manipulation, and tool use",
+          "placementZone": "sensor-transfer and public contact edge",
+          "footprintMetres": [
+            182,
+            92
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "a long tapered instrument clad in responsive ceramic sensor tiles above an articulated twenty-four-support canopy",
+          "operationalMovement": "contact-event light constellations, iris manipulators, and load-adjusting canopy supports"
+        },
+        {
+          "code": "R3",
+          "name": "Myomer Pavilion",
+          "subtitle": "Soft Robotics, Artificial Muscle and Adaptive Morphology Centre",
+          "purpose": "Pneumatic and hydraulic robots, artificial muscles, variable-stiffness structures, self-healing elastomers, and continuum manipulators",
+          "placementZone": "soft-machine landscape belt",
+          "footprintMetres": [
+            154,
+            118
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "serpentine translucent membrane lobes, vascular fluid channels, self-repair scars, and variable-stiffness arches",
+          "operationalMovement": "slow pneumatic breathing, load-responsive muscle bundles, and reconfigurable outdoor arches"
+        },
+        {
+          "code": "R4",
+          "name": "Murmuration Array",
+          "subtitle": "Swarm Robotics and Collective Autonomy Complex",
+          "purpose": "Decentralized coordination, aerial and terrestrial swarms, collective mapping, emergent construction, and distributed sensing",
+          "placementZone": "collective-autonomy flight volume",
+          "footprintMetres": [
+            168,
+            124
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "six equal hexagonal docking towers around an open high-tension-mesh swarm enclosure and Consensus Needle",
+          "operationalMovement": "coordinated drone constellations, shifting machine-readable landmarks, and mobile sensor pods"
+        },
+        {
+          "code": "R5",
+          "name": "Symbiont Conservatory",
+          "subtitle": "Biohybrid and Living Robotics Laboratory",
+          "purpose": "Living muscle, neurons, responsive tissues, biological actuators, organism-machine interfaces, and cultivated robots",
+          "placementZone": "controlled biological interface toward OMICS",
+          "footprintMetres": [
+            156,
+            118
+          ],
+          "heightMetres": 76,
+          "exteriorMotif": "three lens pavilions nested under a branching transparent shell with culture-media tubes and biosafety basins",
+          "operationalMovement": "fluid-front indicators, frame-crawling maintenance robots, incubator lanterns, and aquatic monitors"
+        },
+        {
+          "code": "R6",
+          "name": "Magnetotaxis Vault",
+          "subtitle": "Medical Micro- and Nanorobotics Research Centre",
+          "purpose": "Magnetic and acoustic microrobots, targeted delivery, microscale manipulation, soft medical robots, and confined-fluid navigation",
+          "placementZone": "vibration-isolated microsystems plaza",
+          "footprintMetres": [
+            142,
+            126
+          ],
+          "heightMetres": 92,
+          "exteriorMotif": "a buried black dome surrounded by six monumental copper-banded field arches and four acoustic pylons",
+          "operationalMovement": "drifting field geometry, responsive-liquid calibration, and acoustic interference displays"
+        },
+        {
+          "code": "R7",
+          "name": "Avatar Spine",
+          "subtitle": "Telepresence, Haptics and Robotic Embodiment Institute",
+          "purpose": "Remote robotic avatars, full-body teleoperation, haptic feedback, exoskeleton control, shared autonomy, and remote science",
+          "placementZone": "Guest Scientists public interface",
+          "footprintMetres": [
+            138,
+            108
+          ],
+          "heightMetres": 152,
+          "exteriorMotif": "paired leaning dark and translucent towers linked under tension by three sensor-lattice bridges",
+          "operationalMovement": "Echo Armature posture mirroring, synchronized facade silhouettes, and bridge inspection robots"
+        },
+        {
+          "code": "R8",
+          "name": "Terminus Range",
+          "subtitle": "Extreme-Environment and Disaster Robotics Facility",
+          "purpose": "Search-and-rescue, subterranean, deep-sea, polar, planetary, and autonomous inspection robotics",
+          "placementZone": "southern heavy-service and hostile-terrain edge",
+          "footprintMetres": [
+            176,
+            132
+          ],
+          "heightMetres": 94,
+          "exteriorMotif": "four scarred armoured hangars around a rearrangeable Failure Canyon and compressed hostile terrain",
+          "operationalMovement": "test-crane traversal, hazard boundaries, wash-down frames, and autonomous endurance routes"
+        },
+        {
+          "code": "R9",
+          "name": "Autopoiesis Yard",
+          "subtitle": "Autonomous Construction and Robotic Fabrication Hall",
+          "purpose": "Robotic assembly, large-scale additive manufacturing, autonomous building, voxel construction, and self-climbing machines",
+          "placementZone": "distributed-construction demonstration front",
+          "footprintMetres": [
+            188,
+            132
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "an open fabrication hall with sliding space-frame roof, interchangeable facade bays, gantries, and unfinished prototypes",
+          "operationalMovement": "bridge-gantry fabrication, rail carriers, climbing maintenance robots, and replaceable building bays"
+        },
+        {
+          "code": "R10",
+          "name": "Palingenesis Works",
+          "subtitle": "Modular, Evolutionary and Self-Repairing Robotics Laboratory",
+          "purpose": "Self-reconfiguring robots, modular bodies, autonomous repair, machine ecology, and long-duration adaptive systems",
+          "placementZone": "self-repairing terminal court",
+          "footprintMetres": [
+            158,
+            136
+          ],
+          "heightMetres": 82,
+          "exteriorMotif": "twelve mismatched annular modules, exposed scar plates, a circular service rail, Parts Trees, and central sorting tower",
+          "operationalMovement": "facade-module servicing, component exchange, repair-nest traffic, and autonomous parts redistribution"
+        }
+      ],
+      "landmarks": {
+        "embodiedIntelligence": "Corpus Nexus",
+        "tactileManipulation": "Tactus Hall",
+        "softRobotics": "Myomer Pavilion",
+        "swarmAutonomy": "Murmuration Array",
+        "biohybridRobotics": "Symbiont Conservatory",
+        "microrobotics": "Magnetotaxis Vault",
+        "telepresence": "Avatar Spine",
+        "extremeEnvironments": "Terminus Range",
+        "roboticConstruction": "Autopoiesis Yard",
+        "selfRepair": "Palingenesis Works"
+      },
+      "circulation": {
+        "primaryAxis": "ROBOTICS__KINEMATIC_WALK",
+        "pedestrianWidthMetres": 34,
+        "autonomousMachineLanes": 2,
+        "inductionChargingStrips": 2,
+        "machineReadableFiducials": 48,
+        "robotHeightTrafficSignals": 10,
+        "humanRefuges": 8,
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "corpusSlabs": 7,
+        "tactileSkinTiles": 120,
+        "articulatedCanopySupports": 24,
+        "myomerLobes": 5,
+        "variableStiffnessArches": 8,
+        "swarmTowers": 6,
+        "dockingApertures": 96,
+        "coordinatedDrones": 24,
+        "symbiontPavilions": 3,
+        "cultureMediaTubes": 18,
+        "fieldShapingArches": 6,
+        "avatarBridges": 3,
+        "armouredHangars": 4,
+        "fabricationGantries": 2,
+        "reconfigurableModules": 12,
+        "partsTrees": 8,
+        "autonomousCarriers": 6
+      },
+      "materials": [
+        "pale ceramic composite",
+        "graphite photovoltaic glass",
+        "dark titanium",
+        "brushed service alloy",
+        "field-shaping copper",
+        "adaptive translucent membrane",
+        "biohybrid fluoropolymer",
+        "scarred fibre-reinforced concrete"
+      ],
+      "lighting": [
+        "cool-white active-test state",
+        "cyan machine guidance",
+        "functional hazard amber",
+        "biohybrid violet",
+        "active-boundary red"
+      ],
+      "operationalRule": "movement replaces ornament; every animated element represents testing, calibration, logistics, maintenance, sensing, or structural response",
+      "exteriorOnly": true
+    },
+    "population": {
+      "plannedFacilities": [
+        "Corpus Nexus",
+        "Tactus Hall",
+        "Myomer Pavilion",
+        "Murmuration Array",
+        "Symbiont Conservatory",
+        "Magnetotaxis Vault",
+        "Avatar Spine",
+        "Terminus Range",
+        "Autopoiesis Yard",
+        "Palingenesis Works"
+      ],
+      "plannedObjects": [
+        "Kinematic Walk",
+        "Autonomous Machine Lanes",
+        "Induction Charging Strips",
+        "Machine-Readable Fiducials",
+        "Robot-Height Traffic Signals",
+        "Human Refuges",
+        "Active Test Landscape",
+        "District Observation Sensors"
+      ],
+      "realizedFeatureTags": [
+        "corpus-nexus",
+        "tactus-hall",
+        "myomer-pavilion",
+        "murmuration-array",
+        "symbiont-conservatory",
+        "magnetotaxis-vault",
+        "avatar-spine",
+        "terminus-range",
+        "autopoiesis-yard",
+        "palingenesis-works"
+      ],
+      "realizedFacilityCount": 10,
+      "realizedObjectCount": 179,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 13,
+      "radialCoverage": 0.96,
+      "angularCoverage": 0.97,
+      "exteriorOnly": true,
+      "kinematicWalkNarrative": true,
+      "movementIsFunctional": true
+    },
+    "topLevelNames": [
+      "ROBOTICS__KINEMATIC_WALK_INFRASTRUCTURE",
+      "ROBOTICS__ACTIVE_TEST_LANDSCAPE",
+      "ROBOTICS__R1__CORPUS_NEXUS",
+      "ROBOTICS__R2__TACTUS_HALL",
+      "ROBOTICS__R3__MYOMER_PAVILION",
+      "ROBOTICS__R4__MURMURATION_ARRAY",
+      "ROBOTICS__R5__SYMBIONT_CONSERVATORY",
+      "ROBOTICS__R6__MAGNETOTAXIS_VAULT",
+      "ROBOTICS__R7__AVATAR_SPINE",
+      "ROBOTICS__R8__TERMINUS_RANGE",
+      "ROBOTICS__R9__AUTOPOIESIS_YARD",
+      "ROBOTICS__R10__PALINGENESIS_WORKS",
+      "DISTRICT_ROADS__GENERATED_NETWORK"
+    ],
+    "codes": [
+      "R1",
+      "R2",
+      "R3",
+      "R4",
+      "R5",
+      "R6",
+      "R7",
+      "R8",
+      "R9",
+      "R10"
+    ],
+    "facilityCount": 10,
+    "meshCount": 1547,
+    "triangleCount": 93604,
+    "uniqueNames": 1548,
+    "scaledMeshParentDetails": [],
+    "materialNames": [
+      "Kinematic Walk autonomous-machine lane",
+      "Kinematic Walk pale machine-readable paving",
+      "Robotics active boundary red",
+      "Robotics active-test cool white",
+      "Robotics biohybrid fluoropolymer shell",
+      "Robotics biohybrid state violet",
+      "Robotics brushed service alloy",
+      "Robotics dark titanium exoskeleton",
+      "Robotics fibre reinforced concrete",
+      "Robotics field-shaping copper alloy",
+      "Robotics functional hazard amber",
+      "Robotics graphite photovoltaic glass",
+      "Robotics graphite structural shell",
+      "Robotics machine-state cyan",
+      "Robotics monitored black water",
+      "Robotics pale ceramic composite",
+      "Robotics reinforced adaptive membrane",
+      "Robotics transparent safety glass",
+      "Robotics variable-compliance test rubber",
+      "Robotics warm repair ceramic"
+    ],
+    "animations": {
+      "robotics-emissive-pulse": 152,
+      "robotics-path-transit": 6,
+      "robotics-rotation": 1
+    },
+    "prefixCounts": {
+      "ROBOTICS__R1__ROTATED_RESEARCH_SLAB_": 7,
+      "ROBOTICS__R2__PRESSURE_SKIN_TILE_": 120,
+      "ROBOTICS__R2__ARTICULATED_CANOPY_SUPPORT_": 24,
+      "ROBOTICS__R3__ADAPTIVE_MEMBRANE_LOBE_": 5,
+      "ROBOTICS__R3__VARIABLE_STIFFNESS_ARCH_": 8,
+      "ROBOTICS__R4__HEXAGONAL_SWARM_TOWER_": 6,
+      "ROBOTICS__R4__DOCKING_APERTURE_": 96,
+      "ROBOTICS__R4__COORDINATED_SWARM_DRONE_": 24,
+      "ROBOTICS__R5__LENS_PAVILION_": 3,
+      "ROBOTICS__R5__CULTURE_MEDIA_TUBE_": 18,
+      "ROBOTICS__R6__FIELD_SHAPING_ARCH_": 6,
+      "ROBOTICS__R7__TENSION_BRIDGE_": 3,
+      "ROBOTICS__R8__ARMOURED_HANGAR_": 4,
+      "ROBOTICS__R9__GANTRY_BEAM_": 2,
+      "ROBOTICS__R10__RECONFIGURABLE_ANNULAR_MODULE_": 12,
+      "ROBOTICS__R10__PARTS_TREE_TRUNK_": 8,
+      "ROBOTICS__MACHINE_READABLE_FIDUCIAL_": 48,
+      "ROBOTICS__HUMAN_MACHINE_REFUGE_": 8,
+      "ROBOTICS__ROBOT_HEIGHT_TRAFFIC_SIGNAL_": 10,
+      "ROBOTICS__AUTONOMOUS_MACHINE_CARRIER_": 6
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "facilityBoxes": [
+      {
+        "code": "R1",
+        "min": [
+          -134.13046229478252,
+          1.6660000000000004,
+          44.80535103973738
+        ],
+        "max": [
+          -119.68470309579882,
+          17.776,
+          60.79376426788162
+        ]
+      },
+      {
+        "code": "R2",
+        "min": [
+          -159.2203160143586,
+          1.691,
+          47.45944739012448
+        ],
+        "max": [
+          -143.21012373503387,
+          5.6160000000000005,
+          68.42927936528136
+        ]
+      },
+      {
+        "code": "R3",
+        "min": [
+          -141.99490773805934,
+          1.7659999999999998,
+          17.267765033646725
+        ],
+        "max": [
+          -128.89377251285526,
+          6.566,
+          36.1063881631747
+        ]
+      },
+      {
+        "code": "R4",
+        "min": [
+          -169.30229856238074,
+          1.6640684358948696,
+          19.803031009284393
+        ],
+        "max": [
+          -154.80251119440163,
+          13.166,
+          35.50273557325395
+        ]
+      },
+      {
+        "code": "R5",
+        "min": [
+          -144.12596174049378,
+          1.6710000000000003,
+          -7.499999999999985
+        ],
+        "max": [
+          -131.058,
+          8.786,
+          7.500000000000018
+        ]
+      },
+      {
+        "code": "R6",
+        "min": [
+          -176.06793482303766,
+          1.6340725249710826,
+          -19.441865596310492
+        ],
+        "max": [
+          -149.4152874386683,
+          8.846,
+          7.206765225774011
+        ]
+      },
+      {
+        "code": "R7",
+        "min": [
+          -140.79561040621203,
+          -0.43399999999999905,
+          -28.501812990359472
+        ],
+        "max": [
+          -127.92677082064701,
+          19.191,
+          -12.924880020589253
+        ]
+      },
+      {
+        "code": "R8",
+        "min": [
+          -170.38669503028504,
+          1.4854234576436998,
+          -46.98516526526509
+        ],
+        "max": [
+          -151.08580448175235,
+          10.066,
+          -26.656038180231334
+        ]
+      },
+      {
+        "code": "R9",
+        "min": [
+          -138.4518051458654,
+          1.573620490304111,
+          -56.79537390678277
+        ],
+        "max": [
+          -117.76431150602116,
+          9.466,
+          -33.02634881741131
+        ]
+      },
+      {
+        "code": "R10",
+        "min": [
+          -162.4751376423425,
+          1.6660000000000001,
+          -79.33286353193036
+        ],
+        "max": [
+          -139.50664493241294,
+          9.466,
+          -56.332453070999094
+        ]
+      }
+    ],
+    "routeAudit": [
+      {
+        "name": "ROBOTICS__KINEMATIC_WALK",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R1",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R2",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R3",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R4",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R5",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R6",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R7",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R8",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R9",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "ROBOTICS__BUILDING_APPROACH_R10",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -151.16508787870407,
+      1.6459999984502793,
+      -0.5251221358775907
+    ],
+    "roadGround": 1.6459999984502793,
+    "textDistrict": {
+      "identity": "Robotics Labs District",
+      "architecturalLanguage": "architecture behaves robotically through functional test infrastructure, adaptive skins, replaceable modules, active docking, responsive structures, and exterior machine circulation without figurative robot ornament",
+      "buildingCount": 10,
+      "buildings": [
+        {
+          "code": "R1",
+          "name": "Corpus Nexus",
+          "subtitle": "Embodied Intelligence and Humanoid Robotics Institute",
+          "purpose": "Whole-body embodied AI, humanoid locomotion, mobile manipulation, robot foundation models, and sim-to-real learning",
+          "placementZone": "OMICS-facing embodied-intelligence gateway",
+          "footprintMetres": [
+            128,
+            96
+          ],
+          "heightMetres": 176,
+          "exteriorMotif": "seven rotated slabs around an inclined spine and articulated titanium exoskeleton above hostile urban terrain",
+          "operationalMovement": "load-transfer signals, camera booms, terrace maintenance cranes, and vertical-locomotion trials"
+        },
+        {
+          "code": "R2",
+          "name": "Tactus Hall",
+          "subtitle": "Robotic Skin, Dexterity and Manipulation Laboratory",
+          "purpose": "Robotic hands, multimodal tactile sensing, artificial skin, compliant grasping, in-hand manipulation, and tool use",
+          "placementZone": "sensor-transfer and public contact edge",
+          "footprintMetres": [
+            182,
+            92
+          ],
+          "heightMetres": 54,
+          "exteriorMotif": "a long tapered instrument clad in responsive ceramic sensor tiles above an articulated twenty-four-support canopy",
+          "operationalMovement": "contact-event light constellations, iris manipulators, and load-adjusting canopy supports"
+        },
+        {
+          "code": "R3",
+          "name": "Myomer Pavilion",
+          "subtitle": "Soft Robotics, Artificial Muscle and Adaptive Morphology Centre",
+          "purpose": "Pneumatic and hydraulic robots, artificial muscles, variable-stiffness structures, self-healing elastomers, and continuum manipulators",
+          "placementZone": "soft-machine landscape belt",
+          "footprintMetres": [
+            154,
+            118
+          ],
+          "heightMetres": 74,
+          "exteriorMotif": "serpentine translucent membrane lobes, vascular fluid channels, self-repair scars, and variable-stiffness arches",
+          "operationalMovement": "slow pneumatic breathing, load-responsive muscle bundles, and reconfigurable outdoor arches"
+        },
+        {
+          "code": "R4",
+          "name": "Murmuration Array",
+          "subtitle": "Swarm Robotics and Collective Autonomy Complex",
+          "purpose": "Decentralized coordination, aerial and terrestrial swarms, collective mapping, emergent construction, and distributed sensing",
+          "placementZone": "collective-autonomy flight volume",
+          "footprintMetres": [
+            168,
+            124
+          ],
+          "heightMetres": 112,
+          "exteriorMotif": "six equal hexagonal docking towers around an open high-tension-mesh swarm enclosure and Consensus Needle",
+          "operationalMovement": "coordinated drone constellations, shifting machine-readable landmarks, and mobile sensor pods"
+        },
+        {
+          "code": "R5",
+          "name": "Symbiont Conservatory",
+          "subtitle": "Biohybrid and Living Robotics Laboratory",
+          "purpose": "Living muscle, neurons, responsive tissues, biological actuators, organism-machine interfaces, and cultivated robots",
+          "placementZone": "controlled biological interface toward OMICS",
+          "footprintMetres": [
+            156,
+            118
+          ],
+          "heightMetres": 76,
+          "exteriorMotif": "three lens pavilions nested under a branching transparent shell with culture-media tubes and biosafety basins",
+          "operationalMovement": "fluid-front indicators, frame-crawling maintenance robots, incubator lanterns, and aquatic monitors"
+        },
+        {
+          "code": "R6",
+          "name": "Magnetotaxis Vault",
+          "subtitle": "Medical Micro- and Nanorobotics Research Centre",
+          "purpose": "Magnetic and acoustic microrobots, targeted delivery, microscale manipulation, soft medical robots, and confined-fluid navigation",
+          "placementZone": "vibration-isolated microsystems plaza",
+          "footprintMetres": [
+            142,
+            126
+          ],
+          "heightMetres": 92,
+          "exteriorMotif": "a buried black dome surrounded by six monumental copper-banded field arches and four acoustic pylons",
+          "operationalMovement": "drifting field geometry, responsive-liquid calibration, and acoustic interference displays"
+        },
+        {
+          "code": "R7",
+          "name": "Avatar Spine",
+          "subtitle": "Telepresence, Haptics and Robotic Embodiment Institute",
+          "purpose": "Remote robotic avatars, full-body teleoperation, haptic feedback, exoskeleton control, shared autonomy, and remote science",
+          "placementZone": "Guest Scientists public interface",
+          "footprintMetres": [
+            138,
+            108
+          ],
+          "heightMetres": 152,
+          "exteriorMotif": "paired leaning dark and translucent towers linked under tension by three sensor-lattice bridges",
+          "operationalMovement": "Echo Armature posture mirroring, synchronized facade silhouettes, and bridge inspection robots"
+        },
+        {
+          "code": "R8",
+          "name": "Terminus Range",
+          "subtitle": "Extreme-Environment and Disaster Robotics Facility",
+          "purpose": "Search-and-rescue, subterranean, deep-sea, polar, planetary, and autonomous inspection robotics",
+          "placementZone": "southern heavy-service and hostile-terrain edge",
+          "footprintMetres": [
+            176,
+            132
+          ],
+          "heightMetres": 94,
+          "exteriorMotif": "four scarred armoured hangars around a rearrangeable Failure Canyon and compressed hostile terrain",
+          "operationalMovement": "test-crane traversal, hazard boundaries, wash-down frames, and autonomous endurance routes"
+        },
+        {
+          "code": "R9",
+          "name": "Autopoiesis Yard",
+          "subtitle": "Autonomous Construction and Robotic Fabrication Hall",
+          "purpose": "Robotic assembly, large-scale additive manufacturing, autonomous building, voxel construction, and self-climbing machines",
+          "placementZone": "distributed-construction demonstration front",
+          "footprintMetres": [
+            188,
+            132
+          ],
+          "heightMetres": 88,
+          "exteriorMotif": "an open fabrication hall with sliding space-frame roof, interchangeable facade bays, gantries, and unfinished prototypes",
+          "operationalMovement": "bridge-gantry fabrication, rail carriers, climbing maintenance robots, and replaceable building bays"
+        },
+        {
+          "code": "R10",
+          "name": "Palingenesis Works",
+          "subtitle": "Modular, Evolutionary and Self-Repairing Robotics Laboratory",
+          "purpose": "Self-reconfiguring robots, modular bodies, autonomous repair, machine ecology, and long-duration adaptive systems",
+          "placementZone": "self-repairing terminal court",
+          "footprintMetres": [
+            158,
+            136
+          ],
+          "heightMetres": 82,
+          "exteriorMotif": "twelve mismatched annular modules, exposed scar plates, a circular service rail, Parts Trees, and central sorting tower",
+          "operationalMovement": "facade-module servicing, component exchange, repair-nest traffic, and autonomous parts redistribution"
+        }
+      ],
+      "landmarks": {
+        "embodiedIntelligence": "Corpus Nexus",
+        "tactileManipulation": "Tactus Hall",
+        "softRobotics": "Myomer Pavilion",
+        "swarmAutonomy": "Murmuration Array",
+        "biohybridRobotics": "Symbiont Conservatory",
+        "microrobotics": "Magnetotaxis Vault",
+        "telepresence": "Avatar Spine",
+        "extremeEnvironments": "Terminus Range",
+        "roboticConstruction": "Autopoiesis Yard",
+        "selfRepair": "Palingenesis Works"
+      },
+      "circulation": {
+        "primaryAxis": "ROBOTICS__KINEMATIC_WALK",
+        "pedestrianWidthMetres": 34,
+        "autonomousMachineLanes": 2,
+        "inductionChargingStrips": 2,
+        "machineReadableFiducials": 48,
+        "robotHeightTrafficSignals": 10,
+        "humanRefuges": 8,
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "corpusSlabs": 7,
+        "tactileSkinTiles": 120,
+        "articulatedCanopySupports": 24,
+        "myomerLobes": 5,
+        "variableStiffnessArches": 8,
+        "swarmTowers": 6,
+        "dockingApertures": 96,
+        "coordinatedDrones": 24,
+        "symbiontPavilions": 3,
+        "cultureMediaTubes": 18,
+        "fieldShapingArches": 6,
+        "avatarBridges": 3,
+        "armouredHangars": 4,
+        "fabricationGantries": 2,
+        "reconfigurableModules": 12,
+        "partsTrees": 8,
+        "autonomousCarriers": 6
+      },
+      "materials": [
+        "pale ceramic composite",
+        "graphite photovoltaic glass",
+        "dark titanium",
+        "brushed service alloy",
+        "field-shaping copper",
+        "adaptive translucent membrane",
+        "biohybrid fluoropolymer",
+        "scarred fibre-reinforced concrete"
+      ],
+      "lighting": [
+        "cool-white active-test state",
+        "cyan machine guidance",
+        "functional hazard amber",
+        "biohybrid violet",
+        "active-boundary red"
+      ],
+      "operationalRule": "movement replaces ornament; every animated element represents testing, calibration, logistics, maintenance, sensing, or structural response",
+      "exteriorOnly": true
+    },
+    "compactDistrict": {
+      "buildingCount": 10,
+      "circulation": {
+        "primaryAxis": "ROBOTICS__KINEMATIC_WALK",
+        "pedestrianWidthMetres": 34,
+        "autonomousMachineLanes": 2,
+        "inductionChargingStrips": 2,
+        "machineReadableFiducials": 48,
+        "robotHeightTrafficSignals": 10,
+        "humanRefuges": 8,
+        "exactBuildingApproaches": 10
+      },
+      "signatureSystems": {
+        "corpusSlabs": 7,
+        "tactileSkinTiles": 120,
+        "articulatedCanopySupports": 24,
+        "myomerLobes": 5,
+        "variableStiffnessArches": 8,
+        "swarmTowers": 6,
+        "dockingApertures": 96,
+        "coordinatedDrones": 24,
+        "symbiontPavilions": 3,
+        "cultureMediaTubes": 18,
+        "fieldShapingArches": 6,
+        "avatarBridges": 3,
+        "armouredHangars": 4,
+        "fabricationGantries": 2,
+        "reconfigurableModules": 12,
+        "partsTrees": 8,
+        "autonomousCarriers": 6
+      },
+      "operationalRule": "movement replaces ornament; every animated element represents testing, calibration, logistics, maintenance, sensing, or structural response"
+    },
+    "compactSelected": {
+      "id": "robotics-labs",
+      "name": "Robotics Labs District",
+      "category": "engineering",
+      "packageId": "robotics-labs",
+      "state": {
+        "position": {
+          "x": -151.5,
+          "y": 1.61,
+          "z": 1.85533990070824e-14
+        },
+        "rotationY": 0,
+        "scale": 1,
+        "visible": true,
+        "visibilityIntent": "visible",
+        "effectiveVisible": true,
+        "accent": "#6DE0E2",
+        "styleCustomized": false,
+        "collisionEnabled": true,
+        "interactions": []
+      }
+    },
+    "selectableAudit": [
+      {
+        "code": "R1",
+        "id": "robotics-labs__building-corpus-nexus",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R2",
+        "id": "robotics-labs__building-tactus-hall",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R3",
+        "id": "robotics-labs__building-myomer-pavilion",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R4",
+        "id": "robotics-labs__building-murmuration-array",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R5",
+        "id": "robotics-labs__building-symbiont-conservatory",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R6",
+        "id": "robotics-labs__building-magnetotaxis-vault",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R7",
+        "id": "robotics-labs__building-avatar-spine",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R8",
+        "id": "robotics-labs__building-terminus-range",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R9",
+        "id": "robotics-labs__building-autopoiesis-yard",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      },
+      {
+        "code": "R10",
+        "id": "robotics-labs__building-palingenesis-works",
+        "definitionRegistered": true,
+        "objectRegistered": true
+      }
+    ],
+    "specializedRevision": 18,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "streaming": {
+      "id": "robotics-labs",
+      "kind": "district",
+      "loadState": "loaded",
+      "lifecyclePhase": "ready",
+      "loadProgress": 1,
+      "priorityReason": "selected",
+      "priorityScore": 1000000,
+      "visibleCandidate": true,
+      "visualLevel": "detail",
+      "detailResident": true,
+      "proxyVisible": false,
+      "midVisible": false,
+      "farVisible": false,
+      "pinned": true,
+      "distanceMetres": 0,
+      "estimatedCost": {
+        "drawCalls": 24,
+        "triangles": 93604,
+        "animationNodes": 3
+      },
+      "renderImportance": {
+        "mandatory": 1539,
+        "micro": 8,
+        "visibleMicro": 8,
+        "culledMicro": 0
+      },
+      "batchOccupancy": {
+        "capacity": 1547,
+        "active": 1547,
+        "ratio": 1
+      }
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6459999984502793,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.1624999999999964,
+    "grounded": true,
+    "position": [
+      -151.162,
+      1.808,
+      -0.688
+    ]
+  },
+  "errors": []
+}

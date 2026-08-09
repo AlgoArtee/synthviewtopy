@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 17;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 18;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -178,6 +178,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'proteomics-labs': 12,
   'omics-labs': 17,
   'computational-biology-labs': 13,
+  'robotics-labs': 18,
   'biochemistry-labs': 8,
   'organic-chemistry-labs': 9,
   'inorganic-chemistry': 10,
@@ -199,6 +200,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'proteomics-emissive-pulse',
   'omics-emissive-pulse',
   'computational-biology-emissive-pulse',
+  'robotics-emissive-pulse',
   'biochemistry-emissive-pulse',
   'organic-chemistry-emissive-pulse',
   'inorganic-chemistry-emissive-pulse',
@@ -3833,6 +3835,35 @@ export class IslandWorld {
         const path = object.userData.path as Array<[number, number, number]>;
         if (Array.isArray(path) && path.length > 1) {
           const progress = (this.elapsed * Number(object.userData.speed ?? 0.003) + Number(object.userData.phase ?? 0)) % 1;
+          const scaled = progress * (path.length - 1); const index = Math.min(path.length - 2, Math.floor(scaled)); const localT = scaled - index;
+          object.position.set(
+            THREE.MathUtils.lerp(path[index][0], path[index + 1][0], localT),
+            THREE.MathUtils.lerp(path[index][1], path[index + 1][1], localT),
+            THREE.MathUtils.lerp(path[index][2], path[index + 1][2], localT),
+          );
+        }
+      } else if (object.userData.animate === 'robotics-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.006) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.2),
+            Number(object.userData.maxIntensity ?? 3.8),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'robotics-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.01);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'robotics-path-transit') {
+        const path = object.userData.path as Array<[number, number, number]>;
+        if (Array.isArray(path) && path.length > 1) {
+          const progress = (this.elapsed * Number(object.userData.speed ?? 0.0025) + Number(object.userData.phase ?? 0)) % 1;
           const scaled = progress * (path.length - 1); const index = Math.min(path.length - 2, Math.floor(scaled)); const localT = scaled - index;
           object.position.set(
             THREE.MathUtils.lerp(path[index][0], path[index + 1][0], localT),
@@ -9336,6 +9367,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedComputationalBiology = selectedPackageId === 'computational-biology-labs'
       ? this.objectGroups.get('computational-biology-labs')?.userData.computationalBiologyLabsDistrict
       : null;
+    const selectedRobotics = selectedPackageId === 'robotics-labs'
+      ? this.objectGroups.get('robotics-labs')?.userData.roboticsLabsDistrict
+      : null;
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
@@ -9507,6 +9541,12 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         circulation: selectedComputationalBiology.circulation,
         signatureSystems: selectedComputationalBiology.signatureSystems,
       } : null,
+      roboticsLabsDistrict: selectedRobotics ? {
+        buildingCount: selectedRobotics.buildingCount,
+        circulation: selectedRobotics.circulation,
+        signatureSystems: selectedRobotics.signatureSystems,
+        operationalRule: selectedRobotics.operationalRule,
+      } : null,
       astronomyAstrobiologyLabsDistrict: selectedAstronomyAstrobiology ? {
         buildingCount: selectedAstronomyAstrobiology.buildingCount,
         circulation: selectedAstronomyAstrobiology.circulation,
@@ -9549,6 +9589,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const proteomicsLabsDistrict = this.objectGroups.get('proteomics-labs')?.userData.proteomicsLabsDistrict ?? null;
     const omicsLabsDistrict = this.objectGroups.get('omics-labs')?.userData.omicsLabsDistrict ?? null;
     const computationalBiologyLabsDistrict = this.objectGroups.get('computational-biology-labs')?.userData.computationalBiologyLabsDistrict ?? null;
+    const roboticsLabsDistrict = this.objectGroups.get('robotics-labs')?.userData.roboticsLabsDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9709,6 +9750,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       proteomicsLabsDistrict,
       omicsLabsDistrict,
       computationalBiologyLabsDistrict,
+      roboticsLabsDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

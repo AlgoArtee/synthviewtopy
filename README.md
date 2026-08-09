@@ -36,6 +36,7 @@ npm run test:genomics           # Audit the five-building Genomics Labs District
 npm run test:proteomics         # Audit the five-building Proteomics Labs District exterior package
 npm run test:omics              # Audit the five-building Omics Labs District exterior package
 npm run test:computational-biology # Audit the ten-building Computational Biology Labs District exterior package
+npm run test:robotics           # Audit the ten-building Robotics Labs District exterior package
 npm run test:biochemistry       # Audit the ten-building Biochemistry Labs District exterior package
 npm run test:inorganic-chemistry # Audit the fifteen-building Inorganic Chemistry Labs District exterior package
 npm run test:particle-physics # Audit the fifteen-building Particle Physics Labs District exterior package
@@ -176,6 +177,15 @@ The outer-ring Computational Biology Labs District is a ten-building exterior ca
 - **Pangenome Meridian**, **Morphospace Atlas**, and **Regula Loom** translate graph genomes, tissue sections, and context-dependent regulation into five branching bars, six offset tissue plates, three veil towers, section breaks, enhancer bridges, and cellular relief.
 - **Immunome Exchange**, **Kinetica Dynamics Array**, **Aion Evolution Engine**, and **Continuum BioTwin Observatory** complete the district with a crescent Recognition Court, trajectory ribbons, a phylogenetic canyon, eighteen Thermal Reef towers, nested biological-scale terraces, and the Systems Tower.
 - The 32-metre **Inference Spine** carries three signal lines, five branching paths, a Cartesian grid, an 87-part courier track, six animated couriers, eighteen sensor masts, thirty-six validation domains, ten heat exchangers, and exact approaches to every building. The 1,887-mesh package stays within its outer-ring sector with zero facility-envelope overlaps and participates in HLOD streaming, revision-13 persistence migration, selection, deterministic animation, text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the exterior specification.
+
+## Robotics Labs District
+
+The western middle-ring Robotics Labs District is a ten-building exterior machine-test environment organized along the **Kinematic Walk**. Pale ceramic composite, graphite photovoltaic glass, dark titanium, service alloy, copper field structures, adaptive membranes, biohybrid fluoropolymer, and scarred concrete unify ten intentionally different silhouettes without gears, android statues, robot-head buildings, or ornamental motion.
+
+- **Corpus Nexus** stacks seven rotated research slabs around an inclined central spine and articulated exoskeleton; **Tactus Hall** stretches a responsive 120-tile skin above twenty-four articulated canopy supports; and **Myomer Pavilion** gathers five translucent membrane lobes beneath variable-stiffness arches and an artificial-muscle colonnade.
+- **Murmuration Array** distributes six equal docking towers and ninety-six apertures around the open swarm volume; **Symbiont Conservatory** nests three cultivated pavilions below a branching environmental shell; and **Magnetotaxis Vault** monumentalizes invisible microscale control with six copper-banded field arches and four acoustic pylons.
+- **Avatar Spine** links paired leaning towers with three tension bridges and the functional Echo Armature; **Terminus Range** arranges four scarred armoured hangars around the Failure Canyon; **Autopoiesis Yard** remains an open, unfinished construction system beneath two fabrication gantries; and **Palingenesis Works** divides its annulus into twelve mismatched, repairable modules served by Parts Trees and a circular maintenance frame.
+- The grounded **Kinematic Walk** is flanked by two autonomous-machine lanes, two induction strips, forty-eight machine-readable fiducials, ten robot-height traffic signals, eight recessed human refuges, six circulating carriers, and exact approaches to every facility. Exterior motion is limited to testing, calibration, logistics, maintenance, sensing, or structural response. The specialized package participates in HLOD streaming, revision-18 persistence migration, per-building selection/editing, compact/deep text-state inspection, WALK navigation, and GLB export. Interiors remain intentionally deferred by the supplied exterior specification.
 
 ## Particle Physics Labs District
 

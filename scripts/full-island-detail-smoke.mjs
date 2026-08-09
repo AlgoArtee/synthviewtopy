@@ -7,8 +7,8 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-// 354 planned facilities plus the retained substantial Industrial annex anchor.
-const TARGET_BUILDING_COUNT = 355;
+// 360 planned facilities plus the retained substantial Industrial annex anchor.
+const TARGET_BUILDING_COUNT = 361;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -242,12 +242,12 @@ try {
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
     || fullAudit.stats.drawCalls > 1_500
-    // The 59-building Residential / Ever Hour continuum brings the measured
-    // authored baseline to 844 GPU batches, 439 textures, and about 3.631M
-    // triangles. Preserve a narrow margin above that verified baseline.
-    || fullStreaming.gpuBatching.batchCount > 845
-    || fullAudit.stats.textureCount > 440
-    || fullAudit.stats.triangles > 3_650_000
+    // The Living Transect's ten authored institutes bring the measured island
+    // baseline to 854 GPU batches, 453 textures, and about 3.695M triangles.
+    // Preserve a narrow margin above that verified baseline.
+    || fullStreaming.gpuBatching.batchCount > 860
+    || fullAudit.stats.textureCount > 460
+    || fullAudit.stats.triangles > 3_750_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0

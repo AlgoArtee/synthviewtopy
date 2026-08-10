@@ -77,6 +77,10 @@ const NETWORK_VERSION = 2;
 const MAX_SUMMARY_CENTERLINE_POINTS = 64;
 const MAX_MESH_CENTERLINE_POINTS = 64;
 const GENERATED_NETWORK_GROUP_NAME = 'DISTRICT_ROADS__GENERATED_NETWORK';
+const RETIRED_CORE_ROAD_NETWORK_IDS = new Set([
+  'synthetic-quantum-biosystems',
+  'dark-center-lab-megabuilding',
+]);
 const CONNECTOR_EDGE_CLEARANCE = metresToWorldUnits(1.8);
 const CONNECTOR_SMOOTHING_MARGIN = metresToWorldUnits(3.2);
 const CONNECTOR_SAMPLE_STEP = metresToWorldUnits(11);
@@ -104,6 +108,10 @@ const GENERIC_DISTRICT_IDS = new Set([
 ]);
 
 const EXISTING_NETWORK_EXCEPTIONS = new Map<string, string>([
+  [
+    'corporate-core',
+    'The Black Ring uses its authored concentric Compliance Walk, Procession Loop, and exact inward approaches; no road connector may cross the protected central plaza.',
+  ],
   [
     'academic-libraries-theoretical-labs',
     'The authored Academic path graph already joins the inner ring and both radial gate roads at the shared road datum.',
@@ -1565,6 +1573,38 @@ export function finalizeDistrictRoadNetwork(
   options: FinalizeDistrictRoadNetworkOptions = {},
 ) {
   if (!definition.sector) return;
+  if (RETIRED_CORE_ROAD_NETWORK_IDS.has(definition.id)) {
+    removeGeneratedRoadNetwork(district);
+    district.userData.districtRoadNetwork = {
+      version: NETWORK_VERSION,
+      districtId: definition.id,
+      centerlineSpace: 'district-local',
+      routeCount: 0,
+      connectorCount: 0,
+      ringConnectorCount: 0,
+      genericCollectorLoop: false,
+      genericCollectorRoadId: null,
+      connectedRingIds: [],
+      sharedCell: {
+        index: definition.sector.sharedCellIndex,
+        count: definition.sector.sharedCellCount,
+        connectionMode: 'retired-core-placeholder-network',
+        backboneRingIds: [],
+      },
+      sharedCellBackbone: false,
+      existingNetworkException: false,
+      connectorException: false,
+      exceptionReason: null,
+      retirementReason: 'Legacy central placeholder roads retired by the Black Ring masterplan.',
+      roadSurfaceWorldY: ROAD_SURFACE_WORLD_Y,
+      connectorObstacleCount: 0,
+      obstacleAwareConnectorCount: 0,
+      detouredConnectorCount: 0,
+      legacyCoreRoadNetworkRetired: true,
+      routes: [],
+    };
+    return;
+  }
   if (!options.force && district.userData.districtRoadNetwork?.version === NETWORK_VERSION) return;
   if (options.force) removeGeneratedRoadNetwork(district);
   district.updateMatrixWorld(true);
@@ -1578,9 +1618,11 @@ export function finalizeDistrictRoadNetwork(
   const exceptionReason = EXISTING_NETWORK_EXCEPTIONS.get(definition.id);
   const connectedRingIds: string[] = [];
   if (exceptionReason) {
-    const existingRadius = matchingRoadRadius(definition.sector.innerRadius)
-      ?? matchingRoadRadius(definition.sector.outerRadius);
-    if (existingRadius !== undefined) connectedRingIds.push(ringId(existingRadius));
+    if (definition.id !== 'corporate-core') {
+      const existingRadius = matchingRoadRadius(definition.sector.innerRadius)
+        ?? matchingRoadRadius(definition.sector.outerRadius);
+      if (existingRadius !== undefined) connectedRingIds.push(ringId(existingRadius));
+    }
   } else {
     eligibleRingBoundaries(definition).forEach((radius) => {
       district.updateMatrixWorld(true);

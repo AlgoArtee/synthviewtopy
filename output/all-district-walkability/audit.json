@@ -12,7 +12,7 @@
     "preciseObstacleCount": 807,
     "sampleCount": 23305,
     "clearCount": 23305,
-    "broadOnlyMarginsAvoided": 121,
+    "broadOnlyMarginsAvoided": 135,
     "movementProbeCount": 131,
     "failedDistricts": [],
     "districtResults": [
@@ -20,7 +20,7 @@
         "id": "synthetic-quantum-biosystems",
         "sampleCount": 462,
         "clearCount": 462,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 7,
         "movementProbeCount": 3,
         "movementFailures": [],
         "failures": []
@@ -38,7 +38,7 @@
         "id": "corporate-core",
         "sampleCount": 462,
         "clearCount": 462,
-        "broadOnlyMarginsAvoided": 0,
+        "broadOnlyMarginsAvoided": 7,
         "movementProbeCount": 3,
         "movementFailures": [],
         "failures": []
@@ -333,11 +333,11 @@
       }
     ],
     "representative": {
-      "districtId": "pharmacology-labs",
-      "boundary": "inner-ring-road",
-      "x": 38.7317701217433,
-      "z": -74.53757430475204,
-      "ground": 1.6160000000000072,
+      "districtId": "synthetic-quantum-biosystems",
+      "boundary": "start-radial-road",
+      "x": -48.71392896287467,
+      "z": -28.125000000000004,
+      "ground": 1.6160000000521542,
       "clear": true,
       "broadOnly": true,
       "blocker": null

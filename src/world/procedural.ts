@@ -50,6 +50,7 @@ import { buildEverHourDistrict, buildResidentialScientistsDistrict } from './res
 import { buildMarketingDistrict, buildScientificArtLabsDistrict } from './artMarketingDistrict';
 import { buildEntertainmentDistrict } from './entertainmentDistrict';
 import { buildFinancialFundingDistrict } from './financialFundingDistrict';
+import { buildCorporateCoreDistrict } from './corporateCoreDistrict';
 import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
@@ -2136,6 +2137,37 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     boundedByTwoConcentricCircles: true,
   };
 
+  if (definition.id === 'synthetic-quantum-biosystems') {
+    group.userData.retiredCorePlaceholder = true;
+    group.userData.population = {
+      plannedFacilities: [],
+      plannedObjects: [],
+      realizedFeatureTags: [],
+      realizedFacilityCount: 0,
+      realizedObjectCount: 0,
+      localRoadCount: 0,
+      distinct: true,
+      visualProgramRetired: true,
+      incorporatedInto: 'dark-center-lab-megabuilding',
+    };
+    return;
+  }
+
+  if (definition.id === 'dark-center-lab-megabuilding') {
+    group.userData.population = {
+      plannedFacilities: [],
+      plannedObjects: [],
+      realizedFeatureTags: ['central-black-megabuilding'],
+      realizedFacilityCount: 0,
+      realizedObjectCount: 1,
+      localRoadCount: 0,
+      distinct: true,
+      preservedCentralMegabuilding: true,
+      legacySatelliteCampusRetired: true,
+    };
+    return;
+  }
+
   if (definition.id === 'scientific-art-labs' || definition.id === 'marketing') {
     group.traverse((child) => {
       if (!child.name.startsWith('ARTMARK__')) return;
@@ -2159,6 +2191,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
   if (definition.id === 'financial-funding') {
     group.traverse((child) => {
       if (!child.name.startsWith('FINANCE__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
+  if (definition.id === 'corporate-core') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('CORPORATE__')) return;
       child.userData.districtId = definition.id;
       child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
       child.userData.featureTag ??= campusFeatureKey(child.name);
@@ -2696,7 +2738,12 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isToxicologyLabsDistrict = definition.id === 'toxicology-labs';
   const isResidentialEverHourDistrict = definition.id === 'scientist-residential' || definition.id === 'even-hour-hotel';
   const isArtMarketingDistrict = definition.id === 'scientific-art-labs' || definition.id === 'marketing';
-  const isEntertainmentDistrict = definition.id === 'luxury-entertainment' || definition.id === 'financial-funding';
+  const isRetiredCorePlaceholder = definition.id === 'synthetic-quantum-biosystems';
+  const isRetiredCoreRoadNetwork = isRetiredCorePlaceholder || definition.id === 'dark-center-lab-megabuilding';
+  const isEntertainmentDistrict = definition.id === 'luxury-entertainment'
+    || definition.id === 'financial-funding'
+    || definition.id === 'corporate-core'
+    || isRetiredCorePlaceholder;
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
@@ -2818,7 +2865,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   }
   if (isAcademicDistrict) plot.userData.academicGroundDatum = true;
   if (!isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict && !isEntertainmentDistrict) group.add(plot);
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict && !isEntertainmentDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isAstronomyAstrobiologyLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict && !isEntertainmentDistrict && !isRetiredCoreRoadNetwork) {
     addAccessRamp(
       group,
       definition.id,
@@ -2846,7 +2893,12 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
     : THREE.MathUtils.clamp(definition.height * 0.25, 2.4, definition.category === 'core' ? 10.5 : 5.8);
   switch (definition.category) {
     case 'core':
-      buildCore(group, definition, height);
+      if (definition.id === 'corporate-core') buildCorporateCoreDistrict(group, definition);
+      else if (isRetiredCorePlaceholder) {
+        group.userData.retiredCorePlaceholder = true;
+        group.userData.incorporatedInto = 'dark-center-lab-megabuilding';
+      }
+      else buildCore(group, definition, height);
       break;
     case 'bioscience':
       if (definition.id === 'medical-labs') buildMedicalLabsDistrict(group, definition);
@@ -2909,7 +2961,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       break;
   }
 
-  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict && !isEntertainmentDistrict) {
+  if (!isAcademicDistrict && !isEntryLogisticsDistrict && !isSecurityDistrict && !isSecretLabsDistrict && !isMedicalLabsDistrict && !isPharmacologyDistrict && !isMicrobiologyDistrict && !isMolecularBiologyDistrict && !isBioanalyticsLabsDistrict && !isForensicCyberforensicDistrict && !isGenomicsLabsDistrict && !isProteomicsLabsDistrict && !isOmicsLabsDistrict && !isComputationalBiologyLabsDistrict && !isRoboticsLabsDistrict && !isElectronicsLabsDistrict && !isBiochemistryLabsDistrict && !isOrganicChemistryLabsDistrict && !isInorganicChemistryLabsDistrict && !isParticlePhysicsLabsDistrict && !isMaterialsScienceLabsDistrict && !isEnvironmentalScienceLabsDistrict && !isToxicologyLabsDistrict && !isResidentialEverHourDistrict && !isArtMarketingDistrict && !isEntertainmentDistrict && !isRetiredCoreRoadNetwork) {
     addDistrictWalkPortal(group, definition.id, width, depth, definition.accent, finishedFloorY, accessRampLength);
   }
   if (definition.id === 'academic-libraries-theoretical-labs') {
@@ -2981,6 +3033,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       ? 18.4
       : definition.id === 'financial-funding'
       ? 20.8
+      : definition.id === 'corporate-core'
+      ? 27.5
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };
 }

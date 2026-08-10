@@ -8,15 +8,22 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
 const CONNECTOR_EXCEPTIONS = [
+  'corporate-core',
   'academic-libraries-theoretical-labs',
   'entry-commercial',
   'logistics',
+];
+
+const RETIRED_CORE_ROAD_PACKAGES = [
+  'synthetic-quantum-biosystems',
+  'dark-center-lab-megabuilding',
 ];
 
 // These districts own bespoke circulation generators. Every other district
 // uses the shared collector-loop and local-approach model.
 const SPECIALIZED_NETWORKS = [
   ...CONNECTOR_EXCEPTIONS,
+  ...RETIRED_CORE_ROAD_PACKAGES,
   'industrial-labs',
   'security',
   'secret-labs',
@@ -32,6 +39,12 @@ const SPECIALIZED_NETWORKS = [
   'omics-labs',
   'computational-biology-labs',
   'robotics-labs',
+  'electronics-microelectronics-labs',
+  'scientific-art-labs',
+  'marketing',
+  'luxury-entertainment',
+  'financial-funding',
+  'corporate-core',
   'biochemistry-labs',
   'organic-chemistry-labs',
   'inorganic-chemistry',
@@ -66,11 +79,12 @@ try {
   await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot));
   await page.waitForTimeout(900);
 
-  const audit = await page.evaluate(({ connectorExceptions, specializedNetworks }) => {
+  const audit = await page.evaluate(({ connectorExceptions, specializedNetworks, retiredCoreRoadPackages }) => {
     const world = window.labIsland;
     const failures = [];
     const exceptionIds = new Set(connectorExceptions);
     const specializedIds = new Set(specializedNetworks);
+    const retiredCoreIds = new Set(retiredCoreRoadPackages);
     const normalizeToken = (value) => String(value ?? '').trim().toLowerCase();
     const routeId = (route) => String(route?.roadId ?? route?.id ?? '').trim();
     const routeClass = (route) => normalizeToken(route?.roadClass);
@@ -172,6 +186,11 @@ try {
       const id = routeId(route);
       const cls = routeClass(route);
       const points = arterialCenterline(route);
+      const centerlineSegments = Array.isArray(route?.centerlineSegments)
+        ? route.centerlineSegments.map((segment) => (
+          Array.isArray(segment) ? segment.map(toPoint) : []
+        ))
+        : [];
       const width = Number(route?.width);
       if (!id) failures.push(`${ownerLabel} has no id/roadId`);
       if (!cls) failures.push(`${ownerLabel}/${id || '<unknown>'} has no roadClass`);
@@ -185,7 +204,22 @@ try {
       if (points.length < 2 || points.some((point) => !finitePoint(point))) {
         failures.push(`${ownerLabel}/${id || '<unknown>'} has an invalid centerline specification`);
       }
-      return { id, cls, points, width };
+      if (route?.centralBlackRingClearance === true && (
+        centerlineSegments.length !== 2
+        || centerlineSegments.some((segment) => segment.length !== 2 || segment.some((point) => !finitePoint(point)))
+        || !Number.isFinite(Number(route?.centralGapRadius))
+        || Number(route?.centralGapRadius) < 74
+      )) {
+        failures.push(`${ownerLabel}/${id || '<unknown>'} has an invalid central Black Ring road gap`);
+      }
+      return {
+        id,
+        cls,
+        points,
+        width,
+        centerlineSegments,
+        centralBlackRingClearance: route?.centralBlackRingClearance === true,
+      };
     };
 
     const arterialCandidates = new Map();
@@ -262,8 +296,12 @@ try {
       failures.push(`Expected 3 standardized radial-axis arterials, found ${radialArterials.length}`);
     }
     for (const arterial of radialArterials) {
-      if (arterial.points.length !== 2) {
-        failures.push(`Radial-axis arterial ${arterial.id} must have exactly two centerline points`);
+      const expectedPointCount = arterial.centralBlackRingClearance ? 4 : 2;
+      if (arterial.points.length !== expectedPointCount) {
+        failures.push(`Radial-axis arterial ${arterial.id} must have exactly ${expectedPointCount} centerline points`);
+      }
+      if (arterial.centralBlackRingClearance && arterial.centerlineSegments.length !== 2) {
+        failures.push(`Radial-axis arterial ${arterial.id} does not expose two outer Black Ring segments`);
       }
     }
     if (arterials.some((arterial) => !arterial.standardized)) {
@@ -307,7 +345,9 @@ try {
         const definition = world.definitions.get(id);
         const ring = String(definition?.ring ?? network?.ring ?? '').trim();
         const rawRoutes = Array.isArray(network?.routes) ? network.routes : [];
-        if (!network || rawRoutes.length === 0) failures.push(`District ${id} has no districtRoadNetwork routes`);
+        const retiredCoreNetwork = retiredCoreIds.has(id);
+        if (!network || (!retiredCoreNetwork && rawRoutes.length === 0)) failures.push(`District ${id} has no districtRoadNetwork routes`);
+        if (retiredCoreNetwork && rawRoutes.length !== 0) failures.push(`Retired core package ${id} still exposes ${rawRoutes.length} legacy roads`);
         const normalizedRoutes = rawRoutes.map((route) => ({
           source: route,
           ...validateRoute(route, `district/${id}`),
@@ -321,7 +361,7 @@ try {
           route.kinds.some((kind) => kind.includes('ring'))
           && route.cls.includes('connector')
         ));
-        const expectedConnectorCount = ring === 'core' || ring === 'perimeter' ? 1 : 2;
+        const expectedConnectorCount = retiredCoreNetwork ? 0 : ring === 'core' || ring === 'perimeter' ? 1 : 2;
         const declaredException = network?.existingNetworkException === true
           || network?.connectorException === true
           || (typeof network?.exceptionReason === 'string' && network.exceptionReason.trim().length > 0);
@@ -329,7 +369,7 @@ try {
           failures.push(`District ${id} declares an unauthorized connector exception`);
         }
         const connectorExempt = exceptionIds.has(id) && declaredException;
-        if (!connectorExempt && ringConnectors.length !== expectedConnectorCount) {
+        if (!retiredCoreNetwork && !connectorExempt && ringConnectors.length !== expectedConnectorCount) {
           failures.push(
             `District ${id} (${ring || 'unknown ring'}) has ${ringConnectors.length} ring connectors; expected ${expectedConnectorCount}`,
           );
@@ -337,7 +377,7 @@ try {
 
         group.updateWorldMatrix(true, false);
         const connectorRings = new Set();
-        for (const connector of connectorExempt ? [] : ringConnectors) {
+        for (const connector of connectorExempt || retiredCoreNetwork ? [] : ringConnectors) {
           for (let endpointIndex = 0; endpointIndex < connector.kinds.length; endpointIndex += 1) {
             if (!connector.kinds[endpointIndex].includes('ring')) continue;
             const localPoint = endpointIndex === 0 ? connector.points[0] : connector.points.at(-1);
@@ -375,7 +415,7 @@ try {
             }
           }
         }
-        if (!connectorExempt && connectorRings.size !== expectedConnectorCount) {
+        if (!retiredCoreNetwork && !connectorExempt && connectorRings.size !== expectedConnectorCount) {
           failures.push(`District ${id} connectors do not reach ${expectedConnectorCount} distinct rings`);
         }
 
@@ -519,6 +559,7 @@ try {
           collectorCount,
           localApproachCount,
           maximumApproachGap,
+          retiredCoreNetwork,
         });
       }
     } finally {
@@ -526,7 +567,7 @@ try {
     }
 
     if (districtResults.length !== 35) failures.push(`Expected 35 district networks, found ${districtResults.length}`);
-    if (districtResults.some((district) => district.routeCount === 0)) {
+    if (districtResults.some((district) => district.routeCount === 0 && !district.retiredCoreNetwork)) {
       failures.push('At least one district road network is empty');
     }
     if (ringCurbs.length !== 10) failures.push(`Expected 10 segmented ring curbs, found ${ringCurbs.length}`);
@@ -607,7 +648,11 @@ try {
       districtResults,
       failures,
     };
-  }, { connectorExceptions: CONNECTOR_EXCEPTIONS, specializedNetworks: SPECIALIZED_NETWORKS });
+  }, {
+    connectorExceptions: CONNECTOR_EXCEPTIONS,
+    specializedNetworks: SPECIALIZED_NETWORKS,
+    retiredCoreRoadPackages: RETIRED_CORE_ROAD_PACKAGES,
+  });
 
   const dynamicRefreshAudit = await page.evaluate(() => {
     const world = window.labIsland;
@@ -776,13 +821,15 @@ try {
   });
 
   const failures = [...audit.failures];
-  if (planProxyAudit.count !== 35
+  const expectedProxyRoadCount = audit.districtResults
+    .filter((district) => district.retiredCoreNetwork !== true).length;
+  if (planProxyAudit.count !== expectedProxyRoadCount
     || planProxyAudit.roads.some((road) => !road.depthTest || !road.depthWrite)) {
-    failures.push(`Plan HLOD road overlay is incomplete (${planProxyAudit.count}/35 visible)`);
+    failures.push(`Plan HLOD road overlay is incomplete (${planProxyAudit.count}/${expectedProxyRoadCount} visible)`);
   }
-  if (exploreProxyAudit.count !== 35
+  if (exploreProxyAudit.count !== expectedProxyRoadCount
     || exploreProxyAudit.roads.some((road) => !road.depthTest || !road.depthWrite)) {
-    failures.push(`Explore FAR HLOD roads are not depth-occluded (${exploreProxyAudit.count}/35)`);
+    failures.push(`Explore FAR HLOD roads are not depth-occluded (${exploreProxyAudit.count}/${expectedProxyRoadCount})`);
   }
   if (!dynamicRefreshAudit.available
     || !dynamicRefreshAudit.networkReplaced

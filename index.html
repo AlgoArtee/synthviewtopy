@@ -104,6 +104,67 @@
           <button class="icon-action" id="toggle-time" title="Toggle day / night">
             <span class="action-icon">☼</span><span class="action-label">Blue hour</span>
           </button>
+          <div class="atmosphere-monitor">
+            <button
+              class="icon-action"
+              id="atmosphere-toggle"
+              type="button"
+              aria-expanded="false"
+              aria-controls="atmosphere-menu"
+              title="Open atmosphere and Corporate plaza lighting controls"
+            >
+              <span class="action-icon">&#9729;</span><span class="action-label">Atmosphere</span>
+            </button>
+            <section class="atmosphere-menu glass-panel" id="atmosphere-menu" aria-labelledby="atmosphere-menu-title" hidden>
+              <header class="atmosphere-menu-head">
+                <div>
+                  <span class="eyebrow">Island environment</span>
+                  <h2 id="atmosphere-menu-title">Atmosphere</h2>
+                </div>
+                <button id="atmosphere-menu-close" type="button" aria-label="Close atmosphere menu">&times;</button>
+              </header>
+              <div class="atmosphere-control-grid">
+                <label class="select-field">
+                  <span>Time of Day</span>
+                  <select id="env-time">
+                    <option value="noon">Noon (Day)</option>
+                    <option value="sunrise">Sunrise</option>
+                    <option value="sunset">Sunset</option>
+                    <option value="night">Night</option>
+                  </select>
+                </label>
+                <label class="select-field">
+                  <span>Season</span>
+                  <select id="env-season">
+                    <option value="summer">Summer</option>
+                    <option value="spring">Spring</option>
+                    <option value="autumn">Autumn</option>
+                    <option value="winter">Winter</option>
+                  </select>
+                </label>
+                <label class="select-field atmosphere-weather-field">
+                  <span>Weather</span>
+                  <select id="env-weather">
+                    <option value="clear">Clear sky</option>
+                    <option value="rain">Rainy</option>
+                    <option value="fog">Foggy</option>
+                    <option value="storm">Stormy</option>
+                    <optgroup label="Academic District">
+                      <option value="academic-autumn">Late-autumn after rain</option>
+                      <option value="academic-overcast">Overcast afternoon</option>
+                      <option value="academic-rainy-dusk">Rainy dusk</option>
+                      <option value="academic-foggy-night">Foggy night</option>
+                    </optgroup>
+                  </select>
+                </label>
+              </div>
+              <label class="atmosphere-strength-field" for="corporate-plaza-light-strength">
+                <span><strong>Corporate plaza stadium lights</strong><output id="corporate-plaza-light-strength-output">100%</output></span>
+                <input id="corporate-plaza-light-strength" type="range" min="0" max="200" step="5" value="100" />
+                <small>Adjusts all twenty inward-facing building stanchions together.</small>
+              </label>
+            </section>
+          </div>
           <button class="icon-action" id="import-trigger" title="Import GLB, GLTF, OBJ or STL into the active interior, or choose an exterior location">
             <span class="action-icon">↥</span><span class="action-label">Import</span>
           </button>
@@ -142,41 +203,8 @@
           <kbd>/</kbd>
         </label>
 
-        <section class="atlas-atmosphere" aria-label="Atmospheric controls">
+        <section class="atlas-performance" aria-label="Rendering controls">
           <div class="field-row">
-            <label class="select-field">
-              <span>Time of Day</span>
-              <select id="env-time">
-                <option value="noon">Noon (Day)</option>
-                <option value="sunrise">Sunrise</option>
-                <option value="sunset">Sunset</option>
-                <option value="night">Night</option>
-              </select>
-            </label>
-            <label class="select-field">
-              <span>Weather</span>
-              <select id="env-weather">
-                <option value="clear">Clear sky</option>
-                <option value="rain">Rainy</option>
-                <option value="fog">Foggy</option>
-                <option value="storm">Stormy</option>
-                <optgroup label="Academic District">
-                  <option value="academic-autumn">Late-autumn after rain</option>
-                  <option value="academic-overcast">Overcast afternoon</option>
-                  <option value="academic-rainy-dusk">Rainy dusk</option>
-                  <option value="academic-foggy-night">Foggy night</option>
-                </optgroup>
-              </select>
-            </label>
-            <label class="select-field">
-              <span>Season</span>
-              <select id="env-season">
-                <option value="summer">Summer</option>
-                <option value="spring">Spring</option>
-                <option value="autumn">Autumn</option>
-                <option value="winter">Winter</option>
-              </select>
-            </label>
             <label class="select-field">
               <span>Graphics</span>
               <select id="env-quality">

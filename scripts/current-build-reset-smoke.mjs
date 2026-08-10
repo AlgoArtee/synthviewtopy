@@ -55,9 +55,11 @@ try {
     );
     world.setObjectPosition(id, 'x', canonical.position.x + 31.25);
     world.setObjectPosition(id, 'z', canonical.position.z - 13.5);
+    world.setCorporateCorePlazaLightStrength(1.45);
     return {
       canonical,
       moved: world.getObjectState(id),
+      plazaLightStrength: world.getCorporateCorePlazaLightStrength(),
       assetId: asset.assetId,
     };
   }, hallId);
@@ -75,6 +77,7 @@ try {
   const staleLoad = await page.evaluate((id) => ({
     state: window.labIsland.getObjectState(id),
     persistence: window.labIsland.getPersistenceSnapshot(),
+    plazaLightStrength: window.labIsland.getCorporateCorePlazaLightStrength(),
     localMirrorPresent: localStorage.getItem('youtopy_saved_project') !== null,
   }), hallId);
 
@@ -117,6 +120,84 @@ try {
     world.camera.position.set(point.x + 44, point.y + 60, point.z + 44);
     world.controls.target.copy(point);
     world.controls.update();
+    const mountedCorePackages = [
+      'synthetic-quantum-biosystems',
+      'dark-center-lab-megabuilding',
+      'corporate-core',
+    ].map((packageId) => world.worldStreaming.mountPackageAuthoritySources(packageId)).filter(Boolean);
+    const synthetic = world.objectGroups.get('synthetic-quantum-biosystems');
+    const central = world.objectGroups.get('dark-center-lab-megabuilding');
+    const corporate = world.objectGroups.get('corporate-core');
+    const coreAudit = {
+      syntheticMeshes: 0,
+      syntheticLegacyRoads: 0,
+      centralLegacyFacilities: 0,
+      centralLegacyRoads: 0,
+      legacyPlazaPavilions: 0,
+      centralLightPlatforms: 0,
+      skybridgeSegments: 0,
+      covenantDeadEndPassages: 0,
+      patentAuctionPrimaryMasses: 0,
+      patentAuctionMaterialCount: 0,
+      patentAuctionGroupCount: 0,
+      patentAuctionElementCount: 0,
+      patentAuctionDrawnElementCount: 0,
+      corporateNightLightObjects: 0,
+      corporateNightLightPointLights: 0,
+      corporateNightLightSpotLights: 0,
+      corporatePlazaStadiumLightRigs: 0,
+      corporateNightLightEmissiveMeshes: 0,
+      corporateNightLightBlockingObjects: 0,
+      corporateGradedRoadConnectors: 0,
+      transparentGreyGlassMeshes: 0,
+    };
+    synthetic?.traverse((object) => {
+      if (object.isMesh) coreAudit.syntheticMeshes += 1;
+      if (object.userData.localCampusRoad === true || object.userData.generatedDistrictRoadNetwork === true) coreAudit.syntheticLegacyRoads += 1;
+    });
+    central?.traverse((object) => {
+      if (object.name.includes('__FACILITY__')) coreAudit.centralLegacyFacilities += 1;
+      if (object.userData.localCampusRoad === true || object.userData.generatedDistrictRoadNetwork === true) coreAudit.centralLegacyRoads += 1;
+    });
+    corporate?.traverse((object) => {
+      if (object.userData.corporatePlazaStadiumLightRig === true) coreAudit.corporatePlazaStadiumLightRigs += 1;
+      if (object.name.endsWith('__GRADED_CONNECTOR')) coreAudit.corporateGradedRoadConnectors += 1;
+      if (object.userData.sealedSkybridgeSegment === true) coreAudit.skybridgeSegments += 1;
+      if (object.name === 'CORPORATE__C07__SEALED_MEGABUILDING_PASSAGE') coreAudit.covenantDeadEndPassages += 1;
+      if (object.userData.corporateNightLight === true) {
+        coreAudit.corporateNightLightObjects += 1;
+        if (object.isPointLight === true) coreAudit.corporateNightLightPointLights += 1;
+        if (object.isSpotLight === true && object.userData.corporatePlazaStadiumLight === true) coreAudit.corporateNightLightSpotLights += 1;
+        if (object.userData.navObstacle !== false) coreAudit.corporateNightLightBlockingObjects += 1;
+      }
+      if (!object.isMesh) return;
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      if (object.userData.corporateNightLight === true && materials.some((material) => (
+        Number(material?.emissiveIntensity ?? 0) > 0 && Number(material?.emissive?.getHex?.() ?? 0) !== 0
+      ))) {
+        coreAudit.corporateNightLightEmissiveMeshes += 1;
+      }
+      if (object.name === 'CORPORATE__C10__FACETED_AUCTION_POLYHEDRON') {
+        coreAudit.patentAuctionPrimaryMasses += 1;
+        coreAudit.patentAuctionMaterialCount = materials.length;
+        coreAudit.patentAuctionGroupCount = object.geometry.groups.length;
+        coreAudit.patentAuctionElementCount = object.geometry.index?.count ?? object.geometry.getAttribute('position')?.count ?? 0;
+        coreAudit.patentAuctionDrawnElementCount = object.geometry.groups.reduce((sum, group) => sum + group.count, 0);
+      }
+      if (materials.some((material) => material?.name === 'Corporate transparent grey sealed skybridge glass'
+        && material.transparent === true && material.opacity < 0.6)) coreAudit.transparentGreyGlassMeshes += 1;
+    });
+    world.scene.traverse((object) => {
+      if (object.name.startsWith('Corporate plaza laboratory pavilion')) coreAudit.legacyPlazaPavilions += 1;
+      if (object.userData.centralLightPlatform === true) coreAudit.centralLightPlatforms += 1;
+    });
+    coreAudit.syntheticRoadRouteCount = synthetic?.userData.districtRoadNetwork?.routes?.length ?? -1;
+    coreAudit.centralRoadRouteCount = central?.userData.districtRoadNetwork?.routes?.length ?? -1;
+    coreAudit.corporateRoadConnectorCount = corporate?.userData.districtRoadNetwork?.connectorCount ?? -1;
+    coreAudit.corporateRoadRingConnectorCount = corporate?.userData.districtRoadNetwork?.ringConnectorCount ?? -1;
+    coreAudit.corporatePlazaLightStrength = world.getCorporateCorePlazaLightStrength();
+    coreAudit.skybridgeMetadata = corporate?.userData.corporateCoreDistrict?.skybridges ?? null;
+    mountedCorePackages.reverse().forEach((restore) => restore());
     return {
       state: world.getObjectState(id),
       persistence: world.getPersistenceSnapshot(),
@@ -127,12 +208,14 @@ try {
         manualProjectCount,
         assetCount,
         manualHallState: manualProject?.payload?.objects?.find((object) => object.id === id)?.state ?? null,
+        manualPlazaLightStrength: manualProject?.payload?.editor?.corporateCorePlazaLightStrength ?? null,
       },
       button: {
         present: Boolean(button),
         label: button?.textContent?.replace(/\s+/g, ' ').trim(),
         title: button?.getAttribute('title'),
       },
+      coreAudit,
     };
   }, hallId);
   await page.waitForTimeout(500);
@@ -152,12 +235,14 @@ try {
   const manualReload = await page.evaluate((id) => ({
     state: window.labIsland.getObjectState(id),
     persistence: window.labIsland.getPersistenceSnapshot(),
+    plazaLightStrength: window.labIsland.getCorporateCorePlazaLightStrength(),
     localMirrorPresent: localStorage.getItem('youtopy_saved_project') !== null,
   }), hallId);
 
   const near = (a, b, tolerance = 0.001) => Math.abs(a - b) <= tolerance;
   if (!near(staleLoad.state.position.x, seeded.saved.position.x)
-    || !near(staleLoad.state.position.z, seeded.saved.position.z)) {
+    || !near(staleLoad.state.position.z, seeded.saved.position.z)
+    || !near(staleLoad.plazaLightStrength, seeded.plazaLightStrength)) {
     throw new Error(`Seeded saved override did not load: ${JSON.stringify({ seeded, staleLoad })}`);
   }
   if (!near(restored.state.position.x, seeded.canonical.position.x)
@@ -176,7 +261,8 @@ try {
     throw new Error(`Current Build did not clear working state while preserving manual Save: ${JSON.stringify(restored)}`);
   }
   if (!near(restored.stores.manualHallState.position.x, seeded.saved.position.x)
-    || !near(restored.stores.manualHallState.position.z, seeded.saved.position.z)) {
+    || !near(restored.stores.manualHallState.position.z, seeded.saved.position.z)
+    || !near(restored.stores.manualPlazaLightStrength, seeded.plazaLightStrength)) {
     throw new Error(`Manual Save did not retain the moved Hall coordinates: ${JSON.stringify(restored.stores)}`);
   }
   if (restored.stores.assetCount !== 1 || restored.persistence.assetCount !== 1) {
@@ -187,8 +273,37 @@ try {
     || !restored.button.title?.includes('retain the manual Save')) {
     throw new Error(`Current Build menu action is missing or mislabeled: ${JSON.stringify(restored.button)}`);
   }
+  if (restored.coreAudit.syntheticMeshes !== 0
+    || restored.coreAudit.syntheticLegacyRoads !== 0
+    || restored.coreAudit.centralLegacyFacilities !== 0
+    || restored.coreAudit.centralLegacyRoads !== 0
+    || restored.coreAudit.syntheticRoadRouteCount !== 0
+    || restored.coreAudit.centralRoadRouteCount !== 0
+    || restored.coreAudit.legacyPlazaPavilions !== 0
+    || restored.coreAudit.centralLightPlatforms !== 6
+    || restored.coreAudit.skybridgeSegments !== 0
+    || restored.coreAudit.covenantDeadEndPassages !== 0
+    || restored.coreAudit.patentAuctionPrimaryMasses !== 1
+    || restored.coreAudit.patentAuctionMaterialCount !== 3
+    || restored.coreAudit.patentAuctionGroupCount !== 20
+    || restored.coreAudit.patentAuctionDrawnElementCount !== restored.coreAudit.patentAuctionElementCount
+    || restored.coreAudit.corporateNightLightObjects !== 576
+    || restored.coreAudit.corporateNightLightPointLights !== 16
+    || restored.coreAudit.corporateNightLightSpotLights !== 20
+    || restored.coreAudit.corporatePlazaStadiumLightRigs !== 20
+    || restored.coreAudit.corporateNightLightEmissiveMeshes !== 340
+    || restored.coreAudit.corporateNightLightBlockingObjects !== 0
+    || Math.abs(restored.coreAudit.corporatePlazaLightStrength - 1) > 0.0001
+    || restored.coreAudit.corporateGradedRoadConnectors !== 0
+    || restored.coreAudit.corporateRoadConnectorCount !== 0
+    || restored.coreAudit.corporateRoadRingConnectorCount !== 0
+    || restored.coreAudit.transparentGreyGlassMeshes !== 0
+    || restored.coreAudit.skybridgeMetadata != null) {
+    throw new Error(`Current Build retained legacy core placeholders/roads, lost the light platforms, or retained skybridges: ${JSON.stringify(restored.coreAudit)}`);
+  }
   if (!near(manualReload.state.position.x, seeded.saved.position.x)
     || !near(manualReload.state.position.z, seeded.saved.position.z)
+    || !near(manualReload.plazaLightStrength, seeded.plazaLightStrength)
     || !manualReload.localMirrorPresent
     || !manualReload.persistence.manualSaveAvailable) {
     throw new Error(`Refresh did not restore the protected moved-building layout: ${JSON.stringify(manualReload)}`);

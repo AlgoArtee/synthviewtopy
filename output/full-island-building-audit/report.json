@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2954,
+    "liveRenderObjectCount": 3023,
     "batchOccupancy": {
-      "capacity": 66330,
-      "active": 64672,
-      "ratio": 0.9750037690336197
+      "capacity": 67536,
+      "active": 65878,
+      "ratio": 0.9754501303008766
     },
     "microdetail": {
       "total": 896,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 48029,
+    "detachedAuthoringSourceCount": 49235,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 923,
-      "batchedSourceCount": 48029,
-      "retainedSourceCount": 50060,
-      "estimatedGeometryBytes": 109995556,
-      "estimatedTextureBytes": 228127077,
-      "instancedBatchCount": 243,
-      "batchedMeshBatchCount": 196,
-      "mergedBatchCount": 484,
+      "batchCount": 943,
+      "batchedSourceCount": 49235,
+      "retainedSourceCount": 51315,
+      "estimatedGeometryBytes": 112858704,
+      "estimatedTextureBytes": 298554679,
+      "instancedBatchCount": 240,
+      "batchedMeshBatchCount": 203,
+      "mergedBatchCount": 500,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -249,19 +249,19 @@
         "pinned": false,
         "distanceMetres": 11277,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3758,
-          "animationNodes": 0
+          "drawCalls": 87,
+          "triangles": 79292,
+          "animationNodes": 6
         },
         "renderImportance": {
-          "mandatory": 61,
+          "mandatory": 1316,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 54,
-          "active": 54,
+          "capacity": 1260,
+          "active": 1260,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 401,
+  "buildingCount": 417,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -1791,8 +1791,8 @@
     {
       "districtId": "corporate-core",
       "name": "Corporate Core",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 20,
+      "discoveredCount": 20,
       "packageState": {
         "id": "corporate-core",
         "kind": "district",
@@ -1810,104 +1810,440 @@
         "pinned": false,
         "distanceMetres": 11277,
         "estimatedCost": {
-          "drawCalls": 15,
-          "triangles": 3758,
-          "animationNodes": 0
+          "drawCalls": 87,
+          "triangles": 79292,
+          "animationNodes": 6
         },
         "renderImportance": {
-          "mandatory": 61,
+          "mandatory": 1316,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 54,
-          "active": 54,
+          "capacity": 1260,
+          "active": 1260,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "corporate-core",
-          "name": "Island Executive Headquarters",
-          "rootName": "corporate-core__FACILITY__ISLAND-EXECUTIVE-HEADQUARTERS",
-          "code": null,
-          "representedSourceCount": 7,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 7,
-          "authoredBatchedSources": 7,
-          "expectedRuntimeBatchSources": 7,
-          "mandatoryArchitecturalSources": 4,
-          "representedMandatorySources": 4,
+          "name": "The Null Exchange",
+          "rootName": "CORPORATE__C01__THE_NULL_EXCHANGE",
+          "code": "C01",
+          "representedSourceCount": 34,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 32,
+          "authoredBatchedSources": 32,
+          "expectedRuntimeBatchSources": 32,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            9.56,
-            7.331,
-            8.487
+            10.449,
+            23.846,
+            9.55
           ],
           "failures": []
         },
         {
           "districtId": "corporate-core",
-          "name": "Research Command Forum",
-          "rootName": "corporate-core__FACILITY__RESEARCH-COMMAND-FORUM",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Obsidian Reserve",
+          "rootName": "CORPORATE__C02__THE_OBSIDIAN_RESERVE",
+          "code": "C02",
+          "representedSourceCount": 30,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 29,
+          "authoredBatchedSources": 29,
+          "expectedRuntimeBatchSources": 29,
+          "mandatoryArchitecturalSources": 8,
+          "representedMandatorySources": 8,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            9.236,
-            3.873,
-            8.275
+            13.32,
+            12.515,
+            15.26
           ],
           "failures": []
         },
         {
           "districtId": "corporate-core",
-          "name": "Diplomatic Briefing Pavilion",
-          "rootName": "corporate-core__FACILITY__DIPLOMATIC-BRIEFING-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Black Ledger Authority",
+          "rootName": "CORPORATE__C03__THE_BLACK_LEDGER_AUTHORITY",
+          "code": "C03",
+          "representedSourceCount": 88,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 86,
+          "authoredBatchedSources": 86,
+          "expectedRuntimeBatchSources": 86,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            11.014,
-            2.921,
-            8.275
+            10.6,
+            18.8,
+            9.965
           ],
           "failures": []
         },
         {
           "districtId": "corporate-core",
-          "name": "Operations Coordination Hall",
-          "rootName": "corporate-core__FACILITY__OPERATIONS-COORDINATION-HALL",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
+          "name": "The Quantum Clearing House",
+          "rootName": "CORPORATE__C04__THE_QUANTUM_CLEARING_HOUSE",
+          "code": "C04",
+          "representedSourceCount": 33,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 31,
+          "authoredBatchedSources": 31,
+          "expectedRuntimeBatchSources": 31,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.2,
+            14.8,
+            11.701
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Black Index Bureau",
+          "rootName": "CORPORATE__C05__THE_BLACK_INDEX_BUREAU",
+          "code": "C05",
+          "representedSourceCount": 64,
+          "directVisibleMeshes": 6,
+          "visibleBatchSources": 58,
+          "authoredBatchedSources": 58,
+          "expectedRuntimeBatchSources": 58,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.091,
+            11.625,
+            7.242
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Vanta Venture Spire",
+          "rootName": "CORPORATE__C06__THE_VANTA_VENTURE_SPIRE",
+          "code": "C06",
+          "representedSourceCount": 40,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 39,
+          "authoredBatchedSources": 39,
+          "expectedRuntimeBatchSources": 39,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            9.675,
+            27.3,
+            9.853
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Covenant Capital House",
+          "rootName": "CORPORATE__C07__COVENANT_CAPITAL_HOUSE",
+          "code": "C07",
+          "representedSourceCount": 57,
+          "directVisibleMeshes": 3,
+          "visibleBatchSources": 54,
+          "authoredBatchedSources": 54,
+          "expectedRuntimeBatchSources": 54,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15.2,
+            12.706,
+            51.25
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Patronage Engine",
+          "rootName": "CORPORATE__C08__THE_PATRONAGE_ENGINE",
+          "code": "C08",
+          "representedSourceCount": 117,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 115,
+          "authoredBatchedSources": 115,
+          "expectedRuntimeBatchSources": 115,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.617,
+            13.6,
+            13.807
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Legacy Endowment",
+          "rootName": "CORPORATE__C09__THE_LEGACY_ENDOWMENT",
+          "code": "C09",
+          "representedSourceCount": 63,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 61,
+          "authoredBatchedSources": 61,
+          "expectedRuntimeBatchSources": 61,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.97,
+            19.225,
+            10.76
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Silent Patent Auction",
+          "rootName": "CORPORATE__C10__THE_SILENT_PATENT_AUCTION",
+          "code": "C10",
+          "representedSourceCount": 51,
+          "directVisibleMeshes": 3,
+          "visibleBatchSources": 48,
+          "authoredBatchedSources": 48,
+          "expectedRuntimeBatchSources": 48,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.95,
+            16,
+            13.975
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Umbra Underwriting Hall",
+          "rootName": "CORPORATE__C11__UMBRA_UNDERWRITING_HALL",
+          "code": "C11",
+          "representedSourceCount": 69,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 67,
+          "authoredBatchedSources": 67,
+          "expectedRuntimeBatchSources": 67,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.151,
+            11.298,
+            14.432
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Catastrophe Bond Tower",
+          "rootName": "CORPORATE__C12__CATASTROPHE_BOND_TOWER",
+          "code": "C12",
+          "representedSourceCount": 47,
+          "directVisibleMeshes": 8,
+          "visibleBatchSources": 39,
+          "authoredBatchedSources": 39,
+          "expectedRuntimeBatchSources": 39,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.2,
+            24.36,
+            11.2
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Arbitration Basilica",
+          "rootName": "CORPORATE__C13__THE_ARBITRATION_BASILICA",
+          "code": "C13",
+          "representedSourceCount": 68,
+          "directVisibleMeshes": 4,
+          "visibleBatchSources": 64,
+          "authoredBatchedSources": 64,
+          "expectedRuntimeBatchSources": 64,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.6,
+            11.9,
+            15.215
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Event Horizon Convention Centre",
+          "rootName": "CORPORATE__C14__EVENT_HORIZON_CONVENTION_CENTRE",
+          "code": "C14",
+          "representedSourceCount": 85,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 83,
+          "authoredBatchedSources": 83,
+          "expectedRuntimeBatchSources": 83,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.88,
+            7.861,
+            14.5
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Mourningstar Plenary Hall",
+          "rootName": "CORPORATE__C15__MOURNINGSTAR_PLENARY_HALL",
+          "code": "C15",
+          "representedSourceCount": 53,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 52,
+          "authoredBatchedSources": 52,
+          "expectedRuntimeBatchSources": 52,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            17.7,
+            8.3,
+            20.082
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Eclipse Expo Galleries",
+          "rootName": "CORPORATE__C16__ECLIPSE_EXPO_GALLERIES",
+          "code": "C16",
+          "representedSourceCount": 32,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 31,
+          "authoredBatchedSources": 31,
+          "expectedRuntimeBatchSources": 31,
+          "mandatoryArchitecturalSources": 7,
+          "representedMandatorySources": 7,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            15.875,
+            8.451,
+            15.8
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Funding Crucible",
+          "rootName": "CORPORATE__C17__THE_FUNDING_CRUCIBLE",
+          "code": "C17",
+          "representedSourceCount": 72,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 71,
+          "authoredBatchedSources": 71,
+          "expectedRuntimeBatchSources": 71,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            13.84,
+            7.4,
+            13.734
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Last Prospectus Media House",
+          "rootName": "CORPORATE__C18__THE_LAST_PROSPECTUS_MEDIA_HOUSE",
+          "code": "C18",
+          "representedSourceCount": 40,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 38,
+          "authoredBatchedSources": 38,
+          "expectedRuntimeBatchSources": 38,
           "mandatoryArchitecturalSources": 3,
           "representedMandatorySources": 3,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            3.225,
-            8.931
+            14.006,
+            14.017,
+            12.718
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "Nocturne Delegation Tower",
+          "rootName": "CORPORATE__C19__NOCTURNE_DELEGATION_TOWER",
+          "code": "C19",
+          "representedSourceCount": 67,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 65,
+          "authoredBatchedSources": 65,
+          "expectedRuntimeBatchSources": 65,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16,
+            18.66,
+            15.95
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "corporate-core",
+          "name": "The Crown of Consensus",
+          "rootName": "CORPORATE__C20__THE_CROWN_OF_CONSENSUS",
+          "code": "C20",
+          "representedSourceCount": 86,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 84,
+          "authoredBatchedSources": 84,
+          "expectedRuntimeBatchSources": 84,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.549,
+            16.122,
+            11.4
           ],
           "failures": []
         }

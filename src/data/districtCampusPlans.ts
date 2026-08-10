@@ -108,46 +108,46 @@ export type DistrictCampusId =
 
 export const DISTRICT_CAMPUS_PLANS = {
   'synthetic-quantum-biosystems': {
-    facilities: [
-      { name: 'Quantum Living Systems Crown', form: 'arcology' },
-      { name: 'Synthetic Cell Foundry', form: 'lab-block' },
-      { name: 'Entanglement Measurement Pavilion', form: 'pavilion' },
-      { name: 'Biological Computation Greenhouse', form: 'greenhouse' },
-    ],
-    objects: [
-      { name: 'Quantum Bioreactor Array', kind: 'process-equipment' },
-      { name: 'Photon Correlation Benches', kind: 'instrument' },
-      { name: 'Living Data Totems', kind: 'public-art' },
-      { name: 'Cryogenic Sample Pods', kind: 'storage' },
-    ],
+    // This program is contained inside the preserved central Megabuilding.
+    // Its former exterior campus was a temporary masterplan placeholder.
+    facilities: [],
+    objects: [],
   },
   'dark-center-lab-megabuilding': {
-    facilities: [
-      { name: 'Black Glass Research Arcology', form: 'arcology' },
-      { name: 'Cyan Energy Spine Tower', form: 'tower' },
-      { name: 'Deep Systems Laboratory', form: 'subterranean-bunker' },
-      { name: 'Central Utility Exchange', form: 'utility-plant' },
-    ],
-    objects: [
-      { name: 'Luminous Computation Core', kind: 'energy-system' },
-      { name: 'Autonomous Service Drones', kind: 'drone' },
-      { name: 'Secure Data Vaults', kind: 'storage' },
-      { name: 'Arcology Access Scanners', kind: 'security' },
-    ],
+    // The authored Megabuilding itself remains. These former surrounding
+    // campus facilities and their generated roads were only placeholders.
+    facilities: [],
+    objects: [],
   },
   'corporate-core': {
     facilities: [
-      { name: 'Island Executive Headquarters', form: 'tower' },
-      { name: 'Research Command Forum', form: 'administration' },
-      { name: 'Diplomatic Briefing Pavilion', form: 'pavilion' },
-      { name: 'Operations Coordination Hall', form: 'hall' },
+      { name: 'The Null Exchange', form: 'tower' },
+      { name: 'The Obsidian Reserve', form: 'administration' },
+      { name: 'The Black Ledger Authority', form: 'tower' },
+      { name: 'The Quantum Clearing House', form: 'administration' },
+      { name: 'The Black Index Bureau', form: 'hall' },
+      { name: 'The Vanta Venture Spire', form: 'tower' },
+      { name: 'Covenant Capital House', form: 'hall' },
+      { name: 'The Patronage Engine', form: 'administration' },
+      { name: 'The Legacy Endowment', form: 'tower' },
+      { name: 'The Silent Patent Auction', form: 'pavilion' },
+      { name: 'Umbra Underwriting Hall', form: 'hall' },
+      { name: 'Catastrophe Bond Tower', form: 'tower' },
+      { name: 'The Arbitration Basilica', form: 'hall' },
+      { name: 'Event Horizon Convention Centre', form: 'administration' },
+      { name: 'Mourningstar Plenary Hall', form: 'hall' },
+      { name: 'Eclipse Expo Galleries', form: 'pavilion' },
+      { name: 'The Funding Crucible', form: 'subterranean-bunker' },
+      { name: 'The Last Prospectus Media House', form: 'administration' },
+      { name: 'Nocturne Delegation Tower', form: 'tower' },
+      { name: 'The Crown of Consensus', form: 'pavilion' },
     ],
     objects: [
-      { name: 'Orbital Plaza Beacon', kind: 'public-art' },
-      { name: 'Executive Arrival Vehicles', kind: 'vehicle' },
-      { name: 'Holographic Campus Directory', kind: 'signage' },
-      { name: 'Formal Reflecting Pools', kind: 'water-feature' },
-      { name: 'Civic Shade Gardens', kind: 'garden' },
+      { name: 'The Compliance Walk', kind: 'street-furniture' },
+      { name: 'The Procession Loop', kind: 'vehicle' },
+      { name: 'Subsurface Neon Lane Hierarchy', kind: 'signage' },
+      { name: 'Inward-Facing Tribunal Seating', kind: 'street-furniture' },
+      { name: 'Sealed Central Access Gates', kind: 'security' },
     ],
   },
   'toxicology-labs': {

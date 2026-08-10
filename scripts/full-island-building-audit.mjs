@@ -291,8 +291,15 @@ try {
       const root = world.objectGroups.get(districtId);
       root.updateWorldMatrix(true, true);
       const bounds = new world.selectionBounds.constructor().setFromObject(root, true);
-      const center = bounds.getCenter(world.controls.target.clone());
-      const size = bounds.getSize(world.camera.position.clone());
+      const center = world.controls.target.clone();
+      const size = world.camera.position.clone();
+      if (bounds.isEmpty()) {
+        root.getWorldPosition(center);
+        size.set(16, 1, 16);
+      } else {
+        bounds.getCenter(center);
+        bounds.getSize(size);
+      }
       const radial = center.clone().setY(0);
       if (radial.lengthSq() < 0.001) radial.set(0, 0, 1);
       radial.normalize();

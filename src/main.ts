@@ -214,6 +214,11 @@ const undoActionButton = required<HTMLButtonElement>('#undo-action');
 const envTimeSelect = required<HTMLSelectElement>('#env-time');
 const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
 const envSeasonSelect = required<HTMLSelectElement>('#env-season');
+const atmosphereToggleButton = required<HTMLButtonElement>('#atmosphere-toggle');
+const atmosphereMenu = required<HTMLElement>('#atmosphere-menu');
+const atmosphereMenuCloseButton = required<HTMLButtonElement>('#atmosphere-menu-close');
+const corporatePlazaLightStrengthInput = required<HTMLInputElement>('#corporate-plaza-light-strength');
+const corporatePlazaLightStrengthOutput = required<HTMLOutputElement>('#corporate-plaza-light-strength-output');
 const envQualitySelect = required<HTMLSelectElement>('#env-quality');
 const fullIslandDetailInput = required<HTMLInputElement>('#full-island-detail');
 const fullIslandDetailStatus = required<HTMLElement>('#full-island-detail-status');
@@ -2188,8 +2193,36 @@ function syncEnvironmentUI() {
   envTimeSelect.value = world.getTimeOfDay();
   envWeatherSelect.value = world.getWeather();
   envSeasonSelect.value = world.getSeason();
+  const plazaLightPercent = Math.round(world.getCorporateCorePlazaLightStrength() * 100);
+  corporatePlazaLightStrengthInput.value = String(plazaLightPercent);
+  corporatePlazaLightStrengthOutput.value = `${plazaLightPercent}%`;
+  corporatePlazaLightStrengthOutput.textContent = `${plazaLightPercent}%`;
   envQualitySelect.value = world.getGraphicsQuality();
 }
+
+function setAtmosphereMenuOpen(open: boolean) {
+  atmosphereMenu.hidden = !open;
+  atmosphereToggleButton.setAttribute('aria-expanded', String(open));
+}
+
+atmosphereToggleButton.addEventListener('click', () => {
+  const open = atmosphereMenu.hidden;
+  if (open) syncEnvironmentUI();
+  setAtmosphereMenuOpen(open);
+});
+
+atmosphereMenuCloseButton.addEventListener('click', () => setAtmosphereMenuOpen(false));
+
+document.addEventListener('pointerdown', (event) => {
+  if (atmosphereMenu.hidden) return;
+  const target = event.target;
+  if (!(target instanceof Node) || atmosphereMenu.contains(target) || atmosphereToggleButton.contains(target)) return;
+  setAtmosphereMenuOpen(false);
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && !atmosphereMenu.hidden) setAtmosphereMenuOpen(false);
+});
 
 fountainSceneModeSelect.addEventListener('change', () => {
   cycleFountainStateTo('sceneMode', fountainSceneModeSelect.value, 'cycle fountain scene mode', 3);
@@ -2286,6 +2319,18 @@ envQualitySelect.addEventListener('change', () => {
   world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
   syncFountainControlPanel();
   toast('Graphics quality', `${envQualitySelect.options[envQualitySelect.selectedIndex].text} quality is active.`);
+});
+
+corporatePlazaLightStrengthInput.addEventListener('input', () => {
+  const percent = Number(corporatePlazaLightStrengthInput.value);
+  corporatePlazaLightStrengthOutput.value = `${percent}%`;
+  corporatePlazaLightStrengthOutput.textContent = `${percent}%`;
+  world.setCorporateCorePlazaLightStrength(percent / 100);
+});
+
+corporatePlazaLightStrengthInput.addEventListener('change', () => {
+  const percent = Number(corporatePlazaLightStrengthInput.value);
+  toast('Corporate plaza lights', `All twenty stadium-light stanchions are set to ${percent}% strength.`);
 });
 
 const legacyFullIslandDetailStorageKey = 'youtopy_full_island_detail';

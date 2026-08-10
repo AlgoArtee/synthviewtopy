@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 30;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 32;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -195,6 +195,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   marketing: 28,
   'luxury-entertainment': 29,
   'financial-funding': 30,
+  'corporate-core': 32,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -223,6 +224,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'art-marketing-emissive-pulse',
   'entertainment-emissive-pulse',
   'financial-emissive-pulse',
+  'corporate-emissive-pulse',
 ]);
 
 /**
@@ -1036,6 +1038,7 @@ export class IslandWorld {
   private activeTimeOfDay: 'sunrise' | 'noon' | 'sunset' | 'night' = 'noon';
   private activeWeather: WeatherMode = 'clear';
   private activeSeason: 'summer' | 'spring' | 'autumn' | 'winter' = 'summer';
+  private corporateCorePlazaLightStrength = 1;
   private graphicsQuality: GraphicsQuality = 'medium';
   private effectivePixelRatio = 1;
   private mediumPixelRatioTarget = 1;
@@ -1465,7 +1468,13 @@ export class IslandWorld {
       const authoredBuildings = this.prepareAuthoredExteriorBuildingIds(definition, group);
       this.worldStreaming.register(definition, 'district', group, this.architectureRoot);
       this.configureRuntimePickingLayers(group);
-      this.registerSelectable(definition, group, labelHeight, false);
+      this.registerSelectable(
+        definition,
+        group,
+        labelHeight,
+        false,
+        definition.id !== 'synthetic-quantum-biosystems',
+      );
       if (definition.id === 'academic-libraries-theoretical-labs') {
         this.registerAcademicBuildingSelectables(definition, group);
       }
@@ -4122,6 +4131,24 @@ export class IslandWorld {
         if (axis === 'x') object.rotation.x += step;
         else if (axis === 'z') object.rotation.z += step;
         else object.rotation.y += step;
+      } else if (object.userData.animate === 'corporate-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.002) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.2),
+            Number(object.userData.maxIntensity ?? 4),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'corporate-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.0015);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
       } else if (object.userData.animate === 'environmental-science-emissive-pulse') {
         if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
           const wave = Math.max(0, Math.sin(
@@ -5607,6 +5634,25 @@ export class IslandWorld {
     this.dayTarget = time === 'noon' ? 1 : 0;
     this.syncAcademicGateForTime();
     this.scheduleAutosave();
+  }
+
+  setCorporateCorePlazaLightStrength(strength: number) {
+    const normalized = THREE.MathUtils.clamp(Number.isFinite(strength) ? strength : 1, 0, 2);
+    this.corporateCorePlazaLightStrength = normalized;
+    const corporate = this.objectGroups.get('corporate-core');
+    corporate?.traverse((object) => {
+      if (!(object instanceof THREE.SpotLight) || object.userData.corporatePlazaStadiumLight !== true) return;
+      const baseIntensity = Number(object.userData.corporatePlazaStadiumLightBaseIntensity ?? 1100);
+      object.intensity = baseIntensity * normalized;
+      object.userData.corporatePlazaStadiumLightStrength = normalized;
+    });
+    const nightLighting = corporate?.userData.corporateCoreDistrict?.nightLighting;
+    if (nightLighting) nightLighting.plazaStadiumLightStrength = normalized;
+    this.scheduleAutosave();
+  }
+
+  getCorporateCorePlazaLightStrength() {
+    return this.corporateCorePlazaLightStrength;
   }
 
   getTimeOfDay() {
@@ -7784,6 +7830,7 @@ export class IslandWorld {
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
         season: this.activeSeason,
+        corporateCorePlazaLightStrength: this.corporateCorePlazaLightStrength,
         academicFountain: this.serializeAcademicFountainState(),
         camera: this.serializeCameraState(),
       },
@@ -8345,6 +8392,9 @@ export class IslandWorld {
       }
       if (payload.editor.season !== undefined) {
         this.setSeason(payload.editor.season);
+      }
+      if (payload.editor.corporateCorePlazaLightStrength !== undefined) {
+        this.setCorporateCorePlazaLightStrength(Number(payload.editor.corporateCorePlazaLightStrength));
       }
       // Academic weather presets can imply a time of day. Restore the user's
       // explicit time selection last so independent weather/time combinations
@@ -9527,6 +9577,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedFinancialFunding = selectedPackageId === 'financial-funding'
       ? this.objectGroups.get('financial-funding')?.userData.financialFundingDistrict
       : null;
+    const selectedCorporateCore = selectedPackageId === 'corporate-core'
+      ? this.objectGroups.get('corporate-core')?.userData.corporateCoreDistrict
+      : null;
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
@@ -9604,6 +9657,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
         season: this.activeSeason,
+        corporateCorePlazaLightStrength: this.corporateCorePlazaLightStrength,
         graphicsQuality: this.graphicsQuality,
       },
       performance: {
@@ -9753,6 +9807,15 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         lightingProtocol: selectedFinancialFunding.lightingProtocol,
         architecturalIntent: selectedFinancialFunding.architecturalIntent,
       } : null,
+      corporateCoreDistrict: selectedCorporateCore ? {
+        buildingCount: selectedCorporateCore.buildingCount,
+        clockwiseOrder: selectedCorporateCore.clockwiseOrder,
+        circulation: selectedCorporateCore.circulation,
+        signatureSystems: selectedCorporateCore.signatureSystems,
+        neonHierarchy: selectedCorporateCore.neonHierarchy,
+        architecturalIntent: selectedCorporateCore.architecturalIntent,
+        centralBuildingPreserved: selectedCorporateCore.centralBuildingPreserved,
+      } : null,
       astronomyAstrobiologyLabsDistrict: selectedAstronomyAstrobiology ? {
         buildingCount: selectedAstronomyAstrobiology.buildingCount,
         circulation: selectedAstronomyAstrobiology.circulation,
@@ -9831,6 +9894,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const marketingDistrict = this.objectGroups.get('marketing')?.userData.marketingDistrict ?? null;
     const entertainmentDistrict = this.objectGroups.get('luxury-entertainment')?.userData.entertainmentDistrict ?? null;
     const financialFundingDistrict = this.objectGroups.get('financial-funding')?.userData.financialFundingDistrict ?? null;
+    const corporateCoreDistrict = this.objectGroups.get('corporate-core')?.userData.corporateCoreDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9888,6 +9952,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         timeOfDay: this.activeTimeOfDay,
         weather: this.activeWeather,
         season: this.activeSeason,
+        corporateCorePlazaLightStrength: this.corporateCorePlazaLightStrength,
         graphicsQuality: this.graphicsQuality,
         effectivePixelRatio: Number(this.effectivePixelRatio.toFixed(2)),
         frameTimeMs: {
@@ -10001,6 +10066,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       marketingDistrict,
       entertainmentDistrict,
       financialFundingDistrict,
+      corporateCoreDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

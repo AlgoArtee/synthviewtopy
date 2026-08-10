@@ -562,6 +562,11 @@ body.import-placement-active #viewport::after {
   background: rgba(255, 255, 255, 0.05);
 }
 
+#atmosphere-toggle[aria-expanded='true'] {
+  border-color: var(--acid);
+  background: rgba(183, 243, 75, 0.08);
+}
+
 .action-icon {
   font: 400 17px/1 'DM Mono', monospace;
 }
@@ -756,7 +761,7 @@ kbd {
   transition: 140ms ease;
 }
 
-.atlas.building-browser-active .atlas-atmosphere,
+.atlas.building-browser-active .atlas-performance,
 .atlas.building-browser-active .atlas-metrics {
   display: none;
 }
@@ -2836,6 +2841,14 @@ body.theme-cleantech .fountain-control-panel {
     width: min(380px, calc(100vw - 16px));
     max-height: calc(100vh - 100px);
   }
+  .atmosphere-menu {
+    position: fixed;
+    top: 84px;
+    right: 8px;
+    width: min(360px, calc(100vw - 16px));
+    max-height: calc(100vh - 100px);
+    overflow: auto;
+  }
   #reload-current-build .action-label { display: none; }
   .brand-copy .eyebrow { display: none; }
   .brand-copy strong { font-size: 12px; }
@@ -3105,29 +3118,25 @@ body.object-interactions-disabled .fountain-control-panel {
   transform: translateY(-1px);
 }
 
-.atlas-atmosphere {
+.atlas-performance {
   padding: 8px 14px 12px;
   border-bottom: 1px solid var(--line);
 }
 
-.atlas-atmosphere .field-row {
+.atlas-performance .field-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   gap: 8px;
 }
 
-.atlas-atmosphere .field-row .select-field:last-child {
-  grid-column: span 2;
-}
-
-.atlas-atmosphere .select-field {
+.atlas-performance .select-field {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   gap: 4px;
 }
 
-.atlas-atmosphere .select-field span {
+.atlas-performance .select-field span {
   font-size: 8px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -3135,8 +3144,108 @@ body.object-interactions-disabled .fountain-control-panel {
   font-weight: 600;
 }
 
-.atlas-atmosphere .select-field select {
+.atlas-performance .select-field select {
   width: 100%;
+}
+
+.atmosphere-monitor {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.atmosphere-menu {
+  position: absolute;
+  z-index: 96;
+  top: calc(100% + 10px);
+  right: 0;
+  width: min(360px, calc(100vw - 36px));
+  padding: 16px;
+  border-radius: 5px;
+  background-color: var(--panel-deep);
+  box-shadow: 0 24px 72px rgba(0, 0, 0, 0.55);
+}
+
+.atmosphere-menu-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.atmosphere-menu-head h2 {
+  margin: 4px 0 0;
+  color: var(--ink);
+  font: 600 14px/1.25 'Space Grotesk', sans-serif;
+}
+
+.atmosphere-menu-head button {
+  width: 44px;
+  height: 44px;
+  margin: -9px -9px 0 0;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.atmosphere-control-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.atmosphere-control-grid .select-field {
+  display: grid;
+  gap: 5px;
+}
+
+.atmosphere-control-grid .select-field span {
+  color: var(--muted);
+  font: 600 8px/1.2 'DM Mono', monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.atmosphere-control-grid .select-field select {
+  width: 100%;
+}
+
+.atmosphere-weather-field {
+  grid-column: 1 / -1;
+}
+
+.atmosphere-strength-field {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.atmosphere-strength-field > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink);
+  font: 600 9px/1.35 'DM Mono', monospace;
+}
+
+.atmosphere-strength-field output {
+  color: var(--acid);
+  font-weight: 700;
+}
+
+.atmosphere-strength-field input {
+  width: 100%;
+  accent-color: var(--acid);
+}
+
+.atmosphere-strength-field small {
+  color: var(--dim);
+  font: 400 8px/1.45 'DM Mono', monospace;
 }
 
 .full-detail-option {

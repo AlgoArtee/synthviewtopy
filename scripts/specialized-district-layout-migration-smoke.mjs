@@ -7,7 +7,7 @@ const OUTPUT = process.env.SPECIALIZED_DISTRICT_LAYOUT_OUTPUT
 const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
-const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'toxicology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'electronics-microelectronics-labs', 'scientific-art-labs', 'marketing', 'luxury-entertainment', 'financial-funding', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'environmental-science-labs', 'industrial-labs', 'scientist-residential', 'even-hour-hotel'];
+const districtIds = ['security', 'secret-labs', 'medical-labs', 'pharmacology-labs', 'toxicology-labs', 'microbiology-labs', 'molecular-biology-labs', 'bioanalytics-lab', 'forensic-cyberforensic-lab', 'genomics-labs', 'proteomics-labs', 'omics-labs', 'computational-biology-labs', 'robotics-labs', 'electronics-microelectronics-labs', 'scientific-art-labs', 'marketing', 'luxury-entertainment', 'financial-funding', 'corporate-core', 'biochemistry-labs', 'organic-chemistry-labs', 'inorganic-chemistry', 'particle-physics-labs', 'astronomy-astrobiology-labs', 'materials-science-lab', 'environmental-science-labs', 'industrial-labs', 'scientist-residential', 'even-hour-hotel'];
 const roadNames = {
   security: 'SECURITY__MAIN_CURVED_BOULEVARD',
   'secret-labs': 'SECRET__BIOLOGICAL_ARC',
@@ -19,6 +19,7 @@ const roadNames = {
   marketing: 'ARTMARK__M__SPECTRUM_SPINE_OUTER_HALF',
   'luxury-entertainment': 'ENTERTAINMENT__LUMEN_BOULEVARD',
   'financial-funding': 'FINANCE__FUNDING_SPINE_PROMENADE',
+  'corporate-core': 'CORPORATE__COMPLIANCE_WALK',
   'microbiology-labs': 'MICROBIOLOGY__INNER_COLONY_ARC',
   'molecular-biology-labs': 'MOLECULAR__MOLECULAR_MERIDIAN',
   'bioanalytics-lab': 'BIOANALYTICS__ANALYTICAL_CRESCENT',
@@ -126,7 +127,7 @@ try {
       };
 
       const sector = definition.sector;
-      district.traverse((facility) => {
+      if (id !== 'corporate-core') district.traverse((facility) => {
         if (facility.userData.exteriorProgram !== true) return;
         facility.traverse((object) => {
           if (!object.isMesh || !object.geometry) return;
@@ -159,7 +160,7 @@ try {
       if (!road || !positions) throw new Error(`Missing primary road for ${id}`);
       road.updateMatrixWorld(true);
       const stride = Math.max(2, Math.floor(positions.count / 18));
-      for (let index = 0; index < positions.count; index += stride) {
+      for (let index = 0; id !== 'corporate-core' && index < positions.count; index += stride) {
         const point = world.camera.position.clone().fromBufferAttribute(positions, index).applyMatrix4(road.matrixWorld);
         const radius = Math.hypot(point.x, point.z);
         const angle = normalizeNear(Math.atan2(point.z, point.x), sector.centerAngle);
@@ -198,7 +199,7 @@ try {
   if (audit.roadViolations.length) {
     throw new Error(`Migrated roads left their sector cells: ${JSON.stringify(audit.roadViolations.slice(0, 12))}`);
   }
-  if (audit.storedRevision !== 30 || audit.textRevision !== 30) {
+  if (audit.storedRevision !== 32 || audit.textRevision !== 32) {
     throw new Error(`Migration revision was not persisted: ${JSON.stringify({ stored: audit.storedRevision, text: audit.textRevision })}`);
   }
   if (audit.planningViolations !== 0) throw new Error(`Master-plan cell violations remain: ${audit.planningViolations}`);

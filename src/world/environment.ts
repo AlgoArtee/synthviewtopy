@@ -14,6 +14,7 @@ const RADIAL_ARTERIAL_WIDTH = 1.65;
 const RING_CURB_JUNCTION_CLEARANCE = 0.35;
 const RING_CURB_JUNCTION_OPENING_WIDTH = RADIAL_ARTERIAL_WIDTH + RING_CURB_JUNCTION_CLEARANCE * 2;
 const CENTRAL_PLAZA_RADIUS = DISTRICT_ROAD_RADII[0] - 3.4;
+const CENTRAL_TRANSIT_GAP_RADIUS = DISTRICT_ROAD_RADII[0] - 8;
 const LEGACY_CENTRAL_PLAZA_Y = 1.835;
 const COASTAL_RAIL_SLEEPER_HEIGHT = metresToWorldUnits(0.12);
 const COASTAL_RAIL_CENTER_Y = ROAD_SURFACE_Y + metresToWorldUnits(0.14);
@@ -143,6 +144,37 @@ function roadSegment(start: THREE.Vector3, end: THREE.Vector3, width: number, ma
   mesh.castShadow = true;
   mesh.receiveShadow = true;
   return mesh;
+}
+
+function roadAxisWithCentralGap(
+  start: THREE.Vector3,
+  end: THREE.Vector3,
+  gapRadius: number,
+  width: number,
+  material: THREE.Material,
+  height: number,
+) {
+  const gapPoint = (source: THREE.Vector3) => {
+    const direction = source.clone().setY(0).normalize();
+    return direction.multiplyScalar(gapRadius).setY(source.y);
+  };
+  const segments = [
+    roadSegment(start, gapPoint(start), width, material, height),
+    roadSegment(gapPoint(end), end, width, material, height),
+  ];
+  const geometries = segments.map((segment) => {
+    segment.updateMatrix();
+    const geometry = segment.geometry.clone().applyMatrix4(segment.matrix);
+    segment.geometry.dispose();
+    return geometry;
+  });
+  const merged = mergeGeometries(geometries, false);
+  geometries.forEach((geometry) => geometry.dispose());
+  if (!merged) throw new Error('Failed to create the split radial arterial geometry.');
+  const road = new THREE.Mesh(merged, material);
+  road.castShadow = true;
+  road.receiveShadow = true;
+  return road;
 }
 
 function smoothTaperedRoadTransition(
@@ -609,6 +641,8 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     radialRoadWidth: RADIAL_ARTERIAL_WIDTH,
     ringCurbJunctionOpeningWidth: RING_CURB_JUNCTION_OPENING_WIDTH,
     spokeIntersectionAngles: [...spokeIntersectionAngles],
+    centralRoadGapRadius: CENTRAL_TRANSIT_GAP_RADIUS,
+    centralBlackRingRoadsRemoved: true,
   };
   const roadMaterial = new THREE.MeshPhysicalMaterial({
     color: '#142429',
@@ -840,7 +874,16 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
   radialAxes.forEach(({ roadId, startId, endId, start, end }, index) => {
     const centerlineStart = [start.x, ROAD_SURFACE_Y, start.z];
     const centerlineEnd = [end.x, ROAD_SURFACE_Y, end.z];
-    const road = roadSegment(start, end, RADIAL_ARTERIAL_WIDTH, roadMaterial, ROAD_THICKNESS);
+    const startGap = start.clone().setY(0).normalize().multiplyScalar(CENTRAL_TRANSIT_GAP_RADIUS).setY(ROAD_SURFACE_Y);
+    const endGap = end.clone().setY(0).normalize().multiplyScalar(CENTRAL_TRANSIT_GAP_RADIUS).setY(ROAD_SURFACE_Y);
+    const road = roadAxisWithCentralGap(
+      start,
+      end,
+      CENTRAL_TRANSIT_GAP_RADIUS,
+      RADIAL_ARTERIAL_WIDTH,
+      roadMaterial,
+      ROAD_THICKNESS,
+    );
     road.name = `Radial district boundary road ${index + 1}`;
     road.renderOrder = 1;
     road.userData = {
@@ -858,13 +901,20 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
       centerlineStart,
       centerlineEnd,
       centerlineY: ROAD_SURFACE_Y,
-      centerline: [centerlineStart, centerlineEnd],
+      centerline: [centerlineStart, startGap.toArray(), endGap.toArray(), centerlineEnd],
+      centerlineSegments: [
+        [centerlineStart, startGap.toArray()],
+        [endGap.toArray(), centerlineEnd],
+      ],
+      centralGapRadius: CENTRAL_TRANSIT_GAP_RADIUS,
+      centralBlackRingClearance: true,
       ringIntersectionRadii: [...DISTRICT_ROAD_RADII],
     };
     target.add(road);
-    const guide = roadSegment(
+    const guide = roadAxisWithCentralGap(
       new THREE.Vector3(start.x, ROAD_MARKING_CENTER_Y, start.z),
       new THREE.Vector3(end.x, ROAD_MARKING_CENTER_Y, end.z),
+      CENTRAL_TRANSIT_GAP_RADIUS,
       0.08,
       laneMaterial,
       ROAD_MARKING_THICKNESS,
@@ -925,24 +975,37 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     beacon.position.set(Math.cos(angle) * radius, 2.55 + plazaElevationDelta, Math.sin(angle) * radius);
     target.add(beacon);
   }
+  // Restore the original six luminous plaza platforms as public-realm objects.
+  // They are not buildings, facilities, or roads and remain independent of the
+  // retired core-campus placeholders.
   for (let index = 0; index < 6; index += 1) {
     const angle = (index / 6) * Math.PI * 2 + Math.PI / 6;
-    const pavilion = new THREE.Group();
-    pavilion.name = `Corporate plaza laboratory pavilion ${index + 1}`;
+    const platform = new THREE.Group();
+    platform.name = `Corporate plaza light platform ${index + 1}`;
+    platform.userData.centralLightPlatform = true;
+    platform.userData.publicRealmObject = true;
+    platform.userData.exteriorProgram = false;
+    platform.userData.navObstacle = false;
     const base = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.7, 0.24, 32), plazaMaterial);
+    base.name = `${platform.name} base`;
     base.position.y = 1.98;
     base.userData.walkable = true;
+    base.userData.navObstacle = false;
     const canopy = new THREE.Mesh(
       new THREE.CylinderGeometry(2.7, 2.35, 0.22, 32),
       new THREE.MeshPhysicalMaterial({ color: '#394950', roughness: 0.24, metalness: 0.72, clearcoat: 0.55 }),
     );
+    canopy.name = `${platform.name} canopy`;
     canopy.position.y = 4.75;
-    pavilion.add(base, canopy);
+    canopy.userData.navObstacle = false;
+    platform.add(base, canopy);
     for (let column = 0; column < 3; column += 1) {
       const columnAngle = (column / 3) * Math.PI * 2;
       const support = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.12, 2.65, 8), plazaMaterial);
+      support.name = `${platform.name} support ${column + 1}`;
       support.position.set(Math.cos(columnAngle) * 2.05, 3.38, Math.sin(columnAngle) * 2.05);
-      pavilion.add(support);
+      support.userData.navObstacle = false;
+      platform.add(support);
     }
     const hologramColor = index % 2 ? '#ff4ecb' : '#35d8ff';
     const hologram = new THREE.Mesh(
@@ -952,11 +1015,13 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
         transparent: true, opacity: 0.28, roughness: 0.12, metalness: 0.18, side: THREE.DoubleSide,
       }),
     );
+    hologram.name = `${platform.name} holographic light`;
     hologram.position.y = 3.25;
-    pavilion.add(hologram);
-    pavilion.position.set(Math.cos(angle) * 31, plazaElevationDelta, Math.sin(angle) * 31);
-    pavilion.rotation.y = -angle;
-    target.add(pavilion);
+    hologram.userData.navObstacle = false;
+    platform.add(hologram);
+    platform.position.set(Math.cos(angle) * 31, plazaElevationDelta, Math.sin(angle) * 31);
+    platform.rotation.y = -angle;
+    target.add(platform);
   }
 }
 

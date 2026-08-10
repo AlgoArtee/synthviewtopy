@@ -7,8 +7,9 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-// 401 planned facilities plus the retained substantial Industrial annex anchor.
-const TARGET_BUILDING_COUNT = 402;
+// 409 discoverable district buildings plus the retained metadata-only
+// Industrial annex anchor used by the GPU-detail selection contract.
+const TARGET_BUILDING_COUNT = 410;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -173,9 +174,24 @@ try {
     let markedRuntimeObjects = 0;
     let metadataAnchorCount = 0;
     let trueRuntimeBatchCount = 0;
+    const corporateEssentialSpotlights = [];
     world.scene.traverse((object) => {
       if (object.userData.streamingBudgetSuppressed === true) suppressedMeshes += 1;
       if (object.userData.gpuBatchSource === true) liveAuthoredSources += 1;
+      if (object.isSpotLight === true && object.userData.corporatePlazaStadiumLight === true) {
+        let hierarchyVisible = object.visible;
+        let parent = object.parent;
+        while (hierarchyVisible && parent) {
+          hierarchyVisible = parent.visible;
+          parent = parent.parent;
+        }
+        corporateEssentialSpotlights.push({
+          visible: object.visible,
+          hierarchyVisible,
+          intensity: object.intensity,
+          essential: object.userData.fullIslandDetailLightEssential,
+        });
+      }
       if (object.userData.gpuRuntimeBatch !== true) return;
       markedRuntimeObjects += 1;
       if (object.userData.gpuBatchMetadataAnchor === true) metadataAnchorCount += 1;
@@ -224,6 +240,7 @@ try {
       },
       hiddenSourceCollisionCount: hiddenCollisionSources.size,
       collisionSpatialIndex: world.walkController.getNavigationSpatialIndexSnapshot(),
+      corporateEssentialSpotlights,
       legacyPreference: localStorage.getItem('youtopy_full_island_detail'),
       devicePreference,
       projectSchema: world.takeSnapshotPayload().schema,
@@ -241,14 +258,13 @@ try {
     || fullStreaming.proxyPackageCount !== 0
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
-    || fullAudit.stats.drawCalls > 1_550
-    // The combined Scientific Art, Marketing, and Financial/Funding Districts'
-    // thirty authored landmarks bring the measured island baseline to about
-    // 923 GPU batches, 596 textures, and 4.388M triangles. Preserve a narrow
-    // margin above that verified baseline.
-    || fullStreaming.gpuBatching.batchCount > 940
-    || fullAudit.stats.textureCount > 620
-    || fullAudit.stats.triangles > 4_500_000
+    || fullAudit.stats.drawCalls > 1_680
+    // The Corporate Core replaces its obsolete campus placeholders with twenty
+    // authored landmarks and their sealed skybridge network. Keep a narrow
+    // margin above the measured full-island values.
+    || fullStreaming.gpuBatching.batchCount > 970
+    || fullAudit.stats.textureCount > 690
+    || fullAudit.stats.triangles > 4_600_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0
@@ -265,6 +281,11 @@ try {
     || fullAudit.stableBuildings.missingBatchMetadata.length
     || fullAudit.hiddenSourceCollisionCount === 0
     || fullAudit.collisionSpatialIndex.occupiedCellCount === 0
+    || fullAudit.corporateEssentialSpotlights.length !== 20
+    || fullAudit.corporateEssentialSpotlights.some((light) => !light.visible
+      || !light.hierarchyVisible
+      || light.essential !== true
+      || light.intensity <= 0)
     || fullAudit.representationErrors.length
     || fullAudit.nonReadyPackages.length
     || fullAudit.legacyPreference !== 'true'
@@ -273,6 +294,33 @@ try {
     || fullAudit.projectSchema !== 'youtopy.lab-island/2.0') {
     throw new Error(`Full-island structural audit failed: ${JSON.stringify(fullAudit, null, 2)}`);
   }
+
+  await page.evaluate(() => {
+    const world = window.labIsland;
+    world.select('corporate-core', 'scene');
+    world.setMode('explore');
+    world.setTimeOfDay('night');
+    world.setSeason('summer');
+    world.setWeather('clear');
+    world.setCorporateCorePlazaLightStrength(1.35);
+    world.cameraTween = null;
+    world.camera.up.set(0, 1, 0);
+    world.camera.position.set(105, 70, 116);
+    world.controls.target.set(0, 5.5, 0);
+    world.controls.update();
+    document.querySelector('.toast-region')?.setAttribute('style', 'display:none');
+  });
+  await page.locator('#atmosphere-toggle').click();
+  await settle(900);
+  await page.screenshot({ path: `${OUTPUT}/corporate-core-full-detail-explore-stadium-lights.png`, fullPage: true });
+  await page.locator('#atmosphere-menu-close').click();
+  await page.evaluate(() => {
+    const world = window.labIsland;
+    world.setCorporateCorePlazaLightStrength(1);
+    world.setTimeOfDay('noon');
+    world.overview();
+  });
+  await settle(500);
 
   const compactTextAudit = await page.evaluate(() => {
     for (let index = 0; index < 5; index += 1) window.render_game_to_text();

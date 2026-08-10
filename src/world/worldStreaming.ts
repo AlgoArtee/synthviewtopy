@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { CORPORATE_CORE_BUILDING_PROGRAM } from './corporateCoreDistrict';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { BiomeDefinition, DistrictDefinition } from '../data/districts';
 import { ISLAND_SURFACE_Y } from '../config/island';
@@ -268,7 +269,9 @@ function isRuntimeInteriorDescendant(object: THREE.Object3D, root: THREE.Group) 
 function collectFullIslandExteriorLights(root: THREE.Group) {
   const lights: Array<{ light: THREE.Light; originalVisible: boolean }> = [];
   root.traverse((object) => {
-    if (!(object instanceof THREE.Light) || isRuntimeInteriorDescendant(object, root)) return;
+    if (!(object instanceof THREE.Light)
+      || isRuntimeInteriorDescendant(object, root)
+      || object.userData.fullIslandDetailLightEssential === true) return;
     lights.push({ light: object, originalVisible: object.visible });
   });
   return lights;
@@ -292,6 +295,7 @@ const GPU_PULSE_PROFILES = new Set([
   'environmental-science-emissive-pulse',
   'toxicology-emissive-pulse',
   'residential-ever-hour-emissive-pulse',
+  'corporate-emissive-pulse',
 ]);
 
 interface ProductionVisibilityState {
@@ -703,11 +707,74 @@ function makeDistrictRoadProxy(
   return roads;
 }
 
+function makeCorporateCoreProxy(
+  definition: StreamedWorldDefinition,
+  detailRoot: THREE.Group,
+  level: 'mid' | 'far',
+) {
+  const root = new THREE.Group();
+  root.name = `STREAMING_${level.toUpperCase()}_HLOD__CORPORATE_CORE`;
+  root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
+  applyProxyMetadata(root, definition, level);
+  root.userData.specializedBlackRingProxy = true;
+  root.userData.legacyCentralPlaceholderSuppressed = true;
+
+  const massMaterial = makeProxyMaterial(definition, level === 'mid' ? 1 : 0, level);
+  const masses = new THREE.InstancedMesh(proxyBoxGeometry, massMaterial, CORPORATE_CORE_BUILDING_PROGRAM.length);
+  masses.name = `${root.name}__TWENTY_BLACK_RING_MASSES`;
+  CORPORATE_CORE_BUILDING_PROGRAM.forEach((record, index) => {
+    const heightScale = level === 'mid' ? 0.62 : 0.42;
+    const widthScale = level === 'mid' ? 0.58 : 0.46;
+    const depthScale = level === 'mid' ? 0.56 : 0.44;
+    const height = Math.max(2.4, record.heightMetres / 10 * heightScale);
+    instancePosition.set(
+      Math.cos(record.angle) * record.radius - definition.position[0],
+      height * 0.5,
+      Math.sin(record.angle) * record.radius - definition.position[2],
+    );
+    instanceScale.set(
+      Math.max(2.4, record.footprintMetres[0] / 10 * widthScale),
+      height,
+      Math.max(2.1, record.footprintMetres[1] / 10 * depthScale),
+    );
+    instanceQuaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), -record.angle - Math.PI * 0.5);
+    instanceMatrix.compose(instancePosition, instanceQuaternion, instanceScale);
+    masses.setMatrixAt(index, instanceMatrix);
+  });
+  instanceQuaternion.identity();
+  masses.instanceMatrix.needsUpdate = true;
+  masses.userData.instanceSemanticIds = CORPORATE_CORE_BUILDING_PROGRAM.map((record) => `${definition.id}:${level}:${record.code}`);
+  applyProxyMetadata(masses, definition, level);
+  root.add(masses);
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(71, level === 'mid' ? 0.34 : 0.24, 5, 96),
+    makeProxyMaterial(definition, 3, level, true),
+  );
+  ring.name = `${root.name}__PROCESSION_LOOP_SILHOUETTE`;
+  ring.rotation.x = Math.PI * 0.5;
+  ring.position.set(-definition.position[0], 0.12, -definition.position[2]);
+  applyProxyMetadata(ring, definition, level);
+  root.add(ring);
+
+  const roadNetwork = makeDistrictRoadProxy(definition, detailRoot, level);
+  if (roadNetwork) root.add(roadNetwork);
+  root.userData.estimatedDrawCalls = 2 + (roadNetwork ? 1 : 0);
+  return root;
+}
+
 function makeDistrictMidProxy(definition: StreamedWorldDefinition, detailRoot: THREE.Group) {
+  if (definition.id === 'corporate-core') return makeCorporateCoreProxy(definition, detailRoot, 'mid');
   const root = new THREE.Group();
   root.name = `STREAMING_MID_HLOD__${definition.id.toUpperCase().replaceAll('-', '_')}`;
   root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
   applyProxyMetadata(root, definition, 'mid');
+
+  if (definition.id === 'synthetic-quantum-biosystems') {
+    root.userData.retiredCorePlaceholder = true;
+    root.userData.estimatedDrawCalls = 0;
+    return root;
+  }
 
   const podiumMaterial = makeProxyMaterial(definition, 0, 'mid');
   const podium = new THREE.Mesh(proxyBoxGeometry, podiumMaterial);
@@ -793,10 +860,18 @@ function makeFarProxy(
   kind: StreamedPackageKind,
   detailRoot?: THREE.Group,
 ) {
+  if (definition.id === 'corporate-core' && detailRoot) {
+    return makeCorporateCoreProxy(definition, detailRoot, 'far');
+  }
   const root = new THREE.Group();
   root.name = `STREAMING_FAR_HLOD__${definition.id.toUpperCase().replaceAll('-', '_')}`;
   root.position.set(definition.position[0], ISLAND_SURFACE_Y, definition.position[2]);
   applyProxyMetadata(root, definition, 'far');
+  if (definition.id === 'synthetic-quantum-biosystems') {
+    root.userData.retiredCorePlaceholder = true;
+    root.userData.estimatedDrawCalls = 0;
+    return root;
+  }
   const roadNetwork = kind === 'district' && detailRoot
     ? makeDistrictRoadProxy(definition, detailRoot, 'far')
     : null;

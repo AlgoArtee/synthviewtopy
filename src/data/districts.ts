@@ -108,7 +108,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "bio-quantum-research-crown",
     accent: "#62F5FF",
     palette: ["#07131C", "#123442", "#8AAAB2", "#62F5FF"],
-    description: "A luminous bio-quantum research crown couples living systems laboratories to the island's central computation spine.",
+    description: "The Synthetic Quantum Biosystems program is housed inside the preserved central Megabuilding; its former exterior placeholder campus has been retired.",
   },
   {
     id: "dark-center-lab-megabuilding",
@@ -121,7 +121,7 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     archetype: "dark-lab-arcology",
     accent: "#35D8FF",
     palette: ["#03070B", "#0C1822", "#263743", "#35D8FF"],
-    description: "The island's tallest landmark is a monolithic black-glass laboratory arcology with a cyan energy spine.",
+    description: "The island's tallest landmark remains a monolithic black-glass laboratory arcology with a cyan energy spine, cleared of its former generic satellite placeholders and roads.",
   },
   {
     id: "corporate-core",
@@ -131,10 +131,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [0, 0, 7.5],
     footprint: [14, 4.5],
     height: 13,
-    archetype: "executive-command-campus",
-    accent: "#7FD9FF",
-    palette: ["#111B24", "#274253", "#B7CBD4", "#7FD9FF"],
-    description: "A formal executive and command campus forms the south-facing civic threshold of the central megabuilding.",
+    archetype: "black-ring-corporate-tribunal",
+    accent: "#9A5CFF",
+    palette: ["#050608", "#090B10", "#11151B", "#9A5CFF"],
+    description: "Twenty distinct black exchange, treasury, ledger, clearing, venture, legal, convention, media, delegation, and ceremonial landmarks form a complete inward-facing tribunal around the untouched central Megabuilding.",
   },
 
   // Inner ring: six molecular and life-science sectors.

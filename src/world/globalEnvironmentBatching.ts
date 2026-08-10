@@ -210,6 +210,7 @@ export function batchGlobalEnvironmentGeometry(scopes: readonly THREE.Group[]): 
         || object.morphTargetInfluences
         || object.customDepthMaterial
         || object.customDistanceMaterial
+        || object.userData.exportFallback === true
         || object.userData.editorOnly === true
         || object.userData.authoredInteriorComponent === true
         || object.userData.gpuRuntimeBatch === true
@@ -218,6 +219,7 @@ export function batchGlobalEnvironmentGeometry(scopes: readonly THREE.Group[]): 
       const key = [
         owner.uuid,
         materialSignature(object.material),
+        Number(object.userData.smoothTransparencyBatch === true),
         attributeSignature(object.geometry),
         Number(object.castShadow),
         object.renderOrder,
@@ -288,6 +290,7 @@ export function batchGlobalEnvironmentGeometry(scopes: readonly THREE.Group[]): 
       merged.computeBoundingBox();
       merged.computeBoundingSphere();
       const material = segment[0].material.clone();
+      const smoothTransparencyBatch = segment.every(({ source }) => source.userData.smoothTransparencyBatch === true);
       material.color.set(0xffffff);
       if (material instanceof THREE.MeshStandardMaterial || material instanceof THREE.MeshPhysicalMaterial) {
         applyBakedStandardMaterialParameters(material);
@@ -296,10 +299,16 @@ export function batchGlobalEnvironmentGeometry(scopes: readonly THREE.Group[]): 
       const physical = material as THREE.MeshPhysicalMaterial;
       if (material.transparent || material.opacity < 1 || Number(physical.transmission ?? 0) > 0) {
         physical.transmission = 0;
-        material.transparent = false;
-        material.alphaHash = true;
-        material.depthWrite = true;
-        material.opacity = THREE.MathUtils.clamp(material.opacity, 0.34, 0.92);
+        if (smoothTransparencyBatch) {
+          material.transparent = true;
+          material.alphaHash = false;
+          material.depthWrite = false;
+        } else {
+          material.transparent = false;
+          material.alphaHash = true;
+          material.depthWrite = true;
+          material.opacity = THREE.MathUtils.clamp(material.opacity, 0.34, 0.92);
+        }
       }
       material.needsUpdate = true;
       const batch = new THREE.Mesh(merged, material);
@@ -310,6 +319,7 @@ export function batchGlobalEnvironmentGeometry(scopes: readonly THREE.Group[]): 
       batch.layers.mask = segment[0].source.layers.mask;
       batch.userData.gpuRuntimeBatch = true;
       batch.userData.globalEnvironmentBatch = true;
+      batch.userData.smoothTransparencyBatch = smoothTransparencyBatch;
       batch.userData.exportExcluded = true;
       batch.userData.batchSourceNames = segment.map(({ source }) => source.name);
       batch.userData.batchSelectableIds = segment.map(({ source }) => nearestSelectableId(source, owner));

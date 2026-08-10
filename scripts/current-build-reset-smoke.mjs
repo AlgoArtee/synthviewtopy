@@ -125,6 +125,8 @@ try {
       'dark-center-lab-megabuilding',
       'corporate-core',
     ].map((packageId) => world.worldStreaming.mountPackageAuthoritySources(packageId)).filter(Boolean);
+    const restoreGlobalEnvironment = world.globalEnvironmentBatching?.mountSources();
+    if (restoreGlobalEnvironment) mountedCorePackages.push(restoreGlobalEnvironment);
     const synthetic = world.objectGroups.get('synthetic-quantum-biosystems');
     const central = world.objectGroups.get('dark-center-lab-megabuilding');
     const corporate = world.objectGroups.get('corporate-core');
@@ -135,6 +137,20 @@ try {
       centralLegacyRoads: 0,
       legacyPlazaPavilions: 0,
       centralLightPlatforms: 0,
+      groundedLightPlatformBases: 0,
+      groundedLightPlatformTables: 0,
+      groundedLightPlatformChairGroups: 0,
+      groundedLightPlatformChairParts: 0,
+      groundedLightPlatformFurnitureObstacles: 0,
+      groundedLightPlatformStructuralObstacles: 0,
+      groundedLightPlatformSubtleEmissives: 0,
+      groundedLightPlatformSubtlePointLights: 0,
+      groundedLightPlatformCanopyPanels: 0,
+      groundedLightPlatformEmitterRails: 0,
+      groundedLightPlatformLightCurrents: 0,
+      groundedLightPlatformDotFields: 0,
+      groundedLightPlatformHolographicDots: 0,
+      groundedLightPlatformLegacyOverheadElements: 0,
       skybridgeSegments: 0,
       covenantDeadEndPassages: 0,
       patentAuctionPrimaryMasses: 0,
@@ -190,6 +206,27 @@ try {
     world.scene.traverse((object) => {
       if (object.name.startsWith('Corporate plaza laboratory pavilion')) coreAudit.legacyPlazaPavilions += 1;
       if (object.userData.centralLightPlatform === true) coreAudit.centralLightPlatforms += 1;
+      if (object.userData.centralLightPlatformGroundBase === true
+        && object.userData.walkable === true
+        && object.userData.preventUnderwalk === true) coreAudit.groundedLightPlatformBases += 1;
+      if (object.userData.centralLightPlatformTable === true) coreAudit.groundedLightPlatformTables += 1;
+      if (object.userData.centralLightPlatformChair === true) coreAudit.groundedLightPlatformChairGroups += 1;
+      if (object.userData.centralLightPlatformChairPart === true) coreAudit.groundedLightPlatformChairParts += 1;
+      if ((object.userData.centralLightPlatformTable === true || object.userData.centralLightPlatformChairPart === true)
+        && object.userData.navObstacle === true) coreAudit.groundedLightPlatformFurnitureObstacles += 1;
+      if (object.userData.centralLightPlatformCanopySupport === true
+        && object.userData.navObstacle === true) coreAudit.groundedLightPlatformStructuralObstacles += 1;
+      if (object.userData.centralLightPlatformSubtleEmissive === true) coreAudit.groundedLightPlatformSubtleEmissives += 1;
+      if (object.userData.centralLightPlatformSubtleLight === true && object.intensity <= 0.25) coreAudit.groundedLightPlatformSubtlePointLights += 1;
+      if (object.userData.centralLightPlatformCanopyPanel === true) coreAudit.groundedLightPlatformCanopyPanels += 1;
+      if (object.userData.centralLightPlatformEmitterRail === true) coreAudit.groundedLightPlatformEmitterRails += 1;
+      if (object.userData.centralLightPlatformLightCurrent === true) coreAudit.groundedLightPlatformLightCurrents += 1;
+      if (object.userData.centralLightPlatformHolographicDots === true) {
+        coreAudit.groundedLightPlatformDotFields += 1;
+        coreAudit.groundedLightPlatformHolographicDots += Number(object.userData.holographicDotCount ?? 0);
+      }
+      if (object.name.startsWith('Corporate plaza light platform')
+        && / canopy$| support \d+$| holographic light$/.test(object.name)) coreAudit.groundedLightPlatformLegacyOverheadElements += 1;
     });
     coreAudit.syntheticRoadRouteCount = synthetic?.userData.districtRoadNetwork?.routes?.length ?? -1;
     coreAudit.centralRoadRouteCount = central?.userData.districtRoadNetwork?.routes?.length ?? -1;
@@ -281,6 +318,20 @@ try {
     || restored.coreAudit.centralRoadRouteCount !== 0
     || restored.coreAudit.legacyPlazaPavilions !== 0
     || restored.coreAudit.centralLightPlatforms !== 6
+    || restored.coreAudit.groundedLightPlatformBases !== 6
+    || restored.coreAudit.groundedLightPlatformTables !== 12
+    || restored.coreAudit.groundedLightPlatformChairGroups !== 24
+    || restored.coreAudit.groundedLightPlatformChairParts !== 72
+    || restored.coreAudit.groundedLightPlatformFurnitureObstacles !== 84
+    || restored.coreAudit.groundedLightPlatformStructuralObstacles !== 18
+    || restored.coreAudit.groundedLightPlatformSubtleEmissives !== 12
+    || restored.coreAudit.groundedLightPlatformSubtlePointLights !== 0
+    || restored.coreAudit.groundedLightPlatformCanopyPanels !== 18
+    || restored.coreAudit.groundedLightPlatformEmitterRails !== 18
+    || restored.coreAudit.groundedLightPlatformLightCurrents !== 36
+    || restored.coreAudit.groundedLightPlatformDotFields !== 6
+    || restored.coreAudit.groundedLightPlatformHolographicDots !== 168
+    || restored.coreAudit.groundedLightPlatformLegacyOverheadElements !== 0
     || restored.coreAudit.skybridgeSegments !== 0
     || restored.coreAudit.covenantDeadEndPassages !== 0
     || restored.coreAudit.patentAuctionPrimaryMasses !== 1

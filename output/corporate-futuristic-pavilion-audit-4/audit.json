@@ -1,0 +1,1943 @@
+{
+  "audit": {
+    "facilityCount": 20,
+    "codes": [
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C09",
+      "C10",
+      "C11",
+      "C12",
+      "C13",
+      "C14",
+      "C15",
+      "C16",
+      "C17",
+      "C18",
+      "C19",
+      "C20"
+    ],
+    "records": [
+      {
+        "code": "C01",
+        "name": "The Null Exchange",
+        "center": [
+          3.6127080574846916e-15,
+          1.6380000000000001,
+          -58.99999999999999
+        ],
+        "radius": 58.99999999999999,
+        "angle": -1.5707963267948966,
+        "footprintMetres": [
+          118,
+          96
+        ],
+        "heightMetres": 214,
+        "ringAnchor": {
+          "radius": 59,
+          "angle": -1.5707963267948966,
+          "clockwiseIndex": 1,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C02",
+        "name": "The Obsidian Reserve",
+        "center": [
+          18.695528159684322,
+          1.6380000000000001,
+          -57.53891923585679
+        ],
+        "radius": 60.49999999999999,
+        "angle": -1.2566370614359172,
+        "footprintMetres": [
+          142,
+          126
+        ],
+        "heightMetres": 112,
+        "ringAnchor": {
+          "radius": 60.5,
+          "angle": -1.2566370614359172,
+          "clockwiseIndex": 2,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C03",
+        "name": "The Black Ledger Authority",
+        "center": [
+          34.09154463296344,
+          1.6380000000000001,
+          -46.92298567374694
+        ],
+        "radius": 57.99999999999999,
+        "angle": -0.9424777960769379,
+        "footprintMetres": [
+          96,
+          92
+        ],
+        "heightMetres": 198,
+        "ringAnchor": {
+          "radius": 58,
+          "angle": -0.9424777960769379,
+          "clockwiseIndex": 3,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C04",
+        "name": "The Quantum Clearing House",
+        "center": [
+          47.32749417093443,
+          1.6380000000000001,
+          -34.38543725910968
+        ],
+        "radius": 58.5,
+        "angle": -0.6283185307179586,
+        "footprintMetres": [
+          112,
+          112
+        ],
+        "heightMetres": 126,
+        "ringAnchor": {
+          "radius": 58.5,
+          "angle": -0.6283185307179586,
+          "clockwiseIndex": 4,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C05",
+        "name": "The Black Index Bureau",
+        "center": [
+          57.06339097770921,
+          1.6380000000000001,
+          -18.541019662496844
+        ],
+        "radius": 59.99999999999999,
+        "angle": -0.3141592653589793,
+        "footprintMetres": [
+          154,
+          82
+        ],
+        "heightMetres": 64,
+        "ringAnchor": {
+          "radius": 60,
+          "angle": -0.3141592653589793,
+          "clockwiseIndex": 5,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C06",
+        "name": "The Vanta Venture Spire",
+        "center": [
+          58,
+          1.6380000000000001,
+          0
+        ],
+        "radius": 58,
+        "angle": 0,
+        "footprintMetres": [
+          94,
+          88
+        ],
+        "heightMetres": 232,
+        "ringAnchor": {
+          "radius": 58,
+          "angle": 0,
+          "clockwiseIndex": 6,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C07",
+        "name": "Covenant Capital House",
+        "center": [
+          57.06339097770921,
+          1.6380000000000001,
+          18.541019662496844
+        ],
+        "radius": 59.99999999999999,
+        "angle": 0.3141592653589793,
+        "footprintMetres": [
+          138,
+          112
+        ],
+        "heightMetres": 118,
+        "ringAnchor": {
+          "radius": 60,
+          "angle": 0.3141592653589793,
+          "clockwiseIndex": 7,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C08",
+        "name": "The Patronage Engine",
+        "center": [
+          46.51847717655948,
+          1.6380000000000001,
+          33.7976520068172
+        ],
+        "radius": 57.5,
+        "angle": 0.6283185307179586,
+        "footprintMetres": [
+          112,
+          112
+        ],
+        "heightMetres": 102,
+        "ringAnchor": {
+          "radius": 57.5,
+          "angle": 0.6283185307179586,
+          "clockwiseIndex": 8,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C09",
+        "name": "The Legacy Endowment",
+        "center": [
+          34.67932988525592,
+          1.6380000000000001,
+          47.7320026681219
+        ],
+        "radius": 59.00000000000001,
+        "angle": 0.9424777960769379,
+        "footprintMetres": [
+          106,
+          98
+        ],
+        "heightMetres": 174,
+        "ringAnchor": {
+          "radius": 59,
+          "angle": 0.9424777960769379,
+          "clockwiseIndex": 9,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C10",
+        "name": "The Silent Patent Auction",
+        "center": [
+          18.386511165309372,
+          1.6380000000000001,
+          56.587862719561635
+        ],
+        "radius": 59.49999999999999,
+        "angle": 1.2566370614359172,
+        "footprintMetres": [
+          116,
+          104
+        ],
+        "heightMetres": 108,
+        "ringAnchor": {
+          "radius": 59.5,
+          "angle": 1.2566370614359172,
+          "clockwiseIndex": 10,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C11",
+        "name": "Umbra Underwriting Hall",
+        "center": [
+          3.704556567420744e-15,
+          1.6380000000000001,
+          60.5
+        ],
+        "radius": 60.5,
+        "angle": 1.5707963267948966,
+        "footprintMetres": [
+          148,
+          112
+        ],
+        "heightMetres": 72,
+        "ringAnchor": {
+          "radius": 60.5,
+          "angle": 1.5707963267948966,
+          "clockwiseIndex": 11,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C12",
+        "name": "Catastrophe Bond Tower",
+        "center": [
+          -17.768477176559497,
+          1.6380000000000001,
+          54.68574968697132
+        ],
+        "radius": 57.5,
+        "angle": 1.8849555921538763,
+        "footprintMetres": [
+          88,
+          84
+        ],
+        "heightMetres": 222,
+        "ringAnchor": {
+          "radius": 57.5,
+          "angle": 1.8849555921538763,
+          "clockwiseIndex": 12,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C13",
+        "name": "The Arbitration Basilica",
+        "center": [
+          -35.26711513754838,
+          1.6380000000000001,
+          48.54101966249685
+        ],
+        "radius": 60,
+        "angle": 2.199114857512855,
+        "footprintMetres": [
+          148,
+          108
+        ],
+        "heightMetres": 82,
+        "ringAnchor": {
+          "radius": 60,
+          "angle": 2.199114857512855,
+          "clockwiseIndex": 13,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C14",
+        "name": "Event Horizon Convention Centre",
+        "center": [
+          -48.945528159684315,
+          1.6380000000000001,
+          35.56100776369463
+        ],
+        "radius": 60.5,
+        "angle": 2.5132741228718345,
+        "footprintMetres": [
+          144,
+          132
+        ],
+        "heightMetres": 78,
+        "ringAnchor": {
+          "radius": 60.5,
+          "angle": 2.5132741228718345,
+          "clockwiseIndex": 14,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C15",
+        "name": "Mourningstar Plenary Hall",
+        "center": [
+          -56.11233446141406,
+          1.6380000000000001,
+          18.232002668121904
+        ],
+        "radius": 58.99999999999999,
+        "angle": 2.827433388230814,
+        "footprintMetres": [
+          138,
+          132
+        ],
+        "heightMetres": 84,
+        "ringAnchor": {
+          "radius": 59,
+          "angle": 2.827433388230814,
+          "clockwiseIndex": 15,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C16",
+        "name": "Eclipse Expo Galleries",
+        "center": [
+          -60,
+          1.6380000000000001,
+          7.105427357601002e-15
+        ],
+        "radius": 60,
+        "angle": 3.141592653589793,
+        "footprintMetres": [
+          148,
+          132
+        ],
+        "heightMetres": 62,
+        "ringAnchor": {
+          "radius": 60,
+          "angle": 3.141592653589793,
+          "clockwiseIndex": 16,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C17",
+        "name": "The Funding Crucible",
+        "center": [
+          -57.538919235856795,
+          1.6380000000000001,
+          -18.695528159684308
+        ],
+        "radius": 60.5,
+        "angle": -2.8274333882308142,
+        "footprintMetres": [
+          126,
+          118
+        ],
+        "heightMetres": 54,
+        "ringAnchor": {
+          "radius": 60.5,
+          "angle": 3.4557519189487724,
+          "clockwiseIndex": 17,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C18",
+        "name": "The Last Prospectus Media House",
+        "center": [
+          -46.92298567374696,
+          1.6380000000000001,
+          -34.09154463296343
+        ],
+        "radius": 58,
+        "angle": -2.513274122871835,
+        "footprintMetres": [
+          122,
+          102
+        ],
+        "heightMetres": 118,
+        "ringAnchor": {
+          "radius": 58,
+          "angle": 3.7699111843077517,
+          "clockwiseIndex": 18,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C19",
+        "name": "Nocturne Delegation Tower",
+        "center": [
+          -33.79765200681721,
+          1.6380000000000001,
+          -46.51847717655948
+        ],
+        "radius": 57.50000000000001,
+        "angle": -2.199114857512855,
+        "footprintMetres": [
+          98,
+          94
+        ],
+        "heightMetres": 188,
+        "ringAnchor": {
+          "radius": 57.5,
+          "angle": 4.084070449666731,
+          "clockwiseIndex": 19,
+          "facesCentralMegabuilding": true
+        }
+      },
+      {
+        "code": "C20",
+        "name": "The Crown of Consensus",
+        "center": [
+          -18.69552815968433,
+          1.6380000000000001,
+          -57.53891923585679
+        ],
+        "radius": 60.49999999999999,
+        "angle": -1.884955592153876,
+        "footprintMetres": [
+          142,
+          112
+        ],
+        "heightMetres": 148,
+        "ringAnchor": {
+          "radius": 60.5,
+          "angle": 4.39822971502571,
+          "clockwiseIndex": 20,
+          "facesCentralMegabuilding": true
+        }
+      }
+    ],
+    "meshes": 1883,
+    "triangles": 224880,
+    "uniqueNames": 2035,
+    "materials": [
+      "Corporate acid green growth light",
+      "Corporate arterial red risk light",
+      "Corporate black ceramic",
+      "Corporate blackened titanium",
+      "Corporate carbon fibre",
+      "Corporate cold cyan verified light",
+      "Corporate deep magenta speculative light",
+      "Corporate funeral amber obligation light",
+      "Corporate high-output night amber",
+      "Corporate high-output night cyan",
+      "Corporate high-output night green",
+      "Corporate high-output night magenta",
+      "Corporate high-output night red",
+      "Corporate high-output night ultraviolet",
+      "Corporate high-output night white",
+      "Corporate integrated declaration 00:00:08",
+      "Corporate integrated declaration 1",
+      "Corporate integrated declaration 10.1%",
+      "Corporate integrated declaration 17.2%",
+      "Corporate integrated declaration 24.3%",
+      "Corporate integrated declaration 3",
+      "Corporate integrated declaration 3.0%",
+      "Corporate integrated declaration 31.4%",
+      "Corporate integrated declaration 38.5%",
+      "Corporate integrated declaration 4",
+      "Corporate integrated declaration 45.6%",
+      "Corporate integrated declaration 6",
+      "Corporate integrated declaration 742.6",
+      "Corporate integrated declaration 8",
+      "Corporate integrated declaration A 47",
+      "Corporate integrated declaration ACCESS IS A FINANCIAL CONDITION",
+      "Corporate integrated declaration ALL ACCOUNTS REMAIN OPEN",
+      "Corporate integrated declaration ALL MODELS EVENTUALLY CONVERGE",
+      "Corporate integrated declaration APPLICATIONS ARE ALWAYS OPEN",
+      "Corporate integrated declaration ARBITRATION BASILICA",
+      "Corporate integrated declaration B 53",
+      "Corporate integrated declaration CAPITAL SEEKS CONTINUITY",
+      "Corporate integrated declaration CATASTROPHE BOND TOWER",
+      "Corporate integrated declaration CONSENSUS / COMPLIANCE",
+      "Corporate integrated declaration CONSENT IS RECORDED",
+      "Corporate integrated declaration CONVENTION CENTRE",
+      "Corporate integrated declaration COVENANT CAPITAL HOUSE",
+      "Corporate integrated declaration CROWN OF CONSENSUS",
+      "Corporate integrated declaration DELEGATION TOWER",
+      "Corporate integrated declaration DISCOVERY CREATES OBLIGATION",
+      "Corporate integrated declaration ECLIPSE EXPO",
+      "Corporate integrated declaration EVENT HORIZON",
+      "Corporate integrated declaration LEGACY ENDOWMENT",
+      "Corporate integrated declaration LIABILITY TRANSFERRED",
+      "Corporate integrated declaration LOT 0000 / RESTRICTED",
+      "Corporate integrated declaration MODEL HORIZON 1487 YEARS",
+      "Corporate integrated declaration MOURNINGSTAR",
+      "Corporate integrated declaration N O C T U R N E",
+      "Corporate integrated declaration NO LIABILITY EXPIRES HERE",
+      "Corporate integrated declaration NULL EXCHANGE",
+      "Corporate integrated declaration OBSIDIAN RESERVE",
+      "Corporate integrated declaration QUANTUM CLEARING HOUSE",
+      "Corporate integrated declaration SELECTION IS NOT",
+      "Corporate integrated declaration SILENT PATENT AUCTION",
+      "Corporate integrated declaration STATEMENT PENDING",
+      "Corporate integrated declaration SUBMIT / DEFEND / SURVIVE",
+      "Corporate integrated declaration SURVIVAL IS NOT COVERAGE",
+      "Corporate integrated declaration TERMS SURVIVE THEIR AUTHORS",
+      "Corporate integrated declaration THE FUTURE HAS ALREADY BEEN ALLOCATED",
+      "Corporate integrated declaration THE LAST PROSPECTUS",
+      "Corporate integrated declaration UMBRA UNDERWRITING",
+      "Corporate integrated declaration VANTA VENTURE",
+      "Corporate light-absorbing concrete",
+      "Corporate matte light-absorbing basalt",
+      "Corporate mirror black glass",
+      "Corporate perfectly black water",
+      "Corporate polished obsidian composite",
+      "Corporate rare binding white light",
+      "Corporate smoked black glass",
+      "Corporate ultraviolet authority light"
+    ],
+    "animations": {
+      "corporate-emissive-pulse": 323,
+      "corporate-rotation": 10
+    },
+    "missingRoots": [],
+    "tangentialGaps": [
+      {
+        "pair": "C01/C02",
+        "gap": 5.752533966610983
+      },
+      {
+        "pair": "C02/C03",
+        "gap": 6.801213025913913
+      },
+      {
+        "pair": "C03/C04",
+        "gap": 7.831304956614815
+      },
+      {
+        "pair": "C04/C05",
+        "gap": 5.296592580578352
+      },
+      {
+        "pair": "C05/C06",
+        "gap": 6.164661230028711
+      },
+      {
+        "pair": "C06/C07",
+        "gap": 6.96466123002871
+      },
+      {
+        "pair": "C07/C08",
+        "gap": 6.046159644612146
+      },
+      {
+        "pair": "C08/C09",
+        "gap": 7.384735079770319
+      },
+      {
+        "pair": "C09/C10",
+        "gap": 7.444061019413381
+      },
+      {
+        "pair": "C10/C11",
+        "gap": 5.598101258718703
+      },
+      {
+        "pair": "C11/C12",
+        "gap": 6.895568669512837
+      },
+      {
+        "pair": "C12/C13",
+        "gap": 6.746159644612121
+      },
+      {
+        "pair": "C13/C14",
+        "gap": 4.2568208268834375
+      },
+      {
+        "pair": "C14/C15",
+        "gap": 4.6525339666109815
+      },
+      {
+        "pair": "C15/C16",
+        "gap": 4.341884685575991
+      },
+      {
+        "pair": "C16/C17",
+        "gap": 5.15682082688344
+      },
+      {
+        "pair": "C17/C18",
+        "gap": 6.301213025913917
+      },
+      {
+        "pair": "C18/C19",
+        "gap": 7.07492839021295
+      },
+      {
+        "pair": "C19/C20",
+        "gap": 6.695568669512802
+      },
+      {
+        "pair": "C20/C01",
+        "gap": 5.752533966610997
+      }
+    ],
+    "routes": [
+      {
+        "name": "CORPORATE__COMPLIANCE_WALK",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__PROCESSION_LOOP",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C01__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C02__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C03__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C04__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C05__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C06__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C07__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C08__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C09__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C10__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C11__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C12__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C13__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C14__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C15__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C16__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C17__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C18__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C19__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "CORPORATE__C20__EXACT_INWARD_APPROACH",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "walkPoint": [
+      42,
+      0.03,
+      0
+    ],
+    "walkGround": 1.6429999998211862,
+    "program": {
+      "name": "Corporate Core — The Black Ring",
+      "buildingCount": 20,
+      "buildings": [
+        {
+          "code": "C01",
+          "name": "The Null Exchange",
+          "purpose": "Research securities, laboratory bonds, prediction contracts, and instruments attached to discoveries that may not yet exist",
+          "form": "inward-leaning twin-slab exchange",
+          "footprintMetres": [
+            118,
+            96
+          ],
+          "heightMetres": 214,
+          "neon": "cyan",
+          "exteriorSignature": "two mirror-black guillotine slabs, full-height void, upper bridge, digital-rain tickers, black-water bridge, red submerged cracks, and horn antenna frames"
+        },
+        {
+          "code": "C02",
+          "name": "The Obsidian Reserve",
+          "purpose": "Central treasury, emergency financing authority, and long-term capital repository",
+          "form": "seven-terrace armored ziggurat",
+          "footprintMetres": [
+            142,
+            126
+          ],
+          "heightMetres": 112,
+          "neon": "amber",
+          "exteriorSignature": "seven basalt vault terraces, pulsing amber strata, floating halo, mirror entrance slab, red alignment line, and four sealed-hand cube monuments"
+        },
+        {
+          "code": "C03",
+          "name": "The Black Ledger Authority",
+          "purpose": "Ownership, debt, royalty, influence, liability, and contractual-lineage registry",
+          "form": "layered document monolith",
+          "footprintMetres": [
+            96,
+            92
+          ],
+          "heightMetres": 198,
+          "neon": "magenta",
+          "exteriorSignature": "forty compressed document layers, severe page cantilevers, magenta floor edges, contract fragments, redacted panels, and a thirty-metre corner wound"
+        },
+        {
+          "code": "C04",
+          "name": "The Quantum Clearing House",
+          "purpose": "Escrow, transfer reconciliation, and high-speed transaction verification",
+          "form": "suspended electrochromic cube",
+          "footprintMetres": [
+            112,
+            112
+          ],
+          "heightMetres": 126,
+          "neon": "cyan",
+          "exteriorSignature": "mathematically perfect floating cube, concealed columns, reconfiguring cyan-magenta-red grid, ultraviolet convergence platform, and reset countdown ramp"
+        },
+        {
+          "code": "C05",
+          "name": "The Black Index Bureau",
+          "purpose": "Financial, scientific, political, reputational, and institutional ranking",
+          "form": "long inward-curved index blade",
+          "footprintMetres": [
+            154,
+            82
+          ],
+          "heightMetres": 64,
+          "neon": "green",
+          "exteriorSignature": "concave carbon-fin blade, live green-cyan ranking bars, five renumbering portals, blood-lit reflecting channel, and composite-index mast"
+        },
+        {
+          "code": "C06",
+          "name": "The Vanta Venture Spire",
+          "purpose": "Speculative research investment, accelerated commercialization, and hostile acquisition",
+          "form": "rooted triangular needle tower",
+          "footprintMetres": [
+            94,
+            88
+          ],
+          "heightMetres": 232,
+          "neon": "green",
+          "exteriorSignature": "narrow grooved needle, synthetic root ribs, racing acid-green investment streams, descending failure flashes, arrow forecourt, observation ledges, and unreachable summit light"
+        },
+        {
+          "code": "C07",
+          "name": "Covenant Capital House",
+          "purpose": "Multi-decade funding compacts among governments, corporations, alliances, and foundations",
+          "form": "fortified corporate cathedral",
+          "footprintMetres": [
+            138,
+            112
+          ],
+          "heightMetres": 118,
+          "neon": "ultraviolet",
+          "exteriorSignature": "pointed black hall, four asymmetrical wings, twelve inward pillars, suspended-light banners, scale roof, black-water channels, and mirrored delegates"
+        },
+        {
+          "code": "C08",
+          "name": "The Patronage Engine",
+          "purpose": "Private foundations, prestige grants, cultural sponsorship, and anonymous funding",
+          "form": "six-ring rotating capital turbine",
+          "footprintMetres": [
+            112,
+            112
+          ],
+          "heightMetres": 102,
+          "neon": "magenta",
+          "exteriorSignature": "six independently rotating finned rings, spiraling magenta-amber edges, accusatory arcade, intermittent slab entrance, artificial carbon grove, and cold-vapor stack"
+        },
+        {
+          "code": "C09",
+          "name": "The Legacy Endowment",
+          "purpose": "Permanent funds, deceased-patron trusts, and century-scale research programs",
+          "form": "three-stage vertical mausoleum",
+          "footprintMetres": [
+            106,
+            98
+          ],
+          "heightMetres": 174,
+          "neon": "amber",
+          "exteriorSignature": "three granite stages, vascular amber veins, project grave-marker court, monumental arch and suspended circle, beneficiary traces, and candle-fin crown"
+        },
+        {
+          "code": "C10",
+          "name": "The Silent Patent Auction",
+          "purpose": "Approved sale of intellectual property, licenses, research claims, prototypes, and unfinished technologies",
+          "form": "faceted mirrored auction polyhedron",
+          "footprintMetres": [
+            116,
+            104
+          ],
+          "heightMetres": 108,
+          "neon": "magenta",
+          "exteriorSignature": "unstable faceted polyhedron, fragmented Megabuilding reflections, state-change panel outlines, hovering lot sign, roof bid columns, triangular entry canyon, and twelve sealed display plinths"
+        },
+        {
+          "code": "C11",
+          "name": "Umbra Underwriting Hall",
+          "purpose": "Insurance for hazardous trials, irreplaceable instruments, personnel, prototypes, and synthetic ecosystems",
+          "form": "low armored impact shell",
+          "footprintMetres": [
+            148,
+            112
+          ],
+          "heightMetres": 72,
+          "neon": "cyan",
+          "exteriorSignature": "overlapping titanium shell plates, heavy impact buttresses, blue armor seams, descending storm court, ultraviolet drainage, five risk shields, and lightning-rod network"
+        },
+        {
+          "code": "C12",
+          "name": "Catastrophe Bond Tower",
+          "purpose": "Finance for containment failures, environmental collapse, infrastructure loss, and experimental instability",
+          "form": "fractured dual-finish risk tower",
+          "footprintMetres": [
+            88,
+            84
+          ],
+          "heightMetres": 222,
+          "neon": "red",
+          "exteriorSignature": "reflective and matte tower halves split by a living red fault, unidentified risk percentages, disaster-graph wall, fracture doors, asymmetrical antennas, and suspended warning beacon"
+        },
+        {
+          "code": "C13",
+          "name": "The Arbitration Basilica",
+          "purpose": "Resolution of ownership, default, jurisdiction, intellectual-property, liability, and intergovernmental disputes",
+          "form": "authoritarian judicial basilica",
+          "footprintMetres": [
+            148,
+            108
+          ],
+          "heightMetres": 82,
+          "neon": "red",
+          "exteriorSignature": "long volcanic-stone nave, twenty-four square pillars, red legal grid, vast shallow stairs, splitting approach line, unequal geometric scales, and off-center judgment tower"
+        },
+        {
+          "code": "C14",
+          "name": "Event Horizon Convention Centre",
+          "purpose": "Global congresses, investor summits, emergency convocations, exhibitions, and consequential announcements",
+          "form": "partially embedded convention torus",
+          "footprintMetres": [
+            144,
+            132
+          ],
+          "heightMetres": 78,
+          "neon": "cyan",
+          "exteriorSignature": "low smoked-glass torus, raised entrance sector, inward carbon ribs, accelerating cyan information band, void plaza, corrupted banner pylons, and orbiting fin crown"
+        },
+        {
+          "code": "C15",
+          "name": "Mourningstar Plenary Hall",
+          "purpose": "Keynotes, declarations, awards, leadership transitions, and formal program terminations",
+          "form": "twelve-wing eclipse dome",
+          "footprintMetres": [
+            138,
+            132
+          ],
+          "heightMetres": 84,
+          "neon": "magenta",
+          "exteriorSignature": "black ceramic dome, twelve radial triangular wings, red thermal seams, district-word pylons, converging amber avenue, equatorial vote sphere, and artificial black-sun crown"
+        },
+        {
+          "code": "C16",
+          "name": "Eclipse Expo Galleries",
+          "purpose": "Prototype demonstrations, research showcases, recruitment, funding fairs, and technology exhibitions",
+          "form": "seven-pavilion eclipse canopy",
+          "footprintMetres": [
+            148,
+            132
+          ],
+          "heightMetres": 62,
+          "neon": "white",
+          "exteriorSignature": "seven unlike black pavilions, vast uneven canopy disc, cold central aperture, category light signs, floating holographic title, concealed red loading portals, and ultraviolet edge"
+        },
+        {
+          "code": "C17",
+          "name": "The Funding Crucible",
+          "purpose": "Competitive high-risk capital, grants, sponsorship, and restricted-infrastructure access",
+          "form": "sunken inverted selection pyramid",
+          "footprintMetres": [
+            126,
+            118
+          ],
+          "heightMetres": 54,
+          "neon": "red",
+          "exteriorSignature": "inverted perforated pyramid in a crater, four dark-glass bridges, descending rejected-project light, sponsor-fin crown, and deep circular heartbeat"
+        },
+        {
+          "code": "C18",
+          "name": "The Last Prospectus Media House",
+          "purpose": "Official financial press, investor relations, controlled announcements, and emergency explanations",
+          "form": "five folded-page media house",
+          "footprintMetres": [
+            122,
+            102
+          ],
+          "heightMetres": 118,
+          "neon": "cyan",
+          "exteriorSignature": "five leaning folded black pages, white illuminated margins, canyon media screens, camera-zone terraces, microphone pylons, rotating roof antennas, and self-deleting ticker"
+        },
+        {
+          "code": "C19",
+          "name": "Nocturne Delegation Tower",
+          "purpose": "Accommodation for visiting councils, corporate missions, funding committees, and executive delegations",
+          "form": "nine-offset-cylinder delegation tower",
+          "footprintMetres": [
+            98,
+            94
+          ],
+          "heightMetres": 188,
+          "neon": "ultraviolet",
+          "exteriorSignature": "nine misaligned dark cylinders, delegation frequency bands, damaged vertical sign, off-center disc canopy, twenty rigid light flags, opaque skybridges, and targeting-reticle crown"
+        },
+        {
+          "code": "C20",
+          "name": "The Crown of Consensus",
+          "purpose": "Treaty announcements, convention closings, collective commitments, and public declarations of unity",
+          "form": "incomplete vertical ceremonial ring",
+          "footprintMetres": [
+            142,
+            112
+          ],
+          "heightMetres": 148,
+          "neon": "ultraviolet",
+          "exteriorSignature": "two obsidian curved wings nearly meeting overhead, interrupted ultraviolet arc, mirror plaza divided unequally, forty inward judicial seats, black podium, and expanding cyan accord rings"
+        }
+      ],
+      "clockwiseOrder": [
+        "The Null Exchange",
+        "The Obsidian Reserve",
+        "The Black Ledger Authority",
+        "The Quantum Clearing House",
+        "The Black Index Bureau",
+        "The Vanta Venture Spire",
+        "Covenant Capital House",
+        "The Patronage Engine",
+        "The Legacy Endowment",
+        "The Silent Patent Auction",
+        "Umbra Underwriting Hall",
+        "Catastrophe Bond Tower",
+        "The Arbitration Basilica",
+        "Event Horizon Convention Centre",
+        "Mourningstar Plenary Hall",
+        "Eclipse Expo Galleries",
+        "The Funding Crucible",
+        "The Last Prospectus Media House",
+        "Nocturne Delegation Tower",
+        "The Crown of Consensus"
+      ],
+      "circulation": {
+        "complianceWalk": "narrow inner promenade with cyan convergence lines and all seating facing the central Megabuilding",
+        "processionLoop": "wide outer ceremonial route with illuminated subsurface lanes and emergency red reversal protocol",
+        "exactBuildingApproaches": 20,
+        "conventionalStreetlights": 0,
+        "centralBuildingModified": false,
+        "accessibleRoutesIntegrated": true
+      },
+      "publicRealm": {
+        "inwardFacingSeats": 48,
+        "sealedCentralAccessGates": 8,
+        "floatingDeclarations": [
+          "CAPITAL SEEKS CONTINUITY",
+          "DISCOVERY CREATES OBLIGATION",
+          "ACCESS IS A FINANCIAL CONDITION",
+          "ALL MODELS EVENTUALLY CONVERGE",
+          "THE FUTURE HAS ALREADY BEEN ALLOCATED",
+          "NO LIABILITY EXPIRES HERE"
+        ],
+        "palette": "exclusively black architecture distinguished by texture; neon is the only chromatic element",
+        "advertisingPermitted": false,
+        "darkCircuitBoardReading": true
+      },
+      "nightLighting": {
+        "outerPromenadePylons": 80,
+        "outerPromenadeNeonLanterns": 80,
+        "innerComplianceNeonShards": 60,
+        "buildingFacadeBlades": 40,
+        "buildingFacadeThresholds": 60,
+        "rooftopAuthorityBeacons": 20,
+        "rooftopNeonHalos": 20,
+        "localPointLights": 16,
+        "plazaStadiumLightRigs": 20,
+        "plazaStadiumSpotlights": 20,
+        "plazaStadiumLampLenses": 60,
+        "plazaStadiumLightBaseIntensity": 1100,
+        "plazaStadiumLightStrength": 1,
+        "emissiveElements": 340,
+        "nonBlocking": true,
+        "shadowCasting": false,
+        "nighttimeIntent": "very bright high-output cyan, ultraviolet, magenta, amber, green, red, and binding-white corporate illumination"
+      },
+      "signatureSystems": {
+        "nullExchangeTickerLines": 22,
+        "obsidianReserveTerraces": 7,
+        "blackLedgerLayers": 40,
+        "indexBladeSegments": 13,
+        "covenantPillars": 12,
+        "patronageRotatingRings": 6,
+        "patentDisplayPlinths": 12,
+        "arbitrationPillars": 24,
+        "mourningstarWings": 12,
+        "eclipsePavilions": 7,
+        "nocturneVolumes": 9,
+        "consensusSeats": 40
+      },
+      "neonHierarchy": {
+        "cyan": "public information, verified transactions, convention navigation",
+        "ultraviolet": "executive authority, restricted funding, high-level access",
+        "magenta": "speculative capital, active bidding, venture investment",
+        "amber": "long-term obligations, endowments, ceremonial functions",
+        "green": "growth projections, active investment streams, favorable assessments",
+        "red": "disputes, risk, terminations, liability, emergencies",
+        "white": "final declarations, binding decisions, official names"
+      },
+      "architecturalIntent": "an almost continuous tribunal of black architecture watching the central Megabuilding like a circuit around an inaccessible processor",
+      "centralBuildingPreserved": true,
+      "exteriorOnly": true
+    },
+    "compact": {
+      "buildingCount": 20,
+      "clockwiseOrder": [
+        "The Null Exchange",
+        "The Obsidian Reserve",
+        "The Black Ledger Authority",
+        "The Quantum Clearing House",
+        "The Black Index Bureau",
+        "The Vanta Venture Spire",
+        "Covenant Capital House",
+        "The Patronage Engine",
+        "The Legacy Endowment",
+        "The Silent Patent Auction",
+        "Umbra Underwriting Hall",
+        "Catastrophe Bond Tower",
+        "The Arbitration Basilica",
+        "Event Horizon Convention Centre",
+        "Mourningstar Plenary Hall",
+        "Eclipse Expo Galleries",
+        "The Funding Crucible",
+        "The Last Prospectus Media House",
+        "Nocturne Delegation Tower",
+        "The Crown of Consensus"
+      ],
+      "circulation": {
+        "complianceWalk": "narrow inner promenade with cyan convergence lines and all seating facing the central Megabuilding",
+        "processionLoop": "wide outer ceremonial route with illuminated subsurface lanes and emergency red reversal protocol",
+        "exactBuildingApproaches": 20,
+        "conventionalStreetlights": 0,
+        "centralBuildingModified": false,
+        "accessibleRoutesIntegrated": true
+      },
+      "signatureSystems": {
+        "nullExchangeTickerLines": 22,
+        "obsidianReserveTerraces": 7,
+        "blackLedgerLayers": 40,
+        "indexBladeSegments": 13,
+        "covenantPillars": 12,
+        "patronageRotatingRings": 6,
+        "patentDisplayPlinths": 12,
+        "arbitrationPillars": 24,
+        "mourningstarWings": 12,
+        "eclipsePavilions": 7,
+        "nocturneVolumes": 9,
+        "consensusSeats": 40
+      },
+      "neonHierarchy": {
+        "cyan": "public information, verified transactions, convention navigation",
+        "ultraviolet": "executive authority, restricted funding, high-level access",
+        "magenta": "speculative capital, active bidding, venture investment",
+        "amber": "long-term obligations, endowments, ceremonial functions",
+        "green": "growth projections, active investment streams, favorable assessments",
+        "red": "disputes, risk, terminations, liability, emergencies",
+        "white": "final declarations, binding decisions, official names"
+      },
+      "architecturalIntent": "an almost continuous tribunal of black architecture watching the central Megabuilding like a circuit around an inaccessible processor",
+      "centralBuildingPreserved": true
+    },
+    "deepProgram": {
+      "name": "Corporate Core — The Black Ring",
+      "buildingCount": 20,
+      "buildings": [
+        {
+          "code": "C01",
+          "name": "The Null Exchange",
+          "purpose": "Research securities, laboratory bonds, prediction contracts, and instruments attached to discoveries that may not yet exist",
+          "form": "inward-leaning twin-slab exchange",
+          "footprintMetres": [
+            118,
+            96
+          ],
+          "heightMetres": 214,
+          "neon": "cyan",
+          "exteriorSignature": "two mirror-black guillotine slabs, full-height void, upper bridge, digital-rain tickers, black-water bridge, red submerged cracks, and horn antenna frames"
+        },
+        {
+          "code": "C02",
+          "name": "The Obsidian Reserve",
+          "purpose": "Central treasury, emergency financing authority, and long-term capital repository",
+          "form": "seven-terrace armored ziggurat",
+          "footprintMetres": [
+            142,
+            126
+          ],
+          "heightMetres": 112,
+          "neon": "amber",
+          "exteriorSignature": "seven basalt vault terraces, pulsing amber strata, floating halo, mirror entrance slab, red alignment line, and four sealed-hand cube monuments"
+        },
+        {
+          "code": "C03",
+          "name": "The Black Ledger Authority",
+          "purpose": "Ownership, debt, royalty, influence, liability, and contractual-lineage registry",
+          "form": "layered document monolith",
+          "footprintMetres": [
+            96,
+            92
+          ],
+          "heightMetres": 198,
+          "neon": "magenta",
+          "exteriorSignature": "forty compressed document layers, severe page cantilevers, magenta floor edges, contract fragments, redacted panels, and a thirty-metre corner wound"
+        },
+        {
+          "code": "C04",
+          "name": "The Quantum Clearing House",
+          "purpose": "Escrow, transfer reconciliation, and high-speed transaction verification",
+          "form": "suspended electrochromic cube",
+          "footprintMetres": [
+            112,
+            112
+          ],
+          "heightMetres": 126,
+          "neon": "cyan",
+          "exteriorSignature": "mathematically perfect floating cube, concealed columns, reconfiguring cyan-magenta-red grid, ultraviolet convergence platform, and reset countdown ramp"
+        },
+        {
+          "code": "C05",
+          "name": "The Black Index Bureau",
+          "purpose": "Financial, scientific, political, reputational, and institutional ranking",
+          "form": "long inward-curved index blade",
+          "footprintMetres": [
+            154,
+            82
+          ],
+          "heightMetres": 64,
+          "neon": "green",
+          "exteriorSignature": "concave carbon-fin blade, live green-cyan ranking bars, five renumbering portals, blood-lit reflecting channel, and composite-index mast"
+        },
+        {
+          "code": "C06",
+          "name": "The Vanta Venture Spire",
+          "purpose": "Speculative research investment, accelerated commercialization, and hostile acquisition",
+          "form": "rooted triangular needle tower",
+          "footprintMetres": [
+            94,
+            88
+          ],
+          "heightMetres": 232,
+          "neon": "green",
+          "exteriorSignature": "narrow grooved needle, synthetic root ribs, racing acid-green investment streams, descending failure flashes, arrow forecourt, observation ledges, and unreachable summit light"
+        },
+        {
+          "code": "C07",
+          "name": "Covenant Capital House",
+          "purpose": "Multi-decade funding compacts among governments, corporations, alliances, and foundations",
+          "form": "fortified corporate cathedral",
+          "footprintMetres": [
+            138,
+            112
+          ],
+          "heightMetres": 118,
+          "neon": "ultraviolet",
+          "exteriorSignature": "pointed black hall, four asymmetrical wings, twelve inward pillars, suspended-light banners, scale roof, black-water channels, and mirrored delegates"
+        },
+        {
+          "code": "C08",
+          "name": "The Patronage Engine",
+          "purpose": "Private foundations, prestige grants, cultural sponsorship, and anonymous funding",
+          "form": "six-ring rotating capital turbine",
+          "footprintMetres": [
+            112,
+            112
+          ],
+          "heightMetres": 102,
+          "neon": "magenta",
+          "exteriorSignature": "six independently rotating finned rings, spiraling magenta-amber edges, accusatory arcade, intermittent slab entrance, artificial carbon grove, and cold-vapor stack"
+        },
+        {
+          "code": "C09",
+          "name": "The Legacy Endowment",
+          "purpose": "Permanent funds, deceased-patron trusts, and century-scale research programs",
+          "form": "three-stage vertical mausoleum",
+          "footprintMetres": [
+            106,
+            98
+          ],
+          "heightMetres": 174,
+          "neon": "amber",
+          "exteriorSignature": "three granite stages, vascular amber veins, project grave-marker court, monumental arch and suspended circle, beneficiary traces, and candle-fin crown"
+        },
+        {
+          "code": "C10",
+          "name": "The Silent Patent Auction",
+          "purpose": "Approved sale of intellectual property, licenses, research claims, prototypes, and unfinished technologies",
+          "form": "faceted mirrored auction polyhedron",
+          "footprintMetres": [
+            116,
+            104
+          ],
+          "heightMetres": 108,
+          "neon": "magenta",
+          "exteriorSignature": "unstable faceted polyhedron, fragmented Megabuilding reflections, state-change panel outlines, hovering lot sign, roof bid columns, triangular entry canyon, and twelve sealed display plinths"
+        },
+        {
+          "code": "C11",
+          "name": "Umbra Underwriting Hall",
+          "purpose": "Insurance for hazardous trials, irreplaceable instruments, personnel, prototypes, and synthetic ecosystems",
+          "form": "low armored impact shell",
+          "footprintMetres": [
+            148,
+            112
+          ],
+          "heightMetres": 72,
+          "neon": "cyan",
+          "exteriorSignature": "overlapping titanium shell plates, heavy impact buttresses, blue armor seams, descending storm court, ultraviolet drainage, five risk shields, and lightning-rod network"
+        },
+        {
+          "code": "C12",
+          "name": "Catastrophe Bond Tower",
+          "purpose": "Finance for containment failures, environmental collapse, infrastructure loss, and experimental instability",
+          "form": "fractured dual-finish risk tower",
+          "footprintMetres": [
+            88,
+            84
+          ],
+          "heightMetres": 222,
+          "neon": "red",
+          "exteriorSignature": "reflective and matte tower halves split by a living red fault, unidentified risk percentages, disaster-graph wall, fracture doors, asymmetrical antennas, and suspended warning beacon"
+        },
+        {
+          "code": "C13",
+          "name": "The Arbitration Basilica",
+          "purpose": "Resolution of ownership, default, jurisdiction, intellectual-property, liability, and intergovernmental disputes",
+          "form": "authoritarian judicial basilica",
+          "footprintMetres": [
+            148,
+            108
+          ],
+          "heightMetres": 82,
+          "neon": "red",
+          "exteriorSignature": "long volcanic-stone nave, twenty-four square pillars, red legal grid, vast shallow stairs, splitting approach line, unequal geometric scales, and off-center judgment tower"
+        },
+        {
+          "code": "C14",
+          "name": "Event Horizon Convention Centre",
+          "purpose": "Global congresses, investor summits, emergency convocations, exhibitions, and consequential announcements",
+          "form": "partially embedded convention torus",
+          "footprintMetres": [
+            144,
+            132
+          ],
+          "heightMetres": 78,
+          "neon": "cyan",
+          "exteriorSignature": "low smoked-glass torus, raised entrance sector, inward carbon ribs, accelerating cyan information band, void plaza, corrupted banner pylons, and orbiting fin crown"
+        },
+        {
+          "code": "C15",
+          "name": "Mourningstar Plenary Hall",
+          "purpose": "Keynotes, declarations, awards, leadership transitions, and formal program terminations",
+          "form": "twelve-wing eclipse dome",
+          "footprintMetres": [
+            138,
+            132
+          ],
+          "heightMetres": 84,
+          "neon": "magenta",
+          "exteriorSignature": "black ceramic dome, twelve radial triangular wings, red thermal seams, district-word pylons, converging amber avenue, equatorial vote sphere, and artificial black-sun crown"
+        },
+        {
+          "code": "C16",
+          "name": "Eclipse Expo Galleries",
+          "purpose": "Prototype demonstrations, research showcases, recruitment, funding fairs, and technology exhibitions",
+          "form": "seven-pavilion eclipse canopy",
+          "footprintMetres": [
+            148,
+            132
+          ],
+          "heightMetres": 62,
+          "neon": "white",
+          "exteriorSignature": "seven unlike black pavilions, vast uneven canopy disc, cold central aperture, category light signs, floating holographic title, concealed red loading portals, and ultraviolet edge"
+        },
+        {
+          "code": "C17",
+          "name": "The Funding Crucible",
+          "purpose": "Competitive high-risk capital, grants, sponsorship, and restricted-infrastructure access",
+          "form": "sunken inverted selection pyramid",
+          "footprintMetres": [
+            126,
+            118
+          ],
+          "heightMetres": 54,
+          "neon": "red",
+          "exteriorSignature": "inverted perforated pyramid in a crater, four dark-glass bridges, descending rejected-project light, sponsor-fin crown, and deep circular heartbeat"
+        },
+        {
+          "code": "C18",
+          "name": "The Last Prospectus Media House",
+          "purpose": "Official financial press, investor relations, controlled announcements, and emergency explanations",
+          "form": "five folded-page media house",
+          "footprintMetres": [
+            122,
+            102
+          ],
+          "heightMetres": 118,
+          "neon": "cyan",
+          "exteriorSignature": "five leaning folded black pages, white illuminated margins, canyon media screens, camera-zone terraces, microphone pylons, rotating roof antennas, and self-deleting ticker"
+        },
+        {
+          "code": "C19",
+          "name": "Nocturne Delegation Tower",
+          "purpose": "Accommodation for visiting councils, corporate missions, funding committees, and executive delegations",
+          "form": "nine-offset-cylinder delegation tower",
+          "footprintMetres": [
+            98,
+            94
+          ],
+          "heightMetres": 188,
+          "neon": "ultraviolet",
+          "exteriorSignature": "nine misaligned dark cylinders, delegation frequency bands, damaged vertical sign, off-center disc canopy, twenty rigid light flags, opaque skybridges, and targeting-reticle crown"
+        },
+        {
+          "code": "C20",
+          "name": "The Crown of Consensus",
+          "purpose": "Treaty announcements, convention closings, collective commitments, and public declarations of unity",
+          "form": "incomplete vertical ceremonial ring",
+          "footprintMetres": [
+            142,
+            112
+          ],
+          "heightMetres": 148,
+          "neon": "ultraviolet",
+          "exteriorSignature": "two obsidian curved wings nearly meeting overhead, interrupted ultraviolet arc, mirror plaza divided unequally, forty inward judicial seats, black podium, and expanding cyan accord rings"
+        }
+      ],
+      "clockwiseOrder": [
+        "The Null Exchange",
+        "The Obsidian Reserve",
+        "The Black Ledger Authority",
+        "The Quantum Clearing House",
+        "The Black Index Bureau",
+        "The Vanta Venture Spire",
+        "Covenant Capital House",
+        "The Patronage Engine",
+        "The Legacy Endowment",
+        "The Silent Patent Auction",
+        "Umbra Underwriting Hall",
+        "Catastrophe Bond Tower",
+        "The Arbitration Basilica",
+        "Event Horizon Convention Centre",
+        "Mourningstar Plenary Hall",
+        "Eclipse Expo Galleries",
+        "The Funding Crucible",
+        "The Last Prospectus Media House",
+        "Nocturne Delegation Tower",
+        "The Crown of Consensus"
+      ],
+      "circulation": {
+        "complianceWalk": "narrow inner promenade with cyan convergence lines and all seating facing the central Megabuilding",
+        "processionLoop": "wide outer ceremonial route with illuminated subsurface lanes and emergency red reversal protocol",
+        "exactBuildingApproaches": 20,
+        "conventionalStreetlights": 0,
+        "centralBuildingModified": false,
+        "accessibleRoutesIntegrated": true
+      },
+      "publicRealm": {
+        "inwardFacingSeats": 48,
+        "sealedCentralAccessGates": 8,
+        "floatingDeclarations": [
+          "CAPITAL SEEKS CONTINUITY",
+          "DISCOVERY CREATES OBLIGATION",
+          "ACCESS IS A FINANCIAL CONDITION",
+          "ALL MODELS EVENTUALLY CONVERGE",
+          "THE FUTURE HAS ALREADY BEEN ALLOCATED",
+          "NO LIABILITY EXPIRES HERE"
+        ],
+        "palette": "exclusively black architecture distinguished by texture; neon is the only chromatic element",
+        "advertisingPermitted": false,
+        "darkCircuitBoardReading": true
+      },
+      "nightLighting": {
+        "outerPromenadePylons": 80,
+        "outerPromenadeNeonLanterns": 80,
+        "innerComplianceNeonShards": 60,
+        "buildingFacadeBlades": 40,
+        "buildingFacadeThresholds": 60,
+        "rooftopAuthorityBeacons": 20,
+        "rooftopNeonHalos": 20,
+        "localPointLights": 16,
+        "plazaStadiumLightRigs": 20,
+        "plazaStadiumSpotlights": 20,
+        "plazaStadiumLampLenses": 60,
+        "plazaStadiumLightBaseIntensity": 1100,
+        "plazaStadiumLightStrength": 1,
+        "emissiveElements": 340,
+        "nonBlocking": true,
+        "shadowCasting": false,
+        "nighttimeIntent": "very bright high-output cyan, ultraviolet, magenta, amber, green, red, and binding-white corporate illumination"
+      },
+      "signatureSystems": {
+        "nullExchangeTickerLines": 22,
+        "obsidianReserveTerraces": 7,
+        "blackLedgerLayers": 40,
+        "indexBladeSegments": 13,
+        "covenantPillars": 12,
+        "patronageRotatingRings": 6,
+        "patentDisplayPlinths": 12,
+        "arbitrationPillars": 24,
+        "mourningstarWings": 12,
+        "eclipsePavilions": 7,
+        "nocturneVolumes": 9,
+        "consensusSeats": 40
+      },
+      "neonHierarchy": {
+        "cyan": "public information, verified transactions, convention navigation",
+        "ultraviolet": "executive authority, restricted funding, high-level access",
+        "magenta": "speculative capital, active bidding, venture investment",
+        "amber": "long-term obligations, endowments, ceremonial functions",
+        "green": "growth projections, active investment streams, favorable assessments",
+        "red": "disputes, risk, terminations, liability, emergencies",
+        "white": "final declarations, binding decisions, official names"
+      },
+      "architecturalIntent": "an almost continuous tribunal of black architecture watching the central Megabuilding like a circuit around an inaccessible processor",
+      "centralBuildingPreserved": true,
+      "exteriorOnly": true
+    },
+    "specializedRevision": 32,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 33,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Null Exchange",
+        "The Obsidian Reserve",
+        "The Black Ledger Authority",
+        "The Quantum Clearing House",
+        "The Black Index Bureau",
+        "The Vanta Venture Spire",
+        "Covenant Capital House",
+        "The Patronage Engine",
+        "The Legacy Endowment",
+        "The Silent Patent Auction",
+        "Umbra Underwriting Hall",
+        "Catastrophe Bond Tower",
+        "The Arbitration Basilica",
+        "Event Horizon Convention Centre",
+        "Mourningstar Plenary Hall",
+        "Eclipse Expo Galleries",
+        "The Funding Crucible",
+        "The Last Prospectus Media House",
+        "Nocturne Delegation Tower",
+        "The Crown of Consensus"
+      ],
+      "plannedObjects": [
+        "Compliance Walk",
+        "Procession Loop",
+        "twenty exact inward approaches",
+        "subsurface neon lane hierarchy",
+        "inward-facing tribunal seating",
+        "sealed central access gates",
+        "floating corporate declarations",
+        "high-output night lighting network"
+      ],
+      "realizedFeatureTags": [
+        "the-null-exchange",
+        "the-obsidian-reserve",
+        "the-black-ledger-authority",
+        "the-quantum-clearing-house",
+        "the-black-index-bureau",
+        "the-vanta-venture-spire",
+        "covenant-capital-house",
+        "the-patronage-engine",
+        "the-legacy-endowment",
+        "the-silent-patent-auction",
+        "umbra-underwriting-hall",
+        "catastrophe-bond-tower",
+        "the-arbitration-basilica",
+        "event-horizon-convention-centre",
+        "mourningstar-plenary-hall",
+        "eclipse-expo-galleries",
+        "the-funding-crucible",
+        "the-last-prospectus-media-house",
+        "nocturne-delegation-tower",
+        "the-crown-of-consensus"
+      ],
+      "realizedFacilityCount": 20,
+      "realizedObjectCount": 117,
+      "distinct": true,
+      "asymmetricCampus": false,
+      "localRoadCount": 22,
+      "skybridgeCount": 0,
+      "sealedSkybridgeTransferRingCount": 0,
+      "radialCoverage": 1,
+      "angularCoverage": 1,
+      "exteriorOnly": true,
+      "blackRingNarrative": true,
+      "fullClockwiseRing": true,
+      "centralBuildingPreserved": true,
+      "highOutputNightLighting": {
+        "outerPromenadePylons": 80,
+        "outerPromenadeNeonLanterns": 80,
+        "innerComplianceNeonShards": 60,
+        "buildingFacadeBlades": 40,
+        "buildingFacadeThresholds": 60,
+        "rooftopAuthorityBeacons": 20,
+        "rooftopNeonHalos": 20,
+        "localPointLights": 16,
+        "plazaStadiumLightRigs": 20,
+        "plazaStadiumSpotlights": 20,
+        "plazaStadiumLampLenses": 60,
+        "plazaStadiumLightBaseIntensity": 1100,
+        "plazaStadiumLightStrength": 1,
+        "emissiveElements": 340,
+        "nonBlocking": true,
+        "shadowCasting": false,
+        "nighttimeIntent": "very bright high-output cyan, ultraviolet, magenta, amber, green, red, and binding-white corporate illumination"
+      }
+    },
+    "signatureCounts": {
+      "nullTickerLines": 22,
+      "reserveTerraces": 7,
+      "ledgerLayers": 40,
+      "covenantPillars": 12,
+      "covenantDeadEndPassages": 0,
+      "patronageRings": 6,
+      "patentPlinths": 12,
+      "arbitrationPillars": 24,
+      "mourningstarWings": 12,
+      "eclipsePavilions": 7,
+      "nocturneVolumes": 9,
+      "consensusSeats": 40
+    },
+    "districtRoadNetwork": {
+      "routeCount": 20,
+      "connectorCount": 0,
+      "ringConnectorCount": 0,
+      "connectedRingIds": [],
+      "exceptionReason": "The Black Ring uses its authored concentric Compliance Walk, Procession Loop, and exact inward approaches; no road connector may cross the protected central plaza.",
+      "gradedConnectorNames": []
+    },
+    "nightLighting": {
+      "metadata": {
+        "outerPromenadePylons": 80,
+        "outerPromenadeNeonLanterns": 80,
+        "innerComplianceNeonShards": 60,
+        "buildingFacadeBlades": 40,
+        "buildingFacadeThresholds": 60,
+        "rooftopAuthorityBeacons": 20,
+        "rooftopNeonHalos": 20,
+        "localPointLights": 16,
+        "plazaStadiumLightRigs": 20,
+        "plazaStadiumSpotlights": 20,
+        "plazaStadiumLampLenses": 60,
+        "plazaStadiumLightBaseIntensity": 1100,
+        "plazaStadiumLightStrength": 1,
+        "emissiveElements": 340,
+        "nonBlocking": true,
+        "shadowCasting": false,
+        "nighttimeIntent": "very bright high-output cyan, ultraviolet, magenta, amber, green, red, and binding-white corporate illumination"
+      },
+      "objectCount": 576,
+      "outerPromenadePylons": 80,
+      "outerPromenadeNeonLanterns": 80,
+      "innerComplianceNeonShards": 60,
+      "buildingFacadeBlades": 40,
+      "buildingFacadeThresholds": 60,
+      "rooftopAuthorityBeacons": 20,
+      "rooftopNeonHalos": 20,
+      "plazaStadiumLightRigs": 20,
+      "plazaStadiumLightMasts": 20,
+      "plazaStadiumLightCrossbars": 20,
+      "plazaStadiumLightHousings": 60,
+      "plazaStadiumLightLenses": 60,
+      "plazaStadiumLightTargets": 20,
+      "pointLights": 16,
+      "spotLights": 20,
+      "emissiveMeshes": 340,
+      "maximumEmissiveIntensity": 10,
+      "blocking": [],
+      "shadowCasters": []
+    },
+    "patentAuctionPolyhedron": {
+      "present": true,
+      "visible": true,
+      "primaryMass": true,
+      "materialCount": 3,
+      "groupCount": 20,
+      "elementCount": 60,
+      "drawnElementCount": 60
+    },
+    "central": {
+      "name": "DISTRICT__dark-center-lab-megabuilding",
+      "meshCount": 51,
+      "corporateDescendants": [],
+      "canonicalSpinePresent": false
+    },
+    "retiredLegacyCore": {
+      "centralLegacyFacilities": 0,
+      "centralLegacyRoads": 0,
+      "syntheticMeshes": 0,
+      "syntheticLegacyFacilities": 0,
+      "syntheticLegacyRoads": 0,
+      "syntheticRetired": true,
+      "syntheticRoadRouteCount": 0,
+      "centralRoadRouteCount": 0,
+      "legacyPlazaPavilions": 0,
+      "centralLightPlatforms": 6,
+      "centralLightPlatformAudit": [
+        {
+          "name": "Corporate plaza light platform 1",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        },
+        {
+          "name": "Corporate plaza light platform 2",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        },
+        {
+          "name": "Corporate plaza light platform 3",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        },
+        {
+          "name": "Corporate plaza light platform 4",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        },
+        {
+          "name": "Corporate plaza light platform 5",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        },
+        {
+          "name": "Corporate plaza light platform 6",
+          "groundedSeatingPod": true,
+          "futuristicLightPavilion": true,
+          "metadataRoundTables": 1,
+          "metadataChairs": 4,
+          "metadataPlatformRadiusMetres": 8.2,
+          "metadataCanopyPanels": 3,
+          "metadataCanopySupports": 3,
+          "metadataLightCurrentRibbons": 6,
+          "metadataHolographicDotFields": 1,
+          "metadataHolographicDots": 28,
+          "tableParts": 2,
+          "chairGroups": 4,
+          "chairParts": 12,
+          "furnitureObstacles": 14,
+          "structuralObstacles": 3,
+          "subtleEmissiveElements": 2,
+          "subtlePointLights": 0,
+          "maximumPointLightIntensity": 0,
+          "canopyPanels": 3,
+          "canopySupports": 3,
+          "emitterRails": 3,
+          "lightCurrentRibbons": 6,
+          "holographicDotFields": 1,
+          "holographicDots": 28,
+          "legacyOverheadElements": 0,
+          "baseWalkable": true,
+          "basePreventsUnderwalk": true,
+          "groundedOffset": 3.874300880113424e-10,
+          "heightAbovePlaza": 0.3660000000000003
+        }
+      ],
+      "centralRoadGapRadius": 76,
+      "centralBlackRingRoadsRemoved": true
+    },
+    "skybridges": {
+      "segmentCount": 0,
+      "buildingBridgeCount": 0,
+      "centralDockCount": 0,
+      "transparentGreyGlassMeshes": 0,
+      "transferRingPresent": false
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6429999998211862,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.12686666392164525,
+    "grounded": true,
+    "position": [
+      42,
+      1.794,
+      0.126
+    ]
+  },
+  "seatingPlatformWalkAudit": {
+    "plazaGround": 1.6160000000521542,
+    "platformGround": 1.6339999996125698,
+    "platformRise": 0.017999999560415647,
+    "startDistance": 0.9199999999999983,
+    "endDistance": 0.20304816263299372,
+    "moved": 0.7171831219477321,
+    "crossedCenter": false,
+    "eyeClearance": 0.1619999999999997,
+    "grounded": true,
+    "underwalkSurfaces": 6,
+    "obstacles": 367,
+    "position": [
+      27.023,
+      1.796,
+      15.6
+    ]
+  },
+  "errors": []
+}

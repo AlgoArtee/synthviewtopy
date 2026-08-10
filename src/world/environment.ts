@@ -975,9 +975,25 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     beacon.position.set(Math.cos(angle) * radius, 2.55 + plazaElevationDelta, Math.sin(angle) * radius);
     target.add(beacon);
   }
-  // Restore the original six luminous plaza platforms as public-realm objects.
-  // They are not buildings, facilities, or roads and remain independent of the
-  // retired core-campus placeholders.
+  // Keep the six colored plaza platforms as grounded public-realm seating
+  // pavilions. Their broad low decks are WALK surfaces; human-scale furniture
+  // and canopy columns provide collision authority, while the overhead panels
+  // are high enough to read as shelter rather than a floating walk surface.
+  const platformDeckMaterial = new THREE.MeshPhysicalMaterial({
+    color: '#202c31', roughness: 0.42, metalness: 0.48, clearcoat: 0.38, clearcoatRoughness: 0.32,
+  });
+  platformDeckMaterial.name = 'Corporate grounded light-platform deck';
+  const platformFurnitureMaterial = new THREE.MeshPhysicalMaterial({
+    color: '#10171b', roughness: 0.34, metalness: 0.62, clearcoat: 0.28,
+  });
+  platformFurnitureMaterial.name = 'Corporate plaza table and chair titanium';
+  const platformSeatMaterial = new THREE.MeshStandardMaterial({
+    color: '#263237', roughness: 0.72, metalness: 0.18,
+  });
+  platformSeatMaterial.name = 'Corporate plaza chair upholstery';
+  const platformGroundLocalY = LEGACY_CENTRAL_PLAZA_Y;
+  const platformDeckHeight = metresToWorldUnits(0.18);
+  const platformDeckTopY = platformGroundLocalY + platformDeckHeight;
   for (let index = 0; index < 6; index += 1) {
     const angle = (index / 6) * Math.PI * 2 + Math.PI / 6;
     const platform = new THREE.Group();
@@ -986,39 +1002,276 @@ export function createTransitNetwork(target: THREE.Group, biomes: readonly Biome
     platform.userData.publicRealmObject = true;
     platform.userData.exteriorProgram = false;
     platform.userData.navObstacle = false;
-    const base = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.7, 0.24, 32), plazaMaterial);
-    base.name = `${platform.name} base`;
-    base.position.y = 1.98;
-    base.userData.walkable = true;
-    base.userData.navObstacle = false;
-    const canopy = new THREE.Mesh(
-      new THREE.CylinderGeometry(2.7, 2.35, 0.22, 32),
-      new THREE.MeshPhysicalMaterial({ color: '#394950', roughness: 0.24, metalness: 0.72, clearcoat: 0.55 }),
+    platform.userData.groundedPlazaSeatingPod = true;
+    platform.userData.futuristicLightPavilion = true;
+    platform.userData.roundTableCount = 1;
+    platform.userData.chairCount = 4;
+    platform.userData.platformRadiusMetres = 8.2;
+    platform.userData.canopyPanelCount = 3;
+    platform.userData.canopySupportCount = 3;
+    platform.userData.lightCurrentRibbonCount = 6;
+    platform.userData.holographicDotFieldCount = 1;
+    platform.userData.holographicDotCount = 28;
+    platform.userData.lighting = 'subtle cyan/magenta emissive edges, transparent tapered light currents, and sparse low-opacity holographic dots without local light spill';
+
+    const base = new THREE.Mesh(
+      new THREE.CylinderGeometry(metresToWorldUnits(8.2), metresToWorldUnits(8.35), platformDeckHeight, 64),
+      platformDeckMaterial,
     );
-    canopy.name = `${platform.name} canopy`;
-    canopy.position.y = 4.75;
-    canopy.userData.navObstacle = false;
-    platform.add(base, canopy);
-    for (let column = 0; column < 3; column += 1) {
-      const columnAngle = (column / 3) * Math.PI * 2;
-      const support = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.12, 2.65, 8), plazaMaterial);
-      support.name = `${platform.name} support ${column + 1}`;
-      support.position.set(Math.cos(columnAngle) * 2.05, 3.38, Math.sin(columnAngle) * 2.05);
-      support.userData.navObstacle = false;
+    base.name = `${platform.name} base`;
+    base.position.y = platformGroundLocalY + platformDeckHeight * 0.5;
+    base.userData.walkable = true;
+    base.userData.preventUnderwalk = true;
+    base.userData.navObstacle = false;
+    base.userData.centralLightPlatformGroundBase = true;
+    base.userData.platformRadiusMetres = 8.2;
+    base.receiveShadow = true;
+    platform.add(base);
+
+    const hologramColor = index % 2 ? '#ff4ecb' : '#35d8ff';
+    const subtleLightMaterial = new THREE.MeshStandardMaterial({
+      color: '#1b2428', emissive: hologramColor, emissiveIntensity: 0.12, roughness: 0.52, metalness: 0.42,
+    });
+    subtleLightMaterial.name = `Corporate subtle ${index % 2 ? 'magenta' : 'cyan'} seating-pod light`;
+    const deckLightRing = new THREE.Mesh(
+      new THREE.TorusGeometry(metresToWorldUnits(7.72), metresToWorldUnits(0.045), 6, 96),
+      subtleLightMaterial,
+    );
+    deckLightRing.name = `${platform.name} subtle deck light ring`;
+    deckLightRing.rotation.x = Math.PI / 2;
+    deckLightRing.position.y = platformDeckTopY + metresToWorldUnits(0.035);
+    deckLightRing.userData.centralLightPlatformSubtleEmissive = true;
+    deckLightRing.userData.navObstacle = false;
+    platform.add(deckLightRing);
+
+    const canopyHeight = platformDeckTopY + metresToWorldUnits(3.48);
+    const canopyOuterRadius = metresToWorldUnits(7.25);
+    const canopyInnerRadius = metresToWorldUnits(2.2);
+    const canopyPanelArc = Math.PI * 2 / 3 - 0.18;
+    const canopyMaterial = new THREE.MeshPhysicalMaterial({
+      color: '#1b282e',
+      emissive: hologramColor,
+      emissiveIntensity: 0.035,
+      roughness: 0.24,
+      metalness: 0.58,
+      clearcoat: 0.62,
+      clearcoatRoughness: 0.2,
+      transparent: true,
+      opacity: 0.92,
+      transmission: 0.08,
+      side: THREE.DoubleSide,
+    });
+    canopyMaterial.name = `Corporate ${index % 2 ? 'magenta' : 'cyan'} translucent pavilion canopy`;
+    const currentMaterial = new THREE.MeshBasicMaterial({
+      color: hologramColor,
+      transparent: true,
+      opacity: 0.055,
+      depthWrite: false,
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending,
+      toneMapped: false,
+    });
+    currentMaterial.name = `Corporate ${index % 2 ? 'magenta' : 'cyan'} transparent light current`;
+    const emitterMaterial = new THREE.MeshStandardMaterial({
+      color: '#172328',
+      emissive: hologramColor,
+      emissiveIntensity: 0.16,
+      roughness: 0.34,
+      metalness: 0.5,
+      side: THREE.DoubleSide,
+    });
+    emitterMaterial.name = `Corporate ${index % 2 ? 'magenta' : 'cyan'} pavilion emitter rail`;
+
+    for (let panelIndex = 0; panelIndex < 3; panelIndex += 1) {
+      const panelStart = panelIndex * Math.PI * 2 / 3 + 0.09;
+      const panel = new THREE.Mesh(
+        new THREE.RingGeometry(canopyInnerRadius, canopyOuterRadius, 40, 1, panelStart, canopyPanelArc),
+        canopyMaterial,
+      );
+      panel.name = `${platform.name} upper emitter panel ${panelIndex + 1}`;
+      panel.rotation.x = -Math.PI / 2;
+      panel.position.y = canopyHeight;
+      panel.userData.centralLightPlatformCanopyPanel = true;
+      panel.userData.navObstacle = false;
+      panel.userData.smoothTransparencyBatch = true;
+      panel.castShadow = true;
+      panel.receiveShadow = true;
+      platform.add(panel);
+
+      const emitterRail = new THREE.Mesh(
+        new THREE.RingGeometry(
+          canopyInnerRadius - metresToWorldUnits(0.02),
+          canopyInnerRadius + metresToWorldUnits(0.13),
+          24,
+          1,
+          panelStart,
+          canopyPanelArc,
+        ),
+        emitterMaterial,
+      );
+      emitterRail.name = `${platform.name} upper holographic emitter rail ${panelIndex + 1}`;
+      emitterRail.rotation.x = -Math.PI / 2;
+      emitterRail.position.y = canopyHeight - metresToWorldUnits(0.035);
+      emitterRail.userData.centralLightPlatformEmitterRail = true;
+      emitterRail.userData.navObstacle = false;
+      platform.add(emitterRail);
+
+      // Place each column beneath the middle of its panel, leaving the three
+      // canopy seams as generous radial entrances into the pavilion.
+      const supportAngle = panelStart + canopyPanelArc * 0.5;
+      const supportHeight = metresToWorldUnits(3.38);
+      const support = new THREE.Mesh(
+        new THREE.CylinderGeometry(metresToWorldUnits(0.09), metresToWorldUnits(0.14), supportHeight, 12),
+        platformFurnitureMaterial,
+      );
+      support.name = `${platform.name} pavilion column ${panelIndex + 1}`;
+      support.position.set(
+        Math.cos(supportAngle) * metresToWorldUnits(6.45),
+        platformDeckTopY + supportHeight * 0.5,
+        Math.sin(supportAngle) * metresToWorldUnits(6.45),
+      );
+      support.userData.centralLightPlatformCanopySupport = true;
+      support.userData.navObstacle = true;
+      support.castShadow = true;
       platform.add(support);
     }
-    const hologramColor = index % 2 ? '#ff4ecb' : '#35d8ff';
-    const hologram = new THREE.Mesh(
-      new THREE.CylinderGeometry(0.75, 1.25, 2.2, 24, 1, true),
-      new THREE.MeshStandardMaterial({
-        color: hologramColor, emissive: hologramColor, emissiveIntensity: 2.6,
-        transparent: true, opacity: 0.28, roughness: 0.12, metalness: 0.18, side: THREE.DoubleSide,
+
+    const currentBottomY = platformDeckTopY + metresToWorldUnits(0.92);
+    const currentTopY = canopyHeight - metresToWorldUnits(0.12);
+    for (let currentIndex = 0; currentIndex < 6; currentIndex += 1) {
+      const current = new THREE.Mesh(
+        new THREE.CylinderGeometry(
+          metresToWorldUnits(2.08),
+          metresToWorldUnits(0.94),
+          currentTopY - currentBottomY,
+          40,
+          1,
+          true,
+          currentIndex * Math.PI / 3 + 0.06,
+          0.48,
+        ),
+        currentMaterial,
+      );
+      current.name = `${platform.name} transparent light-current ribbon ${currentIndex + 1}`;
+      current.position.y = (currentBottomY + currentTopY) * 0.5;
+      current.rotation.y = index * 0.17;
+      current.renderOrder = 3;
+      current.userData.centralLightPlatformLightCurrent = true;
+      current.userData.navObstacle = false;
+      current.userData.smoothTransparencyBatch = true;
+      platform.add(current);
+    }
+
+    const dotPositions = new Float32Array(28 * 3);
+    for (let dotIndex = 0; dotIndex < 28; dotIndex += 1) {
+      const progress = (dotIndex + 0.5) / 28;
+      const dotRadius = metresToWorldUnits(0.92 + progress * 1.12);
+      const dotAngle = dotIndex * 2.399963229728653 + index * 0.61;
+      dotPositions[dotIndex * 3] = Math.cos(dotAngle) * dotRadius;
+      dotPositions[dotIndex * 3 + 1] = currentBottomY + progress * (currentTopY - currentBottomY);
+      dotPositions[dotIndex * 3 + 2] = Math.sin(dotAngle) * dotRadius;
+    }
+    const dotGeometry = new THREE.BufferGeometry();
+    dotGeometry.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+    const dotField = new THREE.Points(
+      dotGeometry,
+      new THREE.PointsMaterial({
+        name: `Corporate ${index % 2 ? 'magenta' : 'cyan'} sparse holographic dots`,
+        color: hologramColor,
+        size: metresToWorldUnits(0.11),
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0.14,
+        depthWrite: false,
+        blending: THREE.AdditiveBlending,
+        toneMapped: false,
       }),
     );
-    hologram.name = `${platform.name} holographic light`;
-    hologram.position.y = 3.25;
-    hologram.userData.navObstacle = false;
-    platform.add(hologram);
+    dotField.name = `${platform.name} sparse holographic dot field`;
+    dotField.renderOrder = 4;
+    dotField.userData.centralLightPlatformHolographicDots = true;
+    dotField.userData.holographicDotCount = 28;
+    dotField.userData.navObstacle = false;
+    dotField.userData.exportFallback = true;
+    platform.add(dotField);
+
+    const tablePedestal = new THREE.Mesh(
+      new THREE.CylinderGeometry(metresToWorldUnits(0.09), metresToWorldUnits(0.14), metresToWorldUnits(0.68), 16),
+      platformFurnitureMaterial,
+    );
+    tablePedestal.name = `${platform.name} round table pedestal`;
+    tablePedestal.position.y = platformDeckTopY + metresToWorldUnits(0.34);
+    tablePedestal.userData.centralLightPlatformTable = true;
+    tablePedestal.userData.navObstacle = true;
+    tablePedestal.castShadow = true;
+    const tableTop = new THREE.Mesh(
+      new THREE.CylinderGeometry(metresToWorldUnits(0.78), metresToWorldUnits(0.78), metresToWorldUnits(0.08), 32),
+      platformFurnitureMaterial,
+    );
+    tableTop.name = `${platform.name} round table top`;
+    tableTop.position.y = platformDeckTopY + metresToWorldUnits(0.72);
+    tableTop.userData.centralLightPlatformTable = true;
+    tableTop.userData.navObstacle = true;
+    tableTop.castShadow = true;
+    tableTop.receiveShadow = true;
+    const tableLightRing = new THREE.Mesh(
+      new THREE.TorusGeometry(metresToWorldUnits(0.7), metresToWorldUnits(0.025), 5, 48),
+      subtleLightMaterial,
+    );
+    tableLightRing.name = `${platform.name} subtle table-edge light`;
+    tableLightRing.rotation.x = Math.PI / 2;
+    tableLightRing.position.y = platformDeckTopY + metresToWorldUnits(0.765);
+    tableLightRing.userData.centralLightPlatformSubtleEmissive = true;
+    tableLightRing.userData.navObstacle = false;
+    platform.add(tablePedestal, tableTop, tableLightRing);
+
+    for (let chairIndex = 0; chairIndex < 4; chairIndex += 1) {
+      const chairAngle = chairIndex / 4 * Math.PI * 2;
+      const chair = new THREE.Group();
+      chair.name = `${platform.name} chair ${chairIndex + 1}`;
+      chair.position.set(
+        Math.cos(chairAngle) * metresToWorldUnits(1.48),
+        0,
+        Math.sin(chairAngle) * metresToWorldUnits(1.48),
+      );
+      chair.rotation.y = Math.PI / 2 - chairAngle;
+      chair.userData.centralLightPlatformChair = true;
+      chair.userData.navObstacle = false;
+
+      const chairPedestal = new THREE.Mesh(
+        new THREE.CylinderGeometry(metresToWorldUnits(0.065), metresToWorldUnits(0.1), metresToWorldUnits(0.42), 12),
+        platformFurnitureMaterial,
+      );
+      chairPedestal.name = `${chair.name} pedestal`;
+      chairPedestal.position.y = platformDeckTopY + metresToWorldUnits(0.21);
+      chairPedestal.userData.centralLightPlatformChairPart = true;
+      chairPedestal.userData.navObstacle = true;
+      const chairSeat = new THREE.Mesh(
+        new RoundedBoxGeometry(
+          metresToWorldUnits(0.48), metresToWorldUnits(0.08), metresToWorldUnits(0.48), 2, metresToWorldUnits(0.045),
+        ),
+        platformSeatMaterial,
+      );
+      chairSeat.name = `${chair.name} seat`;
+      chairSeat.position.y = platformDeckTopY + metresToWorldUnits(0.45);
+      chairSeat.userData.centralLightPlatformChairPart = true;
+      chairSeat.userData.navObstacle = true;
+      chairSeat.castShadow = true;
+      const chairBack = new THREE.Mesh(
+        new RoundedBoxGeometry(
+          metresToWorldUnits(0.48), metresToWorldUnits(0.48), metresToWorldUnits(0.07), 2, metresToWorldUnits(0.035),
+        ),
+        platformSeatMaterial,
+      );
+      chairBack.name = `${chair.name} back`;
+      chairBack.position.set(0, platformDeckTopY + metresToWorldUnits(0.67), metresToWorldUnits(0.22));
+      chairBack.userData.centralLightPlatformChairPart = true;
+      chairBack.userData.navObstacle = true;
+      chairBack.castShadow = true;
+      chair.add(chairPedestal, chairSeat, chairBack);
+      platform.add(chair);
+    }
+
     platform.position.set(Math.cos(angle) * 31, plazaElevationDelta, Math.sin(angle) * 31);
     platform.rotation.y = -angle;
     target.add(platform);

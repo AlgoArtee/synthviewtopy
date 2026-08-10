@@ -1,0 +1,277 @@
+{
+  "seeded": {
+    "canonical": {
+      "position": {
+        "x": -26.27739023610019,
+        "y": 0,
+        "z": 12.180754853468272
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "moved": {
+      "position": {
+        "x": 4.972609763899811,
+        "y": 0,
+        "z": -1.3192451465317276
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "plazaLightStrength": 1.45,
+    "assetId": "sha256-837140db9fdd139b794ad1155578ef79462309663ef0d6bd98b12b6d46f1c938",
+    "saved": {
+      "position": {
+        "x": 4.972609763899811,
+        "y": 0,
+        "z": -1.3192451465317276
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 1,
+      "savedAt": "2026-08-10T19:23:55.687Z",
+      "source": "current",
+      "recoveryRevisionCount": 1,
+      "manualSaveAvailable": true,
+      "manualSaveRevision": 1,
+      "manualSavedAt": "2026-08-10T19:23:55.687Z",
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    }
+  },
+  "staleLoad": {
+    "state": {
+      "position": {
+        "x": 4.972609763899811,
+        "y": 0,
+        "z": -1.3192451465317276
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 1,
+      "savedAt": "2026-08-10T19:23:55.687Z",
+      "source": "current",
+      "recoveryRevisionCount": 1,
+      "manualSaveAvailable": true,
+      "manualSaveRevision": 1,
+      "manualSavedAt": "2026-08-10T19:23:55.687Z",
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    },
+    "plazaLightStrength": 1.45,
+    "localMirrorPresent": true
+  },
+  "currentBuild": {
+    "state": {
+      "position": {
+        "x": -26.27739023610019,
+        "y": 0,
+        "z": 12.180754853468272
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 0,
+      "savedAt": null,
+      "source": "none",
+      "recoveryRevisionCount": 0,
+      "manualSaveAvailable": true,
+      "manualSaveRevision": 1,
+      "manualSavedAt": "2026-08-10T19:23:55.687Z",
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    },
+    "localMirrorPresent": false,
+    "stores": {
+      "projectCount": 0,
+      "revisionCount": 0,
+      "manualProjectCount": 1,
+      "assetCount": 1,
+      "manualHallState": {
+        "position": {
+          "x": 4.972609763899811,
+          "y": 0,
+          "z": -1.3192451465317276
+        },
+        "rotationY": -212.99999999999997,
+        "scale": 1,
+        "scale3D": {
+          "x": 1,
+          "y": 1,
+          "z": 1
+        },
+        "visibilityIntent": "visible",
+        "accent": "#FF5ACD",
+        "styleCustomized": false,
+        "collisionEnabled": true,
+        "interactions": []
+      },
+      "manualPlazaLightStrength": 1.45
+    },
+    "button": {
+      "present": true,
+      "label": "◎Current Build",
+      "title": "Clear working autosave overrides, retain the manual Save, and reload the authored build"
+    },
+    "coreAudit": {
+      "syntheticMeshes": 0,
+      "syntheticLegacyRoads": 0,
+      "centralLegacyFacilities": 0,
+      "centralLegacyRoads": 0,
+      "legacyPlazaPavilions": 0,
+      "centralLightPlatforms": 6,
+      "groundedLightPlatformBases": 6,
+      "groundedLightPlatformTables": 12,
+      "groundedLightPlatformChairGroups": 24,
+      "groundedLightPlatformChairParts": 72,
+      "groundedLightPlatformFurnitureObstacles": 84,
+      "groundedLightPlatformSubtleEmissives": 12,
+      "groundedLightPlatformSubtlePointLights": 0,
+      "groundedLightPlatformLegacyOverheadElements": 0,
+      "skybridgeSegments": 0,
+      "covenantDeadEndPassages": 0,
+      "patentAuctionPrimaryMasses": 1,
+      "patentAuctionMaterialCount": 3,
+      "patentAuctionGroupCount": 20,
+      "patentAuctionElementCount": 60,
+      "patentAuctionDrawnElementCount": 60,
+      "corporateNightLightObjects": 576,
+      "corporateNightLightPointLights": 16,
+      "corporateNightLightSpotLights": 20,
+      "corporatePlazaStadiumLightRigs": 20,
+      "corporateNightLightEmissiveMeshes": 340,
+      "corporateNightLightBlockingObjects": 0,
+      "corporateGradedRoadConnectors": 0,
+      "transparentGreyGlassMeshes": 0,
+      "syntheticRoadRouteCount": 0,
+      "centralRoadRouteCount": 0,
+      "corporateRoadConnectorCount": 0,
+      "corporateRoadRingConnectorCount": 0,
+      "corporatePlazaLightStrength": 1,
+      "skybridgeMetadata": null
+    }
+  },
+  "manualReload": {
+    "state": {
+      "position": {
+        "x": 4.972609763899811,
+        "y": 0,
+        "z": -1.3192451465317276
+      },
+      "rotationY": -212.99999999999997,
+      "scale": 1,
+      "scale3D": {
+        "x": 1,
+        "y": 1,
+        "z": 1
+      },
+      "visible": true,
+      "visibilityIntent": "visible",
+      "effectiveVisible": false,
+      "accent": "#FF5ACD",
+      "styleCustomized": false,
+      "collisionEnabled": true,
+      "interactions": []
+    },
+    "persistence": {
+      "schema": "youtopy.lab-island/2.0",
+      "revision": 2,
+      "savedAt": "2026-08-10T19:24:20.783Z",
+      "source": "current",
+      "recoveryRevisionCount": 1,
+      "manualSaveAvailable": true,
+      "manualSaveRevision": 1,
+      "manualSavedAt": "2026-08-10T19:23:55.687Z",
+      "assetCount": 1,
+      "missingAssetIds": [],
+      "persistentStorageGranted": false,
+      "lastError": null,
+      "legacyBackupAvailable": false,
+      "missingLegacyImportCount": 0
+    },
+    "plazaLightStrength": 1.45,
+    "localMirrorPresent": true
+  },
+  "consoleErrors": [],
+  "pageErrors": []
+}

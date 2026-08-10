@@ -115,6 +115,7 @@ try {
     const restoreCorporate = world.worldStreaming.mountPackageAuthoritySources(districtId);
     const restoreCentral = world.worldStreaming.mountPackageAuthoritySources('dark-center-lab-megabuilding');
     const restoreSynthetic = world.worldStreaming.mountPackageAuthoritySources('synthetic-quantum-biosystems');
+    const restoreGlobalEnvironment = world.globalEnvironmentBatching?.mountSources();
     district.updateMatrixWorld(true);
     central.updateMatrixWorld(true);
     const facilities = [];
@@ -210,10 +211,110 @@ try {
         && entry.transparent === true && entry.opacity < 0.6)) transparentGreyGlassMeshes += 1;
     });
     let legacyPlazaPavilions = 0;
-    let centralLightPlatforms = 0;
+    const centralLightPlatforms = [];
     world.scene.traverse((object) => {
       if (object.name.startsWith('Corporate plaza laboratory pavilion')) legacyPlazaPavilions += 1;
-      if (object.userData.centralLightPlatform === true) centralLightPlatforms += 1;
+      if (object.userData.centralLightPlatform === true) centralLightPlatforms.push(object);
+    });
+    const plazaSurfaceY = world.scene.getObjectByName('Corporate Core futuristic plaza')
+      ?.getWorldPosition(world.camera.position.clone()).y ?? null;
+    const verticalBounds = (root) => {
+      let minY = Number.POSITIVE_INFINITY;
+      let maxY = Number.NEGATIVE_INFINITY;
+      root.updateMatrixWorld(true);
+      root.traverse((object) => {
+        if (!object.isMesh || !object.geometry) return;
+        object.geometry.computeBoundingBox();
+        const localBounds = object.geometry.boundingBox;
+        if (!localBounds) return;
+        for (const x of [localBounds.min.x, localBounds.max.x]) {
+          for (const y of [localBounds.min.y, localBounds.max.y]) {
+            for (const z of [localBounds.min.z, localBounds.max.z]) {
+              const cornerY = world.camera.position.clone().set(x, y, z).applyMatrix4(object.matrixWorld).y;
+              minY = Math.min(minY, cornerY);
+              maxY = Math.max(maxY, cornerY);
+            }
+          }
+        }
+      });
+      return { minY, maxY };
+    };
+    const centralLightPlatformAudit = centralLightPlatforms.map((platform) => {
+      let base = null;
+      let tableParts = 0;
+      let chairGroups = 0;
+      let chairParts = 0;
+      let furnitureObstacles = 0;
+      let structuralObstacles = 0;
+      let subtleEmissiveElements = 0;
+      let subtlePointLights = 0;
+      let maximumPointLightIntensity = 0;
+      let canopyPanels = 0;
+      let canopySupports = 0;
+      let emitterRails = 0;
+      let lightCurrentRibbons = 0;
+      let holographicDotFields = 0;
+      let holographicDots = 0;
+      let legacyOverheadElements = 0;
+      platform.traverse((object) => {
+        if (object.userData.centralLightPlatformGroundBase === true) base = object;
+        if (object.userData.centralLightPlatformTable === true) tableParts += 1;
+        if (object.userData.centralLightPlatformChair === true) chairGroups += 1;
+        if (object.userData.centralLightPlatformChairPart === true) chairParts += 1;
+        if ((object.userData.centralLightPlatformTable === true
+          || object.userData.centralLightPlatformChairPart === true)
+          && object.userData.navObstacle === true) furnitureObstacles += 1;
+        if (object.userData.centralLightPlatformCanopySupport === true
+          && object.userData.navObstacle === true) structuralObstacles += 1;
+        if (object.userData.centralLightPlatformSubtleEmissive === true) subtleEmissiveElements += 1;
+        if (object.userData.centralLightPlatformCanopyPanel === true) canopyPanels += 1;
+        if (object.userData.centralLightPlatformCanopySupport === true) canopySupports += 1;
+        if (object.userData.centralLightPlatformEmitterRail === true) emitterRails += 1;
+        if (object.userData.centralLightPlatformLightCurrent === true) lightCurrentRibbons += 1;
+        if (object.userData.centralLightPlatformHolographicDots === true) {
+          holographicDotFields += 1;
+          holographicDots += Number(object.userData.holographicDotCount ?? 0);
+        }
+        if (object.userData.centralLightPlatformSubtleLight === true) {
+          subtlePointLights += 1;
+          maximumPointLightIntensity = Math.max(maximumPointLightIntensity, object.intensity ?? 0);
+        }
+        if (/ canopy$| support \d+$| holographic light$/.test(object.name)) legacyOverheadElements += 1;
+      });
+      const bounds = verticalBounds(platform);
+      const baseBounds = base ? verticalBounds(base) : null;
+      return {
+        name: platform.name,
+        groundedSeatingPod: platform.userData.groundedPlazaSeatingPod === true,
+        futuristicLightPavilion: platform.userData.futuristicLightPavilion === true,
+        metadataRoundTables: platform.userData.roundTableCount,
+        metadataChairs: platform.userData.chairCount,
+        metadataPlatformRadiusMetres: platform.userData.platformRadiusMetres,
+        metadataCanopyPanels: platform.userData.canopyPanelCount,
+        metadataCanopySupports: platform.userData.canopySupportCount,
+        metadataLightCurrentRibbons: platform.userData.lightCurrentRibbonCount,
+        metadataHolographicDotFields: platform.userData.holographicDotFieldCount,
+        metadataHolographicDots: platform.userData.holographicDotCount,
+        tableParts,
+        chairGroups,
+        chairParts,
+        furnitureObstacles,
+        structuralObstacles,
+        subtleEmissiveElements,
+        subtlePointLights,
+        maximumPointLightIntensity,
+        canopyPanels,
+        canopySupports,
+        emitterRails,
+        lightCurrentRibbons,
+        holographicDotFields,
+        holographicDots,
+        legacyOverheadElements,
+        baseWalkable: base?.userData.walkable === true,
+        basePreventsUnderwalk: base?.userData.preventUnderwalk === true,
+        groundedOffset: baseBounds && plazaSurfaceY !== null ? baseBounds.minY - plazaSurfaceY : null,
+        heightAbovePlaza: plazaSurfaceY === null ? null : bounds.maxY - plazaSurfaceY,
+      };
     });
     const transit = world.scene.getObjectByName('INFRASTRUCTURE__TRANSIT_NETWORK');
     const routes = [
@@ -325,7 +426,8 @@ try {
         syntheticRoadRouteCount: synthetic.userData.districtRoadNetwork?.routes?.length ?? -1,
         centralRoadRouteCount: central.userData.districtRoadNetwork?.routes?.length ?? -1,
         legacyPlazaPavilions,
-        centralLightPlatforms,
+        centralLightPlatforms: centralLightPlatforms.length,
+        centralLightPlatformAudit,
         centralRoadGapRadius: transit?.userData.masterplan?.centralRoadGapRadius ?? null,
         centralBlackRingRoadsRemoved: transit?.userData.masterplan?.centralBlackRingRoadsRemoved === true,
       },
@@ -338,6 +440,7 @@ try {
         metadata: district.userData.corporateCoreDistrict?.skybridges,
       },
     };
+    restoreGlobalEnvironment?.();
     restoreSynthetic?.();
     restoreCentral?.();
     restoreCorporate?.();
@@ -414,6 +517,39 @@ try {
   }
   if (audit.retiredLegacyCore.centralLightPlatforms !== 6) {
     throw new Error(`The six original central light platforms were not restored: ${JSON.stringify(audit.retiredLegacyCore)}`);
+  }
+  if (audit.retiredLegacyCore.centralLightPlatformAudit.length !== 6
+    || audit.retiredLegacyCore.centralLightPlatformAudit.some((platform) => !platform.groundedSeatingPod
+      || !platform.futuristicLightPavilion
+      || platform.metadataRoundTables !== 1
+      || platform.metadataChairs !== 4
+      || platform.metadataPlatformRadiusMetres !== 8.2
+      || platform.metadataCanopyPanels !== 3
+      || platform.metadataCanopySupports !== 3
+      || platform.metadataLightCurrentRibbons !== 6
+      || platform.metadataHolographicDotFields !== 1
+      || platform.metadataHolographicDots !== 28
+      || platform.tableParts !== 2
+      || platform.chairGroups !== 4
+      || platform.chairParts !== 12
+      || platform.furnitureObstacles !== 14
+      || platform.structuralObstacles !== 3
+      || platform.subtleEmissiveElements !== 2
+      || platform.subtlePointLights !== 0
+      || platform.maximumPointLightIntensity !== 0
+      || platform.canopyPanels !== 3
+      || platform.canopySupports !== 3
+      || platform.emitterRails !== 3
+      || platform.lightCurrentRibbons !== 6
+      || platform.holographicDotFields !== 1
+      || platform.holographicDots !== 28
+      || platform.legacyOverheadElements !== 0
+      || !platform.baseWalkable
+      || !platform.basePreventsUnderwalk
+      || Math.abs(platform.groundedOffset ?? 1) > 0.003
+      || (platform.heightAbovePlaza ?? 0) < 0.35
+      || (platform.heightAbovePlaza ?? 1) > 0.39)) {
+    throw new Error(`Corporate plaza light pavilions are not large, grounded, furnished, structurally safe, or subtly holographic: ${JSON.stringify(audit.retiredLegacyCore.centralLightPlatformAudit)}`);
   }
   if (audit.skybridges.segmentCount !== 0
     || audit.skybridges.buildingBridgeCount !== 0
@@ -524,9 +660,77 @@ try {
   }, { walkPoint: audit.walkPoint });
   if (Math.abs(walkAudit.eyeClearance - 0.162) > 0.002 || !walkAudit.grounded || walkAudit.moved < 0.1) throw new Error(`Compliance Walk traversal failed: ${JSON.stringify(walkAudit)}`);
   await page.screenshot({ path: `${OUTPUT}/compliance-walk-human-height.png` });
+
+  const seatingPlatformWalkAudit = await page.evaluate(() => {
+    const world = window.labIsland;
+    const platform = world.scene.getObjectByName('Corporate plaza light platform 1');
+    const plaza = world.scene.getObjectByName('Corporate Core futuristic plaza');
+    if (!platform || !plaza) throw new Error('Corporate plaza seating platform or plaza surface is unavailable');
+    const center = platform.getWorldPosition(world.camera.position.clone());
+    const outward = center.clone().setY(0).normalize();
+    const startPoint = center.clone().addScaledVector(outward, 0.92).setY(0.05);
+    const heading = center.clone().sub(startPoint).setY(0).normalize();
+    const clearDeckPoint = center.clone().addScaledVector(outward, 0.255);
+    world.setMode('walk');
+    world.setTimeOfDay('night');
+    world.setWeather('clear');
+    world.walkController.refreshNavigation();
+    const plazaGround = world.walkController.sampleGround(startPoint.x, startPoint.z);
+    const platformGround = world.walkController.sampleGround(clearDeckPoint.x, clearDeckPoint.z);
+    world.walkController.enter(startPoint, heading, startPoint);
+    const start = world.camera.position.clone();
+    world.setWalkIntent(0, 1, true);
+    world.advanceTime(10_000);
+    world.setWalkIntent(0, 0);
+    const end = world.camera.position.clone();
+    const endGround = world.walkController.sampleGround(end.x, end.z);
+    const state = world.walkController.getSnapshot();
+    return {
+      plazaGround,
+      platformGround,
+      platformRise: plazaGround === null || platformGround === null ? null : platformGround - plazaGround,
+      startDistance: start.clone().setY(0).distanceTo(center.clone().setY(0)),
+      endDistance: end.clone().setY(0).distanceTo(center.clone().setY(0)),
+      moved: start.distanceTo(end),
+      crossedCenter: end.clone().sub(center).setY(0).dot(start.clone().sub(center).setY(0)) < 0,
+      eyeClearance: endGround === null ? null : end.y - endGround,
+      grounded: state.grounded,
+      underwalkSurfaces: state.collisionSpatialIndex.totalCandidates.underwalkSurfaces,
+      obstacles: state.collisionSpatialIndex.totalCandidates.obstacles,
+      position: state.positionWorld,
+    };
+  });
+  if (seatingPlatformWalkAudit.plazaGround === null
+    || seatingPlatformWalkAudit.platformGround === null
+    || Math.abs(seatingPlatformWalkAudit.platformRise - 0.018) > 0.003
+    || seatingPlatformWalkAudit.moved < 0.5
+    || seatingPlatformWalkAudit.endDistance >= seatingPlatformWalkAudit.startDistance
+    || seatingPlatformWalkAudit.endDistance < 0.085
+    || seatingPlatformWalkAudit.crossedCenter
+    || Math.abs(seatingPlatformWalkAudit.eyeClearance - 0.162) > 0.003
+    || !seatingPlatformWalkAudit.grounded
+    || seatingPlatformWalkAudit.underwalkSurfaces < 6
+    || seatingPlatformWalkAudit.obstacles < 102) {
+    throw new Error(`Grounded seating-platform WALK approach or furniture collision failed: ${JSON.stringify(seatingPlatformWalkAudit)}`);
+  }
+  await page.evaluate(() => {
+    const world = window.labIsland;
+    const platform = world.scene.getObjectByName('Corporate plaza light platform 1');
+    if (!platform) return;
+    const center = platform.getWorldPosition(world.camera.position.clone());
+    const outward = center.clone().setY(0).normalize();
+    const ground = world.walkController.sampleGround(
+      center.x + outward.x * 0.95,
+      center.z + outward.z * 0.95,
+    ) ?? 1.616;
+    world.camera.position.copy(center).addScaledVector(outward, 0.95).setY(ground + 0.162);
+    world.camera.lookAt(center.x, ground + 0.18, center.z);
+  });
+  await page.waitForTimeout(250);
+  await page.screenshot({ path: `${OUTPUT}/central-light-platform-walk.png` });
   if (errors.length) throw new Error(`Browser errors: ${errors.join(' | ')}`);
-  await writeFile(`${OUTPUT}/audit.json`, `${JSON.stringify({ audit, walkAudit, errors }, null, 2)}\n`);
-  console.log(JSON.stringify({ facilities: audit.facilityCount, meshes: audit.meshes, triangles: audit.triangles, routes: audit.routes.length, walkAudit, errors }, null, 2));
+  await writeFile(`${OUTPUT}/audit.json`, `${JSON.stringify({ audit, walkAudit, seatingPlatformWalkAudit, errors }, null, 2)}\n`);
+  console.log(JSON.stringify({ facilities: audit.facilityCount, meshes: audit.meshes, triangles: audit.triangles, routes: audit.routes.length, walkAudit, seatingPlatformWalkAudit, errors }, null, 2));
 } finally {
   await browser.close();
 }

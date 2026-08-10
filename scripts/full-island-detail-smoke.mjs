@@ -247,6 +247,21 @@ try {
     };
   });
   const fullStreaming = fullAudit.stats.streaming;
+  console.log(JSON.stringify({
+    fullIslandStructuralSummary: {
+      drawCalls: fullAudit.stats.drawCalls,
+      triangles: fullAudit.stats.triangles,
+      textures: fullAudit.stats.textureCount,
+      activeAnimationNodes: fullAudit.stats.activeAnimationNodes,
+      runtimeBatches: fullAudit.trueRuntimeBatchCount,
+      reportedGpuBatches: fullStreaming.gpuBatching.batchCount,
+      liveAuthoredSources: fullAudit.liveAuthoredSources,
+      normalRenderAuthoredSourceCount: fullStreaming.normalRenderAuthoredSourceCount,
+      detachedAuthoringSourceCount: fullStreaming.detachedAuthoringSourceCount,
+      representationErrors: fullAudit.representationErrors.length,
+      nonReadyPackages: fullAudit.nonReadyPackages.length,
+    },
+  }, null, 2));
   if (!fullStreaming.fullIslandDetailRequested
     || !fullStreaming.fullIslandDetailReady
     || fullStreaming.totalPackages !== TARGET_PACKAGE_COUNT

@@ -493,10 +493,10 @@ const districtBlueprints: readonly DistrictDefinition[] = [
     position: [-29, 0, -26],
     footprint: [14, 8],
     height: 17,
-    archetype: "finance-incubator-campus",
+    archetype: "financial-funding-convention-circulatory-district",
     accent: "#65CFFF",
     palette: ["#101C25", "#2A4A5D", "#C7D5DB", "#65CFFF"],
-    description: "Slender headquarters and incubator buildings overlook a formal plaza for investors, grants, and venture partnerships.",
+    description: "Fifteen distinct exchange, banking, venture, grant, patent, risk, impact, patronage, sovereign-fund, clearing, convention, delegation, arbitration, and futures landmarks form Capital Crescent, the Funding Spine, and Confluence Grounds along the island's northern outer edge.",
   },
   {
     id: "logistics",

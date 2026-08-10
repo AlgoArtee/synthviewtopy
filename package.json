@@ -33,6 +33,7 @@
     "test:electronics": "node scripts/electronics-labs-district-smoke.mjs",
     "test:art-marketing": "node scripts/art-marketing-district-smoke.mjs",
     "test:entertainment": "node scripts/entertainment-district-smoke.mjs",
+    "test:financial-funding": "node scripts/financial-funding-district-smoke.mjs",
     "test:residential-ever-hour": "node scripts/residential-ever-hour-district-smoke.mjs",
     "test:biochemistry": "node scripts/biochemistry-labs-district-smoke.mjs",
     "test:organic-chemistry": "node scripts/organic-chemistry-labs-district-smoke.mjs",

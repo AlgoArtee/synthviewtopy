@@ -35,11 +35,11 @@
       "percent": 100
     },
     "renderProfile": "full-island",
-    "liveRenderObjectCount": 2927,
+    "liveRenderObjectCount": 2954,
     "batchOccupancy": {
-      "capacity": 64963,
-      "active": 63305,
-      "ratio": 0.9744777796591906
+      "capacity": 66330,
+      "active": 64672,
+      "ratio": 0.9750037690336197
     },
     "microdetail": {
       "total": 896,
@@ -48,7 +48,7 @@
     },
     "collisionResidentCellCount": 0,
     "navigationResidencyRevision": 41,
-    "detachedAuthoringSourceCount": 46662,
+    "detachedAuthoringSourceCount": 48029,
     "normalRenderAuthoredSourceCount": 0,
     "totalPackages": 41,
     "cacheCapacity": 41,
@@ -148,14 +148,14 @@
     "gpuBatching": {
       "backend": "batched-mesh-multi-draw",
       "multiDrawSupported": true,
-      "batchCount": 915,
-      "batchedSourceCount": 46662,
-      "retainedSourceCount": 48674,
-      "estimatedGeometryBytes": 106192148,
-      "estimatedTextureBytes": 203634310,
-      "instancedBatchCount": 246,
-      "batchedMeshBatchCount": 187,
-      "mergedBatchCount": 482,
+      "batchCount": 923,
+      "batchedSourceCount": 48029,
+      "retainedSourceCount": 50060,
+      "estimatedGeometryBytes": 109995556,
+      "estimatedTextureBytes": 228127077,
+      "instancedBatchCount": 243,
+      "batchedMeshBatchCount": 196,
+      "mergedBatchCount": 484,
       "largestBatchInstances": 6599,
       "largestBatchVertices": 44930,
       "largestBatchIndices": 224496,
@@ -1107,19 +1107,19 @@
         "pinned": false,
         "distanceMetres": 15019,
         "estimatedCost": {
-          "drawCalls": 19,
-          "triangles": 7858,
+          "drawCalls": 47,
+          "triangles": 129984,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 100,
+          "mandatory": 1486,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 94,
-          "active": 94,
+          "capacity": 1461,
+          "active": 1461,
           "ratio": 1
         }
       },
@@ -1534,7 +1534,7 @@
     }
   },
   "districtCount": 35,
-  "buildingCount": 390,
+  "buildingCount": 401,
   "districtReports": [
     {
       "districtId": "synthetic-quantum-biosystems",
@@ -9246,8 +9246,8 @@
     {
       "districtId": "financial-funding",
       "name": "Financial & Funding District",
-      "expectedCount": 4,
-      "discoveredCount": 4,
+      "expectedCount": 15,
+      "discoveredCount": 15,
       "packageState": {
         "id": "financial-funding",
         "kind": "district",
@@ -9265,104 +9265,335 @@
         "pinned": false,
         "distanceMetres": 15019,
         "estimatedCost": {
-          "drawCalls": 19,
-          "triangles": 7858,
+          "drawCalls": 47,
+          "triangles": 129984,
           "animationNodes": 0
         },
         "renderImportance": {
-          "mandatory": 100,
+          "mandatory": 1486,
           "micro": 0,
           "visibleMicro": 0,
           "culledMicro": 0
         },
         "batchOccupancy": {
-          "capacity": 94,
-          "active": 94,
+          "capacity": 1461,
+          "active": 1461,
           "ratio": 1
         }
       },
       "buildingReports": [
         {
           "districtId": "financial-funding",
-          "name": "Research Funding Headquarters",
-          "rootName": "financial-funding__FACILITY__RESEARCH-FUNDING-HEADQUARTERS",
-          "code": null,
-          "representedSourceCount": 7,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 7,
-          "authoredBatchedSources": 7,
-          "expectedRuntimeBatchSources": 7,
-          "mandatoryArchitecturalSources": 4,
-          "representedMandatorySources": 4,
+          "name": "The Aequitas Exchange",
+          "rootName": "FINANCE__F01__THE_AEQUITAS_EXCHANGE",
+          "code": "F01",
+          "representedSourceCount": 74,
+          "directVisibleMeshes": 3,
+          "visibleBatchSources": 71,
+          "authoredBatchedSources": 71,
+          "expectedRuntimeBatchSources": 71,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.938,
-            7.148,
-            8.487
+            12.89,
+            19.6,
+            12.89
           ],
           "failures": []
         },
         {
           "districtId": "financial-funding",
-          "name": "Venture Incubator Pavilion",
-          "rootName": "financial-funding__FACILITY__VENTURE-INCUBATOR-PAVILION",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "Meridian Research Bank",
+          "rootName": "FINANCE__F02__MERIDIAN_RESEARCH_BANK",
+          "code": "F02",
+          "representedSourceCount": 63,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 62,
+          "authoredBatchedSources": 62,
+          "expectedRuntimeBatchSources": 62,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.95,
+            5.399,
+            10.975
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Venture Prism",
+          "rootName": "FINANCE__F03__VENTURE_PRISM",
+          "code": "F03",
+          "representedSourceCount": 42,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 41,
+          "authoredBatchedSources": 41,
+          "expectedRuntimeBatchSources": 41,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            11.766,
+            16.617,
+            10.7
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Helix Grant House",
+          "rootName": "FINANCE__F04__HELIX_GRANT_HOUSE",
+          "code": "F04",
+          "representedSourceCount": 100,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 99,
+          "authoredBatchedSources": 99,
+          "expectedRuntimeBatchSources": 99,
+          "mandatoryArchitecturalSources": 26,
+          "representedMandatorySources": 26,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.612,
+            2.96,
+            14.241
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "The Patent Lantern",
+          "rootName": "FINANCE__F05__THE_PATENT_LANTERN",
+          "code": "F05",
+          "representedSourceCount": 142,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 141,
+          "authoredBatchedSources": 141,
+          "expectedRuntimeBatchSources": 141,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.466,
+            8.795,
+            14.383
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Black Swan Risk Tower",
+          "rootName": "FINANCE__F06__BLACK_SWAN_RISK_TOWER",
+          "code": "F06",
+          "representedSourceCount": 54,
+          "directVisibleMeshes": 3,
+          "visibleBatchSources": 51,
+          "authoredBatchedSources": 51,
+          "expectedRuntimeBatchSources": 51,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            10.6,
+            16.89,
+            10.86
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "The Impact Ledger",
+          "rootName": "FINANCE__F07__THE_IMPACT_LEDGER",
+          "code": "F07",
+          "representedSourceCount": 82,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 81,
+          "authoredBatchedSources": 81,
+          "expectedRuntimeBatchSources": 81,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.5,
+            7.55,
+            9.35
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Patron Constellation Hall",
+          "rootName": "FINANCE__F08__PATRON_CONSTELLATION_HALL",
+          "code": "F08",
+          "representedSourceCount": 42,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 41,
+          "authoredBatchedSources": 41,
+          "expectedRuntimeBatchSources": 41,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.434,
+            9.631,
+            16.245
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Sovereign Science Fund Forum",
+          "rootName": "FINANCE__F09__SOVEREIGN_SCIENCE_FUND_FORUM",
+          "code": "F09",
+          "representedSourceCount": 56,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 55,
+          "authoredBatchedSources": 55,
+          "expectedRuntimeBatchSources": 55,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            14.255,
+            7.23,
+            21.35
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "The Clearing Vault",
+          "rootName": "FINANCE__F10__THE_CLEARING_VAULT",
+          "code": "F10",
+          "representedSourceCount": 161,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 160,
+          "authoredBatchedSources": 160,
+          "expectedRuntimeBatchSources": 160,
+          "mandatoryArchitecturalSources": 0,
+          "representedMandatorySources": 0,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
             12.5,
-            3.007,
-            8.275
+            10.24,
+            12.79
           ],
           "failures": []
         },
         {
           "districtId": "financial-funding",
-          "name": "Grant Review Hall",
-          "rootName": "financial-funding__FACILITY__GRANT-REVIEW-HALL",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "Astra Confluence Convention Centre",
+          "rootName": "FINANCE__F11__ASTRA_CONFLUENCE_CONVENTION_CENTRE",
+          "code": "F11",
+          "representedSourceCount": 117,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 116,
+          "authoredBatchedSources": 116,
+          "expectedRuntimeBatchSources": 116,
+          "mandatoryArchitecturalSources": 23,
+          "representedMandatorySources": 23,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            14,
-            4.251,
-            8.931
+            26.197,
+            5.975,
+            31.338
           ],
           "failures": []
         },
         {
           "districtId": "financial-funding",
-          "name": "Partnership Administration House",
-          "rootName": "financial-funding__FACILITY__PARTNERSHIP-ADMINISTRATION-HOUSE",
-          "code": null,
-          "representedSourceCount": 3,
-          "directVisibleMeshes": 0,
-          "visibleBatchSources": 3,
-          "authoredBatchedSources": 3,
-          "expectedRuntimeBatchSources": 3,
-          "mandatoryArchitecturalSources": 3,
-          "representedMandatorySources": 3,
+          "name": "The Modular Congress Yards",
+          "rootName": "FINANCE__F12__THE_MODULAR_CONGRESS_YARDS",
+          "code": "F12",
+          "representedSourceCount": 132,
+          "directVisibleMeshes": 6,
+          "visibleBatchSources": 126,
+          "authoredBatchedSources": 126,
+          "expectedRuntimeBatchSources": 126,
+          "mandatoryArchitecturalSources": 100,
+          "representedMandatorySources": 100,
           "missingBatchRepresentations": [],
           "semanticOwnershipFailures": [],
           "bounds": [
-            12.5,
-            4.107,
-            8.275
+            25.7,
+            7.3,
+            20.62
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "The Delegate Spire",
+          "rootName": "FINANCE__F13__THE_DELEGATE_SPIRE",
+          "code": "F13",
+          "representedSourceCount": 52,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 51,
+          "authoredBatchedSources": 51,
+          "expectedRuntimeBatchSources": 51,
+          "mandatoryArchitecturalSources": 1,
+          "representedMandatorySources": 1,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            12.49,
+            18.1,
+            13.081
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "The Arbitration Basilica",
+          "rootName": "FINANCE__F14__THE_ARBITRATION_BASILICA",
+          "code": "F14",
+          "representedSourceCount": 51,
+          "directVisibleMeshes": 1,
+          "visibleBatchSources": 50,
+          "authoredBatchedSources": 50,
+          "expectedRuntimeBatchSources": 50,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            23.35,
+            5.76,
+            20.81
+          ],
+          "failures": []
+        },
+        {
+          "districtId": "financial-funding",
+          "name": "Chronos Futures Observatory",
+          "rootName": "FINANCE__F15__CHRONOS_FUTURES_OBSERVATORY",
+          "code": "F15",
+          "representedSourceCount": 84,
+          "directVisibleMeshes": 2,
+          "visibleBatchSources": 82,
+          "authoredBatchedSources": 82,
+          "expectedRuntimeBatchSources": 82,
+          "mandatoryArchitecturalSources": 2,
+          "representedMandatorySources": 2,
+          "missingBatchRepresentations": [],
+          "semanticOwnershipFailures": [],
+          "bounds": [
+            16.4,
+            14.071,
+            16.4
           ],
           "failures": []
         }

@@ -7,8 +7,8 @@ const chrome = process.env.PLAYWRIGHT_BROWSER_PATH
   ?? process.env.PLAYWRIGHT_CHROME_EXECUTABLE
   ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const TARGET_PACKAGE_COUNT = 41;
-// 374 planned facilities plus the retained substantial Industrial annex anchor.
-const TARGET_BUILDING_COUNT = 375;
+// 401 planned facilities plus the retained substantial Industrial annex anchor.
+const TARGET_BUILDING_COUNT = 402;
 
 const percentile = (samples, fraction) => {
   if (!samples.length) return 0;
@@ -241,14 +241,14 @@ try {
     || fullStreaming.proxyPackageCount !== 0
     || fullStreaming.midPackageCount !== 0
     || fullStreaming.farPackageCount !== 0
-    || fullAudit.stats.drawCalls > 1_500
-    // The combined Scientific Art and Marketing District's fifteen authored
-    // institutes bring the measured island baseline to 909 GPU batches,
-    // 515 textures, and about 4.158M triangles. Preserve a narrow margin above
-    // that verified baseline.
-    || fullStreaming.gpuBatching.batchCount > 920
-    || fullAudit.stats.textureCount > 530
-    || fullAudit.stats.triangles > 4_250_000
+    || fullAudit.stats.drawCalls > 1_550
+    // The combined Scientific Art, Marketing, and Financial/Funding Districts'
+    // thirty authored landmarks bring the measured island baseline to about
+    // 923 GPU batches, 596 textures, and 4.388M triangles. Preserve a narrow
+    // margin above that verified baseline.
+    || fullStreaming.gpuBatching.batchCount > 940
+    || fullAudit.stats.textureCount > 620
+    || fullAudit.stats.triangles > 4_500_000
     || fullAudit.stats.activeAnimationNodes > 120
     || fullAudit.suppressedMeshes !== 0
     || fullAudit.liveAuthoredSources !== 0

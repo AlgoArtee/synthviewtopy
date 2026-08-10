@@ -164,7 +164,7 @@ export type GizmoMode = 'translate' | 'rotate' | 'scale';
 export type SceneLayer = 'buildings' | 'landscape' | 'labels' | 'transit';
 export type GraphicsQuality = 'low' | 'medium' | 'high';
 export const OBJECT_INTERACTIONS_ENABLED = false;
-export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 29;
+export const SPECIALIZED_DISTRICT_LAYOUT_REVISION = 30;
 const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number>> = {
   security: 1,
   'secret-labs': 1,
@@ -194,6 +194,7 @@ const SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID: Readonly<Record<string, number
   'scientific-art-labs': 28,
   marketing: 28,
   'luxury-entertainment': 29,
+  'financial-funding': 30,
 };
 const SPECIALIZED_DISTRICT_IDS = new Set(Object.keys(SPECIALIZED_DISTRICT_LAYOUT_REVISION_BY_ID));
 const GPU_SHARED_ANIMATION_PROFILES = new Set([
@@ -221,6 +222,7 @@ const GPU_SHARED_ANIMATION_PROFILES = new Set([
   'residential-ever-hour-emissive-pulse',
   'art-marketing-emissive-pulse',
   'entertainment-emissive-pulse',
+  'financial-emissive-pulse',
 ]);
 
 /**
@@ -4097,6 +4099,24 @@ export class IslandWorld {
           );
         }
       } else if (object.userData.animate === 'entertainment-rotation') {
+        const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
+        const step = delta * Number(object.userData.speed ?? 0.002);
+        if (axis === 'x') object.rotation.x += step;
+        else if (axis === 'z') object.rotation.z += step;
+        else object.rotation.y += step;
+      } else if (object.userData.animate === 'financial-emissive-pulse') {
+        if (object instanceof THREE.Mesh && object.material instanceof THREE.MeshStandardMaterial) {
+          const wave = Math.max(0, Math.sin(
+            this.elapsed * Number(object.userData.speed ?? 0.002) * Math.PI * 2
+            + Number(object.userData.phase ?? 0),
+          ));
+          object.material.emissiveIntensity = THREE.MathUtils.lerp(
+            Number(object.userData.minIntensity ?? 0.2),
+            Number(object.userData.maxIntensity ?? 3.8),
+            Math.pow(wave, 3),
+          );
+        }
+      } else if (object.userData.animate === 'financial-rotation') {
         const axis = object.userData.axis === 'x' || object.userData.axis === 'z' ? object.userData.axis : 'y';
         const step = delta * Number(object.userData.speed ?? 0.002);
         if (axis === 'x') object.rotation.x += step;
@@ -9504,6 +9524,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const selectedEntertainment = selectedPackageId === 'luxury-entertainment'
       ? this.objectGroups.get('luxury-entertainment')?.userData.entertainmentDistrict
       : null;
+    const selectedFinancialFunding = selectedPackageId === 'financial-funding'
+      ? this.objectGroups.get('financial-funding')?.userData.financialFundingDistrict
+      : null;
     const selectedAstronomyAstrobiology = selectedPackageId === 'astronomy-astrobiology-labs'
       ? this.objectGroups.get('astronomy-astrobiology-labs')?.userData.astronomyAstrobiologyLabsDistrict
       : null;
@@ -9722,6 +9745,14 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         lightingProtocol: selectedEntertainment.lightingProtocol,
         acousticProtocol: selectedEntertainment.acousticProtocol,
       } : null,
+      financialFundingDistrict: selectedFinancialFunding ? {
+        buildingCount: selectedFinancialFunding.buildingCount,
+        zones: selectedFinancialFunding.zones,
+        circulation: selectedFinancialFunding.circulation,
+        signatureSystems: selectedFinancialFunding.signatureSystems,
+        lightingProtocol: selectedFinancialFunding.lightingProtocol,
+        architecturalIntent: selectedFinancialFunding.architecturalIntent,
+      } : null,
       astronomyAstrobiologyLabsDistrict: selectedAstronomyAstrobiology ? {
         buildingCount: selectedAstronomyAstrobiology.buildingCount,
         circulation: selectedAstronomyAstrobiology.circulation,
@@ -9799,6 +9830,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const scientificArtLabsDistrict = this.objectGroups.get('scientific-art-labs')?.userData.scientificArtLabsDistrict ?? null;
     const marketingDistrict = this.objectGroups.get('marketing')?.userData.marketingDistrict ?? null;
     const entertainmentDistrict = this.objectGroups.get('luxury-entertainment')?.userData.entertainmentDistrict ?? null;
+    const financialFundingDistrict = this.objectGroups.get('financial-funding')?.userData.financialFundingDistrict ?? null;
     const biochemistryLabsDistrict = this.objectGroups.get('biochemistry-labs')?.userData.biochemistryLabsDistrict ?? null;
     const organicChemistryLabsDistrict = this.objectGroups.get('organic-chemistry-labs')?.userData.organicChemistryLabsDistrict ?? null;
     const inorganicChemistryLabsDistrict = this.objectGroups.get('inorganic-chemistry')?.userData.inorganicChemistryLabsDistrict ?? null;
@@ -9968,6 +10000,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       scientificArtLabsDistrict,
       marketingDistrict,
       entertainmentDistrict,
+      financialFundingDistrict,
       biochemistryLabsDistrict,
       organicChemistryLabsDistrict,
       inorganicChemistryLabsDistrict,

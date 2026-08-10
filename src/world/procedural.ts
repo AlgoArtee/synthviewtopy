@@ -49,6 +49,7 @@ import { buildToxicologyLabsDistrict } from './toxicologyLabsDistrict';
 import { buildEverHourDistrict, buildResidentialScientistsDistrict } from './residentialEverHourDistrict';
 import { buildMarketingDistrict, buildScientificArtLabsDistrict } from './artMarketingDistrict';
 import { buildEntertainmentDistrict } from './entertainmentDistrict';
+import { buildFinancialFundingDistrict } from './financialFundingDistrict';
 import { finalizeDistrictRoadNetwork } from './districtRoadNetwork';
 import { ACADEMIC_FOUNTAIN_COURT_NAME } from '../data/academicFountain';
 import { createAcademicGothicFountain } from './academicFountain';
@@ -2155,6 +2156,16 @@ function populateDistrictSectorCampus(group: THREE.Group, definition: DistrictDe
     return;
   }
 
+  if (definition.id === 'financial-funding') {
+    group.traverse((child) => {
+      if (!child.name.startsWith('FINANCE__')) return;
+      child.userData.districtId = definition.id;
+      child.userData.featureRole ??= child.userData.exteriorProgram === true ? 'building' : 'infrastructure';
+      child.userData.featureTag ??= campusFeatureKey(child.name);
+    });
+    return;
+  }
+
   if (definition.id === 'scientist-residential' || definition.id === 'even-hour-hotel') {
     group.traverse((child) => {
       if (!child.name.startsWith('LIVEWORK__')) return;
@@ -2685,7 +2696,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
   const isToxicologyLabsDistrict = definition.id === 'toxicology-labs';
   const isResidentialEverHourDistrict = definition.id === 'scientist-residential' || definition.id === 'even-hour-hotel';
   const isArtMarketingDistrict = definition.id === 'scientific-art-labs' || definition.id === 'marketing';
-  const isEntertainmentDistrict = definition.id === 'luxury-entertainment';
+  const isEntertainmentDistrict = definition.id === 'luxury-entertainment' || definition.id === 'financial-funding';
   const finishedFloorY = isIndustrialDistrict
     ? metresToWorldUnits(0.18)
     : isAcademicDistrict
@@ -2881,6 +2892,7 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       else if (definition.id === 'scientific-art-labs') buildScientificArtLabsDistrict(group, definition);
       else if (definition.id === 'marketing') buildMarketingDistrict(group, definition);
       else if (definition.id === 'luxury-entertainment') buildEntertainmentDistrict(group, definition);
+      else if (definition.id === 'financial-funding') buildFinancialFundingDistrict(group, definition);
       else buildCivic(group, definition, height, random);
       break;
     case 'infrastructure':
@@ -2967,6 +2979,8 @@ export function createDistrictModel(definition: DistrictDefinition): ProceduralM
       ? 14.8
       : definition.id === 'luxury-entertainment'
       ? 18.4
+      : definition.id === 'financial-funding'
+      ? 20.8
       : 2.3 + height * (definition.category === 'core' ? 1.4 : 1.02),
   };
 }

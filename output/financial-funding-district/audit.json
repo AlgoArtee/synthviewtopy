@@ -1,0 +1,1046 @@
+{
+  "audit": {
+    "facilityCount": 15,
+    "codes": [
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "F05",
+      "F06",
+      "F07",
+      "F08",
+      "F09",
+      "F10",
+      "F11",
+      "F12",
+      "F13",
+      "F14",
+      "F15"
+    ],
+    "boxes": [
+      {
+        "code": "F01",
+        "name": "The Aequitas Exchange",
+        "min": [
+          -292.3746267878846,
+          1.6380000013411047,
+          -280.75111768558116
+        ],
+        "max": [
+          -274.14941145108196,
+          21.237999952316287,
+          -262.5259023487785
+        ]
+      },
+      {
+        "code": "F02",
+        "name": "Meridian Research Bank",
+        "min": [
+          -274.22858845643924,
+          1.638,
+          -243.09739737727847
+        ],
+        "max": [
+          -258.01200571885914,
+          7.036564092240592,
+          -226.64945873305655
+        ]
+      },
+      {
+        "code": "F03",
+        "name": "Venture Prism",
+        "min": [
+          -323.1235302312002,
+          1.638000002682209,
+          -226.99631354566128
+        ],
+        "max": [
+          -308.8304465271442,
+          18.25516644673756,
+          -212.4778378359511
+        ]
+      },
+      {
+        "code": "F04",
+        "name": "Helix Grant House",
+        "min": [
+          -207.65874619204374,
+          1.6380000008940698,
+          -277.20777243283527
+        ],
+        "max": [
+          -191.39453061690125,
+          4.597999993443489,
+          -260.46912995945775
+        ]
+      },
+      {
+        "code": "F05",
+        "name": "The Patent Lantern",
+        "min": [
+          -235.0069468270613,
+          1.6379998092651364,
+          -300.9494105737726
+        ],
+        "max": [
+          -221.84630869379453,
+          10.43273429167477,
+          -286.9601187936896
+        ]
+      },
+      {
+        "code": "F06",
+        "name": "Black Swan Risk Tower",
+        "min": [
+          -217.4894249592906,
+          1.4180000005960465,
+          -346.302494630176
+        ],
+        "max": [
+          -202.89483045613906,
+          18.308000016689302,
+          -331.7079001270244
+        ]
+      },
+      {
+        "code": "F07",
+        "name": "The Impact Ledger",
+        "min": [
+          -160.5214733011985,
+          1.6379999856948855,
+          -305.6544949998133
+        ],
+        "max": [
+          -144.06987302462946,
+          9.187999998658896,
+          -291.1039143879196
+        ]
+      },
+      {
+        "code": "F08",
+        "name": "Patron Constellation Hall",
+        "min": [
+          -282.1760516532967,
+          -2.6934838342864906,
+          -194.90452495549727
+        ],
+        "max": [
+          -262.58883939838637,
+          6.938000095367432,
+          -175.3173127005869
+        ]
+      },
+      {
+        "code": "F09",
+        "name": "Sovereign Science Fund Forum",
+        "min": [
+          -114.93564467720854,
+          1.6379999761581425,
+          -324.54287029714106
+        ],
+        "max": [
+          -98.08333816673492,
+          8.867999998211861,
+          -301.15817383571846
+        ]
+      },
+      {
+        "code": "F10",
+        "name": "The Clearing Vault",
+        "min": [
+          -164.9767336479093,
+          1.5680000017881395,
+          -350.5300444395788
+        ],
+        "max": [
+          -148.40777238156593,
+          11.807999976158142,
+          -333.96108317323535
+        ]
+      },
+      {
+        "code": "F11",
+        "name": "Astra Confluence Convention Centre",
+        "min": [
+          -98.91258753731628,
+          1.6031451795443323,
+          -360.3720848411926
+        ],
+        "max": [
+          -70.85034095973819,
+          7.578000000596046,
+          -327.4793574232177
+        ]
+      },
+      {
+        "code": "F12",
+        "name": "The Modular Congress Yards",
+        "min": [
+          -79.71140704790633,
+          1.1379999046325686,
+          -400.6905434710742
+        ],
+        "max": [
+          -51.89008629771965,
+          8.438000095367432,
+          -377.4404807847075
+        ]
+      },
+      {
+        "code": "F13",
+        "name": "The Delegate Spire",
+        "min": [
+          -30.503731449197904,
+          1.6380000238418582,
+          -339.32690113420034
+        ],
+        "max": [
+          -18.29530782586334,
+          19.73800002384186,
+          -326.10126435950264
+        ]
+      },
+      {
+        "code": "F14",
+        "name": "The Arbitration Basilica",
+        "min": [
+          -162.8167768176457,
+          1.6379999046325686,
+          -383.53796108464394
+        ],
+        "max": [
+          -138.5983564449602,
+          7.39799999910593,
+          -360.56873951324974
+        ]
+      },
+      {
+        "code": "F15",
+        "name": "Chronos Futures Observatory",
+        "min": [
+          -241.27190513234967,
+          1.5340769552098323,
+          -241.27190513234962
+        ],
+        "max": [
+          -221.4446303405033,
+          15.604997444138561,
+          -221.44463034050324
+        ]
+      }
+    ],
+    "meshes": 1508,
+    "triangles": 259208,
+    "uniqueNames": 1563,
+    "materials": [
+      "Finance alpine roof vegetation",
+      "Finance black basalt",
+      "Finance brushed titanium",
+      "Finance civic white light",
+      "Finance dark perforated metal",
+      "Finance data cyan light",
+      "Finance dichroic blue violet glass",
+      "Finance dichroic copper green glass",
+      "Finance ecological pale green glass",
+      "Finance formal dark foliage",
+      "Finance graphite glass",
+      "Finance institutional gold light",
+      "Finance integrated sign 1",
+      "Finance integrated sign 2",
+      "Finance integrated sign 3",
+      "Finance integrated sign 4",
+      "Finance integrated sign 5",
+      "Finance integrated sign 6",
+      "Finance integrated sign AEQUITAS",
+      "Finance integrated sign ARBITRATION BASILICA",
+      "Finance integrated sign ASTRA CONFLUENCE",
+      "Finance integrated sign BLACK SWAN RISK",
+      "Finance integrated sign CHRONOS FUTURES",
+      "Finance integrated sign CLEARING VAULT",
+      "Finance integrated sign DELEGATE SPIRE",
+      "Finance integrated sign HELIX GRANT HOUSE",
+      "Finance integrated sign IMPACT LEDGER",
+      "Finance integrated sign MERIDIAN RESEARCH BANK",
+      "Finance integrated sign PATENT LANTERN",
+      "Finance integrated sign PATRON CONSTELLATION HALL",
+      "Finance integrated sign SOVEREIGN SCIENCE FUND FORUM",
+      "Finance integrated sign VENTURE PRISM",
+      "Finance low-iron structural glass",
+      "Finance matte black metal",
+      "Finance milky translucent composite",
+      "Finance pale bronze",
+      "Finance pale engineered stone",
+      "Finance partner-region stone 1",
+      "Finance partner-region stone 2",
+      "Finance partner-region stone 3",
+      "Finance partner-region stone 4",
+      "Finance partner-region stone 5",
+      "Finance partner-region stone 6",
+      "Finance reflected water",
+      "Finance risk red orange light",
+      "Finance satin ceramic",
+      "Finance silver ornamental grass",
+      "Finance smoked silver glass",
+      "Finance venture violet light",
+      "Finance weathering copper"
+    ],
+    "animations": {
+      "financial-emissive-pulse": 245,
+      "financial-rotation": 14
+    },
+    "missingRoots": [],
+    "boundaryViolations": [],
+    "overlaps": [],
+    "routes": [
+      {
+        "name": "FINANCE__CAPITAL_CRESCENT_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__FUNDING_SPINE_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__CONFLUENCE_GROUNDS_PROMENADE",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F01__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F02__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F03__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F04__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F05__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F06__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F07__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F08__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F09__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F10__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F11__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F12__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F13__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F14__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__F15__EXACT_PEDESTRIAN_APPROACH",
+        "resident": true,
+        "walkable": true
+      },
+      {
+        "name": "FINANCE__DIRECT_CONVENTION_TRANSIT_LINE",
+        "resident": true,
+        "walkable": true
+      }
+    ],
+    "roadPoint": [
+      -183.18166774511354,
+      1.6319999998807908,
+      -310.32854569150766
+    ],
+    "roadNext": [
+      -168.0085229873659,
+      1.6319999998807908,
+      -318.79847192956765
+    ],
+    "roadGround": 1.6319999998807908,
+    "program": {
+      "name": "Financial / Funding / Convention District",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "F01",
+          "name": "The Aequitas Exchange",
+          "purpose": "Research securities, institutional bonds, resource contracts, and long-term technology investment",
+          "zone": "capital-crescent",
+          "form": "three-interlocked-slab exchange tower",
+          "footprintMetres": [
+            150,
+            116
+          ],
+          "heightMetres": 198,
+          "exteriorSignature": "three balancing ledger slabs, elliptical contour plaza, titanium cantilever, transparent partnership pylons, and open artificial-horizon crown"
+        },
+        {
+          "code": "F02",
+          "name": "Meridian Research Bank",
+          "purpose": "Project escrow, infrastructure finance, research payroll, and long-duration capital management",
+          "zone": "capital-crescent",
+          "form": "offset monolithic instrument bank",
+          "footprintMetres": [
+            185,
+            112
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "grooved basalt lower stratum, floating bronze-glass upper volume, golden shadow incision, reflecting pool, steel world sphere, and photovoltaic fin canopy"
+        },
+        {
+          "code": "F03",
+          "name": "Venture Prism",
+          "purpose": "Venture capital, startup financing, prototype showcases, and researcher-commercial meetings",
+          "zone": "capital-crescent",
+          "form": "faceted dichroic crystal tower",
+          "footprintMetres": [
+            138,
+            120
+          ],
+          "heightMetres": 151,
+          "exteriorSignature": "leaning crystalline facets, black investment-graph seams, empty silhouette fins, transparent showcase podium, fractured canopy, and retractable prototype plinths"
+        },
+        {
+          "code": "F04",
+          "name": "Helix Grant House",
+          "purpose": "Public grants, fellowships, emergency research finance, and independent investigator support",
+          "zone": "funding-spine",
+          "form": "paired civic double-helix wings",
+          "footprintMetres": [
+            224,
+            128
+          ],
+          "heightMetres": 37,
+          "exteriorSignature": "two pale ceramic spiral wings, through-garden, glowing molecular bridges, branching canopy columns, memorial pools, and planted alpine roof ribbons"
+        },
+        {
+          "code": "F05",
+          "name": "The Patent Lantern",
+          "purpose": "Patent registration, licensing, technology transfer, open-license coordination, and partnership brokerage",
+          "zone": "funding-spine",
+          "form": "double-skin cylindrical archive lantern",
+          "footprintMetres": [
+            126,
+            126
+          ],
+          "heightMetres": 88,
+          "exteriorSignature": "luminous milky inner cylinder, perforated technical-notation shell, peeled page entrances, mirrored aperture vanes, water ramp, and ownership-network plaza"
+        },
+        {
+          "code": "F06",
+          "name": "Black Swan Risk Tower",
+          "purpose": "Insurance and reinsurance for hazardous research and catastrophic project failure",
+          "zone": "funding-spine",
+          "form": "backward-leaning matte-black risk blade",
+          "footprintMetres": [
+            114,
+            108
+          ],
+          "heightMetres": 162,
+          "exteriorSignature": "absorptive black leaning blade, shock-wave buttresses, fragmented red probability curves, sunken storm plaza, folded-wing canopy, swan abstraction, and visible weather crown"
+        },
+        {
+          "code": "F07",
+          "name": "The Impact Ledger",
+          "purpose": "Climate finance, biodiversity investment, restoration bonds, and social-impact accounting",
+          "zone": "funding-spine",
+          "form": "paired terraced ecological ledgers",
+          "footprintMetres": [
+            194,
+            132
+          ],
+          "heightMetres": 78,
+          "exteriorSignature": "green and silver setback towers, six micro-landscape terraces, five copper-mesh garden bridges, expressed irrigation, duration displays, and vertical material ledger"
+        },
+        {
+          "code": "F08",
+          "name": "Patron Constellation Hall",
+          "purpose": "Philanthropic foundations, scientific patronage, prizes, endowments, and fundraising events",
+          "zone": "capital-crescent",
+          "form": "fissured black constellation dome",
+          "footprintMetres": [
+            174,
+            148
+          ],
+          "heightMetres": 43,
+          "exteriorSignature": "blue-black titanium dome, curved luminous fissures, satellite volumes and passages, fibre-optic program sky, alabaster crescents, circular pool, and anonymous bronze patron strips"
+        },
+        {
+          "code": "F09",
+          "name": "Sovereign Science Fund Forum",
+          "purpose": "Multinational funding agreements, treaty funds, and scientific-development initiatives",
+          "zone": "confluence-grounds",
+          "form": "stone-fin circular assembly forum",
+          "footprintMetres": [
+            188,
+            188
+          ],
+          "heightMetres": 49,
+          "exteriorSignature": "equal multicolour stone fins around glazed drum, kinetic delegation rings, inward roof aperture, suspended artificial moon, ceremonial avenue, and permanent public debate tables"
+        },
+        {
+          "code": "F10",
+          "name": "The Clearing Vault",
+          "purpose": "Transaction clearing, distributed records, identity verification, archives, and high-value data custody",
+          "zone": "funding-spine",
+          "form": "elevated encryption-matrix cube",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 94,
+          "exteriorSignature": "deep metallic cell matrix, electrochromic calculation waves, illuminated cut corners, pale dry moat, four narrow bridges, disguised scanners, and shielded synchronization dish"
+        },
+        {
+          "code": "F11",
+          "name": "Astra Confluence Convention Centre",
+          "purpose": "Flagship congresses, funding summits, product presentations, public exhibitions, and international conventions",
+          "zone": "confluence-grounds",
+          "form": "vast open crescent convention landmark",
+          "footprintMetres": [
+            305,
+            194
+          ],
+          "heightMetres": 58,
+          "exteriorSignature": "open crescent, gravitational-wave photovoltaic roof, permeable fin facade, three immense branching portals, configurable park terraces, and northern luminous roof arc"
+        },
+        {
+          "code": "F12",
+          "name": "The Modular Congress Yards",
+          "purpose": "Trade fairs, technology expos, laboratory-equipment exhibitions, and industrial demonstrations",
+          "zone": "confluence-grounds",
+          "form": "six reconfigurable trussed congress halls",
+          "footprintMetres": [
+            286,
+            190
+          ],
+          "heightMetres": 39,
+          "exteriorSignature": "six halls with sawtooth, barrel, folded, dome, terrace, and technical roofs; exposed trusses and rails; numbered canopy; visible ordered freight court; and rain gardens"
+        },
+        {
+          "code": "F13",
+          "name": "The Delegate Spire",
+          "purpose": "Visiting delegation offices, conference chairs, negotiators, and intergovernmental missions",
+          "zone": "confluence-grounds",
+          "form": "restrained torsion delegation tower",
+          "footprintMetres": [
+            118,
+            108
+          ],
+          "heightMetres": 154,
+          "exteriorSignature": "stacked reversing floor rotations, pale treaty-page fins, restrained identity bands, displaced illuminated colonnade, secure landscape terraces, hovering eastern room, and Alpine-aligned beacon"
+        },
+        {
+          "code": "F14",
+          "name": "The Arbitration Basilica",
+          "purpose": "Contract arbitration, IP disputes, funding mediation, ethics hearings, and international scientific-commercial law",
+          "zone": "funding-spine",
+          "form": "repaired-seam civic basilica",
+          "footprintMetres": [
+            224,
+            126
+          ],
+          "heightMetres": 52,
+          "exteriorSignature": "long pale civic mass, dark visible-repair seams, empty black threshold frame, opposing roof fins and unresolved light gap, formal side gardens, and concentric public rulings forum"
+        },
+        {
+          "code": "F15",
+          "name": "Chronos Futures Observatory",
+          "purpose": "Long-range forecasting, roadmaps, prediction markets, scenario modelling, and convention closing sessions",
+          "zone": "capital-crescent",
+          "form": "disc-crowned futures observatory",
+          "footprintMetres": [
+            152,
+            152
+          ],
+          "heightMetres": 109,
+          "exteriorSignature": "bronze-lined mirrored tower, vast shadow disc, branching underside timelines, long-duration display ring, twelve-domain radial plaza, framed real-sky void, and rotating sensor rings"
+        }
+      ],
+      "zones": {
+        "capitalCrescent": [
+          "The Aequitas Exchange",
+          "Meridian Research Bank",
+          "Venture Prism",
+          "Patron Constellation Hall",
+          "Chronos Futures Observatory"
+        ],
+        "fundingSpine": [
+          "Helix Grant House",
+          "The Patent Lantern",
+          "Black Swan Risk Tower",
+          "The Impact Ledger",
+          "The Clearing Vault",
+          "The Arbitration Basilica"
+        ],
+        "confluenceGrounds": [
+          "Sovereign Science Fund Forum",
+          "Astra Confluence Convention Centre",
+          "The Modular Congress Yards",
+          "The Delegate Spire"
+        ]
+      },
+      "circulation": {
+        "capitalCrescent": "curved promenade toward Luxury and Entertainment",
+        "fundingSpine": "civic funding and governance route",
+        "confluenceGrounds": "wide convention promenade toward Entry and Logistics",
+        "directConventionTransit": true,
+        "enclosedMovingWalkway": true,
+        "exactBuildingApproaches": 15,
+        "accessibleRoutesIntegrated": true
+      },
+      "publicRealm": {
+        "formalGroveTrees": 30,
+        "thinVerticalStreetLights": 42,
+        "linearRainGardens": 12,
+        "palette": "pale engineered stone, black basalt, smoked glass, titanium, bronze, ceramic, translucent composites, and controlled media",
+        "darkSkyLighting": true,
+        "alpineVisualConnection": true
+      },
+      "signatureSystems": {
+        "aequitasLedgerBands": 17,
+        "patentNotationPanels": 28,
+        "sovereignPartnerFins": 24,
+        "clearingEncryptionCells": 144,
+        "astraCrescentBays": 19,
+        "congressHalls": 6,
+        "delegateTorsionFloors": 16,
+        "chronosFutureDomains": 12
+      },
+      "lightingProtocol": "gold and white civic funding light; cold silver, violet, and blue private-capital light; restrained media; convention roof arcs; reflected water; dark planted terraces",
+      "architecturalIntent": "finance as the island circulation system rather than its ruling ideology, with visible tension among public science, private capital, political influence, and uncertain futures",
+      "exteriorOnly": true
+    },
+    "compact": {
+      "buildingCount": 15,
+      "zones": {
+        "capitalCrescent": [
+          "The Aequitas Exchange",
+          "Meridian Research Bank",
+          "Venture Prism",
+          "Patron Constellation Hall",
+          "Chronos Futures Observatory"
+        ],
+        "fundingSpine": [
+          "Helix Grant House",
+          "The Patent Lantern",
+          "Black Swan Risk Tower",
+          "The Impact Ledger",
+          "The Clearing Vault",
+          "The Arbitration Basilica"
+        ],
+        "confluenceGrounds": [
+          "Sovereign Science Fund Forum",
+          "Astra Confluence Convention Centre",
+          "The Modular Congress Yards",
+          "The Delegate Spire"
+        ]
+      },
+      "circulation": {
+        "capitalCrescent": "curved promenade toward Luxury and Entertainment",
+        "fundingSpine": "civic funding and governance route",
+        "confluenceGrounds": "wide convention promenade toward Entry and Logistics",
+        "directConventionTransit": true,
+        "enclosedMovingWalkway": true,
+        "exactBuildingApproaches": 15,
+        "accessibleRoutesIntegrated": true
+      },
+      "signatureSystems": {
+        "aequitasLedgerBands": 17,
+        "patentNotationPanels": 28,
+        "sovereignPartnerFins": 24,
+        "clearingEncryptionCells": 144,
+        "astraCrescentBays": 19,
+        "congressHalls": 6,
+        "delegateTorsionFloors": 16,
+        "chronosFutureDomains": 12
+      },
+      "lightingProtocol": "gold and white civic funding light; cold silver, violet, and blue private-capital light; restrained media; convention roof arcs; reflected water; dark planted terraces",
+      "architecturalIntent": "finance as the island circulation system rather than its ruling ideology, with visible tension among public science, private capital, political influence, and uncertain futures"
+    },
+    "deepProgram": {
+      "name": "Financial / Funding / Convention District",
+      "buildingCount": 15,
+      "buildings": [
+        {
+          "code": "F01",
+          "name": "The Aequitas Exchange",
+          "purpose": "Research securities, institutional bonds, resource contracts, and long-term technology investment",
+          "zone": "capital-crescent",
+          "form": "three-interlocked-slab exchange tower",
+          "footprintMetres": [
+            150,
+            116
+          ],
+          "heightMetres": 198,
+          "exteriorSignature": "three balancing ledger slabs, elliptical contour plaza, titanium cantilever, transparent partnership pylons, and open artificial-horizon crown"
+        },
+        {
+          "code": "F02",
+          "name": "Meridian Research Bank",
+          "purpose": "Project escrow, infrastructure finance, research payroll, and long-duration capital management",
+          "zone": "capital-crescent",
+          "form": "offset monolithic instrument bank",
+          "footprintMetres": [
+            185,
+            112
+          ],
+          "heightMetres": 48,
+          "exteriorSignature": "grooved basalt lower stratum, floating bronze-glass upper volume, golden shadow incision, reflecting pool, steel world sphere, and photovoltaic fin canopy"
+        },
+        {
+          "code": "F03",
+          "name": "Venture Prism",
+          "purpose": "Venture capital, startup financing, prototype showcases, and researcher-commercial meetings",
+          "zone": "capital-crescent",
+          "form": "faceted dichroic crystal tower",
+          "footprintMetres": [
+            138,
+            120
+          ],
+          "heightMetres": 151,
+          "exteriorSignature": "leaning crystalline facets, black investment-graph seams, empty silhouette fins, transparent showcase podium, fractured canopy, and retractable prototype plinths"
+        },
+        {
+          "code": "F04",
+          "name": "Helix Grant House",
+          "purpose": "Public grants, fellowships, emergency research finance, and independent investigator support",
+          "zone": "funding-spine",
+          "form": "paired civic double-helix wings",
+          "footprintMetres": [
+            224,
+            128
+          ],
+          "heightMetres": 37,
+          "exteriorSignature": "two pale ceramic spiral wings, through-garden, glowing molecular bridges, branching canopy columns, memorial pools, and planted alpine roof ribbons"
+        },
+        {
+          "code": "F05",
+          "name": "The Patent Lantern",
+          "purpose": "Patent registration, licensing, technology transfer, open-license coordination, and partnership brokerage",
+          "zone": "funding-spine",
+          "form": "double-skin cylindrical archive lantern",
+          "footprintMetres": [
+            126,
+            126
+          ],
+          "heightMetres": 88,
+          "exteriorSignature": "luminous milky inner cylinder, perforated technical-notation shell, peeled page entrances, mirrored aperture vanes, water ramp, and ownership-network plaza"
+        },
+        {
+          "code": "F06",
+          "name": "Black Swan Risk Tower",
+          "purpose": "Insurance and reinsurance for hazardous research and catastrophic project failure",
+          "zone": "funding-spine",
+          "form": "backward-leaning matte-black risk blade",
+          "footprintMetres": [
+            114,
+            108
+          ],
+          "heightMetres": 162,
+          "exteriorSignature": "absorptive black leaning blade, shock-wave buttresses, fragmented red probability curves, sunken storm plaza, folded-wing canopy, swan abstraction, and visible weather crown"
+        },
+        {
+          "code": "F07",
+          "name": "The Impact Ledger",
+          "purpose": "Climate finance, biodiversity investment, restoration bonds, and social-impact accounting",
+          "zone": "funding-spine",
+          "form": "paired terraced ecological ledgers",
+          "footprintMetres": [
+            194,
+            132
+          ],
+          "heightMetres": 78,
+          "exteriorSignature": "green and silver setback towers, six micro-landscape terraces, five copper-mesh garden bridges, expressed irrigation, duration displays, and vertical material ledger"
+        },
+        {
+          "code": "F08",
+          "name": "Patron Constellation Hall",
+          "purpose": "Philanthropic foundations, scientific patronage, prizes, endowments, and fundraising events",
+          "zone": "capital-crescent",
+          "form": "fissured black constellation dome",
+          "footprintMetres": [
+            174,
+            148
+          ],
+          "heightMetres": 43,
+          "exteriorSignature": "blue-black titanium dome, curved luminous fissures, satellite volumes and passages, fibre-optic program sky, alabaster crescents, circular pool, and anonymous bronze patron strips"
+        },
+        {
+          "code": "F09",
+          "name": "Sovereign Science Fund Forum",
+          "purpose": "Multinational funding agreements, treaty funds, and scientific-development initiatives",
+          "zone": "confluence-grounds",
+          "form": "stone-fin circular assembly forum",
+          "footprintMetres": [
+            188,
+            188
+          ],
+          "heightMetres": 49,
+          "exteriorSignature": "equal multicolour stone fins around glazed drum, kinetic delegation rings, inward roof aperture, suspended artificial moon, ceremonial avenue, and permanent public debate tables"
+        },
+        {
+          "code": "F10",
+          "name": "The Clearing Vault",
+          "purpose": "Transaction clearing, distributed records, identity verification, archives, and high-value data custody",
+          "zone": "funding-spine",
+          "form": "elevated encryption-matrix cube",
+          "footprintMetres": [
+            128,
+            128
+          ],
+          "heightMetres": 94,
+          "exteriorSignature": "deep metallic cell matrix, electrochromic calculation waves, illuminated cut corners, pale dry moat, four narrow bridges, disguised scanners, and shielded synchronization dish"
+        },
+        {
+          "code": "F11",
+          "name": "Astra Confluence Convention Centre",
+          "purpose": "Flagship congresses, funding summits, product presentations, public exhibitions, and international conventions",
+          "zone": "confluence-grounds",
+          "form": "vast open crescent convention landmark",
+          "footprintMetres": [
+            305,
+            194
+          ],
+          "heightMetres": 58,
+          "exteriorSignature": "open crescent, gravitational-wave photovoltaic roof, permeable fin facade, three immense branching portals, configurable park terraces, and northern luminous roof arc"
+        },
+        {
+          "code": "F12",
+          "name": "The Modular Congress Yards",
+          "purpose": "Trade fairs, technology expos, laboratory-equipment exhibitions, and industrial demonstrations",
+          "zone": "confluence-grounds",
+          "form": "six reconfigurable trussed congress halls",
+          "footprintMetres": [
+            286,
+            190
+          ],
+          "heightMetres": 39,
+          "exteriorSignature": "six halls with sawtooth, barrel, folded, dome, terrace, and technical roofs; exposed trusses and rails; numbered canopy; visible ordered freight court; and rain gardens"
+        },
+        {
+          "code": "F13",
+          "name": "The Delegate Spire",
+          "purpose": "Visiting delegation offices, conference chairs, negotiators, and intergovernmental missions",
+          "zone": "confluence-grounds",
+          "form": "restrained torsion delegation tower",
+          "footprintMetres": [
+            118,
+            108
+          ],
+          "heightMetres": 154,
+          "exteriorSignature": "stacked reversing floor rotations, pale treaty-page fins, restrained identity bands, displaced illuminated colonnade, secure landscape terraces, hovering eastern room, and Alpine-aligned beacon"
+        },
+        {
+          "code": "F14",
+          "name": "The Arbitration Basilica",
+          "purpose": "Contract arbitration, IP disputes, funding mediation, ethics hearings, and international scientific-commercial law",
+          "zone": "funding-spine",
+          "form": "repaired-seam civic basilica",
+          "footprintMetres": [
+            224,
+            126
+          ],
+          "heightMetres": 52,
+          "exteriorSignature": "long pale civic mass, dark visible-repair seams, empty black threshold frame, opposing roof fins and unresolved light gap, formal side gardens, and concentric public rulings forum"
+        },
+        {
+          "code": "F15",
+          "name": "Chronos Futures Observatory",
+          "purpose": "Long-range forecasting, roadmaps, prediction markets, scenario modelling, and convention closing sessions",
+          "zone": "capital-crescent",
+          "form": "disc-crowned futures observatory",
+          "footprintMetres": [
+            152,
+            152
+          ],
+          "heightMetres": 109,
+          "exteriorSignature": "bronze-lined mirrored tower, vast shadow disc, branching underside timelines, long-duration display ring, twelve-domain radial plaza, framed real-sky void, and rotating sensor rings"
+        }
+      ],
+      "zones": {
+        "capitalCrescent": [
+          "The Aequitas Exchange",
+          "Meridian Research Bank",
+          "Venture Prism",
+          "Patron Constellation Hall",
+          "Chronos Futures Observatory"
+        ],
+        "fundingSpine": [
+          "Helix Grant House",
+          "The Patent Lantern",
+          "Black Swan Risk Tower",
+          "The Impact Ledger",
+          "The Clearing Vault",
+          "The Arbitration Basilica"
+        ],
+        "confluenceGrounds": [
+          "Sovereign Science Fund Forum",
+          "Astra Confluence Convention Centre",
+          "The Modular Congress Yards",
+          "The Delegate Spire"
+        ]
+      },
+      "circulation": {
+        "capitalCrescent": "curved promenade toward Luxury and Entertainment",
+        "fundingSpine": "civic funding and governance route",
+        "confluenceGrounds": "wide convention promenade toward Entry and Logistics",
+        "directConventionTransit": true,
+        "enclosedMovingWalkway": true,
+        "exactBuildingApproaches": 15,
+        "accessibleRoutesIntegrated": true
+      },
+      "publicRealm": {
+        "formalGroveTrees": 30,
+        "thinVerticalStreetLights": 42,
+        "linearRainGardens": 12,
+        "palette": "pale engineered stone, black basalt, smoked glass, titanium, bronze, ceramic, translucent composites, and controlled media",
+        "darkSkyLighting": true,
+        "alpineVisualConnection": true
+      },
+      "signatureSystems": {
+        "aequitasLedgerBands": 17,
+        "patentNotationPanels": 28,
+        "sovereignPartnerFins": 24,
+        "clearingEncryptionCells": 144,
+        "astraCrescentBays": 19,
+        "congressHalls": 6,
+        "delegateTorsionFloors": 16,
+        "chronosFutureDomains": 12
+      },
+      "lightingProtocol": "gold and white civic funding light; cold silver, violet, and blue private-capital light; restrained media; convention roof arcs; reflected water; dark planted terraces",
+      "architecturalIntent": "finance as the island circulation system rather than its ruling ideology, with visible tension among public science, private capital, political influence, and uncertain futures",
+      "exteriorOnly": true
+    },
+    "specializedRevision": 30,
+    "planning": {
+      "boundedDistricts": 35,
+      "populatedDistricts": 35,
+      "distinctDistricts": 35,
+      "filledBiomeDomes": 6,
+      "cellViolations": 0
+    },
+    "population": {
+      "plannedFacilities": [
+        "The Aequitas Exchange",
+        "Meridian Research Bank",
+        "Venture Prism",
+        "Helix Grant House",
+        "The Patent Lantern",
+        "Black Swan Risk Tower",
+        "The Impact Ledger",
+        "Patron Constellation Hall",
+        "Sovereign Science Fund Forum",
+        "The Clearing Vault",
+        "Astra Confluence Convention Centre",
+        "The Modular Congress Yards",
+        "The Delegate Spire",
+        "The Arbitration Basilica",
+        "Chronos Futures Observatory"
+      ],
+      "plannedObjects": [
+        "Capital Crescent promenade",
+        "Funding Spine promenade",
+        "Confluence Grounds promenade",
+        "direct convention transit line",
+        "enclosed moving walkway",
+        "formal grove",
+        "linear rain gardens",
+        "fifteen exact building approaches"
+      ],
+      "realizedFeatureTags": [
+        "the-aequitas-exchange",
+        "meridian-research-bank",
+        "venture-prism",
+        "helix-grant-house",
+        "the-patent-lantern",
+        "black-swan-risk-tower",
+        "the-impact-ledger",
+        "patron-constellation-hall",
+        "sovereign-science-fund-forum",
+        "the-clearing-vault",
+        "astra-confluence-convention-centre",
+        "the-modular-congress-yards",
+        "the-delegate-spire",
+        "the-arbitration-basilica",
+        "chronos-futures-observatory"
+      ],
+      "realizedFacilityCount": 15,
+      "realizedObjectCount": 231,
+      "distinct": true,
+      "asymmetricCampus": true,
+      "localRoadCount": 19,
+      "radialCoverage": 0.95,
+      "angularCoverage": 0.96,
+      "exteriorOnly": true,
+      "financialCirculatoryNarrative": true,
+      "threeZoneMasterplan": true,
+      "conventionTransitIntegrated": true
+    },
+    "signatureCounts": {
+      "aequitasLedgerBands": 17,
+      "patentNotationPanels": 28,
+      "sovereignPartnerFins": 24,
+      "clearingEncryptionCells": 144,
+      "astraCrescentBays": 19,
+      "congressHallRoots": 6,
+      "delegateTorsionFloors": 16,
+      "chronosFutureDomains": 12
+    }
+  },
+  "walkAudit": {
+    "ground": 1.6319999998807908,
+    "eyeClearance": 0.16199999999999992,
+    "moved": 0.16249999999993142,
+    "grounded": true,
+    "position": [
+      -183.04,
+      1.794,
+      -310.408
+    ]
+  },
+  "errors": []
+}

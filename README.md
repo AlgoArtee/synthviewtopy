@@ -79,6 +79,7 @@ Additional controls:
 
 - Click a district in the Atlas to select it; double-click a model or Atlas item to focus the camera.
 - In Edit mode, use `G` for Move, `R` for Rotate, and `S` for Scale.
+- Selecting a district in Edit mode isolates that district for responsive authoring: other districts, biome proxies, terrain, roads, distant city geometry, and ocean rendering are temporarily hidden. The selected package keeps a complete editor-only annular wedge surface with bright inner, outer, and radial borders, so buildings can be moved against the exact district limits. Switching back to Explore, Plan, or Walk restores the complete island without changing any saved visibility settings.
 - The Inspector exposes editable object names, independent floating scene labels, descriptions, numeric XYZ position, Y rotation, uniform scale, accent color, visibility, Focus, and Reset controls. Identity edits update the Atlas, search, labels, Academic building cards, project JSON, and GLB metadata while retaining each object's stable selection ID.
 - Press `/` to focus Atlas search, `Escape` to clear selection, `Home` to return to the overview, and `F` to toggle fullscreen.
 - Toggle the Architecture, Landscape, Labels, and Transit layer buttons independently.

@@ -1032,11 +1032,20 @@ function roadStyle(
 function roadDecalMaterial(source: THREE.Material, depthPriority: number) {
   const cloned = source.clone();
   cloned.name = `${source.name || source.type}__ENTRY_LOGISTICS_ROAD_DECAL_${depthPriority}`;
+  // The road surface already sits 34 cm above the canonical planted datum.
+  // The former -500..-1000 polygon offsets overwhelmed that real separation
+  // under reverse depth and buried the Welcome roads behind terrain in
+  // Explore. Keep only a small negative decal bias for coplanar junctions.
+  const decalLayer = Math.max(1, Math.min(8, Math.abs(depthPriority) % 16));
   cloned.polygonOffset = true;
-  cloned.polygonOffsetFactor = -depthPriority;
-  cloned.polygonOffsetUnits = -depthPriority;
-  cloned.depthTest = true;
-  cloned.depthWrite = true;
+  cloned.polygonOffsetFactor = -1;
+  cloned.polygonOffsetUnits = -decalLayer;
+  // Explore draws road decals after terrain but before package architecture.
+  // WALK switches these channels back on through groundRoadDepthMode so the
+  // same surface participates in the first-person depth buffer.
+  cloned.depthTest = false;
+  cloned.depthWrite = false;
+  cloned.userData = { ...source.userData, groundRoadDepthMode: true };
   cloned.needsUpdate = true;
   return cloned;
 }
@@ -1206,7 +1215,7 @@ function addContinuousRoadRibbon(
   );
   surface.name = `${districtId.toUpperCase()}__${route.id.toUpperCase()}__CONTINUOUS_SURFACE`;
   surface.receiveShadow = true;
-  surface.renderOrder = 1;
+  surface.renderOrder = -30;
   surface.userData = {
     selectableId: districtId,
     continuousRoadSurface: true,
@@ -1247,7 +1256,7 @@ function addContinuousRoadRibbon(
         roadDecalMaterial(mats.logisticsRoadGrey, depthPriority + dividerIndex + 1),
       );
       marking.name = `${surface.name}__THREE_LANE_DIVIDER_${dividerIndex + 1}`;
-      marking.renderOrder = 2;
+      marking.renderOrder = -29;
       marking.userData = {
         selectableId: districtId,
         continuousRoadMarking: true,
@@ -1310,7 +1319,7 @@ function addWelcomeJunctions(
       junction.point.position.z,
     );
     cap.receiveShadow = true;
-    cap.renderOrder = 3;
+    cap.renderOrder = -28;
     cap.userData = {
       selectableId: districtId,
       welcomeForkJunction: true,

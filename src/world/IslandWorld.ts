@@ -943,6 +943,7 @@ export class IslandWorld {
   readonly interiorsRoot = new THREE.Group();
   readonly presentationRoot = new THREE.Group();
   readonly debugRoot = new THREE.Group();
+  readonly editDistrictContextRoot = new THREE.Group();
   private readonly worldStreaming = new WorldStreamingManager();
   private renderTextStreamingSnapshotCache: {
     snapshot: StreamingSnapshot;
@@ -1011,6 +1012,8 @@ export class IslandWorld {
   private readonly academicInteriorIsolation = new Map<THREE.Object3D, boolean>();
   private readonly exteriorHighDetailIsolation = new Map<THREE.Object3D, boolean>();
   private readonly runtimeWalkInteriorIsolation = new Map<THREE.Object3D, boolean>();
+  private readonly editDistrictIsolation = new Map<THREE.Object3D, boolean>();
+  private editIsolatedPackageId: string | null = null;
   private readonly authoredRuntimeInteriors: THREE.Group[] = [];
   private readonly authoredInteriorByBuildingId = new Map<string, THREE.Group>();
   private readonly authoredInteriorComponentIds = new Map<string, Set<string>>();
@@ -1340,6 +1343,13 @@ export class IslandWorld {
     this.presentationRoot.name = 'PRESENTATION_ONLY__DO_NOT_EXPORT';
     this.debugRoot.name = 'DEBUG__COLLISIONS_LIGHTS_AND_STATS';
     this.debugRoot.visible = false;
+    this.editDistrictContextRoot.name = 'EDITOR__SELECTED_DISTRICT_WEDGE_CONTEXT';
+    this.editDistrictContextRoot.visible = false;
+    this.editDistrictContextRoot.userData = {
+      editorOnly: true,
+      exportExcluded: true,
+      packageId: null,
+    };
     this.labelRoot.name = 'EDITOR__LABELS';
     this.modelRoot.userData = {
       project: 'YouTopy Lab Island',
@@ -1358,7 +1368,7 @@ export class IslandWorld {
     );
     this.landscapeRoot.add(this.islandShellRoot);
     this.transitRoot.add(this.transitNetworkRoot, this.industrialPortRoot, this.bridgeRoot);
-    this.presentationRoot.add(this.worldStreaming.vistaRoot, this.debugRoot);
+    this.presentationRoot.add(this.worldStreaming.vistaRoot, this.debugRoot, this.editDistrictContextRoot);
     this.scene.add(this.modelRoot, this.presentationRoot);
 
     this.precipitation = new PrecipitationSystem();
@@ -2054,10 +2064,20 @@ export class IslandWorld {
     this.lastLabelUpdateSeconds = this.elapsed;
     this.lastLabelCameraPosition.copy(this.camera.position);
     this.lastLabelCameraQuaternion.copy(this.camera.quaternion);
+    const selectedObject = this.selectedId ? this.objectGroups.get(this.selectedId) : null;
+    const editIsolationPackageId = this.mode === 'edit'
+      ? this.worldStreaming.findPackageId(selectedObject)
+      : null;
     this.labels.forEach((record) => {
       this.updateSingleLabel(record);
       const element = record.anchor.element as HTMLElement;
-      if (!record.object.visible) {
+      const recordPackageId = editIsolationPackageId
+        ? this.worldStreaming.findPackageId(record.object)
+        : null;
+      if (
+        !record.object.visible
+        || (editIsolationPackageId && recordPackageId !== editIsolationPackageId)
+      ) {
         element.classList.add('label-suppressed');
         return;
       }
@@ -2823,6 +2843,174 @@ export class IslandWorld {
     return true;
   }
 
+  private getSelectedEditPackageId() {
+    if (this.mode !== 'edit' || this.activeInteriorBuildingId || !this.selectedId) return null;
+    return this.worldStreaming.findPackageId(this.objectGroups.get(this.selectedId));
+  }
+
+  private clearEditDistrictContext() {
+    const changed = this.editDistrictContextRoot.visible || this.editDistrictContextRoot.children.length > 0;
+    this.editDistrictContextRoot.traverse((object) => {
+      if (!(object instanceof THREE.Mesh || object instanceof THREE.Line)) return;
+      object.geometry.dispose();
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach((material) => material.dispose());
+    });
+    this.editDistrictContextRoot.clear();
+    this.editDistrictContextRoot.visible = false;
+    this.editDistrictContextRoot.userData = {
+      editorOnly: true,
+      exportExcluded: true,
+      packageId: null,
+    };
+    return changed;
+  }
+
+  private syncEditDistrictContext(packageId: string) {
+    const definition = districts.find((candidate) => candidate.id === packageId);
+    const sector = definition?.sector;
+    if (!definition || !sector) return this.clearEditDistrictContext();
+    if (
+      this.editDistrictContextRoot.visible
+      && this.editDistrictContextRoot.userData.packageId === packageId
+      && this.editDistrictContextRoot.children.length === 2
+    ) return false;
+
+    this.clearEditDistrictContext();
+    const angleSpan = sector.endAngle - sector.startAngle;
+    const arcSegments = Math.max(24, Math.ceil(Math.abs(angleSpan) * 72));
+    const surfaceGeometry = new THREE.RingGeometry(
+      sector.innerRadius,
+      sector.outerRadius,
+      arcSegments,
+      1,
+      sector.startAngle,
+      angleSpan,
+    );
+    surfaceGeometry.rotateX(Math.PI * 0.5);
+    const surface = new THREE.Mesh(
+      surfaceGeometry,
+      new THREE.MeshBasicMaterial({
+        color: '#637f84',
+        side: THREE.DoubleSide,
+        depthTest: true,
+        depthWrite: true,
+        polygonOffset: true,
+        polygonOffsetFactor: 1,
+        polygonOffsetUnits: 1,
+      }),
+    );
+    surface.name = `EDITOR__${packageId.toUpperCase().replaceAll('-', '_')}__COMPLETE_WEDGE_SURFACE`;
+    surface.position.y = ISLAND_SURFACE_Y + 0.002;
+    surface.renderOrder = -10;
+    surface.userData = {
+      editorOnly: true,
+      exportExcluded: true,
+      editDistrictWedgeSurface: true,
+      packageId,
+      walkable: false,
+      navObstacle: false,
+    };
+
+    const boundaryPoints: THREE.Vector3[] = [];
+    const point = (radius: number, angle: number) => new THREE.Vector3(
+      Math.cos(angle) * radius,
+      ISLAND_SURFACE_Y + 0.018,
+      Math.sin(angle) * radius,
+    );
+    boundaryPoints.push(point(sector.innerRadius, sector.startAngle));
+    boundaryPoints.push(point(sector.outerRadius, sector.startAngle));
+    for (let index = 1; index <= arcSegments; index += 1) {
+      boundaryPoints.push(point(
+        sector.outerRadius,
+        THREE.MathUtils.lerp(sector.startAngle, sector.endAngle, index / arcSegments),
+      ));
+    }
+    boundaryPoints.push(point(sector.innerRadius, sector.endAngle));
+    for (let index = arcSegments - 1; index >= 0; index -= 1) {
+      boundaryPoints.push(point(
+        sector.innerRadius,
+        THREE.MathUtils.lerp(sector.startAngle, sector.endAngle, index / arcSegments),
+      ));
+    }
+    const boundary = new THREE.LineLoop(
+      new THREE.BufferGeometry().setFromPoints(boundaryPoints),
+      new THREE.LineBasicMaterial({
+        color: definition.accent,
+        transparent: true,
+        opacity: 0.96,
+        depthTest: false,
+        depthWrite: false,
+        toneMapped: false,
+      }),
+    );
+    boundary.name = `EDITOR__${packageId.toUpperCase().replaceAll('-', '_')}__COMPLETE_WEDGE_BOUNDARY`;
+    boundary.renderOrder = 200;
+    boundary.userData = {
+      editorOnly: true,
+      exportExcluded: true,
+      editDistrictWedgeBoundary: true,
+      packageId,
+    };
+
+    this.editDistrictContextRoot.add(surface, boundary);
+    this.editDistrictContextRoot.visible = true;
+    this.editDistrictContextRoot.userData = {
+      editorOnly: true,
+      exportExcluded: true,
+      packageId,
+      innerRadius: sector.innerRadius,
+      outerRadius: sector.outerRadius,
+      startAngle: sector.startAngle,
+      endAngle: sector.endAngle,
+      boundaryModel: 'complete annular district wedge',
+    };
+    return true;
+  }
+
+  private applyEditDistrictIsolation() {
+    const packageId = this.getSelectedEditPackageId();
+    if (!packageId) return this.restoreEditDistrictIsolation();
+    let changed = false;
+    if (!this.editDistrictIsolation.size) {
+      // Package envelopes are isolated by WorldStreamingManager. These are
+      // the remaining global exterior layers which otherwise dominate Edit
+      // traversal and obscure the district being authored.
+      [
+        this.islandShellRoot,
+        this.transitRoot,
+        this.cityRoot,
+        this.importedRoot,
+        this.interiorsRoot,
+        this.ocean,
+      ].forEach((object) => {
+        this.editDistrictIsolation.set(object, object.visible);
+        object.visible = false;
+      });
+      changed = true;
+    }
+    this.precipitation.points.visible = false;
+    changed ||= this.editIsolatedPackageId !== packageId;
+    this.editIsolatedPackageId = packageId;
+    changed ||= this.syncEditDistrictContext(packageId);
+    return changed;
+  }
+
+  private restoreEditDistrictIsolation() {
+    const contextChanged = this.clearEditDistrictContext();
+    if (!this.editDistrictIsolation.size && !this.editIsolatedPackageId) return contextChanged;
+    this.editDistrictIsolation.forEach((visible, object) => {
+      object.visible = visible;
+    });
+    this.editDistrictIsolation.clear();
+    this.editIsolatedPackageId = null;
+    this.precipitation.points.visible = this.activeWeather === 'rain'
+      || this.activeWeather === 'storm'
+      || this.activeWeather === 'academic-rainy-dusk'
+      || this.activeWeather === 'academic-autumn';
+    return true;
+  }
+
   private updateWorldStreaming(interiorActive: boolean, force = false) {
     // Medium's local amber pools do not need a second shadow-map render of the
     // entire authored library. High retains the optional shadow treatment;
@@ -2881,6 +3069,7 @@ export class IslandWorld {
       elapsedSeconds: this.elapsed,
       force,
     });
+    this.renderTextStreamingSnapshotCache = null;
     const isolationChanged = interiorActive
       ? this.isolateAcademicExteriorForInterior()
       : this.restoreAcademicExteriorAfterInterior();
@@ -3463,7 +3652,9 @@ export class IslandWorld {
       || this.activeWeather === 'storm'
       || this.activeWeather === 'academic-rainy-dusk'
       || this.activeWeather === 'academic-autumn';
-    this.precipitation.points.visible = precipitationWeather && !insideCerebrum;
+    this.precipitation.points.visible = precipitationWeather
+      && !insideCerebrum
+      && !this.editIsolatedPackageId;
     const playerPos = this.mode === 'walk' ? this.camera.position : this.controls.target;
     this.precipitation.update(delta, playerPos, this.elapsed);
     this.worldStreaming.updateGpuAnimations(this.elapsed);
@@ -4802,6 +4993,8 @@ export class IslandWorld {
       this.applyFullIslandMaterialPolicy();
     }
     this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
+    this.applyEditDistrictIsolation();
+    this.updateLabels(true);
     const label = this.labels.get(id)?.anchor.element;
     label?.classList.add('selected');
     this.refreshSelectionBounds();
@@ -4820,15 +5013,18 @@ export class IslandWorld {
     this.selectionBox.visible = false;
     this.transformControls.detach();
     this.transformControls.getHelper().visible = false;
+    this.restoreEditDistrictIsolation();
     if (this.graphicsQuality === 'high' && this.worldStreaming.isFullIslandDetail()) {
       this.applyFullIslandMaterialPolicy();
     }
     this.updateWorldStreaming(this.cerebrumLibraryPresence || this.cerebrumLibraryInspectionActive, true);
+    this.updateLabels(true);
     this.callbacks.onSelection?.(null, source);
   }
 
   setMode(mode: ViewMode) {
     const previousMode = this.mode;
+    if (previousMode === 'edit' && mode !== 'edit') this.restoreEditDistrictIsolation();
     // Resolve the occupied room before WALK teardown changes visibility or
     // clears the generated-interior runtime marker. The inverse transition can
     // then reopen the same authoritative room instead of revealing the island
@@ -5029,8 +5225,9 @@ export class IslandWorld {
     }
     const interiorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
     this.updateWorldStreaming(false, true);
+    const editIsolationChanged = this.applyEditDistrictIsolation();
     const runtimeWalkIsolationChanged = this.enforceRuntimeWalkInteriorIsolation();
-    if (interiorVisibilityChanged || runtimeWalkIsolationChanged) {
+    if (interiorVisibilityChanged || editIsolationChanged || runtimeWalkIsolationChanged) {
       this.walkController.refreshNavigation();
     }
     this.applyFullIslandMaterialPolicy();
@@ -5297,6 +5494,9 @@ export class IslandWorld {
     if (this.mode !== 'edit') this.setMode('edit');
     if (this.activeInteriorBuildingId === id) return true;
     if (this.activeInteriorBuildingId && this.activeInteriorBuildingId !== id) this.exitInterior();
+    // Interior Edit captures and restores its own visibility envelope. Remove
+    // exterior district isolation first so that the saved state is canonical.
+    this.restoreEditDistrictIsolation();
     this.worldStreaming.ensurePackageResident(this.objectGroups.get(id), this.elapsed);
     const interior = this.ensureInterior(id);
     if (!interior) return false;
@@ -5603,7 +5803,16 @@ export class IslandWorld {
       this.worldStreaming.setLayerEnabled('biome', visible);
     }
     if (layer === 'transit') affectedRoot = this.transitRoot;
-    if (affectedRoot) affectedRoot.visible = visible;
+    if (affectedRoot) {
+      if (this.editDistrictIsolation.has(affectedRoot)) {
+        // Keep the runtime isolation intact while remembering a layer change
+        // as the state that should be restored after Edit.
+        this.editDistrictIsolation.set(affectedRoot, visible);
+        affectedRoot.visible = false;
+      } else {
+        affectedRoot.visible = visible;
+      }
+    }
     if (layer === 'labels') {
       this.labelRoot.visible = visible;
       this.labelRenderDirty = true;
@@ -5680,7 +5889,7 @@ export class IslandWorld {
       this.dayTarget = 0;
     }
     if (weather === 'rain' || weather === 'storm' || weather === 'academic-rainy-dusk' || weather === 'academic-autumn') {
-      this.precipitation.points.visible = true;
+      this.precipitation.points.visible = !this.editIsolatedPackageId;
       this.precipitation.setType(this.activeSeason === 'winter' ? 'snow' : 'rain');
     } else {
       this.precipitation.points.visible = false;
@@ -9696,6 +9905,11 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       },
       streaming: {
         detailPolicy: streaming.detailPolicy,
+        editIsolationActive: streaming.editIsolationActive,
+        editIsolationPackageId: streaming.editIsolationPackageId,
+        editIsolationHiddenPackageCount: streaming.editIsolationHiddenPackageCount,
+        editWedgeVisible: this.editDistrictContextRoot.visible,
+        editWedgePackageId: this.editDistrictContextRoot.userData.packageId ?? null,
         requested: streaming.fullIslandDetailRequested,
         ready: streaming.fullIslandDetailReady,
         progress: streaming.fullIslandDetailProgress,
@@ -9983,6 +10197,9 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
         isolatedWalkInteriorActive: Boolean(this.isolatedRuntimeWalkInterior),
         isolatedWalkInteriorName: this.isolatedRuntimeWalkInterior?.name ?? null,
         isolatedExteriorObjectCount: this.runtimeWalkInteriorIsolation.size,
+        editDistrictIsolationActive: Boolean(this.editIsolatedPackageId),
+        editDistrictIsolationPackageId: this.editIsolatedPackageId,
+        editDistrictIsolationHiddenGlobalObjectCount: this.editDistrictIsolation.size,
         exteriorProjectionCount: this.isolatedRuntimeWalkInterior
           ? Array.from((() => {
             const projections: THREE.Object3D[] = [];
@@ -10037,6 +10254,18 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
       },
       edit: {
         workspace: this.editWorkspace,
+        districtIsolationActive: Boolean(this.editIsolatedPackageId),
+        isolatedPackageId: this.editIsolatedPackageId,
+        hiddenGlobalObjectCount: this.editDistrictIsolation.size,
+        wedgeContextVisible: this.editDistrictContextRoot.visible,
+        wedgeContextPackageId: this.editDistrictContextRoot.userData.packageId ?? null,
+        wedgeContext: this.editDistrictContextRoot.visible ? {
+          innerRadius: this.editDistrictContextRoot.userData.innerRadius,
+          outerRadius: this.editDistrictContextRoot.userData.outerRadius,
+          startAngle: this.editDistrictContextRoot.userData.startAngle,
+          endAngle: this.editDistrictContextRoot.userData.endAngle,
+          boundaryModel: this.editDistrictContextRoot.userData.boundaryModel,
+        } : null,
         activeInteriorBuildingId: this.activeInteriorBuildingId,
         activeInteriorType: this.activeInteriorBuildingId
           ? (this.authoredInteriorByBuildingId.has(this.activeInteriorBuildingId) ? 'authored' : 'generated-fallback')
@@ -10198,6 +10427,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     this.cancelScheduledCerebrumLoad = null;
     this.restoreAcademicExteriorAfterInterior();
     this.restoreExteriorHighDetailRoots();
+    this.restoreEditDistrictIsolation();
     const fountain = this.getAcademicFountainRoot();
     if (fountain) disposeAcademicFountain(fountain);
     const library = this.getCerebrumLibraryRoot();

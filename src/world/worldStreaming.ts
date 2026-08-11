@@ -65,6 +65,9 @@ export interface StreamingSnapshot {
   authority: 'web-sandbox';
   strategy: string;
   detailPolicy: StreamingDetailPolicy;
+  editIsolationActive: boolean;
+  editIsolationPackageId: string | null;
+  editIsolationHiddenPackageCount: number;
   fullIslandDetailRequested: boolean;
   fullIslandDetailReady: boolean;
   fullIslandDetailProgress: {
@@ -2971,8 +2974,19 @@ export class WorldStreamingManager {
 
   private reconcileVisibility() {
     let changed = false;
+    const editIsolationPackageId = this.lastMode === 'edit'
+      && this.lastSelectedPackageId
+      && this.packages.has(this.lastSelectedPackageId)
+      ? this.lastSelectedPackageId
+      : null;
     this.packages.forEach((pkg) => {
-      const layerEnabled = this.packageLayerEnabled(pkg);
+      // Edit is an authoring workspace for one district at a time. Keeping
+      // every other package's HLOD proxy alive still incurs scene traversal,
+      // draw calls, and animation work, which makes transform interactions
+      // needlessly expensive. The selected package remains authoritative and
+      // detailed while every unrelated package and proxy is runtime-hidden.
+      const packageAllowed = !editIsolationPackageId || pkg.id === editIsolationPackageId;
+      const layerEnabled = packageAllowed && this.packageLayerEnabled(pkg);
       const detail = layerEnabled && pkg.visualLevel === 'detail' && pkg.loadState === 'loaded';
       const mid = layerEnabled && pkg.visualLevel === 'mid' && !detail;
       const far = layerEnabled && !detail && !mid;
@@ -3506,6 +3520,11 @@ export class WorldStreamingManager {
 
   getSnapshot(): StreamingSnapshot {
     const packages = Array.from(this.packages.values());
+    const editIsolationPackageId = this.lastMode === 'edit'
+      && this.lastSelectedPackageId
+      && this.packages.has(this.lastSelectedPackageId)
+      ? this.lastSelectedPackageId
+      : null;
     const loaded = this.loadedPackageIds.size;
     const total = packages.length;
     const failedPackageIds = packages.filter((pkg) => pkg.lifecyclePhase === 'error').map((pkg) => pkg.id);
@@ -3577,6 +3596,9 @@ export class WorldStreamingManager {
         ? 'progressive full-island GPU detail with per-object frustum culling'
         : 'bounded detail LRU with detail, batched mid HLOD, and far silhouette levels',
       detailPolicy: this.detailPolicy,
+      editIsolationActive: Boolean(editIsolationPackageId),
+      editIsolationPackageId,
+      editIsolationHiddenPackageCount: editIsolationPackageId ? Math.max(0, total - 1) : 0,
       fullIslandDetailRequested: this.detailPolicy === 'full-island',
       fullIslandDetailReady: this.detailPolicy === 'full-island'
         && loaded === total

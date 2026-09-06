@@ -178,7 +178,8 @@ try {
   assert(Math.abs(movingJump.position[1] - movingJump.movement.groundY - 1.62) < 0.001, 'Moving jump must land at the new terrain height.');
   results.jumping = { tap, held, repeat, doubleJump, velocityBeforeSecondPress, velocityAfterSecondPress, movingJump };
 
-  const stairGround = 1.12 + (44 - 28) / 30 * (8 - 1.12);
+  const stairBottom = await page.evaluate(() => window.labIsland.syntheticShore.groundHeight(30.5, 28));
+  const stairGround = stairBottom + (44 - 28) / 30 * (8 - stairBottom);
   await fixture({ x: 30.5, z: 44, groundY: stairGround, dz: 100, surface: 'pier stairs' });
   const ascent = await travel(['w'], 700);
   assert(ascent.after.position[2] > 45 && ascent.after.movement.groundY > stairGround && ascent.after.surface === 'pier stairs', 'Normal-speed walking must climb the stairs.');

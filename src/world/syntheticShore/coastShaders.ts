@@ -99,6 +99,7 @@ export const coastFragmentShader = /* glsl */`
   }
   void main() {
     vec2 p = vWorldPosition.xz;
+    vec4 coast = coastCoordinates(p);
     float depth = max(0.0, -vWorldPosition.y);
     float distanceToEye = length(cameraPosition - vWorldPosition);
     float daylight = clamp(uDaylight, 0.025, 1.2);
@@ -115,7 +116,7 @@ export const coastFragmentShader = /* glsl */`
       * ripplePatches * mix(0.25, 1.0, submergedRipples);
     // Water and the exposed wet sand use the same incoming wave and its recent
     // runup history. Elevated rock surfaces do not inherit a wet terrain mask.
-    float shoreSurface = p.x < 120.0 ? shoreSurfaceGLSL(p).x : 0.0;
+    float shoreSurface = coast.x < 120.0 ? shoreSurfaceGLSL(p).x : 0.0;
     float recentWash = shoreWetnessGLSL(p);
     float rockWetness = 1.0 - smoothstep(shoreSurface - 0.025, shoreSurface + 0.10, vWorldPosition.y);
     float wet = uMaterialKind < 0.5 ? recentWash : rockWetness;
@@ -216,8 +217,8 @@ export const coastFragmentShader = /* glsl */`
     float foamCells = noise(p * 5.7 + vec2(uTime * 0.045, 0.0));
     float foamPatches = smoothstep(0.63, 0.82, noise(p * 0.80 + 19.0));
     float residue = smoothstep(0.69, 0.84, foamCells) * foamPatches * recentWash * exposedFilm
-      * smoothstep(0.0, 0.8, uWaveHeight) * smoothstep(-8.0, -3.0, p.x)
-      * (1.0 - smoothstep(0.0, 7.0, p.x)) * sandMask * 0.26;
+      * smoothstep(0.0, 0.8, uWaveHeight) * smoothstep(-8.0, -3.0, coast.x)
+      * (1.0 - smoothstep(0.0, 7.0, coast.x)) * sandMask * 0.19;
     color = mix(color, vec3(0.62, 0.69, 0.65) * (0.12 + daylight * 0.88), residue);
     float submerged = 1.0 - smoothstep(-0.08, 0.03, vWorldPosition.y);
     float caustics = causticLace(p) * exp(-depth * 0.12)
@@ -251,4 +252,3 @@ export const coastFragmentShader = /* glsl */`
     #include <colorspace_fragment>
   }
 `;
-

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ISLAND_RADIUS, ISLAND_SURFACE_Y, metresToWorldUnits } from '../config/island';
+import { beachSeawallZ, createBeachPerimeter } from './syntheticBeachLayout';
 
 export const SYNTHETIC_PIER_ID = 'synthetic-pier';
 export const SYNTHETIC_PIER_ENTRY = new THREE.Vector3(0, ISLAND_SURFACE_Y, -ISLAND_RADIUS + 2);
@@ -8,10 +9,15 @@ export const SYNTHETIC_PIER_ENTRY = new THREE.Vector3(0, ISLAND_SURFACE_Y, -ISLA
 const DECK_Y = ISLAND_SURFACE_Y;
 const SHORE_Y = 0.12;
 const STEM_HALF_WIDTH = 1.3;
-const STAIR_Z = -ISLAND_RADIUS - 10;
+// Match the immersive shore: a side landing feeds a flight running parallel
+// to the pier, with the high end inland and the foot toward the ocean.
+const STAIR_X = -3.8;
+const STAIR_TOP_Z = -ISLAND_RADIUS - 7;
+const LANDING_DEPTH = 0.8;
 const STAIR_WIDTH = 0.78;
 const STAIR_COUNT = 84;
 const STAIR_TREAD = metresToWorldUnits(0.35);
+const STAIR_BOTTOM_Z = STAIR_TOP_Z - STAIR_COUNT * STAIR_TREAD;
 
 export function disposeSyntheticPier(root: THREE.Group) {
   const geometries = new Set<THREE.BufferGeometry>();
@@ -97,21 +103,14 @@ function silverSandGeometry() {
   const uvs: number[] = [];
   const colors: number[] = [];
   const indices: number[] = [];
-  const segments = 96;
+  const segments = 192;
   const rings = 14;
-  const coastZ = (x: number) => -ISLAND_RADIUS - x / Math.sqrt(3) + 0.22;
-  // One straight landward edge follows the tropical seawall. The outer edge
-  // rounds into the sea, making an attached shelf rather than a second island.
-  const perimeter = new THREE.Shape();
-  perimeter.moveTo(-1.45, coastZ(-1.45));
-  perimeter.lineTo(-29, coastZ(-29));
-  perimeter.bezierCurveTo(-30.5, -ISLAND_RADIUS - 0.5, -28, -ISLAND_RADIUS - 10, -22.5, -ISLAND_RADIUS - 16.5);
-  perimeter.bezierCurveTo(-19.5, -ISLAND_RADIUS - 20, -13, -ISLAND_RADIUS - 23, -8.5, -ISLAND_RADIUS - 20.5);
-  perimeter.bezierCurveTo(-4.7, -ISLAND_RADIUS - 18.3, -2.4, -ISLAND_RADIUS - 13.1, -2.1, -ISLAND_RADIUS - 8.4);
-  perimeter.bezierCurveTo(-1.8, -ISLAND_RADIUS - 4.9, -1.45, -ISLAND_RADIUS - 1.1, -1.45, coastZ(-1.45));
-  perimeter.closePath();
+  const coastZ = (x: number) => -ISLAND_RADIUS + beachSeawallZ(x);
+  // The campus and immersive beach now use the same connected shallow outline.
+  const perimeter = createBeachPerimeter();
   const boundary = perimeter.getSpacedPoints(segments);
-  const center = new THREE.Vector2(-13, -ISLAND_RADIUS - 3.5);
+  for (const point of boundary) point.y -= ISLAND_RADIUS;
+  const center = new THREE.Vector2(0, -ISLAND_RADIUS - 3.5);
   for (let ring = 0; ring <= rings; ring += 1) {
     const radius = ring / rings;
     for (let point = 0; point <= segments; point += 1) {
@@ -123,7 +122,7 @@ function silverSandGeometry() {
       const ripple = Math.sin(x * 1.4 + z * 0.36) * Math.sin(z * 0.47 - x * 0.15);
       const centerRelief = 0.007 * ripple * (1 - THREE.MathUtils.smoothstep(radius, 0.7, 0.94));
       positions.push(x, SHORE_Y + centerRelief - edgeSlope * 0.17, z);
-      uvs.push((x + 30) / 30, (z + ISLAND_RADIUS + 24) / 42);
+      uvs.push((x + 30) / 60, (z + ISLAND_RADIUS + 24) / 42);
       const duneTone = 0.79 + ripple * 0.095;
       const wetTone = 1 - edgeSlope * 0.34;
       colors.push(duneTone * wetTone * 0.91, duneTone * wetTone * 0.97, duneTone * wetTone);
@@ -146,13 +145,16 @@ function silverSandGeometry() {
 /** The campus-scale gateway. The immersive shore is loaded by IslandWorld. */
 export function createSyntheticPier(): THREE.Group {
   const root = identify(new THREE.Group(), 'ANCHOR_GATEWAY');
+  // Let each walkable surface retain its own metal/sand footstep material.
+  delete root.userData.surfaceKind;
   Object.assign(root.userData, {
     scenePortal: 'synthetic-shore',
     title: 'Synthetic Shore',
     description: 'Anchor pier · silver beach · Cygnus X-1',
     entryPosition: SYNTHETIC_PIER_ENTRY.toArray(),
     approachBounds: { min: [-2.2, DECK_Y - 0.5, -ISLAND_RADIUS - 0.5], max: [2.2, DECK_Y + 0.7, -ISLAND_RADIUS + 4.5] },
-    shorelinePosition: [-12, SHORE_Y, STAIR_Z],
+    shorelinePosition: [STAIR_X, SHORE_Y, STAIR_BOTTOM_Z - 0.3],
+    stairLayout: { direction: 'parallel-to-pier', top: [STAIR_X, DECK_Y, STAIR_TOP_Z], bottom: [STAIR_X, SHORE_Y, STAIR_BOTTOM_Z], landingDepth: LANDING_DEPTH },
     permanentEnvironment: true,
   });
 
@@ -227,9 +229,9 @@ export function createSyntheticPier(): THREE.Group {
 
   const railX = STEM_HALF_WIDTH - 0.035;
   addRail(new THREE.Vector3(railX, DECK_Y, -ISLAND_RADIUS + 1.9), new THREE.Vector3(railX, DECK_Y, -ISLAND_RADIUS - 28.8));
-  // The opening is exactly aligned to the side staircase, with no hidden rail collider.
-  addRail(new THREE.Vector3(-railX, DECK_Y, -ISLAND_RADIUS + 1.9), new THREE.Vector3(-railX, DECK_Y, STAIR_Z + STAIR_WIDTH * 0.5 + 0.04));
-  addRail(new THREE.Vector3(-railX, DECK_Y, STAIR_Z - STAIR_WIDTH * 0.5 - 0.04), new THREE.Vector3(-railX, DECK_Y, -ISLAND_RADIUS - 28.8));
+  // The opening spans the connecting landing, with no rail collider across it.
+  addRail(new THREE.Vector3(-railX, DECK_Y, -ISLAND_RADIUS + 1.9), new THREE.Vector3(-railX, DECK_Y, STAIR_TOP_Z + LANDING_DEPTH + 0.04));
+  addRail(new THREE.Vector3(-railX, DECK_Y, STAIR_TOP_Z - 0.04), new THREE.Vector3(-railX, DECK_Y, -ISLAND_RADIUS - 28.8));
 
   const crownEdges = ribbonEdges(crownPoints, 2.12);
   for (const edge of [crownEdges.left, crownEdges.right]) {
@@ -260,16 +262,28 @@ export function createSyntheticPier(): THREE.Group {
   }
 
   const stairRise = (DECK_Y - SHORE_Y) / STAIR_COUNT;
+  const landingOuterX = STAIR_X - STAIR_WIDTH * 0.5;
+  const landingInnerX = -STEM_HALF_WIDTH + 0.06;
+  const topLanding = identify(new THREE.Mesh(boxGeometry(
+    landingInnerX - landingOuterX, 0.07, LANDING_DEPTH,
+    (landingInnerX + landingOuterX) * 0.5, DECK_Y - 0.035, STAIR_TOP_Z + LANDING_DEPTH * 0.5,
+  ), platinum), 'PIER_TO_STAIR_LANDING', true);
+  topLanding.receiveShadow = true;
+  root.add(topLanding);
+  // Enclose the landing's exposed edges; leave the pier and stair mouths open.
+  addRail(new THREE.Vector3(landingOuterX + 0.025, DECK_Y, STAIR_TOP_Z + LANDING_DEPTH - 0.025), new THREE.Vector3(-railX, DECK_Y, STAIR_TOP_Z + LANDING_DEPTH - 0.025));
+  addRail(new THREE.Vector3(landingOuterX + 0.025, DECK_Y, STAIR_TOP_Z), new THREE.Vector3(landingOuterX + 0.025, DECK_Y, STAIR_TOP_Z + LANDING_DEPTH - 0.025));
+  addRail(new THREE.Vector3(STAIR_X + STAIR_WIDTH * 0.5 - 0.025, DECK_Y, STAIR_TOP_Z), new THREE.Vector3(-railX, DECK_Y, STAIR_TOP_Z));
   const steps = identify(new THREE.InstancedMesh(new THREE.BoxGeometry(1, 1, 1), platinum, STAIR_COUNT), 'SILVER_DESCENDING_STAIRS', true);
   const transform = new THREE.Object3D();
   for (let index = 0; index < STAIR_COUNT; index += 1) {
     const top = DECK_Y - (index + 1) * stairRise;
-    const x = -STEM_HALF_WIDTH - (index + 0.5) * STAIR_TREAD;
-    transform.position.set(x, top - 0.035, STAIR_Z);
-    transform.scale.set(STAIR_TREAD + 0.0003, 0.07, STAIR_WIDTH);
+    const z = STAIR_TOP_Z - (index + 0.5) * STAIR_TREAD;
+    transform.position.set(STAIR_X, top - 0.035, z);
+    transform.scale.set(STAIR_WIDTH, 0.07, STAIR_TREAD + 0.0003);
     transform.updateMatrix();
     steps.setMatrixAt(index, transform.matrix);
-    cyanParts.push(boxGeometry(0.005, 0.004, STAIR_WIDTH - 0.04, x - STAIR_TREAD * 0.4, top + 0.002, STAIR_Z));
+    cyanParts.push(boxGeometry(STAIR_WIDTH - 0.04, 0.004, 0.005, STAIR_X, top + 0.002, z - STAIR_TREAD * 0.4));
   }
   steps.instanceMatrix.needsUpdate = true;
   steps.computeBoundingBox();
@@ -278,13 +292,12 @@ export function createSyntheticPier(): THREE.Group {
   steps.receiveShadow = true;
   root.add(steps);
 
-  const stairEndX = -STEM_HALF_WIDTH - STAIR_COUNT * STAIR_TREAD;
   const stairNavGeometry = new THREE.BufferGeometry();
   stairNavGeometry.setAttribute('position', new THREE.Float32BufferAttribute([
-    -STEM_HALF_WIDTH + 0.025, DECK_Y + 0.001, STAIR_Z - STAIR_WIDTH * 0.5,
-    -STEM_HALF_WIDTH + 0.025, DECK_Y + 0.001, STAIR_Z + STAIR_WIDTH * 0.5,
-    stairEndX - 0.025, SHORE_Y + 0.001, STAIR_Z + STAIR_WIDTH * 0.5,
-    stairEndX - 0.025, SHORE_Y + 0.001, STAIR_Z - STAIR_WIDTH * 0.5,
+    STAIR_X - STAIR_WIDTH * 0.5, DECK_Y + 0.001, STAIR_TOP_Z + 0.003,
+    STAIR_X + STAIR_WIDTH * 0.5, DECK_Y + 0.001, STAIR_TOP_Z + 0.003,
+    STAIR_X + STAIR_WIDTH * 0.5, SHORE_Y + 0.001, STAIR_BOTTOM_Z - 0.003,
+    STAIR_X - STAIR_WIDTH * 0.5, SHORE_Y + 0.001, STAIR_BOTTOM_Z - 0.003,
   ], 3));
   stairNavGeometry.setIndex([0, 1, 2, 0, 2, 3]);
   stairNavGeometry.computeVertexNormals();
@@ -294,10 +307,11 @@ export function createSyntheticPier(): THREE.Group {
   stairNav.userData.navigationOnly = true;
   root.add(stairNav);
   for (const side of [-1, 1]) {
-    addRail(new THREE.Vector3(-STEM_HALF_WIDTH, DECK_Y, STAIR_Z + side * (STAIR_WIDTH * 0.5 - 0.025)), new THREE.Vector3(stairEndX, SHORE_Y, STAIR_Z + side * (STAIR_WIDTH * 0.5 - 0.025)));
+    const x = STAIR_X + side * (STAIR_WIDTH * 0.5 - 0.025);
+    addRail(new THREE.Vector3(x, DECK_Y, STAIR_TOP_Z), new THREE.Vector3(x, SHORE_Y, STAIR_BOTTOM_Z));
   }
 
-  const landing = identify(new THREE.Mesh(boxGeometry(0.7, 0.07, 1.05, stairEndX - 0.3, SHORE_Y - 0.035, STAIR_Z), platinum), 'BEACH_LANDING', true);
+  const landing = identify(new THREE.Mesh(boxGeometry(1.05, 0.07, 0.7, STAIR_X, SHORE_Y - 0.035, STAIR_BOTTOM_Z - 0.3), platinum), 'BEACH_LANDING', true);
   landing.receiveShadow = true;
   root.add(landing);
 

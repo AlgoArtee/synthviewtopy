@@ -1,0 +1,174 @@
+{
+  "status": "passed",
+  "coast": [
+    {
+      "index": 28,
+      "x": -130.53369140625,
+      "z": 99.1984502552801,
+      "distance": 0,
+      "along": 112.8572878765999,
+      "normalX": -0.9877394028843806,
+      "normalZ": -0.15611172918652688,
+      "inlandHeight": 0.3758567628530678,
+      "offshoreHeight": -1.100015882963521,
+      "washFloor": 0.05938289481407147,
+      "minDepth": -0.06725440260624418,
+      "maxDepth": 0.06031772585037454
+    },
+    {
+      "index": 64,
+      "x": -93,
+      "z": 11,
+      "distance": 0,
+      "along": 209.96322935003042,
+      "normalX": -0.7605988725431674,
+      "normalZ": -0.6492221153704351,
+      "inlandHeight": 0.3756582542865964,
+      "offshoreHeight": -1.1003218614024841,
+      "washFloor": 0.05918317241566556,
+      "minDepth": -0.06719866460145546,
+      "maxDepth": 0.094068479315573
+    },
+    {
+      "index": 104,
+      "x": -42.697265625,
+      "z": -17.53515625,
+      "distance": 0,
+      "along": 268.8367019221109,
+      "normalX": -0.17362406257566748,
+      "normalZ": -0.9848120048490069,
+      "inlandHeight": 0.37572999717103245,
+      "offshoreHeight": -1.1000799336894327,
+      "washFloor": 0.05941234883470479,
+      "minDepth": -0.06665457447978357,
+      "maxDepth": 0.08316536977023106
+    },
+    {
+      "index": 152,
+      "x": 6.662109375,
+      "z": -6.197265625,
+      "distance": 0,
+      "along": 320.63438387317,
+      "normalX": 0.2575405082421353,
+      "normalZ": -0.9662675026173564,
+      "inlandHeight": 0.376306864542741,
+      "offshoreHeight": -1.0990606255309,
+      "washFloor": 0.059793467138304385,
+      "minDepth": -0.06637841618973933,
+      "maxDepth": 0.06375921104038727
+    },
+    {
+      "index": 192,
+      "x": 42,
+      "z": -4,
+      "distance": 0,
+      "along": 356.13441005819715,
+      "normalX": 0,
+      "normalZ": -1,
+      "inlandHeight": 0.37601076941098344,
+      "offshoreHeight": -1.0999986648559572,
+      "washFloor": 0.059441959107890345,
+      "minDepth": -0.06571041441514291,
+      "maxDepth": 0.0618774378528909
+    },
+    {
+      "index": 232,
+      "x": 77.337890625,
+      "z": -6.197265625,
+      "distance": 0,
+      "along": 391.63443624322434,
+      "normalX": -0.2575405082421367,
+      "normalZ": -0.966267502617356,
+      "inlandHeight": 0.376306864542741,
+      "offshoreHeight": -1.0990606255309003,
+      "washFloor": 0.05979346713830474,
+      "minDepth": -0.06619586919532716,
+      "maxDepth": 0.07459564079921263
+    },
+    {
+      "index": 280,
+      "x": 126.697265625,
+      "z": -17.53515625,
+      "distance": 0,
+      "along": 443.4321181942834,
+      "normalX": 0.17362406257566748,
+      "normalZ": -0.9848120048490069,
+      "inlandHeight": 0.37572999717103284,
+      "offshoreHeight": -1.1000799336894331,
+      "washFloor": 0.059412348834704434,
+      "minDepth": -0.06653161653685696,
+      "maxDepth": 0.08178614391380397
+    },
+    {
+      "index": 320,
+      "x": 177,
+      "z": 11,
+      "distance": 0,
+      "along": 502.30559076636376,
+      "normalX": 0.7605988725431674,
+      "normalZ": -0.6492221153704351,
+      "inlandHeight": 0.37565825428659533,
+      "offshoreHeight": -1.1003218614024841,
+      "washFloor": 0.059183172415664134,
+      "minDepth": -0.06703523604223169,
+      "maxDepth": 0.10702576967919229
+    },
+    {
+      "index": 356,
+      "x": 214.53369140625,
+      "z": 99.1984502552801,
+      "distance": 0,
+      "along": 599.4115322397943,
+      "normalX": 0.9877394028843806,
+      "normalZ": -0.15611172918652688,
+      "inlandHeight": 0.37585676285306635,
+      "offshoreHeight": -1.1000158829635214,
+      "washFloor": 0.05938289481407395,
+      "minDepth": -0.06745056168186805,
+      "maxDepth": 0.08233776076544357
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-matching-beach-outline",
+      "calls": 122,
+      "triangles": 278747
+    },
+    {
+      "name": "02-front-swash-0",
+      "calls": 35,
+      "triangles": 263296
+    },
+    {
+      "name": "02-front-swash-1",
+      "calls": 35,
+      "triangles": 263296
+    },
+    {
+      "name": "02-front-swash-2",
+      "calls": 35,
+      "triangles": 263296
+    },
+    {
+      "name": "03-west-wash",
+      "calls": 17,
+      "triangles": 257576
+    },
+    {
+      "name": "04-east-wash",
+      "calls": 18,
+      "triangles": 258704
+    },
+    {
+      "name": "05-underwater-seabed",
+      "calls": 17,
+      "triangles": 257574
+    },
+    {
+      "name": "06-underwater-surface",
+      "calls": 17,
+      "triangles": 257574
+    }
+  ],
+  "errors": []
+}

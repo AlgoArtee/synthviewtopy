@@ -196,6 +196,7 @@ export const oceanFragmentShader = /* glsl */`
 
   void main() {
     vec2 p = vWorldPosition.xz;
+    vec4 coast = coastCoordinates(p);
     float floorY = seafloorHeightGLSL(p.x, p.y);
     float waterDepth = vWorldPosition.y - floorY;
     // A genuine wet/dry boundary. Raising a whole ocean mesh onto the sand
@@ -277,6 +278,10 @@ export const oceanFragmentShader = /* glsl */`
     float sandRidge = sin(bottomUV.x * 3.2 + sin(bottomUV.y * 0.38) * 2.4 + sandNoise * 1.5);
     vec3 bottomColor = mix(vec3(0.12, 0.13, 0.10), vec3(0.28, 0.27, 0.20), sandNoise);
     bottomColor *= (0.90 + sandRidge * 0.10) * ambientLight;
+    float bottomFootprint = max(length(dFdx(bottomUV)), length(dFdy(bottomUV)));
+    float bottomGrains = (noise(bottomUV * 93.0) - 0.5) * 0.12
+      * (1.0 - smoothstep(0.008, 0.07, bottomFootprint));
+    bottomColor *= 1.0 + bottomGrains;
     float causticA = sin(bottomUV.x * 1.14 + sin(bottomUV.y * 0.77 + uTime * 0.55) * 2.1 + uTime * 0.70);
     float causticB = sin(bottomUV.y * 1.36 + sin(bottomUV.x * 0.62 - uTime * 0.48) * 1.8 - uTime * 0.61);
     float caustics = pow(max(0.0, 1.0 - abs(causticA + causticB) * 0.65), 12.0)
@@ -321,7 +326,9 @@ export const oceanFragmentShader = /* glsl */`
     // transition also keeps a straight mesh/sand intersection from reading as
     // a sharp mirror cutout before the irregular foam fingers arrive.
     float washFilm = smoothstep(0.008, 0.065, waterDepth);
-    fresnel *= mix(washFilm, 1.0, smoothstep(12.0, 30.0, p.x));
+    // The millimetre film exposes grains; its retreat is a transparent wet
+    // sheen, not a broad milky reflected sheet cutting across the beach.
+    fresnel *= mix(washFilm * 0.42, 1.0, smoothstep(0.075, 0.60, waterDepth));
     float roughness = 0.095 + wind * 0.07 + uCloud * 0.035 + shoreState.x * 0.045 + shoreState.z * 0.012;
     roughness = mix(roughness, 0.225, giantFace * 0.85);
     vec3 reflectionFallback = environmentColor(reflect(-viewDir, normal));
@@ -360,37 +367,38 @@ export const oceanFragmentShader = /* glsl */`
     float breaking = smoothstep(0.24, 0.60, steepness) * smoothstep(0.30, 0.95, spectrum.x);
     float shoreFoam = 0.0, shoreFoamLight = 1.0;
     if (shoreState.x + shoreState.y + shoreState.z > 0.001 && giantFace < 0.99) {
-      float arrival = shorePhaseGLSL(vec2(0.0, p.y), uTime) - 1.45;
-      float swashPhase = arrival + 0.30 * cos(arrival);
+      float arrival = shoreLocalPhaseGLSL(vec2(0.0, coast.y), uTime) - 1.45;
+      float swashPhase = arrival + 0.52 * cos(arrival);
       float wash = 0.5 + 0.5 * cos(swashPhase);
-      float washRate = -0.5 * sin(swashPhase) * (1.0 - 0.30 * sin(arrival));
+      float washRate = -0.5 * sin(swashPhase) * (1.0 - 0.52 * sin(arrival));
       float uprush = smoothstep(-0.025, 0.18, washRate);
       // The shallow foam reverses with the real wash, slows at maximum runup,
       // then stretches seaward. Outer whitewater follows the incoming bore.
-      float travel = mix(wash * 5.0, shoreState.w * 3.2, smoothstep(4.0, 22.0, p.x));
-      vec2 flow = vec2(p.x + travel, p.y);
+      float travel = mix(wash * 5.0, shoreState.w * 3.2, smoothstep(4.0, 22.0, coast.x));
+      vec2 flow = vec2(coast.x + travel, coast.y);
       vec2 warp = vec2(noise(flow * 0.71 + uTime * 0.025),
         noise(flow * 0.63 + 19.4 - uTime * 0.018)) - 0.5;
-      vec2 foamUV = flow * 1.8 + warp * 2.4;
+      vec2 foamUV = flow * 3.8 + warp * 2.4;
       float broadPatches = foamTurbulence(flow * 0.64 + warp * 1.3 + 47.1);
       float flecks = foamTurbulence(foamUV + vec2(uTime * 0.045, -uTime * 0.018));
       float detailAA = clamp(footprint * 1.4, 0.018, 0.11);
-      float rafts = smoothstep(0.46 - detailAA, 0.565 + detailAA, flecks + (broadPatches - 0.5) * 0.34);
+      float rafts = smoothstep(0.49 - detailAA, 0.63 + detailAA, flecks + (broadPatches - 0.5) * 0.42);
       // Open holes have curved, turbulent boundaries, with no closed-cell
       // network. Higher-frequency texture breaks small clumps off their edges.
       float brokenRafts = rafts * smoothstep(0.22, 0.43, foamTurbulence(foamUV * 3.1 + 8.4));
-      float fringeShape = foamTurbulence(vec2(p.y * 2.0, uTime * 0.16));
-      float fringeDepth = waterDepth - 0.010 - fringeShape * 0.019;
+      float fringeShape = foamTurbulence(vec2(coast.y * 3.1, uTime * 0.16));
+      float fringeDepth = waterDepth - 0.008 - fringeShape * 0.014;
       float fringeWet = smoothstep(0.0, 0.008 + min(0.012, footprint * 0.04), fringeDepth);
-      float rolledEdge = exp(-pow((fringeDepth - 0.010) / (0.010 + fringeShape * 0.014), 2.0)) * fringeWet;
-      float swashBand = (1.0 - smoothstep(0.055, 0.19, waterDepth)) * fringeWet;
-      float advancingFringe = max(rolledEdge * (0.62 + 0.30 * flecks),
-        swashBand * brokenRafts * 0.94) * (0.34 + uprush * 0.66)
-        * (1.0 - smoothstep(5.0, 16.0, p.x));
-      float freshFoam = shoreState.x * (0.15 + brokenRafts * 0.85);
+      float rolledEdge = exp(-pow((fringeDepth - 0.008) / (0.006 + fringeShape * 0.008), 2.0)) * fringeWet;
+      float swashBand = (1.0 - smoothstep(0.025, 0.07, waterDepth)) * fringeWet;
+      float advancingFringe = max(rolledEdge * (0.20 + 0.65 * flecks),
+        swashBand * brokenRafts * 0.62) * (0.12 + uprush * 0.88)
+        * (1.0 - smoothstep(3.0, 11.0, coast.x));
+      float freshFoam = shoreState.x * (0.04 + brokenRafts * 0.76)
+        * smoothstep(0.30, 0.59, broadPatches);
       float rills = foamTurbulence(vec2(flow.x * 0.75, flow.y * 5.6) + warp * 2.0);
       float stretchedFlecks = smoothstep(0.54 - detailAA, 0.70 + detailAA, rills);
-      float remnants = max(brokenRafts * 0.42, stretchedFlecks * (1.0 - uprush) * 0.66);
+      float remnants = max(brokenRafts * 0.24, stretchedFlecks * (1.0 - uprush) * 0.48);
       float backwashFoam = shoreState.z * remnants * (1.0 - smoothstep(0.22, 0.75, waterDepth));
       shoreFoam = max(freshFoam, advancingFringe) + backwashFoam * (1.0 - freshFoam);
       float bubbleScale = 42.0;
@@ -413,7 +421,7 @@ export const oceanFragmentShader = /* glsl */`
     float fallingStreaks = smoothstep(0.54, 0.87, faceRills) * smoothstep(0.80, 0.955, crestRatio)
       * (1.0 - crestWhitewater * 0.80) * faceFilter;
     float giantFoam = (crestWhitewater * 0.92 + fallingStreaks * 0.055) * giantFace;
-    float ordinaryFoam = breaking * foamTexture * smoothstep(85.0, 200.0, p.x)
+    float ordinaryFoam = breaking * foamTexture * smoothstep(85.0, 200.0, coast.x)
       * seaActivity * (1.0 - giantFace * 0.97);
     float foam = clamp(ordinaryFoam + shoreFoam * 0.94 + giantFoam, 0.0, 0.95);
     float foamDetail = mix(foamCells, 0.5 + crestBreakup * 0.5, giantFace);
@@ -446,7 +454,11 @@ export const oceanFragmentShader = /* glsl */`
       color = mix(color, uHorizonColor, atmosphere * 0.75);
     }
 
-    gl_FragColor = vec4(max(color, vec3(0.0)), 1.0);
+    // Blend the first few centimetres directly over the real silver grains.
+    // Deeper water and every underwater view remain optically opaque here;
+    // their finite-volume transmission is already evaluated above.
+    float opacity = uUnderwater > 0.5 ? 1.0 : max(smoothstep(0.008, 0.065, waterDepth), foam * 0.88);
+    gl_FragColor = vec4(max(color, vec3(0.0)), opacity);
     #include <tonemapping_fragment>
     #include <colorspace_fragment>
   }

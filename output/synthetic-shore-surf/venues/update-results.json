@@ -1,0 +1,46 @@
+{
+  "status": "passed",
+  "islandCygnus": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": false,
+      "elevationDegrees": 6.4,
+      "screenPosition": {
+        "x": 1.198,
+        "y": -0.436
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": false,
+      "elevationDegrees": 10,
+      "screenPosition": {
+        "x": 1.951,
+        "y": -0.772
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.13531249999999995,
+      "coronaPulse": -0.6598377518468398,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "depthPlacement": "background-far-plane",
+    "cameraTranslationOnly": true,
+    "skyDistance": 1260.0000000000002
+  },
+  "environment": {
+    "timeOfDay": "night",
+    "weather": "clear",
+    "waveHeight": 2.4,
+    "waterSpeed": 0,
+    "waterColor": "#248f91",
+    "reflections": false
+  },
+  "errors": []
+}

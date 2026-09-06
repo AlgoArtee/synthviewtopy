@@ -1,0 +1,2731 @@
+{
+  "status": "passed",
+  "layout": {
+    "direction": "parallel-to-pier",
+    "top": [
+      -3.8,
+      1.61,
+      -559
+    ],
+    "bottom": [
+      -3.8,
+      0.12,
+      -561.94
+    ],
+    "landingDepth": 0.8
+  },
+  "stairWidth": 0.7799999713897705,
+  "samples": [
+    {
+      "x": -4.324999809265137,
+      "z": -562.5900268554688,
+      "y": 0.1201644817356966,
+      "gap": -0.00016448173569660884
+    },
+    {
+      "x": -4.324999809265137,
+      "z": -562.2400207519531,
+      "y": 0.11901685203971546,
+      "gap": 0.000983147960284536
+    },
+    {
+      "x": -4.324999809265137,
+      "z": -561.8900146484375,
+      "y": 0.11748336149740624,
+      "gap": 0.00251663850259376
+    },
+    {
+      "x": -3.799999952316284,
+      "z": -562.5900268554688,
+      "y": 0.12072086365413082,
+      "gap": -0.0007208636541308211
+    },
+    {
+      "x": -3.799999952316284,
+      "z": -562.2400207519531,
+      "y": 0.12068498917032588,
+      "gap": -0.0006849891703258892
+    },
+    {
+      "x": -3.799999952316284,
+      "z": -561.8900146484375,
+      "y": 0.11957907476083118,
+      "gap": 0.0004209252391688123
+    },
+    {
+      "x": -3.2750000953674316,
+      "z": -562.5900268554688,
+      "y": 0.11996446329234978,
+      "gap": 0.00003553670765021888
+    },
+    {
+      "x": -3.2750000953674316,
+      "z": -562.2400207519531,
+      "y": 0.12122581508844732,
+      "gap": -0.001225815088447324
+    },
+    {
+      "x": -3.2750000953674316,
+      "z": -561.8900146484375,
+      "y": 0.12175772470877977,
+      "gap": -0.0017577247087797732
+    }
+  ],
+  "checks": [
+    {
+      "name": "Entire beach landing lies over dry silver sand",
+      "passed": true,
+      "detail": [
+        {
+          "x": -4.324999809265137,
+          "z": -562.5900268554688,
+          "y": 0.1201644817356966,
+          "gap": -0.00016448173569660884
+        },
+        {
+          "x": -4.324999809265137,
+          "z": -562.2400207519531,
+          "y": 0.11901685203971546,
+          "gap": 0.000983147960284536
+        },
+        {
+          "x": -4.324999809265137,
+          "z": -561.8900146484375,
+          "y": 0.11748336149740624,
+          "gap": 0.00251663850259376
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -562.5900268554688,
+          "y": 0.12072086365413082,
+          "gap": -0.0007208636541308211
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -562.2400207519531,
+          "y": 0.12068498917032588,
+          "gap": -0.0006849891703258892
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -561.8900146484375,
+          "y": 0.11957907476083118,
+          "gap": 0.0004209252391688123
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -562.5900268554688,
+          "y": 0.11996446329234978,
+          "gap": 0.00003553670765021888
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -562.2400207519531,
+          "y": 0.12122581508844732,
+          "gap": -0.001225815088447324
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -561.8900146484375,
+          "y": 0.12175772470877977,
+          "gap": -0.0017577247087797732
+        }
+      ]
+    },
+    {
+      "name": "Landing edges meet sand within a walkable step",
+      "passed": true,
+      "detail": [
+        {
+          "x": -4.324999809265137,
+          "z": -562.5900268554688,
+          "y": 0.1201644817356966,
+          "gap": -0.00016448173569660884
+        },
+        {
+          "x": -4.324999809265137,
+          "z": -562.2400207519531,
+          "y": 0.11901685203971546,
+          "gap": 0.000983147960284536
+        },
+        {
+          "x": -4.324999809265137,
+          "z": -561.8900146484375,
+          "y": 0.11748336149740624,
+          "gap": 0.00251663850259376
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -562.5900268554688,
+          "y": 0.12072086365413082,
+          "gap": -0.0007208636541308211
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -562.2400207519531,
+          "y": 0.12068498917032588,
+          "gap": -0.0006849891703258892
+        },
+        {
+          "x": -3.799999952316284,
+          "z": -561.8900146484375,
+          "y": 0.11957907476083118,
+          "gap": 0.0004209252391688123
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -562.5900268554688,
+          "y": 0.11996446329234978,
+          "gap": 0.00003553670765021888
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -562.2400207519531,
+          "y": 0.12122581508844732,
+          "gap": -0.001225815088447324
+        },
+        {
+          "x": -3.2750000953674316,
+          "z": -561.8900146484375,
+          "y": 0.12175772470877977,
+          "gap": -0.0017577247087797732
+        }
+      ]
+    },
+    {
+      "name": "Deck crosses open side rail onto top landing",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          1.772,
+          -558.6
+        ],
+        "positionMetres": [
+          -38,
+          17.7,
+          -5586
+        ],
+        "groundY": 1.61,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 7
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.800000000000217,
+          1.7720000143051147,
+          -558.6
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 1.61,
+        "maxGroundY": 1.61
+      }
+    },
+    {
+      "name": "Parallel staircase descends onto the beach landing",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          0.283,
+          -562.24
+        ],
+        "positionMetres": [
+          -38,
+          2.8,
+          -5622.4
+        ],
+        "groundY": 0.121,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.800000000000217,
+          0.28268483719187054,
+          -562.2399999998821
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0020000000000000018,
+        "minGroundY": 0.12,
+        "maxGroundY": 1.611
+      }
+    },
+    {
+      "name": "Descent remains vertically continuous",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          0.283,
+          -562.24
+        ],
+        "positionMetres": [
+          -38,
+          2.8,
+          -5622.4
+        ],
+        "groundY": 0.121,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.800000000000217,
+          0.28268483719187054,
+          -562.2399999998821
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0020000000000000018,
+        "minGroundY": 0.12,
+        "maxGroundY": 1.611
+      }
+    },
+    {
+      "name": "Landing opens west onto the silver beach",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -4.65,
+          0.28,
+          -562.24
+        ],
+        "positionMetres": [
+          -46.5,
+          2.8,
+          -5622.4
+        ],
+        "groundY": 0.118,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -4.6500000000001025,
+          0.28011437672422784,
+          -562.2399999998821
+        ],
+        "maxRise": 0,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.118,
+        "maxGroundY": 0.121
+      }
+    },
+    {
+      "name": "Sand reconnects to beach landing",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          0.283,
+          -562.24
+        ],
+        "positionMetres": [
+          -38,
+          2.8,
+          -5622.4
+        ],
+        "groundY": 0.121,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.8000000000002174,
+          0.2826848020193409,
+          -562.2399999998821
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0,
+        "minGroundY": 0.118,
+        "maxGroundY": 0.121
+      }
+    },
+    {
+      "name": "Reverse ascent reaches the top landing",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          1.772,
+          -558.6
+        ],
+        "positionMetres": [
+          -38,
+          17.7,
+          -5586
+        ],
+        "groundY": 1.61,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 7
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.8000000000002174,
+          1.7720000143051147,
+          -558.6
+        ],
+        "maxRise": 0.0020000000000000018,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.12,
+        "maxGroundY": 1.611
+      }
+    },
+    {
+      "name": "Ascent remains vertically continuous",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          1.772,
+          -558.6
+        ],
+        "positionMetres": [
+          -38,
+          17.7,
+          -5586
+        ],
+        "groundY": 1.61,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 7
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.8000000000002174,
+          1.7720000143051147,
+          -558.6
+        ],
+        "maxRise": 0.0020000000000000018,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.12,
+        "maxGroundY": 1.611
+      }
+    },
+    {
+      "name": "Top landing returns onto the pier deck",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          0,
+          1.772,
+          -558.6
+        ],
+        "positionMetres": [
+          0,
+          17.7,
+          -5586
+        ],
+        "groundY": 1.61,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 7
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -5.399326818977812e-16,
+          1.7720000143051147,
+          -558.6
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 1.61,
+        "maxGroundY": 1.61
+      }
+    },
+    {
+      "name": "Round trip needs no safety teleport",
+      "passed": true,
+      "detail": {
+        "start": 0,
+        "finish": 0
+      }
+    },
+    {
+      "name": "Landing also permits a straight seaward exit",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          0.283,
+          -563.04
+        ],
+        "positionMetres": [
+          -38,
+          2.8,
+          -5630.4
+        ],
+        "groundY": 0.121,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.8,
+          0.28272001989924733,
+          -563.04
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.12,
+        "maxGroundY": 0.121
+      }
+    },
+    {
+      "name": "Seaward landing exit needs no safety teleport",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "name": "Straight seaward route returns to landing",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.8,
+          0.283,
+          -562.24
+        ],
+        "positionMetres": [
+          -38,
+          2.8,
+          -5622.4
+        ],
+        "groundY": 0.121,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.8,
+          0.2826849966218335,
+          -562.24
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.12,
+        "maxGroundY": 0.121
+      }
+    },
+    {
+      "name": "Outer stair handrail contains the walker",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -4.109,
+          1.028,
+          -560.47
+        ],
+        "positionMetres": [
+          -41.1,
+          10.3,
+          -5604.7
+        ],
+        "groundY": 0.866,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -4.1090000000000115,
+          1.0280005879841203,
+          -560.47
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 0.866,
+        "maxGroundY": 0.866
+      }
+    },
+    {
+      "name": "Outer stair rail prevents falling to sand",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -4.109,
+          1.028,
+          -560.47
+        ],
+        "positionMetres": [
+          -41.1,
+          10.3,
+          -5604.7
+        ],
+        "groundY": 0.866,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -4.1090000000000115,
+          1.0280005879841203,
+          -560.47
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 0.866,
+        "maxGroundY": 0.866
+      }
+    },
+    {
+      "name": "Inner stair handrail contains the walker",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.491,
+          1.028,
+          -560.47
+        ],
+        "positionMetres": [
+          -34.9,
+          10.3,
+          -5604.7
+        ],
+        "groundY": 0.866,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.490999999999988,
+          1.0280005879841203,
+          -560.47
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 0.866,
+        "maxGroundY": 0.866
+      }
+    },
+    {
+      "name": "Inner stair rail prevents falling to sand",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -3.491,
+          1.028,
+          -560.47
+        ],
+        "positionMetres": [
+          -34.9,
+          10.3,
+          -5604.7
+        ],
+        "groundY": 0.866,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 5,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 3
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -3.490999999999988,
+          1.0280005879841203,
+          -560.47
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 0.866,
+        "maxGroundY": 0.866
+      }
+    },
+    {
+      "name": "Opposite pier rail remains closed",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          1.21,
+          1.772,
+          -558.6
+        ],
+        "positionMetres": [
+          12.1,
+          17.7,
+          -5586
+        ],
+        "groundY": 1.61,
+        "surfaceKind": "metal",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 2,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 1
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          1.2098950524737535,
+          1.7720000143051147,
+          -558.6
+        ],
+        "maxRise": 0,
+        "maxDrop": 0,
+        "minGroundY": 1.61,
+        "maxGroundY": 1.61
+      }
+    },
+    {
+      "name": "West silver-beach wing stays dry",
+      "passed": true,
+      "detail": [
+        {
+          "x": 8,
+          "offset": 5,
+          "westY": 0.11954799867080546,
+          "eastY": 0.11581307786879158
+        },
+        {
+          "x": 14,
+          "offset": 5,
+          "westY": 0.12022039415221286,
+          "eastY": 0.12029682431038058
+        },
+        {
+          "x": 20,
+          "offset": 5,
+          "westY": 0.12468847360309354,
+          "eastY": 0.12128072073617613
+        },
+        {
+          "x": 14,
+          "offset": 12,
+          "westY": 0.11973450719962742,
+          "eastY": 0.11900816588114171
+        },
+        {
+          "x": 20,
+          "offset": 12,
+          "westY": 0.12063437776551744,
+          "eastY": 0.12125656405346419
+        }
+      ]
+    },
+    {
+      "name": "Mirrored east silver-beach wing stays dry",
+      "passed": true,
+      "detail": [
+        {
+          "x": 8,
+          "offset": 5,
+          "westY": 0.11954799867080546,
+          "eastY": 0.11581307786879158
+        },
+        {
+          "x": 14,
+          "offset": 5,
+          "westY": 0.12022039415221286,
+          "eastY": 0.12029682431038058
+        },
+        {
+          "x": 20,
+          "offset": 5,
+          "westY": 0.12468847360309354,
+          "eastY": 0.12128072073617613
+        },
+        {
+          "x": 14,
+          "offset": 12,
+          "westY": 0.11973450719962742,
+          "eastY": 0.11900816588114171
+        },
+        {
+          "x": 20,
+          "offset": 12,
+          "westY": 0.12063437776551744,
+          "eastY": 0.12125656405346419
+        }
+      ]
+    },
+    {
+      "name": "East and west shelf elevations agree within sand relief",
+      "passed": true,
+      "detail": [
+        {
+          "x": 8,
+          "offset": 5,
+          "westY": 0.11954799867080546,
+          "eastY": 0.11581307786879158
+        },
+        {
+          "x": 14,
+          "offset": 5,
+          "westY": 0.12022039415221286,
+          "eastY": 0.12029682431038058
+        },
+        {
+          "x": 20,
+          "offset": 5,
+          "westY": 0.12468847360309354,
+          "eastY": 0.12128072073617613
+        },
+        {
+          "x": 14,
+          "offset": 12,
+          "westY": 0.11973450719962742,
+          "eastY": 0.11900816588114171
+        },
+        {
+          "x": 20,
+          "offset": 12,
+          "westY": 0.12063437776551744,
+          "eastY": 0.12125656405346419
+        }
+      ]
+    },
+    {
+      "name": "Continuous dry silver sand passes beneath the pier",
+      "passed": true,
+      "detail": [
+        {
+          "x": -1.2,
+          "z": -569,
+          "y": 0.12019187244520424
+        },
+        {
+          "x": -0.6,
+          "z": -569,
+          "y": 0.1202566883079017
+        },
+        {
+          "x": 0,
+          "z": -569,
+          "y": 0.12024418168763873
+        },
+        {
+          "x": 0.6,
+          "z": -569,
+          "y": 0.11970937547893001
+        },
+        {
+          "x": 1.2,
+          "z": -569,
+          "y": 0.11940778940069574
+        }
+      ]
+    },
+    {
+      "name": "WALK crosses west to east under the pier",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          8,
+          0.287,
+          -569
+        ],
+        "positionMetres": [
+          80,
+          2.9,
+          -5690
+        ],
+        "groundY": 0.125,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 3,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 4
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          7.99999999999983,
+          0.28685525576499105,
+          -569
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.117,
+        "maxGroundY": 0.125
+      }
+    },
+    {
+      "name": "Eastward crossing remains on sand below the raised deck",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          8,
+          0.287,
+          -569
+        ],
+        "positionMetres": [
+          80,
+          2.9,
+          -5690
+        ],
+        "groundY": 0.125,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 3,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 4
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          7.99999999999983,
+          0.28685525576499105,
+          -569
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.117,
+        "maxGroundY": 0.125
+      }
+    },
+    {
+      "name": "WALK crosses east to west under the pier",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -8,
+          0.284,
+          -569
+        ],
+        "positionMetres": [
+          -80,
+          2.8,
+          -5690
+        ],
+        "groundY": 0.122,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 3,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 4
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -8,
+          0.2840159538127521,
+          -569
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.117,
+        "maxGroundY": 0.125
+      }
+    },
+    {
+      "name": "Westward crossing remains on sand below the raised deck",
+      "passed": true,
+      "detail": {
+        "active": true,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": true,
+        "positionWorld": [
+          -8,
+          0.284,
+          -569
+        ],
+        "positionMetres": [
+          -80,
+          2.8,
+          -5690
+        ],
+        "groundY": 0.122,
+        "surfaceKind": "sand",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 52,
+          "residentCellCount": 1,
+          "residentCandidates": {
+            "walkables": 3,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 4
+          },
+          "totalCandidates": {
+            "walkables": 7,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 92
+          }
+        },
+        "exactPosition": [
+          -8,
+          0.2840159538127521,
+          -569
+        ],
+        "maxRise": 0.0010000000000000009,
+        "maxDrop": 0.0010000000000000009,
+        "minGroundY": 0.117,
+        "maxGroundY": 0.125
+      }
+    },
+    {
+      "name": "Both under-pier crossings need no safety teleport",
+      "passed": true,
+      "detail": {
+        "start": 0,
+        "east": 0,
+        "west": 0
+      }
+    }
+  ],
+  "start": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      0,
+      1.772,
+      -558.6
+    ],
+    "positionMetres": [
+      0,
+      17.7,
+      -5586
+    ],
+    "groundY": 1.61,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 2,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 1
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      0,
+      1.7720000143051147,
+      -558.6
+    ]
+  },
+  "topLanding": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.8,
+      1.772,
+      -558.6
+    ],
+    "positionMetres": [
+      -38,
+      17.7,
+      -5586
+    ],
+    "groundY": 1.61,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 7
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.800000000000217,
+      1.7720000143051147,
+      -558.6
+    ],
+    "maxRise": 0,
+    "maxDrop": 0,
+    "minGroundY": 1.61,
+    "maxGroundY": 1.61
+  },
+  "descent": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.8,
+      0.283,
+      -562.24
+    ],
+    "positionMetres": [
+      -38,
+      2.8,
+      -5622.4
+    ],
+    "groundY": 0.121,
+    "surfaceKind": "sand",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.800000000000217,
+      0.28268483719187054,
+      -562.2399999998821
+    ],
+    "maxRise": 0.0010000000000000009,
+    "maxDrop": 0.0020000000000000018,
+    "minGroundY": 0.12,
+    "maxGroundY": 1.611
+  },
+  "beach": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -4.65,
+      0.28,
+      -562.24
+    ],
+    "positionMetres": [
+      -46.5,
+      2.8,
+      -5622.4
+    ],
+    "groundY": 0.118,
+    "surfaceKind": "sand",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -4.6500000000001025,
+      0.28011437672422784,
+      -562.2399999998821
+    ],
+    "maxRise": 0,
+    "maxDrop": 0.0010000000000000009,
+    "minGroundY": 0.118,
+    "maxGroundY": 0.121
+  },
+  "ascent": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.8,
+      1.772,
+      -558.6
+    ],
+    "positionMetres": [
+      -38,
+      17.7,
+      -5586
+    ],
+    "groundY": 1.61,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 7
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.8000000000002174,
+      1.7720000143051147,
+      -558.6
+    ],
+    "maxRise": 0.0020000000000000018,
+    "maxDrop": 0.0010000000000000009,
+    "minGroundY": 0.12,
+    "maxGroundY": 1.611
+  },
+  "returnDeck": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      0,
+      1.772,
+      -558.6
+    ],
+    "positionMetres": [
+      0,
+      17.7,
+      -5586
+    ],
+    "groundY": 1.61,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 7
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -5.399326818977812e-16,
+      1.7720000143051147,
+      -558.6
+    ],
+    "maxRise": 0,
+    "maxDrop": 0,
+    "minGroundY": 1.61,
+    "maxGroundY": 1.61
+  },
+  "straightExit": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.8,
+      0.283,
+      -563.04
+    ],
+    "positionMetres": [
+      -38,
+      2.8,
+      -5630.4
+    ],
+    "groundY": 0.121,
+    "surfaceKind": "sand",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.8,
+      0.28272001989924733,
+      -563.04
+    ],
+    "maxRise": 0.0010000000000000009,
+    "maxDrop": 0.0010000000000000009,
+    "minGroundY": 0.12,
+    "maxGroundY": 0.121
+  },
+  "straightReturn": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.8,
+      0.283,
+      -562.24
+    ],
+    "positionMetres": [
+      -38,
+      2.8,
+      -5622.4
+    ],
+    "groundY": 0.121,
+    "surfaceKind": "sand",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.8,
+      0.2826849966218335,
+      -562.24
+    ],
+    "maxRise": 0.0010000000000000009,
+    "maxDrop": 0.0010000000000000009,
+    "minGroundY": 0.12,
+    "maxGroundY": 0.121
+  },
+  "leftRail": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -4.109,
+      1.028,
+      -560.47
+    ],
+    "positionMetres": [
+      -41.1,
+      10.3,
+      -5604.7
+    ],
+    "groundY": 0.866,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -4.1090000000000115,
+      1.0280005879841203,
+      -560.47
+    ],
+    "maxRise": 0,
+    "maxDrop": 0,
+    "minGroundY": 0.866,
+    "maxGroundY": 0.866
+  },
+  "rightRail": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      -3.491,
+      1.028,
+      -560.47
+    ],
+    "positionMetres": [
+      -34.9,
+      10.3,
+      -5604.7
+    ],
+    "groundY": 0.866,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 5,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 3
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      -3.490999999999988,
+      1.0280005879841203,
+      -560.47
+    ],
+    "maxRise": 0,
+    "maxDrop": 0,
+    "minGroundY": 0.866,
+    "maxGroundY": 0.866
+  },
+  "pierRail": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      1.21,
+      1.772,
+      -558.6
+    ],
+    "positionMetres": [
+      12.1,
+      17.7,
+      -5586
+    ],
+    "groundY": 1.61,
+    "surfaceKind": "metal",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 52,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 2,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 1
+      },
+      "totalCandidates": {
+        "walkables": 7,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 92
+      }
+    },
+    "exactPosition": [
+      1.2098950524737535,
+      1.7720000143051147,
+      -558.6
+    ],
+    "maxRise": 0,
+    "maxDrop": 0,
+    "minGroundY": 1.61,
+    "maxGroundY": 1.61
+  },
+  "shoreExtension": {
+    "wingSamples": [
+      {
+        "x": 8,
+        "offset": 5,
+        "westY": 0.11954799867080546,
+        "eastY": 0.11581307786879158
+      },
+      {
+        "x": 14,
+        "offset": 5,
+        "westY": 0.12022039415221286,
+        "eastY": 0.12029682431038058
+      },
+      {
+        "x": 20,
+        "offset": 5,
+        "westY": 0.12468847360309354,
+        "eastY": 0.12128072073617613
+      },
+      {
+        "x": 14,
+        "offset": 12,
+        "westY": 0.11973450719962742,
+        "eastY": 0.11900816588114171
+      },
+      {
+        "x": 20,
+        "offset": 12,
+        "westY": 0.12063437776551744,
+        "eastY": 0.12125656405346419
+      }
+    ],
+    "neckSamples": [
+      {
+        "x": -1.2,
+        "z": -569,
+        "y": 0.12019187244520424
+      },
+      {
+        "x": -0.6,
+        "z": -569,
+        "y": 0.1202566883079017
+      },
+      {
+        "x": 0,
+        "z": -569,
+        "y": 0.12024418168763873
+      },
+      {
+        "x": 0.6,
+        "z": -569,
+        "y": 0.11970937547893001
+      },
+      {
+        "x": 1.2,
+        "z": -569,
+        "y": 0.11940778940069574
+      }
+    ],
+    "crossingStart": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        -8,
+        0.284,
+        -569
+      ],
+      "positionMetres": [
+        -80,
+        2.8,
+        -5690
+      ],
+      "groundY": 0.122,
+      "surfaceKind": "sand",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "safetyRecoveries": 0,
+      "collisionSpatialIndex": {
+        "cellSizeWorld": 8,
+        "cellSizeMetres": 80,
+        "occupiedCellCount": 52,
+        "residentCellCount": 1,
+        "residentCandidates": {
+          "walkables": 3,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 4
+        },
+        "totalCandidates": {
+          "walkables": 7,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 92
+        }
+      },
+      "exactPosition": [
+        -8,
+        0.2840158615919058,
+        -569
+      ]
+    },
+    "crossingEast": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        8,
+        0.287,
+        -569
+      ],
+      "positionMetres": [
+        80,
+        2.9,
+        -5690
+      ],
+      "groundY": 0.125,
+      "surfaceKind": "sand",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "safetyRecoveries": 0,
+      "collisionSpatialIndex": {
+        "cellSizeWorld": 8,
+        "cellSizeMetres": 80,
+        "occupiedCellCount": 52,
+        "residentCellCount": 1,
+        "residentCandidates": {
+          "walkables": 3,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 4
+        },
+        "totalCandidates": {
+          "walkables": 7,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 92
+        }
+      },
+      "exactPosition": [
+        7.99999999999983,
+        0.28685525576499105,
+        -569
+      ],
+      "maxRise": 0.0010000000000000009,
+      "maxDrop": 0.0010000000000000009,
+      "minGroundY": 0.117,
+      "maxGroundY": 0.125
+    },
+    "crossingWest": {
+      "active": true,
+      "pointerLocked": false,
+      "lookMode": "idle",
+      "grounded": true,
+      "positionWorld": [
+        -8,
+        0.284,
+        -569
+      ],
+      "positionMetres": [
+        -80,
+        2.8,
+        -5690
+      ],
+      "groundY": 0.122,
+      "surfaceKind": "sand",
+      "roomId": "outside",
+      "speedMetresPerSecond": 0,
+      "speedKilometresPerHour": 0,
+      "configuredWalkSpeedKilometresPerHour": 6.5,
+      "turboEnabled": false,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "movementKeys": [],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "safetyRecoveries": 0,
+      "collisionSpatialIndex": {
+        "cellSizeWorld": 8,
+        "cellSizeMetres": 80,
+        "occupiedCellCount": 52,
+        "residentCellCount": 1,
+        "residentCandidates": {
+          "walkables": 3,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 4
+        },
+        "totalCandidates": {
+          "walkables": 7,
+          "obstacles": 0,
+          "accessBounds": 0,
+          "underwalkAccessVolumes": 0,
+          "underwalkSurfaces": 0,
+          "barriers": 92
+        }
+      },
+      "exactPosition": [
+        -8,
+        0.2840159538127521,
+        -569
+      ],
+      "maxRise": 0.0010000000000000009,
+      "maxDrop": 0.0010000000000000009,
+      "minGroundY": 0.117,
+      "maxGroundY": 0.125
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,1541 @@
+{
+  "status": "passed",
+  "simulatedSeconds": 9.75,
+  "errors": [],
+  "pointerLock": {
+    "nativeLockAcquired": true,
+    "nativeEscapeReleased": true,
+    "releaseFallbackUsed": false,
+    "beforeLock": {
+      "island": [
+        -0.22472171601467997,
+        0.3547053610584734,
+        0.08824602553785896,
+        0.9032701125159445
+      ],
+      "shore": [
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "afterLook": {
+      "island": [
+        -0.22472171601467997,
+        0.3547053610584734,
+        0.08824602553785896,
+        0.9032701125159445
+      ],
+      "shore": [
+        0.43781740468184155,
+        -0.24601335128339621,
+        0.12589628860138918,
+        0.8555369516650725
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": true,
+        "lookMode": "pointer-lock",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "islandMovement": {
+        "active": false,
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "grounded": false,
+        "positionWorld": [
+          780,
+          610,
+          840
+        ],
+        "positionMetres": [
+          7800,
+          6100,
+          8400
+        ],
+        "groundY": null,
+        "surfaceKind": "stone",
+        "roomId": "outside",
+        "speedMetresPerSecond": 0,
+        "speedKilometresPerHour": 0,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "movementKeys": [],
+        "direction": [
+          -0.601,
+          -0.469,
+          -0.647
+        ],
+        "safetyRecoveries": 0,
+        "collisionSpatialIndex": {
+          "cellSizeWorld": 8,
+          "cellSizeMetres": 80,
+          "occupiedCellCount": 1281,
+          "residentCellCount": 0,
+          "residentCandidates": {
+            "walkables": 0,
+            "obstacles": 0,
+            "accessBounds": 0,
+            "underwalkAccessVolumes": 0,
+            "underwalkSurfaces": 0,
+            "barriers": 0
+          },
+          "totalCandidates": {
+            "walkables": 42,
+            "obstacles": 102,
+            "accessBounds": 60,
+            "underwalkAccessVolumes": 2,
+            "underwalkSurfaces": 6,
+            "barriers": 92
+          }
+        }
+      }
+    },
+    "afterReturn": [
+      -0.22472171601467997,
+      0.3547053610584734,
+      0.08824602553785896,
+      0.9032701125159445
+    ]
+  },
+  "walking": {
+    "straight": {
+      "before": {
+        "position": [
+          0,
+          2.4818515069217097,
+          18
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 0,
+          "grounded": true,
+          "groundY": 0.8618515069217096,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.862,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "after": {
+        "position": [
+          0,
+          2.451103513840263,
+          16.9166666666667
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 6.5,
+          "grounded": true,
+          "groundY": 0.831103513840263,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.831,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "distance": 1.0833333333333002
+    },
+    "diagonal": {
+      "before": {
+        "position": [
+          0,
+          2.4818515069217097,
+          18
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 0,
+          "grounded": true,
+          "groundY": 0.8618515069217096,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.862,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "after": {
+        "position": [
+          0.7660323462854257,
+          2.454272665603666,
+          17.233967653714544
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 6.5,
+          "grounded": true,
+          "groundY": 0.8342726656036658,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.834,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "distance": 1.083333333333354
+    },
+    "shifted": {
+      "before": {
+        "position": [
+          0,
+          2.4818515069217097,
+          18
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 0,
+          "grounded": true,
+          "groundY": 0.8618515069217096,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.862,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "after": {
+        "position": [
+          0,
+          2.451103513840263,
+          16.9166666666667
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 6.5,
+          "grounded": true,
+          "groundY": 0.831103513840263,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.831,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "distance": 1.0833333333333002
+    },
+    "directional": {
+      "w": {
+        "before": {
+          "position": [
+            0,
+            2.4818515069217097,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 0,
+            "grounded": true,
+            "groundY": 0.8618515069217096,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.862,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "after": {
+          "position": [
+            0,
+            2.474202128617688,
+            17.729166666666675
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 6.5,
+            "grounded": true,
+            "groundY": 0.854202128617688,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.854,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "distance": 0.27083333333332504
+      },
+      "a": {
+        "before": {
+          "position": [
+            0,
+            2.4818515069217097,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 0,
+            "grounded": true,
+            "groundY": 0.8618515069217096,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.862,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "after": {
+          "position": [
+            -0.2708333333333333,
+            2.4838873958593073,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 6.5,
+            "grounded": true,
+            "groundY": 0.8638873958593074,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.864,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "distance": 0.2708333333333333
+      },
+      "s": {
+        "before": {
+          "position": [
+            0,
+            2.4818515069217097,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 0,
+            "grounded": true,
+            "groundY": 0.8618515069217096,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.862,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "after": {
+          "position": [
+            0,
+            2.489475941478808,
+            18.270833333333325
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 6.5,
+            "grounded": true,
+            "groundY": 0.8694759414788078,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.869,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "distance": 0.27083333333332504
+      },
+      "d": {
+        "before": {
+          "position": [
+            0,
+            2.4818515069217097,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 0,
+            "grounded": true,
+            "groundY": 0.8618515069217096,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.862,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "after": {
+          "position": [
+            0.2708333333333333,
+            2.4798138437358332,
+            18
+          ],
+          "direction": [
+            0,
+            0,
+            -1
+          ],
+          "movement": {
+            "eyeHeightMetres": 1.62,
+            "configuredWalkSpeedKilometresPerHour": 6.5,
+            "turboEnabled": false,
+            "speedKilometresPerHour": 6.5,
+            "grounded": true,
+            "groundY": 0.8598138437358334,
+            "jumpState": "grounded",
+            "jumpHeld": false,
+            "jumpHeightMetres": 0,
+            "jumpHeightRangeMetres": [
+              0.55,
+              1.6
+            ],
+            "pointerLocked": false,
+            "lookMode": "idle",
+            "swimming": {
+              "mode": "walking",
+              "swimming": false,
+              "underwater": false,
+              "depthMetres": 0,
+              "waterDepthMetres": 0,
+              "waterHeightMetres": 0,
+              "floorHeightMetres": 0.86,
+              "floorClearanceMetres": 1.62,
+              "buoyancy": "standing",
+              "controls": {
+                "dive": "Ctrl / Q",
+                "ascend": "Space / E",
+                "swimming": "WASD / arrows; look to steer underwater"
+              }
+            }
+          },
+          "surface": "silver sand"
+        },
+        "distance": 0.2708333333333333
+      }
+    },
+    "turbo": {
+      "before": {
+        "position": [
+          0,
+          2.4818515069217097,
+          18
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": true,
+          "speedKilometresPerHour": 0,
+          "grounded": true,
+          "groundY": 0.8618515069217096,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.862,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "after": {
+        "position": [
+          0,
+          2.342772747462714,
+          13.199999999999983
+        ],
+        "direction": [
+          0,
+          0,
+          -1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": true,
+          "speedKilometresPerHour": 43.2,
+          "grounded": true,
+          "groundY": 0.7227727474627138,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 0.723,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "silver sand"
+      },
+      "distance": 4.800000000000017
+    }
+  },
+  "jumping": {
+    "tap": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0.52,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    },
+    "held": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 1.55,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    },
+    "repeat": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 1.55,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    },
+    "doubleJump": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 1.03,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    },
+    "velocityBeforeSecondPress": 2.6309657532461435,
+    "velocityAfterSecondPress": 2.6309657532461435,
+    "movingJump": {
+      "position": [
+        0,
+        2.417375317674786,
+        15.743055555555609
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 6.5,
+        "grounded": true,
+        "groundY": 0.7973753176747856,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 1.55,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.797,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    }
+  },
+  "stairs": {
+    "ascent": {
+      "before": {
+        "position": [
+          30.5,
+          6.379361635756781,
+          44
+        ],
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 0,
+          "grounded": true,
+          "groundY": 4.759361635756781,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 4.759,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "pier stairs"
+      },
+      "after": {
+        "position": [
+          30.5,
+          6.671919265862097,
+          45.263888888889
+        ],
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 6.5,
+          "grounded": true,
+          "groundY": 5.051919265862097,
+          "jumpState": "grounded",
+          "jumpHeld": false,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 5.052,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "pier stairs"
+      },
+      "distance": 1.2638888888889994
+    },
+    "jumpIntoRail": {
+      "before": {
+        "position": [
+          28.25,
+          6.379361635756781,
+          44
+        ],
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 0,
+          "grounded": false,
+          "groundY": 4.759361635756781,
+          "jumpState": "rising",
+          "jumpHeld": true,
+          "jumpHeightMetres": 0,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 4.759,
+            "floorClearanceMetres": 1.62,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "pier stairs"
+      },
+      "after": {
+        "position": [
+          28.129629629629633,
+          6.517528691559162,
+          44
+        ],
+        "direction": [
+          0,
+          0,
+          1
+        ],
+        "movement": {
+          "eyeHeightMetres": 1.62,
+          "configuredWalkSpeedKilometresPerHour": 6.5,
+          "turboEnabled": false,
+          "speedKilometresPerHour": 6.5,
+          "grounded": false,
+          "groundY": 4.759361635756781,
+          "jumpState": "falling",
+          "jumpHeld": true,
+          "jumpHeightMetres": 1.55,
+          "jumpHeightRangeMetres": [
+            0.55,
+            1.6
+          ],
+          "pointerLocked": false,
+          "lookMode": "idle",
+          "swimming": {
+            "mode": "walking",
+            "swimming": false,
+            "underwater": false,
+            "depthMetres": 0,
+            "waterDepthMetres": 0,
+            "waterHeightMetres": 0,
+            "floorHeightMetres": 4.759,
+            "floorClearanceMetres": 1.758,
+            "buoyancy": "standing",
+            "controls": {
+              "dive": "Ctrl / Q",
+              "ascend": "Space / E",
+              "swimming": "WASD / arrows; look to steer underwater"
+            }
+          }
+        },
+        "surface": "pier stairs"
+      },
+      "distance": 0.12037037037036669
+    },
+    "stairRail": {
+      "position": [
+        28.129629629629633,
+        6.379361635756781,
+        44
+      ],
+      "direction": [
+        0,
+        0,
+        1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 4.759361635756781,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 1.55,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 4.759,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "pier stairs"
+    }
+  },
+  "focusedInput": {
+    "beforeFocusedInput": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    },
+    "afterFocusedInput": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0,
+        0,
+        -1
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    }
+  },
+  "pointerLockFallback": {
+    "requestRejected": true,
+    "fallbackBefore": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "fallbackSeeded": [
+      0,
+      0,
+      0,
+      1
+    ],
+    "fallbackMoved": [
+      -0.02984564764108105,
+      -0.09978849497861382,
+      -0.0029945532692457677,
+      0.9945564469840339
+    ],
+    "fallbackReleased": {
+      "position": [
+        0,
+        2.4818515069217097,
+        18
+      ],
+      "direction": [
+        0.19831183326819582,
+        -0.05996400647944461,
+        -0.9783029871735752
+      ],
+      "movement": {
+        "eyeHeightMetres": 1.62,
+        "configuredWalkSpeedKilometresPerHour": 6.5,
+        "turboEnabled": false,
+        "speedKilometresPerHour": 0,
+        "grounded": true,
+        "groundY": 0.8618515069217096,
+        "jumpState": "grounded",
+        "jumpHeld": false,
+        "jumpHeightMetres": 0,
+        "jumpHeightRangeMetres": [
+          0.55,
+          1.6
+        ],
+        "pointerLocked": false,
+        "lookMode": "idle",
+        "swimming": {
+          "mode": "walking",
+          "swimming": false,
+          "underwater": false,
+          "depthMetres": 0,
+          "waterDepthMetres": 0,
+          "waterHeightMetres": 0,
+          "floorHeightMetres": 0.862,
+          "floorClearanceMetres": 1.62,
+          "buoyancy": "standing",
+          "controls": {
+            "dive": "Ctrl / Q",
+            "ascend": "Space / E",
+            "swimming": "WASD / arrows; look to steer underwater"
+          }
+        }
+      },
+      "surface": "silver sand"
+    }
+  },
+  "club": {
+    "clubY": 1.9905143329994617,
+    "interior": [
+      -48,
+      3.610514332999462,
+      46
+    ]
+  }
+}

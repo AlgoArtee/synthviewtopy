@@ -49,12 +49,13 @@ export class SyntheticShoreUI {
           <button type="button" data-shore-view="club">Beach club</button>
           <button type="button" data-shore-view="house">Beach house</button>
         </div>
-        <div class="shore-movement" aria-label="Walking controls">
+        <div class="shore-movement" aria-label="Walking and swimming controls">
           <button type="button" data-shore-look>Mouse look</button>
           <label>Walk speed <input data-shore-speed aria-label="Walk speed in kilometres per hour" type="number" min="0.5" max="120" step="0.5" value="6.5" inputmode="decimal"> km/h</label>
           <button type="button" data-shore-turbo aria-pressed="false">Turbo · Off</button>
         </div>
-        <p>WASD / arrows move · Space tap / hold jump · Click or drag to look · E interact · Esc release / return</p>
+        <p data-shore-swim-status role="status">Walking · Silver shore</p>
+        <p data-shore-movement-help>WASD / arrows move · Space tap / hold jump · Swim beyond the shallows · Click or drag to look · E interact · Esc release / return</p>
       </footer>`;
     root.querySelector('[data-shore-exit]')!.addEventListener('click', onExit);
     root.querySelector('[data-shore-interact]')!.addEventListener('click', () => this.scene?.openNearbyInteraction());
@@ -117,11 +118,20 @@ export class SyntheticShoreUI {
   private syncInteraction() {
     if (!this.scene) return;
     const movement = this.scene.getMovementState();
-    this.element.querySelector<HTMLInputElement>('[data-shore-speed]')!.value = String(movement.configuredWalkSpeedKilometresPerHour);
+    const speedInput = this.element.querySelector<HTMLInputElement>('[data-shore-speed]')!;
+    if (document.activeElement !== speedInput) speedInput.value = String(movement.configuredWalkSpeedKilometresPerHour);
     const turbo = this.element.querySelector<HTMLButtonElement>('[data-shore-turbo]')!;
     turbo.textContent = movement.turboEnabled ? 'Turbo · On' : 'Turbo · Off';
     turbo.setAttribute('aria-pressed', String(movement.turboEnabled));
     this.element.querySelector('[data-shore-look]')!.textContent = movement.pointerLocked ? 'Esc · Release mouse' : 'Mouse look';
+    const swimming = movement.swimming;
+    this.element.querySelector('[data-shore-swim-status]')!.textContent = swimming.mode === 'underwater'
+      ? `Underwater · ${swimming.depthMetres.toFixed(1)} m depth · Neutral buoyancy`
+      : swimming.mode === 'surface-swimming' ? 'Surface swimming · Floating with the waves'
+        : swimming.mode === 'wading' ? 'Wading · Walk into deeper water to swim' : 'Walking · Silver shore';
+    this.element.querySelector('[data-shore-movement-help]')!.textContent = swimming.swimming
+      ? 'WASD / arrows swim · Look to steer underwater · Ctrl / Q dive · Space / E ascend · Shift swim faster · Esc release / return'
+      : 'WASD / arrows move · Space tap / hold jump · Swim beyond the shallows · Click or drag to look · E interact · Esc release / return';
     const state = this.scene.getInteractionState();
     const prompt = this.element.querySelector<HTMLButtonElement>('[data-shore-interact]')!;
     prompt.hidden = !state.nearby || !!state.active;

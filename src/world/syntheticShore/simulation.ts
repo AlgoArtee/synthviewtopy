@@ -1,7 +1,7 @@
 // Adapted from the user-owned MizuTopia project (NatureSimTopy/MizuTopia/src).
 // Keep the shared surf model and Cygnus animation in sync when updating the source.
 import type { MillerPhase, MillerWaveState, StageDefinition, StageId, WeatherId } from './types';
-import { SHORE_BLEND_END, SHORE_BLEND_START, sampleShoreSurface, shoreGLSL, type ShoreSurfaceSample } from './shore';
+import { SHORE_BLEND_END, SHORE_BLEND_START, SHORE_SEAFLOOR_SLOPE, sampleShoreSurface, coastFieldGLSL, shoreGLSL, type ShoreSurfaceSample } from './shore';
 
 export const STAGES: Record<StageId, StageDefinition> = {
   beach: {
@@ -58,11 +58,11 @@ const interpolateDepth = (x: number, ax: number, ad: number, bx: number, bd: num
 export function bathymetryDepth(x: number, z = 0): number {
   // Above the tideline this value is terrain elevation, preserving the public
   // depth API. The signed floor function below is continuous through x = 0.
-  if (x < 0) return Math.min(90, -x * 0.04);
+  if (x < 0) return 3.2 * (1 - Math.exp(x / 80));
 
   let depth: number;
-  if (x < 160) depth = x * (2.2 / 160);
-  else if (x < 850) depth = interpolateDepth(x, 160, 2.2, 850, 35);
+  if (x < 80) depth = x * SHORE_SEAFLOOR_SLOPE;
+  else if (x < 850) depth = interpolateDepth(x, 80, 80 * SHORE_SEAFLOOR_SLOPE, 850, 35);
   else if (x < 2800) depth = interpolateDepth(x, 850, 35, 2800, 250);
   else if (x < 6500) depth = interpolateDepth(x, 2800, 250, 6500, 1500);
   else depth = 1500 + Math.min(180, (x - 6500) * 0.025);
@@ -133,11 +133,12 @@ export function sampleNormalWaveSurface(x: number, z: number, time: number, wave
 
 /** Shared signed seabed function for water displacement and shoreline shading. */
 export const oceanBathymetryGLSL = /* glsl */`
-  float seafloorHeightGLSL(float x, float z) {
-    if (x < 0.0) return min(90.0, -x * 0.04);
+  ${coastFieldGLSL}
+  float coastFloorHeightGLSL(float x, float z) {
+    if (x < 0.0) return 3.2 * (1.0 - exp(x / 80.0));
     float depth;
-    if (x < 160.0) depth = x * (2.2 / 160.0);
-    else if (x < 850.0) depth = mix(2.2, 35.0, smoothstep(160.0, 850.0, x));
+    if (x < 80.0) depth = x * ${SHORE_SEAFLOOR_SLOPE};
+    else if (x < 850.0) depth = mix(${80 * SHORE_SEAFLOOR_SLOPE}, 35.0, smoothstep(80.0, 850.0, x));
     else if (x < 2800.0) depth = mix(35.0, 250.0, smoothstep(850.0, 2800.0, x));
     else if (x < 6500.0) depth = mix(250.0, 1500.0, smoothstep(2800.0, 6500.0, x));
     else depth = 1500.0 + min(180.0, (x - 6500.0) * 0.025);
@@ -145,15 +146,19 @@ export const oceanBathymetryGLSL = /* glsl */`
       * smoothstep(300.0, 1400.0, x);
     return -max(0.0, depth + relief);
   }
+  float seafloorHeightGLSL(float x, float z) {
+    vec2 coast = coastCoordinates(vec2(x, z)).xy;
+    return coastFloorHeightGLSL(coast.x, coast.y);
+  }
 `;
 
 const glslFloat = (value: number): string => Number.isInteger(value) ? `${value}.0` : `${value}`;
 
 /** Requires uWaveHeight/uTime and oceanBathymetryGLSL in the consuming shader. */
-export const oceanWaveGLSL = /* glsl */`
+const localOceanWaveGLSL = /* glsl */`
   ${shoreGLSL}
   float normalWaveAmplitudeGLSL(vec2 p) {
-    float depth = -seafloorHeightGLSL(p.x, p.y);
+    float depth = -coastFloorHeightGLSL(p.x, p.y);
     float shoalDistance = (depth - 4.0) / 5.0;
     float shoaling = 1.0 + 0.22 * exp(-shoalDistance * shoalDistance);
     float runup = 0.16 * (1.0 - exp(-max(0.0, uWaveHeight) * 0.5));
@@ -176,7 +181,7 @@ export const oceanWaveGLSL = /* glsl */`
   }
   vec3 normalWaveSurfaceGLSL(vec2 p) {
     if (uWaveHeight <= 0.0) return vec3(0.0);
-    vec3 shore = p.x < ${glslFloat(SHORE_BLEND_END)} ? shoreSurfaceGLSL(p) : vec3(0.0);
+    vec3 shore = p.x < ${glslFloat(SHORE_BLEND_END)} ? shoreLocalSurfaceGLSL(p) : vec3(0.0);
     if (p.x <= ${glslFloat(SHORE_BLEND_START)}) return shore;
     vec3 spectrum = waveSpectrumGLSL(p);
     float amplitude = normalWaveAmplitudeGLSL(p);
@@ -190,9 +195,22 @@ export const oceanWaveGLSL = /* glsl */`
     result.y += (offshore.x - shore.x) * blendDx;
     return result;
   }
-  float regularWave(vec2 p) {
-    return normalWaveSurfaceGLSL(p).x;
+`;
+
+export const oceanWaveGLSL = localOceanWaveGLSL
+  .replaceAll('normalWaveAmplitudeGLSL', 'normalWaveAmplitudeLocalGLSL')
+  .replaceAll('waveSpectrumGLSL', 'waveSpectrumLocalGLSL')
+  .replaceAll('normalWaveSurfaceGLSL', 'normalWaveSurfaceLocalGLSL') + /* glsl */`
+  float normalWaveAmplitudeGLSL(vec2 p) { return normalWaveAmplitudeLocalGLSL(coastCoordinates(p).xy); }
+  vec3 waveSpectrumGLSL(vec2 p) {
+    vec4 coast = coastCoordinates(p);
+    return coastSurfaceToWorld(waveSpectrumLocalGLSL(coast.xy), coast);
   }
+  vec3 normalWaveSurfaceGLSL(vec2 p) {
+    vec4 coast = coastCoordinates(p);
+    return coastSurfaceToWorld(normalWaveSurfaceLocalGLSL(coast.xy), coast);
+  }
+  float regularWave(vec2 p) { return normalWaveSurfaceGLSL(p).x; }
 `;
 
 export const MILLER_WAVE_SPEED = 50;

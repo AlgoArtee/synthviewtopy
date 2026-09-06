@@ -85,6 +85,12 @@ mouse look or closes a venue interaction, then returns to the island.
 Five viewpoint buttons reach the ocean, island, pier/stairs, beach club, or house.
 Press **E** near the bar, DJ booth, or house for cocktails, music, doors and lights.
 **Weather + water** controls time, weather, waves, speed, tint and reflections.
+The beach shares Lab Island's curved outline, with surf along both sides and
+across its joined ocean edge. Walk into the shallows to wade, then float and swim
+when the water deepens. Hold **Ctrl / Q** to dive and **Space / E** to ascend;
+underwater, look in the direction you want to swim and use **WASD / arrows**.
+Releasing the controls holds your depth underwater. Returning to shallow water
+resumes walking. The swimming status shows your mode and depth.
 The club's roof-mounted sign leaves its ocean/city sightline open. In the main
 island, Cygnus stays at a fixed distant northern sky bearing: look toward that
 horizon in Explore or Walk to see it; looking down or away naturally hides it.
@@ -95,6 +101,9 @@ Water reflections update at a bounded resolution and rate, while repeated
 architecture is instanced. `npm run test:synthetic-shore` checks entry, movement,
 viewpoints, resizing, return navigation, resource disposal, and browser errors.
 `npm run test:synthetic-shore-movement` checks walking, jumping and mouse input;
+`npm run test:synthetic-shore-swimming` checks water entry, diving, resurfacing,
+and return to land. `test:synthetic-shore-surf` checks advancing/receding wash
+around the curved coast; `test:synthetic-beach-layout` checks the shared outline.
 `npm run test:island-cygnus-stability` checks sky stability and foreground occlusion.
 
 The effects are adapted from the local `NatureSimTopy/MizuTopia` project. Original

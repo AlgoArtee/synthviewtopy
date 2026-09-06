@@ -33,7 +33,7 @@ const source = fs
   )
   .replace(
     'await captureScreenshot(page, canvas, shotPath);',
-    'const directDataUrl = await page.evaluate(() => { const world = window.labIsland; world.renderer.render(world.scene, world.camera); return world.renderer.domElement.toDataURL("image/png"); }); fs.writeFileSync(shotPath, Buffer.from(directDataUrl.split(",")[1], "base64"));',
+    'const directDataUrl = await page.evaluate(() => { const world = window.labIsland; const active = world.syntheticShore ?? world; world.renderer.render(active.scene, active.camera); return world.renderer.domElement.toDataURL("image/png"); }); fs.writeFileSync(shotPath, Buffer.from(directDataUrl.split(",")[1], "base64"));',
   )
   .replace(
     'await page.goto(args.url, { waitUntil: "domcontentloaded" });',
@@ -41,7 +41,10 @@ const source = fs
   )
   .replace(
     'await page.waitForTimeout(500);',
-    'await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot), null, { timeout: 180000 }); await page.waitForTimeout(500);',
+    'await page.waitForFunction(() => Boolean(window.labIsland?.getTextSnapshot), null, { timeout: 180000 }); await page.waitForTimeout(500);'
+      + (process.env.SYNTHETIC_SHORE_CLIENT === '1'
+        ? ' await page.evaluate(() => window.labIsland.enterSyntheticShore()); await page.waitForFunction(() => !!window.labIsland.syntheticShore);'
+        : ''),
   )
   .replace(
     'await page.click(args.clickSelector, { timeout: 5000 });',

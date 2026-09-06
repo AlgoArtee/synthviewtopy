@@ -2,9 +2,11 @@ import * as THREE from 'three';
 import { createSyntheticShoreEffects, type ShoreEnvironmentState } from './syntheticShoreEffects';
 import { createSyntheticBeachVenues } from './syntheticBeachVenues';
 import { createSyntheticBeachAudio } from './syntheticBeachAudio';
+import { sampleBeachCoast } from './syntheticBeachLayout';
 import { WALK_EYE_HEIGHT_METRES, WALK_GRAVITY, WALK_JUMP_SPEED, WALK_JUMP_TAP_SPEED, WALK_JUMP_TAP_HEIGHT_METRES, WALK_JUMP_HOLD_HEIGHT_METRES, WALK_TURBO_SPEED, worldUnitsToMetres } from '../config/island';
 
 export type SyntheticShoreView = 'ocean' | 'island' | 'pier' | 'club' | 'house';
+export type SyntheticShoreSwimmingMode = 'walking' | 'wading' | 'surface-swimming' | 'underwater';
 
 const EYE_HEIGHT = WALK_EYE_HEIGHT_METRES;
 // The island uses 10 m per unit; this scene uses metres. Share its physics.
@@ -19,6 +21,10 @@ const STAIR_END = 58;
 const ANCHOR_Z = -39;
 const ANCHOR_RADIUS = 24;
 const TAU = Math.PI * 2;
+const SWIM_EYE_ABOVE_WATER = 0.60;
+const SWIM_FLOOR_CLEARANCE = 0.65;
+const SWIM_ENTRY_DEPTH = 1.15;
+const SWIM_EXIT_DEPTH = 1.02;
 
 type BoxPlacement = { x: number; y: number; z: number; w: number; h: number; d: number; angle: number };
 
@@ -127,6 +133,8 @@ export class SyntheticShoreScene {
   private readonly navigationRight = new THREE.Vector3();
   private readonly destination = new THREE.Vector3();
   private readonly navigationFrom = new THREE.Vector3();
+  private readonly swimVelocity = new THREE.Vector3();
+  private readonly swimIntent = new THREE.Vector3();
   private readonly direction = new THREE.Vector3();
   private readonly euler = new THREE.Euler(0, 0, 0, 'YXZ');
   private readonly up = new THREE.Vector3(0, 1, 0);
@@ -148,6 +156,12 @@ export class SyntheticShoreScene {
   private jumpHeld = false;
   private jumpStartY = 0;
   private jumpPeakHeight = 0;
+  private swimming = false;
+  private underwater = false;
+  private standingFromSwim = false;
+  private localWaterHeight = 0;
+  private localWaterDepth = 0;
+  private movementHudElapsed = 0;
   private walkSpeedKilometresPerHour = 6.5;
   private turboEnabled = false;
   private pointerWasLocked = false;
@@ -389,9 +403,8 @@ export class SyntheticShoreScene {
     const glazing = standard('laboratory glass', '#538493', 0.55, 0.25);
     const cyan = glow('lab cyan', '#b2f1e9', 0.75);
     const radius = 450;
-    // Keep the full island far enough behind the beach that the Alpine dome,
-    // five other biospheres and core read as a campus panorama at eye level.
-    const centerZ = 850;
+    // The Alpine corner joins the same two seawall edges as the beach outline.
+    const centerZ = 560;
     const shape = new THREE.Shape();
     for (let i = 0; i <= 6; i += 1) {
       const angle = i / 6 * TAU;
@@ -472,7 +485,7 @@ export class SyntheticShoreScene {
     for (let i = 0; i < 10; i += 1) batch.add(ink, 410 + i * 32, 9, centerZ + 10 + i * 11.7, 3, 24, 3);
     batch.finish(group, 'Instanced island vista');
     this.makeSign(group, 'ALPINE BIOSPHERE', 'LAB ISLAND / RESEARCH CAMPUS', 0, 35, centerZ - 406, 17, true);
-    group.scale.x = 1.3;
+    group.position.x = PIER_X;
     this.scene.add(group);
   }
 
@@ -553,7 +566,7 @@ export class SyntheticShoreScene {
     this.interactionMessage = '';
     if (view === 'island') {
       this.camera.position.set(-4, this.groundHeight(-4, 12) + EYE_HEIGHT, 12);
-      this.camera.lookAt(0, 58, 850);
+      this.camera.lookAt(42, 45, 560);
     } else if (view === 'pier') {
       this.camera.position.set(-5, this.groundHeight(-5, 7) + EYE_HEIGHT, 7);
       this.camera.lookAt(32, 5.8, 41);
@@ -573,6 +586,14 @@ export class SyntheticShoreScene {
     this.velocityY = 0;
     this.jumpHeld = false;
     this.jumpPeakHeight = 0;
+    this.swimming = false;
+    this.underwater = false;
+    this.standingFromSwim = false;
+    this.swimVelocity.set(0, 0, 0);
+    this.localWaterHeight = this.effects.waterHeight(this.camera.position.x, this.camera.position.z, this.elapsed);
+    this.localWaterDepth = Math.max(0, this.localWaterHeight - this.groundY);
+    this.effects.setUnderwater(false);
+    this.applyLighting();
     this.surface = this.venues.groundHeight(this.camera.position.x, this.camera.position.z) === null ? 'silver sand' : 'beach pavilion';
     this.moving = false;
     this.effects.update(this.camera, this.elapsed);
@@ -690,15 +711,34 @@ export class SyntheticShoreScene {
       eyeHeightMetres: EYE_HEIGHT,
       configuredWalkSpeedKilometresPerHour: this.walkSpeedKilometresPerHour,
       turboEnabled: this.turboEnabled,
-      speedKilometresPerHour: this.moving ? (this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) * 3.6 : this.walkSpeedKilometresPerHour) : 0,
+      speedKilometresPerHour: this.swimming ? Number((this.swimVelocity.length() * 3.6).toFixed(1)) : this.moving ? (this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) * 3.6 : this.walkSpeedKilometresPerHour) : 0,
       grounded: this.grounded,
       groundY: this.groundY,
-      jumpState: this.grounded ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
+      jumpState: this.swimming ? 'swimming' : this.grounded ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
       jumpHeld: this.jumpHeld,
       jumpHeightMetres: Number(this.jumpPeakHeight.toFixed(2)),
       jumpHeightRangeMetres: [WALK_JUMP_TAP_HEIGHT_METRES, WALK_JUMP_HOLD_HEIGHT_METRES],
       pointerLocked: document.pointerLockElement === this.canvas,
       lookMode: document.pointerLockElement === this.canvas ? 'pointer-lock' : this.pointerId !== null || this.dragLookFallback ? 'drag' : 'idle',
+      swimming: this.getSwimmingState(),
+    };
+  }
+
+  getSwimmingState() {
+    const mode: SyntheticShoreSwimmingMode = this.swimming
+      ? this.underwater ? 'underwater' : 'surface-swimming'
+      : this.localWaterDepth > 0.08 && this.surface === 'silver sand' ? 'wading' : 'walking';
+    return {
+      mode,
+      swimming: this.swimming,
+      underwater: this.underwater,
+      depthMetres: Number(Math.max(0, this.localWaterHeight - this.camera.position.y).toFixed(2)),
+      waterDepthMetres: Number(this.localWaterDepth.toFixed(2)),
+      waterHeightMetres: Number(this.localWaterHeight.toFixed(3)),
+      floorHeightMetres: Number(this.groundY.toFixed(3)),
+      floorClearanceMetres: Number((this.camera.position.y - this.groundY).toFixed(3)),
+      buoyancy: this.swimming && this.underwater ? 'neutral' : this.swimming ? 'surface' : 'standing',
+      controls: { dive: 'Ctrl / Q', ascend: 'Space / E', swimming: 'WASD / arrows; look to steer underwater' },
     };
   }
 
@@ -732,7 +772,7 @@ export class SyntheticShoreScene {
 
   private releaseJump() {
     this.jumpHeld = false;
-    if (!this.grounded && this.velocityY > JUMP_TAP_SPEED) this.velocityY = JUMP_TAP_SPEED;
+    if (!this.swimming && !this.grounded && this.velocityY > JUMP_TAP_SPEED) this.velocityY = JUMP_TAP_SPEED;
   }
 
   resize(width: number, height: number) {
@@ -741,7 +781,15 @@ export class SyntheticShoreScene {
     this.camera.updateProjectionMatrix();
   }
 
-  /** Return null for water/rail edges; walkable deck height is continuous on stairs. */
+  /** The vista's solid island hexagon; the surrounding ocean stays traversable. */
+  private insideIslandWall(x: number, z: number) {
+    const offsetX = Math.abs(x - 42);
+    return offsetX < 450 * Math.sqrt(3) / 2 + 0.2
+      && z > 110 + offsetX / Math.sqrt(3) - 0.15
+      && z < 1010 - offsetX / Math.sqrt(3) + 0.15;
+  }
+
+  /** Continuous sand/seabed, with physical venue, stair, seawall and pier barriers. */
   private navigationHeight(x: number, z: number, from: THREE.Vector3): { y: number; surface: string } | null {
     const fromGround = from.y - EYE_HEIGHT;
     if (Math.abs(x - STAIR_X) < 2.38 && z >= STAIR_START - 0.4 && z <= STAIR_END) {
@@ -757,14 +805,104 @@ export class SyntheticShoreScene {
     const angle = Math.atan2(dx, -dz);
     const head = radius >= 20.3 && radius <= 27.7 && Math.abs(angle) <= Math.PI * 0.64;
     if ((stem || landing || head) && fromGround > PIER_Y - 0.65) return { y: PIER_Y, surface: 'anchor pier' };
-    if (x < -94 || x > 94 || z < 0.8 || z > 84) return null;
+    if (this.insideIslandWall(x, z)) return null;
     if (this.venues.blocksMovement(x, z)) return null;
     const venueGround = this.venues.groundHeight(x, z);
     const y = venueGround ?? this.groundHeight(x, z);
     // Railings prevent stepping off the deck, and stair sides prevent climbing
     // directly through the upper treads from the sand beneath them.
-    if (Math.abs(fromGround - y) > 0.7 || (Math.abs(x - STAIR_X) < 2.8 && z > STAIR_START + 1 && z < STAIR_END)) return null;
+    if ((!this.swimming || venueGround !== null) && Math.abs(fromGround - y) > 0.7
+      || Math.abs(x - STAIR_X) < 2.8 && z > STAIR_START + 1 && z < STAIR_END) return null;
     return { y, surface: venueGround === null ? 'silver sand' : 'beach pavilion' };
+  }
+
+  private moveHorizontally(dx: number, dz: number, swimming: boolean) {
+    const subdivisions = Math.max(1, Math.ceil(Math.hypot(dx, dz) / 0.16));
+    for (let step = 0; step < subdivisions; step += 1) {
+      this.navigationFrom.copy(this.camera.position);
+      this.navigationFrom.y = this.groundY + EYE_HEIGHT;
+      this.destination.copy(this.camera.position);
+      this.destination.x += dx / subdivisions;
+      this.destination.z += dz / subdivisions;
+      let surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
+      if (!surface) {
+        const nextZ = this.destination.z;
+        this.destination.z = this.camera.position.z;
+        surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
+        if (!surface) {
+          this.destination.x = this.camera.position.x;
+          this.destination.z = nextZ;
+          surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
+        }
+      }
+      if (surface) {
+        this.groundY = surface.y;
+        this.camera.position.set(this.destination.x,
+          !swimming && this.grounded ? surface.y + EYE_HEIGHT : this.camera.position.y, this.destination.z);
+        this.surface = surface.surface;
+      }
+    }
+  }
+
+  /** MizuTopia's surface buoyancy and neutral underwater exploration, in metres. */
+  private updateSwimming(dt: number, forward: number, sideways: number) {
+    const wantsDive = this.keys.has('ControlLeft') || this.keys.has('ControlRight') || this.keys.has('KeyQ');
+    const wantsAscend = this.keys.has('Space') || this.keys.has('KeyE');
+    const vertical = Number(wantsAscend) - Number(wantsDive);
+    const fast = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight');
+    const baseSpeed = this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) : this.walkSpeedKilometresPerHour / 3.6;
+    const speed = baseSpeed * (this.underwater ? 7.8 / 9.5 : 1) * (fast ? 1.8 : 1);
+    this.camera.getWorldDirection(this.navigationDirection);
+    if (!this.underwater) this.navigationDirection.y = 0;
+    this.navigationDirection.normalize();
+    this.navigationRight.crossVectors(this.navigationDirection, this.up).normalize();
+    this.swimIntent.copy(this.navigationDirection).multiplyScalar(forward).addScaledVector(this.navigationRight, sideways);
+    if (this.swimIntent.lengthSq() > 1) this.swimIntent.normalize();
+    this.swimIntent.multiplyScalar(speed);
+    this.swimIntent.y += vertical * (fast ? 9 : 5.8);
+    const horizontalBlend = 1 - Math.exp(-dt * (forward || sideways ? 3.2 : 4.8));
+    const verticalBlend = 1 - Math.exp(-dt * (vertical || Math.abs(this.swimIntent.y) > 0.05 ? 3.8 : 1.7));
+    this.swimVelocity.x += (this.swimIntent.x - this.swimVelocity.x) * horizontalBlend;
+    this.swimVelocity.z += (this.swimIntent.z - this.swimVelocity.z) * horizontalBlend;
+    this.velocityY += (this.swimIntent.y - this.velocityY) * verticalBlend;
+    if (wantsDive) {
+      this.velocityY *= Math.exp(-dt * 0.3);
+    } else if (this.underwater && this.camera.position.y < this.localWaterHeight - 0.08) {
+      // Stop gently at the current depth after input ends, rather than forcing
+      // a return to the surface every time the visitor releases Dive.
+      if (!vertical && Math.abs(this.swimIntent.y) < 0.05) this.velocityY *= Math.exp(-dt * 3.5);
+    } else if (this.camera.position.y > this.localWaterHeight + SWIM_EYE_ABOVE_WATER + 2.5) {
+      this.velocityY -= GRAVITY * dt;
+    } else {
+      this.velocityY += (this.localWaterHeight + SWIM_EYE_ABOVE_WATER - this.camera.position.y) * 16 * dt;
+      if (!vertical) this.velocityY *= Math.exp(-dt * 3.5);
+    }
+    this.moveHorizontally(this.swimVelocity.x * dt, this.swimVelocity.z * dt, true);
+    this.localWaterHeight = this.effects.waterHeight(this.camera.position.x, this.camera.position.z, this.elapsed);
+    this.localWaterDepth = Math.max(0, this.localWaterHeight - this.groundY);
+    this.camera.position.y += this.velocityY * dt;
+    if (this.camera.position.y < this.groundY + SWIM_FLOOR_CLEARANCE) {
+      this.camera.position.y = this.groundY + SWIM_FLOOR_CLEARANCE;
+      this.velocityY = Math.max(0, this.velocityY);
+    }
+    // Ordinary waves must never push a surface swimmer underwater. Diving is
+    // an explicit action; once submerged, neutral buoyancy is maintained.
+    if (!wantsDive && !this.underwater && this.camera.position.y < this.localWaterHeight + 0.4) {
+      this.camera.position.y = this.localWaterHeight + 0.4;
+      this.velocityY = Math.max(0, this.velocityY);
+    }
+    if (this.camera.position.y > this.localWaterHeight + SWIM_EYE_ABOVE_WATER && wantsAscend) {
+      this.camera.position.y = this.localWaterHeight + SWIM_EYE_ABOVE_WATER;
+      this.velocityY = Math.min(0, this.velocityY);
+    }
+    this.swimVelocity.y = this.velocityY;
+    this.moving = !!(forward || sideways || vertical) || this.swimVelocity.lengthSq() > 0.01;
+    if (this.localWaterDepth <= SWIM_EXIT_DEPTH || this.surface !== 'silver sand') {
+      this.swimming = false;
+      this.standingFromSwim = true;
+      this.velocityY = 0;
+      this.swimVelocity.set(0, 0, 0);
+    }
   }
 
   update(delta: number, elapsed: number) {
@@ -774,41 +912,37 @@ export class SyntheticShoreScene {
     const forward = Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')) - Number(this.keys.has('KeyS') || this.keys.has('ArrowDown'));
     const sideways = Number(this.keys.has('KeyD') || this.keys.has('ArrowRight')) - Number(this.keys.has('KeyA') || this.keys.has('ArrowLeft'));
     this.moving = !!(forward || sideways);
-    if (this.moving) {
+    this.localWaterHeight = this.effects.waterHeight(this.camera.position.x, this.camera.position.z, elapsed);
+    this.localWaterDepth = Math.max(0, this.localWaterHeight - this.groundY);
+    if (!this.swimming && this.surface === 'silver sand' && this.localWaterDepth > SWIM_ENTRY_DEPTH) {
+      this.swimming = true;
+      this.grounded = false;
+      this.standingFromSwim = false;
+      this.jumpHeld = false;
+      this.swimVelocity.set(0, 0, 0);
+    }
+    if (this.swimming) {
+      this.updateSwimming(dt, forward, sideways);
+    } else if (this.moving) {
       this.camera.getWorldDirection(this.navigationDirection);
       this.navigationDirection.y = 0;
       this.navigationDirection.normalize();
       this.navigationRight.crossVectors(this.navigationDirection, this.up).normalize();
       const speed = this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) : this.walkSpeedKilometresPerHour / 3.6;
-      const subdivisions = Math.max(1, Math.ceil(speed * dt / 0.16));
-      const distance = speed * dt / subdivisions / Math.max(1, Math.hypot(forward, sideways));
-      for (let substep = 0; substep < subdivisions; substep++) {
-        // Ground navigation remains independent of jump height, so a hop never
-        // changes deck layers or slips through a thin wall at high walking speeds.
-        this.navigationFrom.copy(this.camera.position);
-        this.navigationFrom.y = this.groundY + EYE_HEIGHT;
-        this.destination.copy(this.camera.position).addScaledVector(this.navigationDirection, forward * distance).addScaledVector(this.navigationRight, sideways * distance);
-        let surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
-        if (!surface) {
-          // Sliding along a railing/beach bound remains responsive at an angle.
-          const nextZ = this.destination.z;
-          this.destination.z = this.camera.position.z;
-          surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
-          if (!surface) {
-            this.destination.x = this.camera.position.x;
-            this.destination.z = nextZ;
-            surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
-          }
-        }
-        if (surface) {
-          this.groundY = surface.y;
-          this.camera.position.set(this.destination.x, this.grounded ? surface.y + EYE_HEIGHT : this.camera.position.y, this.destination.z);
-          this.surface = surface.surface;
-        }
-      }
+      const distance = speed * dt / Math.max(1, Math.hypot(forward, sideways));
+      this.moveHorizontally((this.navigationDirection.x * forward + this.navigationRight.x * sideways) * distance,
+        (this.navigationDirection.z * forward + this.navigationRight.z * sideways) * distance, false);
       if (this.surface === 'anchor pier' && this.camera.position.z > 118) this.exit();
     }
-    if (!this.grounded) {
+    if (this.standingFromSwim) {
+      const target = this.groundY + EYE_HEIGHT;
+      this.camera.position.y += (target - this.camera.position.y) * (1 - Math.exp(-dt * 14));
+      if (Math.abs(this.camera.position.y - target) < 0.025) {
+        this.camera.position.y = target;
+        this.grounded = true;
+        this.standingFromSwim = false;
+      }
+    } else if (!this.grounded && !this.swimming) {
       this.velocityY -= GRAVITY * dt;
       this.camera.position.y += this.velocityY * dt;
       this.jumpPeakHeight = Math.max(this.jumpPeakHeight, this.camera.position.y - this.jumpStartY);
@@ -820,10 +954,26 @@ export class SyntheticShoreScene {
       }
     }
     if (!this.disposed && !this.exiting) {
+      this.localWaterHeight = this.effects.waterHeight(this.camera.position.x, this.camera.position.z, elapsed);
+      this.localWaterDepth = Math.max(0, this.localWaterHeight - this.groundY);
+      const submerged = this.underwater
+        ? this.camera.position.y < this.localWaterHeight + 0.08
+        : this.swimming && this.camera.position.y < this.localWaterHeight - 0.12;
+      if (submerged !== this.underwater) {
+        this.underwater = submerged;
+        this.effects.setUnderwater(submerged);
+        this.applyLighting();
+        this.interactionListener?.();
+      }
       this.effects.update(this.camera, elapsed);
       this.venues.update(elapsed, this.audio.getSnapshot().playing);
       this.refreshNearbyHotspot();
       this.effects.renderReflection(this.renderer, this.scene, this.camera, elapsed);
+      this.movementHudElapsed += dt;
+      if (this.movementHudElapsed >= 0.25) {
+        this.movementHudElapsed = 0;
+        this.interactionListener?.();
+      }
     }
   }
 
@@ -838,12 +988,14 @@ export class SyntheticShoreScene {
       surface: this.surface,
       moving: this.moving,
       movement: this.getMovementState(),
+      swimming: this.getSwimmingState(),
+      coast: sampleBeachCoast(this.camera.position.x, this.camera.position.z),
       dragging: this.pointerId !== null,
       elapsed: this.elapsed,
       cygnusX1: this.effects.getCygnusState(),
       environment: this.effects.getEnvironment(),
       interactions: this.getInteractionState(),
-      landmarks: { pier: [PIER_X, PIER_Y, ANCHOR_Z], stairs: [STAIR_X, STAIR_START, STAIR_END], island: [0, 16, 850], citySide: 'right', oceanSide: 'left', cygnusX1: true },
+      landmarks: { pier: [PIER_X, PIER_Y, ANCHOR_Z], stairs: [STAIR_X, STAIR_START, STAIR_END], island: [42, 16, 560], citySide: 'right', oceanSide: 'left', cygnusX1: true },
     };
   }
 
@@ -856,7 +1008,10 @@ export class SyntheticShoreScene {
 
   private readonly onPointerDown = (event: PointerEvent) => {
     if (this.disposed || event.button !== 0) return;
-    if (document.pointerLockElement === this.canvas) { this.openNearbyInteraction(); return; }
+    if (document.pointerLockElement === this.canvas) {
+      if (this.nearbyHotspotId) this.openNearbyInteraction();
+      return;
+    }
     this.pointerId = event.pointerId;
     this.pointerX = event.clientX;
     this.pointerY = event.clientY;
@@ -936,7 +1091,7 @@ export class SyntheticShoreScene {
   private readonly onContextMenu = (event: Event) => event.preventDefault();
 
   private readonly onKeyDown = (event: KeyboardEvent) => {
-    if (this.disposed || event.ctrlKey || event.metaKey || event.altKey) return;
+    if (this.disposed || event.metaKey || event.altKey) return;
     const target = event.target as HTMLElement | null;
     if (target?.matches('input, textarea, select, [contenteditable="true"]')) return;
     if (event.code === 'Escape') {
@@ -946,10 +1101,15 @@ export class SyntheticShoreScene {
       if (this.activeHotspotId) { this.closeInteraction(); return; }
       this.exit(); return;
     }
+    if (event.code === 'KeyE' && this.swimming && !this.nearbyHotspotId) {
+      this.keys.add(event.code); event.preventDefault(); return;
+    }
     if (event.code === 'KeyE' && this.surface === 'anchor pier' && this.camera.position.z > 91) { this.exit(); return; }
     if (event.code === 'KeyE' && !event.repeat) { event.preventDefault(); this.openNearbyInteraction(); return; }
     if (event.code === 'Space') {
       event.preventDefault();
+      this.keys.add(event.code);
+      if (this.swimming) return;
       if (!event.repeat && this.grounded) {
         this.jumpHeld = true;
         this.grounded = false;
@@ -959,7 +1119,7 @@ export class SyntheticShoreScene {
       }
       return;
     }
-    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
+    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'KeyQ', 'ControlLeft', 'ControlRight', 'ShiftLeft', 'ShiftRight'].includes(event.code)) {
       this.keys.add(event.code);
       event.preventDefault();
     }

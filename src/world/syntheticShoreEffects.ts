@@ -5,6 +5,7 @@ import { coastVertexShader, coastFragmentShader } from './syntheticShore/coastSh
 import { skyFragmentShader } from './syntheticShore/atmosphere';
 import { createReflectionUniforms, configureReflectionCamera } from './syntheticShore/reflections';
 import { seafloorHeight, sampleNormalWave } from './syntheticShore/simulation';
+import { BEACH_COAST_FIELD_BOUNDS, sampleBeachCoast } from './syntheticBeachLayout';
 
 export interface SyntheticShoreEffectsOptions {
   quality?: 'low' | 'balanced';
@@ -38,6 +39,8 @@ export interface SyntheticShoreEffects {
   sky: THREE.Mesh<THREE.SphereGeometry, THREE.ShaderMaterial>;
   groundHeight(x: number, z: number): number;
   waterHeight(x: number, z: number, elapsedSeconds: number): number;
+  getCoastSample(x: number, z: number): { distance: number; along: number; normalX: number; normalZ: number };
+  setUnderwater(underwater: boolean | null): void;
   update(camera: THREE.Camera, elapsedSeconds: number): void;
   renderReflection(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, elapsedSeconds: number): void;
   getCygnusState(): CygnusSkyState;
@@ -127,19 +130,118 @@ function createShoreRain(quality: 'low' | 'balanced'): THREE.LineSegments<THREE.
   return rain;
 }
 
+function createUnderwaterParticles(quality: 'low' | 'balanced'): THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial> {
+  const count = quality === 'low' ? 140 : 280;
+  const positions = new Float32Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    positions[i * 3] = (Math.sin(i * 13.7 + 0.7) * 4375.1 % 1 + 1) % 1 * 36;
+    positions[i * 3 + 1] = (Math.sin(i * 57.2 + 3.2) * 7593.6 % 1 + 1) % 1 * 20;
+    positions[i * 3 + 2] = (Math.sin(i * 7.39 + 9.1) * 3165.9 % 1 + 1) % 1 * 36;
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const material = new THREE.ShaderMaterial({
+    name: 'Suspended coastal sediment and microbubbles',
+    uniforms: { uTime: { value: 0 }, uDaylight: { value: 1 } },
+    vertexShader: /* glsl */`
+      uniform float uTime;
+      varying float vVisibility;
+      void main() {
+        vec3 p = position;
+        p.x = mod(p.x + uTime * 0.055, 36.0) - 18.0;
+        p.y = mod(p.y + uTime * 0.032, 20.0) - 10.0;
+        p.z = mod(p.z - uTime * 0.042, 36.0) - 18.0;
+        vec4 world = modelMatrix * vec4(p, 1.0);
+        vec4 view = viewMatrix * world;
+        vVisibility = (1.0 - smoothstep(8.0, 21.0, length(p))) * (1.0 - smoothstep(-0.12, 0.0, world.y));
+        gl_PointSize = clamp(12.0 / max(0.8, -view.z), 0.6, 2.8);
+        gl_Position = projectionMatrix * view;
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform float uDaylight;
+      varying float vVisibility;
+      void main() {
+        float disc = 1.0 - smoothstep(0.12, 0.5, length(gl_PointCoord - 0.5));
+        gl_FragColor = vec4(vec3(0.44, 0.72, 0.72) * (0.3 + uDaylight * 0.7), disc * vVisibility * 0.26);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }
+    `,
+    transparent: true, depthWrite: false, fog: false,
+  });
+  const particles = new THREE.Points(geometry, material);
+  particles.name = 'Submerged suspended sand';
+  particles.frustumCulled = false;
+  particles.visible = false;
+  return particles;
+}
+
 /**
  * The surf and Cygnus shaders are ported from the user's MizuTopia project.
  * Mizu's +X offshore axis is rotated onto this scene's -Z axis. One unit is
- * one metre. Land rises inland at 4%, sharing exactly the water's bathymetry.
+ * one metre. Terrain and water share a baked signed field of the main-map shore.
  */
+const COAST_FIELD_SIZE = 256;
+type CoastSample = { distance: number; along: number; normalX: number; normalZ: number };
+let bakedCoastField: Float32Array | undefined;
+function getCoastFieldData(): Float32Array {
+  if (bakedCoastField) return bakedCoastField;
+  const data = new Float32Array(COAST_FIELD_SIZE * COAST_FIELD_SIZE * 4);
+  const [minX, minZ, maxX, maxZ] = BEACH_COAST_FIELD_BOUNDS;
+  const sample: CoastSample = { distance: 0, along: 0, normalX: 0, normalZ: -1 };
+  for (let row = 0; row < COAST_FIELD_SIZE; row++) {
+    for (let column = 0; column < COAST_FIELD_SIZE; column++) {
+      sampleBeachCoast(minX + column / (COAST_FIELD_SIZE - 1) * (maxX - minX),
+        minZ + row / (COAST_FIELD_SIZE - 1) * (maxZ - minZ), sample);
+      const offset = (row * COAST_FIELD_SIZE + column) * 4;
+      data[offset] = sample.distance;
+      data[offset + 1] = sample.along;
+      data[offset + 2] = sample.normalX;
+      data[offset + 3] = sample.normalZ;
+    }
+  }
+  bakedCoastField = data;
+  return data;
+}
+
+/** Bilinear CPU sampling exactly matches texel-centred linear GPU sampling. */
+function sampleCoastField(x: number, z: number, result: CoastSample): CoastSample {
+  const data = getCoastFieldData();
+  const [minX, minZ, maxX, maxZ] = BEACH_COAST_FIELD_BOUNDS;
+  const clampedX = THREE.MathUtils.clamp(x, minX, maxX), clampedZ = THREE.MathUtils.clamp(z, minZ, maxZ);
+  const u = (clampedX - minX) / (maxX - minX) * (COAST_FIELD_SIZE - 1);
+  const v = (clampedZ - minZ) / (maxZ - minZ) * (COAST_FIELD_SIZE - 1);
+  const ix = Math.min(COAST_FIELD_SIZE - 2, Math.floor(u));
+  const iz = Math.min(COAST_FIELD_SIZE - 2, Math.floor(v));
+  const fu = u - ix, fv = v - iz;
+  const offset = (iz * COAST_FIELD_SIZE + ix) * 4;
+  const channel = (index: number): number => THREE.MathUtils.lerp(
+    THREE.MathUtils.lerp(data[offset + index], data[offset + 4 + index], fu),
+    THREE.MathUtils.lerp(data[offset + COAST_FIELD_SIZE * 4 + index], data[offset + (COAST_FIELD_SIZE + 1) * 4 + index], fu), fv);
+  let normalX = channel(2), normalZ = channel(3);
+  const length = Math.hypot(normalX, normalZ) || 1;
+  normalX /= length; normalZ /= length;
+  const dx = x - clampedX, dz = z - clampedZ;
+  result.distance = channel(0) + dx * normalX + dz * normalZ;
+  result.along = channel(1) - dx * normalZ + dz * normalX;
+  result.normalX = normalX;
+  result.normalZ = normalZ;
+  return result;
+}
+
+const terrainCoastSample: CoastSample = { distance: 0, along: 0, normalX: 0, normalZ: -1 };
 export function syntheticShoreGroundHeight(x: number, z: number): number {
-  return seafloorHeight(-z, x);
+  const coast = sampleCoastField(x, z, terrainCoastSample);
+  return seafloorHeight(coast.distance, coast.along);
 }
 
 function gradedOceanGeometry(quality: 'low' | 'balanced'): THREE.BufferGeometry {
   const segments = quality === 'low' ? 112 : 160;
   const extent = 14000;
-  const curve = 7;
+  // Concentrate the same vertex budget at sub-metre spacing around swimmers
+  // and the fine swash front, retaining sparse geometry toward the horizon.
+  const curve = 9;
   const scale = extent / Math.sinh(curve);
   const geometry = new THREE.PlaneGeometry(2, 2, segments, segments);
   geometry.rotateX(-Math.PI / 2);
@@ -155,29 +257,32 @@ function gradedOceanGeometry(quality: 'low' | 'balanced'): THREE.BufferGeometry 
   return geometry;
 }
 
-function sandGeometry(): THREE.BufferGeometry {
-  // Dense around the swash, coarse inland. Offshore sand is integrated into
-  // the water shader, so there is no invisible kilometre-scale seabed mesh.
-  const offshoreAxis: number[] = [];
-  for (let x = -110; x < -12; x += 2) offshoreAxis.push(x);
-  for (let x = -12; x <= 30; x += 0.75) offshoreAxis.push(x);
-  for (let x = 33; x <= 165; x += 6) offshoreAxis.push(x);
-  const lateralSegments = 96;
-  const positions = new Float32Array(offshoreAxis.length * (lateralSegments + 1) * 3);
+function sandGeometry(quality: 'low' | 'balanced'): THREE.BufferGeometry {
+  // A complete curved beach and real submerged shelf replace the rectangular
+  // shore strip. Fine cells cover the accessible coast; distant seabed is sparse.
+  const axis = (min: number, max: number): number[] => {
+    const values = [-14000, -6000, -2500, min - 900, min - 350, min - 130];
+    const step = quality === 'low' ? 4 : 2;
+    for (let value = min - 65; value <= max + 65; value += step) values.push(value);
+    values.push(max + 130, max + 350, max + 900, 2500, 6000, 14000);
+    return values.sort((a, b) => a - b);
+  };
+  const [minX, minZ, maxX, maxZ] = BEACH_COAST_FIELD_BOUNDS;
+  const xAxis = axis(minX, maxX), zAxis = axis(minZ, maxZ);
+  const positions = new Float32Array(xAxis.length * zAxis.length * 3);
   const indices: number[] = [];
   let vertex = 0;
-  for (let row = 0; row <= lateralSegments; row++) {
-    const lateral = -145 + row / lateralSegments * 290;
-    for (const offshore of offshoreAxis) {
-      positions[vertex++] = offshore;
-      positions[vertex++] = seafloorHeight(offshore, lateral);
-      positions[vertex++] = lateral;
+  for (const z of zAxis) {
+    for (const x of xAxis) {
+      positions[vertex++] = -z;
+      positions[vertex++] = syntheticShoreGroundHeight(x, z);
+      positions[vertex++] = x;
     }
   }
-  for (let row = 0; row < lateralSegments; row++) {
-    for (let column = 0; column < offshoreAxis.length - 1; column++) {
-      const a = row * offshoreAxis.length + column;
-      const b = a + 1, c = a + offshoreAxis.length, d = c + 1;
+  for (let row = 0; row < zAxis.length - 1; row++) {
+    for (let column = 0; column < xAxis.length - 1; column++) {
+      const a = row * xAxis.length + column;
+      const b = a + 1, c = a + xAxis.length, d = c + 1;
       indices.push(a, c, b, b, c, d);
     }
   }
@@ -249,6 +354,16 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   group.add(frame);
 
   const reflectionUniforms = createReflectionUniforms();
+  const coastTexture = new THREE.DataTexture(getCoastFieldData(), COAST_FIELD_SIZE, COAST_FIELD_SIZE, THREE.RGBAFormat, THREE.FloatType);
+  coastTexture.name = 'Shared Bezier coastline distance / along / outward normal';
+  coastTexture.minFilter = THREE.LinearFilter;
+  coastTexture.magFilter = THREE.LinearFilter;
+  coastTexture.needsUpdate = true;
+  const coastUniforms = {
+    uCoastField: { value: coastTexture },
+    uCoastBounds: { value: new THREE.Vector4(...BEACH_COAST_FIELD_BOUNDS) },
+    uCoastFieldSize: { value: COAST_FIELD_SIZE },
+  };
   const shoreToWorld = new THREE.Matrix4();
   const worldToShore = new THREE.Matrix4();
   const cameraPosition = new THREE.Vector3();
@@ -272,7 +387,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     vertexShader: waterVertex,
     fragmentShader: silverWaterFragment,
     uniforms: {
-      ...reflectionUniforms, ...frameUniforms,
+      ...reflectionUniforms, ...frameUniforms, ...coastUniforms,
       uTime: { value: 0 }, uWaveHeight: { value: environment.waveHeight },
       uMillerActive: { value: 0 }, uMillerX: { value: -100000 }, uMillerTime: { value: 0 },
       uShallowWaterColor: { value: new THREE.Color(0x168d9c) },
@@ -289,8 +404,11 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
       uCameraNear: { value: 0.05 }, uCameraFar: { value: 16000 },
     },
     side: THREE.DoubleSide,
+    transparent: true,
     fog: false,
   });
+  // Double-sided transparency would otherwise draw the entire ocean twice.
+  waterMaterial.forceSinglePass = true;
   const water = new THREE.Mesh(gradedOceanGeometry(quality), waterMaterial);
   water.name = 'Synthetic shore ocean · graded surf grid';
   water.frustumCulled = false;
@@ -301,7 +419,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     vertexShader: sandVertex,
     fragmentShader: silverSandFragment,
     uniforms: {
-      ...reflectionUniforms, ...frameUniforms,
+      ...reflectionUniforms, ...frameUniforms, ...coastUniforms,
       uShoreCameraPosition: { value: cameraPosition },
       uTime: { value: 0 }, uWaveHeight: { value: environment.waveHeight },
       uUnderwater: { value: 0 }, uDaylight: { value: 1 }, uMaterialKind: { value: 0 },
@@ -312,8 +430,8 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     },
     fog: false,
   });
-  const sand = new THREE.Mesh(sandGeometry(), sandMaterial);
-  sand.name = 'Synthetic silver sand · continuous tidal beach';
+  const sand = new THREE.Mesh(sandGeometry(quality), sandMaterial);
+  sand.name = 'Synthetic silver sand · complete curved coast and submerged shelf';
   frame.add(sand);
 
   const skyMaterial = new THREE.ShaderMaterial({
@@ -344,6 +462,8 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   frame.add(cygnus.group);
   const rain = createShoreRain(quality);
   frame.add(rain);
+  const underwaterParticles = createUnderwaterParticles(quality);
+  frame.add(underwaterParticles);
   const localCamera = new THREE.PerspectiveCamera();
   const localCameraMatrix = new THREE.Matrix4();
   const reflectionCamera = new THREE.PerspectiveCamera();
@@ -357,10 +477,38 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   let lastAnimationTime: number | undefined;
   let waterTime = 0;
   let disposed = false;
+  let underwater = false;
+  let underwaterOverride: boolean | null = null;
+  const waterCoastSample: CoastSample = { distance: 0, along: 0, normalX: 0, normalZ: -1 };
+
+  const sampleWaterHeight = (x: number, z: number, elapsedSeconds: number): number => {
+    const coast = sampleCoastField(x, z, waterCoastSample);
+    const time = lastAnimationTime === undefined ? elapsedSeconds * environment.waterSpeed
+      : waterTime + Math.max(0, elapsedSeconds - lastAnimationTime) * environment.waterSpeed;
+    return sampleNormalWave(coast.distance, coast.along, time, environment.waveHeight);
+  };
+  const applyUnderwater = (value: boolean): void => {
+    underwater = value;
+    waterMaterial.uniforms.uUnderwater.value = value ? 1 : 0;
+    waterMaterial.uniforms.uCygnus.value = value ? 0 : 1;
+    sandMaterial.uniforms.uUnderwater.value = value ? 1 : 0;
+    skyMaterial.uniforms.uUnderwater.value = value ? 1 : 0;
+    cygnus.group.visible = !value;
+    rain.visible = !value && weatherPresets[environment.weather].rain > 0;
+    underwaterParticles.visible = value;
+    if (value) reflectionUniforms.uReflectionStrength.value = 0;
+  };
 
   const getLighting = (): ShoreLightingState => {
     const light = daylightPresets[environment.timeOfDay];
     const weather = weatherPresets[environment.weather];
+    if (underwater) return {
+      background: '#103f50', fogColor: '#164e5b', fogDensity: 0.028,
+      ambientColor: '#9ecace', ambientIntensity: light.ambientIntensity * 0.65,
+      sunColor: '#abdfdc', sunIntensity: light.sunIntensity * 0.42,
+      sunPosition: [sunDirection.z * 400, sunDirection.y * 400, -sunDirection.x * 400],
+      daylight: light.daylight * (1 - weather.shade * 0.38),
+    };
     return {
       background: `#${skyColor.getHexString()}`,
       fogColor: `#${horizonColor.getHexString()}`,
@@ -407,7 +555,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     reflectionUniforms.uReflectionHorizonColor.value.copy(horizonColor);
     reflectionUniforms.uReflectionStrength.value = 0;
     lastReflectionTime = -Infinity;
-    rain.visible = weather.rain > 0;
+    rain.visible = !underwater && weather.rain > 0;
     rain.geometry.setDrawRange(0, Math.round(rain.geometry.getAttribute('position').count * weather.rain / 2) * 2);
     rain.material.uniforms.uWind.value = weather.wind;
     rain.material.uniforms.uOpacity.value = environment.timeOfDay === 'night' ? 0.42 : 0.66;
@@ -457,16 +605,22 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     skyMaterial.uniforms.uTime.value = elapsedSeconds;
     rain.position.copy(localCamera.position);
     rain.material.uniforms.uTime.value = currentTime;
+    const surfaceY = sampleWaterHeight(localCamera.position.z, -localCamera.position.x, currentTime);
+    applyUnderwater(underwaterOverride ?? localCamera.position.y < surfaceY - 0.08);
+    skyMaterial.uniforms.uDepth.value = Math.max(0, surfaceY - localCamera.position.y);
+    underwaterParticles.position.copy(localCamera.position);
+    underwaterParticles.material.uniforms.uTime.value = currentTime;
+    underwaterParticles.material.uniforms.uDaylight.value = waterMaterial.uniforms.uDaylight.value;
     const weather = weatherPresets[environment.weather];
     const daylight = waterMaterial.uniforms.uDaylight.value as number;
-    cygnus.update(localCamera, currentTime, false, 0.96 - weather.shade * 0.28, daylight);
+    cygnus.update(localCamera, currentTime, underwater, 0.96 - weather.shade * 0.28, daylight);
     waterMaterial.uniforms.uCompanionDirection.value.copy(cygnus.companionDirection);
     waterMaterial.uniforms.uCompanionGlow.value = 1 - Math.cos(elapsedSeconds * Math.PI / 4) * 0.16;
   };
 
   const renderReflection = (renderer: THREE.WebGLRenderer, scene: THREE.Scene,
     camera: THREE.PerspectiveCamera, elapsedSeconds: number): void => {
-    if (disposed || quality === 'low' || !environment.reflections || !group.visible || elapsedSeconds - lastReflectionTime < 1 / 20) return;
+    if (disposed || underwater || quality === 'low' || !environment.reflections || !group.visible || elapsedSeconds - lastReflectionTime < 1 / 20) return;
     if (!reflectionTarget) {
       reflectionTarget = new THREE.WebGLRenderTarget(1, 1, {
         type: THREE.HalfFloatType, minFilter: THREE.LinearMipmapLinearFilter,
@@ -528,10 +682,12 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   return {
     group, water, sand, sky,
     groundHeight: syntheticShoreGroundHeight,
-    waterHeight: (x, z, elapsedSeconds) => sampleNormalWave(-z, x,
-      lastAnimationTime === undefined ? elapsedSeconds * environment.waterSpeed
-        : waterTime + Math.max(0, elapsedSeconds - lastAnimationTime) * environment.waterSpeed,
-      environment.waveHeight),
+    waterHeight: sampleWaterHeight,
+    getCoastSample: (x, z) => sampleCoastField(x, z, { distance: 0, along: 0, normalX: 0, normalZ: -1 }),
+    setUnderwater(value) {
+      underwaterOverride = value;
+      if (value !== null) applyUnderwater(value);
+    },
     update, renderReflection,
     getCygnusState: () => cygnus.getState(localCamera),
     getEnvironment: () => ({ ...environment }), setEnvironment, getLighting,
@@ -539,10 +695,11 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
       if (disposed) return;
       disposed = true;
       reflectionTarget?.dispose();
+      coastTexture.dispose();
       const geometries = new Set<THREE.BufferGeometry>();
       const materials = new Set<THREE.Material>();
       group.traverse((object) => {
-        if (!(object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments)) return;
+        if (!(object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments) && !(object instanceof THREE.Points)) return;
         geometries.add(object.geometry);
         for (const material of Array.isArray(object.material) ? object.material : [object.material]) materials.add(material);
       });

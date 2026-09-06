@@ -15,6 +15,7 @@ page.on('pageerror', error => errors.push(error.message));
 page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
 const state = () => page.evaluate(() => window.labIsland.syntheticShore.getSnapshot());
+const sandHeight = (x, z) => page.evaluate(({ x, z }) => window.labIsland.syntheticShore.groundHeight(x, z), { x, z });
 const step = milliseconds => page.evaluate(ms => window.labIsland.advanceTime(ms), milliseconds);
 const move = async (key, milliseconds, running = true) => {
   if (running) await page.keyboard.down('Shift');
@@ -48,7 +49,7 @@ try {
   await step(100);
   await page.screenshot({ path: `${output}/navigation-02-stairs.png` });
 
-  await position(30.5, 27.5 * 0.04, 27.5);
+  await position(30.5, await sandHeight(30.5, 27.5), 27.5);
   await move('w', 5700);
   const ascent = await state();
   assert(ascent.position[2] > 58 && ascent.position[2] < 61.5, `Stairs must reach landing: ${JSON.stringify(ascent)}`);
@@ -72,7 +73,8 @@ try {
   assert(Math.hypot(railing.position[0] - 42, railing.position[2] + 39) <= 27.71, 'Crescent outer railing must stop movement.');
   assert(Math.abs(railing.position[1] - 9.62) < 0.025, 'Railing must prevent stepping into water.');
 
-  const middleHeight = 1.12 + (44 - 28) / 30 * (8 - 1.12);
+  const stairBottom = await sandHeight(30.5, 28);
+  const middleHeight = stairBottom + (44 - 28) / 30 * (8 - stairBottom);
   await position(30.5, middleHeight, 44);
   await move('d', 1500);
   const stairRailing = await state();
@@ -84,7 +86,7 @@ try {
   const descent = await state();
   assert(descent.position[2] < 28 && descent.position[2] > 24, 'Descent must reach the beach.');
   assert(descent.surface === 'silver sand', 'Stair foot must connect to sand.');
-  assert(Math.abs(descent.position[1] - (descent.position[2] * 0.04 + 1.62)) < 0.025, 'Descent must end at the sand height.');
+  assert(Math.abs(descent.position[1] - ((await sandHeight(descent.position[0], descent.position[2])) + 1.62)) < 0.025, 'Descent must end at the sand height.');
 
   await position(42, 8, 117);
   await move('w', 700);

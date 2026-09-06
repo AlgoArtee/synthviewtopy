@@ -50,7 +50,8 @@ try {
   await screenshot('03-shore-island-sky');
   await page.click('[data-shore-view="club"]'); await step(200);
   let s = await state();
-  assert(Math.abs(s.position[1] - 4.22) < 0.01 && s.interactions.nearby?.id === 'club-bar', 'Club view must spawn on deck near bar.');
+  const clubEyeY = s.interactions.venues.club.position[1] + 1.62;
+  assert(Math.abs(s.position[1] - clubEyeY) < 0.01 && s.interactions.nearby?.id === 'club-bar', 'Club view must spawn on deck near bar.');
   await screenshot('04-beach-club');
   await page.click('[data-shore-interact]');
   for (const [id, name] of [['nebula','Nebula Fizz'], ['silver','Silver Tide'], ['aurora','Aurora Spritz']]) {
@@ -69,9 +70,10 @@ try {
   await page.click('[data-shore-action="clear-drink"]');
   assert((await state()).interactions.venues.cocktail === null, 'Cocktail must clear.');
   await page.click('[data-shore-close-interaction]');
-  await position(-48, 1.62 + 23 * 0.04, 23);
+  const clubRampY = await page.evaluate(() => window.labIsland.syntheticShore.groundHeight(-48, 23));
+  await position(-48, 1.62 + clubRampY, 23);
   await move('w', 2300);
-  assert(Math.abs((await state()).position[1] - 4.22) < 0.02, 'Club ramp must join deck continuously.');
+  assert(Math.abs((await state()).position[1] - clubEyeY) < 0.02, 'Club ramp must join deck continuously.');
   await page.click('[data-shore-view="house"]'); await step(200);
   await screenshot('06-beach-house');
   await move('w', 1700);
@@ -87,7 +89,8 @@ try {
   await move('w', 1400);
   assert((await state()).position[2] > 55, 'Open doorway must permit entry.');
   await screenshot('07-house-interior');
-  await position(68, 4.70, 51); await step(30); await page.keyboard.press('e');
+  const houseEyeY = (await state()).interactions.venues.house.position[1] + 1.62;
+  await position(68, houseEyeY, 51); await step(30); await page.keyboard.press('e');
   await page.click('[data-shore-action="toggle-house-door"]');
   assert((await state()).interactions.venues.house.doorOpen, 'Door must not close on visitor.');
   await page.click('[data-shore-view="ocean"]');

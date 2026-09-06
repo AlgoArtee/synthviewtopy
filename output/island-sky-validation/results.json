@@ -1,0 +1,106 @@
+{
+  "status": "passed",
+  "overview": {
+    "visible": true,
+    "fixedWorldBearing": false,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": -16.4,
+      "screenPosition": {
+        "x": 0.387,
+        "y": 0.237
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": -12.6,
+      "screenPosition": {
+        "x": 0.649,
+        "y": 0.147
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.25,
+      "coronaPulse": -6.123233995736766e-17,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "overview-sky",
+    "overviewMix": 1,
+    "skyDistance": 1260.0000000000002
+  },
+  "horizon": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 19.2,
+      "screenPosition": {
+        "x": 0.39,
+        "y": 0.495
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 22.8,
+      "screenPosition": {
+        "x": 0.644,
+        "y": 0.409
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.25,
+      "coronaPulse": -6.123233995736766e-17,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "overviewMix": 0,
+    "skyDistance": 1260.0000000000002
+  },
+  "away": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": false,
+      "inViewport": false,
+      "elevationDegrees": 19.2,
+      "screenPosition": {
+        "x": 0.359,
+        "y": 1.541
+      }
+    },
+    "companion": {
+      "inFront": false,
+      "inViewport": false,
+      "elevationDegrees": 22.8,
+      "screenPosition": {
+        "x": 0.694,
+        "y": 1.688
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.25,
+      "coronaPulse": -6.123233995736766e-17,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "overviewMix": 0,
+    "skyDistance": 1260.0000000000002
+  },
+  "oldFarHemisphereDepth": 3700,
+  "newMaximumSkyDepth": 2800,
+  "geometryDisposals": 1,
+  "materialDisposals": 1
+}

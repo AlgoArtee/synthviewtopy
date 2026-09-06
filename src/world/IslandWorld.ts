@@ -59,6 +59,8 @@ import {
 import { WalkController } from './WalkController';
 import { createSyntheticPier, disposeSyntheticPier, SYNTHETIC_PIER_ID, SYNTHETIC_PIER_ENTRY } from './syntheticPier';
 import type { SyntheticShoreScene } from './SyntheticShoreScene';
+import { SyntheticShoreUI } from './syntheticShoreUI';
+import { createIslandCygnus } from './islandCygnus';
 import { AcademicAudioController } from './academicAudio';
 import {
   CEREBRUM_LIBRARY_ROOT_NAME,
@@ -945,6 +947,8 @@ export class IslandWorld {
   private shoreLoading = false;
   private shoreRequest = 0;
   private shoreOverlay: HTMLElement | null = null;
+  private shoreUI: SyntheticShoreUI | null = null;
+  private readonly islandCygnus = createIslandCygnus();
   private shoreReturn: { position: THREE.Vector3; direction: THREE.Vector3; exposure: number; focus: HTMLElement | null } | null = null;
   private shoreApproachArmed = true;
   readonly cityRoot = new THREE.Group();
@@ -1384,6 +1388,7 @@ export class IslandWorld {
     this.ocean = createOcean();
     this.sky = createSkyDome();
     this.presentationRoot.add(this.ocean, this.sky, this.importPlacementMarker, this.precipitation.points);
+    this.presentationRoot.add(this.islandCygnus.group);
 
     this.hemisphere = new THREE.HemisphereLight('#9ecbd4', '#17241f', 1.55);
     this.hemisphere.name = 'Blue-hour hemisphere light';
@@ -3505,6 +3510,8 @@ export class IslandWorld {
     }
     this.retryPendingAcademicGateClose();
     this.ocean.material.uniforms.uTime.value = this.elapsed;
+    this.islandCygnus.group.visible = this.sky.visible && this.mode !== 'plan' && !this.activeInteriorBuildingId;
+    if (this.islandCygnus.group.visible) this.islandCygnus.update(this.camera, this.elapsed, this.isDaylight() ? 1 : 0.22, this.activeWeather === 'storm' ? 0.6 : 0.96);
     let targetDayMix = 0;
     const targetSkyTop = this.targetSkyTop.set('#071827');
     const targetSkyHorizon = this.targetSkyHorizon.set('#9b5f6c');
@@ -4905,32 +4912,26 @@ export class IslandWorld {
     if (this.mode === 'walk') this.walkController.exit();
     this.labelRenderer.domElement.hidden = true;
     document.body.classList.add('synthetic-shore-active');
-    const overlay = document.createElement('section');
-    overlay.className = 'synthetic-shore-ui';
-    overlay.setAttribute('aria-label', 'Synthetic Shore');
-    overlay.innerHTML = `<header class="shore-header"><div><span class="shore-eyebrow">LAB ISLAND / ALPINE COAST</span><h1>Synthetic Shore</h1></div><button type="button" data-shore-exit>Return to island <span>↗</span></button></header><div class="shore-loading" role="status">Opening the shore…</div><footer class="shore-footer"><div class="shore-views" aria-label="Shore viewpoints"><button type="button" data-shore-view="ocean">Ocean + Cygnus X-1</button><button type="button" data-shore-view="island">Lab Island</button><button type="button" data-shore-view="pier">Pier + stairs</button></div><p>WASD / arrows to walk · Shift to run · Drag to look · Esc to return</p></footer>`;
-    overlay.querySelector('[data-shore-exit]')?.addEventListener('click', () => this.exitSyntheticShore());
-    overlay.querySelectorAll<HTMLButtonElement>('[data-shore-view]').forEach((button) => {
-      button.addEventListener('click', () => {
-        this.syntheticShore?.setView(button.dataset.shoreView as 'ocean' | 'island' | 'pier');
-        overlay.querySelectorAll('[data-shore-view]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
-      });
-    });
-    overlay.querySelector('[data-shore-view="ocean"]')?.setAttribute('aria-pressed', 'true');
+    const ui = new SyntheticShoreUI(() => this.exitSyntheticShore());
+    const overlay = ui.element;
+    this.shoreUI = ui;
     this.container.appendChild(overlay);
     this.shoreOverlay = overlay;
     (overlay.querySelector('[data-shore-exit]') as HTMLButtonElement).focus();
     try {
       const { SyntheticShoreScene } = await import('./SyntheticShoreScene');
       if (this.disposed || request !== this.shoreRequest) return;
-      const shore = new SyntheticShoreScene(this.renderer, () => this.exitSyntheticShore());
+      const shore = new SyntheticShoreScene(this.renderer, () => this.exitSyntheticShore(), {
+        speedKilometresPerHour: this.walkController.getWalkSpeedKilometresPerHour(),
+        turboEnabled: this.walkController.isTurboEnabled(),
+      });
       this.syntheticShore = shore;
       shore.scene.userData.entrySource = source;
       shore.resize(this.container.clientWidth, this.container.clientHeight);
       this.renderer.toneMappingExposure = 1.08;
       shore.update(0, this.elapsed);
       this.shoreLoading = false;
-      overlay.querySelector('.shore-loading')?.remove();
+      ui.bindScene(shore);
       this.resetFrameTimingWindows(true);
     } catch (error) {
       if (request !== this.shoreRequest || this.disposed) return;
@@ -4945,6 +4946,8 @@ export class IslandWorld {
     this.syntheticShore?.dispose();
     this.syntheticShore = null;
     this.shoreLoading = false;
+    this.shoreUI?.dispose();
+    this.shoreUI = null;
     this.shoreOverlay?.remove();
     this.shoreOverlay = null;
     document.body.classList.remove('synthetic-shore-active');
@@ -4973,6 +4976,8 @@ export class IslandWorld {
       scene: this.syntheticShore?.getSnapshot() ?? null,
     };
   }
+
+  getIslandCygnusSnapshot() { return this.islandCygnus.getSnapshot(this.camera); }
 
   private intersectsEditableSibling(definition: SceneDefinition, group: THREE.Group) {
     const parent = group.parent;
@@ -10611,6 +10616,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     this.globalEnvironmentBatching?.dispose();
     this.globalEnvironmentBatching = null;
     disposeSyntheticPier(this.syntheticPierRoot);
+    this.islandCygnus.dispose();
     this.worldStreaming.dispose();
     this.renderer.dispose();
     this.labelRenderer.domElement.remove();

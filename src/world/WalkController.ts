@@ -228,12 +228,18 @@ export class WalkController {
     this.onTurboChange = options.onTurboChange;
     this.onInteract = options.onInteract;
     this.pointerControls = new PointerLockControls(this.camera, this.element);
+    // Other scenes share this canvas. PointerLockControls listens to document
+    // mouse movement independently of our update loop, so inactive WALK must
+    // explicitly stop it from rotating the island camera.
+    this.pointerControls.enabled = false;
     this.pointerControls.addEventListener('lock', () => {
+      if (!this.active) return;
       this.dragLookActive = false;
       this.lastPointer = null;
       this.onLockChange?.(true, false);
     });
     this.pointerControls.addEventListener('unlock', () => {
+      if (!this.active) return;
       this.keys.clear();
       this.dragLookActive = false;
       this.lastPointer = null;
@@ -279,6 +285,7 @@ export class WalkController {
     fallbackSpawn?: THREE.Vector3,
   ) {
     this.active = true;
+    this.pointerControls.enabled = true;
     this.keys.clear();
     this.externalIntent = { x: 0, z: 0, sprint: false };
     this.dragLookActive = false;
@@ -324,6 +331,7 @@ export class WalkController {
 
   exit() {
     this.active = false;
+    this.pointerControls.enabled = false;
     this.keys.clear();
     this.externalIntent = { x: 0, z: 0, sprint: false };
     this.currentSpeed = 0;
@@ -335,6 +343,7 @@ export class WalkController {
     this.dragLookActive = false;
     this.lastPointer = null;
     if (this.pointerControls.isLocked) this.pointerControls.unlock();
+    this.onLockChange?.(false, false);
   }
 
   requestPointerLock() {
@@ -792,8 +801,8 @@ export class WalkController {
     const position = this.camera.position.toArray() as [number, number, number];
     return {
       active: this.active,
-      pointerLocked: this.pointerControls.isLocked,
-      lookMode: this.pointerControls.isLocked ? 'pointer-lock' : this.dragLookActive ? 'drag' : 'idle',
+      pointerLocked: this.active && this.pointerControls.isLocked,
+      lookMode: !this.active ? 'idle' : this.pointerControls.isLocked ? 'pointer-lock' : this.dragLookActive ? 'drag' : 'idle',
       grounded: this.grounded,
       positionWorld: position.map((value) => Number(value.toFixed(3))) as [number, number, number],
       positionMetres: position.map((value) => Number(worldUnitsToMetres(value).toFixed(1))) as [number, number, number],
@@ -1345,6 +1354,7 @@ export class WalkController {
   };
 
   private onPointerLockError = (event: Event) => {
+    if (!this.active) return;
     event.stopImmediatePropagation();
     this.enableDragLook();
   };

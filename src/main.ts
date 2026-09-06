@@ -1776,13 +1776,15 @@ required<HTMLButtonElement>('#fullscreen-toggle').addEventListener('click', () =
 document.addEventListener('fullscreenchange', syncFountainControlPanel);
 
 document.addEventListener('keydown', (event) => {
-  if (world.isSyntheticShoreActive()) {
-    if (event.key.toLowerCase() === 'f') void toggleFullscreen();
-    if (event.key === 'Escape') world.exitSyntheticShore();
-    return;
-  }
   const target = event.target as HTMLElement;
   const editingText = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
+  if (world.isSyntheticShoreActive()) {
+    if (event.key.toLowerCase() === 'f' && !editingText) void toggleFullscreen();
+    // The shore owns Escape once ready: it first releases mouse look before
+    // returning to the island. During its lazy load there is no scene handler.
+    if (event.key === 'Escape' && world.getSyntheticShoreSnapshot().loading) world.exitSyntheticShore();
+    return;
+  }
   if (event.key === '/' && !editingText) {
     event.preventDefault();
     districtSearch.focus();

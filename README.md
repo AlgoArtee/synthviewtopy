@@ -77,14 +77,25 @@ beach has glittering silver sand, rolling surf, a cyberpunk city on the right ha
 of the ocean horizon, and a simplified Lab Island vista behind you. Cygnus X-1
 uses MizuTopia's animated companion star, stellar wind, accretion disk, and corona.
 
-Walk with **WASD / arrow keys**, run with **Shift**, and drag to look around.
-The three viewpoint buttons frame the ocean, island, or pier and stairs.
-**Return to island** or **Escape** restores the island camera and navigation;
+Walk with **WASD / arrow keys** and tap/hold **Space** for the same short/high
+jumps as island Walk. The **Walk speed** field sets km/h; **Turbo** enables fast
+traversal. Entry inherits the island's current speed settings. Click **Mouse look**
+or the scene to lock the cursor; dragging also works. **Escape** first releases
+mouse look or closes a venue interaction, then returns to the island.
+Five viewpoint buttons reach the ocean, island, pier/stairs, beach club, or house.
+Press **E** near the bar, DJ booth, or house for cocktails, music, doors and lights.
+**Weather + water** controls time, weather, waves, speed, tint and reflections.
+The club's roof-mounted sign leaves its ocean/city sightline open. In the main
+island, Cygnus stays at a fixed distant northern sky bearing: look toward that
+horizon in Explore or Walk to see it; looking down or away naturally hides it.
+**Return to island** restores the island camera and navigation;
 walking back along the pier also returns. The scene loads on demand, shares the
 existing renderer, pauses island updates, and disposes its resources on exit.
 Water reflections update at a bounded resolution and rate, while repeated
 architecture is instanced. `npm run test:synthetic-shore` checks entry, movement,
 viewpoints, resizing, return navigation, resource disposal, and browser errors.
+`npm run test:synthetic-shore-movement` checks walking, jumping and mouse input;
+`npm run test:island-cygnus-stability` checks sky stability and foreground occlusion.
 
 The effects are adapted from the local `NatureSimTopy/MizuTopia` project. Original
 effect provenance is recorded in `src/world/syntheticShore/README.md`.

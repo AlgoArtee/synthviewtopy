@@ -1,0 +1,119 @@
+{
+  "status": "passed",
+  "baseline": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 6.4,
+      "screenPosition": {
+        "x": 0.39,
+        "y": 0.513
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 10,
+      "screenPosition": {
+        "x": 0.644,
+        "y": 0.428
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.25,
+      "coronaPulse": -6.123233995736766e-17,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "depthPlacement": "background-far-plane",
+    "cameraTranslationOnly": true,
+    "skyDistance": 1260.0000000000002
+  },
+  "overview": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": false,
+      "elevationDegrees": 6.4,
+      "screenPosition": {
+        "x": 1.198,
+        "y": -0.436
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": false,
+      "elevationDegrees": 10,
+      "screenPosition": {
+        "x": 1.951,
+        "y": -0.772
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.25,
+      "coronaPulse": -6.123233995736766e-17,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "depthPlacement": "background-far-plane",
+    "cameraTranslationOnly": true,
+    "skyDistance": 1260.0000000000002
+  },
+  "translationCases": 5,
+  "occlusion": [
+    {
+      "requestedReverseDepth": false,
+      "actualReverseDepth": false,
+      "clearStar": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "opaque": [
+        0,
+        255,
+        0,
+        255
+      ],
+      "transparent": [
+        0,
+        255,
+        0,
+        255
+      ]
+    },
+    {
+      "requestedReverseDepth": true,
+      "actualReverseDepth": true,
+      "clearStar": [
+        255,
+        255,
+        255,
+        255
+      ],
+      "opaque": [
+        0,
+        255,
+        0,
+        255
+      ],
+      "transparent": [
+        0,
+        255,
+        0,
+        255
+      ]
+    }
+  ],
+  "errors": []
+}

@@ -1,0 +1,4 @@
+import {chromium} from 'playwright';
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--enable-gpu','--ignore-gpu-blocklist']});
+const page=await browser.newPage({viewport:{width:1440,height:900}});const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('console',m=>{if(m.type()==='error')errors.push(m.text());});
+try{await page.goto('http://127.0.0.1:5178/output/playwright/island-sky-validation.html');await page.waitForFunction(()=>window.ready);await page.screenshot({path:'output/playwright/island-sky-clip-comparison.png'});const snapshot=await page.evaluate(()=>window.renderOverview());await page.screenshot({path:'output/playwright/island-cygnus-overview-isolated.png'});if(errors.length)throw new Error(errors.join('\n'));console.log(JSON.stringify({status:'passed',snapshot,errors},null,2));}finally{await browser.close();}

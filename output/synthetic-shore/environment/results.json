@@ -1,0 +1,328 @@
+{
+  "setup": {
+    "timeOfDay": "day",
+    "weather": "clear",
+    "waveHeight": 1.2,
+    "waterSpeed": 1,
+    "waterColor": "#047888",
+    "reflections": true
+  },
+  "variants": [
+    {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#075c8e",
+        "fogColor": "#a5d5d9",
+        "fogDensity": 0.00022,
+        "ambientColor": "#e6f9ff",
+        "ambientIntensity": 2.25,
+        "sunColor": "#fff8e9",
+        "sunIntensity": 2.4,
+        "sunPosition": [
+          -150.3265843186782,
+          342.4105531703225,
+          141.97510741208498
+        ],
+        "daylight": 1
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "day",
+      "weather": "cloudy",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#3b688f",
+        "fogColor": "#99c4ca",
+        "fogDensity": 0.00036,
+        "ambientColor": "#e6f9ff",
+        "ambientIntensity": 2.0736,
+        "sunColor": "#fff8e9",
+        "sunIntensity": 1.8422399999999999,
+        "sunPosition": [
+          -150.3265843186782,
+          342.4105531703225,
+          141.97510741208498
+        ],
+        "daylight": 0.8936
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "day",
+      "weather": "rain",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#466d8f",
+        "fogColor": "#94bcc3",
+        "fogDensity": 0.00052,
+        "ambientColor": "#e6f9ff",
+        "ambientIntensity": 1.998,
+        "sunColor": "#fff8e9",
+        "sunIntensity": 1.6031999999999997,
+        "sunPosition": [
+          -150.3265843186782,
+          342.4105531703225,
+          141.97510741208498
+        ],
+        "daylight": 0.848
+      },
+      "rainVisible": true,
+      "calls": 5
+    },
+    {
+      "timeOfDay": "day",
+      "weather": "storm",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#547390",
+        "fogColor": "#8bb0b8",
+        "fogDensity": 0.0008,
+        "ambientColor": "#e6f9ff",
+        "ambientIntensity": 1.8846,
+        "sunColor": "#fff8e9",
+        "sunIntensity": 1.2446400000000002,
+        "sunPosition": [
+          -150.3265843186782,
+          342.4105531703225,
+          141.97510741208498
+        ],
+        "daylight": 0.7796000000000001
+      },
+      "rainVisible": true,
+      "calls": 5
+    },
+    {
+      "timeOfDay": "sunset",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#353764",
+        "fogColor": "#ec977b",
+        "fogDensity": 0.00022,
+        "ambientColor": "#b9c1e2",
+        "ambientIntensity": 1.55,
+        "sunColor": "#ffc194",
+        "sunIntensity": 1.8,
+        "sunPosition": [
+          -200.09458501356363,
+          69.5981165264569,
+          -339.2908180664774
+        ],
+        "daylight": 0.54
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "sunset",
+      "weather": "cloudy",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#4a5473",
+        "fogColor": "#d59281",
+        "fogDensity": 0.00036,
+        "ambientColor": "#b9c1e2",
+        "ambientIntensity": 1.42848,
+        "sunColor": "#ffc194",
+        "sunIntensity": 1.38168,
+        "sunPosition": [
+          -200.09458501356363,
+          69.5981165264569,
+          -339.2908180664774
+        ],
+        "daylight": 0.48254400000000003
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "sunset",
+      "weather": "rain",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#515e79",
+        "fogColor": "#ca9083",
+        "fogDensity": 0.00052,
+        "ambientColor": "#b9c1e2",
+        "ambientIntensity": 1.3764,
+        "sunColor": "#ffc194",
+        "sunIntensity": 1.2024,
+        "sunPosition": [
+          -200.09458501356363,
+          69.5981165264569,
+          -339.2908180664774
+        ],
+        "daylight": 0.45792
+      },
+      "rainVisible": true,
+      "calls": 5
+    },
+    {
+      "timeOfDay": "sunset",
+      "weather": "storm",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#5a6a81",
+        "fogColor": "#b88c87",
+        "fogDensity": 0.0008,
+        "ambientColor": "#b9c1e2",
+        "ambientIntensity": 1.29828,
+        "sunColor": "#ffc194",
+        "sunIntensity": 0.9334800000000001,
+        "sunPosition": [
+          -200.09458501356363,
+          69.5981165264569,
+          -339.2908180664774
+        ],
+        "daylight": 0.4209840000000001
+      },
+      "rainVisible": true,
+      "calls": 5
+    },
+    {
+      "timeOfDay": "night",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#101d3d",
+        "fogColor": "#355875",
+        "fogDensity": 0.00022,
+        "ambientColor": "#9bbde8",
+        "ambientIntensity": 1.15,
+        "sunColor": "#a8caff",
+        "sunIntensity": 0.95,
+        "sunPosition": [
+          -211.20591384838278,
+          272.80763872082775,
+          -202.4056674380335
+        ],
+        "daylight": 0.22
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "night",
+      "weather": "cloudy",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#13223e",
+        "fogColor": "#304f6b",
+        "fogDensity": 0.00036,
+        "ambientColor": "#9bbde8",
+        "ambientIntensity": 1.05984,
+        "sunColor": "#a8caff",
+        "sunIntensity": 0.7292199999999999,
+        "sunPosition": [
+          -211.20591384838278,
+          272.80763872082775,
+          -202.4056674380335
+        ],
+        "daylight": 0.196592
+      },
+      "rainVisible": false,
+      "calls": 4
+    },
+    {
+      "timeOfDay": "night",
+      "weather": "rain",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#14233f",
+        "fogColor": "#2d4b66",
+        "fogDensity": 0.00052,
+        "ambientColor": "#9bbde8",
+        "ambientIntensity": 1.0211999999999999,
+        "sunColor": "#a8caff",
+        "sunIntensity": 0.6345999999999999,
+        "sunPosition": [
+          -211.20591384838278,
+          272.80763872082775,
+          -202.4056674380335
+        ],
+        "daylight": 0.18656
+      },
+      "rainVisible": true,
+      "calls": 5
+    },
+    {
+      "timeOfDay": "night",
+      "weather": "storm",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true,
+      "lighting": {
+        "background": "#16263f",
+        "fogColor": "#29455e",
+        "fogDensity": 0.0008,
+        "ambientColor": "#9bbde8",
+        "ambientIntensity": 0.96324,
+        "sunColor": "#a8caff",
+        "sunIntensity": 0.49267000000000005,
+        "sunPosition": [
+          -211.20591384838278,
+          272.80763872082775,
+          -202.4056674380335
+        ],
+        "daylight": 0.17151200000000003
+      },
+      "rainVisible": true,
+      "calls": 5
+    }
+  ],
+  "validation": {
+    "clamped": {
+      "timeOfDay": "night",
+      "weather": "storm",
+      "waveHeight": 3,
+      "waterSpeed": 0,
+      "waterColor": "#047888",
+      "reflections": false
+    },
+    "frozen": true,
+    "cygnusMoves": true,
+    "reflectionDisabled": true,
+    "continuousSpeed": true,
+    "disposed": true
+  },
+  "errors": []
+}

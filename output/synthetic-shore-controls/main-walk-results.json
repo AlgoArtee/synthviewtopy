@@ -1,0 +1,223 @@
+{
+  "status": "passed",
+  "travelMetres": 1.8918773744616502,
+  "before": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      0,
+      1.805,
+      44
+    ],
+    "positionMetres": [
+      0,
+      18,
+      440
+    ],
+    "groundY": 1.643,
+    "surfaceKind": "stone",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 1262,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 22,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 0
+      },
+      "totalCandidates": {
+        "walkables": 67,
+        "obstacles": 364,
+        "accessBounds": 60,
+        "underwalkAccessVolumes": 2,
+        "underwalkSurfaces": 6,
+        "barriers": 89
+      }
+    }
+  },
+  "afterLook": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "drag",
+    "grounded": true,
+    "positionWorld": [
+      0,
+      1.805,
+      44
+    ],
+    "positionMetres": [
+      0,
+      18,
+      440
+    ],
+    "groundY": 1.643,
+    "surfaceKind": "stone",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0.231,
+      -0.067,
+      -0.971
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 1262,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 22,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 0
+      },
+      "totalCandidates": {
+        "walkables": 67,
+        "obstacles": 367,
+        "accessBounds": 60,
+        "underwalkAccessVolumes": 2,
+        "underwalkSurfaces": 6,
+        "barriers": 89
+      }
+    }
+  },
+  "afterMove": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "drag",
+    "grounded": true,
+    "positionWorld": [
+      0.044,
+      1.805,
+      43.816
+    ],
+    "positionMetres": [
+      0.4,
+      18,
+      438.2
+    ],
+    "groundY": 1.643,
+    "surfaceKind": "stone",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0.231,
+      -0.067,
+      -0.971
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 1262,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 22,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 0
+      },
+      "totalCandidates": {
+        "walkables": 67,
+        "obstacles": 367,
+        "accessBounds": 60,
+        "underwalkAccessVolumes": 2,
+        "underwalkSurfaces": 6,
+        "barriers": 89
+      }
+    }
+  },
+  "jump": {
+    "tapHeight": 0.52,
+    "heldHeight": 1.55,
+    "tapLanded": true,
+    "heldLanded": true,
+    "lockedMoved": true
+  },
+  "fixedSky": {
+    "visible": true,
+    "fixedWorldBearing": true,
+    "companionToBlackHoleDiameter": 5.625,
+    "blackHole": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 19.2,
+      "screenPosition": {
+        "x": 0.419,
+        "y": 0.454
+      }
+    },
+    "companion": {
+      "inFront": true,
+      "inViewport": true,
+      "elevationDegrees": 22.8,
+      "screenPosition": {
+        "x": 0.607,
+        "y": 0.391
+      }
+    },
+    "animation": {
+      "coronaPeriodSeconds": 8,
+      "coronaPhase": 0.1720625,
+      "coronaPulse": -0.4703574209255971,
+      "streamTransitSeconds": 10,
+      "streamDirection": "companion-to-black-hole"
+    },
+    "placement": "fixed-north-sky",
+    "depthPlacement": "background-far-plane",
+    "cameraTranslationOnly": true,
+    "skyDistance": 1260.0000000000002
+  },
+  "errors": []
+}

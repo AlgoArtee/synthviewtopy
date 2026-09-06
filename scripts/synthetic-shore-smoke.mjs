@@ -1,7 +1,7 @@
 import { chromium } from 'playwright';
 import { mkdir, writeFile } from 'node:fs/promises';
 
-const output = 'output/synthetic-shore';
+const output = process.env.SYNTHETIC_SHORE_OUTPUT ?? 'output/synthetic-shore';
 await mkdir(output, { recursive: true });
 const browser = await chromium.launch({
   headless: true,

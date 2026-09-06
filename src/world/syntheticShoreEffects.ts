@@ -10,6 +10,27 @@ export interface SyntheticShoreEffectsOptions {
   quality?: 'low' | 'balanced';
 }
 
+export interface ShoreEnvironmentState {
+  timeOfDay: 'day' | 'sunset' | 'night';
+  weather: 'clear' | 'cloudy' | 'rain' | 'storm';
+  waveHeight: number;
+  waterSpeed: number;
+  waterColor: string;
+  reflections: boolean;
+}
+
+export interface ShoreLightingState {
+  background: string;
+  fogColor: string;
+  fogDensity: number;
+  ambientColor: string;
+  ambientIntensity: number;
+  sunColor: string;
+  sunIntensity: number;
+  sunPosition: [number, number, number];
+  daylight: number;
+}
+
 export interface SyntheticShoreEffects {
   group: THREE.Group;
   water: THREE.Mesh<THREE.BufferGeometry, THREE.ShaderMaterial>;
@@ -20,7 +41,90 @@ export interface SyntheticShoreEffects {
   update(camera: THREE.Camera, elapsedSeconds: number): void;
   renderReflection(renderer: THREE.WebGLRenderer, scene: THREE.Scene, camera: THREE.PerspectiveCamera, elapsedSeconds: number): void;
   getCygnusState(): CygnusSkyState;
+  getEnvironment(): ShoreEnvironmentState;
+  setEnvironment(environment: Partial<ShoreEnvironmentState>): ShoreEnvironmentState;
+  getLighting(): ShoreLightingState;
   dispose(): void;
+}
+
+const daylightPresets = {
+  day: {
+    sky: '#075c8e', horizon: '#a5d5d9', sun: '#fff8e9', ambient: '#e6f9ff',
+    sunDirection: [-0.34, 0.82, -0.36], daylight: 1, ambientIntensity: 2.25, sunIntensity: 2.4,
+  },
+  sunset: {
+    sky: '#353764', horizon: '#ec977b', sun: '#ffc194', ambient: '#b9c1e2',
+    sunDirection: [0.78, 0.16, -0.46], daylight: 0.54, ambientIntensity: 1.55, sunIntensity: 1.8,
+  },
+  night: {
+    // Moonlit blues retain readable sand and architecture while revealing stars.
+    sky: '#101d3d', horizon: '#355875', sun: '#a8caff', ambient: '#9bbde8',
+    sunDirection: [0.46, 0.62, -0.48], daylight: 0.22, ambientIntensity: 1.15, sunIntensity: 0.95,
+  },
+} as const;
+
+const weatherPresets = {
+  clear: { cloud: 0.13, shade: 0, fog: 0.00022, rain: 0, wind: 1.1 },
+  cloudy: { cloud: 0.79, shade: 0.28, fog: 0.00036, rain: 0, wind: 1.6 },
+  rain: { cloud: 0.88, shade: 0.40, fog: 0.00052, rain: 0.6, wind: 2.1 },
+  storm: { cloud: 1, shade: 0.58, fog: 0.0008, rain: 1, wind: 5.8 },
+} as const;
+
+/** One static line buffer; the GPU wraps rain around the visitor. */
+function createShoreRain(quality: 'low' | 'balanced'): THREE.LineSegments<THREE.BufferGeometry, THREE.ShaderMaterial> {
+  const count = quality === 'low' ? 360 : 760;
+  const positions = new Float32Array(count * 6);
+  const endpoints = new Float32Array(count * 2);
+  let seed = 9137;
+  const random = (): number => {
+    seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+    return seed / 4294967296;
+  };
+  for (let i = 0; i < count; i++) {
+    const x = random() * 64, y = random() * 36, z = random() * 64;
+    positions.set([x, y, z, x, y, z], i * 6);
+    endpoints[i * 2 + 1] = 1;
+  }
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute('aEndpoint', new THREE.BufferAttribute(endpoints, 1));
+  const material = new THREE.ShaderMaterial({
+    name: 'Camera-local coastal rainfall',
+    vertexShader: /* glsl */`
+      uniform float uTime;
+      uniform float uWind;
+      attribute float aEndpoint;
+      varying float vAlpha;
+      void main() {
+        vec3 p = vec3(mod(position.x + uTime * uWind, 64.0) - 32.0,
+          mod(position.y - uTime * (16.0 + uWind), 36.0) - 5.0,
+          position.z - 32.0);
+        p += vec3(uWind * 0.025, -0.42 - uWind * 0.035, 0.02) * aEndpoint;
+        vAlpha = (1.0 - smoothstep(18.0, 34.0, length(p.xz))) * (0.36 + aEndpoint * 0.30);
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+      }
+    `,
+    fragmentShader: /* glsl */`
+      uniform vec3 uColor;
+      uniform float uOpacity;
+      varying float vAlpha;
+      void main() {
+        gl_FragColor = vec4(uColor, uOpacity * vAlpha);
+        #include <tonemapping_fragment>
+        #include <colorspace_fragment>
+      }
+    `,
+    uniforms: {
+      uTime: { value: 0 }, uWind: { value: 2.1 },
+      uColor: { value: new THREE.Color('#c8e4f1') }, uOpacity: { value: 0.65 },
+    },
+    transparent: true, depthWrite: false, fog: false,
+  });
+  const rain = new THREE.LineSegments(geometry, material);
+  rain.name = 'Synthetic shore rainfall';
+  rain.frustumCulled = false;
+  rain.visible = false;
+  return rain;
 }
 
 /**
@@ -152,7 +256,10 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   const skyColor = new THREE.Color(0x075c8e);
   const horizonColor = new THREE.Color(0xa5d5d9);
   const oceanColor = new THREE.Color(0x047888);
-  const waveHeight = 1.2;
+  const environment: ShoreEnvironmentState = {
+    timeOfDay: 'day', weather: 'clear', waveHeight: 1.2,
+    waterSpeed: 1, waterColor: '#047888', reflections: true,
+  };
   reflectionUniforms.uReflectionSkyColor.value.copy(skyColor);
   reflectionUniforms.uReflectionHorizonColor.value.copy(horizonColor);
   const frameUniforms = {
@@ -166,7 +273,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     fragmentShader: silverWaterFragment,
     uniforms: {
       ...reflectionUniforms, ...frameUniforms,
-      uTime: { value: 0 }, uWaveHeight: { value: waveHeight },
+      uTime: { value: 0 }, uWaveHeight: { value: environment.waveHeight },
       uMillerActive: { value: 0 }, uMillerX: { value: -100000 }, uMillerTime: { value: 0 },
       uShallowWaterColor: { value: new THREE.Color(0x168d9c) },
       uDeepWaterColor: { value: new THREE.Color(0x023b57) },
@@ -196,7 +303,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     uniforms: {
       ...reflectionUniforms, ...frameUniforms,
       uShoreCameraPosition: { value: cameraPosition },
-      uTime: { value: 0 }, uWaveHeight: { value: waveHeight },
+      uTime: { value: 0 }, uWaveHeight: { value: environment.waveHeight },
       uUnderwater: { value: 0 }, uDaylight: { value: 1 }, uMaterialKind: { value: 0 },
       uSunDirection: { value: sunDirection }, uOceanColor: { value: oceanColor },
       uMetallicBeach: { value: 0 }, uFlashlightEnabled: { value: 0 },
@@ -235,6 +342,8 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
 
   const cygnus = createCygnusSystem();
   frame.add(cygnus.group);
+  const rain = createShoreRain(quality);
+  frame.add(rain);
   const localCamera = new THREE.PerspectiveCamera();
   const localCameraMatrix = new THREE.Matrix4();
   const reflectionCamera = new THREE.PerspectiveCamera();
@@ -245,7 +354,83 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   const previousScissor = new THREE.Vector4();
   let reflectionTarget: THREE.WebGLRenderTarget | undefined;
   let lastReflectionTime = -Infinity;
+  let lastAnimationTime: number | undefined;
+  let waterTime = 0;
   let disposed = false;
+
+  const getLighting = (): ShoreLightingState => {
+    const light = daylightPresets[environment.timeOfDay];
+    const weather = weatherPresets[environment.weather];
+    return {
+      background: `#${skyColor.getHexString()}`,
+      fogColor: `#${horizonColor.getHexString()}`,
+      fogDensity: weather.fog,
+      ambientColor: light.ambient,
+      ambientIntensity: light.ambientIntensity * (1 - weather.shade * 0.28),
+      sunColor: light.sun,
+      sunIntensity: light.sunIntensity * (1 - weather.shade * 0.83),
+      // Rotate the shader's Mizu frame into the scene's world coordinate frame.
+      sunPosition: [sunDirection.z * 400, sunDirection.y * 400, -sunDirection.x * 400],
+      daylight: light.daylight * (1 - weather.shade * 0.38),
+    };
+  };
+
+  const applyEnvironment = (): void => {
+    const light = daylightPresets[environment.timeOfDay];
+    const weather = weatherPresets[environment.weather];
+    const stormTint = new THREE.Color(environment.timeOfDay === 'night' ? '#192b41' : '#6c8191');
+    skyColor.set(light.sky).lerp(stormTint, weather.shade);
+    horizonColor.set(light.horizon).lerp(stormTint, weather.shade * 0.9);
+    oceanColor.set(environment.waterColor);
+    sunDirection.fromArray(light.sunDirection).normalize();
+    const daylight = getLighting().daylight;
+    waterMaterial.uniforms.uWaveHeight.value = environment.waveHeight;
+    sandMaterial.uniforms.uWaveHeight.value = environment.waveHeight;
+    // Use the original Mizu palette at its default color. A color-picker edit
+    // shifts both the shallow water and deep absorption, keeping their contrast.
+    const baseColor = new THREE.Color('#047888');
+    const channelRatio = new THREE.Color(
+      oceanColor.r / Math.max(0.015, baseColor.r),
+      oceanColor.g / Math.max(0.015, baseColor.g),
+      oceanColor.b / Math.max(0.015, baseColor.b),
+    );
+    if (environment.waterColor === '#047888') channelRatio.setRGB(1, 1, 1);
+    waterMaterial.uniforms.uShallowWaterColor.value.set('#168d9c').multiply(channelRatio);
+    waterMaterial.uniforms.uDeepWaterColor.value.set('#023b57').multiply(channelRatio);
+    waterMaterial.uniforms.uSunColor.value.set(light.sun);
+    waterMaterial.uniforms.uDaylight.value = daylight;
+    waterMaterial.uniforms.uCloud.value = weather.cloud;
+    sandMaterial.uniforms.uDaylight.value = daylight;
+    skyMaterial.uniforms.uDaylight.value = daylight;
+    skyMaterial.uniforms.uCloud.value = weather.cloud;
+    reflectionUniforms.uReflectionSkyColor.value.copy(skyColor);
+    reflectionUniforms.uReflectionHorizonColor.value.copy(horizonColor);
+    reflectionUniforms.uReflectionStrength.value = 0;
+    lastReflectionTime = -Infinity;
+    rain.visible = weather.rain > 0;
+    rain.geometry.setDrawRange(0, Math.round(rain.geometry.getAttribute('position').count * weather.rain / 2) * 2);
+    rain.material.uniforms.uWind.value = weather.wind;
+    rain.material.uniforms.uOpacity.value = environment.timeOfDay === 'night' ? 0.42 : 0.66;
+  };
+
+  const setEnvironment = (partial: Partial<ShoreEnvironmentState>): ShoreEnvironmentState => {
+    if (disposed) return { ...environment };
+    if (partial.timeOfDay && Object.hasOwn(daylightPresets, partial.timeOfDay)) environment.timeOfDay = partial.timeOfDay;
+    if (partial.weather && Object.hasOwn(weatherPresets, partial.weather)) environment.weather = partial.weather;
+    if (typeof partial.waveHeight === 'number' && Number.isFinite(partial.waveHeight)) {
+      environment.waveHeight = THREE.MathUtils.clamp(partial.waveHeight, 0, 3);
+    }
+    if (typeof partial.waterSpeed === 'number' && Number.isFinite(partial.waterSpeed)) {
+      environment.waterSpeed = THREE.MathUtils.clamp(partial.waterSpeed, 0, 3);
+    }
+    if (typeof partial.waterColor === 'string' && /^#[0-9a-f]{6}$/i.test(partial.waterColor)) {
+      environment.waterColor = partial.waterColor.toLowerCase();
+    }
+    if (typeof partial.reflections === 'boolean') environment.reflections = partial.reflections;
+    applyEnvironment();
+    return { ...environment };
+  };
+  applyEnvironment();
 
   const update = (camera: THREE.Camera, elapsedSeconds: number): void => {
     if (disposed) return;
@@ -263,17 +448,25 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     // Moving the graded grid maintains dense metre-scale wave geometry near
     // the visitor without CPU vertex updates or rebuilding GPU buffers.
     water.position.set(localCamera.position.x, 0, localCamera.position.z);
-    waterMaterial.uniforms.uTime.value = elapsedSeconds;
-    sandMaterial.uniforms.uTime.value = elapsedSeconds;
+    const currentTime = Number.isFinite(elapsedSeconds) ? Math.max(0, elapsedSeconds) : (lastAnimationTime ?? 0);
+    waterTime += lastAnimationTime === undefined ? currentTime * environment.waterSpeed
+      : Math.max(0, currentTime - lastAnimationTime) * environment.waterSpeed;
+    lastAnimationTime = currentTime;
+    waterMaterial.uniforms.uTime.value = waterTime;
+    sandMaterial.uniforms.uTime.value = waterTime;
     skyMaterial.uniforms.uTime.value = elapsedSeconds;
-    cygnus.update(localCamera, elapsedSeconds, false, 0.96, 1);
+    rain.position.copy(localCamera.position);
+    rain.material.uniforms.uTime.value = currentTime;
+    const weather = weatherPresets[environment.weather];
+    const daylight = waterMaterial.uniforms.uDaylight.value as number;
+    cygnus.update(localCamera, currentTime, false, 0.96 - weather.shade * 0.28, daylight);
     waterMaterial.uniforms.uCompanionDirection.value.copy(cygnus.companionDirection);
     waterMaterial.uniforms.uCompanionGlow.value = 1 - Math.cos(elapsedSeconds * Math.PI / 4) * 0.16;
   };
 
   const renderReflection = (renderer: THREE.WebGLRenderer, scene: THREE.Scene,
     camera: THREE.PerspectiveCamera, elapsedSeconds: number): void => {
-    if (disposed || quality === 'low' || !group.visible || elapsedSeconds - lastReflectionTime < 1 / 20) return;
+    if (disposed || quality === 'low' || !environment.reflections || !group.visible || elapsedSeconds - lastReflectionTime < 1 / 20) return;
     if (!reflectionTarget) {
       reflectionTarget = new THREE.WebGLRenderTarget(1, 1, {
         type: THREE.HalfFloatType, minFilter: THREE.LinearMipmapLinearFilter,
@@ -297,6 +490,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     const previousXr = renderer.xr.enabled;
     const previousShadowUpdate = renderer.shadowMap.autoUpdate;
     const previousWaterVisible = water.visible;
+    const previousRainVisible = rain.visible;
     renderer.getClearColor(previousClear);
     renderer.getViewport(previousViewport);
     renderer.getScissor(previousScissor);
@@ -304,6 +498,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     reflectionUniforms.uReflectionStrength.value = 0;
     reflectionUniforms.uSceneReflection.value = null;
     water.visible = false;
+    rain.visible = false;
     try {
       renderer.xr.enabled = false;
       renderer.shadowMap.autoUpdate = false;
@@ -318,6 +513,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
     } finally {
       reflectionUniforms.uSceneReflection.value = reflectionTarget.texture;
       water.visible = previousWaterVisible;
+      rain.visible = previousRainVisible;
       renderer.setRenderTarget(previousTarget);
       renderer.setViewport(previousViewport);
       renderer.setScissor(previousScissor);
@@ -332,9 +528,13 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
   return {
     group, water, sand, sky,
     groundHeight: syntheticShoreGroundHeight,
-    waterHeight: (x, z, elapsedSeconds) => sampleNormalWave(-z, x, elapsedSeconds, waveHeight),
+    waterHeight: (x, z, elapsedSeconds) => sampleNormalWave(-z, x,
+      lastAnimationTime === undefined ? elapsedSeconds * environment.waterSpeed
+        : waterTime + Math.max(0, elapsedSeconds - lastAnimationTime) * environment.waterSpeed,
+      environment.waveHeight),
     update, renderReflection,
     getCygnusState: () => cygnus.getState(localCamera),
+    getEnvironment: () => ({ ...environment }), setEnvironment, getLighting,
     dispose() {
       if (disposed) return;
       disposed = true;
@@ -342,7 +542,7 @@ export function createSyntheticShoreEffects(options: SyntheticShoreEffectsOption
       const geometries = new Set<THREE.BufferGeometry>();
       const materials = new Set<THREE.Material>();
       group.traverse((object) => {
-        if (!(object instanceof THREE.Mesh)) return;
+        if (!(object instanceof THREE.Mesh) && !(object instanceof THREE.LineSegments)) return;
         geometries.add(object.geometry);
         for (const material of Array.isArray(object.material) ? object.material : [object.material]) materials.add(material);
       });

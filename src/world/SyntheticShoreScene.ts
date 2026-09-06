@@ -1,9 +1,16 @@
 import * as THREE from 'three';
-import { createSyntheticShoreEffects } from './syntheticShoreEffects';
+import { createSyntheticShoreEffects, type ShoreEnvironmentState } from './syntheticShoreEffects';
+import { createSyntheticBeachVenues } from './syntheticBeachVenues';
+import { createSyntheticBeachAudio } from './syntheticBeachAudio';
+import { WALK_EYE_HEIGHT_METRES, WALK_GRAVITY, WALK_JUMP_SPEED, WALK_JUMP_TAP_SPEED, WALK_JUMP_TAP_HEIGHT_METRES, WALK_JUMP_HOLD_HEIGHT_METRES, WALK_TURBO_SPEED, worldUnitsToMetres } from '../config/island';
 
-export type SyntheticShoreView = 'ocean' | 'island' | 'pier';
+export type SyntheticShoreView = 'ocean' | 'island' | 'pier' | 'club' | 'house';
 
-const EYE_HEIGHT = 1.7;
+const EYE_HEIGHT = WALK_EYE_HEIGHT_METRES;
+// The island uses 10 m per unit; this scene uses metres. Share its physics.
+const GRAVITY = worldUnitsToMetres(WALK_GRAVITY);
+const JUMP_SPEED = worldUnitsToMetres(WALK_JUMP_SPEED);
+const JUMP_TAP_SPEED = worldUnitsToMetres(WALK_JUMP_TAP_SPEED);
 const PIER_X = 42;
 const PIER_Y = 8;
 const STAIR_X = 30.5;
@@ -103,10 +110,23 @@ export class SyntheticShoreScene {
   private readonly canvas: HTMLCanvasElement;
   private readonly renderer: THREE.WebGLRenderer;
   private readonly effects: ReturnType<typeof createSyntheticShoreEffects>;
+  private readonly venues: ReturnType<typeof createSyntheticBeachVenues>;
+  private readonly audio = createSyntheticBeachAudio();
+  private readonly ambient = new THREE.HemisphereLight();
+  private readonly sunlight = new THREE.DirectionalLight();
+  private readonly raycaster = new THREE.Raycaster();
+  private readonly pickPoint = new THREE.Vector2();
+  private pointerStartX = 0;
+  private pointerStartY = 0;
+  private interactionListener: (() => void) | null = null;
+  private nearbyHotspotId: string | null = null;
+  private activeHotspotId: string | null = null;
+  private interactionMessage = '';
   private readonly keys = new Set<string>();
   private readonly navigationDirection = new THREE.Vector3();
   private readonly navigationRight = new THREE.Vector3();
   private readonly destination = new THREE.Vector3();
+  private readonly navigationFrom = new THREE.Vector3();
   private readonly direction = new THREE.Vector3();
   private readonly euler = new THREE.Euler(0, 0, 0, 'YXZ');
   private readonly up = new THREE.Vector3(0, 1, 0);
@@ -122,12 +142,29 @@ export class SyntheticShoreScene {
   private surface = 'silver sand';
   private moving = false;
   private elapsed = 0;
+  private groundY = 0;
+  private velocityY = 0;
+  private grounded = true;
+  private jumpHeld = false;
+  private jumpStartY = 0;
+  private jumpPeakHeight = 0;
+  private walkSpeedKilometresPerHour = 6.5;
+  private turboEnabled = false;
+  private pointerWasLocked = false;
+  private pointerLockPending = false;
+  private dragLookFallback = false;
+  private fallbackPointerReady = false;
+  private lastUnlockAt = -Infinity;
   private readonly onExit: () => void;
 
-  constructor(renderer: THREE.WebGLRenderer, onExit: () => void) {
+  constructor(renderer: THREE.WebGLRenderer, onExit: () => void, movement?: { speedKilometresPerHour: number; turboEnabled: boolean }) {
     this.onExit = onExit;
     this.renderer = renderer;
     this.canvas = renderer.domElement;
+    if (movement) {
+      this.walkSpeedKilometresPerHour = movement.speedKilometresPerHour;
+      this.turboEnabled = movement.turboEnabled;
+    }
     this.previousTouchAction = this.canvas.style.touchAction;
     this.previousCursor = this.canvas.style.cursor;
     this.previousTabIndex = this.canvas.tabIndex;
@@ -137,12 +174,17 @@ export class SyntheticShoreScene {
     this.scene.name = 'Synthetic shore / Alpine oceanfront';
     this.scene.background = new THREE.Color('#80b9d1');
     this.scene.fog = new THREE.FogExp2('#83adbf', 0.00022);
-    this.scene.add(new THREE.HemisphereLight('#e6f9ff', '#516c77', 2.25));
-    const sunlight = new THREE.DirectionalLight('#fff8e9', 2.4);
-    sunlight.position.set(-200, 400, -260);
-    this.scene.add(sunlight);
+    this.ambient.groundColor.set('#516c77');
+    this.scene.add(this.ambient, this.sunlight);
     this.effects = createSyntheticShoreEffects();
     this.scene.add(this.effects.group);
+    this.venues = createSyntheticBeachVenues((x, z) => this.groundHeight(x, z));
+    this.scene.add(this.venues.group);
+    try {
+      const saved = JSON.parse(localStorage.getItem('synthetic-shore-environment-v1') ?? 'null');
+      if (saved && typeof saved === 'object') this.effects.setEnvironment(saved);
+    } catch { /* Optional view preferences must never block the scene. */ }
+    this.applyLighting();
     this.buildPier();
     this.buildIslandVista();
     this.buildCityVista();
@@ -156,6 +198,11 @@ export class SyntheticShoreScene {
     this.canvas.addEventListener('pointercancel', this.onPointerUp);
     this.canvas.addEventListener('lostpointercapture', this.onPointerUp);
     this.canvas.addEventListener('contextmenu', this.onContextMenu);
+    this.canvas.addEventListener('blur', this.onBlur);
+    document.addEventListener('mousemove', this.onLockedMouseMove);
+    document.addEventListener('pointerlockchange', this.onPointerLockChange);
+    document.addEventListener('pointerlockerror', this.onPointerLockError, true);
+    document.addEventListener('visibilitychange', this.onVisibilityChange);
     window.addEventListener('keydown', this.onKeyDown);
     window.addEventListener('keyup', this.onKeyUp);
     window.addEventListener('blur', this.onBlur);
@@ -420,9 +467,6 @@ export class SyntheticShoreScene {
     batch.add(ink, -31, 76, centerZ + 8, 20, 99, 27);
     batch.add(ink, 36, 72, centerZ + 16, 17, 95, 29);
     for (let floor = 0; floor < 9; floor += 1) batch.add(cyan, 0, 25 + floor * 10, centerZ - 24, 66, 0.8, 1);
-    const shieldMaterial = new THREE.MeshPhysicalMaterial({ color: '#bfdce0', transparent: true, opacity: 0.24, roughness: 0.3, metalness: 0, depthWrite: false, side: THREE.DoubleSide });
-    const shield = meshAt(group, new THREE.SphereGeometry(220, 24, 12, 0, TAU, 0, Math.PI / 2), shieldMaterial, 0, 16, centerZ + 90, 'Central atmospheric shield');
-    shield.scale.y = 0.87;
     // The eastern transit bridge remains at the side of the view.
     batch.add(pale, 560, 20, centerZ + 65, 380, 2.3, 9, -0.35);
     for (let i = 0; i < 10; i += 1) batch.add(ink, 410 + i * 32, 9, centerZ + 10 + i * 11.7, 3, 24, 3);
@@ -459,6 +503,7 @@ export class SyntheticShoreScene {
     group.add(stones);
     for (const x of [-43, -25, 14, 66, 82]) {
       const z = 44 + seeded(x + 203) * 9;
+      if (this.venues.groundHeight(x, z) !== null) continue;
       const y = this.groundHeight(x, z);
       batch.add(titanium, x, y + 0.46, z, 3.7, 0.16, 1.05);
       batch.add(dark, x, y + 0.55, z, 3.3, 0.07, 0.8);
@@ -468,6 +513,7 @@ export class SyntheticShoreScene {
     for (let i = 0; i < 16; i += 1) {
       const x = -83 + i * 11;
       const z = 65 + Math.sin(i * 0.7) * 4;
+      if (this.venues.groundHeight(x, z) !== null) continue;
       const y = this.groundHeight(x, z);
       batch.add(titanium, x, y + 0.5, z, 0.13, 1, 0.13);
       batch.add(cyan, x, y + 0.95, z, 0.17, 0.13, 0.17);
@@ -503,20 +549,190 @@ export class SyntheticShoreScene {
     if (this.disposed) return;
     this.view = view;
     this.keys.clear();
+    this.activeHotspotId = null;
+    this.interactionMessage = '';
     if (view === 'island') {
       this.camera.position.set(-4, this.groundHeight(-4, 12) + EYE_HEIGHT, 12);
       this.camera.lookAt(0, 58, 850);
     } else if (view === 'pier') {
       this.camera.position.set(-5, this.groundHeight(-5, 7) + EYE_HEIGHT, 7);
       this.camera.lookAt(32, 5.8, 41);
+    } else if (view === 'club') {
+      this.camera.position.set(-48, (this.venues.groundHeight(-48, 32) ?? this.groundHeight(-48, 32)) + EYE_HEIGHT, 32);
+      this.camera.lookAt(-48, 5, 49);
+    } else if (view === 'house') {
+      this.camera.position.set(68, (this.venues.groundHeight(68, 45) ?? this.groundHeight(68, 45)) + EYE_HEIGHT, 45);
+      this.camera.lookAt(68, 5.5, 62);
     } else {
       this.camera.position.set(0, this.groundHeight(0, 18) + EYE_HEIGHT, 18);
       this.camera.lookAt(0, 10, -160);
     }
     this.euler.setFromQuaternion(this.camera.quaternion, 'YXZ');
-    this.surface = 'silver sand';
+    this.groundY = this.camera.position.y - EYE_HEIGHT;
+    this.grounded = true;
+    this.velocityY = 0;
+    this.jumpHeld = false;
+    this.jumpPeakHeight = 0;
+    this.surface = this.venues.groundHeight(this.camera.position.x, this.camera.position.z) === null ? 'silver sand' : 'beach pavilion';
     this.moving = false;
     this.effects.update(this.camera, this.elapsed);
+    this.refreshNearbyHotspot();
+    this.interactionListener?.();
+  }
+
+  getEnvironment() { return this.effects.getEnvironment(); }
+
+  setEnvironment(patch: Partial<ShoreEnvironmentState>) {
+    const state = this.effects.setEnvironment(patch);
+    this.applyLighting();
+    try { localStorage.setItem('synthetic-shore-environment-v1', JSON.stringify(state)); } catch { /* Storage is optional. */ }
+    return state;
+  }
+
+  private applyLighting() {
+    const light = this.effects.getLighting();
+    (this.scene.background as THREE.Color).set(light.background);
+    const fog = this.scene.fog as THREE.FogExp2;
+    fog.color.set(light.fogColor);
+    fog.density = light.fogDensity;
+    this.ambient.color.set(light.ambientColor);
+    this.ambient.intensity = light.ambientIntensity;
+    this.sunlight.color.set(light.sunColor);
+    this.sunlight.intensity = light.sunIntensity;
+    this.sunlight.position.fromArray(light.sunPosition);
+  }
+
+  setInteractionListener(listener: (() => void) | null) {
+    this.interactionListener = listener;
+    listener?.();
+  }
+
+  private refreshNearbyHotspot() {
+    let nearest: string | null = null;
+    let distance = Infinity;
+    for (const hotspot of this.venues.hotspots) {
+      const candidate = Math.hypot(hotspot.position.x - this.camera.position.x, hotspot.position.z - this.camera.position.z);
+      if (candidate <= hotspot.radius && candidate < distance) { nearest = hotspot.id; distance = candidate; }
+    }
+    const active = this.venues.hotspots.find(h => h.id === this.activeHotspotId);
+    const activeOutOfRange = !!active && Math.hypot(active.position.x - this.camera.position.x, active.position.z - this.camera.position.z) > active.radius;
+    if (nearest !== this.nearbyHotspotId || activeOutOfRange) {
+      this.nearbyHotspotId = nearest;
+      if (activeOutOfRange) this.activeHotspotId = null;
+      this.interactionListener?.();
+    }
+  }
+
+  openNearbyInteraction(hotspotId?: string) {
+    this.refreshNearbyHotspot();
+    const picked = this.venues.hotspots.find(h => h.id === hotspotId);
+    this.activeHotspotId = picked
+      ? (Math.hypot(picked.position.x - this.camera.position.x, picked.position.z - this.camera.position.z) <= picked.radius ? picked.id : null)
+      : this.nearbyHotspotId;
+    if (this.activeHotspotId) this.releaseMouseLook();
+    this.keys.clear();
+    this.interactionMessage = this.activeHotspotId ? '' : 'Walk closer to the beach bar, DJ booth, or house.';
+    this.interactionListener?.();
+  }
+
+  closeInteraction() {
+    this.activeHotspotId = null;
+    this.interactionListener?.();
+    this.canvas.focus({ preventScroll: true });
+  }
+
+  getInteractionState() {
+    return {
+      nearby: this.venues.hotspots.find(h => h.id === this.nearbyHotspotId) ?? null,
+      active: this.venues.hotspots.find(h => h.id === this.activeHotspotId) ?? null,
+      message: this.interactionMessage,
+      venues: this.venues.getSnapshot(),
+      audio: this.audio.getSnapshot(),
+    };
+  }
+
+  async performVenueAction(actionId: string) {
+    const active = this.venues.hotspots.find(h => h.id === this.activeHotspotId);
+    if (!active || !active.actions.some(action => action.id === actionId)) return;
+    this.refreshNearbyHotspot();
+    if (this.activeHotspotId !== active.id) return;
+    const doorOpen = this.venues.getSnapshot().house.doorOpen;
+    const inDoorway = Math.abs(this.camera.position.x - 68) < 2.6 && Math.abs(this.camera.position.z - 51) < 1;
+    const byOpenDoor = Math.abs(this.camera.position.x - 65.95) < 0.8 && Math.abs(this.camera.position.z - 53.05) < 2.5;
+    if (actionId === 'toggle-house-door' && (doorOpen ? inDoorway : byOpenDoor)) {
+      this.interactionMessage = 'Step clear of the doorway before closing the door.';
+      if (!doorOpen) this.interactionMessage = 'Step clear of the door before opening it.';
+      this.interactionListener?.();
+      return;
+    }
+    const result = this.venues.perform(actionId);
+    this.interactionMessage = result.message;
+    if (actionId === 'toggle-music') {
+      try { await this.audio.setPlaying(!this.audio.getSnapshot().playing); }
+      catch { this.interactionMessage = 'Music could not start. Press Play to try again.'; }
+    }
+    if (actionId === 'track-tidal' || actionId === 'track-orbital') this.audio.selectTrack(actionId === 'track-tidal' ? 'tidal' : 'orbital');
+    if (!this.disposed) this.interactionListener?.();
+  }
+
+  setMusicVolume(volume: number) {
+    this.audio.setVolume(volume);
+    this.interactionListener?.();
+  }
+
+  setMusicTrack(track: 'tidal' | 'orbital') {
+    this.audio.selectTrack(track);
+    this.interactionListener?.();
+  }
+
+  getMovementState() {
+    return {
+      eyeHeightMetres: EYE_HEIGHT,
+      configuredWalkSpeedKilometresPerHour: this.walkSpeedKilometresPerHour,
+      turboEnabled: this.turboEnabled,
+      speedKilometresPerHour: this.moving ? (this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) * 3.6 : this.walkSpeedKilometresPerHour) : 0,
+      grounded: this.grounded,
+      groundY: this.groundY,
+      jumpState: this.grounded ? 'grounded' : this.velocityY > 0 ? 'rising' : 'falling',
+      jumpHeld: this.jumpHeld,
+      jumpHeightMetres: Number(this.jumpPeakHeight.toFixed(2)),
+      jumpHeightRangeMetres: [WALK_JUMP_TAP_HEIGHT_METRES, WALK_JUMP_HOLD_HEIGHT_METRES],
+      pointerLocked: document.pointerLockElement === this.canvas,
+      lookMode: document.pointerLockElement === this.canvas ? 'pointer-lock' : this.pointerId !== null || this.dragLookFallback ? 'drag' : 'idle',
+    };
+  }
+
+  setWalkSpeedKilometresPerHour(speed: number) {
+    this.walkSpeedKilometresPerHour = THREE.MathUtils.clamp(Number.isFinite(speed) ? speed : 6.5, 0.5, 120);
+    this.interactionListener?.();
+  }
+
+  setTurboEnabled(enabled: boolean) {
+    this.turboEnabled = enabled;
+    this.interactionListener?.();
+  }
+
+  requestMouseLook() {
+    if (this.disposed || document.pointerLockElement === this.canvas || this.pointerLockPending) return;
+    this.closeInteraction();
+    this.canvas.focus({ preventScroll: true });
+    this.pointerLockPending = true;
+    try {
+      if (!this.canvas.requestPointerLock) { this.onPointerLockError(); return; }
+      const result = this.canvas.requestPointerLock() as Promise<void> | undefined;
+      result?.then(() => { if (this.disposed && document.pointerLockElement === this.canvas) document.exitPointerLock(); }, () => this.onPointerLockError());
+    } catch { this.onPointerLockError(); }
+  }
+
+  private releaseMouseLook() {
+    this.dragLookFallback = false;
+    this.fallbackPointerReady = false;
+    if (document.pointerLockElement === this.canvas) document.exitPointerLock();
+  }
+
+  private releaseJump() {
+    this.jumpHeld = false;
+    if (!this.grounded && this.velocityY > JUMP_TAP_SPEED) this.velocityY = JUMP_TAP_SPEED;
   }
 
   resize(width: number, height: number) {
@@ -542,23 +758,19 @@ export class SyntheticShoreScene {
     const head = radius >= 20.3 && radius <= 27.7 && Math.abs(angle) <= Math.PI * 0.64;
     if ((stem || landing || head) && fromGround > PIER_Y - 0.65) return { y: PIER_Y, surface: 'anchor pier' };
     if (x < -94 || x > 94 || z < 0.8 || z > 84) return null;
-    const y = this.groundHeight(x, z);
+    if (this.venues.blocksMovement(x, z)) return null;
+    const venueGround = this.venues.groundHeight(x, z);
+    const y = venueGround ?? this.groundHeight(x, z);
     // Railings prevent stepping off the deck, and stair sides prevent climbing
     // directly through the upper treads from the sand beneath them.
-    if (fromGround > y + 0.7 || (Math.abs(x - STAIR_X) < 2.8 && z > STAIR_START + 1 && z < STAIR_END)) return null;
-    return { y, surface: 'silver sand' };
+    if (Math.abs(fromGround - y) > 0.7 || (Math.abs(x - STAIR_X) < 2.8 && z > STAIR_START + 1 && z < STAIR_END)) return null;
+    return { y, surface: venueGround === null ? 'silver sand' : 'beach pavilion' };
   }
 
   update(delta: number, elapsed: number) {
     if (this.disposed || this.exiting) return;
     const dt = Math.min(Math.max(delta, 0), 0.05);
     this.elapsed = elapsed;
-    const leftLook = this.keys.has('KeyQ') ? 1 : 0;
-    const rightLook = this.keys.has('KeyE') ? 1 : 0;
-    if (leftLook || rightLook) {
-      this.euler.y += (leftLook - rightLook) * dt * 1.25;
-      this.camera.quaternion.setFromEuler(this.euler);
-    }
     const forward = Number(this.keys.has('KeyW') || this.keys.has('ArrowUp')) - Number(this.keys.has('KeyS') || this.keys.has('ArrowDown'));
     const sideways = Number(this.keys.has('KeyD') || this.keys.has('ArrowRight')) - Number(this.keys.has('KeyA') || this.keys.has('ArrowLeft'));
     this.moving = !!(forward || sideways);
@@ -567,29 +779,50 @@ export class SyntheticShoreScene {
       this.navigationDirection.y = 0;
       this.navigationDirection.normalize();
       this.navigationRight.crossVectors(this.navigationDirection, this.up).normalize();
-      const speed = this.keys.has('ShiftLeft') || this.keys.has('ShiftRight') ? 5.5 : 2.1;
-      const distance = speed * dt / Math.max(1, Math.hypot(forward, sideways));
-      this.destination.copy(this.camera.position).addScaledVector(this.navigationDirection, forward * distance).addScaledVector(this.navigationRight, sideways * distance);
-      let surface = this.navigationHeight(this.destination.x, this.destination.z, this.camera.position);
-      if (!surface) {
-        // Sliding along a railing/beach bound remains responsive at an angle.
-        const nextZ = this.destination.z;
-        this.destination.z = this.camera.position.z;
-        surface = this.navigationHeight(this.destination.x, this.destination.z, this.camera.position);
+      const speed = this.turboEnabled ? worldUnitsToMetres(WALK_TURBO_SPEED) : this.walkSpeedKilometresPerHour / 3.6;
+      const subdivisions = Math.max(1, Math.ceil(speed * dt / 0.16));
+      const distance = speed * dt / subdivisions / Math.max(1, Math.hypot(forward, sideways));
+      for (let substep = 0; substep < subdivisions; substep++) {
+        // Ground navigation remains independent of jump height, so a hop never
+        // changes deck layers or slips through a thin wall at high walking speeds.
+        this.navigationFrom.copy(this.camera.position);
+        this.navigationFrom.y = this.groundY + EYE_HEIGHT;
+        this.destination.copy(this.camera.position).addScaledVector(this.navigationDirection, forward * distance).addScaledVector(this.navigationRight, sideways * distance);
+        let surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
         if (!surface) {
-          this.destination.x = this.camera.position.x;
-          this.destination.z = nextZ;
-          surface = this.navigationHeight(this.destination.x, this.destination.z, this.camera.position);
+          // Sliding along a railing/beach bound remains responsive at an angle.
+          const nextZ = this.destination.z;
+          this.destination.z = this.camera.position.z;
+          surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
+          if (!surface) {
+            this.destination.x = this.camera.position.x;
+            this.destination.z = nextZ;
+            surface = this.navigationHeight(this.destination.x, this.destination.z, this.navigationFrom);
+          }
         }
-      }
-      if (surface) {
-        this.camera.position.set(this.destination.x, surface.y + EYE_HEIGHT, this.destination.z);
-        this.surface = surface.surface;
+        if (surface) {
+          this.groundY = surface.y;
+          this.camera.position.set(this.destination.x, this.grounded ? surface.y + EYE_HEIGHT : this.camera.position.y, this.destination.z);
+          this.surface = surface.surface;
+        }
       }
       if (this.surface === 'anchor pier' && this.camera.position.z > 118) this.exit();
     }
+    if (!this.grounded) {
+      this.velocityY -= GRAVITY * dt;
+      this.camera.position.y += this.velocityY * dt;
+      this.jumpPeakHeight = Math.max(this.jumpPeakHeight, this.camera.position.y - this.jumpStartY);
+      if (this.camera.position.y <= this.groundY + EYE_HEIGHT) {
+        this.camera.position.y = this.groundY + EYE_HEIGHT;
+        this.velocityY = 0;
+        this.grounded = true;
+        this.jumpHeld = false;
+      }
+    }
     if (!this.disposed && !this.exiting) {
       this.effects.update(this.camera, elapsed);
+      this.venues.update(elapsed, this.audio.getSnapshot().playing);
+      this.refreshNearbyHotspot();
       this.effects.renderReflection(this.renderer, this.scene, this.camera, elapsed);
     }
   }
@@ -604,9 +837,12 @@ export class SyntheticShoreScene {
       direction: this.direction.toArray(),
       surface: this.surface,
       moving: this.moving,
+      movement: this.getMovementState(),
       dragging: this.pointerId !== null,
       elapsed: this.elapsed,
       cygnusX1: this.effects.getCygnusState(),
+      environment: this.effects.getEnvironment(),
+      interactions: this.getInteractionState(),
       landmarks: { pier: [PIER_X, PIER_Y, ANCHOR_Z], stairs: [STAIR_X, STAIR_START, STAIR_END], island: [0, 16, 850], citySide: 'right', oceanSide: 'left', cygnusX1: true },
     };
   }
@@ -620,9 +856,12 @@ export class SyntheticShoreScene {
 
   private readonly onPointerDown = (event: PointerEvent) => {
     if (this.disposed || event.button !== 0) return;
+    if (document.pointerLockElement === this.canvas) { this.openNearbyInteraction(); return; }
     this.pointerId = event.pointerId;
     this.pointerX = event.clientX;
     this.pointerY = event.clientY;
+    this.pointerStartX = event.clientX;
+    this.pointerStartY = event.clientY;
     this.canvas.setPointerCapture(event.pointerId);
     this.canvas.style.cursor = 'grabbing';
     this.canvas.focus({ preventScroll: true });
@@ -630,9 +869,16 @@ export class SyntheticShoreScene {
   };
 
   private readonly onPointerMove = (event: PointerEvent) => {
-    if (this.pointerId !== event.pointerId || this.disposed) return;
-    this.euler.y -= (event.clientX - this.pointerX) * 0.0026;
-    this.euler.x = THREE.MathUtils.clamp(this.euler.x - (event.clientY - this.pointerY) * 0.0026, -1.25, 1.25);
+    if (this.disposed || document.pointerLockElement === this.canvas || (this.pointerId !== event.pointerId && !this.dragLookFallback)) return;
+    if (this.dragLookFallback && !this.fallbackPointerReady) {
+      this.pointerX = event.clientX;
+      this.pointerY = event.clientY;
+      this.fallbackPointerReady = true;
+      return;
+    }
+    this.euler.setFromQuaternion(this.camera.quaternion, 'YXZ');
+    this.euler.y -= (event.clientX - this.pointerX) * 0.002;
+    this.euler.x = THREE.MathUtils.clamp(this.euler.x - (event.clientY - this.pointerY) * 0.002, -1.42, 1.42);
     this.euler.z = 0;
     this.camera.quaternion.setFromEuler(this.euler);
     this.pointerX = event.clientX;
@@ -641,9 +887,50 @@ export class SyntheticShoreScene {
 
   private readonly onPointerUp = (event: PointerEvent) => {
     if (this.pointerId !== event.pointerId) return;
+    const clicked = event.type === 'pointerup' && Math.hypot(event.clientX - this.pointerStartX, event.clientY - this.pointerStartY) < 5;
     this.pointerId = null;
     this.canvas.style.cursor = 'grab';
     if (this.canvas.hasPointerCapture(event.pointerId)) this.canvas.releasePointerCapture(event.pointerId);
+    if (clicked) {
+      const rect = this.canvas.getBoundingClientRect();
+      this.pickPoint.set((event.clientX - rect.left) / rect.width * 2 - 1, 1 - (event.clientY - rect.top) / rect.height * 2);
+      this.raycaster.setFromCamera(this.pickPoint, this.camera);
+      const hit = this.raycaster.intersectObject(this.venues.group, true)[0];
+      if (hit) {
+        let object: THREE.Object3D | null = hit.object;
+        while (object && !object.userData.beachHotspotId) object = object.parent;
+        if (object) this.openNearbyInteraction(object.userData.beachHotspotId as string);
+      }
+      if (!this.activeHotspotId) this.requestMouseLook();
+    }
+  };
+
+  private readonly onLockedMouseMove = (event: MouseEvent) => {
+    if (this.disposed || document.pointerLockElement !== this.canvas) return;
+    this.euler.setFromQuaternion(this.camera.quaternion, 'YXZ');
+    this.euler.y -= event.movementX * 0.002;
+    this.euler.x = THREE.MathUtils.clamp(this.euler.x - event.movementY * 0.002, -1.42, 1.42);
+    this.camera.quaternion.setFromEuler(this.euler);
+  };
+
+  private readonly onPointerLockChange = () => {
+    const locked = document.pointerLockElement === this.canvas;
+    if (!locked && this.pointerWasLocked) { this.lastUnlockAt = performance.now(); this.onBlur(); }
+    this.pointerWasLocked = locked;
+    this.pointerLockPending = false;
+    this.dragLookFallback = false;
+    if (this.disposed) { if (locked) document.exitPointerLock(); return; }
+    this.interactionListener?.();
+  };
+
+  private readonly onPointerLockError = (event?: Event) => {
+    if (this.disposed) return;
+    event?.stopImmediatePropagation();
+    if (!this.pointerLockPending) return;
+    this.pointerLockPending = false;
+    this.dragLookFallback = true;
+    this.fallbackPointerReady = false;
+    this.interactionListener?.();
   };
 
   private readonly onContextMenu = (event: Event) => event.preventDefault();
@@ -652,20 +939,43 @@ export class SyntheticShoreScene {
     if (this.disposed || event.ctrlKey || event.metaKey || event.altKey) return;
     const target = event.target as HTMLElement | null;
     if (target?.matches('input, textarea, select, [contenteditable="true"]')) return;
-    if (event.code === 'Escape') { event.preventDefault(); this.exit(); return; }
+    if (event.code === 'Escape') {
+      event.preventDefault();
+      if (document.pointerLockElement === this.canvas || this.dragLookFallback) { this.releaseMouseLook(); this.onBlur(); return; }
+      if (performance.now() - this.lastUnlockAt < 180) return;
+      if (this.activeHotspotId) { this.closeInteraction(); return; }
+      this.exit(); return;
+    }
     if (event.code === 'KeyE' && this.surface === 'anchor pier' && this.camera.position.z > 91) { this.exit(); return; }
-    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'KeyQ', 'KeyE', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ShiftLeft', 'ShiftRight'].includes(event.code)) {
+    if (event.code === 'KeyE' && !event.repeat) { event.preventDefault(); this.openNearbyInteraction(); return; }
+    if (event.code === 'Space') {
+      event.preventDefault();
+      if (!event.repeat && this.grounded) {
+        this.jumpHeld = true;
+        this.grounded = false;
+        this.velocityY = JUMP_SPEED;
+        this.jumpStartY = this.camera.position.y;
+        this.jumpPeakHeight = 0;
+      }
+      return;
+    }
+    if (['KeyW', 'KeyA', 'KeyS', 'KeyD', 'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(event.code)) {
       this.keys.add(event.code);
       event.preventDefault();
     }
   };
 
-  private readonly onKeyUp = (event: KeyboardEvent) => this.keys.delete(event.code);
-  private readonly onBlur = () => { this.keys.clear(); this.moving = false; };
+  private readonly onKeyUp = (event: KeyboardEvent) => { this.keys.delete(event.code); if (event.code === 'Space') this.releaseJump(); };
+  private readonly onBlur = () => { this.keys.clear(); this.moving = false; this.releaseJump(); };
+  private readonly onVisibilityChange = () => { if (document.hidden) this.onBlur(); };
 
   dispose() {
     if (this.disposed) return;
     this.disposed = true;
+    this.releaseMouseLook();
+    this.interactionListener = null;
+    this.audio.dispose();
+    this.venues.dispose();
     this.keys.clear();
     this.canvas.removeEventListener('pointerdown', this.onPointerDown);
     this.canvas.removeEventListener('pointermove', this.onPointerMove);
@@ -673,6 +983,11 @@ export class SyntheticShoreScene {
     this.canvas.removeEventListener('pointercancel', this.onPointerUp);
     this.canvas.removeEventListener('lostpointercapture', this.onPointerUp);
     this.canvas.removeEventListener('contextmenu', this.onContextMenu);
+    this.canvas.removeEventListener('blur', this.onBlur);
+    document.removeEventListener('mousemove', this.onLockedMouseMove);
+    document.removeEventListener('pointerlockchange', this.onPointerLockChange);
+    document.removeEventListener('pointerlockerror', this.onPointerLockError, true);
+    document.removeEventListener('visibilitychange', this.onVisibilityChange);
     window.removeEventListener('keydown', this.onKeyDown);
     window.removeEventListener('keyup', this.onKeyUp);
     window.removeEventListener('blur', this.onBlur);

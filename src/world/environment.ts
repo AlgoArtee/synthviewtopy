@@ -1975,7 +1975,11 @@ export function createSkyDome(): SkyDome {
       uSunDir: { value: new THREE.Vector3(0, 1, 0) },
       uIsNight: { value: 0.0 },
     },
-    vertexShader: `varying vec3 vPosition; void main(){ vPosition = position; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
+    // A world-centred sky sphere can cross the camera's far plane when viewed
+    // from the coast. The clipped cap reveals scene.background as a giant
+    // pale semicircle behind the island. Keeping only the view rotation makes
+    // the sky infinitely distant while the radius stays inside the far plane.
+    vertexShader: `varying vec3 vPosition; void main(){ vPosition = position; gl_Position = projectionMatrix * vec4(mat3(viewMatrix) * position, 1.0); }`,
     fragmentShader: `
       uniform vec3 uTop;
       uniform vec3 uHorizon;
@@ -2020,5 +2024,8 @@ export function createSkyDome(): SkyDome {
     material,
   ) as SkyDome;
   sky.name = 'Atmospheric sky (presentation)';
+  // Culling must match the camera-centred shader, not the mesh's origin.
+  sky.frustumCulled = false;
+  sky.userData.cameraRelative = true;
   return sky;
 }

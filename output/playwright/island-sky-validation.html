@@ -1,0 +1,12 @@
+<!doctype html><html><head><meta charset="UTF-8"><link rel="icon" href="data:,"><title>Island sky regression comparison</title><style>body{margin:0;background:#061620;color:white;font:14px system-ui}#labels{display:flex;position:absolute;width:100%;top:18px}#labels span{width:50%;text-align:center;background:#06162099;padding:10px}canvas{display:block}</style></head><body><div id="labels"><span>Previous world-centred sky · offshore view</span><span>Camera-relative sky · same view</span></div><script type="module">
+import * as THREE from '/node_modules/three/build/three.module.js';
+import {createSkyDome} from '/src/world/environment.ts';
+import {createIslandCygnus} from '/src/world/islandCygnus.ts';
+const renderer=new THREE.WebGLRenderer({antialias:true,reverseDepthBuffer:true});
+renderer.setSize(1440,900); renderer.setScissorTest(true);document.body.appendChild(renderer.domElement);
+const camera=new THREE.PerspectiveCamera(42,720/900,.65,3600);camera.position.set(0,1.8,-900);camera.lookAt(0,1.8,0);camera.updateMatrixWorld(true);
+const scenes=[0,1].map((i)=>{const scene=new THREE.Scene();scene.background=new THREE.Color('#a1bbc2');const sky=createSkyDome();sky.material.uniforms.uDayMix.value=1;if(i===0)sky.material.vertexShader='varying vec3 vPosition;void main(){vPosition=position;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';scene.add(sky);const sea=new THREE.Mesh(new THREE.PlaneGeometry(7000,7000),new THREE.MeshBasicMaterial({color:'#063c50'}));sea.rotation.x=-Math.PI/2;sea.position.y=-2;scene.add(sea);return scene;});
+function renderComparison(){scenes.forEach((scene,i)=>{renderer.setViewport(i*720,0,720,900);renderer.setScissor(i*720,0,720,900);renderer.render(scene,camera);});}
+window.renderOverview=()=>{document.querySelector('#labels').innerHTML='<span style="width:100%">Shared Cygnus artwork · default island overview camera</span>';const scene=scenes[1];scene.children.filter(o=>o.name.includes('Cygnus')).forEach(o=>scene.remove(o));const binary=createIslandCygnus();scene.add(binary.group);camera.aspect=1440/900;camera.updateProjectionMatrix();camera.position.set(780,610,840);camera.lookAt(0,2,0);camera.updateMatrixWorld(true);binary.update(camera,3,1,1);renderer.setViewport(0,0,1440,900);renderer.setScissor(0,0,1440,900);renderer.render(scene,camera);return binary.getSnapshot(camera);};
+renderComparison();window.ready=true;
+</script></body></html>

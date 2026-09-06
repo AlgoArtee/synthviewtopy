@@ -1,0 +1,1002 @@
+{
+  "status": "passed",
+  "ascent": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      30.5,
+      9.620000000000001,
+      59.125000000000476
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": false,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 0,
+      "grounded": true,
+      "groundY": 8,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 16.8493,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.10616249999999994,
+        "coronaPulse": -0.7856571768555072,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "landing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      42.1137999999674,
+      9.620000000000001,
+      59.125000000000476
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 19.8,
+      "grounded": true,
+      "groundY": 8,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 16.8659,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.10823749999999999,
+        "coronaPulse": -0.7775247586429725,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "stem": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      42.1137999999674,
+      9.620000000000001,
+      50.875000000000306
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 19.8,
+      "grounded": true,
+      "groundY": 8,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 18.365899999999915,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.29573749999998933,
+        "coronaPulse": 0.28343795088582463,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "anchor": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      35.399999999999864,
+      9.620000000000001,
+      -63.21664999998373
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 19.8,
+      "grounded": true,
+      "groundY": 8,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 18.099299999999932,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.2624124999999915,
+        "coronaPulse": 0.07791099996792872,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "railing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      28.61666666666652,
+      9.620000000000001,
+      -63.21664999998373
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 19.8,
+      "grounded": true,
+      "groundY": 8,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 16.9159,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.11448750000000008,
+        "coronaPulse": -0.7522366887180836,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "stairRailing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      28.208333333333375,
+      6.4093333333333335,
+      44
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "pier stairs",
+    "moving": true,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 19.8,
+      "grounded": true,
+      "groundY": 4.789333333333333,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 18.415899999999915,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.3019874999999894,
+        "coronaPulse": 0.320869223890422,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "descent": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      30.5,
+      2.70899999999998,
+      27.224999999999497
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "silver sand",
+    "moving": false,
+    "movement": {
+      "eyeHeightMetres": 1.62,
+      "configuredWalkSpeedKilometresPerHour": 19.8,
+      "turboEnabled": false,
+      "speedKilometresPerHour": 0,
+      "grounded": true,
+      "groundY": 1.08899999999998,
+      "jumpState": "grounded",
+      "jumpHeld": false,
+      "jumpHeightMetres": 0,
+      "jumpHeightRangeMetres": [
+        0.55,
+        1.6
+      ],
+      "pointerLocked": false,
+      "lookMode": "idle"
+    },
+    "dragging": false,
+    "elapsed": 16.9659,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.12073750000000016,
+        "coronaPulse": -0.725788724342394,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "environment": {
+      "timeOfDay": "day",
+      "weather": "clear",
+      "waveHeight": 1.2,
+      "waterSpeed": 1,
+      "waterColor": "#047888",
+      "reflections": true
+    },
+    "interactions": {
+      "nearby": null,
+      "active": null,
+      "message": "",
+      "venues": {
+        "club": {
+          "name": "Silver Frequency",
+          "position": [
+            -48,
+            2.6,
+            46
+          ],
+          "musicPlaying": false,
+          "canopyClearHeight": 8.4,
+          "canopySoffitY": 11,
+          "roofTopY": 11.6,
+          "signBottomY": 11.9,
+          "signTopY": 15.9,
+          "signFacesOcean": true,
+          "signDoubleSided": false
+        },
+        "house": {
+          "name": "Tidal House",
+          "position": [
+            68,
+            3.08,
+            60
+          ],
+          "doorOpen": false,
+          "doorProgress": 0,
+          "lightsOn": true
+        },
+        "cocktail": null,
+        "hotspotIds": [
+          "club-dj",
+          "club-bar",
+          "beach-house"
+        ]
+      },
+      "audio": {
+        "playing": false,
+        "volume": 0.32,
+        "track": "tidal",
+        "trackName": "Tidal / 86 BPM",
+        "available": true
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "exit": {
+    "active": false,
+    "loading": false,
+    "entry": [
+      0,
+      1.61,
+      -550
+    ],
+    "entrySource": null,
+    "scene": null
+  },
+  "errors": []
+}

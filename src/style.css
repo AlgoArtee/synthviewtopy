@@ -3537,8 +3537,39 @@ body.synthetic-shore-active .label-layer { display: none !important; }
 .shore-header button span { margin-left: 16px; }
 .shore-footer { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; }
 .shore-views { display: flex; justify-content: center; gap: 8px; }
+.shore-movement { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 9px 12px 0; pointer-events: auto; }
+.shore-movement label { display: flex; align-items: center; gap: 7px; padding: 5px 10px; border-radius: 4px; background: rgba(6,33,47,.8); color: #f4fcff; font-size: 11px; }
+.shore-movement input { width: 60px; padding: 5px; border: 1px solid #527883; border-radius: 3px; background: #12323c; color: #eaffff; font: inherit; }
+.synthetic-shore-ui .shore-movement button { padding: 8px 12px; font-size: 11px; }
 .shore-footer p { margin: 12px 10px 0; font-size: 11px; letter-spacing: .025em; color: #14333e; text-shadow: 0 1px 5px #fff; }
 .shore-loading { position: absolute; inset: 0; display: grid; place-items: center; background: #0b2330; font-size: 18px; z-index: -1; }
+.shore-header-actions { display: flex; align-items: flex-start; gap: 10px; }
+.shore-controls { pointer-events: auto; position: relative; }
+.shore-controls summary { cursor: pointer; list-style: none; border: 1px solid rgba(219, 248, 255, .32); border-radius: 4px; background: rgba(6,33,47,.75); padding: 11px 16px; font-size: 12px; }
+.shore-controls summary::-webkit-details-marker { display: none; }
+.shore-controls summary span { margin-left: 12px; }
+.shore-control-body { position: absolute; right: 0; top: 47px; width: 280px; max-height: calc(100vh - 220px); overflow-y: auto; padding: 22px; background: rgba(7,29,42,.94); border: 1px solid #426773; border-radius: 8px; box-shadow: 0 15px 45px #00121b55; backdrop-filter: blur(16px); }
+.shore-control-body h2 { margin: 0 0 18px; font-weight: 400; font-size: 18px; }
+.shore-control-body label, .shore-music-controls label { display: block; margin: 0 0 15px; color: #c0d7df; font-size: 11px; }
+.synthetic-shore-ui select { display: block; width: 100%; margin-top: 7px; padding: 9px; color: #eaffff; background: #143a4b; border: 1px solid #4f707c; border-radius: 4px; font: inherit; font-size: 12px; }
+.synthetic-shore-ui input[type="range"] { display: block; width: 100%; margin: 10px 0 0; accent-color: #9eeaf0; }
+.shore-control-body output { float: right; color: #ecfcff; }
+.shore-control-body label.shore-inline-control { display: flex; align-items: center; justify-content: space-between; }
+.shore-control-body input[type="color"] { width: 55px; height: 29px; padding: 2px; border: 1px solid #527883; border-radius: 3px; background: #12323c; }
+.shore-control-body input[type="checkbox"] { accent-color: #98e7ec; width: 16px; height: 16px; }
+.shore-control-body button { width: 100%; }
+.shore-interaction { pointer-events: auto; position: absolute; bottom: 168px; left: 38px; width: 300px; max-height: calc(100vh - 288px); overflow-y: auto; padding: 20px; background: rgba(7,29,42,.93); border: 1px solid #527981; border-radius: 9px; backdrop-filter: blur(14px); box-shadow: 0 15px 45px #00121b66; }
+.shore-interaction[hidden], .shore-nearby[hidden] { display: none; }
+.shore-interaction > header { display: flex; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.shore-interaction h2 { font-size: 20px; font-weight: 400; margin: 6px 0 0; }
+.shore-interaction > header button { padding: 5px 10px; font-size: 22px; }
+.shore-venue-actions { display: grid; gap: 7px; }
+.shore-venue-actions button { text-align: left; }
+.shore-music-controls { border-top: 1px solid #3b5663; margin-top: 18px; padding-top: 18px; }
+.shore-music-controls p { color: #8bb5c5; font-size: 10px; margin-bottom: 0; }
+.shore-interaction-message { color: #bef4e9; font-size: 12px; line-height: 1.6; margin-bottom: 0; min-height: 1em; }
+.shore-footer .shore-nearby { margin-bottom: 15px; border-color: #b4fcf1; color: #d5ffef; }
+.synthetic-shore-ui[data-time-of-day="night"] .shore-footer p { color: #dcf3fb; text-shadow: 0 1px 5px #000; }
 @media (max-width: 640px) {
   .shore-header { padding: 22px 18px; }
   .shore-header h1 { font-size: 21px; }
@@ -3547,4 +3578,11 @@ body.synthetic-shore-active .label-layer { display: none !important; }
   .shore-views { gap: 5px; }
   .shore-views button { padding: 9px; font-size: 10px; }
   .shore-footer p { font-size: 10px; }
+  .shore-header-actions { gap: 5px; }
+  .shore-controls summary { padding: 10px; font-size: 10px; }
+  .shore-controls summary span { display: none; }
+  .shore-control-body { position: fixed; top: 82px; right: 18px; width: min(280px, calc(100vw - 36px)); }
+  .shore-views { padding: 0 12px; flex-wrap: wrap; }
+  .shore-interaction { left: 18px; bottom: 210px; width: min(300px, calc(100vw - 36px)); max-height: calc(100vh - 305px); }
+  .shore-movement { flex-wrap: wrap; gap: 5px; }
 }

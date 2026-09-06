@@ -3484,3 +3484,67 @@ body.theme-cleantech .inspector-actions button:first-child {
     transition-duration: 0.01ms !important;
   }
 }
+
+.shore-atlas-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 16px;
+  padding: 12px;
+  border: 1px solid rgba(156, 224, 232, .28);
+  border-radius: 4px;
+  color: var(--ink);
+  background: rgba(139, 221, 227, .07);
+  text-align: left;
+  cursor: pointer;
+}
+.shore-atlas-link > span:first-child { font-size: 23px; color: #91e1e8; }
+.shore-atlas-link small { display: block; margin-top: 5px; color: var(--muted); font-size: 10px; }
+body.synthetic-shore-active #app > :not(#viewport) { visibility: hidden !important; pointer-events: none !important; }
+body.synthetic-shore-active .label-layer { display: none !important; }
+.synthetic-shore-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  color: #f2fafb;
+  font-family: var(--font-body, sans-serif);
+}
+.shore-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 30px 38px;
+  background: linear-gradient(180deg, rgba(4, 28, 43, .54), transparent);
+}
+.shore-eyebrow { font-size: 10px; letter-spacing: .23em; opacity: .75; }
+.shore-header h1 { margin: 8px 0 0; font-size: 27px; font-weight: 400; letter-spacing: .035em; }
+.synthetic-shore-ui button {
+  pointer-events: auto;
+  cursor: pointer;
+  color: #f4fcff;
+  border: 1px solid rgba(219, 248, 255, .32);
+  border-radius: 4px;
+  background: rgba(6, 33, 47, .62);
+  backdrop-filter: blur(12px);
+  padding: 11px 16px;
+  font: inherit;
+  font-size: 12px;
+}
+.synthetic-shore-ui button:hover,
+.synthetic-shore-ui button[aria-pressed="true"] { background: rgba(20, 66, 78, .83); border-color: #aeecf4; }
+.synthetic-shore-ui button:focus-visible { outline: 2px solid #dbf9ff; outline-offset: 4px; }
+.shore-header button span { margin-left: 16px; }
+.shore-footer { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; }
+.shore-views { display: flex; justify-content: center; gap: 8px; }
+.shore-footer p { margin: 12px 10px 0; font-size: 11px; letter-spacing: .025em; color: #14333e; text-shadow: 0 1px 5px #fff; }
+.shore-loading { position: absolute; inset: 0; display: grid; place-items: center; background: #0b2330; font-size: 18px; z-index: -1; }
+@media (max-width: 640px) {
+  .shore-header { padding: 22px 18px; }
+  .shore-header h1 { font-size: 21px; }
+  .shore-header button { padding: 10px; }
+  .shore-eyebrow { font-size: 8px; }
+  .shore-views { gap: 5px; }
+  .shore-views button { padding: 9px; font-size: 10px; }
+  .shore-footer p { font-size: 10px; }
+}

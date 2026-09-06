@@ -14,6 +14,7 @@ SynthViewTopy is an interactive Three.js spatial editor for the YouTopy Lab Isla
 - A cohesive road hierarchy: generic campuses use closed collectors, specialized campuses retain their authored circulation, obstacle-aware graded connectors meet adjacent ring arterials at the exact road datum, and every curb opens at its real junction
 - A Design Studio catalog with 10 exterior building/landscape assets and 12 interior lab, office, furniture, and systems assets
 - Procedural terrain, architecture, biome interiors, roads, landscape, labels, water, lighting, and atmosphere
+- An illuminated anchor pier behind the Alpine dome, with stairs to a silver beach and a separate Synthetic Shore scene featuring MizuTopia surf and animated Cygnus X-1
 
 The source wording is retained as `sourceLabel` where a display name was normalized. The three central labels are represented as closely grouped parts of the integrated core complex.
 
@@ -67,6 +68,28 @@ quality configuration, and Cerebrum vertical-slice definition are documented in
 [`../YouTopiaProgrammabilis/README.md`](../YouTopiaProgrammabilis/README.md).
 
 ## Editor modes and controls
+
+### Synthetic Shore
+
+Use **Synthetic Shore → Locate the Alpine pier** in the Atlas, then click the pier
+in Explore. Approaching its island entrance in Walk also opens the shore. The
+beach has glittering silver sand, rolling surf, a cyberpunk city on the right half
+of the ocean horizon, and a simplified Lab Island vista behind you. Cygnus X-1
+uses MizuTopia's animated companion star, stellar wind, accretion disk, and corona.
+
+Walk with **WASD / arrow keys**, run with **Shift**, and drag to look around.
+The three viewpoint buttons frame the ocean, island, or pier and stairs.
+**Return to island** or **Escape** restores the island camera and navigation;
+walking back along the pier also returns. The scene loads on demand, shares the
+existing renderer, pauses island updates, and disposes its resources on exit.
+Water reflections update at a bounded resolution and rate, while repeated
+architecture is instanced. `npm run test:synthetic-shore` checks entry, movement,
+viewpoints, resizing, return navigation, resource disposal, and browser errors.
+
+The effects are adapted from the local `NatureSimTopy/MizuTopia` project. Original
+effect provenance is recorded in `src/world/syntheticShore/README.md`.
+
+### Island modes
 
 | Mode | Purpose | Mouse controls | Shortcut |
 | --- | --- | --- | --- |

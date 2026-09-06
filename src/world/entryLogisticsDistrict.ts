@@ -57,19 +57,20 @@ const E1_ISLAND_ROUTE_START_Z = 19.5;
 const INNER_RETAIL_COLLECTOR_RADIUS = 318;
 const WELCOME_BUILDING_RADIUS = 343;
 const WELCOME_BUILDING_ANGLE = 303;
-const WELCOME_DISTRICT_BOUNDARY_ANGLE = 300;
-const WELCOME_FRONT_JUNCTION_DISTANCE = 18;
-const WELCOME_LOGISTICS_SPLIT_DISTANCE = 34;
+const WELCOME_THREE_WAY_SPLIT_DISTANCE = 30;
 const WELCOME_ARRIVAL_ALIGNMENT_DISTANCE = 42;
+const WELCOME_HALL_STAIRCASE_OUTER_EDGE = 7.45;
+const WELCOME_SINGLE_LANE_WIDTH = 2.4;
+const WELCOME_SIDE_BRANCH_THROAT_OFFSET = 1.8;
+const WELCOME_LOOP_THROAT_OFFSET = 0.72;
 /** Exact top datum shared by the five arterial rings and six delimiter spokes. */
 const ARTERIAL_ROAD_SURFACE_TOP = metresToWorldUnits(0.06);
 const ROAD_SURFACE_TOP = metresToWorldUnits(0.34);
 const WELCOME_ENTRY_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.01);
 const WELCOME_LOGISTICS_BRANCH_SURFACE_OFFSET = metresToWorldUnits(0.04);
 const WELCOME_APRON_SURFACE_OFFSET = metresToWorldUnits(0.03);
-const WELCOME_JUNCTION_SURFACE_OFFSET = metresToWorldUnits(0.046);
 const FACILITY_VERTICAL_SCALE = 0.46;
-export const ENTRY_LOGISTICS_LAYOUT_REVISION = 7;
+export const ENTRY_LOGISTICS_LAYOUT_REVISION = 10;
 export const WELCOME_POOL_SELECTABLE_ID = 'entry-logistics-landscape-welcome-pool';
 export const WELCOME_POOL_GROUP_NAME = 'ENTRY__WELCOME_HALF_COVERED_POOL_EDITABLE';
 
@@ -214,7 +215,7 @@ type RoadRoute = {
   widthEnd?: number;
   logisticsPlatform?: boolean;
   districtTransition?: boolean;
-  laneCount?: 3;
+  laneCount?: 1 | 3;
 };
 type DoorAccess = {
   threshold: RoadPoint;
@@ -336,7 +337,7 @@ const DOOR_ACCESS_LOCAL: Readonly<Record<string, {
   routeStart: readonly [number, number];
 }>> = {
   E1: { threshold: [0, E1_ISLAND_PORTAL_Z], routeStart: [0, E1_ISLAND_ROUTE_START_Z] },
-  E2: { threshold: [0, 4.1], routeStart: [0, 6.6] },
+  E2: { threshold: [0, 4.1], routeStart: [0, WELCOME_HALL_STAIRCASE_OUTER_EDGE] },
   E3: { threshold: [0, 2.0], routeStart: [0, 4.0] },
   E4: { threshold: [2.1, 2.45], routeStart: [2.1, 8.2] },
   E5: { threshold: [0, 5.3], routeStart: [0, 7.2] },
@@ -583,11 +584,6 @@ function worldPolarAngleForRoadPoint(districtGroup: THREE.Group, point: RoadPoin
   return angle < 0 ? angle + 360 : angle;
 }
 
-function worldPolarRadiusForRoadPoint(districtGroup: THREE.Group, point: RoadPoint) {
-  const world = districtGroup.localToWorld(point.position.clone());
-  return Math.hypot(world.x, world.z);
-}
-
 function welcomeHallRoadJunctions(access: DoorAccess) {
   const frontOutward = access.routeStart.position
     .clone()
@@ -599,11 +595,48 @@ function welcomeHallRoadJunctions(access: DoorAccess) {
     access.routeStart.position.clone().addScaledVector(frontOutward, distance),
     'street-junction',
   );
+  const threeWaySplit = pointOnFrontAxis(
+    'welcome-three-way-split',
+    WELCOME_THREE_WAY_SPLIT_DISTANCE,
+  );
+  const lateral = new THREE.Vector3(-frontOutward.z, 0, frontOutward.x);
+  const symmetricFanPoint = (
+    id: string,
+    side: -1 | 1,
+    forwardDistance: number,
+    lateralDistance: number,
+  ) => roadPoint(
+    id,
+    threeWaySplit.position.clone()
+      .addScaledVector(frontOutward, -forwardDistance)
+      .addScaledVector(lateral, side * lateralDistance),
+    'street-junction',
+  );
   return {
     frontOutward,
-    frontJunction: pointOnFrontAxis('welcome-hall-front-junction', WELCOME_FRONT_JUNCTION_DISTANCE),
-    logisticsSplit: pointOnFrontAxis('welcome-logistics-split', WELCOME_LOGISTICS_SPLIT_DISTANCE),
+    lateral,
+    threeWaySplit,
+    entryThroat: roadPoint(
+      'welcome-entry-single-lane-throat',
+      threeWaySplit.position.clone().addScaledVector(lateral, WELCOME_SIDE_BRANCH_THROAT_OFFSET),
+      'street-junction',
+    ),
+    logisticsThroat: roadPoint(
+      'welcome-logistics-single-lane-throat',
+      threeWaySplit.position.clone().addScaledVector(lateral, -WELCOME_SIDE_BRANCH_THROAT_OFFSET),
+      'street-junction',
+    ),
     arrivalAlignment: pointOnFrontAxis('welcome-arrival-alignment', WELCOME_ARRIVAL_ALIGNMENT_DISTANCE),
+    entryFan: [
+      symmetricFanPoint('welcome-entry-fan-near', 1, 10, 7),
+      symmetricFanPoint('welcome-entry-fan-mid', 1, 21, 15),
+      symmetricFanPoint('welcome-entry-fan-clear', 1, 32, 25),
+    ],
+    logisticsFan: [
+      symmetricFanPoint('welcome-logistics-fan-near', -1, 10, 7),
+      symmetricFanPoint('welcome-logistics-fan-mid', -1, 21, 15),
+      symmetricFanPoint('welcome-logistics-fan-clear', -1, 32, 25),
+    ],
   };
 }
 
@@ -701,103 +734,91 @@ function buildEntryRoutes(districtGroup: THREE.Group, access: ReadonlyMap<string
       'street-junction',
     );
     const {
-      frontJunction,
-      logisticsSplit,
+      frontOutward,
+      lateral,
+      threeWaySplit,
+      entryThroat,
+      logisticsThroat,
       arrivalAlignment,
+      entryFan,
+      logisticsFan,
     } = welcomeHallRoadJunctions(e2);
-    const arrivalToLogisticsSplit = sampledRoadCurve([
+    const arrivalToSplit = sampledRoadCurve([
       e1.routeStart,
       tangentPoint,
       arrivalAlignment,
-      logisticsSplit,
-    ], 48, 'arrival-to-logistics-split');
-    const arrivalToHall = sampledRoadCurve(
-      [logisticsSplit, frontJunction],
-      12,
-      'arrival-to-hall',
-    );
+      threeWaySplit,
+    ], 48, 'arrival-to-three-way-split');
     routes.push({
       id: 'arrival',
-      name: 'Bridge arrival boulevard to the door-aligned Hall junction',
+      name: 'Bridge arrival boulevard to the symmetric Welcome three-way split',
       kind: 'public-vehicle',
-      points: [...arrivalToLogisticsSplit, ...arrivalToHall.slice(1)],
+      points: arrivalToSplit,
       surfaceOffset: 0,
       underBuildingPodium: false,
       laneCount: 3,
     });
-    const entryBranchControls = [
-      frontJunction,
-      polarRoadPoint(districtGroup, 'entry-branch-370-305', 370, 305),
-      polarRoadPoint(districtGroup, 'entry-branch-360-307_5', 360, 307.5),
-      polarRoadPoint(districtGroup, 'entry-branch-345-310', 345, 310),
-      polarRoadPoint(districtGroup, 'central-311', 333, 311),
-    ];
+    const entryFanCurve = sampledRoadCurve([
+      entryThroat,
+      ...entryFan,
+    ], 20, 'entry-symmetric-fan');
     routes.push({
       id: 'arrival-entry-branch',
-      name: 'Welcome fork to Entry and Commercial',
+      name: 'Symmetric Welcome split ending at the Entry facility edge',
       kind: 'public-white',
-      points: sampledRoadCurve(entryBranchControls, 32, 'entry-branch'),
+      points: entryFanCurve,
       surfaceOffset: WELCOME_ENTRY_BRANCH_SURFACE_OFFSET,
-      widthStart: 6.8,
-      widthEnd: 6.8,
-      laneCount: 3,
+      widthStart: WELCOME_SINGLE_LANE_WIDTH,
+      widthEnd: WELCOME_SINGLE_LANE_WIDTH,
+      laneCount: 1,
     });
-    const logisticsBranchControls = [
-      logisticsSplit,
-      polarRoadPoint(districtGroup, 'logistics-branch-367-297_9', 367, 297.9),
-      polarRoadPoint(districtGroup, 'logistics-branch-350-296_8', 350, 296.8),
-      polarRoadPoint(districtGroup, 'logistics-branch-334-297', 334, 297),
-      polarRoadPoint(districtGroup, 'freight-297', 322, 297),
-    ];
+    const logisticsFanCurve = sampledRoadCurve([
+      logisticsThroat,
+      ...logisticsFan,
+    ], 20, 'logistics-symmetric-fan');
     routes.push({
       id: 'arrival-logistics-branch',
-      name: 'Welcome fork to Logistics',
+      name: 'Symmetric Welcome split ending at the Logistics facility edge',
       kind: 'public-vehicle',
-      points: sampledRoadCurve(logisticsBranchControls, 32, 'logistics-branch'),
+      points: logisticsFanCurve,
       surfaceOffset: WELCOME_LOGISTICS_BRANCH_SURFACE_OFFSET,
-      laneCount: 3,
+      widthStart: WELCOME_SINGLE_LANE_WIDTH,
+      widthEnd: WELCOME_SINGLE_LANE_WIDTH,
+      laneCount: 1,
     });
+    const loopPoint = (id: string, forward: number, side: number) => roadPoint(
+      id,
+      threeWaySplit.position.clone()
+        .addScaledVector(frontOutward, -forward)
+        .addScaledVector(lateral, side),
+      'street-junction',
+    );
+    const welcomeLoopControls = [
+      loopPoint('welcome-loop-logistics-throat', 0, -WELCOME_LOOP_THROAT_OFFSET),
+      loopPoint('welcome-loop-logistics-stem-near', 8, -1.35),
+      loopPoint('welcome-loop-logistics-stem-upper', 16.5, -2.15),
+      loopPoint('welcome-loop-logistics-bulb-lower', 20.5, -4.05),
+      loopPoint('welcome-loop-logistics-bulb-side', 24.5, -4.7),
+      loopPoint('welcome-loop-logistics-bulb-upper', 27.2, -3.15),
+      loopPoint('welcome-loop-hall-crown', 28.25, 0),
+      loopPoint('welcome-loop-entry-bulb-upper', 27.2, 3.15),
+      loopPoint('welcome-loop-entry-bulb-side', 24.5, 4.7),
+      loopPoint('welcome-loop-entry-bulb-lower', 20.5, 4.05),
+      loopPoint('welcome-loop-entry-stem-upper', 16.5, 2.15),
+      loopPoint('welcome-loop-entry-stem-near', 8, 1.35),
+      loopPoint('welcome-loop-entry-throat', 0, WELCOME_LOOP_THROAT_OFFSET),
+    ];
     routes.push({
       id: 'e2-door-apron',
-      name: 'Straight three-lane Welcome approach on the exact E2 front-door axis',
+      name: 'Single-lane teardrop loop from the Welcome split around the Hall forecourt',
       kind: 'public-vehicle',
-      points: sampledRoadCurve(
-        [e2.threshold, e2.routeStart, frontJunction],
-        16,
-        'e2-front-door-axis',
-      ),
+      points: sampledRoadCurve(welcomeLoopControls, 64, 'e2-welcome-teardrop-loop'),
       surfaceOffset: WELCOME_APRON_SURFACE_OFFSET,
       underBuildingPodium: false,
-      laneCount: 3,
+      widthStart: WELCOME_SINGLE_LANE_WIDTH,
+      widthEnd: WELCOME_SINGLE_LANE_WIDTH,
+      laneCount: 1,
     });
-    if (e2.rearThreshold && e2.rearRouteStart) {
-      const boundaryRadius = THREE.MathUtils.clamp(
-        worldPolarRadiusForRoadPoint(districtGroup, e2.rearRouteStart) - 4,
-        318,
-        345,
-      );
-      const districtBoundary = polarRoadPoint(
-        districtGroup,
-        'e2-rear-district-boundary-join',
-        boundaryRadius,
-        WELCOME_DISTRICT_BOUNDARY_ANGLE,
-      );
-      routes.push({
-        id: 'e2-rear-boundary-link',
-        name: 'Three-lane E2 rear exit to the Welcome and Logistics delimiter road',
-        kind: 'public-vehicle',
-        points: sampledRoadCurve(
-          [e2.rearThreshold, e2.rearRouteStart, districtBoundary],
-          20,
-          'e2-rear-boundary',
-        ),
-        surfaceOffset: WELCOME_APRON_SURFACE_OFFSET,
-        underBuildingPodium: false,
-        laneCount: 3,
-        widthStart: 6.8,
-        widthEnd: 6.8,
-      });
-    }
   }
 
   routes.push(
@@ -822,8 +843,8 @@ function buildEntryRoutes(districtGroup: THREE.Group, access: ReadonlyMap<string
   );
 
   const connectorAssignments: Readonly<Record<string, readonly [number, readonly [number, number], RoadKind]>> = {
-    E3: [333, [305, 330], 'pedestrian'], E10: [333, [305, 330], 'pedestrian'],
-    E4: [333, [305, 330], 'pedestrian'], E7: [333, [305, 330], 'pedestrian'],
+    E10: [333, [305, 330], 'pedestrian'], E4: [333, [305, 330], 'pedestrian'],
+    E7: [333, [305, 330], 'pedestrian'],
     E11: [333, [305, 330], 'pedestrian'],
     E5: [INNER_RETAIL_COLLECTOR_RADIUS, [313, 330], 'pedestrian'],
     E6: [INNER_RETAIL_COLLECTOR_RADIUS, [313, 330], 'pedestrian'],
@@ -934,6 +955,7 @@ function buildLogisticsRoutes(districtGroup: THREE.Group, access: ReadonlyMap<st
   access.forEach((doorAccess, code) => {
     const entries = doorAccess.entries ?? [];
     entries.forEach((entry, index) => {
+      if (code === 'L1' && entry.id === 'north-stair') return;
       const baseWidth = platformWidths[code] ?? 5.5;
       const width = entry.role === 'staff'
         ? Math.max(2.2, entry.width + 0.7)
@@ -1189,11 +1211,7 @@ function dashedLaneDividerGeometry(
 }
 
 function laneMarkingClearance(route: RoadRoute) {
-  if (route.id === 'arrival') return { start: 0.65, end: 4.75 };
-  if (route.id === 'e2-door-apron') return { start: 0.9, end: 4.75 };
-  if (route.id === 'arrival-entry-branch' || route.id === 'arrival-logistics-branch') {
-    return { start: 4.75, end: 0.8 };
-  }
+  if (route.id === 'arrival') return { start: 0.65, end: 0.65 };
   return { start: 0.8, end: 0.8 };
 }
 
@@ -1235,6 +1253,11 @@ function addContinuousRoadRibbon(
     logisticsPlatform: route.logisticsPlatform === true,
     districtTransition: route.districtTransition === true,
     laneCount: route.laneCount ?? 0,
+    pointCount: route.points.length,
+    startPointId: route.points[0]?.id,
+    endPointId: route.points.at(-1)?.id,
+    startPoint: route.points[0]?.position.toArray(),
+    endPoint: route.points.at(-1)?.position.toArray(),
     walkable: true,
     navObstacle: false,
   };
@@ -1283,60 +1306,56 @@ function addContinuousRoadRibbon(
 
 }
 
-function addWelcomeJunctions(
+function addWelcomeSplitMetadata(
   network: THREE.Group,
-  districtId: string,
-  mats: RoadMaterials,
   access: DoorAccess,
+  routes: readonly RoadRoute[],
 ) {
-  const { frontJunction, logisticsSplit } = welcomeHallRoadJunctions(access);
-  const junctions = [
-    {
-      id: 'LOGISTICS_SPLIT',
-      point: logisticsSplit,
-      radius: 3.75,
-      connectedRoutes: ['arrival', 'arrival-logistics-branch'],
-      role: 'staged-logistics-split',
-    },
-    {
-      id: 'HALL_JUNCTION',
-      point: frontJunction,
-      radius: 4.1,
-      connectedRoutes: ['arrival', 'arrival-entry-branch', 'e2-door-apron'],
-      role: 'door-aligned-entry-split',
-    },
-  ];
-  junctions.forEach((junction, index) => {
-    const cap = new THREE.Mesh(
-      new THREE.CircleGeometry(junction.radius, 48),
-      roadDecalMaterial(mats.welcomeRoadWhite, 1_000 + index),
-    );
-    cap.name = `${districtId.toUpperCase()}__WELCOME_${junction.id}__CLEAN_JUNCTION_CAP`;
-    cap.rotation.x = -Math.PI * 0.5;
-    cap.position.set(
-      junction.point.position.x,
-      ROAD_SURFACE_TOP + WELCOME_JUNCTION_SURFACE_OFFSET,
-      junction.point.position.z,
-    );
-    cap.receiveShadow = true;
-    cap.renderOrder = -28;
-    cap.userData = {
-      selectableId: districtId,
-      welcomeForkJunction: true,
-      stagedJunction: true,
-      junctionRole: junction.role,
-      coversCoplanarOverlap: true,
-      surfaceOffset: WELCOME_JUNCTION_SURFACE_OFFSET,
-      surfaceElevation: ROAD_SURFACE_TOP + WELCOME_JUNCTION_SURFACE_OFFSET,
-      connectedRoutes: junction.connectedRoutes,
-      ownedRoadMaterial: true,
-      terrainDepthBias: true,
-      walkable: true,
-      navObstacle: false,
-      surfaceKind: 'welcome-white',
-    };
-    network.add(cap);
-  });
+  const { frontOutward, threeWaySplit } = welcomeHallRoadJunctions(access);
+  network.userData.welcomeSplitLayout = 'three-single-lane-branches-with-central-teardrop-loop';
+  network.userData.welcomeSplitDestinationCount = 3;
+  network.userData.welcomeSplitApproachCount = 1;
+  const arrivalRoute = routes.find((route) => route.id === 'arrival')!;
+  const entryRoute = routes.find((route) => route.id === 'arrival-entry-branch')!;
+  const logisticsRoute = routes.find((route) => route.id === 'arrival-logistics-branch')!;
+  const hallRoute = routes.find((route) => route.id === 'e2-door-apron')!;
+  const direction = (from: RoadPoint, to: RoadPoint) => (
+    to.position.clone().sub(from.position).setY(0).normalize()
+  );
+  const hallDirection = frontOutward.clone().multiplyScalar(-1);
+  const entryDirection = direction(entryRoute.points[0], entryRoute.points[1]);
+  const logisticsDirection = direction(logisticsRoute.points[0], logisticsRoute.points[1]);
+  const branchAngleDegrees = (branchDirection: THREE.Vector3) => (
+    Math.acos(THREE.MathUtils.clamp(branchDirection.dot(hallDirection), -1, 1)) / DEG
+  );
+  const hallCrown = hallRoute.points.reduce((closest, point) => (
+    point.position.distanceToSquared(access.routeStart.position)
+      < closest.position.distanceToSquared(access.routeStart.position)
+      ? point
+      : closest
+  ));
+  network.userData.welcomeSplitGeometry = {
+    splitPoint: threeWaySplit.position.toArray(),
+    entryOriginGap: entryRoute.points[0].position.distanceTo(arrivalRoute.points.at(-1)!.position),
+    logisticsOriginGap: logisticsRoute.points[0].position.distanceTo(arrivalRoute.points.at(-1)!.position),
+    hallInboundOriginGap: hallRoute.points[0].position.distanceTo(arrivalRoute.points.at(-1)!.position),
+    hallOutboundOriginGap: hallRoute.points.at(-1)!.position.distanceTo(arrivalRoute.points.at(-1)!.position),
+    hallLoopEndpointGap: hallRoute.points[0].position.distanceTo(hallRoute.points.at(-1)!.position),
+    entryAngleDegrees: branchAngleDegrees(entryDirection),
+    logisticsAngleDegrees: branchAngleDegrees(logisticsDirection),
+    entryWidth: entryRoute.widthStart ?? WELCOME_SINGLE_LANE_WIDTH,
+    logisticsWidth: logisticsRoute.widthStart ?? WELCOME_SINGLE_LANE_WIDTH,
+    hallWidth: hallRoute.widthStart ?? WELCOME_SINGLE_LANE_WIDTH,
+    entryLaneCount: entryRoute.laneCount ?? 0,
+    logisticsLaneCount: logisticsRoute.laneCount ?? 0,
+    hallLaneCount: hallRoute.laneCount ?? 0,
+    centralLoopShape: 'teardrop',
+    centralLoopOneWay: true,
+    circularJunctionSurface: false,
+    hallUnderBuildingPodium: hallRoute.underBuildingPodium === true,
+    hallRoadCrown: hallCrown.position.toArray(),
+    hallRoadCrownClearance: hallCrown.position.distanceTo(access.routeStart.position),
+  };
 }
 
 function addTunnelSidewalks(
@@ -1511,7 +1530,7 @@ export function refreshEntryLogisticsRoadNetwork(districtGroup: THREE.Group) {
   });
   if (entryDistrict) {
     const welcomeAccess = accessPoints.get('E2');
-    if (welcomeAccess) addWelcomeJunctions(network, districtId, mats, welcomeAccess);
+    if (welcomeAccess) addWelcomeSplitMetadata(network, welcomeAccess, routes);
     const e1Access = accessPoints.get('E1');
     if (e1Access) addTunnelSidewalks(network, districtId, e1Access, mats);
   }
@@ -2424,7 +2443,7 @@ function buildWelcomeHall(facility: THREE.Group, mats: Materials) {
   const stairCount = 11;
   const stairDepth = 0.36;
   const stairWidth = 4.85;
-  const staircaseOuterEdge = 7.45;
+  const staircaseOuterEdge = WELCOME_HALL_STAIRCASE_OUTER_EDGE;
   const roadTopLocal = (
     ROAD_SURFACE_TOP + WELCOME_APRON_SURFACE_OFFSET
   ) / FACILITY_VERTICAL_SCALE;

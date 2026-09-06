@@ -1,0 +1,423 @@
+{
+  "ocean": {
+    "active": true,
+    "loading": false,
+    "entry": [
+      0,
+      1.61,
+      -550
+    ],
+    "entrySource": "explore-click",
+    "scene": {
+      "active": true,
+      "scene": "synthetic-shore",
+      "view": "ocean",
+      "position": [
+        0,
+        2.42,
+        18
+      ],
+      "direction": [
+        0,
+        0.04254571051432262,
+        -0.9990945213125892
+      ],
+      "surface": "silver sand",
+      "moving": false,
+      "dragging": false,
+      "elapsed": 15.4156,
+      "cygnusX1": {
+        "visible": true,
+        "fixedWorldBearing": true,
+        "companionToBlackHoleDiameter": 5.625,
+        "blackHole": {
+          "inFront": true,
+          "inViewport": true,
+          "elevationDegrees": 19.2,
+          "screenPosition": {
+            "x": 0.426,
+            "y": 0.246
+          }
+        },
+        "companion": {
+          "inFront": true,
+          "inViewport": true,
+          "elevationDegrees": 22.8,
+          "screenPosition": {
+            "x": 0.598,
+            "y": 0.185
+          }
+        },
+        "animation": {
+          "coronaPeriodSeconds": 8,
+          "coronaPhase": 0.9269499999999999,
+          "coronaPulse": -0.8965018959394675,
+          "streamTransitSeconds": 10,
+          "streamDirection": "companion-to-black-hole"
+        }
+      },
+      "landmarks": {
+        "pier": [
+          42,
+          8,
+          -39
+        ],
+        "stairs": [
+          30.5,
+          28,
+          58
+        ],
+        "island": [
+          0,
+          16,
+          850
+        ],
+        "citySide": "right",
+        "oceanSide": "left",
+        "cygnusX1": true
+      }
+    }
+  },
+  "moved": {
+    "active": true,
+    "loading": false,
+    "entry": [
+      0,
+      1.61,
+      -550
+    ],
+    "entrySource": "explore-click",
+    "scene": {
+      "active": true,
+      "scene": "synthetic-shore",
+      "view": "ocean",
+      "position": [
+        0,
+        2.3528,
+        16.319999999999993
+      ],
+      "direction": [
+        0,
+        0.04254571051432262,
+        -0.9990945213125892
+      ],
+      "surface": "silver sand",
+      "moving": true,
+      "dragging": false,
+      "elapsed": 16.565699999999982,
+      "cygnusX1": {
+        "visible": true,
+        "fixedWorldBearing": true,
+        "companionToBlackHoleDiameter": 5.625,
+        "blackHole": {
+          "inFront": true,
+          "inViewport": true,
+          "elevationDegrees": 19.2,
+          "screenPosition": {
+            "x": 0.426,
+            "y": 0.246
+          }
+        },
+        "companion": {
+          "inFront": true,
+          "inViewport": true,
+          "elevationDegrees": 22.8,
+          "screenPosition": {
+            "x": 0.598,
+            "y": 0.185
+          }
+        },
+        "animation": {
+          "coronaPeriodSeconds": 8,
+          "coronaPhase": 0.07071249999999774,
+          "coronaPulse": -0.9029118760584403,
+          "streamTransitSeconds": 10,
+          "streamDirection": "companion-to-black-hole"
+        }
+      },
+      "landmarks": {
+        "pier": [
+          42,
+          8,
+          -39
+        ],
+        "stairs": [
+          30.5,
+          28,
+          58
+        ],
+        "island": [
+          0,
+          16,
+          850
+        ],
+        "citySide": "right",
+        "oceanSide": "left",
+        "cygnusX1": true
+      }
+    }
+  },
+  "animationStart": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "ocean",
+    "position": [
+      0,
+      2.42,
+      18
+    ],
+    "direction": [
+      0,
+      0.04254571051432262,
+      -0.9990945213125892
+    ],
+    "surface": "silver sand",
+    "moving": false,
+    "dragging": false,
+    "elapsed": 15.449,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": true,
+        "inViewport": true,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.426,
+          "y": 0.246
+        }
+      },
+      "companion": {
+        "inFront": true,
+        "inViewport": true,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.598,
+          "y": 0.185
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.931125,
+        "coronaPulse": -0.9078140791757671,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "stats": {
+    "calls": 73,
+    "triangles": 111879,
+    "snapshot": {
+      "application": "YouTopy Synthetic Shore",
+      "mode": "synthetic-shore",
+      "coordinateSystem": "+X right, +Y up, ocean toward -Z; 1 unit = 1 metre",
+      "syntheticShore": {
+        "active": true,
+        "loading": false,
+        "entry": [
+          0,
+          1.61,
+          -550
+        ],
+        "entrySource": "explore-click",
+        "scene": {
+          "active": true,
+          "scene": "synthetic-shore",
+          "view": "pier",
+          "position": [
+            -5,
+            1.98,
+            7
+          ],
+          "direction": [
+            0.7342090183928305,
+            0.07580212027731384,
+            0.674678557442061
+          ],
+          "surface": "silver sand",
+          "moving": false,
+          "dragging": false,
+          "elapsed": 16.5323,
+          "cygnusX1": {
+            "visible": true,
+            "fixedWorldBearing": true,
+            "companionToBlackHoleDiameter": 5.625,
+            "blackHole": {
+              "inFront": false,
+              "inViewport": false,
+              "elevationDegrees": 19.2,
+              "screenPosition": {
+                "x": 0.941,
+                "y": 0.954
+              }
+            },
+            "companion": {
+              "inFront": false,
+              "inViewport": false,
+              "elevationDegrees": 22.8,
+              "screenPosition": {
+                "x": 1.399,
+                "y": 1.276
+              }
+            },
+            "animation": {
+              "coronaPeriodSeconds": 8,
+              "coronaPhase": 0.06653749999999992,
+              "coronaPulse": -0.913875255301778,
+              "streamTransitSeconds": 10,
+              "streamDirection": "companion-to-black-hole"
+            }
+          },
+          "landmarks": {
+            "pier": [
+              42,
+              8,
+              -39
+            ],
+            "stairs": [
+              30.5,
+              28,
+              58
+            ],
+            "island": [
+              0,
+              16,
+              850
+            ],
+            "citySide": "right",
+            "oceanSide": "left",
+            "cygnusX1": true
+          }
+        }
+      },
+      "performance": {
+        "drawCalls": 73,
+        "triangles": 111879,
+        "islandUpdatePaused": true
+      }
+    }
+  },
+  "before": {
+    "position": [
+      -42.00000000000001,
+      44,
+      -610
+    ],
+    "target": [
+      -5,
+      0.8000000000000004,
+      -566
+    ],
+    "geometries": 140
+  },
+  "after": {
+    "position": [
+      -42.00000000000001,
+      44,
+      -610
+    ],
+    "target": [
+      -5,
+      0.8000000000000004,
+      -566
+    ],
+    "orbitEnabled": true,
+    "overlayCount": 0
+  },
+  "walkRestored": {
+    "active": true,
+    "pointerLocked": false,
+    "lookMode": "idle",
+    "grounded": true,
+    "positionWorld": [
+      0,
+      1.692,
+      -547.003
+    ],
+    "positionMetres": [
+      0,
+      16.9,
+      -5470
+    ],
+    "groundY": 1.53,
+    "surfaceKind": "stone",
+    "roomId": "outside",
+    "speedMetresPerSecond": 0,
+    "speedKilometresPerHour": 0,
+    "configuredWalkSpeedKilometresPerHour": 6.5,
+    "turboEnabled": false,
+    "jumpState": "grounded",
+    "jumpHeld": false,
+    "jumpHeightMetres": 0,
+    "jumpHeightRangeMetres": [
+      0.55,
+      1.6
+    ],
+    "movementKeys": [],
+    "direction": [
+      0,
+      0,
+      -1
+    ],
+    "safetyRecoveries": 0,
+    "collisionSpatialIndex": {
+      "cellSizeWorld": 8,
+      "cellSizeMetres": 80,
+      "occupiedCellCount": 1262,
+      "residentCellCount": 1,
+      "residentCandidates": {
+        "walkables": 16,
+        "obstacles": 0,
+        "accessBounds": 0,
+        "underwalkAccessVolumes": 0,
+        "underwalkSurfaces": 0,
+        "barriers": 1
+      },
+      "totalCandidates": {
+        "walkables": 41,
+        "obstacles": 102,
+        "accessBounds": 60,
+        "underwalkAccessVolumes": 2,
+        "underwalkSurfaces": 6,
+        "barriers": 89
+      }
+    }
+  },
+  "memory": [
+    {
+      "geometries": 325,
+      "textures": 44
+    },
+    {
+      "geometries": 325,
+      "textures": 44
+    },
+    {
+      "geometries": 325,
+      "textures": 44
+    }
+  ],
+  "errors": []
+}

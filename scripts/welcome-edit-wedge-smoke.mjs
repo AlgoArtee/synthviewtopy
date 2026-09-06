@@ -35,16 +35,52 @@ const prepareEntryView = () => page.evaluate(() => {
   const center = bounds.getCenter(world.controls.target.clone());
   const size = bounds.getSize(world.camera.position.clone());
   world.controls.target.copy(center);
+  world.camera.up.set(0, 1, 0);
   world.camera.position.set(center.x + size.x * 0.72, center.y + size.y * 1.4 + 42, center.z + size.z * 0.9);
   world.camera.lookAt(center);
   world.controls.update();
   world.advanceTime(500);
 });
 
+const prepareWelcomeJunctionView = () => page.evaluate(() => {
+  const world = window.labIsland;
+  const district = world.scene.getObjectByName('DISTRICT__entry-commercial');
+  const network = world.scene.getObjectByName('DISTRICT__entry-commercial')
+    ?.getObjectByName('ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK');
+  const focusObjects = [
+    world.scene.getObjectByName('ENTRY__E1__BRIDGEHEAD_TUNNEL_AND_ISLAND_GATE'),
+    world.scene.getObjectByName('ENTRY__E2__WELCOME_AND_REGISTRATION_HALL'),
+  ].filter(Boolean);
+  const splitPoint = network?.userData.welcomeSplitGeometry?.splitPoint;
+  if (focusObjects.length !== 2 || !district || !splitPoint) {
+    throw new Error('Cannot frame the tunnel, split, and Welcome Hall');
+  }
+  const focusPoints = focusObjects.map((object) => object.getWorldPosition(world.camera.position.clone()));
+  focusPoints.push(district.localToWorld(world.camera.position.clone().fromArray(splitPoint)));
+  const bounds = new world.selectionBounds.constructor().setFromPoints(focusPoints).expandByScalar(18);
+  const center = bounds.getCenter(world.controls.target.clone());
+  const size = bounds.getSize(world.camera.position.clone());
+  const cameraHeight = Math.max(145, Math.hypot(size.x, size.z) * 1.05);
+  const hallPosition = focusObjects[1].getWorldPosition(world.controls.target.clone());
+  const splitPosition = focusPoints[2];
+  const outwardAxis = splitPosition.sub(hallPosition).setY(0).normalize();
+  center.addScaledVector(outwardAxis, -10);
+  world.cameraTween = null;
+  world.controls.target.copy(center);
+  world.camera.up.copy(outwardAxis);
+  world.camera.position.set(center.x, center.y + cameraHeight, center.z);
+  world.camera.lookAt(center);
+  world.controls.update();
+  world.advanceTime(400);
+});
+
 const audit = () => page.evaluate(() => {
   const world = window.labIsland;
   const pkg = world.worldStreaming.packages.get('entry-commercial');
-  const network = world.scene.getObjectByName('ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK');
+  const sourceByName = (name) => pkg.authoritySources.find((entry) => entry.source.name === name)?.source;
+  const network = world.scene.getObjectByName('DISTRICT__entry-commercial')
+    ?.getObjectByName('ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK');
+  const roadObjectByName = (name) => sourceByName(name) ?? network?.getObjectByName(name);
   const effective = (object) => {
     let cursor = object;
     while (cursor) {
@@ -67,6 +103,44 @@ const audit = () => page.evaluate(() => {
     return box ? [box.min.y, box.max.y] : [];
   });
   const wedge = world.editDistrictContextRoot;
+  const obsoleteJunctionNames = [
+    'ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__CLEAN_JUNCTION_CAP',
+    'ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__CENTRAL_ISLAND',
+    'ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__OUTER_LANE_EDGE',
+    'ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__TWO_LANE_DASHED_DIVIDER',
+    'ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__CLOCKWISE_DIRECTION_ARROWS',
+    ...Array.from({ length: 4 }, (_, index) => (
+      `ENTRY-COMMERCIAL__WELCOME_THREE_WAY_SPLIT__APPROACH_YIELD_BAR_${index + 1}`
+    )),
+  ];
+  const routeSurfaces = ['arrival', 'arrival-entry-branch', 'e2-door-apron', 'arrival-logistics-branch']
+    .map((routeId) => {
+      const surface = roadObjectByName(`ENTRY-COMMERCIAL__${routeId.toUpperCase()}__CONTINUOUS_SURFACE`);
+      return {
+        routeId,
+        present: Boolean(surface),
+        widthStart: surface?.userData.widthStart ?? null,
+        widthEnd: surface?.userData.widthEnd ?? null,
+        laneCount: surface?.userData.laneCount ?? null,
+        pointCount: surface?.userData.pointCount ?? null,
+        startPointId: surface?.userData.startPointId ?? null,
+        endPointId: surface?.userData.endPointId ?? null,
+        dividerCount: entries.filter((entry) => (
+          entry.source.userData.continuousRoadMarking === true
+          && entry.source.userData.routeId === routeId
+        )).length,
+      };
+    });
+  const hall = world.scene.getObjectByName('ENTRY__E2__WELCOME_AND_REGISTRATION_HALL');
+  const district = world.scene.getObjectByName('DISTRICT__entry-commercial');
+  const logisticsNetwork = world.objectGroups.get('logistics')
+    ?.getObjectByName('ENTRY_LOGISTICS__EDITABLE_ENTRANCE_ROAD_NETWORK');
+  const splitGeometry = network?.userData.welcomeSplitGeometry;
+  const hallRoadCrownWorld = district
+    .localToWorld(world.camera.position.clone().fromArray(splitGeometry.hallRoadCrown));
+  const hallRoadCrownLocal = hall.worldToLocal(hallRoadCrownWorld).toArray();
+  const threshold = hall.userData.roadDoorThreshold;
+  const routeStart = hall.userData.roadRouteStart;
   return {
     mode: world.getMode(),
     selectedId: world.selectedId,
@@ -91,6 +165,31 @@ const audit = () => page.evaluate(() => {
     })),
     roadLocalYRange: surfaceYs.length ? [Math.min(...surfaceYs), Math.max(...surfaceYs)] : null,
     islandSurfaceY: world.islandShellRoot.getObjectByName('Island planted surface')?.position.y ?? null,
+    obsoletePlotCount: [
+      sourceByName('entry-commercial__PLOT'),
+      world.scene.getObjectByName('logistics__PLOT'),
+    ].filter(Boolean).length,
+    obsoleteJunctionObjectCount: obsoleteJunctionNames.filter((name) => roadObjectByName(name)).length,
+    markedRoadCleanup: {
+      hallRearRoadPresent: Boolean(roadObjectByName(
+        'ENTRY-COMMERCIAL__E2-REAR-BOUNDARY-LINK__CONTINUOUS_SURFACE',
+      )),
+      transitCollectorTailPresent: Boolean(roadObjectByName(
+        'ENTRY-COMMERCIAL__E3-TO-COLLECTOR__CONTINUOUS_SURFACE',
+      )),
+      parkingRearStairRoadPresent: Boolean(logisticsNetwork?.getObjectByName(
+        'LOGISTICS__L1-NORTH-STAIR-HARDSTAND__CONTINUOUS_SURFACE',
+      )),
+    },
+    routeSurfaces,
+    symmetricSplit: {
+      layout: network?.userData.welcomeSplitLayout ?? null,
+      destinationCount: network?.userData.welcomeSplitDestinationCount ?? 0,
+      approachCount: network?.userData.welcomeSplitApproachCount ?? 0,
+      ...splitGeometry,
+      hallRoadCrownLocal,
+      thresholdToRouteStart: Math.hypot(routeStart[0] - threshold[0], routeStart[2] - threshold[2]),
+    },
     wedge: wedge ? {
       visible: effective(wedge),
       directVisible: wedge.visible,
@@ -109,15 +208,57 @@ const audit = () => page.evaluate(() => {
 const assertExploreRoads = (state, phase) => {
   if (state.mode !== 'explore'
     || !state.package?.detailResident
-    || state.roadEntryCount !== 50
-    || state.roadBatchCount !== 3
-    || state.visibleRoadBatchCount !== 3
+    || state.roadEntryCount !== 38
+    || state.roadBatchCount !== 2
+    || state.visibleRoadBatchCount !== 2
     || state.roadBatchMaterials.some((batch) => !batch.visible
       || batch.depthTest
       || batch.depthWrite
       || !batch.polygonOffset
       || batch.polygonOffsetFactor !== -1
       || batch.renderOrder >= 0)
+    || state.obsoletePlotCount !== 0
+    || state.obsoleteJunctionObjectCount !== 0
+    || state.markedRoadCleanup.hallRearRoadPresent
+    || state.markedRoadCleanup.transitCollectorTailPresent
+    || state.markedRoadCleanup.parkingRearStairRoadPresent
+    || state.routeSurfaces.some((surface) => !surface.present)
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival')?.laneCount !== 3
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival')?.dividerCount !== 2
+    || state.routeSurfaces.filter((surface) => surface.routeId !== 'arrival').some((surface) => (
+      surface.laneCount !== 1
+      || Math.abs(surface.widthStart - 2.4) > 0.001
+      || Math.abs(surface.widthEnd - 2.4) > 0.001
+      || surface.dividerCount !== 0
+    ))
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival-entry-branch')?.pointCount !== 21
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival-entry-branch')?.endPointId
+      !== 'welcome-entry-fan-clear'
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival-logistics-branch')?.pointCount !== 21
+    || state.routeSurfaces.find((surface) => surface.routeId === 'arrival-logistics-branch')?.endPointId
+      !== 'welcome-logistics-fan-clear'
+    || state.symmetricSplit.layout !== 'three-single-lane-branches-with-central-teardrop-loop'
+    || state.symmetricSplit.destinationCount !== 3
+    || state.symmetricSplit.approachCount !== 1
+    || Math.abs(state.symmetricSplit.entryOriginGap - 1.8) > 0.001
+    || Math.abs(state.symmetricSplit.logisticsOriginGap - 1.8) > 0.001
+    || Math.abs(state.symmetricSplit.hallInboundOriginGap - 0.72) > 0.001
+    || Math.abs(state.symmetricSplit.hallOutboundOriginGap - 0.72) > 0.001
+    || Math.abs(state.symmetricSplit.hallLoopEndpointGap - 1.44) > 0.001
+    || Math.abs(state.symmetricSplit.entryAngleDegrees - state.symmetricSplit.logisticsAngleDegrees) > 0.05
+    || Math.abs(state.symmetricSplit.entryWidth - 2.4) > 0.001
+    || Math.abs(state.symmetricSplit.logisticsWidth - 2.4) > 0.001
+    || Math.abs(state.symmetricSplit.hallWidth - 2.4) > 0.001
+    || state.symmetricSplit.entryLaneCount !== 1
+    || state.symmetricSplit.logisticsLaneCount !== 1
+    || state.symmetricSplit.hallLaneCount !== 1
+    || state.symmetricSplit.centralLoopShape !== 'teardrop'
+    || !state.symmetricSplit.centralLoopOneWay
+    || state.symmetricSplit.circularJunctionSurface
+    || state.symmetricSplit.hallUnderBuildingPodium
+    || Math.abs(state.symmetricSplit.hallRoadCrownLocal[0]) > 0.1
+    || state.symmetricSplit.hallRoadCrownClearance < 1.2
+    || state.symmetricSplit.thresholdToRouteStart < 3.3
     || state.wedge?.visible
     || state.compact.streaming.editWedgeVisible) {
     throw new Error(`Welcome roads are not Explore-visible during ${phase}: ${JSON.stringify(state, null, 2)}`);
@@ -138,6 +279,9 @@ try {
   const explore = await audit();
   assertExploreRoads(explore, 'initial Explore');
   await page.screenshot({ path: `${OUTPUT}/welcome-explore.png`, fullPage: true });
+  await prepareWelcomeJunctionView();
+  await settle();
+  await page.screenshot({ path: `${OUTPUT}/welcome-single-lane-loop.png`, fullPage: true });
 
   await page.locator('.mode[data-mode="edit"]').click();
   await prepareEntryView();
@@ -145,7 +289,7 @@ try {
   const edit = await audit();
   if (edit.mode !== 'edit'
     || !edit.package?.detailResident
-    || edit.visibleRoadBatchCount !== 3
+    || edit.visibleRoadBatchCount !== 2
     || !edit.wedge?.visible
     || edit.wedge.packageId !== 'entry-commercial'
     || edit.wedge.childCount !== 2

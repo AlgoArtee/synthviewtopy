@@ -1,0 +1,498 @@
+{
+  "status": "passed",
+  "ascent": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      30.5,
+      9.7,
+      59.133799999967685
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 14.0229,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.7528625,
+        "coronaPulse": -0.017984648285517466,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "landing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      42.09125000000018,
+      9.7,
+      59.133799999967685
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 14.0395,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.7549375,
+        "coronaPulse": -0.031018251357841333,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "stem": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      42.09125000000018,
+      9.7,
+      50.883799999967515
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 15.539500000000075,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.9424375000000094,
+        "coronaPulse": -0.9353051494582877,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "anchor": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      35.30814999998347,
+      9.7,
+      -63.050000000000125
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 15.25620000000006,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.9070250000000075,
+        "coronaPulse": -0.8341650756535375,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "railing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      28.341483333316802,
+      9.7,
+      -63.050000000000125
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "anchor pier",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 18.256199999999968,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.282024999999996,
+        "coronaPulse": 0.199863893321633,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "stairRailing": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      28.208333333333375,
+      6.489333333333334,
+      44
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "pier stairs",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 14.072799999999999,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.7590999999999999,
+        "coronaPulse": -0.0571458374794676,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "descent": {
+    "active": true,
+    "scene": "synthetic-shore",
+    "view": "pier",
+    "position": [
+      30.5,
+      2.79999999999998,
+      27.499999999999496
+    ],
+    "direction": [
+      0,
+      0,
+      1
+    ],
+    "surface": "silver sand",
+    "moving": true,
+    "dragging": false,
+    "elapsed": 20.072799999999862,
+    "cygnusX1": {
+      "visible": true,
+      "fixedWorldBearing": true,
+      "companionToBlackHoleDiameter": 5.625,
+      "blackHole": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 19.2,
+        "screenPosition": {
+          "x": 0.425,
+          "y": 0.793
+        }
+      },
+      "companion": {
+        "inFront": false,
+        "inViewport": false,
+        "elevationDegrees": 22.8,
+        "screenPosition": {
+          "x": 0.6,
+          "y": 0.856
+        }
+      },
+      "animation": {
+        "coronaPeriodSeconds": 8,
+        "coronaPhase": 0.5090999999999828,
+        "coronaPulse": 0.9983658413922135,
+        "streamTransitSeconds": 10,
+        "streamDirection": "companion-to-black-hole"
+      }
+    },
+    "landmarks": {
+      "pier": [
+        42,
+        8,
+        -39
+      ],
+      "stairs": [
+        30.5,
+        28,
+        58
+      ],
+      "island": [
+        0,
+        16,
+        850
+      ],
+      "citySide": "right",
+      "oceanSide": "left",
+      "cygnusX1": true
+    }
+  },
+  "exit": {
+    "active": false,
+    "loading": false,
+    "entry": [
+      0,
+      1.61,
+      -550
+    ],
+    "entrySource": null,
+    "scene": null
+  },
+  "errors": []
+}

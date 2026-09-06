@@ -1776,6 +1776,11 @@ required<HTMLButtonElement>('#fullscreen-toggle').addEventListener('click', () =
 document.addEventListener('fullscreenchange', syncFountainControlPanel);
 
 document.addEventListener('keydown', (event) => {
+  if (world.isSyntheticShoreActive()) {
+    if (event.key.toLowerCase() === 'f') void toggleFullscreen();
+    if (event.key === 'Escape') world.exitSyntheticShore();
+    return;
+  }
   const target = event.target as HTMLElement;
   const editingText = target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target instanceof HTMLSelectElement;
   if (event.key === '/' && !editingText) {
@@ -2834,11 +2839,18 @@ debugButton.addEventListener('click', () => {
 world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
 applyPersistedFullIslandDetailPreference();
 const gpuDetailUiInterval = window.setInterval(() => {
+  if (document.hidden || world.isSyntheticShoreActive()) return;
   const needsSceneStatistics = !fullIslandStatusCard.hidden || !debugStats.hidden;
   const sceneStats = needsSceneStatistics ? world.getSceneStatistics() as FullIslandSceneStatistics : undefined;
   syncFullIslandDetailUI(sceneStats);
   if (!debugStats.hidden) refreshPerformanceStats(sceneStats);
 }, 1000);
+
+required<HTMLButtonElement>('#locate-synthetic-shore').addEventListener('click', () => {
+  setMode('explore');
+  world.focusSyntheticPier();
+  toast('Synthetic Shore', 'Click the anchor pier to visit the beach, or approach its entrance in Walk.');
+});
 
 const savedTheme = localStorage.getItem('youtopy_theme');
 if (savedTheme === 'cleantech') {

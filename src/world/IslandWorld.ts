@@ -57,6 +57,8 @@ import {
   WORLD_EXPANSION,
 } from '../config/island';
 import { WalkController } from './WalkController';
+import { createSyntheticPier, disposeSyntheticPier, SYNTHETIC_PIER_ID, SYNTHETIC_PIER_ENTRY } from './syntheticPier';
+import type { SyntheticShoreScene } from './SyntheticShoreScene';
 import { AcademicAudioController } from './academicAudio';
 import {
   CEREBRUM_LIBRARY_ROOT_NAME,
@@ -938,6 +940,13 @@ export class IslandWorld {
   readonly transitNetworkRoot = new THREE.Group();
   readonly industrialPortRoot = new THREE.Group();
   readonly bridgeRoot = new THREE.Group();
+  readonly syntheticPierRoot = createSyntheticPier();
+  private syntheticShore: SyntheticShoreScene | null = null;
+  private shoreLoading = false;
+  private shoreRequest = 0;
+  private shoreOverlay: HTMLElement | null = null;
+  private shoreReturn: { position: THREE.Vector3; direction: THREE.Vector3; exposure: number; focus: HTMLElement | null } | null = null;
+  private shoreApproachArmed = true;
   readonly cityRoot = new THREE.Group();
   readonly importedRoot = new THREE.Group();
   readonly interiorsRoot = new THREE.Group();
@@ -1422,6 +1431,8 @@ export class IslandWorld {
       this.islandShellRoot,
       this.transitRoot,
     ]);
+    // The pier batches its own decoration and retains its clickable surfaces.
+    this.transitRoot.add(this.syntheticPierRoot);
     this.refreshAuthoredRuntimeInteriors();
 
     this.selectionBox = new THREE.Box3Helper(this.selectionBounds, new THREE.Color('#b7f34b'));
@@ -2107,6 +2118,7 @@ export class IslandWorld {
   };
 
   private onPointerUp = (event: PointerEvent) => {
+    if (this.isSyntheticShoreActive()) return;
     if (this.draggingGizmo) return;
     const distance = this.pointerDown.distanceTo(new THREE.Vector2(event.clientX, event.clientY));
     if (distance > 5) return;
@@ -2122,11 +2134,16 @@ export class IslandWorld {
     }
     if (this.mode === 'walk') return;
     const id = this.pick(event);
+    if (id === SYNTHETIC_PIER_ID && this.mode === 'explore') {
+      void this.enterSyntheticShore('explore-click');
+      return;
+    }
     if (id) this.select(id, 'scene');
     else if (this.mode !== 'edit') this.clearSelection('scene');
   };
 
   private onPointerMove = (event: PointerEvent) => {
+    if (this.isSyntheticShoreActive()) return;
     if (this.importPlacementChoosing) {
       const placement = this.pickImportPlacement(event);
       if (placement) this.updateImportPlacementMarker(placement);
@@ -2144,7 +2161,7 @@ export class IslandWorld {
       this.hoverPickFrame = null;
       const point = this.pendingHoverPoint;
       this.pendingHoverPoint = null;
-      if (!point || this.disposed || this.mode === 'walk' || this.draggingGizmo) return;
+      if (!point || this.disposed || this.isSyntheticShoreActive() || this.mode === 'walk' || this.draggingGizmo) return;
       const startedAt = performance.now();
       const id = this.pickAt(point.x, point.y);
       this.hoverPickSamples.push(performance.now() - startedAt);
@@ -2156,6 +2173,7 @@ export class IslandWorld {
   };
 
   private onDoubleClick = (event: MouseEvent) => {
+    if (this.isSyntheticShoreActive()) return;
     if (this.mode === 'walk') return;
     const id = this.pick(event);
     if (id) {
@@ -2268,6 +2286,7 @@ export class IslandWorld {
       this.importedRoot,
       this.interiorsRoot,
       this.worldStreaming.vistaRoot,
+      this.syntheticPierRoot,
     ];
     [...districts, ...biomes].forEach((definition) => {
       const group = this.objectGroups.get(definition.id);
@@ -3335,6 +3354,8 @@ export class IslandWorld {
     this.gpuFrameSamples.length = 0;
     this.hoverPickSamples.length = 0;
     this.frameSampleWindowStartedAt = nowSeconds;
+    // Shore timing must not alter island streaming or its retained quality settings.
+    if (this.isSyntheticShoreActive()) return;
     const streaming = this.worldStreaming.getSnapshot();
     if (streaming.fullIslandDetailRequested && streaming.fullIslandDetailReady) {
       if (!this.fullIslandReadyAt) this.fullIslandReadyAt = nowSeconds;
@@ -3449,8 +3470,23 @@ export class IslandWorld {
   };
 
   private update(delta: number) {
+    if (this.syntheticShore) {
+      this.syntheticShore.update(delta, this.elapsed);
+      return;
+    }
+    if (this.shoreLoading) return;
     if (this.mode === 'walk') this.walkController.update(delta);
     else this.controls.update(delta);
+    const nearPier = this.mode === 'walk'
+      && isEffectivelyVisible(this.syntheticPierRoot)
+      && Math.abs(this.camera.position.x - SYNTHETIC_PIER_ENTRY.x) < 2.2
+      && Math.abs(this.camera.position.z - SYNTHETIC_PIER_ENTRY.z) < 3
+      && Math.abs(this.camera.position.y - ISLAND_SURFACE_Y - WALK_EYE_HEIGHT) < 0.5;
+    if (!nearPier) this.shoreApproachArmed = true;
+    if (nearPier && this.shoreApproachArmed) {
+      void this.enterSyntheticShore('walk-approach');
+      return;
+    }
     this.updateCerebrumStreamingLifecycle();
     const generatedInteriorVisibilityChanged = this.syncGeneratedWalkInteriorVisibility();
     const authoredInteriorVisibilityChanged = this.syncAuthoredRuntimeInteriorVisibility();
@@ -4507,6 +4543,10 @@ export class IslandWorld {
   }
 
   private render() {
+    if (this.syntheticShore) {
+      this.renderer.render(this.syntheticShore.scene, this.syntheticShore.camera);
+      return;
+    }
     const library = this.getCerebrumLibraryRoot();
     const libraryView = Boolean(
       library
@@ -4830,6 +4870,108 @@ export class IslandWorld {
     this.labelRenderDirty = true;
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+    this.syntheticShore?.resize(width, height);
+  }
+
+  isSyntheticShoreActive() {
+    return this.shoreLoading || this.syntheticShore !== null;
+  }
+
+  focusSyntheticPier() {
+    if (this.isSyntheticShoreActive()) this.exitSyntheticShore();
+    if (this.mode !== 'explore') this.setMode('explore');
+    this.clearSelection('system');
+    this.animateCamera(
+      new THREE.Vector3(-42, 44, -ISLAND_RADIUS - 58),
+      new THREE.Vector3(-5, 0.8, -ISLAND_RADIUS - 14),
+      850,
+    );
+  }
+
+  async enterSyntheticShore(source: 'explore-click' | 'walk-approach' = 'explore-click') {
+    if (this.isSyntheticShoreActive() || this.disposed) return;
+    if (this.mode !== 'explore' && this.mode !== 'walk') return;
+    const request = ++this.shoreRequest;
+    this.shoreLoading = true;
+    this.shoreApproachArmed = false;
+    this.shoreReturn = {
+      position: this.camera.position.clone(),
+      direction: this.camera.getWorldDirection(new THREE.Vector3()),
+      exposure: this.renderer.toneMappingExposure,
+      focus: document.activeElement instanceof HTMLElement ? document.activeElement : null,
+    };
+    this.cameraTween = null;
+    this.controls.enabled = false;
+    if (this.mode === 'walk') this.walkController.exit();
+    this.labelRenderer.domElement.hidden = true;
+    document.body.classList.add('synthetic-shore-active');
+    const overlay = document.createElement('section');
+    overlay.className = 'synthetic-shore-ui';
+    overlay.setAttribute('aria-label', 'Synthetic Shore');
+    overlay.innerHTML = `<header class="shore-header"><div><span class="shore-eyebrow">LAB ISLAND / ALPINE COAST</span><h1>Synthetic Shore</h1></div><button type="button" data-shore-exit>Return to island <span>↗</span></button></header><div class="shore-loading" role="status">Opening the shore…</div><footer class="shore-footer"><div class="shore-views" aria-label="Shore viewpoints"><button type="button" data-shore-view="ocean">Ocean + Cygnus X-1</button><button type="button" data-shore-view="island">Lab Island</button><button type="button" data-shore-view="pier">Pier + stairs</button></div><p>WASD / arrows to walk · Shift to run · Drag to look · Esc to return</p></footer>`;
+    overlay.querySelector('[data-shore-exit]')?.addEventListener('click', () => this.exitSyntheticShore());
+    overlay.querySelectorAll<HTMLButtonElement>('[data-shore-view]').forEach((button) => {
+      button.addEventListener('click', () => {
+        this.syntheticShore?.setView(button.dataset.shoreView as 'ocean' | 'island' | 'pier');
+        overlay.querySelectorAll('[data-shore-view]').forEach((item) => item.setAttribute('aria-pressed', String(item === button)));
+      });
+    });
+    overlay.querySelector('[data-shore-view="ocean"]')?.setAttribute('aria-pressed', 'true');
+    this.container.appendChild(overlay);
+    this.shoreOverlay = overlay;
+    (overlay.querySelector('[data-shore-exit]') as HTMLButtonElement).focus();
+    try {
+      const { SyntheticShoreScene } = await import('./SyntheticShoreScene');
+      if (this.disposed || request !== this.shoreRequest) return;
+      const shore = new SyntheticShoreScene(this.renderer, () => this.exitSyntheticShore());
+      this.syntheticShore = shore;
+      shore.scene.userData.entrySource = source;
+      shore.resize(this.container.clientWidth, this.container.clientHeight);
+      this.renderer.toneMappingExposure = 1.08;
+      shore.update(0, this.elapsed);
+      this.shoreLoading = false;
+      overlay.querySelector('.shore-loading')?.remove();
+      this.resetFrameTimingWindows(true);
+    } catch (error) {
+      if (request !== this.shoreRequest || this.disposed) return;
+      this.exitSyntheticShore();
+      this.callbacks.onError?.('Unable to open Synthetic Shore. Please try the pier again.', error);
+    }
+  }
+
+  exitSyntheticShore() {
+    if (!this.isSyntheticShoreActive()) return;
+    ++this.shoreRequest;
+    this.syntheticShore?.dispose();
+    this.syntheticShore = null;
+    this.shoreLoading = false;
+    this.shoreOverlay?.remove();
+    this.shoreOverlay = null;
+    document.body.classList.remove('synthetic-shore-active');
+    this.labelRenderer.domElement.hidden = false;
+    this.controls.enabled = this.mode !== 'walk';
+    const saved = this.shoreReturn;
+    if (saved) {
+      this.renderer.toneMappingExposure = saved.exposure;
+      if (this.mode === 'walk' && !this.disposed) this.walkController.enter(saved.position, saved.direction);
+      saved.focus?.focus({ preventScroll: true });
+    }
+    this.shoreReturn = null;
+    this.shoreApproachArmed = false;
+    this.renderer.domElement.style.cursor = this.mode === 'walk' ? 'crosshair' : 'grab';
+    this.resetFrameTimingWindows(true);
+    this.clock.getDelta();
+    this.labelRenderDirty = true;
+  }
+
+  getSyntheticShoreSnapshot() {
+    return {
+      active: this.isSyntheticShoreActive(),
+      loading: this.shoreLoading,
+      entry: SYNTHETIC_PIER_ENTRY.toArray(),
+      entrySource: this.syntheticShore?.scene.userData.entrySource ?? null,
+      scene: this.syntheticShore?.getSnapshot() ?? null,
+    };
   }
 
   private intersectsEditableSibling(definition: SceneDefinition, group: THREE.Group) {
@@ -5023,6 +5165,7 @@ export class IslandWorld {
   }
 
   setMode(mode: ViewMode) {
+    if (this.isSyntheticShoreActive()) this.exitSyntheticShore();
     const previousMode = this.mode;
     if (previousMode === 'edit' && mode !== 'edit') this.restoreEditDistrictIsolation();
     // Resolve the occupied room before WALK teardown changes visibility or
@@ -7440,8 +7583,8 @@ export class IslandWorld {
     const geometries = new Set<string>();
     let visibleMeshes = 0;
     let triangles = 0;
-    this.scene.traverse((object) => {
-      if (!(object instanceof THREE.Mesh) || !isEffectivelyVisible(object)) return;
+    (this.syntheticShore?.scene ?? this.scene).traverseVisible((object) => {
+      if (!(object instanceof THREE.Mesh)) return;
       visibleMeshes += 1;
       geometries.add(object.geometry.uuid);
       const position = object.geometry.getAttribute('position');
@@ -9745,6 +9888,13 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
    * contract stays bounded and avoids a full scene traversal every call.
    */
   getRenderTextSnapshot() {
+    if (this.isSyntheticShoreActive()) return {
+      application: 'YouTopy Synthetic Shore',
+      mode: 'synthetic-shore',
+      coordinateSystem: '+X right, +Y up, ocean toward -Z; 1 unit = 1 metre',
+      syntheticShore: this.getSyntheticShoreSnapshot(),
+      performance: { drawCalls: this.renderer.info.render.calls, triangles: this.renderer.info.render.triangles, islandUpdatePaused: true },
+    };
     const startedAt = performance.now();
     // Automation can poll render_game_to_text several times in the same frame.
     // Building the complete per-package snapshot for each poll needlessly repeats
@@ -10158,6 +10308,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     const currentInteriorBuildingId = this.getCurrentInteriorBuildingId();
     return {
       application: 'YouTopy Lab Island spatial editor',
+      syntheticShore: this.getSyntheticShoreSnapshot(),
       contentAuthority: 'web-sandbox; Unreal Editor owns production content',
       coordinateSystem: 'origin at central megabuilding; +X east, +Y up, +Z south; 1 unit = 10 metres',
       mode: this.mode,
@@ -10418,6 +10569,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
 
   dispose() {
     this.disposed = true;
+    this.exitSyntheticShore();
     if (this.autosaveTimer !== null) {
       window.clearTimeout(this.autosaveTimer);
       this.autosaveTimer = null;
@@ -10458,6 +10610,7 @@ included. See 00_PRODUCTION_MANIFEST.json for the authoritative file list.
     this.mediumFullCanonicalMaterials.clear();
     this.globalEnvironmentBatching?.dispose();
     this.globalEnvironmentBatching = null;
+    disposeSyntheticPier(this.syntheticPierRoot);
     this.worldStreaming.dispose();
     this.renderer.dispose();
     this.labelRenderer.domElement.remove();

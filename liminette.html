@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17231f" />
+    <meta name="description" content="Step inside Liminette's spacious retro-futuristic dark academia student apartment. An interactive 3D residence at Vinculum Apartments." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%2317231f'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='serif' font-size='44' fill='%23d6bf8c'%3EV%3C/text%3E%3C/svg%3E" />
+    <title>Liminette Student Room · Vinculum Apartments</title>
+  </head>
+  <body class="room-page">
+    <main id="apartment-viewport" aria-label="Interactive 3D Liminette Student Room"></main>
+    <div id="room-loading" class="room-loading" role="status"><span class="residence-seal" aria-hidden="true">V</span><p>Opening Liminette’s door…</p></div>
+    <header class="room-header">
+      <div class="room-navigation"><a class="room-back" href="/apartments.html" aria-label="Back to Vinculum Apartments">↖ <span>Apartments</span></a><button id="room-menu-toggle" type="button" aria-expanded="false" aria-controls="room-menu">☰ <span>Room guide</span></button></div>
+      <div class="room-title"><span>LUX UMBRARUM / Nº 01</span><h1>Liminette Student Room</h1></div>
+    </header>
+    <aside id="room-menu" class="room-menu" aria-labelledby="room-guide-title" hidden>
+      <p class="residence-eyebrow">LUX UMBRARUM · ACADEMIC DISTRICT</p><h2 id="room-guide-title">A scholar’s sanctuary.</h2><p>Above the college gardens: walnut shelves, well-worn leather, and the gentle hum of tomorrow.</p>
+      <h3>Explore the room</h3><nav id="room-viewpoints" aria-label="Apartment viewpoints"></nav>
+      <h3>Find your way</h3><dl class="room-instructions"><div><dt>Look around</dt><dd>Drag the scene</dd></div><div><dt>Walk</dt><dd>W A S D / arrow keys</dd></div><div><dt>Closer look</dt><dd>Scroll / pinch</dd></div><div><dt>Fullscreen</dt><dd>F</dd></div><div><dt>Close guide</dt><dd>Esc</dd></div></dl>
+      <div class="room-menu-actions"><button id="room-reset" type="button">↺ Entrance view</button><button id="room-fullscreen" type="button">⛶ Fullscreen</button></div><a class="room-island-link" href="/">Back to Lab Island ↗</a>
+    </aside>
+    <div class="room-controls-hint" id="room-hint">Drag to look <span>·</span> WASD to walk <span>·</span> Open the guide to visit each space</div>
+    <div class="touch-walk" role="group" aria-label="Walk controls"><button type="button" data-walk="forward" aria-label="Walk forward">↑</button><button type="button" data-walk="left" aria-label="Walk left">←</button><button type="button" data-walk="back" aria-label="Walk backward">↓</button><button type="button" data-walk="right" aria-label="Walk right">→</button></div>
+    <span id="room-status" class="room-sr-only" role="status" aria-live="polite"></span>
+    <script type="module" src="/src/apartments/room.ts"></script>
+  </body>
+</html>

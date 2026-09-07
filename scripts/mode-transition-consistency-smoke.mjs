@@ -38,6 +38,7 @@ try {
   await page.waitForTimeout(1_200);
 
   const buildingId = 'entry-logistics-building-e2';
+  await page.click('#island-menu-toggle');
   await page.click('[data-mode="edit"]');
   const editStart = await page.evaluate((id) => {
     const world = window.labIsland;
@@ -56,6 +57,7 @@ try {
     };
   }, buildingId);
 
+  await page.click('#island-menu-toggle');
   await page.click('[data-mode="walk"]');
   await page.waitForTimeout(180);
   const walkInside = await page.evaluate(() => {
@@ -70,6 +72,7 @@ try {
   });
   await page.screenshot({ path: `${OUTPUT}/welcome-walk-before-edit.png`, fullPage: true });
 
+  await page.click('#island-menu-toggle');
   await page.click('[data-mode="edit"]');
   await page.waitForTimeout(180);
   const editFromWalk = await page.evaluate((id) => {
@@ -93,6 +96,7 @@ try {
   }, buildingId);
   await page.screenshot({ path: `${OUTPUT}/welcome-edit-after-walk.png`, fullPage: true });
 
+  await page.click('#island-menu-toggle');
   await page.click('[data-mode="explore"]');
   await page.waitForTimeout(180);
   const exploreAfterRoundTrip = await page.evaluate(() => {

@@ -3307,8 +3307,8 @@ export class IslandWorld {
         callback(compileRoot);
         compileRepresentatives.forEach((object) => callback(object));
       };
-      void this.renderer.compileAsync(compileRoot, this.camera, this.scene).then(() => {
-        compileRepresentatives.forEach((object) => {
+      void this.compileGpuPrograms(compileRoot).then((completed) => {
+        if (completed) compileRepresentatives.forEach((object) => {
           this.warmedGpuShaderProfiles.add(this.getGpuWarmupProfile(object));
         });
         finish();
@@ -4784,7 +4784,60 @@ export class IslandWorld {
     }
   }
 
-  private async performPackageGpuWarmup(detailRoot: THREE.Group) {
+  private async compileGpuPrograms(compileRoot: THREE.Object3D): Promise<boolean> {
+    const generation = this.webglRecoveryGeneration;
+    if (this.disposed || this.webglRecoveryPhase === 'lost') return false;
+    const materials = this.renderer.compile(compileRoot, this.camera, this.scene);
+
+    // Three r178's compileAsync polls currentProgram from a timer without
+    // checking material disposal. Streaming eviction and page teardown can
+    // remove that program while compilation is pending. Own the polling
+    // lifetime here so cancellation cannot throw outside the returned promise.
+    return new Promise<boolean>((resolve, reject) => {
+      let timer: number | undefined;
+      let settled = false;
+      const listeners = new Map<THREE.Material, () => void>();
+      const finish = (completed: boolean, error?: unknown) => {
+        if (settled) return;
+        settled = true;
+        window.clearTimeout(timer);
+        listeners.forEach((listener, material) => material.removeEventListener('dispose', listener));
+        if (error !== undefined) reject(error);
+        else resolve(completed);
+      };
+      materials.forEach((material) => {
+        const onDispose = () => finish(false);
+        listeners.set(material, onDispose);
+        material.addEventListener('dispose', onDispose);
+      });
+      const checkReady = () => {
+        if (settled) return;
+        if (this.disposed || generation !== this.webglRecoveryGeneration) {
+          finish(false);
+          return;
+        }
+        try {
+          materials.forEach((material) => {
+            const properties = this.renderer.properties.get(material) as {
+              currentProgram?: { isReady: () => boolean };
+            };
+            if (!properties.currentProgram) {
+              throw new Error(`GPU warmup lost the program for active material ${material.name || material.type}.`);
+            }
+            if (properties.currentProgram.isReady()) materials.delete(material);
+          });
+          if (materials.size === 0) finish(true);
+          else timer = window.setTimeout(checkReady, 10);
+        } catch (error) {
+          finish(false, error);
+        }
+      };
+      if (this.renderer.extensions.has('KHR_parallel_shader_compile')) checkReady();
+      else timer = window.setTimeout(checkReady, 10);
+    });
+  }
+
+  private async performPackageGpuWarmup(detailRoot: THREE.Group): Promise<void> {
     if (this.disposed || !this.isWebglReady()) return;
     const MAX_EAGER_SHADER_PROFILES = 32;
     const representatives: THREE.Mesh[] = [];
@@ -4810,7 +4863,15 @@ export class IslandWorld {
         compileRepresentatives.forEach((object) => callback(object));
       };
       try {
-        await this.renderer.compileAsync(compileRoot, this.camera, this.scene);
+        const completed = await this.compileGpuPrograms(compileRoot);
+        if (!completed) {
+          reservedProfiles.forEach((profile) => this.warmedGpuShaderProfiles.delete(profile));
+          if (this.disposed || !this.isWebglReady()) return;
+          // A shared or replaced material may be disposed while this package
+          // is still needed. Retry its current materials before marking ready.
+          await this.waitForGpuWarmupFrame();
+          return this.performPackageGpuWarmup(detailRoot);
+        }
       } catch (error) {
         reservedProfiles.forEach((profile) => this.warmedGpuShaderProfiles.delete(profile));
         throw error;

@@ -11,9 +11,36 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%23091013' d='M32 2 58 17v30L32 62 6 47V17z'/%3E%3Cpath fill='%235ad8d1' d='m32 11 17 10v20L32 53 15 41V21z'/%3E%3Ccircle cx='32' cy='32' r='10' fill='%23091013'/%3E%3C/svg%3E" />
     <title>SynthViewTopy · Lab Island</title>
   </head>
-  <body>
+  <body class="island-menu-shell">
     <div id="app">
       <div id="viewport" aria-label="Interactive 3D Lab Island viewport"></div>
+
+      <button id="island-menu-toggle" class="island-menu-toggle glass-panel" type="button" aria-expanded="false" aria-controls="island-menu" aria-haspopup="dialog">
+        <span class="island-menu-symbol" aria-hidden="true"><i></i><i></i></span>
+        <span>Island menu</span><span id="island-menu-mode">Explore</span>
+      </button>
+      <div id="island-menu-backdrop" class="island-menu-backdrop" hidden></div>
+      <aside id="island-menu" class="island-menu glass-panel" role="dialog" aria-modal="true" aria-labelledby="island-menu-title" hidden>
+        <header class="island-menu-head">
+          <div><span class="eyebrow">YouTopy / places &amp; perspectives</span><h1 id="island-menu-title">Island menu</h1></div>
+          <button id="island-menu-close" type="button" aria-label="Close island menu">&times;</button>
+        </header>
+        <div class="island-menu-scroll">
+          <div id="island-menu-views" class="island-menu-section"></div>
+          <nav class="island-menu-destinations" aria-label="Places">
+            <a href="/apartments.html" class="island-apartments-link"><span><small>Private spaces / character residences</small><strong>Vinculum Apartments</strong></span><span aria-hidden="true">↗</span></a>
+          </nav>
+          <section id="island-menu-current" class="island-menu-section" aria-label="Current view"><button id="island-selection-details" type="button" hidden>Selected object details ↓</button></section>
+          <div id="island-menu-atlas" class="island-menu-section"></div>
+          <div id="island-menu-inspector"></div>
+          <section id="island-menu-walk" class="island-menu-section" aria-label="Walk controls" hidden></section>
+          <section id="island-menu-layers" class="island-menu-section" aria-labelledby="island-layers-title"><h2 id="island-layers-title">Layers &amp; display</h2></section>
+          <section id="island-menu-environment" class="island-menu-section" aria-label="Atmosphere"></section>
+          <section id="island-menu-rendering" class="island-menu-section" aria-label="Rendering and performance"></section>
+          <section id="island-menu-tools" class="island-menu-section" aria-labelledby="island-tools-title"><h2 id="island-tools-title">Project tools</h2></section>
+          <p class="island-menu-foot">1–4 change view · / find a district · F fullscreen<br>Close the menu to enjoy an unobstructed island.</p>
+        </div>
+      </aside>
 
       <header class="topbar glass-panel">
         <button class="brand" id="home-view" aria-label="Return to overview">

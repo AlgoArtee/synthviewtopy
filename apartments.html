@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#17231f" />
+    <meta name="description" content="Explore 101 walkable residences at Lux Umbrarum: Liminette's original apartment and 100 different styles paired with Dark Academia, overlooking the Academic District." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='32' fill='%2317231f'/%3E%3Ctext x='32' y='45' text-anchor='middle' font-family='serif' font-size='44' fill='%23d6bf8c'%3EV%3C/text%3E%3C/svg%3E" />
+    <title>Vinculum Apartments · YouTopy</title>
+  </head>
+  <body class="residences-page">
+    <header class="residence-header">
+      <a class="residence-brand" href="/apartments.html" aria-label="Vinculum Apartments home"><span class="residence-seal" aria-hidden="true">V</span><span>VINCULUM<small>APARTMENTS</small></span></a>
+      <a class="quiet-link" href="/">↖ Back to the island</a>
+    </header>
+    <main class="residence-directory">
+      <div class="directory-intro"><p class="residence-eyebrow">YOUTOPY · THE RESIDENT COLLECTION</p><h1>A world outside.<br /><em>A world within.</em></h1><p>One hundred new interpretations of Dark Academia, alongside Liminette’s original room. Different interiors. The same extraordinary view from Lux Umbrarum.</p></div>
+      <section class="residence-collection" aria-labelledby="collection-title">
+        <div class="collection-heading"><h2 id="collection-title">The apartments</h2><span id="collection-count">101 residences to explore</span></div>
+        <a class="apartment-card" id="featured-room-link" href="/liminette.html" aria-label="Liminette Student Room — enter the 3D apartment">
+          <div class="apartment-image"><img src="/apartments/liminette-preview.jpg" alt="Liminette's spacious apartment, with tall arched windows, walnut bookshelves, a study desk and warm brass lighting" width="1440" height="900" /><span class="image-caption">A PLACE FOR CURIOSITY TO STAY AWHILE</span><span class="room-number">The original</span></div>
+          <div class="apartment-copy"><p class="residence-eyebrow">LUX UMBRARUM · ACADEMIC DISTRICT</p><h3 id="featured-room-name">Liminette<br /> Student Room</h3><p>Late-night theories. Well-worn books. A little tomorrow, tucked inside yesterday.</p><p class="apartment-description" id="featured-room-description">A spacious retreat of walnut, aged brass and deep green. Tall windows overlook the college gardens, Gothic rooftops and the distant city beneath an extraordinary sky.</p><div class="apartment-tags"><span>Dark academia</span><span>Retro-futurism</span><span>Interactive 3D</span></div><span class="enter-apartment">Enter the apartment <span aria-hidden="true">↗</span></span></div>
+        </a>
+        <div class="featured-edit-row"><span>The original residence</span><button type="button" id="edit-liminette" class="catalog-quiet-button">Edit name &amp; description</button></div>
+      </section>
+      <section class="room-catalog" aria-labelledby="catalog-title">
+        <div class="catalog-heading"><div><p class="residence-eyebrow">100 STYLES · ONE SCHOLARLY SPIRIT</p><h2 id="catalog-title">Find your next room.</h2></div><p>Each style meets Dark Academia. Give a room a name and a story when you are ready.</p></div>
+        <div class="catalog-toolbar">
+          <label class="catalog-search" for="room-search"><span>Find a room</span><input id="room-search" type="search" placeholder="Room, style, name or description…" autocomplete="off" /></label>
+          <label class="catalog-filter" for="room-motif-filter"><span>Style family</span><select id="room-motif-filter"><option value="all">All families</option></select></label>
+          <button id="catalog-clear" class="catalog-quiet-button" type="button">Clear filters</button>
+        </div>
+        <div class="catalog-results-heading"><p id="catalog-result-count" role="status" aria-live="polite">100 rooms</p><span>Shared Academic District outlook · Walkable 3D</span></div>
+        <div id="room-catalog-grid" class="room-catalog-grid" aria-label="Room collection"></div>
+        <p id="catalog-empty" class="catalog-empty" hidden>No rooms match those filters. Try another name or style.</p>
+        <div class="catalog-metadata-tools"><p>Names and descriptions are saved on this device. Export them to keep a copy or bring them to another browser.</p><div><button id="metadata-export" class="catalog-quiet-button" type="button">Export names &amp; descriptions</button><button id="metadata-import" class="catalog-quiet-button" type="button">Import a copy</button><input id="metadata-file" type="file" accept=".json,application/json" hidden /></div></div>
+        <p id="catalog-status" class="catalog-status" role="status" aria-live="polite"></p>
+      </section>
+      <footer class="residence-footer"><span>VINCULUM APARTMENTS</span><span>Every room tells a different story.</span><a href="/">Return to Lab Island ↗</a></footer>
+    </main>
+    <dialog id="room-metadata-dialog" class="room-metadata-dialog" aria-labelledby="metadata-dialog-title">
+      <form id="room-metadata-form">
+        <p class="residence-eyebrow" id="metadata-style"></p><h2 id="metadata-dialog-title">Make it your own.</h2>
+        <p class="metadata-note">Edit the name and description shown in the collection and inside the room. The room’s style stays the same.</p>
+        <label for="metadata-room-name">Room name<input id="metadata-room-name" type="text" required maxlength="80" autocomplete="off" /></label>
+        <label for="metadata-room-description">Description<textarea id="metadata-room-description" maxlength="600" rows="5"></textarea></label>
+        <p id="metadata-feedback" role="alert"></p>
+        <div class="metadata-dialog-actions"><button id="metadata-reset" type="button" class="catalog-quiet-button">Restore generic text</button><button id="metadata-cancel" type="button" class="catalog-quiet-button">Cancel</button><button id="metadata-save" type="submit">Save changes</button></div>
+        <p class="metadata-device-note">Saved locally on this device.</p>
+      </form>
+    </dialog>
+    <script type="module" src="/src/apartments/directory.ts"></script>
+  </body>
+</html>

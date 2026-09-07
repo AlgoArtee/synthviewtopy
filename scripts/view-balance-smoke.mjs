@@ -42,6 +42,7 @@ try {
   }
   await page.screenshot({ path: `${OUTPUT}/explore-layered-hlod.png`, fullPage: true });
 
+  await page.click('#island-menu-toggle');
   await page.click('.mode[data-mode="plan"]');
   await settle();
   const plan = await read();
@@ -52,6 +53,7 @@ try {
   }
   await page.screenshot({ path: `${OUTPUT}/plan-far-hlod.png`, fullPage: true });
 
+  await page.click('#island-menu-toggle');
   await page.click('.mode[data-mode="walk"]');
   const closeWalk = await page.evaluate(() => {
     const world = window.labIsland;

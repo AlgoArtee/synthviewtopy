@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import './style.css';
+import { createIslandMenu } from './islandMenu';
 import { Zip, ZipPassThrough } from 'fflate';
 import { biomes, districts } from './data/districts';
 import {
@@ -128,6 +129,7 @@ async function createProductionOutputSink(): Promise<ProductionOutputSink> {
 }
 
 const app = required<HTMLElement>('#app');
+const islandMenu = createIslandMenu();
 
 const syncAppToVisualViewport = () => {
   const visualViewport = window.visualViewport;
@@ -214,9 +216,6 @@ const undoActionButton = required<HTMLButtonElement>('#undo-action');
 const envTimeSelect = required<HTMLSelectElement>('#env-time');
 const envWeatherSelect = required<HTMLSelectElement>('#env-weather');
 const envSeasonSelect = required<HTMLSelectElement>('#env-season');
-const atmosphereToggleButton = required<HTMLButtonElement>('#atmosphere-toggle');
-const atmosphereMenu = required<HTMLElement>('#atmosphere-menu');
-const atmosphereMenuCloseButton = required<HTMLButtonElement>('#atmosphere-menu-close');
 const corporatePlazaLightStrengthInput = required<HTMLInputElement>('#corporate-plaza-light-strength');
 const corporatePlazaLightStrengthOutput = required<HTMLOutputElement>('#corporate-plaza-light-strength-output');
 const envQualitySelect = required<HTMLSelectElement>('#env-quality');
@@ -226,7 +225,6 @@ const fullIslandDetailMonitor = required<HTMLElement>('#full-island-detail-monit
 const fullIslandStatusChip = required<HTMLButtonElement>('#full-island-status-chip');
 const fullIslandStatusChipLabel = required<HTMLElement>('#full-island-status-chip-label');
 const fullIslandStatusCard = required<HTMLElement>('#full-island-status-card');
-const fullIslandStatusClose = required<HTMLButtonElement>('#full-island-status-close');
 const fullIslandStatusProgress = required<HTMLProgressElement>('#full-island-status-progress');
 const fullIslandStatusProgressLabel = required<HTMLElement>('#full-island-status-progress-label');
 const fullIslandStatusSummary = required<HTMLElement>('#full-island-status-summary');
@@ -296,8 +294,6 @@ const walkHud = required<HTMLElement>('#walk-hud');
 const walkLookButton = required<HTMLButtonElement>('#walk-look-button');
 const walkTurboButton = required<HTMLButtonElement>('#walk-turbo');
 const walkSpeedInput = required<HTMLInputElement>('#walk-speed-kmh');
-const walkHudCollapseButton = required<HTMLButtonElement>('#walk-hud-collapse');
-const walkReadout = required<HTMLElement>('.walk-readout');
 const walkStatus = required<HTMLElement>('#walk-status');
 const editWorkspacePanel = required<HTMLElement>('#edit-workspace');
 const editLandscapeButton = required<HTMLButtonElement>('#edit-landscape');
@@ -819,6 +815,7 @@ nextBuildingButton.addEventListener('click', () => navigateBuilding(1));
 
 function updateInspector(definition: SceneDefinition | null, state?: ObjectState | null) {
   currentSelection = definition;
+  islandMenu.setSelection(definition?.name ?? null);
   if (definition && isAtlasBuildingDefinition(definition) && !districtSearch.value) {
     const wasExpanded = expandedAtlasDistrictIds.has(definition.parentDistrictId);
     expandedAtlasDistrictIds.add(definition.parentDistrictId);
@@ -1022,6 +1019,7 @@ function cycleFountainStateTo(
 
 function setMode(mode: ViewMode) {
   currentMode = mode;
+  islandMenu.setMode(mode);
   document.querySelectorAll<HTMLButtonElement>('.mode').forEach((button) => {
     button.classList.toggle('active', button.dataset.mode === mode);
   });
@@ -1029,11 +1027,6 @@ function setMode(mode: ViewMode) {
   document.body.classList.toggle('edit-mode', mode === 'edit');
   document.body.classList.toggle('walk-mode', mode === 'walk');
   walkHud.hidden = mode !== 'walk';
-  if (!window.matchMedia('(max-width: 760px)').matches) {
-    const collapseForView = mode === 'plan' || mode === 'walk';
-    atlas.classList.toggle('collapsed', collapseForView);
-    required<HTMLButtonElement>('#atlas-collapse').textContent = collapseForView ? '›' : '‹';
-  }
   inspector.classList.toggle('hidden-panel', mode === 'walk' || (!currentSelection && mode !== 'edit'));
   world.setMode(mode);
   currentEditWorkspace = world.getEditWorkspace();
@@ -1293,12 +1286,6 @@ walkLookButton.addEventListener('click', () => world.activateWalkLook());
 walkSpeedInput.addEventListener('change', () => {
   world.setWalkTurbo(false);
   applyWalkSpeed(Number(walkSpeedInput.value));
-});
-walkHudCollapseButton.addEventListener('click', () => {
-  const collapsed = walkReadout.classList.toggle('collapsed');
-  walkHudCollapseButton.setAttribute('aria-expanded', String(!collapsed));
-  walkHudCollapseButton.setAttribute('aria-label', `${collapsed ? 'Expand' : 'Collapse'} WALK controls`);
-  walkHudCollapseButton.textContent = collapsed ? '‹' : '›';
 });
 
 document.querySelectorAll<HTMLButtonElement>('[data-gizmo]').forEach((button) => {
@@ -1597,16 +1584,6 @@ required<HTMLButtonElement>('#home-view').addEventListener('click', () => {
   syncFountainControlPanel();
 });
 
-required<HTMLButtonElement>('#atlas-collapse').addEventListener('click', () => {
-  const collapseButton = required<HTMLButtonElement>('#atlas-collapse');
-  if (window.matchMedia('(max-width: 760px)').matches) {
-    const open = atlas.classList.toggle('mobile-open');
-    collapseButton.textContent = open ? '‹' : '›';
-    return;
-  }
-  const collapsed = atlas.classList.toggle('collapsed');
-  collapseButton.textContent = collapsed ? '›' : '‹';
-});
 
 importTrigger.addEventListener('click', () => {
   const interiorBuildingId = world.getCurrentInteriorBuildingId();
@@ -1787,6 +1764,7 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.key === '/' && !editingText) {
     event.preventDefault();
+    islandMenu.setOpen(true);
     districtSearch.focus();
     return;
   }
@@ -2206,30 +2184,6 @@ function syncEnvironmentUI() {
   corporatePlazaLightStrengthOutput.textContent = `${plazaLightPercent}%`;
   envQualitySelect.value = world.getGraphicsQuality();
 }
-
-function setAtmosphereMenuOpen(open: boolean) {
-  atmosphereMenu.hidden = !open;
-  atmosphereToggleButton.setAttribute('aria-expanded', String(open));
-}
-
-atmosphereToggleButton.addEventListener('click', () => {
-  const open = atmosphereMenu.hidden;
-  if (open) syncEnvironmentUI();
-  setAtmosphereMenuOpen(open);
-});
-
-atmosphereMenuCloseButton.addEventListener('click', () => setAtmosphereMenuOpen(false));
-
-document.addEventListener('pointerdown', (event) => {
-  if (atmosphereMenu.hidden) return;
-  const target = event.target;
-  if (!(target instanceof Node) || atmosphereMenu.contains(target) || atmosphereToggleButton.contains(target)) return;
-  setAtmosphereMenuOpen(false);
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !atmosphereMenu.hidden) setAtmosphereMenuOpen(false);
-});
 
 fountainSceneModeSelect.addEventListener('change', () => {
   cycleFountainStateTo('sceneMode', fountainSceneModeSelect.value, 'cycle fountain scene mode', 3);
@@ -2659,32 +2613,10 @@ function syncFullIslandDetailUI(sceneStats?: FullIslandSceneStatistics) {
   announceFullIslandMilestone(state, lifecycle.ready, lifecycle.total, lifecycle.error);
 }
 
-function setFullIslandStatusCardOpen(open: boolean) {
-  fullIslandStatusCard.hidden = !open;
-  fullIslandStatusChip.setAttribute('aria-expanded', String(open));
-  if (open) syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
-}
-
-fullIslandStatusChip.addEventListener('click', () => {
-  setFullIslandStatusCardOpen(fullIslandStatusCard.hidden);
-});
-
-fullIslandStatusClose.addEventListener('click', () => {
-  setFullIslandStatusCardOpen(false);
-  fullIslandStatusChip.focus();
-});
-
-document.addEventListener('pointerdown', (event) => {
-  if (!fullIslandStatusCard.hidden && !fullIslandDetailMonitor.contains(event.target as Node)) {
-    setFullIslandStatusCardOpen(false);
-  }
-});
-
-document.addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && !fullIslandStatusCard.hidden) {
-    setFullIslandStatusCardOpen(false);
-    fullIslandStatusChip.focus();
-  }
+document.addEventListener('island-menu-change', () => {
+  if (!islandMenu.isOpen()) return;
+  syncEnvironmentUI();
+  syncFullIslandDetailUI(world.getSceneStatistics() as FullIslandSceneStatistics);
 });
 
 fullIslandDetailInput.addEventListener('change', () => {
@@ -2842,10 +2774,10 @@ world.setGraphicsQuality(envQualitySelect.value as GraphicsQuality);
 applyPersistedFullIslandDetailPreference();
 const gpuDetailUiInterval = window.setInterval(() => {
   if (document.hidden || world.isSyntheticShoreActive()) return;
-  const needsSceneStatistics = !fullIslandStatusCard.hidden || !debugStats.hidden;
+  const needsSceneStatistics = islandMenu.isOpen() && (!fullIslandStatusCard.hidden || !debugStats.hidden);
   const sceneStats = needsSceneStatistics ? world.getSceneStatistics() as FullIslandSceneStatistics : undefined;
   syncFullIslandDetailUI(sceneStats);
-  if (!debugStats.hidden) refreshPerformanceStats(sceneStats);
+  if (islandMenu.isOpen() && !debugStats.hidden) refreshPerformanceStats(sceneStats);
 }, 1000);
 
 required<HTMLButtonElement>('#locate-synthetic-shore').addEventListener('click', () => {

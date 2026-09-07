@@ -69,6 +69,76 @@ quality configuration, and Cerebrum vertical-slice definition are documented in
 
 ## Editor modes and controls
 
+### Island menu and Vinculum Apartments
+
+The **Island menu** starts closed. It contains the view modes, district Atlas,
+scene information, environment, layers, rendering status and project tools in
+one scrollable drawer. Choose a mode or district to close it, or press Escape.
+Press `/` to open district search. Contextual editing tools remain available
+when working in Edit mode.
+
+Choose **Vinculum Apartments** in the menu to open the character residence
+directory at `/apartments.html`, then **Liminette Student Room** to visit
+`/liminette.html`. These pages also support direct navigation and browser
+Back/Forward. The apartment loads independently from the island and includes
+a library/study, lounge, sleeping area, kitchen and bathroom in a spacious
+retro-futuristic dark academia interior.
+
+Drag to look, use **WASD** or **arrow keys** to walk, scroll or pinch to zoom,
+and press **F** for fullscreen. Touch screens have directional walking buttons.
+The **Room guide** offers viewpoints for each space and an entrance reset.
+Walking respects the room walls and furniture. The room is at **Lux Umbrarum in
+the Academic District**, with a continuous 3D courtyard beyond its arched
+windows: college libraries, chapel, observatory, trees, city skyline and a
+celestial pair. This is an authored outlook inspired by the supplied reference;
+Lux Umbrarum has no exact building record in the current island masterplan.
+
+Custom furniture meshes include tufted seating, stitched cushions, folded
+bedding, carved joinery, hollow ceramics and shaped sanitaryware.
+Locally stored CC0 scans supply walnut, parquet, leather, velvet, linen and
+plaster. A room reflection probe, contact occlusion and cached soft shadows
+ground the furnishings. No external asset service is contacted at runtime.
+The 18 photographic maps total about 13 MiB; their authors, licenses and checksums
+are recorded in [the asset sources](public/apartments/ASSET_SOURCES.md).
+
+`npm run build` produces all four HTML entry pages. With the local server
+running, `npm run test:apartments` checks navigation, menus, room movement,
+viewpoints, window parallax and collision, material loading/failure recovery,
+and responsive layouts.
+
+The directory also contains **100 additional rooms** at
+`/room.html?id=room-001` through `/room.html?id=room-100`. Each combines a
+distinct aesthetic with Dark Academia, including Frutiger Aero, Art Deco,
+Brutalism, Solarpunk and Japonisme. The rooms use twelve floor plans, different
+material palettes, distinct sofa/chair/table/bed meshes, floor and wall treatments,
+window dressings, shelving, ceilings, pendants and sculptural objects.
+Every room retains study, library, lounge, sleeping, kitchen and washroom spaces.
+The north façade, courtyard coordinates and exterior geometry are shared.
+
+Every apartment includes an advanced research workstation with a curved ultrawide
+display, two auxiliary screens, a glass touch deck and titanium hardware, regardless
+of the room's style. Design references, structural families and verification are
+documented in [the design notes](docs/apartment-design-references.md).
+Run `npm run test:apartment-diversity` for all rooms and refreshed visual previews.
+
+Use **Edit name & description** on a directory card to rename a residence and
+change its text. Edits persist on the current device and appear in the room
+header. **Export names & descriptions** and **Import a copy** move those edits between
+devices. **Restore generic text** resets an individual room. Stable room IDs,
+styles and layouts are independent from these display edits. For project-wide
+defaults and new designs, edit `src/apartments/roomCatalog.ts`; geometry lives in
+`styledRoom.ts` and `styleInstallation.ts`.
+
+All apartments now reuse **the exact Lab Island Cygnus artwork** through
+`createIslandCygnus`, with the original star, lensed accretion disk, wind stream,
+proportions and animation. The apartment adapter changes only sky placement to
+clear the college roofs. See [the sky integration](docs/apartment-sky.md).
+`npm run test:apartment-sky` compares the source and actual GPU artwork.
+`npm run test:apartment-catalog` visits all 100 new rooms, fingerprints their
+actual geometry and shared outlook, verifies disposal and metadata editing,
+and generates real gallery thumbnails. Set `BASE_URL` to test a production
+preview instead of the default development server.
+
 ### Synthetic Shore
 
 Use **Synthetic Shore → Locate the Alpine pier** in the Atlas, then click the pier

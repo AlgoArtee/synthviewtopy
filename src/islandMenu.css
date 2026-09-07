@@ -1,0 +1,151 @@
+.island-menu-shell #app > :is(.topbar, .atlas, .scene-card, .layerbar, .interaction-hint, .compass, .debug-stats) {
+  display: none;
+}
+
+.island-menu-toggle {
+  position: absolute;
+  z-index: 61;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 0 16px;
+  border-radius: 5px;
+  color: var(--ink);
+  font-size: 12px;
+  cursor: pointer;
+}
+
+#island-menu-mode {
+  border-left: 1px solid var(--line-strong);
+  padding-left: 12px;
+  color: var(--cyan);
+  font: 10px 'Cascadia Mono', monospace;
+}
+
+.island-menu-symbol { display: grid; gap: 5px; width: 16px; }
+.island-menu-symbol i { height: 1px; background: var(--cyan); transition: transform 150ms ease; }
+.island-menu-toggle[aria-expanded='true'] .island-menu-symbol i:first-child { transform: translateY(3px) rotate(45deg); }
+.island-menu-toggle[aria-expanded='true'] .island-menu-symbol i:last-child { transform: translateY(-3px) rotate(-45deg); }
+.island-menu-backdrop { position: absolute; z-index: 59; inset: 0; background: rgba(2, 8, 10, .2); }
+
+.island-menu {
+  position: absolute;
+  z-index: 60;
+  top: 76px;
+  left: 18px;
+  bottom: 18px;
+  width: min(408px, calc(100% - 36px));
+  display: flex;
+  flex-direction: column;
+  border-radius: 6px;
+  background: var(--panel-deep);
+  overflow: hidden;
+  color: var(--ink);
+}
+
+.island-menu-head { display: flex; align-items: center; justify-content: space-between; flex: none; padding: 20px; border-bottom: 1px solid var(--line); }
+.island-menu-head h1 { margin: 7px 0 0; font-size: 21px; font-weight: 500; }
+.island-menu-head > button { width: 34px; height: 34px; border: 1px solid var(--line-strong); background: transparent; border-radius: 4px; font-size: 24px; cursor: pointer; }
+.island-menu-scroll { overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--line-strong) transparent; }
+.island-menu-section { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.island-menu-section > h2 { font-size: 13px; font-weight: 500; margin: 0 0 14px; }
+.island-menu-foot { padding: 0 20px 14px; margin: 16px 0 0; color: var(--muted); font-size: 10px; line-height: 1.8; }
+.island-menu-destinations { padding: 0 20px 18px; border-bottom: 1px solid var(--line); }
+.island-apartments-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 15px; background: rgba(88, 221, 209, .07); border: 1px solid rgba(88, 221, 209, .26); border-radius: 4px; color: var(--ink); text-decoration: none; transition: background 150ms; }
+.island-apartments-link:hover { background: rgba(88, 221, 209, .14); }
+.island-apartments-link small { display: block; font-size: 9px; color: var(--muted); margin-bottom: 7px; }
+.island-apartments-link strong { font-size: 15px; font-weight: 500; }
+.island-apartments-link > span:last-child { color: var(--cyan); font-size: 23px; }
+.island-menu :is(button, a, input, select, textarea):focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; }
+
+/* Flatten the old scene overlays into normal document flow inside the drawer. */
+#island-menu :is(.topbar, .atlas, .inspector, .scene-card, .layerbar, .interaction-hint, .compass, .atmosphere-menu, .full-detail-status-card, .walk-readout, .debug-stats) {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  transform: none;
+  opacity: 1;
+  pointer-events: auto;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+#island-menu .topbar { display: flex; flex-direction: column; align-items: stretch; gap: 20px; }
+#island-menu .brand-copy { display: grid; }
+#island-menu .brand-copy strong { font-size: 14px; }
+#island-menu .brand-copy .eyebrow { display: block; font-size: 8px; }
+#island-menu .mode-switch { position: static; display: grid; grid-template-columns: repeat(4, 1fr); width: 100%; transform: none; padding: 4px; }
+#island-menu .mode { min-width: 0; padding: 10px 6px; font-size: 11px; }
+#island-menu .scene-card { display: flex; align-items: flex-start; gap: 12px; }
+#island-menu .scene-card p { max-width: none; line-height: 1.7; }
+#island-menu .interaction-hint { display: flex; justify-content: flex-start; gap: 10px; margin-top: 16px; flex-wrap: wrap; font-size: 9px; }
+#island-menu .compass { display: grid; width: 42px; height: 42px; margin-top: 14px; }
+#island-selection-details { width: 100%; margin-top: 15px; padding: 11px; border: 1px solid var(--line-strong); border-radius: 3px; background: var(--cyan-soft); color: var(--cyan); font-size: 11px; line-height: 1.5; text-align: left; cursor: pointer; }
+#island-menu .atlas { display: flex; }
+#island-menu .panel-head { min-height: auto; padding: 0 0 16px; }
+#island-menu .panel-head h1 { font-size: 17px; }
+#island-menu .search-box { margin: 16px 0; }
+#island-menu .atlas-metrics { display: flex; margin: 0 0 14px; }
+#island-menu .atlas-metrics div { flex: 1; }
+#island-menu .atlas-scroll { flex: none; max-height: 310px; padding: 0; overflow-y: auto; }
+#island-menu .atlas-foot { margin-top: 16px; padding: 14px 0 0; }
+#island-menu .shore-atlas-link { margin: 14px 0 0; width: 100%; }
+#island-menu .inspector { display: flex; padding: 20px; border-bottom: 1px solid var(--line); }
+#island-menu .inspector.hidden-panel { display: none; }
+#island-menu .inspector-content { overflow: visible; }
+#island-menu .layerbar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+#island-menu .layerbar button { min-height: 37px; height: auto; justify-content: flex-start; padding: 9px; border: 1px solid var(--line); font-size: 10px; }
+#island-menu .layerbar .utility-label { display: inline; }
+#island-menu .layer-divider { display: none; }
+#island-menu #fullscreen-toggle::after { content: 'Fullscreen'; margin-left: 8px; }
+#island-menu #toggle-theme { margin-top: 10px; }
+#island-menu .atmosphere-menu-head { margin-bottom: 14px; }
+#island-menu .atmosphere-monitor { width: 100%; }
+#island-menu #toggle-time { margin-top: 16px; }
+#island-menu .full-detail-monitor { width: 100%; }
+#island-menu .full-detail-status-card { overflow: visible; }
+#island-menu .full-detail-telemetry { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#island-menu .atlas-performance { margin: 18px 0 0; padding: 18px 0 0; border-top: 1px solid var(--line); }
+#island-menu .debug-stats { white-space: pre-wrap; font-size: 9px; margin-top: 18px; overflow-wrap: anywhere; }
+#island-menu .top-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; width: 100%; }
+#island-menu .top-actions button { min-height: 40px; height: auto; justify-content: flex-start; padding: 11px 10px; font-size: 10px; }
+#island-menu :is(.action-label, .primary-action span:first-child, .production-action span:first-child) { display: inline; }
+#island-menu .top-actions .primary-action { grid-column: 1 / -1; justify-content: space-between; }
+#island-menu .walk-readout-content { display: flex; flex-wrap: wrap; padding: 0; gap: 14px; }
+#island-menu .walk-readout-content > :is(.walk-scale, strong, span:last-of-type) { width: 100%; }
+#island-menu .walk-scale { justify-content: start; border: 0; padding: 0; }
+#island-menu .walk-readout-content > span:last-of-type { font-size: 9px; line-height: 1.8; }
+#island-menu .walk-speed-control { margin: 0; }
+#island-menu .walk-look-button { display: block; }
+
+/* Editing and active interactions retain only the controls relevant to the action. */
+.island-menu-shell.edit-mode #app > .inspector { top: 78px; bottom: 270px; }
+.island-menu-shell .edit-workspace { left: 18px; right: 18px; bottom: 18px; }
+.island-menu-shell.island-menu-open #app > :is(.inspector, .edit-workspace, .fountain-control-panel, .walk-interaction-menu, .academic-overlay) { visibility: hidden; pointer-events: none; }
+.island-menu-shell .toast-region { top: 78px; }
+.island-menu-shell.walk-locked .island-menu-toggle { opacity: .55; }
+.island-menu-shell .fountain-control-panel { top: 78px; }
+
+@media (max-width: 760px) {
+  .island-menu-toggle { top: 10px; left: 10px; }
+  .island-menu { top: 66px; left: 10px; bottom: 10px; width: min(408px, calc(100% - 20px)); }
+  .island-menu-shell.edit-mode #app > .inspector { top: 66px; bottom: 252px; max-width: calc(100% - 20px); }
+  .island-menu-shell .edit-workspace { left: 10px; right: 10px; bottom: 10px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .island-menu-symbol i, .island-apartments-link { transition: none; }
+}

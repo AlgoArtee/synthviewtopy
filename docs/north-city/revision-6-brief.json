@@ -1,0 +1,119 @@
+{
+  "revision": 6,
+  "request": [
+    "Modern full-wall city-facing window",
+    "Holographic TV on the left wall",
+    "Expand the city across the panoramic view",
+    "Reduce pillows, make them bigger and more realistic"
+  ],
+  "authorization": "User authorized local runtime revision; no paid services, export or deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "layout": {
+    "bedMetres": [
+      8.55,
+      8.55
+    ],
+    "northGlazingMetres": [
+      8.55,
+      3.5
+    ],
+    "clearGlassHeight": 3.404,
+    "glazingPanels": 4,
+    "mullionWidth": 0.028,
+    "TV": {
+      "wall": "west / left facing city",
+      "size": [
+        3.72,
+        2.02
+      ],
+      "centre": [
+        -9.655,
+        2.12,
+        -6.1
+      ]
+    },
+    "pillows": {
+      "count": 6,
+      "previous": 18,
+      "widthMetres": [
+        1.37,
+        1.64
+      ]
+    },
+    "additionalCityBuildings": 6
+  },
+  "hero": "Full-wall rainy city panorama over the square cotton bed",
+  "circulation": "Preserve existing deliberate climb, full mattress walking, continuous glass boundary and south step-down opening",
+  "symmetry": "Centred panoramic glazing and square mattress; intentional asymmetry in TV, pillow compression and city blocks",
+  "productionViews": [
+    "sleep",
+    "bed-wide",
+    "panorama",
+    "television",
+    "pillows",
+    "on-bed",
+    "city-detail"
+  ],
+  "budget": {
+    "paidServices": 0,
+    "uniqueTrianglesTarget": 1650000,
+    "reason": "Six unique detailed cotton shells and six lateral city blocks; remove repeated pillow instances and arched surround"
+  },
+  "review": {
+    "revision": 6,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.2
+    ],
+    "acceptedScore": 8.2,
+    "report": "revision-6-reviews.md",
+    "finalReport": "revision-6-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-6/pass-1",
+    "rubric": {
+      "construction": 1.9,
+      "lighting": 1.55,
+      "materials": 1.5,
+      "fidelity": 2.0,
+      "composition": 1.25
+    },
+    "remainingUnusedChecks": 2,
+    "limitations": [
+      "Pillows retain broad smooth cushion faces and shallow compression",
+      "The unusually large duvet remains overly smooth in broad areas",
+      "A small dark cloth notch remains near the left pillow group",
+      "The centre mullion is prominent in the city-detail view",
+      "TV imagery/scanlines and city repetition/reflection streaks remain visibly procedural",
+      "Motion review used separated frames, without direct WebM playback"
+    ]
+  },
+  "validation": {
+    "build": "passed",
+    "runtimeViews": 24,
+    "fullHDReviewCaptures": [
+      1920,
+      1080
+    ],
+    "weatherModes": 6,
+    "bedNavigation": "passed",
+    "mobile": "passed at 390px",
+    "geometryFinite": true,
+    "uniqueTriangles": 1417296,
+    "instanceExpandedTriangles": 1758518,
+    "glazingPanes": 4,
+    "pillowCount": 6,
+    "cityBuildingCount": 34,
+    "cityNearestZ": -9.96,
+    "windowZ": -9.46,
+    "tvMounting": "within 5 mm of west wall",
+    "reducedMotion": "city and TV passed",
+    "runtimeErrors": [],
+    "geometryAudit": "test-artifacts/north-city/revision-6/validation/audit.json",
+    "televisionAudit": "test-artifacts/north-city/revision-6/validation/television.json",
+    "motionCapture": "test-artifacts/north-city/revision-6/pass-1/ghost-motion.webm",
+    "actualMeshPlan": "test-artifacts/north-city/revision-6/pass-1/floor-plan.png"
+  }
+}

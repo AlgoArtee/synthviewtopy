@@ -1,0 +1,126 @@
+{
+  "revision": 16,
+  "formalRound": 1,
+  "files": [
+    {
+      "path": "src/apartments/osCityAmbience.ts",
+      "bytes": 13850,
+      "sha256": "c66de0bb1932953e176e883d3a4a5bf968176d561b56bb5be47ff0b677007069"
+    },
+    {
+      "path": "src/apartments/osCityApartment.ts",
+      "bytes": 30304,
+      "sha256": "906f53b3762e5e425cd698651ff6bf649afd533c8195e44bd7e4cbfa4df8395d"
+    },
+    {
+      "path": "src/apartments/osCityCatPillowArt.ts",
+      "bytes": 3471,
+      "sha256": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188"
+    },
+    {
+      "path": "src/apartments/osCityDuvet.ts",
+      "bytes": 10042,
+      "sha256": "6472fbbaa46251409bf1d3aa98f0b6a3d6d799d170d2d388d7eef8f401886088"
+    },
+    {
+      "path": "src/apartments/osCityExterior.ts",
+      "bytes": 40073,
+      "sha256": "5aaa31288512845aa34d9a6a84b41af6bb6b35f319c21d9b12bc613d0a95f8f6"
+    },
+    {
+      "path": "src/apartments/osCityFurnishings.ts",
+      "bytes": 36211,
+      "sha256": "a2984a031063fa852fd5cd0685f56d0a8eaeba23203c6379b7914b6fcd4ea99e"
+    },
+    {
+      "path": "src/apartments/osCityGeometry.ts",
+      "bytes": 1314,
+      "sha256": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4"
+    },
+    {
+      "path": "src/apartments/osCityGhostFace.ts",
+      "bytes": 12143,
+      "sha256": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc"
+    },
+    {
+      "path": "src/apartments/osCityHolograms.ts",
+      "bytes": 13272,
+      "sha256": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea"
+    },
+    {
+      "path": "src/apartments/osCityLayout.ts",
+      "bytes": 990,
+      "sha256": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614"
+    },
+    {
+      "path": "src/apartments/osCityLife.ts",
+      "bytes": 16821,
+      "sha256": "6c542d081b581dc6766e234c526111d0f997015a891e717204ab9aa8df369637"
+    },
+    {
+      "path": "src/apartments/osCityNavigation.ts",
+      "bytes": 3429,
+      "sha256": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565"
+    },
+    {
+      "path": "src/apartments/osCityPillows.ts",
+      "bytes": 19714,
+      "sha256": "03c9b728872272aaec0e7527f9b70f98d7605e76af479bc3000a4784eed5bb32"
+    },
+    {
+      "path": "src/apartments/osCitySoundControls.ts",
+      "bytes": 4968,
+      "sha256": "d105534f09242f84254401845c989fc06f63298805c8ad0e57f4c2372ce9e6a4"
+    },
+    {
+      "path": "src/apartments/osCitySoundLibrary.ts",
+      "bytes": 38096,
+      "sha256": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5"
+    },
+    {
+      "path": "src/apartments/osCitySoundUploads.ts",
+      "bytes": 4212,
+      "sha256": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f"
+    },
+    {
+      "path": "src/apartments/osCityTV.ts",
+      "bytes": 4698,
+      "sha256": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b"
+    },
+    {
+      "path": "src/apartments/osCityWeather.ts",
+      "bytes": 2392,
+      "sha256": "4f1dd2b94fad9298ad7a4dd0e2aa70f29c593dc775883d3bdee6969d4efbbec7"
+    },
+    {
+      "path": "src/apartments/osCityWindow.ts",
+      "bytes": 7358,
+      "sha256": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95"
+    },
+    {
+      "path": "src/apartments/room.ts",
+      "bytes": 27359,
+      "sha256": "14f35c81dc468c52bbc5608b7f6d970da0b0a929544a14d4182ce6d7f94e81bc"
+    },
+    {
+      "path": "src/apartments/roomRendering.ts",
+      "bytes": 4172,
+      "sha256": "66c65fc538fa66dd1b624a64c64a2ebc46e563b1daf08c69a36a4751cc0a70d5"
+    },
+    {
+      "path": "scripts/north-city-pillow-audit.mjs",
+      "bytes": 5865,
+      "sha256": "35659f2741aebc72a3f0c6c6b0b07c466cfd60445c0f940134e1f56b2a0b9321"
+    },
+    {
+      "path": "scripts/north-city-live-audit.mjs",
+      "bytes": 10839,
+      "sha256": "6d7769571d30025f040275d6747f96c54fec191b766995a0eacf6f9624b7f42a"
+    },
+    {
+      "path": "scripts/north-city-bedding-review.mjs",
+      "bytes": 3349,
+      "sha256": "5e0777daa78235d0f2eac536817dcd58ca14c0974f554c3edc4cf5ee9ac05041"
+    }
+  ]
+}

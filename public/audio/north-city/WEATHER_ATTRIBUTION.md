@@ -1,0 +1,76 @@
+# North City weather sound library
+
+Each weather has at least ten distinct recordings. Compatible weather modes share appropriate recordings; choices are not pitch variants or duplicated files.
+
+All source pages and license records were verified individually. Adaptations: HQ public previews excerpted to at most 90 seconds and encoded as stereo 44.1 kHz 128 kbps MP3; runtime normalization, overlap looping, window gain/filter and stereo positioning. Original cyberpunk rain retains its existing full MP3.
+
+- **Morning Ambience city** by davidco80 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/davidco80/sounds/164213/).
+- **AMB_M_City_Rain_Light.wav** by conleec — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/conleec/sounds/171980/).
+- **Wind-Gusts-late-autumn.wav** by BudJillett — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/BudJillett/sounds/109485/).
+- **Windy autumn - wind.wav** by whirlproductions — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/whirlproductions/sounds/209763/).
+- **120307_ManhattanWide01.wav** by blaukreuz — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/blaukreuz/sounds/212146/).
+- **city-night-rain-light.wav** by ragamuffin — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/ragamuffin/sounds/197213/).
+- **light rain in city.wav** by Walter_Odington — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Walter_Odington/sounds/26221/).
+- **ambience winter train station outdoor quiet distant construction.wav** by lwdickens — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/lwdickens/sounds/263496/).
+- **ambience winter crow birds distant traffic construction.wav** by lwdickens — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/lwdickens/sounds/263497/).
+- **Downtown LA, Little Tokyo, late night semi distant traffic.wav** by janbezouska — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/janbezouska/sounds/330427/).
+- **Autumn rain through drain pipe** by giddster — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/giddster/sounds/336503/).
+- **russia autumn residential yard traffic** by KEDR_SFX — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/KEDR_SFX/sounds/326652/).
+- **Ambience Urban park evening windy trees.wav** by dnlburnett — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/dnlburnett/sounds/360775/).
+- **Ambience Rain on window wet traffic outside.wav** by dnlburnett — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/dnlburnett/sounds/360783/).
+- **Thunder in Columbus, OH** by powerspowerspowe — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/powerspowerspowe/sounds/352790/).
+- **Soft City Park Ambience** by simgo — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/simgo/sounds/380687/).
+- **Astoria NYC - Winter City on Elevated Train Station/Air Tone - Night/Exterior** by flood-mix — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/flood-mix/sounds/413386/).
+- **XY_City hum_Night_River_ambience.wav** by softwalls — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/softwalls/sounds/385104/).
+- **Ambience City Quiet Night Air Tone** by leonelmail — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/leonelmail/sounds/427841/).
+- **THUNDERSTORM & RAIN** by SamuelGremaud — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/SamuelGremaud/sounds/429189/).
+- **synagogue ambience distant traffic and footsteps person passing Amsterdam, Netherlands MS.wav** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/451079/).
+- **village winter ambience day traffic medium perspective2 Quaqtaq, Nunavik.flac** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/450239/).
+- **park city day wind trees nearby light traffic and children Beijing, China.flac** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/452407/).
+- **alley birds city tone wind in trees distant kids traffic cars pass Montreal, Canada.flac** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/452434/).
+- **winter ambience day melt water drip close and little noises.flac** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/454377/).
+- **Autumn wind and dry leaves.wav** by Stek59 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Stek59/sounds/457318/).
+- **Windy city ambience with water and church bell (48khz(24bit)** by neilraouf — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/neilraouf/sounds/465785/).
+- **Night atmosphere Wind City** by Jeffreys2 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Jeffreys2/sounds/455949/).
+- **City Ambience (67P7PXC5+9W)** by juandbermudez — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/juandbermudez/sounds/470030/).
+- **Ambience_City_02.wav** by BenDrain — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/BenDrain/sounds/488060/).
+- **Ambience Urban Rain Fabra i Coats** by bitlab_coop — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/bitlab_coop/sounds/486877/).
+- **Rainy day in Tel Aviv, Israel - street sounds** by khenshom — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/khenshom/sounds/500804/).
+- **Rainy day in city of Tel Aviv, Israel - light traffic** by khenshom — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/khenshom/sounds/500805/).
+- **Wind in city.ogg** by lartti — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/lartti/sounds/518459/).
+- **Wind in city 2.ogg** by lartti — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/lartti/sounds/518460/).
+- **THUNDERSTORM & RAIN - 2** by SamuelGremaud — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/SamuelGremaud/sounds/546524/).
+- **wind and swirling leaves and moderate traffic** by PostProdDog — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/PostProdDog/sounds/537333/).
+- **Rain sounds from a first floor window in city building at night** by khenshom — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/khenshom/sounds/557376/).
+- **Ambience - morning - window - city - calm - pigeon.wav** by ValentinPetiteau — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/ValentinPetiteau/sounds/563546/).
+- **180912 Night city rumble quiet distant traffic roof urban residential TORONTO.flac** by TRP — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/TRP/sounds/572530/).
+- **201207 Urban quiet ambience, city rumble, birds, cold, heating, airplane, roof 9am.flac** by TRP — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/TRP/sounds/568973/).
+- **WInter storm wind lashing snow DISTILERY 190212.flac** by TRP — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/TRP/sounds/574552/).
+- **urban_ambience_outside_apartment__sunny_day.wav** by njlyczko — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/njlyczko/sounds/580646/).
+- **Wind in trees autumn leaves rustle weird howls med 77mel 191122.mp3** by TRP — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/TRP/sounds/574553/).
+- **Autumn wind Bergen Nordnes.wav** by frodeims — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/frodeims/sounds/596454/).
+- **Raining In the City Ambience** by RyanKingArt — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/RyanKingArt/sounds/607228/).
+- **Hollywood Hills Autumn Ambience** by Laggardson — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Laggardson/sounds/627076/).
+- **AMB RESIDENTIAL DISTANT TRAFFIC EXT/DAY (01)** by tferrino — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/tferrino/sounds/631474/).
+- **AMB CITY NIGHT QUIET GARBAGE-TRUCK** by tferrino — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/tferrino/sounds/630584/).
+- **AMB CITY DAWN DISTANT TRAFFIC BIRDS** by tferrino — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/tferrino/sounds/631479/).
+- **forest light wind through bare trees winter GREAT FOR FALLING SNOW.flac** by kyles — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/kyles/sounds/637566/).
+- **storm or gusty wind in the city** by Garuda1982 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Garuda1982/sounds/632203/).
+- **Storm 02.wav** by szelestamas — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/szelestamas/sounds/638872/).
+- **traffic ambience at night.wav** by soundofsong — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/soundofsong/sounds/640635/).
+- **Storm 01.wav** by szelestamas — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/szelestamas/sounds/638873/).
+- **Thunderstorm with Soft Rain** by The_Isot_is_Back — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/The_Isot_is_Back/sounds/641185/).
+- **Ambient - thunder - strikes - light medium rain - city - passing cars - birds.wav** by ValentinPetiteau — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/ValentinPetiteau/sounds/649072/).
+- **Rain and Thunder Ambience** by sagamusix — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/sagamusix/sounds/700358/).
+- **Thunderstorm with rain (loop).wav** by VKProduktion — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/VKProduktion/sounds/704603/).
+- **Very calm street rainy day.wav** by marimu — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/marimu/sounds/706686/).
+- **Snowfall Ambience, City** by Kinoton — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Kinoton/sounds/719961/).
+- **Distant City_Night** by LewisEmmott5 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/LewisEmmott5/sounds/732690/).
+- **Quiet Street BKK night** by Salomé_Lubczanski — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Salom%C3%A9_Lubczanski/sounds/733843/).
+- **Self storage exterior with wind on tree and flag, cable banging pole, traffic city hum** by felix.blume — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/felix.blume/sounds/710536/).
+- **Wind in Trees & Passing Cars – Residential Ambience, Palestine** by sounds_from_palestine — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/sounds_from_palestine/sounds/817606/).
+- **Allotment garden atmosphere in autumn with a city background** by Garuda1982 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Garuda1982/sounds/756756/).
+- **atmospheric sound of a city park in winter with wind** by Garuda1982 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Garuda1982/sounds/839943/).
+- **City Ambience** by CharliesFoley — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/CharliesFoley/sounds/856779/).
+- **Abandoned Railway Embankment: Urban Midday Ambience with Wind** by Garuda1982 — [CC0 1.0](https://creativecommons.org/publicdomain/zero/1.0/), [source](https://freesound.org/people/Garuda1982/sounds/852236/).
+- **Cyberpunk rain ambience (rain and city noises stem)** by Rmshh — [Creative Commons Attribution 4.0 International](https://creativecommons.org/licenses/by/4.0/), [source](https://freesound.org/people/Rmshh/sounds/743999/).

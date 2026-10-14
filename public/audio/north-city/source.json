@@ -1,0 +1,13 @@
+{
+  "title": "Cyberpunk rain ambience (rain and city noises stem)",
+  "author": "Rmshh",
+  "source": "https://freesound.org/people/Rmshh/sounds/743999/",
+  "download": "https://cdn.freesound.org/previews/743/743999_5188925-hq.mp3",
+  "license": "Creative Commons Attribution 4.0 International",
+  "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+  "retrieved": "2026-10-12",
+  "file": "cyberpunk-city-ambience.mp3",
+  "bytes": 2761683,
+  "sha256": "fde1cb3e16561c070d068929044ba2b12ff377e160fe0f27dd94342126d437f1",
+  "changes": "HQ MP3 preview stored locally; runtime moderate RMS/peak normalization, two-second equal-power loop crossfade, window-dependent gain, distance attenuation and low-pass filtering."
+}

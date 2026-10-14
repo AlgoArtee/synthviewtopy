@@ -1,0 +1,88 @@
+{
+  "revision": 13,
+  "priorRevision": 12,
+  "request": [
+    "Remove the two red-marked window dividers, retaining one huge right pane and smaller left bay",
+    "Make the left bay open inward from its wall side and top tilt",
+    "Align television vertical centre with bed midpoint",
+    "Diversify city window lighting/shadows with some neon"
+  ],
+  "reference": "test-artifacts/north-city/references/09-window-layout.png",
+  "implementation": {
+    "largePaneWidthMetres": 6.318,
+    "leftOperatingLeafMetres": [
+      1.907,
+      2.208
+    ],
+    "leftOperatingSillMetres": 1.24,
+    "fixedLowerSideLight": true,
+    "sillReason": "Wall-fitted mattress and duvet prevent an unobstructed full-height inward swing",
+    "retainedInteriorDividerCount": 1,
+    "turnDegrees": 90,
+    "tiltDegrees": 8.594,
+    "tiltTopGapMetres": 0.33,
+    "televisionCentreZ": -5.185,
+    "bedCentreZ": -5.185,
+    "cityInteriorVariants": 24,
+    "cityWindowSelection": "Seeded per-building, floor, bay and elevation; existing city geometry random sequence retained"
+  },
+  "review": {
+    "revision": 13,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.3
+    ],
+    "acceptedScore": 8.3,
+    "remainingUnusedChecks": 2,
+    "report": "revision-13-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-13/review-1-final",
+    "rubric": {
+      "construction": 1.9,
+      "lighting": 1.65,
+      "materials": 1.45,
+      "fidelity": 2.05,
+      "composition": 1.25
+    },
+    "limitations": [
+      "Glazing is very subtle against the white wall in the open pose",
+      "Some illuminated room shapes and interior silhouettes repeat",
+      "Clear daylight flattens smooth duvet detail",
+      "Phone controls take much of the upper view and retain a keyboard hint",
+      "Reviewer assessed endpoint stills rather than full mechanism motion"
+    ]
+  },
+  "validation": {
+    "windowRuntime": "Passed 18 actual renderer screenshots, all opening modes, exclusive tilt/turn transitions, complete swept clearance, six weather options, desktop/mobile/collapse/reduced motion",
+    "windowReport": "test-artifacts/north-city/revision-13/review-1-final/window-results.json",
+    "actualMeshPlan": "test-artifacts/north-city/revision-13/validation/floor-plan.png",
+    "sourceHashes": "revision-13-source-hashes.json",
+    "skillPackageValidator": {
+      "result": "incompatible with existing project contract schema; not a room runtime failure",
+      "command": "validate_room.py docs/north-city --gate function",
+      "errors": [
+        "Missing room-brief.json",
+        "Missing plan-metadata.json",
+        "Missing props.json",
+        "room-layout.json is project-specific rather than game-room.layout.v1",
+        "Missing openings.json",
+        "Missing milestone-reviews.json",
+        "Missing final-report.json"
+      ],
+      "scope": "Existing Three.js scene update; no Blender/Meshy package export and no paid service or deployment",
+      "replacementEvidence": "TypeScript/Vite build, actual mesh plan, room geometry audit, true loaded renderer screenshots, live window-control and clearance checks, independent visual review. No generic package-gate approval is claimed."
+    },
+    "build": "Passed final TypeScript/Vite; validation/build.log",
+    "fullRoomCoverage": "29 viewpoints plus entrance, clear/rain/snow bedding and phone panorama passed with zero errors. Captured after hinge reveal correction and before lever pivot-only correction; all window modes recaptured after final lever correction.",
+    "geometryAudit": "test-artifacts/north-city/revision-13/validation/audit.json"
+  },
+  "snapshotArchive": "The existing 100 revision-12 Snapshots are historical captures. This request updates the live room; it does not regenerate that archive.",
+  "status": "complete",
+  "preflightFixes": [
+    "Increased wall-side hinge reveal to clear the handle at 90 degrees",
+    "Rotated the three-position handle around its stem, preserving construction"
+  ]
+}

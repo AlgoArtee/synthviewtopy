@@ -1,0 +1,8 @@
+{
+  "scripts/north-city-bedding-review.mjs": "fd4a4473b8cef7ae597db9ef2eecdae9f6df8e798c41c97b8ca0c90732040b6c",
+  "scripts/north-city-pillow-audit.mjs": "9484e51d1ee3578816e4794959c0904085095f88c054e0c83b0a4820dc9261fc",
+  "scripts/north-city-live-audit.mjs": "316dde7248041b7d692f2c21fc1169c70426f733fdd42c34555474cd0f894bbc",
+  "test-artifacts/north-city/revision-15/geometry-final/pillows.json": "59bc416e6dfa423e0a7722237919b4ed35c14af105a5dced9371d7d6be7dd19e",
+  "test-artifacts/north-city/revision-15/geometry-final/audit.json": "7fb4481d71a5c22e1bbfa3b87e7ed3fb48d93e61b0eaa0a2360d9ef4386fc63f",
+  "test-artifacts/north-city/revision-15/build-final.log": "6e028bcc4ec0707f5689452e067194a170021ff372bf867ee942f6f62d64b04b"
+}

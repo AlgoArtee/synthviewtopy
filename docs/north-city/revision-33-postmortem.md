@@ -1,0 +1,22 @@
+# Revision 33 — reference Data Mall, editable level signs and flowing circuits
+
+The supplied reference is preserved at `test-artifacts/north-city/revision-33/references/data-mall.png` and used without image modification at `public/apartments/assets/north-city/data-mall-reference.png`. The replacement is a dimensional building, not a full-facade image plane. Its two balcony wings frame a 6.6 m recessed atrium, ten occupied galleries and a broad DATA MALL entrance sign. Side and rear walls, floor plates, railings, window mullions, server cabinets, counters, visitors, portal panels and roof equipment are geometry. Selected window-interior crops from the reference sit behind the modeled rooms. The crops exclude the reference's incorrect floor labels.
+
+The original 51.5 m width, 33.6 m height, plaza position and orientation are retained. The new mall submits 56,740 triangles; the complete district submits 219,605, below the existing 250k check. The open railway, its distance fade, the completed club shell and the blue/pink plaza circuits are retained.
+
+Both wings start at LEVEL 01 at the ground floor and ascend to LEVEL 10. Twenty independent text signs share one canvas atlas. The Data Mall signs panel selects a floor and edits its left and right displays immediately. Text is limited to 36 characters and fitted into the display width; blank text hides a sign, and a floor-specific restore button recovers its correct numbers. Edits are stored in `north-city-data-mall-labels-v1`, with a visible in-session fallback if storage is denied. Rendering uses canvas text rather than HTML. The atlas is updated in place instead of allocating textures while typing.
+
+Blue and pink channels follow the balcony edges, turn into the atrium and continue through the entrance. Luminous packets and short tails move at constant distance per second along the bent paths. The existing speed control now covers plaza and mall, including pause. Speed is integrated so changing it does not reset the phase. Reduced motion freezes packet movement while retaining the circuit architecture. A Data Mall facade viewpoint is available in the room guide; the existing wheel/pinch zoom can inspect its signs.
+
+Validation is complete:
+
+- TypeScript and production build pass (`dist/assets/room-BlfL7WzN.js`). The existing bundle size warning remains.
+- `scripts/north-city-data-mall-review.mjs`: **25 checks and 15 actual-room screenshots pass**, with no browser/WebGL errors or changed source hashes. Coverage includes all ten correctly positioned floor numbers, independent left/right promotion text, untouched adjacent floors, keyboard isolation, blank text, floor reset, 36-character bounds, reuse of the atlas, responsive controls, actual reload persistence and storage-denied fallback.
+- Native-time snapshots verify moving packets, shared plaza/mall pause, resumed movement at changed speed and reduced-motion pause. The screenshots illustrate appearance; the runtime measurements establish temporal behavior.
+- The prior through-line geometry check passes again: 24 invisible resets, no modeled tower intersection, 1.273 m minimum tower clearance and all 36 club wall rays hit. District triangles remain below 250k.
+- The unchanged installed web-game action client passes; its ready 0.8.0 state and native screenshot were inspected, with no error file. Its first sandboxed launch was denied access to the installed user-profile script; the approved external launch completed normally.
+- Independent formal round 1 is accepted at **8.1/10** in `revision-33-review-1.md`, with no blocking defect.
+
+The separate model previews in `model-1/` are construction diagnostics, not native-room acceptance screenshots. The reference has more varied curved detailing than the modeled replacement; repeated interior crops and visitor poses remain visible at close inspection. Long text and mobile/distant views are less legible than the zoomed desktop sign view. The balcony rail masks part of the lower surroundings. These limits are documented in the scoped visual review; no new whole-city realism claim is made.
+
+The user's existing tab is left on the Data Mall facade, zoomed in, with Day/Clear and controls collapsed. Stored window percentages (35/49/71), stream speed (0.8×), open balcony door and audio settings are preserved. No sample promotion was saved to the user's tab. Final source and artifact hashes are in `revision-33-validation.json`. No commit or deployment was made, and no requested work remains.

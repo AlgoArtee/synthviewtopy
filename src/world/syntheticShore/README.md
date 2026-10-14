@@ -32,3 +32,13 @@ The swimming integration follows MizuTopia's surface float, intentional dive,
 neutral underwater buoyancy, ascent, and floor clearance. The current visual
 references and interpretation are recorded in
 [the surf research notes](../../../docs/synthetic-shore-surf-references.md).
+
+Nearshore phase now integrates shallow-water travel time. One travelling wash
+drives the water sheet and foam reversal; the fragment shader evaluates depth
+on the continuous surface and filters foam noise by pixel footprint. The nearby
+ocean grid includes a dense surf band to prevent visible crest facets. Run
+`npm run test:shore-realism` with the dev server for CPU/GPU comparisons and a
+labelled full-cycle viewer, including downward wading views at native and reduced
+resolution. Foam openings use radius-aware filtering: bubbles too small to resolve
+blend into an even froth tone instead of flickering as dark square pixels.
+The research notes explain the approximation limits.

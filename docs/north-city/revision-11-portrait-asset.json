@@ -1,0 +1,13 @@
+{
+  "mode": "built-in imagegen",
+  "prompt": "Use case: identity-preserve. Asset type: transparent portrait atlas for a real-time 3D hologram, not a scene preview. Input image 1 is the user's facial and hair reference. Create one wide image containing TWO equally sized, exactly aligned portrait panels side by side: LEFT eyes open, RIGHT same face with eyes gently closed in a natural blink. Preserve the reference woman's adult East Asian feminine identity and photographic sculptural realism: natural almond eyelids, luminous light irises, detailed nose with nostrils and soft alar wings, natural full lips, tapered jaw, softly modeled cheeks and forehead. Match the swept-back softly gathered voluminous hair with delicate loose strands and fine hair detail. Camera near-frontal, head upright, very slight three-quarter turn to viewer's left, straight neck and upper shoulders. Same camera, same exact head/hair/neck/shoulder positions in both panels; only eyelids change. Each panel shows the complete head and hair and neck down to collarbones, centered, with clear margin all round. Cyan/teal monochrome holographic portrait like reference, realistic dimensional soft shading and thin luminous rim, restrained glow so features stay visible, very sparse faint digital details. Keep face center readable and solid; hair edges airy. Neck/shoulders fade softly to transparent at bottom. Actual transparent background everywhere outside the subject. No rectangular panel background. No phone UI, text, borders, scenery, jewelry, ornaments, watermarks, labels or other objects. Highest facial detail and high resolution, sharp natural skin and hair microstructure. Both heads exactly the same size and pose.",
+  "reference": "test-artifacts/north-city/references/08-hologram-portrait.jpg",
+  "asset": "public/apartments/holograms/reference-portrait-atlas-v11.png",
+  "output": "C:/Users/Admin/.codex/generated_images/01a12800-053f-7893-b743-ed3bdbab1e52/exec-482f83b4-e6e1-4ad4-a0a9-d927f8b6df59.png",
+  "dimensions": [
+    1536,
+    1024
+  ],
+  "alpha": "RGBA, preserved native alpha; no raster processing",
+  "notes": "Open and closed-eye atlas; local runtime maps it onto facial relief and articulated eyelid meshes. Not an apartment/city backdrop or final screenshot."
+}

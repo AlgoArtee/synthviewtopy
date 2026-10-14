@@ -1,0 +1,7 @@
+{
+  "src/apartments/osCityPillows.ts": "96d228406e06319d5f843d0bbfd1d48b6961694b86c14767d4f44dc17a9cc7b6",
+  "src/apartments/osCityFurnishings.ts": "c37c2cf56f38018708978039b68cf56bc4ae0dccb0480297145eb4f6ab48d5ff",
+  "src/apartments/osCityDuvet.ts": "af4f9314f43d52d55092f4bdc9d7efc6b62ccfef15493044ab3236ef993bcc4a",
+  "src/apartments/osCityApartment.ts": "9d3aa619e9411fd2bde718fd3160810eedae67008e4fe264f79dbedfb8a0ace7",
+  "src/apartments/room.ts": "eab66cc89c761b4ace057c699275b98996d8ec913e78184ded541bf72152e27a"
+}

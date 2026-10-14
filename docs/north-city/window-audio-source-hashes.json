@@ -1,0 +1,25 @@
+{
+  "feature": "Window city ambience",
+  "date": "2026-10-12",
+  "files": {
+    "src/apartments/osCityAmbience.ts": "1b92fe46d1b4b2c86fa204041f32392005f6b929acb9c06c759eb0636b232674",
+    "src/apartments/room.ts": "2d0c52305d7335d363c16a38ab330f3549d830024808fb497a7948fcba807439",
+    "src/apartments/northCity.css": "90cadcf9a6753443f8883148be2bb25b551928af21c8554fcd4cefad49a8bd5f",
+    "scripts/north-city-audio-smoke.mjs": "4f4e00e42c6029f34415681760dd0bdf067a025b39438a19a6dc072d61721ed2",
+    "scripts/north-city-audio-retry-smoke.mjs": "2bac042f5ba980f86c0dc437ddb43ba23ff0e28d3da66b1888de170230e53335",
+    "public/audio/north-city/cyberpunk-city-ambience.mp3": "fde1cb3e16561c070d068929044ba2b12ff377e160fe0f27dd94342126d437f1",
+    "public/audio/north-city/source.json": "3866c7a969e3be757d94f5ebb8db1d18d022450302b7b4871e49a7b55898d370",
+    "public/audio/north-city/ATTRIBUTION.md": "c28bee5af5a02b56f49040842b2d603e6ab9ad23551f1b79a4a5176c81b78915",
+    "docs/north-city/window-audio.md": "d27930fbbbd7d6ef552d9e407a6ddd92ee1c85f784696ba199b914a4e1713ec3",
+    "docs/north-city/room-layout.json": "d0675036c41901978adfbbd11c02197c504e1bf7bffda41e128608045979aee6"
+  },
+  "evidence": {
+    "test-artifacts/north-city/audio-window/results.json": "758e9ade35026c98202f9d5e73d3479b580e116ebed16f2863b88e6ddb390901",
+    "test-artifacts/north-city/audio-window/retry-results.json": "39a0508b7be1e8cab36bbd39c3728b08cdb6c5eb06a175b56b39a03774e6ddac",
+    "test-artifacts/north-city/audio-window/desktop-sound-controls.png": "8932a362f9bc6204a7e21003f5e83ced479333059d28eb700b7a8aa22bf7fde8",
+    "test-artifacts/north-city/audio-window/phone-sound-controls.png": "6fec2aa8716dc07fe93900054446d380218cb7c9cad06e2d77a43fdfa478e82e",
+    "test-artifacts/north-city/audio-window/build.log": "30c2130e810cecdc512fba10d253ec2fee05b84869528e42f732fae42d47cfb9"
+  },
+  "packagedAudioMatches": true,
+  "visualReview": "No scene geometry/material change; revision-13 review retained as historical record"
+}

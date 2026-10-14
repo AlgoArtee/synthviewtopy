@@ -4,9 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
+    "start": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
+    "stop": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
     "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 0.0.0.0",
+    "preview": "vite preview --host 127.0.0.1 --port 5179 --strictPort",
+    "test:north-city": "node scripts/north-city-revision-smoke.mjs",
+    "test:north-city-integration": "node scripts/north-city-integration-smoke.mjs",
     "test:apartments": "node scripts/apartments-smoke.mjs",
     "test:apartment-catalog": "node scripts/apartment-catalog-smoke.mjs",
     "test:apartment-diversity": "node scripts/apartment-diversity-smoke.mjs",
@@ -21,6 +25,7 @@
     "test:synthetic-shore-movement": "node scripts/synthetic-shore-movement-smoke.mjs",
     "test:synthetic-shore-swimming": "node scripts/synthetic-shore-swimming-smoke.mjs",
     "test:synthetic-shore-surf": "node scripts/synthetic-shore-surf-smoke.mjs",
+    "test:shore-realism": "node scripts/shore-realism-check.mjs",
     "test:synthetic-beach-layout": "node scripts/synthetic-beach-layout-smoke.mjs",
     "test:island-cygnus-stability": "node scripts/island-cygnus-stability-smoke.mjs",
     "test:edit-isolation": "node scripts/edit-district-isolation-smoke.mjs",
@@ -64,7 +69,8 @@
     "test:district-walkability": "node scripts/all-district-walkability-smoke.mjs",
     "test:district-layout-migration": "node scripts/specialized-district-layout-migration-smoke.mjs",
     "export:unreal-bootstrap": "node scripts/export-unreal-bootstrap.mjs",
-    "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs"
+    "test:unreal-foundation": "node scripts/validate-unreal-foundation.mjs",
+    "test:north-city-navigation": "node --experimental-strip-types scripts/north-city-navigation-check.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",

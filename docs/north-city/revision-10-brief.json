@@ -1,0 +1,133 @@
+{
+  "revision": 10,
+  "request": "Give both city holograms beautiful Asian female features, blinking and head movement",
+  "authorization": "User-requested local portrait and animation update; no paid generation, export or deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "hero": "Two original adult East Asian feminine spectral portraits with understated eyelids, irises, brows, lips and crescent filigree",
+  "scope": "Keep city placement/scale, cyan and pink light, translucent gowns, long wind-blown dresses, architecture and bed unchanged",
+  "animation": {
+    "head": "Independent neck-pivot yaw, nod and tilt, following smooth slow waves",
+    "eyelids": "Continuous upper/lower lid and aperture morphs; 0.29 second closures with asymmetric closing/opening speed",
+    "blinkIntervalsSeconds": [
+      [
+        4.1,
+        5.8,
+        3.7,
+        6.3
+      ],
+      [
+        5.2,
+        3.9,
+        6.7,
+        4.5
+      ]
+    ],
+    "reducedMotion": "All head, eyelid and gown animation frozen at elapsed zero"
+  },
+  "productionViews": [
+    "city-detail",
+    "city-reference",
+    "panorama",
+    "bed-wide"
+  ],
+  "qaViews": [
+    "ghost-cyan-face",
+    "ghost-pink-face",
+    "ghost-cyan-portrait",
+    "ghost-pink-portrait"
+  ],
+  "symmetry": "Independent portraits and unequal blink intervals; existing room geometry and circulation preserved",
+  "budget": {
+    "uniqueTrianglesTarget": 1650000,
+    "paidServices": 0
+  },
+  "review": {
+    "revision": 10,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 2,
+    "scores": [
+      7.6,
+      8.1
+    ],
+    "acceptedScore": 8.1,
+    "remainingUnusedChecks": 1,
+    "report": "revision-10-reviews.md",
+    "round1Report": "revision-10-review-1.md",
+    "finalReport": "revision-10-review-2.md",
+    "evidence": "test-artifacts/north-city/revision-10/review-2",
+    "rubric": {
+      "construction": 1.85,
+      "lighting": 1.55,
+      "materials": 1.45,
+      "fidelity": 2.0,
+      "composition": 1.25
+    },
+    "limitations": [
+      "Smooth forehead/cheeks retain a polished mask-like quality",
+      "Some graphic eye/mouth contours remain",
+      "Background signage still shows through parts of the cyan lower face",
+      "Hair remains ribbon-like; ears and facial transitions are simplified",
+      "Fine features are subtle at normal apartment viewing distance",
+      "Independent reviewer assessed sampled poses, not direct WebM playback"
+    ]
+  },
+  "validation": {
+    "build": "passed TypeScript/Vite; usual large-chunk warning only",
+    "portraitFrames": "10 actual production-renderer frames at 1920x1080, including known open/closed/head-turn states",
+    "liveClips": [
+      "test-artifacts/north-city/revision-10/review-2/cyan-motion.webm",
+      "test-artifacts/north-city/revision-10/review-2/pink-motion.webm"
+    ],
+    "eyeApertureHeightsMetres": {
+      "open": [
+        0.012899994850158691,
+        0.012199997901916504
+      ],
+      "closed": [
+        0,
+        0
+      ]
+    },
+    "upperLidMotionMetres": [
+      0.008699893951416016,
+      0.007999897003173828
+    ],
+    "headMotion": "Actual local quaternion changes independently within body",
+    "blinkRhythms": "Two different interval sequences, checked across 40 seconds at 30 samples/s",
+    "reducedMotion": "Actual runtime snapshot unchanged after advancing 12 s",
+    "geometry": "Finite positions/normals and morph attributes; 153568 triangles in both full ghost characters",
+    "sceneUniqueTriangles": 1561050,
+    "sceneInstanceExpandedTriangles": 1902272,
+    "errors": [],
+    "preservedFit": "All 270 TV rays clear; four bedding/wall boundaries below 0.001 mm; no nightstand intersection",
+    "audit": "test-artifacts/north-city/revision-10/validation-2/audit.json",
+    "portraitMeasurements": "test-artifacts/north-city/revision-10/review-2/portrait-measurements.json",
+    "animationResults": "test-artifacts/north-city/revision-10/review-2/animation-results.json",
+    "sourceHashes": "revision-10-round-2-source-hashes.json",
+    "evidenceHashes": "test-artifacts/north-city/revision-10/review-2/evidence-manifest.json",
+    "finalRoomViews": {
+      "status": "passed",
+      "viewpoints": 28,
+      "captures": 33,
+      "errors": [],
+      "weather": [
+        "clear",
+        "rain",
+        "snow"
+      ],
+      "mobileWidth": 390,
+      "evidence": "test-artifacts/north-city/revision-10/room-views-2",
+      "evidenceManifest": "test-artifacts/north-city/revision-10/room-views-2/evidence-manifest.json"
+    },
+    "actualMeshFloorPlan": "test-artifacts/north-city/revision-10/validation-2/floor-plan.png"
+  },
+  "round2Corrections": [
+    "Remove separate neck capsule; open faded taper joins jaw to shoulders",
+    "Increase central facial readability while retaining translucent silhouette",
+    "Deeper eye sockets, volumetric morph-normal eyelids, sculpted lip volume and nostril recesses",
+    "Unequal swept hair clumps with varied length, width and curve"
+  ]
+}

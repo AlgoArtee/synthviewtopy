@@ -1,0 +1,16 @@
+{
+  "count": 50,
+  "resolution": [
+    3840,
+    2160
+  ],
+  "format": "PNG",
+  "bytes": 193067885,
+  "uniqueCameraPositions": 50,
+  "uniqueHashes": 50,
+  "allFilesDecode": true,
+  "allHashesMatch": true,
+  "lowestLuminanceStandardDeviation": 20.67961356412847,
+  "browserErrors": [],
+  "folder": "F:\\001_YouTopy\\SynthViewTopy\\Snapshots\\North City\\O's Apartment"
+}

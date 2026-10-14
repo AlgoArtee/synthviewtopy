@@ -10,6 +10,7 @@ export interface RoomDefinition {
   motif: RoomMotif;
   layout: number;
   seed: number;
+  kind?: 'community' | 'city';
 }
 
 export interface RoomDisplayMetadata { name: string; description: string }
@@ -122,6 +123,9 @@ const STYLE_ROWS: readonly StyleRow[] = [
 
 export const ROOM_CATALOG: readonly RoomDefinition[] = [
   { id: 'liminette-student-room', number: 0, name: 'Liminette Student Room', description: 'A spacious retreat of walnut, aged brass and deep green. Tall windows overlook the college gardens, Gothic rooftops and the distant city beneath an extraordinary sky.', style: 'Retro-futurism', palette: { wall: '#394b3f', wood: '#715137', upholstery: '#193c31', accent: '#b7a46d', metal: '#ba9251' }, motif: 'collegiate', layout: 0, seed: 8271 },
+  { id: 'lux-umbrarum-community-room', number: -1, kind: 'community', name: 'Lux Umbrarum Community Room', description: 'A shared lounge in warm ivory, honey oak and champagne brass. Settle into the sunken conversation pit, browse the library, or listen to records beside a circular window overlooking the lake and collegiate skyline.', style: 'Ivory celestial lounge', palette: { wall: '#d3c4a7', wood: '#ad8856', upholstery: '#e2d8c2', accent: '#dbc395', metal: '#c7a566' }, motif: 'celestial', layout: 0, seed: 62026 },
+  { id: 'lux-umbrarum-pool-commons', number: -2, kind: 'community', name: 'Lux Umbrarum Pool Commons', description: 'A spacious sunlit pool hall with arched garden windows, ivory tiles and pearl-and-platinum loungers facing the water from every side. Swim in the aquamarine basin or climb the brass diving board and jump in with a splash. Long pearl pod seats hang from metallic double-helix suspensions beside antique books and a grand brass clock.', style: 'Classical brass pool hall', palette: { wall: '#d8cbb2', wood: '#987444', upholstery: '#e2ddcc', accent: '#81bcc4', metal: '#b28b45' }, motif: 'antiquarian', layout: 0, seed: 41026 },
+  { id: 'os-city-apartment', number: -3, kind: 'city', name: '0.8.0', description: 'A quiet white apartment above North City: an 8.55 m square bed with six oversized cotton pillows, full-wall city glazing, a left-wall holographic TV, flowing spectral figures, a floating acrylic chair, a luminous white circular rug, cyan displays and a bathroom traced in pink and blue light.', style: 'Soft future', palette: { wall: '#e0e5eb', wood: '#cbbda9', upholstery: '#eeeef1', accent: '#9eeaf8', metal: '#b2c1cf' }, motif: 'aero', layout: 0, seed: 86723 },
   ...STYLE_ROWS.map(([style, motif, wall, wood, upholstery, accent, metal], index): RoomDefinition => {
     const number = index + 1;
     const suffix = String(number).padStart(3, '0');
@@ -187,8 +191,8 @@ export function resetRoomDisplay(id: string) {
   if (!roomsById.has(id)) throw new Error('This room does not exist in the collection.');
   const metadata = { ...readMetadata() }; delete metadata[id]; writeMetadata(metadata);
 }
-export function exportRoomMetadata(): string {
-  return JSON.stringify({ format: 'vinculum-room-metadata', version: 1, rooms: ROOM_CATALOG.map(room => ({ id: room.id, ...getRoomDisplay(room) })) }, null, 2);
+export function exportRoomMetadata(collection: 'student' | 'city' | 'all' = 'student'): string {
+  return JSON.stringify({ format: 'vinculum-room-metadata', version: 1, rooms: ROOM_CATALOG.filter(room => collection === 'all' || (collection === 'city' ? room.kind === 'city' : room.kind !== 'city')).map(room => ({ id: room.id, ...getRoomDisplay(room) })) }, null, 2);
 }
 export function importRoomMetadata(json: string): number {
   if (json.length > 256_000) throw new Error('Choose a room metadata file smaller than 256 KB.');

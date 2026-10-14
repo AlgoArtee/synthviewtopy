@@ -1,0 +1,500 @@
+{
+  "revision": 21,
+  "capturedAt": "2026-10-13T13:27:18.820Z",
+  "sourceHashes": {
+    "src/apartments/apartments.css": "c2ec39385666c40dd8469686af57a50736b3ea74577b7684c13f0a06811a357b",
+    "src/apartments/liminetteRoom.ts": "87efcf0dbf7ebe8dc7db8fce08da8c443ac9175700008de8db37e3478e2a9025",
+    "src/apartments/northCity.css": "ef87df6237dbb2680b042f9ac5a0cde75258a5ec4d44c231867dbd80a7f5c099",
+    "src/apartments/osCityAmbience.ts": "bfb45f59872fd994f5c26936e46ae09d9ad3bdff115724cb1cac9b0f9b8b4061",
+    "src/apartments/osCityApartment.ts": "017f8a94fbd7ded772e5b98568b71e8df7c7f81b262e6e50be1c0b63fa3bfea5",
+    "src/apartments/osCityBalcony.ts": "0b93158bff8e0a8f1c32f52690cc8a869ea5eb18fa8b69c0cf5fb84261a917ec",
+    "src/apartments/osCityBalconyDistrict.ts": "80f37d362e4c918793144181ba82b3ca76786b774e5ebfc0e025a2d278175643",
+    "src/apartments/osCityBalconyDoor.ts": "ace176304d9f62fce00d3cb2169603f84293f609c737e1ced49902b1a7a91619",
+    "src/apartments/osCityBalconyWeather.ts": "b86414b2405fb4a89ac7099a5a29556af829d4111388be17abca5aaca8bccc22",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "56ef74e6616c41b363d7a6feb3d3d71312c3f36b58c8a5003e0ab59bda604c6c",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "3f000e65a99e67b009a4050de515f9a001b882870bf9432949a1c5309e9aaca4",
+    "src/apartments/osCityLife.ts": "b1bfbc5f2f5fe20b978e3d555eed6df471a178849aa7d53eb30210c63c055543",
+    "src/apartments/osCityNavigation.ts": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565",
+    "src/apartments/osCityNeonAtmosphere.ts": "7ff2fcf24c64532def9c30e04fe2bb414b62c946efba6a2b660847cdd3720383",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCityPlazaLife.ts": "225750bd604ece3d3a49f8bda207daaa1c4f4e04eade6bea9a184da9a7efb294",
+    "src/apartments/osCityPrecipitation.ts": "0b4956aec41fb5f49841b12495a265b0f09572772aab23af336031f8fca2c561",
+    "src/apartments/osCitySoundControls.ts": "f422bfe56a27c2ea6567516adc12ce1542ff6c4b5a3b237381176555cedbb4e4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityTransit.ts": "ba48f1abd977bdf5d18d59853b359f8b1428ba68fc9f9764afd1be8a77a03cdc",
+    "src/apartments/osCityWeather.ts": "cfddcb04e0e459e66a61ffcd07b02f5c25edc08526145ed69d653648b8655e79",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/room.ts": "716981f824515d6d38834fc56acf924e0eaa8b109aeb50ded01226752ab6cea4",
+    "src/apartments/roomArchitecture.ts": "7a77aedbbb6e95a05a7e9840da4249d14e4d6999448f3584eccdc4b9bf0532cc",
+    "src/apartments/roomRendering.ts": "582fda9d9616aeb07dc619d69d8e1d9ebc4c6f6042b6abcefe7bdc1bcfc9a2b7",
+    "src/data/academicCampus.ts": "5d4128a84d2b666f8b122f5d669693287389f6c8e4c060020f1b02cd8073efd8",
+    "scripts/north-city-time-weather-review.mjs": "e5073f834951cdeb1e1753d9949022782767f2c9d8756b720cc03dd0a47b68e4"
+  },
+  "sourcesUnchangedAfterCapture": true,
+  "build": {
+    "status": "PASS",
+    "command": "npm run build",
+    "warning": "Existing Vite large-chunk advisory"
+  },
+  "browser": {
+    "status": "PASS",
+    "checks": 1667,
+    "combinations": 40,
+    "stills": 24,
+    "errors": [],
+    "changedSources": [],
+    "evidence": "test-artifacts/north-city/revision-21/final-1b"
+  },
+  "profiles": {
+    "status": "PASS",
+    "combinations": 40,
+    "evidence": "test-artifacts/north-city/revision-21/profiles/validation.json"
+  },
+  "shader": {
+    "status": "PASS",
+    "checks": 12,
+    "samples": {
+      "day": {
+        "light": [
+          39,
+          42,
+          46
+        ],
+        "body": [
+          1,
+          4,
+          8
+        ]
+      },
+      "night": {
+        "light": [
+          147,
+          149,
+          153
+        ],
+        "body": [
+          1,
+          4,
+          8
+        ]
+      }
+    },
+    "evidence": "test-artifacts/north-city/revision-21/neon-helper/shader-and-idempotence.json"
+  },
+  "actualClearLighting": {
+    "night": {
+      "sky": "#192a3a",
+      "fogColor": "#192a3a",
+      "fogDensity": 0.006,
+      "sunPosition": [
+        -32,
+        28,
+        -24
+      ],
+      "sunTarget": [
+        -1,
+        0,
+        2
+      ],
+      "sunIntensity": 0.0442,
+      "sunColor": "#8daed9",
+      "ambientColor": "#708aaa",
+      "groundColor": "#172331",
+      "ambientIntensity": 0.0924,
+      "windowIntensity": 0.546,
+      "shadowEnabled": true,
+      "shadowRadius": 4,
+      "shadowFar": 160,
+      "exposure": 0.92,
+      "environmentIntensity": 0.18,
+      "bloomStrength": 0.44,
+      "bloomRadius": 0.78,
+      "bloomThreshold": 0.78
+    },
+    "morning": {
+      "sky": "#b1bfc2",
+      "fogColor": "#b1bfc2",
+      "fogDensity": 0.006,
+      "sunPosition": [
+        65,
+        18,
+        -32
+      ],
+      "sunTarget": [
+        -1,
+        0,
+        2
+      ],
+      "sunIntensity": 1.8719999999999999,
+      "sunColor": "#ffcca0",
+      "ambientColor": "#ddc6aa",
+      "groundColor": "#695f51",
+      "ambientIntensity": 0.3444,
+      "windowIntensity": 3.2760000000000002,
+      "shadowEnabled": true,
+      "shadowRadius": 4,
+      "shadowFar": 160,
+      "exposure": 1.04,
+      "environmentIntensity": 0.43,
+      "bloomStrength": 0.22,
+      "bloomRadius": 0.62,
+      "bloomThreshold": 1.18
+    },
+    "day": {
+      "sky": "#9fc8df",
+      "fogColor": "#9fc8df",
+      "fogDensity": 0.006,
+      "sunPosition": [
+        18,
+        85,
+        -38
+      ],
+      "sunTarget": [
+        -1,
+        0,
+        2
+      ],
+      "sunIntensity": 2.6,
+      "sunColor": "#fff0d5",
+      "ambientColor": "#d7e8f2",
+      "groundColor": "#697881",
+      "ambientIntensity": 0.42,
+      "windowIntensity": 4.2,
+      "shadowEnabled": true,
+      "shadowRadius": 2.5,
+      "shadowFar": 160,
+      "exposure": 1,
+      "environmentIntensity": 0.5,
+      "bloomStrength": 0.15,
+      "bloomRadius": 0.48,
+      "bloomThreshold": 1.48
+    },
+    "evening": {
+      "sky": "#7c849e",
+      "fogColor": "#7c849e",
+      "fogDensity": 0.006,
+      "sunPosition": [
+        -65,
+        11,
+        22
+      ],
+      "sunTarget": [
+        -1,
+        0,
+        2
+      ],
+      "sunIntensity": 1.014,
+      "sunColor": "#ffad86",
+      "ambientColor": "#b295ad",
+      "groundColor": "#443346",
+      "ambientIntensity": 0.231,
+      "windowIntensity": 1.806,
+      "shadowEnabled": true,
+      "shadowRadius": 4,
+      "shadowFar": 160,
+      "exposure": 1,
+      "environmentIntensity": 0.31,
+      "bloomStrength": 0.34,
+      "bloomRadius": 0.72,
+      "bloomThreshold": 0.94
+    }
+  },
+  "audio": {
+    "actualBrowserPlaybackVerified": true,
+    "autoplayBypass": false,
+    "subjectiveAuditionClaimed": false,
+    "states": {
+      "closed": {
+        "weather": "rain",
+        "contextState": "suspended",
+        "windowOpening": 0,
+        "doorOpening": 0,
+        "listenerOutside": false,
+        "targetGain": 0,
+        "lowpassHz": 360,
+        "rms": 0
+      },
+      "half": {
+        "weather": "rain",
+        "contextState": "running",
+        "windowOpening": 0,
+        "doorOpening": 0.4983,
+        "listenerOutside": false,
+        "targetGain": 0.16086,
+        "lowpassHz": 3967.9,
+        "rms": 0.0010275
+      },
+      "open": {
+        "weather": "rain",
+        "contextState": "running",
+        "windowOpening": 0,
+        "doorOpening": 1,
+        "listenerOutside": false,
+        "targetGain": 0.32279,
+        "lowpassHz": 7600,
+        "rms": 0.0027327
+      },
+      "windowOnly": {
+        "weather": "rain",
+        "contextState": "running",
+        "windowOpening": 1,
+        "doorOpening": 0,
+        "listenerOutside": false,
+        "targetGain": 0.13107,
+        "lowpassHz": 7600,
+        "rms": 0.0011609
+      },
+      "tilt": {
+        "weather": "rain",
+        "contextState": "running",
+        "windowOpening": 0.34,
+        "doorOpening": 0,
+        "listenerOutside": false,
+        "targetGain": 0.04457,
+        "lowpassHz": 2100,
+        "rms": 0.0009352
+      },
+      "outside": {
+        "weather": "rain",
+        "contextState": "running",
+        "windowOpening": 0,
+        "doorOpening": 0,
+        "listenerOutside": true,
+        "targetGain": 0.341,
+        "lowpassHz": 9000,
+        "rms": 0.0032109
+      }
+    },
+    "savedVolume": 0.27
+  },
+  "mobile": {
+    "combinations": [
+      {
+        "time": "night",
+        "mode": "rain",
+        "fit": {
+          "width": 390,
+          "scrollWidth": 390,
+          "controls": {
+            "city-time-select": {
+              "x": 171,
+              "y": 130,
+              "width": 194,
+              "height": 42,
+              "top": 130,
+              "right": 365,
+              "bottom": 172,
+              "left": 171
+            },
+            "city-weather-select": {
+              "x": 171,
+              "y": 199,
+              "width": 194,
+              "height": 42,
+              "top": 199,
+              "right": 365,
+              "bottom": 241,
+              "left": 171
+            },
+            "city-balcony-door-select": {
+              "x": 171,
+              "y": 370,
+              "width": 194,
+              "height": 42,
+              "top": 370,
+              "right": 365,
+              "bottom": 412,
+              "left": 171
+            }
+          }
+        }
+      },
+      {
+        "time": "morning",
+        "mode": "academic-autumn",
+        "fit": {
+          "width": 390,
+          "scrollWidth": 390,
+          "controls": {
+            "city-time-select": {
+              "x": 171,
+              "y": 130,
+              "width": 194,
+              "height": 42,
+              "top": 130,
+              "right": 365,
+              "bottom": 172,
+              "left": 171
+            },
+            "city-weather-select": {
+              "x": 171,
+              "y": 199,
+              "width": 194,
+              "height": 42,
+              "top": 199,
+              "right": 365,
+              "bottom": 241,
+              "left": 171
+            },
+            "city-balcony-door-select": {
+              "x": 171,
+              "y": 370,
+              "width": 194,
+              "height": 42,
+              "top": 370,
+              "right": 365,
+              "bottom": 412,
+              "left": 171
+            }
+          }
+        }
+      },
+      {
+        "time": "day",
+        "mode": "snow",
+        "fit": {
+          "width": 390,
+          "scrollWidth": 390,
+          "controls": {
+            "city-time-select": {
+              "x": 171,
+              "y": 130,
+              "width": 194,
+              "height": 42,
+              "top": 130,
+              "right": 365,
+              "bottom": 172,
+              "left": 171
+            },
+            "city-weather-select": {
+              "x": 171,
+              "y": 199,
+              "width": 194,
+              "height": 42,
+              "top": 199,
+              "right": 365,
+              "bottom": 241,
+              "left": 171
+            },
+            "city-balcony-door-select": {
+              "x": 171,
+              "y": 370,
+              "width": 194,
+              "height": 42,
+              "top": 370,
+              "right": 365,
+              "bottom": 412,
+              "left": 171
+            }
+          }
+        }
+      },
+      {
+        "time": "evening",
+        "mode": "fog",
+        "fit": {
+          "width": 390,
+          "scrollWidth": 390,
+          "controls": {
+            "city-time-select": {
+              "x": 171,
+              "y": 130,
+              "width": 194,
+              "height": 42,
+              "top": 130,
+              "right": 365,
+              "bottom": 172,
+              "left": 171
+            },
+            "city-weather-select": {
+              "x": 171,
+              "y": 199,
+              "width": 194,
+              "height": 42,
+              "top": 199,
+              "right": 365,
+              "bottom": 241,
+              "left": 171
+            },
+            "city-balcony-door-select": {
+              "x": 171,
+              "y": 370,
+              "width": 194,
+              "height": 42,
+              "top": 370,
+              "right": 365,
+              "bottom": 412,
+              "left": 171
+            }
+          }
+        }
+      }
+    ],
+    "method": "390x844 browser viewport, controls reached within shared scroll panel"
+  },
+  "bundledClient": {
+    "status": "PASS",
+    "ready": true,
+    "evidence": "test-artifacts/north-city/revision-21/bundled-client",
+    "screenshotInspected": true,
+    "errors": []
+  },
+  "review": {
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "accepted": true,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-21-review-1.md",
+        "sha256": "d0f6d9f4501f34ad15c06d8c2bb0a11fbca499f1e84032fa82b2ea751f5dc8df"
+      }
+    ],
+    "scope": "Revision21 time/weather controls, lighting palettes and atmospheric neon only; historical revision18 7.3/nonacceptance, revision19 8.2/acceptance and revision20 8.2/acceptance retained"
+  },
+  "artifactHashes": {
+    "test-artifacts/north-city/revision-21/final-1b/balcony-academic-autumn-day.png": "f520a4f50828124eecb521fc8419a6a4be73d974cda2634f3b2ae29b5088fc41",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-academic-autumn-evening.png": "dd6b5dac6f7fc2bfeab2469e0416c661dc3501f842c4209f8ba71fc11ac66b4c",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-academic-autumn-morning.png": "2eaa58b3ae58aa18ee43ecc585ae128d85a06ac5f00b78a759b56f617f3afa15",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-academic-autumn-night.png": "e262db1676f65f21a4f21d5b45dda2106a0dd7a977d8a3185b2eef400ec82456",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-ceiling-morning.png": "a91698378dfd6ef43c260177a714c544de83634b5227a8c464d59ec23ee5d97a",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-clear-day.png": "7e11c26cea97eeb0e701e902cb2effcb457b5d5dd9a925dbf651d83e56a42e7c",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-clear-evening.png": "2ee5935d93b88338b4857b2d8f59106b95fd5804cd509096d74f12bea0d598d3",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-clear-morning.png": "22a646f1a6c2016dbdadb73e710937c0188e8d4555faaa4addd2de7da72e930a",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-clear-night.png": "997905c8c195763499798a2de78fbfe114ccc49f6be019596a27f976361d2a5e",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-door-night.png": "172d9f9b49e5b7807b88132187ec3d811af142ed309a8ba913ee8aba813c2409",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-fog-day.png": "f5699f0f851fa56ee3b905ef77e02fc6f791722c4cc82deb7f2f86f973591976",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-fog-evening.png": "b8f677e1b96b9100e7a9894e30c69073c386f0ab7a842e4aaec0db061f266ed7",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-fog-morning.png": "f10382242c21eb5b5e6ea0c7d24dc63df1c1dee89c423c94273402b13f79fd3c",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-fog-night.png": "69a4d137eb656c439de4621d3187751ccc1dc54f6526e40117e68627f93f29aa",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-rain-night.png": "f0f2367b951b285cec7e2a889f9b3aff1a67ead7ef2e7d958b475b8a6c5d71ff",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-snow-day.png": "da064f7662aa37ebedebbe5c1cea199ccba77498dcdd7b882766ec4f32a41e79",
+    "test-artifacts/north-city/revision-21/final-1b/balcony-storm-evening.png": "cd53154df593e66c220717c6e6c693a0de0a8b2c4b5d67e398d5c2d5be2aee8f",
+    "test-artifacts/north-city/revision-21/final-1b/interior-evening.png": "e21de55dc565e1d11179c3659b78e5f55ff0b547ad39f6800f49f79e239b6ec8",
+    "test-artifacts/north-city/revision-21/final-1b/mobile-balcony-evening.png": "1a1baa3fa75acacca7ac9cbb7060b3faceaa051aaca95b6feea2cd4396a1ffed",
+    "test-artifacts/north-city/revision-21/final-1b/mobile-controls.png": "b53096c0d98a8e505b68511ff517d3fb707b96a0342c33b10f867e32cd6a8711",
+    "test-artifacts/north-city/revision-21/final-1b/results.json": "2834dba73adeb44d1cda8685ac9b30427835751db312ddc884dc86e0dcdff17f",
+    "test-artifacts/north-city/revision-21/final-1b/source-hashes-after.json": "fe60d290b10bfc4697f6de47629b65b03a02c5279ca4fa7463ec54f20d12cd31",
+    "test-artifacts/north-city/revision-21/final-1b/source-hashes.json": "fe60d290b10bfc4697f6de47629b65b03a02c5279ca4fa7463ec54f20d12cd31",
+    "test-artifacts/north-city/revision-21/final-1b/window-clear-day.png": "92c180cbc71dbfeae483c7fa443bfb03dddecb4f7f40dacef8b07fe054e0c00f",
+    "test-artifacts/north-city/revision-21/final-1b/window-clear-evening.png": "500e89ad7e4cc771e7466004a48a51de820258756fb5f8a56e5548a2e3d682d0",
+    "test-artifacts/north-city/revision-21/final-1b/window-clear-morning.png": "7b14297e774e44e9f717fc711ef945daa18505ed472bd2169e9eae30242411cc",
+    "test-artifacts/north-city/revision-21/final-1b/window-clear-night.png": "0f9599c410b1985929625afbe7dcb072f565471309d05f42089ef5ad7187bf89",
+    "test-artifacts/north-city/revision-21/profiles/validation.json": "8d0f05eb01f467b52cfacc102f9074ac5e090ec1aecc34e5c0b796a15808fc75",
+    "test-artifacts/north-city/revision-21/neon-helper/shader-and-idempotence.json": "95faadede72021093b8fa5f56a9dd18ca2a9bdb8147d443a2d029d435b0a5427",
+    "test-artifacts/north-city/revision-21/bundled-client/shot-0.png": "ad9a39f92f099a04b69aad0d90d064b72dbf2c5df289083590c09fecdd752074",
+    "test-artifacts/north-city/revision-21/bundled-client/state-0.json": "d70975059015c87d456ef3a5b0547d82481d5f3a642dc874dab7887528adac7c",
+    "docs/north-city/revision-21-review-1.md": "d0f6d9f4501f34ad15c06d8c2bb0a11fbca499f1e84032fa82b2ea751f5dc8df"
+  }
+}

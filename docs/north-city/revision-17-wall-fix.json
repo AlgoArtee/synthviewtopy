@@ -1,0 +1,56 @@
+{
+  "revision": 17,
+  "request": "Remove the extra line on the wall behind the pillows.",
+  "change": "Shortened the north bathroom cross-wall to butt against the alcove partition outer face. Its old end cap protruded10mm into the bedroom, creating a vertical line; the continuous bedroom-facing wall is retained.",
+  "oldBathroomCrossWallMinX": -1.26,
+  "bedroomWallFaceX": -1.25,
+  "newBathroomCrossWallMinX": -1.12,
+  "alcovePartitionOuterFaceX": -1.12,
+  "crossWallRightEdgeX": 1.51,
+  "build": "TypeScript and Vite production build passed, exit0; existing chunk-size advisory",
+  "evidence": "test-artifacts/north-city/revision-17/wall-fix",
+  "review": "Independent realism agent confirmed the line absent in both final views, no visible local gap or regression. Ungraded fix verification; revision16 score unchanged.",
+  "source": {
+    "path": "src/apartments/osCityApartment.ts",
+    "sha256": "31d855d21fa3ab0a1e86ca5fd6dc843f323b5c1609c257ba750dd0cf55a94170"
+  },
+  "reviewReport": "revision-17-visual-verification.md",
+  "evidenceHashes": [
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/bedding-results.json",
+      "sha256": "830d6aeaa3eeeb7c1fee3b2f660b700e5e93096e1bac7b258682d624f22618b9"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/cat-cushion-row.png",
+      "sha256": "6cfffd9bc61fb3c6db8dc940007229a75ae5e8468fc80442147b3456eec73c93"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/duvet-clear.png",
+      "sha256": "15d0e001eb40adb8aeabb4bc9d55824bb3b0ba7dc563b0cfcaae3bb95c09b422"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/duvet-rain.png",
+      "sha256": "18512a66aa42519dc3fb9fefafbf2a90c014f837d7bcd3ae9c5229e3a441d968"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/duvet-snow.png",
+      "sha256": "8f0a7113cbbd2e4f2f3b3f0792530b52980ca32de8a6e2d6d04969eeda31d771"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/entrance.png",
+      "sha256": "d9c72c9b4eeacdc6a0730c98c76ed403f489ed6d1ae061ad0af2923f4b8d8958"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/mobile-cat-cushions.png",
+      "sha256": "028062b3367b582dd84af8f7631a2c7b862e8337a55e4968b7e0995960ca1e71"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/mobile-panorama.png",
+      "sha256": "a4be78130e22f5f84f9e81f1b1a32315ffc8863b93c3ac84b55e2f87b21f85e8"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-17/wall-fix/pillow-row.png",
+      "sha256": "4f8e80d047ffdbfe25de3c215fc292d9f24f3ec8f13ba88d53ea9d8e3168ad06"
+    }
+  ]
+}

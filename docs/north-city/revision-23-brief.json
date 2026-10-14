@@ -1,0 +1,34 @@
+{
+  "revision": 23,
+  "request": "Visible independently flickering plaza lights and especially distant building lights at night, evening and morning, with less flickering during day.",
+  "authorization": "User-requested local light animation enhancement of the existing apartment.",
+  "contract": {
+    "runtime": "room.html?id=os-city-apartment",
+    "hero": "Visible local light dynamics across plaza and remote skyline",
+    "layout": "Existing apartment, balcony, openings, collisions and circulation retained",
+    "camera": "Existing production camera and city viewpoints",
+    "input": "Current time/weather selectors; reduced motion restores steady emission",
+    "readiness": "Actual room.ready and render_game_to_text.ready before evidence capture",
+    "performance": "Bounded independent material modulation and existing pointlights; static geometry/maps",
+    "paidServiceBudget": 0
+  },
+  "baseline": "test-artifacts/north-city/revision-22/final-2",
+  "skillAdapter": "Existing custom Three.js runtime contract and opening schedule retained. No export/deployment gate crossed; generic Blender schema validation is not claimed.",
+  "review": {
+    "scope": "Visible time-dependent plaza and distant-building light flicker",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "status": "Accepted for revision23 scope",
+    "accepted": true,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-23-review-1.md",
+        "sha256": "139b6379107a4ddb7ae54e0e9792fd53730a9cfa403d2809a09bc56339324993"
+      }
+    ]
+  }
+}

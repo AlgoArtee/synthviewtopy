@@ -1,0 +1,142 @@
+{
+  "revision": 9,
+  "request": [
+    "Fill all gaps between mattress / duvet and alcove walls, including south return opposite window",
+    "Duvet must leave the full holographic TV unobstructed"
+  ],
+  "authorization": "User-requested local bedding correction within existing approved room; no paid generation, export or deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "hero": "Wall-fitted oversized white duvet with lower soft folds beneath the west TV",
+  "layout": {
+    "bedMetres": [
+      8.55,
+      8.55
+    ],
+    "walls": [
+      "west",
+      "north-window",
+      "east",
+      "south return opposite window"
+    ],
+    "wallContact": "Duvet boundary reaches each wall plane; mattress/fitted-sheet edge bevel reduced to 3 mm",
+    "duvetCutMetres": [
+      9.1,
+      9.46
+    ],
+    "television": "Existing west-wall position and screen dimensions preserved; local loft and gathers reduced across full screen width"
+  },
+  "circulation": "Existing deliberate bed climb, square traversal, window collision and room circulation preserved",
+  "symmetry": "Square bed and fixed architecture retained; duvet folds remain intentionally asymmetric",
+  "productionViews": [
+    "bed-wide",
+    "television",
+    "duvet",
+    "sleep",
+    "duvet-drape",
+    "corner-nw",
+    "pillows"
+  ],
+  "budget": {
+    "uniqueTrianglesTarget": 1650000,
+    "paidServices": 0
+  },
+  "review": {
+    "revision": 9,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.1
+    ],
+    "acceptedScore": 8.1,
+    "report": "revision-9-reviews.md",
+    "finalReport": "revision-9-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-9/review-1",
+    "rubric": {
+      "construction": 1.9,
+      "lighting": 1.55,
+      "materials": 1.4,
+      "fidelity": 2.0,
+      "composition": 1.25
+    },
+    "remainingUnusedChecks": 2,
+    "limitations": [
+      "Duvet centre and hanging face remain unusually smooth and evenly inflated",
+      "Hem has broad sculpted waves with limited fine compression or local creases",
+      "Several pillows retain firm slab-like silhouettes",
+      "Gentle uniform illumination suppresses some contact depth and fabric detail",
+      "Focused independent review inspected five bedding/TV images; concealed contact areas and animation playback were not assessed"
+    ]
+  },
+  "validation": {
+    "wallContact": "passed: maximum fitted boundary gap below 0.001 mm",
+    "television": "passed: 270 sampled rays from five bed cameras; no duvet occlusion",
+    "build": "passed",
+    "runtimeViews": 26,
+    "runtimeErrors": [],
+    "fullHDResolution": [
+      1920,
+      1080
+    ],
+    "weatherCaptures": [
+      "clear",
+      "rain",
+      "snow"
+    ],
+    "mobileFit": "390px passed",
+    "evidence": "test-artifacts/north-city/revision-9/review-1",
+    "evidenceManifest": "test-artifacts/north-city/revision-9/review-1/evidence-manifest.json",
+    "audit": "test-artifacts/north-city/revision-9/validation/audit.json",
+    "actualMeshPlan": "test-artifacts/north-city/revision-9/validation/floor-plan.png",
+    "uniqueTriangles": 1522202,
+    "instanceExpandedTriangles": 1863424,
+    "wallGapsMetres": {
+      "west": 1.9073486257070726e-07,
+      "east": 0,
+      "north": 3.814697180359872e-08,
+      "southReturn": 2.622604367008563e-08
+    },
+    "duvetNonManifoldEdges": 0,
+    "wallCrossingVertices": 0,
+    "verticesInsideNightstand": 0,
+    "duvetSurfacePathsMetres": [
+      9.189829912680345,
+      9.457779261797468
+    ],
+    "meanDuvetFillMetres": 0.22761302672191183,
+    "minimumFloorClearanceMetres": 0.25533726811408997,
+    "openFootOverhangMetres": 0.5348303949832917,
+    "tvSightlines": [
+      {
+        "view": "sleep",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "bed-wide",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "duvet",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "television",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "duvet-drape",
+        "samples": 54,
+        "duvetOccluded": 0
+      }
+    ],
+    "weatherAndCollapse": true,
+    "reducedMotion": "passed: city and ghost state remained frozen",
+    "bedNavigation": "preserved implementation; passing revision 8 traversal retained, not rerun for this local bedding correction"
+  }
+}

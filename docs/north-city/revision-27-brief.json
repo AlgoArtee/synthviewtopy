@@ -1,0 +1,41 @@
+{
+  "revision": 27,
+  "request": "Control plaza data-stream speed and add more interesting distant lights/forms inspired by the supplied cyberpunk city reference.",
+  "contract": {
+    "runtime": "room.html?id=os-city-apartment",
+    "input": "Saved0–3x data-stream speed slider; phase-continuous changes;0 pauses streams; reduced motion remains respected",
+    "hero": "Varied dimensional city crowns and graphic neon signs behind the existing Data Mall and maglev",
+    "forms": "Supported uplink spires, open lantern crowns, halo crowns, sloped roof crowns and twin technical stacks",
+    "lighting": "Eight authored graphic billboard designs, mounted facade circuit traces, existing time/weather emission/fog and local flicker",
+    "layout": "Existing apartment/balcony circulation, mall footprint and connected transit route",
+    "camera": "Production balcony, northern/southern skyline and north-window views at951x892",
+    "readiness": "render_game_to_text.ready",
+    "performance": "Static geometry batched by material, small shared static atlases, no additional real-time lights, existing packet instance count",
+    "paidServiceBudget": 0
+  },
+  "reference": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-6e1ea0cc-7116-4a0d-8718-669422b7eff9.jpg",
+  "skillAdapter": "Existing custom Three.js runtime contract retained. User directly authorized the skyline additions. No generated assets, Meshy, export or deployment gate crossed; no generic Blender validation claim.",
+  "review": {
+    "scope": "Stream-speed control and reference-inspired distant skyline forms/lighting",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 2,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 7.7,
+        "accepted": false,
+        "report": "docs/north-city/revision-27-review-1.md"
+      },
+      {
+        "round": 2,
+        "score": 8.1,
+        "accepted": true,
+        "report": "docs/north-city/revision-27-review-2.md"
+      }
+    ],
+    "accepted": true,
+    "score": 8.1,
+    "report": "docs/north-city/revision-27-review-2.md"
+  }
+}

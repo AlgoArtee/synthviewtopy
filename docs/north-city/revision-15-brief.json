@@ -1,0 +1,330 @@
+{
+  "revision": 15,
+  "request": "Research and correct large pillow side profiles: fill the rear to the wall. Duvet ends at pillow fronts instead of underneath. Target9/10, max3 formal rounds.",
+  "scope": "Focused pillow/duvet-contact realism; historical whole-room revision14 8.1 is separate.",
+  "research": [
+    {
+      "page": "https://www.qehomelinens.com/feather-euro-pillow-insert/",
+      "image": "test-artifacts/north-city/revision-15/research/qe-upright.webp"
+    },
+    {
+      "page": "https://ecolinen.com.au/products/feather-and-down-chamber-pillow",
+      "images": [
+        "test-artifacts/north-city/revision-15/research/ecolinen-side.jpg",
+        "test-artifacts/north-city/revision-15/research/ecolinen-stacked.webp"
+      ]
+    }
+  ],
+  "researchFindings": "Rounded full front/rear volumes, compressed broad bottom contact, shallow crown sag, thin sewn seam ears and short unequal cotton creases; calm central face. Manufacturer photos retained only as internal study, not shipped in app.",
+  "userReference": "test-artifacts/north-city/references/10-pillow-side.png",
+  "implementation": "Six closed authored cotton volumes on fitted sheet. Four oversized wall pillows have 0.545-0.613m side depth, broad rear pressure patches 4mm from wall and rounded compressed bases. Two relaxed pillows near glazing. Duvet follows measured lower-pillow fronts, with head inset1.30m and side inset0.48m; fitted mattress/sheet fill all bed walls.",
+  "latestRequestOverrides": "Prior blanket-under-pillow fit is superseded in pillow zones. Nominal cut9.10x9.46m is distinct from measured gathered centre-surface spans9.170x8.264m after pulling the head back.",
+  "geometry": "test-artifacts/north-city/revision-15/geometry-final/pillows.json",
+  "roomAudit": "test-artifacts/north-city/revision-15/geometry-final/audit.json",
+  "evidence": "test-artifacts/north-city/revision-15/review-3",
+  "sourceHashes": "revision-15-source-hashes.json",
+  "validation": "Final production build passes. Focused pillow audit passes: six closed positive volumes, broad wall/base contact, zero sampled duvet vertices inside pillows and inspection cameras outside pillow volumes. Whole-room audit passes finite geometry,270 unobstructed TV rays,no duvet wall/nightstand crossings,1,833,986 unique triangles,controls/weather/reduced-motion.22 capture files have no browser errors.",
+  "review": {
+    "reviewer": "/root/realism_reviewer",
+    "minimumAcceptedRealismScore": 9,
+    "maximumFormalChecks": 3,
+    "formalChecksCompleted": 3,
+    "status": "below requested 9/10 target; formal limit reached",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.4,
+        "accepted": false,
+        "report": "revision-15-review-1.md"
+      },
+      {
+        "round": 2,
+        "score": 8.7,
+        "accepted": false,
+        "report": "revision-15-review-2.md"
+      },
+      {
+        "round": 3,
+        "score": 8.8,
+        "accepted": false,
+        "report": "revision-15-review-3.md"
+      }
+    ],
+    "finalScore": 8.8,
+    "remainingUnusedChecks": 0
+  },
+  "ungradedGuidance": "Broad rounded rear support rather than triangular wedges; spread uneven base; calm cloth face, unequal local seam folds; true blanket edge at pillow fronts; no black trenches/floating gaps; actual side/low/all-four/contact/ordinary/clear+evening images.",
+  "limitations": "Final independent focused bedding score8.8/10 remains below9. Thin parallel seam grooves look etched in close-up, lower toes remain sharply pointed, duvet outline remains closely fitted. Authored static geometry, not scanned pillows or dynamic cloth. Historical100Snapshots unchanged; no whole-room9 claim.",
+  "round2Fixes": "Unequal curved sides, asymmetrical crown sag and corner ears, spreading lower corners and larger compressed footprint; increased short unequal seam folds with finer mesh. Blanket hem thinned to variable 3-8cm and fitted to measured lower pillow front profiles, keeping sheet separation. Cove fill1.15 to0.88 for improved diffuse shape readability. No pillow penetration samples;270TVraysclear;1,832,046 unique triangles.",
+  "round3Fixes": "Shorter, softer geometry creases; unique restrained short seam puckers over existing scanned cotton weave; smooth conservative pillow-front envelope and rounded duvet transitions. Panel edges use attached linear interpolation rather than spline overshoot, with hidden base seams buried in compressed cloth. Monotone rounded toe compression removes nearly coplanar sliver faces/dotted traces; sheet layer separated from fitted base. Closed shells use outward faces/back-face shadow casting. New lamp-free low side camera. Temporary diagnostic hooks removed.",
+  "measured": {
+    "uniqueTriangles": 1833986,
+    "instanceExpandedTriangles": 2176086,
+    "duvet": {
+      "width": 9.1,
+      "depth": 9.46,
+      "unfoldedSize": [
+        9.1,
+        9.46
+      ],
+      "closedShell": true,
+      "nominalLoft": 0.255,
+      "fill": "down",
+      "color": "white",
+      "gatheredSide": "west / TV",
+      "offCentre": true,
+      "openFootDrape": true,
+      "wallFittedSeams": [
+        "west",
+        "south return"
+      ],
+      "stopsAtPillowFronts": true,
+      "underPillows": false,
+      "headInset": 1.3,
+      "sideInset": 0.48,
+      "televisionClear": true,
+      "foldedBackHeadEdge": "partial irregular corner",
+      "surfaceWidth": 9.169716217108157,
+      "surfaceDepth": 8.26367778216098,
+      "bounds": [
+        8.550000190734863,
+        1.0156219899654388,
+        7.812296062707901
+      ],
+      "min": [
+        -9.800000190734863,
+        0.25533726811408997,
+        -8.18746566772461
+      ],
+      "max": [
+        -1.25,
+        1.2709592580795288,
+        -0.3751696050167084
+      ],
+      "minThickness": 0.029999971389770508,
+      "maxThickness": 0.3079196810722351,
+      "meanThickness": 0.24641506531744956,
+      "nonManifoldEdges": 0,
+      "wallCrossingVertices": 0,
+      "wallGaps": {
+        "west": 1.9073486257070726e-07,
+        "east": 0.6561411619186401,
+        "north": 1.331596336364747,
+        "southReturn": 2.622604367008563e-08
+      },
+      "verticesInsideNightstand": 0
+    },
+    "pillows": [
+      {
+        "name": "Bed pillow \u00c2\u00b7 east wall north \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "wall-compressed down/feather cotton pillow",
+          "width": 1.64,
+          "height": 1.13,
+          "sideLoft": 0.5446395874023438,
+          "rearContactVertices": 16937,
+          "baseContactVertices": 2361,
+          "wallGap": 0.004,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 0,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          0.5446395874023438,
+          1.1554087400436401,
+          1.7041549682617188
+        ],
+        "min": [
+          -1.7986395359039307,
+          0.6478724479675293,
+          -9.266061782836914
+        ],
+        "max": [
+          -1.253999948501587,
+          1.8032811880111694,
+          -7.561906814575195
+        ],
+        "volume": 0.6478616528706849,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 1.5935439252486232,
+        "baseContactArea": 0.4391643814758773,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      },
+      {
+        "name": "Bed pillow \u00c2\u00b7 east wall upper \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "wall-compressed down/feather cotton pillow",
+          "width": 1.56,
+          "height": 1.24,
+          "sideLoft": 0.5620170831680298,
+          "rearContactVertices": 16831,
+          "baseContactVertices": 2430,
+          "wallGap": 0.004,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 1,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          0.5620170831680298,
+          1.2654923796653748,
+          1.6525917053222656
+        ],
+        "min": [
+          -1.8160170316696167,
+          0.6478920578956604,
+          -7.174434185028076
+        ],
+        "max": [
+          -1.253999948501587,
+          1.9133844375610352,
+          -5.5218424797058105
+        ],
+        "volume": 0.713599476506818,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 1.6516051860278194,
+        "baseContactArea": 0.4499518933754926,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      },
+      {
+        "name": "Bed pillow \u00c2\u00b7 east wall lower \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "wall-compressed down/feather cotton pillow",
+          "width": 1.62,
+          "height": 1.09,
+          "sideLoft": 0.5721527338027954,
+          "rearContactVertices": 16441,
+          "baseContactVertices": 2494,
+          "wallGap": 0.004,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 2,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          0.5721527338027954,
+          1.1145129799842834,
+          1.7007339000701904
+        ],
+        "min": [
+          -1.8261526823043823,
+          0.6480953097343445,
+          -5.17374324798584
+        ],
+        "max": [
+          -1.253999948501587,
+          1.762608289718628,
+          -3.4730093479156494
+        ],
+        "volume": 0.629400573315989,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 1.451068849036896,
+        "baseContactArea": 0.483415543086975,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      },
+      {
+        "name": "Bed pillow \u00c2\u00b7 east wall south \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "wall-compressed down/feather cotton pillow",
+          "width": 1.58,
+          "height": 1.16,
+          "sideLoft": 0.612669825553894,
+          "rearContactVertices": 16285,
+          "baseContactVertices": 2501,
+          "wallGap": 0.004,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 3,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          0.612669825553894,
+          1.1848092675209045,
+          1.657177448272705
+        ],
+        "min": [
+          -1.866669774055481,
+          0.6479386687278748,
+          -3.0461554527282715
+        ],
+        "max": [
+          -1.253999948501587,
+          1.8327479362487793,
+          -1.3889780044555664
+        ],
+        "volume": 0.6769019618029155,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 1.4861405974332886,
+        "baseContactArea": 0.5058567737477171,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      },
+      {
+        "name": "Bed pillow \u00c2\u00b7 relaxed west \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "compressed down/feather cotton pillow",
+          "width": 1.37,
+          "depth": 1.02,
+          "loft": 0.365,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 4,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          1.4799365997314453,
+          0.3812333941459656,
+          1.1983041763305664
+        ],
+        "min": [
+          -8.499968528747559,
+          0.6435211300849915,
+          -9.409152030944824
+        ],
+        "max": [
+          -7.020031929016113,
+          1.024754524230957,
+          -8.210847854614258
+        ],
+        "volume": 0.3571965903653751,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 0,
+        "baseContactArea": 1.3471211200995776,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      },
+      {
+        "name": "Bed pillow \u00c2\u00b7 relaxed east \u00c2\u00b7 filled cotton body",
+        "metadata": {
+          "kind": "compressed down/feather cotton pillow",
+          "width": 1.42,
+          "depth": 1.04,
+          "loft": 0.38,
+          "underlyingLayer": "fitted sheet",
+          "pattern": 5,
+          "microstructure": "Existing scanned cotton weave with independent short seam-local puckering; 1024px tangent normal detail"
+        },
+        "size": [
+          1.5367770195007324,
+          0.40134090185165405,
+          1.2358064651489258
+        ],
+        "min": [
+          -3.9883885383605957,
+          0.6435211300849915,
+          -9.427903175354004
+        ],
+        "max": [
+          -2.4516115188598633,
+          1.0448620319366455,
+          -8.192096710205078
+        ],
+        "volume": 0.3929078691314535,
+        "nonManifoldEdges": 0,
+        "rearContactArea": 0,
+        "baseContactArea": 1.4231416244158461,
+        "duvetVerticesInside": 0,
+        "cameraInside": []
+      }
+    ]
+  }
+}

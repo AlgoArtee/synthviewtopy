@@ -1,0 +1,994 @@
+{
+  "roomId": "os-city-apartment",
+  "coordinateSystem": "metres; Y up; north is negative Z",
+  "bounds": {
+    "minX": -9.8,
+    "maxX": 4.8,
+    "minZ": -9.46,
+    "maxZ": 6.15,
+    "height": 3.5
+  },
+  "outsideCutout": {
+    "minX": 1.4,
+    "maxX": 4.8,
+    "minZ": -3,
+    "maxZ": -0.15,
+    "supersededBy": "revision-18 wraparound balcony; bathroom remains enclosed"
+  },
+  "symmetry": "Square sleeping platform and centred north window; main room remains intentionally asymmetric",
+  "openings": [
+    {
+      "id": "north-window",
+      "type": "window",
+      "wall": "north sleeping alcove",
+      "width": 8.55,
+      "sill": 0,
+      "depth": 0.21,
+      "destination": "North City skyline",
+      "construction": "Full-wall low-iron glazing with one 6.318 m fixed panorama and one smaller left bay; single retained 42 mm divider; upper tilt-and-turn sash above fixed lower side light",
+      "centreX": -5.525,
+      "wallZ": -9.46,
+      "height": 3.5,
+      "glassClearHeight": 3.404,
+      "principalBays": 2,
+      "glassMeshes": 3,
+      "retainedInteriorDividers": 1,
+      "leftSash": {
+        "hingeSide": "west / left wall",
+        "swing": "inward",
+        "sillMetres": 1.24,
+        "widthMetres": 1.907,
+        "heightMetres": 2.208,
+        "fullOpenDegrees": 90,
+        "topTiltDegrees": 8.594,
+        "tiltTopOpeningMetres": 0.33,
+        "hardware": "Three left hinge pins, three-position lever, articulated tilt restrictor and thermally broken sealed sash",
+        "fixedLowerLightReason": "Leaves clearance above wall-fitted mattress, duvet and low pillow"
+      }
+    },
+    {
+      "id": "bathroom-door",
+      "type": "door",
+      "width": 1.02,
+      "height": 2.5,
+      "depth": 0.13,
+      "destination": "bathroom",
+      "construction": "structural jambs and lintel; sliding leaf in wall pocket"
+    },
+    {
+      "id": "apartment-entry",
+      "type": "door",
+      "width": 1.14,
+      "height": 2.36,
+      "depth": 0.22,
+      "destination": "building corridor; closed leaf",
+      "construction": "visible leaf, reveal, hardware and threshold"
+    },
+    {
+      "height": 2.62,
+      "construction": "Continuous extruded wall with subtracted doorway profile; two parked telescoping glass panels, recessed head track, metal jambs and handle",
+      "depth": 0.22,
+      "type": "door",
+      "minX": 2.1,
+      "threshold": 0.016,
+      "destination": "wraparound balcony",
+      "wall": "north living room, right of bathroom",
+      "id": "balcony-door",
+      "width": 1.5,
+      "functionalWidthException": "Residential balcony access: 1.5m clear, separate from original main apartment arrival",
+      "maxX": 3.6,
+      "wallZ": -0.26
+    }
+  ],
+  "references": [
+    "01-layout.png",
+    "02-bed.jpg",
+    "03-bathroom.png",
+    "04-desk.png",
+    "05-lamp.png",
+    "06-ceiling-chair-carpet.jpg",
+    "07-live-rain-city.jpg",
+    "08-hologram-portrait.jpg",
+    "09-window-layout.png",
+    "10-pillow-side.png"
+  ],
+  "review": {
+    "revision": 16,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "aspirationalTarget": 9,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "accepted": true,
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.8
+    ],
+    "finalScore": 8.8,
+    "remainingUnusedChecks": 2,
+    "report": "revision-16-review-1.md",
+    "reviewSummary": "revision-16-reviews.md",
+    "evidence": "test-artifacts/north-city/revision-16/review-1",
+    "sourceBinding": "revision-16-review-1-source-hashes.json",
+    "evidenceBinding": "revision-16-review-1-evidence-hashes.json",
+    "rubric": {
+      "construction": 1.85,
+      "lighting": 1.7,
+      "materials": 1.6,
+      "fidelity": 2.35,
+      "composition": 1.3
+    },
+    "scope": "Seven new puffy cat cushions and their bedding contact, printed artwork, placement and room integration; 11 current stills plus one baseline. Historical revision15 large-pillow8.8 below9 and whole-room grades are separate.",
+    "limitations": [
+      "Fronts remain taut and similar",
+      "Some close side creases read incised",
+      "Narrowly tapered lower edges",
+      "Even illumination suppresses cotton microstructure",
+      "Static authored cloth, not cloth simulation"
+    ]
+  },
+  "revision": 17,
+  "livingArea": {
+    "previousSquareMetres": 30.24,
+    "currentSquareMetres": 60.48,
+    "ratio": 2,
+    "southwardExtensionMetres": 3.15
+  },
+  "grossFloorAreaSquareMetres": 143.833,
+  "bedAccess": {
+    "action": "Space at foot edge, or Climb bed touch control",
+    "supportHeightMetres": 0.72,
+    "eyeHeightOnBedMetres": 2.37,
+    "exit": "Walk off mattress edge",
+    "windowCollision": "solid"
+  },
+  "weatherOptions": [
+    "clear",
+    "cloudy",
+    "rain",
+    "storm",
+    "snow",
+    "fog",
+    "academic-autumn",
+    "academic-overcast",
+    "academic-rainy-dusk",
+    "academic-foggy-night"
+  ],
+  "loungePlacement": {
+    "southwardOffsetMetres": 1.3,
+    "chairCentre": [
+      -3.4,
+      0.08,
+      1.69
+    ],
+    "rugCentre": [
+      -3.05,
+      0.08,
+      2.15
+    ],
+    "rugFinish": "brilliant white wool with soft white luminescence",
+    "rugShape": "circle",
+    "rugDiameterMetres": 2.32,
+    "chairFacing": "east kitchen",
+    "chairYawRadians": 1.6279
+  },
+  "weatherControl": {
+    "placement": "top right, visible when apartment controls are expanded",
+    "mobileVisible": true
+  },
+  "interfaceCollapse": {
+    "control": "chevron integrated into North City navigation",
+    "keyboardShortcut": "H",
+    "remainingNavigation": "North City back link",
+    "preservesWeather": true,
+    "mobileSupported": true
+  },
+  "defaultWeather": "rain",
+  "animatedCity": {
+    "vehicles": 44,
+    "pedestrians": 68,
+    "occupiedSkybridges": 3,
+    "humanHolograms": 2,
+    "steamVents": 8,
+    "reducedMotionSupported": true,
+    "reference": "07-live-rain-city.jpg",
+    "hologramStyle": "Two translucent filigree ghosts in layered long wind-blown gowns",
+    "hologramMotion": "Independent natural eyelid closure and neck-pivot yaw/nod/tilt, swept flowing hair and layered wind-driven gowns; all frozen under reduced motion",
+    "exteriorTranslation": [
+      -2.525,
+      0,
+      -6.46
+    ],
+    "pedestrianScale": {
+      "carCalibratedUnitsPerMetre": 0.7,
+      "equivalentHeightRangeMetres": [
+        1.6,
+        1.84
+      ],
+      "meanReductionPercent": 16.668,
+      "headLengthsReduced": 1.25
+    },
+    "ghostFace": "Reference-derived photographic adult East Asian feminine portrait atlas on shaped relief, luminous eyes, natural nose/lips/cheeks and swept-back fine hair",
+    "buildingCount": 34,
+    "panoramicLateralBlocks": 6,
+    "ghostBlink": {
+      "durationSeconds": 0.29,
+      "intervalsSeconds": [
+        [
+          4.1,
+          5.8,
+          3.7,
+          6.3
+        ],
+        [
+          5.2,
+          3.9,
+          6.7,
+          4.5
+        ]
+      ],
+      "differentPhaseOffsetsSeconds": [
+        0.46,
+        1.23
+      ],
+      "construction": "Actual eye aperture and upper/lower eyelid position morphs with feathered open/closed portrait-atlas sampling"
+    },
+    "ghostHead": {
+      "pivotLocal": [
+        0,
+        1.515,
+        0.005
+      ],
+      "jawNeckTransition": "Continuous reference-textured relief fading into shoulders; articulated from existing neck pivot",
+      "maximumYawDegrees": 8.02,
+      "maximumNodDegrees": 2.41,
+      "maximumTiltDegrees": 1.43
+    },
+    "ghostPortraitAsset": "public/apartments/holograms/reference-portrait-atlas-v11.png",
+    "cyanNoseAlignment": {
+      "revision": 12,
+      "direction": "image-left",
+      "maximumSourcePixelDisplacement": 12,
+      "falloff": "Smoothly feathered into bridge and cheeks below the eye corners; fades before lips",
+      "pinkUnchanged": true
+    },
+    "windowLighting": {
+      "variants": 24,
+      "counts": {
+        "dark": 1552,
+        "warm": 1797,
+        "cool": 1061,
+        "rose": 343,
+        "neon": 96
+      },
+      "emissiveRange": [
+        0.018,
+        1.1900000000000002
+      ],
+      "independentRoomLayouts": 4,
+      "variableCurtainsAndBlinds": true,
+      "seed": 57431
+    }
+  },
+  "previousReviews": [
+    {
+      "revision": 2,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent",
+      "status": "accepted",
+      "formalChecksCompleted": 3,
+      "scores": [
+        7.7,
+        7.9,
+        8.1
+      ],
+      "report": "revision-2-reviews.md",
+      "finalScore": 8.1,
+      "finalReport": "revision-2-final-review.md"
+    },
+    {
+      "revision": 3,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent",
+      "status": "accepted",
+      "formalChecksCompleted": 2,
+      "scores": [
+        7.7,
+        8.1
+      ],
+      "report": "revision-3-reviews.md",
+      "finalScore": 8.1,
+      "finalReport": "revision-3-review-2.md"
+    },
+    {
+      "revision": 4,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.2
+      ],
+      "report": "revision-4-reviews.md",
+      "finalScore": 8.2,
+      "finalReport": "revision-4-review-1.md"
+    },
+    {
+      "revision": 5,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent",
+      "status": "accepted",
+      "formalChecksCompleted": 2,
+      "scores": [
+        7.8,
+        8.1
+      ],
+      "report": "revision-5-reviews.md",
+      "acceptedScore": 8.1,
+      "finalReport": "revision-5-review-2.md",
+      "limitations": [
+        "The huge duvet still has broad smooth regions and repeated pillow shapes",
+        "Ghost faces remain luminous artistic masks; hands and necks are simple",
+        "Buildings, traffic and reflections remain procedural; cables obscure parts of the ghosts",
+        "Motion review used separated frames rather than direct video playback"
+      ]
+    },
+    {
+      "revision": 6,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.2
+      ],
+      "acceptedScore": 8.2,
+      "report": "revision-6-reviews.md",
+      "finalReport": "revision-6-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-6/pass-1",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.55,
+        "materials": 1.5,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "remainingUnusedChecks": 2,
+      "limitations": [
+        "Pillows retain broad smooth cushion faces and shallow compression",
+        "The unusually large duvet remains overly smooth in broad areas",
+        "A small dark cloth notch remains near the left pillow group",
+        "The centre mullion is prominent in the city-detail view",
+        "TV imagery/scanlines and city repetition/reflection streaks remain visibly procedural",
+        "Motion review used separated frames, without direct WebM playback"
+      ]
+    },
+    {
+      "revision": 7,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.2
+      ],
+      "acceptedScore": 8.2,
+      "report": "revision-7-reviews.md",
+      "finalReport": "revision-7-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-7/final-pass-1-contact",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.55,
+        "materials": 1.45,
+        "fidelity": 2.0,
+        "composition": 1.3
+      },
+      "remainingUnusedChecks": 2,
+      "limitations": [
+        "Duvet centre remains broad, smooth and evenly lit compared with rumpled cotton reference",
+        "Turned-back edge remains regular with a conspicuous dark seam",
+        "Pillow faces and stuffing deformation remain cushion-like and simplified",
+        "Visible city retains repeated modules, simplified people/vehicles and patterned reflections",
+        "Focused independent review inspected four final bedding images, not all rooms/weather/ceiling views"
+      ]
+    },
+    {
+      "revision": 8,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 2,
+      "scores": [
+        7.9,
+        8.1
+      ],
+      "report": "revision-8-reviews.md",
+      "evidence": "test-artifacts/north-city/revision-8/pass-2",
+      "round1Report": "revision-8-review-1.md",
+      "acceptedScore": 8.1,
+      "finalReport": "revision-8-review-2.md",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.55,
+        "materials": 1.4,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "remainingUnusedChecks": 1,
+      "limitations": [
+        "Broad centre and hanging face remain very smooth",
+        "Large hem wave retains a sculpted appearance rather than fully natural cotton",
+        "Fine fabric response remains weak",
+        "Focused independent review inspected eight bedding and clear-weather views; animation playback not assessed"
+      ]
+    },
+    {
+      "revision": 9,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.1
+      ],
+      "acceptedScore": 8.1,
+      "report": "revision-9-reviews.md",
+      "finalReport": "revision-9-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-9/review-1",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.55,
+        "materials": 1.4,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "remainingUnusedChecks": 2,
+      "limitations": [
+        "Duvet centre and hanging face remain unusually smooth and evenly inflated",
+        "Hem has broad sculpted waves with limited fine compression or local creases",
+        "Several pillows retain firm slab-like silhouettes",
+        "Gentle uniform illumination suppresses some contact depth and fabric detail",
+        "Focused independent review inspected five bedding/TV images; concealed contact areas and animation playback were not assessed"
+      ]
+    },
+    {
+      "revision": 10,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 2,
+      "scores": [
+        7.6,
+        8.1
+      ],
+      "acceptedScore": 8.1,
+      "remainingUnusedChecks": 1,
+      "report": "revision-10-reviews.md",
+      "round1Report": "revision-10-review-1.md",
+      "finalReport": "revision-10-review-2.md",
+      "evidence": "test-artifacts/north-city/revision-10/review-2",
+      "rubric": {
+        "construction": 1.85,
+        "lighting": 1.55,
+        "materials": 1.45,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "limitations": [
+        "Smooth forehead/cheeks retain a polished mask-like quality",
+        "Some graphic eye/mouth contours remain",
+        "Background signage still shows through parts of the cyan lower face",
+        "Hair remains ribbon-like; ears and facial transitions are simplified",
+        "Fine features are subtle at normal apartment viewing distance",
+        "Independent reviewer assessed sampled poses, not direct WebM playback"
+      ]
+    },
+    {
+      "revision": 11,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 2,
+      "scores": [
+        7.8,
+        8.3
+      ],
+      "acceptedScore": 8.3,
+      "remainingUnusedChecks": 1,
+      "report": "revision-11-reviews.md",
+      "round1Report": "revision-11-review-1.md",
+      "finalReport": "revision-11-review-2.md",
+      "evidence": "test-artifacts/north-city/revision-11/review-2",
+      "rubric": {
+        "construction": 1.75,
+        "lighting": 1.6,
+        "materials": 1.7,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "limitations": [
+        "Close interpretation rather than exact dimensional replica",
+        "Shallow portrait relief with some fixed image-like shading and hair detail; unrestricted viewing angles not established",
+        "Central face more solid than reference volumetric glow",
+        "Facial detail subtle at normal apartment viewing distance",
+        "Independent reviewer assessed sampled poses, not direct motion playback"
+      ]
+    },
+    {
+      "revision": 12,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.3
+      ],
+      "acceptedScore": 8.3,
+      "remainingUnusedChecks": 2,
+      "report": "revision-12-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-12/review-1",
+      "rubric": {
+        "construction": 1.75,
+        "lighting": 1.6,
+        "materials": 1.7,
+        "fidelity": 2.0,
+        "composition": 1.25
+      },
+      "limitations": [
+        "Shallow portrait relief and some fixed photographic shading/hair detail",
+        "Central face more solid than reference volumetric glow",
+        "Independent reviewer assessed sampled still poses, not direct motion playback"
+      ]
+    },
+    {
+      "revision": 13,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.3
+      ],
+      "acceptedScore": 8.3,
+      "remainingUnusedChecks": 2,
+      "report": "revision-13-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-13/review-1-final",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.65,
+        "materials": 1.45,
+        "fidelity": 2.05,
+        "composition": 1.25
+      },
+      "limitations": [
+        "Glazing is very subtle against the white wall in the open pose",
+        "Some illuminated room shapes and interior silhouettes repeat",
+        "Clear daylight flattens smooth duvet detail",
+        "Phone controls take much of the upper view and retain a keyboard hint",
+        "Reviewer assessed endpoint stills rather than full mechanism motion"
+      ]
+    },
+    {
+      "revision": 14,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 8,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "accepted",
+      "formalChecksCompleted": 1,
+      "scores": [
+        8.1
+      ],
+      "acceptedScore": 8.1,
+      "remainingUnusedChecks": 2,
+      "report": "revision-14-review-1.md",
+      "evidence": "test-artifacts/north-city/revision-14/review-1-final",
+      "sourceBinding": "revision-14-source-hashes.json",
+      "rubric": {
+        "construction": 1.9,
+        "lighting": 1.55,
+        "materials": 1.45,
+        "fidelity": 2.0,
+        "composition": 1.2
+      },
+      "limitations": [
+        "Regular longitudinal wet-road bands and rounded puddles",
+        "Very dark foggy-night distance",
+        "Autumn leaves subtle in still compositions",
+        "Smooth bedding, repeated facade motifs and simplified traffic",
+        "Expanded phone controls occupy substantial view; landscape panel scrolls"
+      ],
+      "scope": "17 actual runtime stills plus three references; no audio audition or motion claims",
+      "postReviewCopyFix": "Replaced two generic permanent-storage phrases with neutral browser-privacy wording; session-only and saved status stay explicit. Scene sources and frozen review evidence unchanged."
+    },
+    {
+      "revision": 15,
+      "maximumFormalChecks": 3,
+      "minimumAcceptedRealismScore": 9,
+      "reviewer": "independent realism agent /root/realism_reviewer",
+      "status": "below requested target; formal limit reached",
+      "accepted": false,
+      "formalChecksCompleted": 3,
+      "scores": [
+        8.4,
+        8.7,
+        8.8
+      ],
+      "finalScore": 8.8,
+      "remainingUnusedChecks": 0,
+      "report": "revision-15-review-3.md",
+      "reviewSummary": "revision-15-reviews.md",
+      "evidence": "test-artifacts/north-city/revision-15/review-3",
+      "sourceBinding": "revision-15-review-3-source-hashes.json",
+      "evidenceBinding": "revision-15-review-3-evidence-hashes.json",
+      "rubric": {
+        "construction": 1.95,
+        "lighting": 1.7,
+        "materials": 1.7,
+        "fidelity": 2.15,
+        "composition": 1.3
+      },
+      "scope": "Focused four-wall-pillow construction/side realism and duvet-to-pillow contact;16 actual runtime stills. Historical whole-room revision14 8.1/10 remains separate.",
+      "limitations": [
+        "Thin, fairly parallel seam grooves still read etched rather than naturally puckered cotton",
+        "Lower pillow toes remain sharply pointed in close views",
+        "Duvet boundary remains closely fitted to the pillow row",
+        "Static authored cloth geometry; motion and physical cloth simulation not assessed"
+      ]
+    }
+  ],
+  "footprint": [
+    [
+      -9.8,
+      -9.46
+    ],
+    [
+      -1.25,
+      -9.46
+    ],
+    [
+      -1.25,
+      -3
+    ],
+    [
+      1.4,
+      -3
+    ],
+    [
+      1.4,
+      -0.15
+    ],
+    [
+      4.8,
+      -0.15
+    ],
+    [
+      4.8,
+      6.15
+    ],
+    [
+      -4.8,
+      6.15
+    ],
+    [
+      -4.8,
+      -0.91
+    ],
+    [
+      -9.8,
+      -0.91
+    ]
+  ],
+  "bed": {
+    "sizeMetres": [
+      8.55,
+      8.55
+    ],
+    "previousWidthMetres": 2.85,
+    "widthRatio": 3,
+    "minX": -9.8,
+    "maxX": -1.25,
+    "minZ": -9.46,
+    "maxZ": -0.91,
+    "fittedSides": [
+      "west",
+      "north-window",
+      "east",
+      "south return opposite window"
+    ],
+    "alcoveRoomConnectionWidth": 3.55,
+    "pillowDimensionsPreserved": false,
+    "pillowDimensionsRevision": "Six oversized 1.37–1.64 m cotton pillows replace eighteen smaller ones",
+    "mattressBevelMetres": 0.003,
+    "fittedSheetBevelMetres": 0.003,
+    "southReturnContact": true
+  },
+  "television": {
+    "wall": "west / left facing city",
+    "centre": [
+      -9.655,
+      2.12,
+      -5.185
+    ],
+    "size": [
+      3.72,
+      2.02
+    ],
+    "construction": "Wall-mounted optical rail and translucent animated aurora/ocean art channel",
+    "reducedMotionSupported": true,
+    "duvetSightlineChecks": {
+      "samples": 270,
+      "duvetOcclusions": 0,
+      "views": [
+        "sleep",
+        "bed-wide",
+        "duvet",
+        "television",
+        "duvet-drape"
+      ]
+    },
+    "bedCentreAligned": true
+  },
+  "bedPillows": {
+    "count": 13,
+    "previousCount": 6,
+    "widthMetres": [
+      1.37,
+      1.64
+    ],
+    "construction": "Six closed cotton front/rear volumes with narrow sewn bands, broad wall pressure, rounded compressed bases, unequal crown sag, local seam folds and existing scanned cotton weave. Four wall pillows opposite TV; two relaxed near glazing. Seven smaller closed puffy cotton cushions form a staggered front row opposite the TV, with printed fronts and plain cotton backs.",
+    "eastWallOppositeTV": 4,
+    "relaxedNearWindow": 2,
+    "uprightAtWindow": 0,
+    "eastWallClearanceMetres": 0.004,
+    "contact": "Full rounded rear volumes 4mm from east wall; supported by fitted sheet, without duvet underneath. Zero sampled duvet vertices inside pillows at2mm tolerance.",
+    "heightMetres": [
+      1.09,
+      1.24
+    ],
+    "wallSideDepthMetres": [
+      0.5446395874023438,
+      0.612669825553894
+    ],
+    "relaxedNominalDepthMetres": [
+      1.02,
+      1.04
+    ],
+    "rearContactAreaRangeSquareMetres": [
+      1.451068849036896,
+      1.6516051860278194
+    ],
+    "baseContactAreaRangeSquareMetres": [
+      0.4391643814758773,
+      0.5058567737477171
+    ],
+    "underlyingLayer": "fitted sheet",
+    "research": "revision-15-research.md",
+    "focusedAudit": "test-artifacts/north-city/revision-16/geometry-final/pillows.json",
+    "largeCount": 6,
+    "decorativeCount": 7,
+    "decorativeCushions": {
+      "count": 7,
+      "inFrontOfLargeCentres": 4,
+      "betweenLargePillows": 3,
+      "onlyAt": "east wall opposite the TV",
+      "nominalWidthMetres": [
+        0.8,
+        0.86
+      ],
+      "nominalHeightMetres": [
+        0.69,
+        0.75
+      ],
+      "measuredDepthMetres": [
+        0.5328713655471802,
+        0.5614712238311768
+      ],
+      "measuredFilledVolumesCubicMetres": [
+        0.16173242462260548,
+        0.18844624501395157
+      ],
+      "minimumBaseContactAreaSquareMetres": 0.14393928812065573,
+      "artwork": "Original seated, sleeping and stretching abstract cat linework; alternating blue and magenta gradients, matte ink on front only, plain white cotton backs",
+      "palette": [
+        "#287fa8",
+        "#b13b82"
+      ],
+      "emissive": false,
+      "source": "src/apartments/osCityCatPillowArt.ts",
+      "placement": "Four forward and three slightly recessed between, leaning toward large pillows; fitted sheet below; duvet edge at cushion fronts",
+      "sampledIntersections": [],
+      "sampleToleranceMetres": 0.002
+    }
+  },
+  "bedDuvet": {
+    "widthMetres": 9.1,
+    "depthMetres": 9.46,
+    "nominalLoftMetres": 0.255,
+    "measuredSurfaceSpansMetres": [
+      9.162100802009945,
+      8.636791360790182
+    ],
+    "measuredMeanThicknessMetres": 0.24545796942685394,
+    "closedShell": true,
+    "nonManifoldEdges": 0,
+    "color": "white",
+    "fill": "down",
+    "gatheredSide": "west / TV",
+    "openFootDrape": true,
+    "construction": "Closed oversized filled cotton duvet pulled back to the new cushion fronts; fitted sheet below all pillows. West and south-return seams meet walls, lower west loft keeps TV clear, open foot drapes softly. Nominal cut differs from gathered footprint.",
+    "wallFittedSeams": [
+      "west",
+      "south return opposite window"
+    ],
+    "televisionClear": true,
+    "measuredThicknessRangeMetres": [
+      0.029999971389770508,
+      0.3078703284263611
+    ],
+    "floorClearanceMetres": 0.25533726811408997,
+    "openFootOverhangMetres": 0.5348303949832917,
+    "wallGapsMetres": {
+      "west": 1.9073486257070726E-07,
+      "east": 1.1067426204681396,
+      "north": 1.331596336364747,
+      "southReturn": 2.622604367008563E-08
+    },
+    "wallCrossingVertices": 0,
+    "verticesInsideNightstand": 0,
+    "nominalUnfoldedCutMetres": [
+      9.1,
+      9.46
+    ],
+    "measuredBoundsMetres": [
+      8.550000190734863,
+      1.0137893855571747,
+      7.812296062707901
+    ],
+    "underPillows": false,
+    "stopsAtPillowFronts": true,
+    "headInsetMetres": 1.3,
+    "nominalSideInsetMetres": 0.48,
+    "pillowBoundary": "Rounded conservative lower-pillow envelope including the new seven-cushion row",
+    "televisionClearSampledRays": 270
+  },
+  "snapshotArchive": {
+    "path": "Snapshots/North City/O's Apartment",
+    "pictures": 100,
+    "replacedOldPictures": 50,
+    "sceneRevision": 12,
+    "formats": {
+      "Ultrawide": {
+        "pictures": 50,
+        "resolution": [
+          5120,
+          2160
+        ]
+      },
+      "Phone": {
+        "pictures": 50,
+        "resolution": [
+          2160,
+          3840
+        ]
+      }
+    },
+    "nativeRender": true,
+    "upscaled": false,
+    "bytes": 459867177,
+    "manifest": "Snapshots/North City/O's Apartment/manifest.json",
+    "report": "snapshot-100-export.md"
+  },
+  "windowControl": {
+    "label": "Left city window",
+    "options": [
+      "Closed",
+      "Fully open · left hinge",
+      "Tilt open · Kippöffnung"
+    ],
+    "placement": "Right, below weather panel",
+    "mobileSupported": true,
+    "collapse": "Existing North City chevron / H",
+    "reducedMotion": "Immediate direct state change"
+  },
+  "cityAmbience": {
+    "added": "2026-10-12",
+    "revision": 14,
+    "manifest": "public/audio/north-city/weather-library.json",
+    "credits": "public/audio/north-city/WEATHER_ATTRIBUTION.md",
+    "distinctRecordings": 70,
+    "weatherSoundChoices": 101,
+    "choicesPerWeather": {
+      "clear": 10,
+      "cloudy": 10,
+      "rain": 11,
+      "storm": 10,
+      "snow": 10,
+      "fog": 10,
+      "academic-autumn": 10,
+      "academic-overcast": 10,
+      "academic-rainy-dusk": 10,
+      "academic-foggy-night": 10
+    },
+    "packagedBytes": 92602027,
+    "licenses": {
+      "CC0 1.0": 69,
+      "CC BY 4.0": 1
+    },
+    "originalHeavyRainExtra": {
+      "asset": "public/audio/north-city/cyberpunk-city-ambience.mp3",
+      "source": "https://freesound.org/people/Rmshh/sounds/743999/",
+      "author": "Rmshh",
+      "license": "CC BY 4.0"
+    },
+    "behavior": "Weather-filtered actual recordings; remembered selection per weather; window opening and distance drive gain; tilt is quieter and muffled; closed, muted, zero-volume and hidden pages are silent",
+    "controls": "On/off, Sound for this weather, saved volume, Use your own sound and remove selected upload; below Left city window and included in H/chevron collapse",
+    "customUploads": {
+      "maximumBytes": 26214400,
+      "storage": "Local browser/origin IndexedDB",
+      "fallback": "Session-only with explicit notice",
+      "transmittedToServer": false,
+      "playback": "HTMLAudioElement / local Blob URL, streamed rather than full-buffer decoded"
+    },
+    "lazyLoad": true,
+    "decodedLoopCache": 2,
+    "report": "weather-audio-library.md",
+    "validation": "test-artifacts/north-city/weather-audio/validation/results.json"
+  },
+  "weatherAppearance": {
+    "islandWeatherIds": [
+      "clear",
+      "rain",
+      "fog",
+      "storm",
+      "academic-autumn",
+      "academic-overcast",
+      "academic-rainy-dusk",
+      "academic-foggy-night"
+    ],
+    "catalog": "src/data/academicCampus.ts / ACADEMIC_WEATHER_PRESETS",
+    "darkAcademia": "Late-autumn after rain, Overcast afternoon, Rainy dusk, Foggy night; adapted lighting/fog/precipitation/wetness with the existing cyberpunk city",
+    "autumnLeaves": {
+      "moving": 120,
+      "settled": 320,
+      "rainyDuskMoving": 40,
+      "indoors": false
+    },
+    "fog": "Exterior materials only",
+    "report": "weather-audio-library.md"
+  },
+  "finishingFixes": [
+    {
+      "revision": 17,
+      "request": "Remove extra vertical line on wall behind pillows",
+      "change": "Bathroom north cross-wall ends at partition outer face, removing10mm protrusion into continuous bedroom wall",
+      "evidence": "test-artifacts/north-city/revision-17/wall-fix/pillow-row.png",
+      "record": "revision-17-wall-fix.json",
+      "formalScore": "No new grade; historical focused revision16 review unchanged"
+    }
+  ],
+  "balcony": {
+    "elbowX": 1.62,
+    "area": 46.7034,
+    "maxZ": -0.15,
+    "design": "Open-air circuit glass terrace around the bathroom",
+    "elbowZ": -3.22,
+    "railHeight": 1.15,
+    "floorHeight": 0,
+    "minX": -1.12,
+    "minZ": -9.46,
+    "maxX": 4.8
+  },
+  "kitchenTranslationZ": 1.5
+}

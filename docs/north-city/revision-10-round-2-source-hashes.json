@@ -1,0 +1,17 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityGhostFace.ts": "36441c59fdcf5a854ee9e54bcb2b928ab6e959b45845afde65f69c63c7427b81",
+    "src/apartments/osCityHolograms.ts": "4886880321e1880712149973ed5380e893c2e40a3e1976151dfe9e7f88a39cf5",
+    "src/apartments/osCityApartment.ts": "6cba132c061c426ac783aeb09e7b3ed39d36143a433a6cd826ea20b9d2918f5d",
+    "src/apartments/osCityLife.ts": "3c125792a0ca1603a187d973cbc04e112433eb8b96a740aedde691876e8ee1db",
+    "src/apartments/osCityDuvet.ts": "83752d2a076ad6d53da8fbe563694308fa0b1d2258e8b23934034d6009a494d8",
+    "src/apartments/osCityFurnishings.ts": "49823105932b9bbb03402228b3cea4e3d53f6607384b23171d5a20e14e7bc953",
+    "src/apartments/osCityLayout.ts": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614",
+    "scripts/north-city-portrait-review.mjs": "7dbd0968e61a8f846d70994f77cb0410bbb6ef7b36d7caa8e959f0155df533be",
+    "scripts/north-city-bedding-review.mjs": "9f439c50b74bd5eb068e86dc36222f9b5a2c20c1d56ff200d3d1a6a559735307",
+    "scripts/north-city-live-audit.mjs": "ad6e04de73a4e57638fe1e6fa6b56b13976f051b9c15d05debd01cdd1c94dbf9"
+  },
+  "evidence": "test-artifacts/north-city/revision-10/review-2",
+  "priorRound": "docs/north-city/revision-10-round-1-source-hashes.json"
+}

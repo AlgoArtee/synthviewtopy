@@ -1,0 +1,16 @@
+{
+  "revision": 28,
+  "request": "Investigate and straighten the apparent left tilt of the plaza and its buildings.",
+  "diagnosis": "District geometry is level. Pitched perspective produces keystone convergence: the original main view's mall verticals drift about12–27pixels at951x892. The main view also looks slightly across the frontage.",
+  "change": "Use a vertically shifted architectural frustum on the balcony, keep world verticals upright and the intended aim centered, align the main panorama with the plaza axis, and blend back to ordinary projection for steep views and through the doorway.",
+  "scope": "Camera projection and main balcony heading only; geometry, weather, animation, lights and user preferences retained.",
+  "review": {
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "scope": "Plaza alignment, upright building edges and balcony/free-look composition",
+    "accepted": true,
+    "score": 8.4,
+    "report": "docs/north-city/revision-28-review-1.md"
+  }
+}

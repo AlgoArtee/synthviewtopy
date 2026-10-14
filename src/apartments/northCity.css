@@ -1,0 +1,138 @@
+.north-city-page { margin: 0; color: #314755; background: #eef2f5; font: 400 15px/1.65 'DM Sans', Arial, sans-serif; }
+.north-city-page * { box-sizing: border-box; }
+.north-city-page a { color: inherit; }
+.city-header { max-width: 1420px; margin: auto; padding: 28px 5vw; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #93a9b52b; }
+.city-brand { display: flex; align-items: center; gap: 13px; text-decoration: none; font-size: 13px; font-weight: 700; letter-spacing: .14em; }
+.city-brand-mark { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid #91bfcd; border-radius: 50%; font-size: 22px; font-weight: 400; background: linear-gradient(140deg, #d8eff5, #f8e0ef); }
+.city-brand small { display: block; font-size: 8px; font-weight: 500; letter-spacing: .18em; color: #6c8694; }
+.city-back { font-size: 11px; text-decoration: none; }
+.city-main { max-width: 1420px; margin: auto; padding: 0 5vw; }
+.city-intro { padding: 66px 0 52px; position: relative; }
+.city-eyebrow { margin: 0 0 18px; color: #6b8290; font-size: 9px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
+.city-intro h1 { margin: 0; color: #354b59; font-size: clamp(44px, 6.4vw, 85px); line-height: 1.02; font-weight: 400; letter-spacing: -.065em; }
+.city-intro h1 em { display: block; font-style: normal; color: #91a4b4; }
+.city-intro > p:last-child { position: absolute; right: 0; bottom: 45px; max-width: 310px; color: #687e8c; font-size: 13px; }
+.city-collection-heading { display: flex; align-items: baseline; justify-content: space-between; border-bottom: 1px solid #91acb83c; margin-bottom: 24px; padding-bottom: 12px; }
+.city-collection-heading h2 { font-size: 13px; font-weight: 600; margin: 0; }
+.city-collection-heading span { font-size: 10px; color: #718795; }
+.city-apartment { display: grid; grid-template-columns: 1.45fr 1fr; min-height: 430px; border: 1px solid #cbdbe1; background: #f8fbfd; text-decoration: none; overflow: hidden; border-radius: 3px; transition: box-shadow .25s, border-color .25s; }
+.city-apartment:hover { border-color: #93cbdc; box-shadow: 0 12px 48px #7c9cab20; }
+.city-apartment-image { position: relative; min-height: 430px; background: linear-gradient(130deg, #c4e1e9, #e2dae8 62%, #d4dee5); }
+.city-apartment-image img { display: block; width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.city-apartment-image > span { position: absolute; bottom: 20px; left: 22px; padding: 7px 11px; font-size: 8px; letter-spacing: .16em; background: #f1f7f1d9; color: #405d6c; backdrop-filter: blur(10px); }
+.city-apartment-copy { padding: 40px 36px; display: flex; flex-direction: column; justify-content: center; }
+.city-apartment-copy h3 { margin: 0 0 18px; font-weight: 400; font-size: clamp(29px, 3.2vw, 46px); line-height: 1.1; letter-spacing: -.04em; }
+.city-apartment-copy > p:not(.city-eyebrow) { margin: 0 0 24px; color: #657e8d; font-size: 12px; }
+.city-tags { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 30px; }
+.city-tags span { font-size: 9px; border: 1px solid #bfd8df; padding: 4px 8px; color: #557582; border-radius: 3px; }
+.city-enter { display: flex; align-items: center; justify-content: space-between; font-size: 11px; font-weight: 600; border-top: 1px solid #d5e3e9; padding-top: 16px; }
+.city-enter span { color: #a16995; font-size: 20px; }
+.city-foot { padding: 36px 0 26px; margin-top: 22px; display: flex; justify-content: space-between; align-items: baseline; gap: 20px; font-size: 9px; color: #758b98; }
+.city-foot a { text-decoration: none; }
+.north-city-room { font-family: 'DM Sans', Arial, sans-serif; color: #324858; }
+.north-city-room .room-back, .north-city-room #room-menu-toggle, .north-city-room .room-title, .north-city-room .room-controls-hint { background: #f0f5f6df; color: #395466; border-color: #a6c9d7; box-shadow: 0 2px 20px #49616f15; }
+.north-city-room .room-title > span, .north-city-room .room-menu h3, .north-city-room .residence-eyebrow, .north-city-room .room-menu > p.room-style-pairing { color: #7293a4; }
+.north-city-room .room-title h1, .north-city-room .room-menu h2 { font-family: 'DM Sans', Arial, sans-serif; }
+.north-city-room .room-menu { background: #eff5f7f2; border-color: #a7ccda; box-shadow: 0 20px 60px #385c7030; }
+.north-city-room .room-menu > p:not(.residence-eyebrow), .north-city-room .room-instructions { color: #577283; }
+.north-city-room #room-viewpoints button, .north-city-room .room-menu-actions button { color: #395d72; border-color: #a8cbd766; }
+.north-city-room .room-back:hover, .north-city-room #room-menu-toggle:hover, .north-city-room #room-menu-toggle[aria-expanded='true'], .north-city-room #room-viewpoints button:hover { background: #d8eef4; border-color: #8fc9dd; }
+.north-city-room .room-island-link { color: #986f96; }
+.north-city-room .room-loading { background: #e0e8ec; color: #547586; }
+.north-city-room .residence-seal { color: #6d9aae; border-color: #a0c7d8; }
+.north-city-room .touch-walk button { color: #395d72; background: #eff5f7ed; border-color: #a7ccda; }
+.north-city-page a:focus-visible { outline: 3px solid #68bbd4; outline-offset: 5px; }
+@media (max-width: 850px) { .city-intro { padding: 42px 0 32px; } .city-intro > p:last-child { position: static; margin-top: 24px; max-width: 500px; } .city-apartment { grid-template-columns: 1fr; } .city-apartment-image { min-height: 350px; } .city-apartment-copy { padding: 30px; } .city-foot { flex-wrap: wrap; } }
+@media (prefers-reduced-motion: reduce) { .city-apartment { transition: none; } }
+
+.north-city-room { --gold: #729eb4; }
+.north-city-room .room-instructions dd { color: #3c6278; }
+.north-city-room #room-viewpoints button[aria-current='true'] { border-color: #9cc5d6; background: #c6e8f047; }
+.north-city-room .room-controls-hint span { color: #a7839f; }
+
+.city-weather { margin: 20px 0; padding: 16px 0; border-block: 1px solid #b9c9d4; }
+.city-weather label { display:block; color:#344e62; font-size:13px; margin-bottom:8px; }
+.city-weather select { width:100%; border:1px solid #afc3d1; border-radius:6px; padding:10px 12px; background:#f5f9fc; color:#243e50; font:inherit; }
+.city-weather p { font-size:12px; line-height:1.5; color:#5a7081; margin:8px 0 0; }
+.north-city-room .touch-walk button[data-walk="jump"] { width:auto; min-width:70px; font-size:12px; grid-column:1 / -1; }
+
+.city-weather-panel { position:fixed; top:112px; right:25px; z-index:6; width:228px; max-width:calc(100vw - 24px); margin:0; padding:14px 16px; box-sizing:border-box; border:1px solid #a6c9d7; border-radius:6px; background:#f0f5f6ed; box-shadow:0 4px 24px #49616f1f; backdrop-filter:blur(16px); }
+.city-weather-panel label { font-size:12px; font-weight:600; }
+.city-weather-panel select { min-height:42px; cursor:pointer; }
+.city-weather-panel select:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-weather-panel p { font-size:10px; }
+@media (max-width:760px) { .city-weather-panel { top:102px; right:12px; width:178px; padding:10px 12px; } .city-weather-panel label { margin-bottom:5px; font-size:11px; } .city-weather-panel select { padding:8px; font-size:12px; } .city-weather-panel p { display:none; } }
+
+.north-city-room .city-back-controls { display:flex; align-items:stretch; overflow:hidden; border:1px solid #a6c9d7; border-radius:3px; background:#f0f5f6df; box-shadow:0 2px 20px #49616f15; backdrop-filter:blur(16px); }
+.north-city-room .city-back-controls .room-back { border:0; border-radius:0; background:transparent; box-shadow:none; }
+#city-controls-toggle { width:32px; padding:0; border:0; border-left:1px solid #a6c9d77a; border-radius:0; background:transparent; color:#395466; font:20px/1 Arial,sans-serif; cursor:pointer; }
+.north-city-room .city-back-controls .room-back:hover, #city-controls-toggle:hover { background:#d8eef4; }
+#city-controls-toggle:focus-visible { outline:2px solid #68bbd4; outline-offset:-3px; }
+.north-city-room.city-controls-collapsed #room-menu-toggle,
+.north-city-room.city-controls-collapsed .room-title,
+.north-city-room.city-controls-collapsed .city-weather-panel,
+.north-city-room.city-controls-collapsed .room-menu,
+.north-city-room.city-controls-collapsed .room-controls-hint,
+.north-city-room.city-controls-collapsed .touch-walk { display:none; }
+@media (max-width:760px) { #city-controls-toggle { width:26px; font-size:18px; } .north-city-room .room-title { max-width:40vw; } }
+
+.city-window-panel { position:fixed; top:290px; right:25px; z-index:6; width:228px; max-width:calc(100vw - 24px); padding:14px 16px; box-sizing:border-box; border:1px solid #a6c9d7; border-radius:6px; background:#f0f5f6ed; box-shadow:0 4px 24px #49616f1f; backdrop-filter:blur(16px); }
+.city-window-panel label { display:block; margin-bottom:8px; color:#344e62; font-size:12px; font-weight:600; }
+.city-window-panel select { width:100%; min-height:42px; border:1px solid #afc3d1; border-radius:6px; padding:8px; background:#f5f9fc; color:#243e50; font:inherit; font-size:12px; cursor:pointer; }
+.city-window-panel select:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-window-panel p { font-size:10px; line-height:1.5; color:#5a7081; margin:8px 0 0; }
+.north-city-room.city-controls-collapsed .city-window-panel { display:none; }
+@media(max-width:760px){.city-window-panel { top:205px; right:12px; width:178px; padding:10px 12px; }.city-window-panel p { display:none; }.city-window-panel label { font-size:11px; margin-bottom:5px; }}
+
+.city-sound-controls { margin-top:12px; padding-top:12px; border-top:1px solid #b6ccd5; }
+.city-sound-controls button { width:100%; min-height:36px; margin-bottom:10px; border:1px solid #afc3d1; border-radius:5px; background:#e0eff3; color:#243e50; font:600 12px 'Segoe UI',sans-serif; cursor:pointer; }
+.city-sound-controls button:focus-visible,.city-sound-controls input:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-sound-controls label { font-size:10px; margin-bottom:4px; }
+.city-sound-volume-row { display:flex; align-items:center; gap:8px; }
+.city-sound-volume-row input { width:100%; min-width:0; accent-color:#467e95; cursor:pointer; }
+.city-sound-volume-row output { min-width:30px; color:#39566a; font-size:10px; text-align:right; }
+.city-sound-credit { display:block; margin-top:8px; font-size:9px; line-height:1.4; color:#5a7081; }
+.city-sound-credit a { color:inherit; text-underline-offset:2px; }
+@media(max-width:760px){.city-sound-controls{margin-top:9px;padding-top:9px;}.city-sound-controls button{min-height:32px;margin-bottom:7px;}.city-sound-controls #city-sound-status{display:block;font-size:9px;}.city-sound-credit{font-size:8px;}}
+
+/* Weather library and local audio fit within one scrollable window panel. */
+.city-window-panel { width:288px; max-height:calc(100dvh - 365px); overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+.city-weather-panel { width:288px; }
+.city-sound-controls select { margin-bottom:12px; font-size:11px; }
+.city-sound-uploads { margin-top:12px; border-top:1px solid #b6ccd5; padding-top:10px; }
+.city-sound-uploads summary { cursor:pointer; color:#39566a; font-size:11px; padding:3px 0; }
+.city-sound-uploads input[type=file] { max-width:100%; width:100%; color:#39566a; font-size:10px; margin-top:9px; }
+.city-sound-uploads input::file-selector-button { border:1px solid #afc3d1; border-radius:4px; padding:7px; color:#243e50; background:#e0eff3; cursor:pointer; }
+.city-sound-uploads button { margin:8px 0 0; font-size:10px; }
+.city-sound-uploads button[hidden] { display:none; }
+.city-sound-uploads #city-sound-upload-status:empty { display:none; }
+@media(max-width:760px){.city-weather-panel,.city-window-panel{width:220px;}.city-window-panel{max-height:calc(100dvh - 275px);}.city-sound-controls select{font-size:10px;min-height:36px;}.city-sound-uploads p{display:block;font-size:9px;}.city-sound-uploads summary{font-size:10px;}}
+@media(max-height:500px) and (min-width:761px){.city-weather-panel{top:82px;}.city-window-panel{top:220px;max-height:calc(100dvh - 295px);}}
+
+.city-sound-uploads summary { min-height:28px; line-height:28px; }
+.city-balcony-door-controls { margin-top:12px; padding-top:12px; border-top:1px solid #b6ccd5; }
+.city-window-panel #city-balcony-door-status { display:block; }
+@media(max-width:760px){.city-balcony-door-controls{margin-top:9px;padding-top:9px;}.city-window-panel #city-balcony-door-status{font-size:9px;}}
+@media(max-width:760px) and (pointer:coarse){.city-window-panel{max-height:calc(100dvh - 375px);}}
+
+/* Keep the time/weather and aperture/audio panels in one reachable scroll area. */
+.city-control-stack { position:fixed; top:112px; bottom:74px; right:25px; z-index:6; width:288px; max-width:calc(100vw - 24px); overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; display:flex; flex-direction:column; gap:14px; }
+.city-control-stack .city-weather-panel,.city-control-stack .city-window-panel { position:relative; inset:auto; width:100%; max-width:none; max-height:none; overflow:visible; flex:0 0 auto; margin:0; }
+.city-weather-panel #city-time-select { margin-bottom:14px; }
+.city-window-appearance-panel h2 { margin:0 0 14px; font-size:13px; font-weight:600; color:#344e62; }
+.city-window-slider-row { display:flex; align-items:center; gap:10px; margin-bottom:14px; }
+.city-window-slider-row input { flex:1; width:100%; min-width:0; min-height:24px; accent-color:#467e95; cursor:pointer; }
+.city-window-slider-row input:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-window-slider-row output { min-width:36px; color:#39566a; font-size:11px; text-align:right; }
+.city-window-appearance-panel #city-window-appearance-note { display:block; }
+.north-city-room.city-controls-collapsed .city-control-stack { display:none; }
+.city-mall-panel summary { cursor:pointer; color:#294a60; font-size:13px; font-weight:600; }
+.city-mall-panel details[open] summary { margin-bottom:10px; }
+.city-mall-panel label { margin-top:12px; }
+.city-mall-panel input { width:100%; box-sizing:border-box; min-height:40px; border:1px solid #afc3d1; border-radius:6px; padding:8px; background:#f5f9fc; color:#243e50; font:12px 'Segoe UI',sans-serif; }
+.city-mall-panel input:focus-visible,.city-mall-panel summary:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-mall-panel button { width:100%; margin-top:12px; min-height:38px; border:1px solid #a8c1d0; border-radius:5px; background:#e2edf2; color:#294a60; font-size:11px; cursor:pointer; }
+.city-mall-panel p { display:block; }
+@media(max-width:760px){.city-control-stack{top:102px;right:12px;bottom:70px;width:220px;gap:12px;}.city-weather-panel #city-time-select{margin-bottom:10px;}}
+@media(max-width:760px) and (pointer:coarse){.city-control-stack{bottom:172px;}}
+@media(max-height:500px){.city-control-stack{top:82px;bottom:65px;}}

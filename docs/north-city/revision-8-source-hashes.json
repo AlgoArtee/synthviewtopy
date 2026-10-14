@@ -1,0 +1,22 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityDuvet.ts": "4bf4f75b8a96df9e0174203a3a09cc909c0a70ca39d64d36a5f9bb4828e9e4cf",
+    "src/apartments/osCityFurnishings.ts": "4340df5b5067c3f9d43d35a9193392d7b565f22bca894f3afe8063d6a7b07db6",
+    "src/apartments/osCityApartment.ts": "54ed1007410e9020cb7d0611dad50e4425a01c36b6df0593d3361fe7f6a8def2",
+    "scripts/north-city-bedding-review.mjs": "7cf0f999c866bdb2a17c0a6b309123bfc1c7bef4501fc3e8621b37cce25ffe08",
+    "scripts/north-city-live-audit.mjs": "c4b0e1215041bddeb1c08b71ddf9becbfb843994ab2fe3c35d9de545a3e45436"
+  },
+  "evidence": "test-artifacts/north-city/revision-8/pass-2",
+  "acceptedReview": {
+    "revision": 8,
+    "round": 2,
+    "score": 8.1,
+    "report": "docs/north-city/revision-8-review-2.md"
+  },
+  "validationHashes": {
+    "test-artifacts/north-city/revision-8/validation-2/audit.json": "3c3ea0853c287222de68536c2addb8599105dee36d6aafecbb9ea88d38a4775b",
+    "test-artifacts/north-city/revision-8/validation-2/floor-plan.png": "6251406e5753575f9283b845cd4b76e39d7d7c55f530fc170d92ac2bc1d60431",
+    "test-artifacts/north-city/revision-8/pass-2/evidence-manifest.json": "a008ac79d58fc82a79f9f6f9647dff1d1a155f1bb02a52f986e19b30505c7be0"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "revision": 3,
+  "request": "Circular luminous white rug, chair facing kitchen and animated reference-matched city",
+  "reference": "test-artifacts\\north-city\\references\\07-live-rain-city.jpg",
+  "runtime": "Existing Three.js apartment viewer; live local scene",
+  "bounds": "Existing 9.6 by 9.15 metre L-shaped shell and solid arched glazing unchanged",
+  "circulation": "Existing bed access and living-room paths; chair collider updated for rotated shell",
+  "hero": "Rainy night street canyon framed by the arch",
+  "productionViews": [
+    "entrance",
+    "lounge",
+    "on-bed",
+    "city-reference",
+    "city-detail"
+  ],
+  "cityItems": [
+    "NOVA cyan sign",
+    "LUNA pink signs",
+    "vertical CAFE and Asian neon boards",
+    "two occupied skybridges plus distant bridge",
+    "two cyan/pink human holograms",
+    "dense utility cable bundles",
+    "warm interior windows and blinds",
+    "cars with headlights, taillights and wet-road reflections",
+    "rising vent steam",
+    "outdoor rain and haze"
+  ],
+  "animations": [
+    "opposing lane traffic with fixed spacing",
+    "bridge pedestrians with walking poses",
+    "rising fading steam",
+    "hologram scan and subtle turn",
+    "restrained neon variation"
+  ],
+  "review": {
+    "maximumGradedChecks": 3,
+    "minimumAcceptanceScore": 8,
+    "completed": 2,
+    "scores": [
+      7.7,
+      8.1
+    ],
+    "status": "accepted",
+    "reports": [
+      "revision-3-review-1.md",
+      "revision-3-review-2.md"
+    ],
+    "finalScore": 8.1
+  },
+  "budgets": {
+    "paidServices": 0,
+    "uniqueSceneTrianglesTarget": 1200000,
+    "baseSceneDrawCallsTarget": 1200
+  },
+  "authorization": "User directly requests these local scene changes; existing shell and opening schedule retained",
+  "validation": {
+    "viewpoints": 18,
+    "weatherModes": 6,
+    "errors": [],
+    "uniqueTriangles": 1022269,
+    "instanceExpandedSceneTriangles": 1363491,
+    "rugDiameterMetres": 2.32,
+    "chairFacingKitchenDotProduct": 1,
+    "reducedMotion": "passed",
+    "navigation": "passed",
+    "evidence": "test-artifacts/north-city/revision-3/pass-2"
+  }
+}

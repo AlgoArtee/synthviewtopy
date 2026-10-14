@@ -1,0 +1,3 @@
+import {chromium} from 'playwright';
+const b=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe'});const p=await b.newPage();await p.goto('http://127.0.0.1:5178/north-city.html');
+console.log(await p.evaluate(async()=>{const events=[];const open=indexedDB.open.bind(indexedDB);indexedDB.open=(...args)=>{const r=open(...args);for(const type of ['upgradeneeded','success','error','blocked'])r.addEventListener(type,e=>events.push([type,performance.now(),r.error?.message]));return r;};const {createCitySoundUploads}=await import('/src/apartments/osCitySoundUploads.ts');const s=createCitySoundUploads();await s.ready;const result={state:s.getSnapshot(),events};s.dispose();return result;}));await b.close();

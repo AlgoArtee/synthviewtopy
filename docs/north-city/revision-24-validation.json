@@ -1,0 +1,1171 @@
+{
+  "revision": 24,
+  "capturedAt": "2026-10-13T17:01:38.040Z",
+  "sourceHashes": {
+    "src/apartments/northCity.css": "ef87df6237dbb2680b042f9ac5a0cde75258a5ec4d44c231867dbd80a7f5c099",
+    "src/apartments/osCityAmbience.ts": "bfb45f59872fd994f5c26936e46ae09d9ad3bdff115724cb1cac9b0f9b8b4061",
+    "src/apartments/osCityApartment.ts": "017f8a94fbd7ded772e5b98568b71e8df7c7f81b262e6e50be1c0b63fa3bfea5",
+    "src/apartments/osCityBalcony.ts": "0b93158bff8e0a8f1c32f52690cc8a869ea5eb18fa8b69c0cf5fb84261a917ec",
+    "src/apartments/osCityBalconyDistrict.ts": "d2fcec6594b8f563b30a432824df54c0131ee9e643f45e79e9900926021121c4",
+    "src/apartments/osCityBalconyDoor.ts": "ace176304d9f62fce00d3cb2169603f84293f609c737e1ced49902b1a7a91619",
+    "src/apartments/osCityBalconyWeather.ts": "b86414b2405fb4a89ac7099a5a29556af829d4111388be17abca5aaca8bccc22",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDistantNeon.ts": "37379e593c13a7d934d61a01e2fe6e031d5befc2c2501febe7960aeff3798bd7",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "d95b219c695e9db9f56b5089cb33b43b4fa9ad8fb4632e75b33d183e06931aaf",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "3f000e65a99e67b009a4050de515f9a001b882870bf9432949a1c5309e9aaca4",
+    "src/apartments/osCityLife.ts": "b1bfbc5f2f5fe20b978e3d555eed6df471a178849aa7d53eb30210c63c055543",
+    "src/apartments/osCityNavigation.ts": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565",
+    "src/apartments/osCityNeonAtmosphere.ts": "7ff2fcf24c64532def9c30e04fe2bb414b62c946efba6a2b660847cdd3720383",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCityPlazaLife.ts": "85872a21e9853766ae344741e8a2717642f67982ecd6f0f0aead3f95b7c53321",
+    "src/apartments/osCityPrecipitation.ts": "0b4956aec41fb5f49841b12495a265b0f09572772aab23af336031f8fca2c561",
+    "src/apartments/osCitySoundControls.ts": "f422bfe56a27c2ea6567516adc12ce1542ff6c4b5a3b237381176555cedbb4e4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityTransit.ts": "ba48f1abd977bdf5d18d59853b359f8b1428ba68fc9f9764afd1be8a77a03cdc",
+    "src/apartments/osCityWeather.ts": "e34993b67609573610afcb9cdda1f5bced3147353c1943eb5031f9aa5e3dd7f7",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/osCityWindowTv.ts": "e9c5a48efee3b2ba1bd98b38c5c04009c74e0b80a3fb695c300041b7a9cc7633",
+    "src/apartments/room.ts": "716981f824515d6d38834fc56acf924e0eaa8b109aeb50ded01226752ab6cea4",
+    "src/apartments/roomRendering.ts": "582fda9d9616aeb07dc619d69d8e1d9ebc4c6f6042b6abcefe7bdc1bcfc9a2b7",
+    "scripts/north-city-window-tv-review.mjs": "471a8c344f2c813019a57ca0e5cd28b144c5959a5016154a8d5afd1c413f88a8"
+  },
+  "sourcesUnchangedAfterCapture": true,
+  "build": {
+    "status": "PASS",
+    "command": "npm run build",
+    "warning": "Existing large-chunk advisory"
+  },
+  "helper": {
+    "status": "PASS",
+    "scope": "Coverage, deterministic bounded spatial TV motion, reduced motion, merged geometry IDs and existing shader-hook preservation; rendered visibility is separate.",
+    "coverage": {
+      "windows": 100000,
+      "selected": 40000,
+      "fraction": 0.4
+    },
+    "samples": 60100,
+    "evidence": "test-artifacts/north-city/revision-24/helper/validation.json"
+  },
+  "browser": {
+    "status": "PASS",
+    "evidence": "test-artifacts/north-city/revision-24/final-1",
+    "checks": 70,
+    "stills": 8,
+    "coverage": {
+      "balcony": {
+        "windows": 61440,
+        "animated": 24576,
+        "coverage": 0.4,
+        "materials": 14
+      },
+      "north": {
+        "windows": 1496,
+        "animated": 599,
+        "coverage": 0.40040106951871657,
+        "materials": 26
+      }
+    },
+    "times": [
+      "night",
+      "evening",
+      "morning",
+      "day"
+    ],
+    "errors": [],
+    "changedSources": [],
+    "nativeClip": {
+      "file": "balcony-tv-native-12s.webm",
+      "bytes": 3581369,
+      "samples": 48
+    },
+    "visibleWindows": {
+      "balcony": {
+        "selection": {
+          "attributeAudit": [
+            {
+              "material": "Distant Circuit Market · TV window facade 0",
+              "vertices": 258,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 2",
+              "vertices": 240,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 5",
+              "vertices": 240,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 3",
+              "vertices": 234,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 4",
+              "vertices": 234,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 1",
+              "vertices": 252,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 6",
+              "vertices": 228,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · TV window facade 7",
+              "vertices": 234,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 4 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 13 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 31 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 40 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 49 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            },
+            {
+              "material": "Distant Circuit Market · Tower 58 local window group · TV-lit rooms",
+              "vertices": 6,
+              "tagged": true,
+              "layout": "atlas"
+            }
+          ],
+          "candidates": 2415,
+          "visible": [
+            {
+              "id": 3128,
+              "selected": false,
+              "faceId": 16,
+              "col": 0,
+              "row": 7,
+              "rect": {
+                "x": 507.71081941578336,
+                "y": 29.999156619998413,
+                "right": 517.9160606819288,
+                "bottom": 38.98946089791811
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -49.40569248795509
+              ],
+              "ndc": [
+                -0.35897463055722273,
+                0.9309972843320846
+              ],
+              "distance": 145.02940610024265,
+              "brightness": 76.33333333333333,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 91.74822421222991,
+              "nearestDistance": 145.02940610024265
+            },
+            {
+              "id": 3129,
+              "selected": true,
+              "faceId": 16,
+              "col": 1,
+              "row": 7,
+              "rect": {
+                "x": 520.4881845976324,
+                "y": 29.93653117993239,
+                "right": 530.662246252137,
+                "bottom": 38.92977803031439
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -47.53442707657814
+              ],
+              "ndc": [
+                -0.34302243490491313,
+                0.9311195837104095
+              ],
+              "distance": 144.4643291189543,
+              "brightness": 120.33333333333333,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 91.49784792996586,
+              "nearestDistance": 144.46432911895434
+            },
+            {
+              "id": 3130,
+              "selected": true,
+              "faceId": 16,
+              "col": 2,
+              "row": 7,
+              "rect": {
+                "x": 533.273381547098,
+                "y": 29.87386734554187,
+                "right": 543.4162235010394,
+                "bottom": 38.87005868706328
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -45.66316166520119
+              ],
+              "ndc": [
+                -0.3270604746467689,
+                0.9312419579502298
+              ],
+              "distance": 143.92136537105822,
+              "brightness": 113.66666666666667,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 91.2469469644682,
+              "nearestDistance": 143.9213653710582
+            },
+            {
+              "id": 3131,
+              "selected": false,
+              "faceId": 16,
+              "col": 3,
+              "row": 7,
+              "rect": {
+                "x": 546.0664174670017,
+                "y": 29.811165081507717,
+                "right": 556.1779995753407,
+                "bottom": 38.81030283471587
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -43.791896253824234
+              ],
+              "ndc": [
+                -0.3110887408144276,
+                0.9313644071203029
+              ],
+              "distance": 143.40076604129194,
+              "brightness": 17.333333333333332,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 90.99552029581766,
+              "nearestDistance": 143.40076604129192
+            },
+            {
+              "id": 3132,
+              "selected": true,
+              "faceId": 16,
+              "col": 4,
+              "row": 7,
+              "rect": {
+                "x": 558.8672995690004,
+                "y": 29.748424352467996,
+                "right": 568.9475816304887,
+                "bottom": 38.75051043978273
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -41.92063084244728
+              ],
+              "ndc": [
+                -0.2951072244285402,
+                0.9314869312894695
+              ],
+              "distance": 142.9027755527117,
+              "brightness": 21.333333333333332,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 90.7435669019324,
+              "nearestDistance": 142.9027755527117
+            },
+            {
+              "id": 3133,
+              "selected": false,
+              "faceId": 16,
+              "col": 5,
+              "row": 7,
+              "rect": {
+                "x": 571.6760350735996,
+                "y": 29.6856451230168,
+                "right": 581.7249768306873,
+                "bottom": 38.69068146873295
+              },
+              "world": [
+                138.97171020507812,
+                29.379037781618532,
+                -40.04936543107033
+              ],
+              "ndc": [
+                -0.27911591649875506,
+                0.9316095305266555
+              ],
+              "distance": 142.4276310572765,
+              "brightness": 146.66666666666666,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 90.4910857585597,
+              "nearestDistance": 142.42763105727653
+            },
+            {
+              "id": 1209,
+              "selected": false,
+              "faceId": 6,
+              "col": 1,
+              "row": 7,
+              "rect": {
+                "x": 48.31139529981998,
+                "y": 38.42457864198157,
+                "right": 58.80614725705166,
+                "bottom": 47.02124306854605
+              },
+              "world": [
+                142.78944396972656,
+                29.348049113216497,
+                -120.92791901528835
+              ],
+              "ndc": [
+                -0.9330430448271184,
+                0.9145412970416965
+              ],
+              "distance": 183.24910059270277,
+              "brightness": 17.333333333333332,
+              "material": "Distant Circuit Market · TV window facade 1",
+              "area": 90.21986081635158,
+              "nearestDistance": 183.24910059270275
+            },
+            {
+              "id": 1210,
+              "selected": false,
+              "faceId": 6,
+              "col": 2,
+              "row": 7,
+              "rect": {
+                "x": 59.77987946187824,
+                "y": 38.370086703959025,
+                "right": 70.24787967224393,
+                "bottom": 46.96929791016752
+              },
+              "world": [
+                142.78944396972656,
+                29.348049113216497,
+                -119.15855751931667
+              ],
+              "ndc": [
+                -0.9187241787586736,
+                0.9146477267438843
+              ],
+              "distance": 182.1325819895834,
+              "brightness": 15.333333333333334,
+              "material": "Distant Circuit Market · TV window facade 1",
+              "area": 90.0165447155695,
+              "nearestDistance": 182.13258198958326
+            },
+            {
+              "id": 3135,
+              "selected": false,
+              "faceId": 16,
+              "col": 7,
+              "row": 7,
+              "rect": {
+                "x": 597.3170952169472,
+                "y": 29.559971021040244,
+                "right": 607.3032353669145,
+                "bottom": 38.57091366395582
+              },
+              "world": [
+                138.97171020507812,
+                29.37903778161853,
+                -36.30683460831642
+              ],
+              "ndc": [
+                -0.24710388999096863,
+                0.9318549544812105
+              ],
+              "distance": 141.54678926017544,
+              "brightness": 16,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 89.98453611547117,
+              "nearestDistance": 141.5467892601754
+            },
+            {
+              "id": 3136,
+              "selected": true,
+              "faceId": 16,
+              "col": 0,
+              "row": 8,
+              "rect": {
+                "x": 509.61207594324344,
+                "y": 50.016989915463824,
+                "right": 519.7460432219156,
+                "bottom": 58.88670667846957
+              },
+              "world": [
+                138.97171020507812,
+                26.77328459825367,
+                -49.40569248795509
+              ],
+              "ndc": [
+                -0.35664272126728275,
+                0.8910824847090213
+              ],
+              "distance": 144.55382570689548,
+              "brightness": 91.66666666666667,
+              "material": "Distant Circuit Market · TV window facade 4",
+              "area": 89.88541944738981,
+              "nearestDistance": 144.55382570689545
+            },
+            {
+              "id": 1211,
+              "selected": true,
+              "faceId": 6,
+              "col": 3,
+              "row": 7,
+              "rect": {
+                "x": 71.25474313553877,
+                "y": 38.31556444780876,
+                "right": 81.69596025181427,
+                "bottom": 46.91732393716342
+              },
+              "world": [
+                142.78944396972656,
+                29.348049113216494,
+                -117.389196023345
+              ],
+              "ndc": [
+                -0.9043973579288357,
+                0.914754215572464
+              ],
+              "distance": 181.0264711487162,
+              "brightness": 15,
+              "material": "Distant Circuit Market · TV window facade 1",
+              "area": 89.812838410335,
+              "nearestDistance": 181.02647114871615
+            }
+          ],
+          "selected": {
+            "id": 3129,
+            "selected": true,
+            "faceId": 16,
+            "col": 1,
+            "row": 7,
+            "rect": {
+              "x": 520.4881845976324,
+              "y": 29.93653117993239,
+              "right": 530.662246252137,
+              "bottom": 38.92977803031439
+            },
+            "world": [
+              138.97171020507812,
+              29.379037781618532,
+              -47.53442707657814
+            ],
+            "ndc": [
+              -0.34302243490491313,
+              0.9311195837104095
+            ],
+            "distance": 144.4643291189543,
+            "brightness": 120.33333333333333,
+            "material": "Distant Circuit Market · TV window facade 4",
+            "area": 91.49784792996586,
+            "nearestDistance": 144.46432911895434
+          },
+          "control": {
+            "id": 3128,
+            "selected": false,
+            "faceId": 16,
+            "col": 0,
+            "row": 7,
+            "rect": {
+              "x": 507.71081941578336,
+              "y": 29.999156619998413,
+              "right": 517.9160606819288,
+              "bottom": 38.98946089791811
+            },
+            "world": [
+              138.97171020507812,
+              29.379037781618532,
+              -49.40569248795509
+            ],
+            "ndc": [
+              -0.35897463055722273,
+              0.9309972843320846
+            ],
+            "distance": 145.02940610024265,
+            "brightness": 76.33333333333333,
+            "material": "Distant Circuit Market · TV window facade 4",
+            "area": 91.74822421222991,
+            "nearestDistance": 145.02940610024265
+          }
+        },
+        "pixels": {
+          "selected": {
+            "rect": {
+              "x": 522,
+              "y": 31,
+              "w": 7,
+              "h": 6
+            },
+            "comparisons": [
+              {
+                "gain": 0.9833597743932158,
+                "offset": 2.645693762375174,
+                "spatialResidualRms": 6.5840017614661805,
+                "pixels": 42,
+                "meanLumaA": 110.13892857142858,
+                "meanLumaB": 110.95188571428568,
+                "rawRms": 6.706244263726301
+              },
+              {
+                "gain": 0.9647803297567575,
+                "offset": 2.8495567452297053,
+                "spatialResidualRms": 8.307437581000515,
+                "pixels": 42,
+                "meanLumaA": 110.13892857142858,
+                "meanLumaB": 109.10942857142854,
+                "rawRms": 8.625001964554642
+              }
+            ]
+          },
+          "control": {
+            "rect": {
+              "x": 509,
+              "y": 31,
+              "w": 7,
+              "h": 6
+            },
+            "comparisons": [
+              {
+                "gain": 1.000051211440347,
+                "offset": -0.0006835323009113381,
+                "spatialResidualRms": 0.03385240910549356,
+                "pixels": 42,
+                "meanLumaA": 145.75814761904763,
+                "meanLumaB": 145.7649285714286,
+                "rawRms": 0.03464500238817012
+              },
+              {
+                "gain": 1.000051211440347,
+                "offset": -0.0006835323009113381,
+                "spatialResidualRms": 0.03385240910549356,
+                "pixels": 42,
+                "meanLumaA": 145.75814761904763,
+                "meanLumaB": 145.7649285714286,
+                "rawRms": 0.03464500238817012
+              }
+            ]
+          },
+          "crop": {
+            "x": 510,
+            "y": 19,
+            "w": 31,
+            "h": 29
+          },
+          "cropScale": 4
+        }
+      },
+      "north": {
+        "selection": {
+          "attributeAudit": [
+            {
+              "material": "City window · warm interior 12 · TV-lit rooms",
+              "vertices": 3528,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 6 · TV-lit rooms",
+              "vertices": 3564,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 13 · TV-lit rooms",
+              "vertices": 2412,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · rose interior 19 · TV-lit rooms",
+              "vertices": 972,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · warm interior 7 · TV-lit rooms",
+              "vertices": 3312,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 15 · TV-lit rooms",
+              "vertices": 1872,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · rose interior 20 · TV-lit rooms",
+              "vertices": 864,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 16 · TV-lit rooms",
+              "vertices": 1800,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · warm interior 10 · TV-lit rooms",
+              "vertices": 3240,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 4 · TV-lit rooms",
+              "vertices": 3528,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 5 · TV-lit rooms",
+              "vertices": 3276,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 1 · TV-lit rooms",
+              "vertices": 2700,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 18 · TV-lit rooms",
+              "vertices": 1512,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · warm interior 9 · TV-lit rooms",
+              "vertices": 2916,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 17 · TV-lit rooms",
+              "vertices": 1908,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · warm interior 11 · TV-lit rooms",
+              "vertices": 3240,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · rose interior 22 · TV-lit rooms",
+              "vertices": 1188,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 3 · TV-lit rooms",
+              "vertices": 2556,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · warm interior 8 · TV-lit rooms",
+              "vertices": 3528,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · rose interior 21 · TV-lit rooms",
+              "vertices": 972,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · cool interior 14 · TV-lit rooms",
+              "vertices": 1764,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · dark interior 2 · TV-lit rooms",
+              "vertices": 2052,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · neon interior 23 · TV-lit rooms",
+              "vertices": 576,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "City window · neon interior 24 · TV-lit rooms",
+              "vertices": 288,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "Distant North City · North tower 1 local window group · TV-lit rooms",
+              "vertices": 144,
+              "tagged": true,
+              "layout": "room"
+            },
+            {
+              "material": "Distant North City · North tower 10 local window group · TV-lit rooms",
+              "vertices": 144,
+              "tagged": true,
+              "layout": "room"
+            }
+          ],
+          "candidates": 995,
+          "visible": [
+            {
+              "id": 527,
+              "selected": false,
+              "faceId": 527,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.2878325359466,
+                "y": 266.14190592668706,
+                "right": 875.8223836542891,
+                "bottom": 275.7246310933832
+              },
+              "world": [
+                0.2864196062088009,
+                19.699999809265137,
+                -75.88573547363282
+              ],
+              "ndc": [
+                0.08631757943133492,
+                0.4581319838564681
+              ],
+              "distance": 72.86780053841555,
+              "brightness": 122,
+              "material": "City window · warm interior 8 · TV-lit rooms",
+              "area": 129.69788362167625,
+              "nearestDistance": 72.83938320127345
+            },
+            {
+              "id": 527,
+              "selected": false,
+              "faceId": 527,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.2629513409897,
+                "y": 266.2263707561414,
+                "right": 875.7920866656106,
+                "bottom": 275.8052419936199
+              },
+              "world": [
+                0.2864196062088009,
+                19.699999809265137,
+                -75.91373535156251
+              ],
+              "ndc": [
+                0.08628309411046353,
+                0.4579669093123399
+              ],
+              "distance": 72.89490080429361,
+              "brightness": 122,
+              "material": "City window · warm interior 8 · TV-lit rooms",
+              "area": 129.5938452289647,
+              "nearestDistance": 72.83755519004607
+            },
+            {
+              "id": 518,
+              "selected": false,
+              "faceId": 518,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.2506421624792,
+                "y": 284.684542978383,
+                "right": 875.7770982491425,
+                "bottom": 294.2558473784668
+              },
+              "world": [
+                0.2864196062088009,
+                18.149999618530273,
+                -75.88573547363282
+              ],
+              "ndc": [
+                0.08626603362705199,
+                0.4210581331615468
+              ],
+              "distance": 72.51372869918445,
+              "brightness": 180.66666666666666,
+              "material": "City window · warm interior 11 · TV-lit rooms",
+              "area": 129.465828659821,
+              "nearestDistance": 72.48544944469002
+            },
+            {
+              "id": 518,
+              "selected": false,
+              "faceId": 518,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.225790664497,
+                "y": 284.76155256655136,
+                "right": 875.7468374325764,
+                "bottom": 294.32901219571727
+              },
+              "world": [
+                0.2864196062088009,
+                18.149999618530273,
+                -75.91373535156251
+              ],
+              "ndc": [
+                0.08623158947249222,
+                0.42090795993851743
+              ],
+              "distance": 72.54096124135948,
+              "brightness": 168.33333333333334,
+              "material": "City window · warm interior 11 · TV-lit rooms",
+              "area": 129.3620690976636,
+              "nearestDistance": 72.48389406746126
+            },
+            {
+              "id": 509,
+              "selected": true,
+              "faceId": 509,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.2134962168625,
+                "y": 303.20504280819694,
+                "right": 875.7318669082078,
+                "bottom": 312.76492615776755
+              },
+              "world": [
+                0.2864196062088009,
+                16.600000381469727,
+                -75.88573547363282
+              ],
+              "ndc": [
+                0.08621454938034691,
+                0.38402855719438234
+              ],
+              "distance": 72.1912070326507,
+              "brightness": 27.666666666666668,
+              "material": "City window · dark interior 5 · TV-lit rooms",
+              "area": 129.2340468855158,
+              "nearestDistance": 72.16305355671503
+            },
+            {
+              "id": 509,
+              "selected": true,
+              "faceId": 509,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.1886743626843,
+                "y": 303.274614886596,
+                "right": 875.7016421990112,
+                "bottom": 312.83066260732573
+              },
+              "world": [
+                0.2864196062088009,
+                16.600000381469727,
+                -75.91373535156251
+              ],
+              "ndc": [
+                0.08618014631840502,
+                0.38389324984564605
+              ],
+              "distance": 72.21856119303766,
+              "brightness": 27.666666666666668,
+              "material": "City window · dark interior 5 · TV-lit rooms",
+              "area": 129.13056549262572,
+              "nearestDistance": 72.16174764770057
+            },
+            {
+              "id": 482,
+              "selected": true,
+              "faceId": 482,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.1023238450634,
+                "y": 358.6341543474514,
+                "right": 875.5964962073749,
+                "bottom": 368.15988659150145
+              },
+              "world": [
+                0.2864196062088009,
+                11.950000286102295,
+                -75.88573547363282
+              ],
+              "ndc": [
+                0.0860604646168298,
+                0.2732044931127041
+              ],
+              "distance": 71.41700685023554,
+              "brightness": 15.333333333333334,
+              "material": "City window · warm interior 12 · TV-lit rooms",
+              "area": 128.5418727784396,
+              "nearestDistance": 71.38915530062998
+            },
+            {
+              "id": 482,
+              "selected": true,
+              "faceId": 482,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 862.0775906047874,
+                "y": 358.6815197952995,
+                "right": 875.5663794334471,
+                "bottom": 368.2034436942381
+              },
+              "world": [
+                0.2864196062088009,
+                11.950000286102295,
+                -75.91373535156251
+              ],
+              "ndc": [
+                0.08602618439254808,
+                0.2731135717318926
+              ],
+              "distance": 71.44465743082598,
+              "brightness": 15.333333333333334,
+              "material": "City window · warm interior 12 · TV-lit rooms",
+              "area": 128.43922071535115,
+              "nearestDistance": 71.38845270704053
+            },
+            {
+              "id": 428,
+              "selected": true,
+              "faceId": 428,
+              "col": 0,
+              "row": 0,
+              "rect": {
+                "x": 861.8811667923259,
+                "y": 468.90001037618896,
+                "right": 875.3272015029493,
+                "bottom": 478.35800495282933
+              },
+              "world": [
+                0.2864196062088009,
+                2.649999976158142,
+                -75.88573547363282
+              ],
+              "ndc": [
+                0.08575394150531676,
+                0.05274053433158479
+              ],
+              "distance": 70.76553442121752,
+              "brightness": 40.333333333333336,
+              "material": "City window · dark interior 4 · TV-lit rooms",
+              "area": 127.17252337039427,
+              "nearestDistance": 70.73793693597946
+            }
+          ],
+          "selected": {
+            "id": 509,
+            "selected": true,
+            "faceId": 509,
+            "col": 0,
+            "row": 0,
+            "rect": {
+              "x": 862.2134962168625,
+              "y": 303.20504280819694,
+              "right": 875.7318669082078,
+              "bottom": 312.76492615776755
+            },
+            "world": [
+              0.2864196062088009,
+              16.600000381469727,
+              -75.88573547363282
+            ],
+            "ndc": [
+              0.08621454938034691,
+              0.38402855719438234
+            ],
+            "distance": 72.1912070326507,
+            "brightness": 27.666666666666668,
+            "material": "City window · dark interior 5 · TV-lit rooms",
+            "area": 129.2340468855158,
+            "nearestDistance": 72.16305355671503
+          },
+          "control": {
+            "id": 527,
+            "selected": false,
+            "faceId": 527,
+            "col": 0,
+            "row": 0,
+            "rect": {
+              "x": 862.2878325359466,
+              "y": 266.14190592668706,
+              "right": 875.8223836542891,
+              "bottom": 275.7246310933832
+            },
+            "world": [
+              0.2864196062088009,
+              19.699999809265137,
+              -75.88573547363282
+            ],
+            "ndc": [
+              0.08631757943133492,
+              0.4581319838564681
+            ],
+            "distance": 72.86780053841555,
+            "brightness": 122,
+            "material": "City window · warm interior 8 · TV-lit rooms",
+            "area": 129.69788362167625,
+            "nearestDistance": 72.83938320127345
+          }
+        },
+        "pixels": {
+          "selected": {
+            "rect": {
+              "x": 864,
+              "y": 305,
+              "w": 10,
+              "h": 6
+            },
+            "comparisons": [
+              {
+                "gain": 0.7465753955458458,
+                "offset": 3.968939876098789,
+                "spatialResidualRms": 2.842366051634147,
+                "pixels": 60,
+                "meanLumaA": 17.388590000000004,
+                "meanLumaB": 16.950833333333332,
+                "rawRms": 3.0578282841476456
+              },
+              {
+                "gain": 0.8348537019590473,
+                "offset": 6.198244599985266,
+                "spatialResidualRms": 7.079084971826593,
+                "pixels": 60,
+                "meanLumaA": 17.388590000000004,
+                "meanLumaB": 20.71517333333334,
+                "rawRms": 7.850992201881236
+              }
+            ]
+          },
+          "control": {
+            "rect": {
+              "x": 864,
+              "y": 268,
+              "w": 10,
+              "h": 6
+            },
+            "comparisons": [
+              {
+                "gain": 1,
+                "offset": 0,
+                "spatialResidualRms": 0,
+                "pixels": 60,
+                "meanLumaA": 44.994673333333324,
+                "meanLumaB": 44.994673333333324,
+                "rawRms": 0
+              },
+              {
+                "gain": 1,
+                "offset": 0,
+                "spatialResidualRms": 0,
+                "pixels": 60,
+                "meanLumaA": 44.994673333333324,
+                "meanLumaB": 44.994673333333324,
+                "rawRms": 0
+              }
+            ]
+          },
+          "crop": {
+            "x": 852,
+            "y": 293,
+            "w": 34,
+            "h": 30
+          },
+          "cropScale": 4
+        }
+      }
+    },
+    "reducedMotion": "All TV sample light, color and shadow coordinates remain steady",
+    "note": "Focused new-shader and temporal/spatial checks. Unchanged geometry, audio and all-weather combinations were not fully rerun."
+  },
+  "bundledClient": {
+    "status": "PASS",
+    "ready": true,
+    "screenshotInspected": true,
+    "evidence": "test-artifacts/north-city/revision-24/bundled-client"
+  },
+  "review": {
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "accepted": true,
+    "scope": "TV-like lighting and changing interior shadows in approximately 40% of distant windows",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-24-review-1.md",
+        "sha256": "a311dd0bf8915e061e7cffe58a815fe69fde5ab9a3212c9ac9e55abfe88ad775"
+      }
+    ]
+  },
+  "artifactHashes": {
+    "test-artifacts/north-city/revision-24/bundled-client/shot-0.png": "60f85b7622237bc4bd9d865616db712d62bb235c3638101b430fb0ae07036d15",
+    "test-artifacts/north-city/revision-24/bundled-client/state-0.json": "574acc266f040edea829748b8c627d2db9afb8a79abdaeb96d1339d2411f05bd",
+    "test-artifacts/north-city/revision-24/final-1/balcony-day.png": "d4c1a1c6a9e15584fd5d031af0fa0809625eeaefccbc30c7ab64f2d35e162572",
+    "test-artifacts/north-city/revision-24/final-1/balcony-night-t0.png": "c2b8e4a1b663cfa62fce5a6b912f2c52f9664cb367b1e19ef78796e54efa6a92",
+    "test-artifacts/north-city/revision-24/final-1/balcony-night-t1.png": "e4ff5fc78ddd7be4cc722a681d45e647bce7163e8de943b6ddc136b4a3cfa58b",
+    "test-artifacts/north-city/revision-24/final-1/balcony-night-t2.png": "69a68bace6dfe1c6e65102fc3f60a90c4b219e7dfb75d97736513fecabf23003",
+    "test-artifacts/north-city/revision-24/final-1/balcony-tv-native-12s.webm": "1e0013a7bf04fa3d2af4b8ae87119c06ae762eecc950e39992652685365b26ac",
+    "test-artifacts/north-city/revision-24/final-1/balcony-window-temporal-crop.png": "d9fe748e64a1fa6431d6f10c75c2123e7805d635eea9df134fe770400ce2750e",
+    "test-artifacts/north-city/revision-24/final-1/north-day.png": "00c9eefadf788e9299db870429be6f8a601c975b034733606cfb100777b634ed",
+    "test-artifacts/north-city/revision-24/final-1/north-night-t0.png": "8bdb8d6bb0b878b2a4423700623f58736a6f39d71cf7b39af8a69c6f61a086bd",
+    "test-artifacts/north-city/revision-24/final-1/north-night-t1.png": "b2973d0a461adb29cdc1182e3ebae58d45e703596689ddf84bd4bb55a48b5ed0",
+    "test-artifacts/north-city/revision-24/final-1/north-night-t2.png": "f80294bd45633da6ef637c523ca505bff4f51d6b8046084f70f0c26da43e7e13",
+    "test-artifacts/north-city/revision-24/final-1/north-window-temporal-crop.png": "0ccbf91c10b85b92d9854ebf1c173e3d0689470f2d1c3718d61f34c21e862bcf",
+    "test-artifacts/north-city/revision-24/final-1/results.json": "c0e8e39e6518e016ca7f7125ce24915d6746f0fae375c89351fd61bc680bb04f",
+    "test-artifacts/north-city/revision-24/final-1/source-hashes-after.json": "2016a76807a62a4d9eb50b54606a9404aa7dc88e5bfc9ec17c189ce6d046a01a",
+    "test-artifacts/north-city/revision-24/final-1/source-hashes.json": "2016a76807a62a4d9eb50b54606a9404aa7dc88e5bfc9ec17c189ce6d046a01a",
+    "test-artifacts/north-city/revision-24/helper/validation.json": "3d2c202886a54931a5331e40e5b3cf8104583cae11e82ad9e0baa5cde5b6d79c",
+    "docs/north-city/revision-24-review-1.md": "a311dd0bf8915e061e7cffe58a815fe69fde5ab9a3212c9ac9e55abfe88ad775"
+  }
+}

@@ -1,0 +1,1470 @@
+{
+  "revision": 22,
+  "capturedAt": "2026-10-13T14:17:06.727Z",
+  "sourceHashes": {
+    "src/apartments/apartments.css": "c2ec39385666c40dd8469686af57a50736b3ea74577b7684c13f0a06811a357b",
+    "src/apartments/liminetteRoom.ts": "87efcf0dbf7ebe8dc7db8fce08da8c443ac9175700008de8db37e3478e2a9025",
+    "src/apartments/northCity.css": "ef87df6237dbb2680b042f9ac5a0cde75258a5ec4d44c231867dbd80a7f5c099",
+    "src/apartments/osCityAmbience.ts": "bfb45f59872fd994f5c26936e46ae09d9ad3bdff115724cb1cac9b0f9b8b4061",
+    "src/apartments/osCityApartment.ts": "017f8a94fbd7ded772e5b98568b71e8df7c7f81b262e6e50be1c0b63fa3bfea5",
+    "src/apartments/osCityBalcony.ts": "0b93158bff8e0a8f1c32f52690cc8a869ea5eb18fa8b69c0cf5fb84261a917ec",
+    "src/apartments/osCityBalconyDistrict.ts": "f06a2ca261d5fb4f63ef44ad42760fb59d51c2e8f1507df01b60f20d2100a391",
+    "src/apartments/osCityBalconyDoor.ts": "ace176304d9f62fce00d3cb2169603f84293f609c737e1ced49902b1a7a91619",
+    "src/apartments/osCityBalconyWeather.ts": "b86414b2405fb4a89ac7099a5a29556af829d4111388be17abca5aaca8bccc22",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDistantNeon.ts": "0d0bbbc578931462fced0d733b28039052fa7e180a2c4a5f4a4a8e0c44134fcc",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "530740e72a56752f52bf6efc4c628cad265c09f20f88f7464e055962957e5120",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "3f000e65a99e67b009a4050de515f9a001b882870bf9432949a1c5309e9aaca4",
+    "src/apartments/osCityLife.ts": "b1bfbc5f2f5fe20b978e3d555eed6df471a178849aa7d53eb30210c63c055543",
+    "src/apartments/osCityNavigation.ts": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565",
+    "src/apartments/osCityNeonAtmosphere.ts": "7ff2fcf24c64532def9c30e04fe2bb414b62c946efba6a2b660847cdd3720383",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCityPlazaLife.ts": "225750bd604ece3d3a49f8bda207daaa1c4f4e04eade6bea9a184da9a7efb294",
+    "src/apartments/osCityPrecipitation.ts": "0b4956aec41fb5f49841b12495a265b0f09572772aab23af336031f8fca2c561",
+    "src/apartments/osCitySoundControls.ts": "f422bfe56a27c2ea6567516adc12ce1542ff6c4b5a3b237381176555cedbb4e4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityTransit.ts": "ba48f1abd977bdf5d18d59853b359f8b1428ba68fc9f9764afd1be8a77a03cdc",
+    "src/apartments/osCityWeather.ts": "e34993b67609573610afcb9cdda1f5bced3147353c1943eb5031f9aa5e3dd7f7",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/room.ts": "716981f824515d6d38834fc56acf924e0eaa8b109aeb50ded01226752ab6cea4",
+    "src/apartments/roomArchitecture.ts": "7a77aedbbb6e95a05a7e9840da4249d14e4d6999448f3584eccdc4b9bf0532cc",
+    "src/apartments/roomRendering.ts": "582fda9d9616aeb07dc619d69d8e1d9ebc4c6f6042b6abcefe7bdc1bcfc9a2b7",
+    "src/data/academicCampus.ts": "5d4128a84d2b666f8b122f5d669693287389f6c8e4c060020f1b02cd8073efd8",
+    "scripts/north-city-neon-polish-review.mjs": "61fd8db425973b30cbbcc773b2d72df5e0b41cb0d2f0fffc22a2b41e615dbfbe"
+  },
+  "sourcesUnchangedAfterCapture": true,
+  "build": {
+    "status": "PASS",
+    "command": "npm run build",
+    "warning": "Existing large-chunk advisory"
+  },
+  "browser": {
+    "status": "PASS",
+    "checks": 364,
+    "combinations": 40,
+    "runtimeEvidence": "test-artifacts/north-city/revision-22/final-1",
+    "finalCapture": {
+      "checks": 4,
+      "stills": 12,
+      "errors": [],
+      "changedSources": [],
+      "evidence": "test-artifacts/north-city/revision-22/final-2"
+    },
+    "changedAfterRuntime": [
+      "src/apartments/osCityBalconyDistrict.ts",
+      "scripts/north-city-neon-polish-review.mjs"
+    ],
+    "note": "After the full runtime suite, only billboard atlas selection and the capture-only test path changed. Final captures and production build verify that narrow correction."
+  },
+  "profiles": {
+    "status": "PASS",
+    "combinations": 40,
+    "evidence": "test-artifacts/north-city/revision-22/profiles/validation.json"
+  },
+  "distantNeon": {
+    "status": "PASS",
+    "evidence": "test-artifacts/north-city/revision-22/distant-neon/validation.json",
+    "scope": "Pure helper execution in Node; numerical animation and palette verification only, no rendered-scene or visual claim"
+  },
+  "bundledClient": {
+    "status": "PASS",
+    "ready": true,
+    "screenshotInspected": true,
+    "evidence": "test-artifacts/north-city/revision-22/bundled-final-2"
+  },
+  "representative": {
+    "rain/day": {
+      "weather": {
+        "mode": "rain",
+        "timeOfDay": "day",
+        "sky": "#869eaf",
+        "daylightIntensity": 0.34,
+        "windowIntensity": 2.35,
+        "fogDensity": 0.011,
+        "precipitation": "rain",
+        "rainIntensity": 1,
+        "wetness": 1,
+        "autumn": false,
+        "lighting": {
+          "sunColor": "#c5d8e7",
+          "sunPosition": [
+            18,
+            85,
+            -38
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "ambientColor": "#d7e8f2",
+          "groundColor": "#697881",
+          "ambientIntensity": 0.41,
+          "windowColor": "#c5d8e7",
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "neonIntensity": 0.74,
+          "windowGlow": 0.67,
+          "fixtureIntensity": 0.52,
+          "neonFogDensity": 0.00748,
+          "environmentIntensity": 0.52,
+          "exposure": 1,
+          "bloomStrength": 0.175,
+          "bloomRadius": 0.48,
+          "bloomThreshold": 1.48
+        },
+        "actual": {
+          "sky": "#869eaf",
+          "fogColor": "#869eaf",
+          "fogDensity": 0.011,
+          "sunPosition": [
+            18,
+            85,
+            -38
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "sunIntensity": 0.34,
+          "sunColor": "#c5d8e7",
+          "ambientColor": "#d7e8f2",
+          "groundColor": "#697881",
+          "ambientIntensity": 0.41,
+          "windowIntensity": 2.35,
+          "shadowEnabled": true,
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "exposure": 1,
+          "environmentIntensity": 0.52,
+          "bloomStrength": 0.175,
+          "bloomRadius": 0.48,
+          "bloomThreshold": 1.48
+        }
+      },
+      "balconyDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 9,
+        "maxAnimated": 12,
+        "elapsed": 3.4695000000000262,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Tower 3 crown strip",
+            "seed": 6112,
+            "color": "#70e1bf",
+            "emission": 1.6118355905355515,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 0 business sign",
+            "seed": 19403,
+            "color": "#ffffff",
+            "emission": 1.7036328041112052,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 2 local facade accent",
+            "seed": 7409,
+            "color": "#f89088",
+            "emission": 1.7286954164627195,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 9 local facade accent",
+            "seed": 8116,
+            "color": "#60dff5",
+            "emission": 1.9326047566047126,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 23 local facade accent",
+            "seed": 9530,
+            "color": "#e377c5",
+            "emission": 1.596499517883137,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 30 local facade accent",
+            "seed": 10237,
+            "color": "#b89aff",
+            "emission": 1.841084778932333,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 local facade accent",
+            "seed": 11651,
+            "color": "#ffc47a",
+            "emission": 1.5916531695244833,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 business sign",
+            "seed": 22527,
+            "color": "#ffffff",
+            "emission": 1.6912769807259087,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 107 local facade accent",
+            "seed": 18014,
+            "color": "#60dff5",
+            "emission": 2.104265350257252,
+            "pulse": 1
+          }
+        ]
+      },
+      "northDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 5,
+        "maxAnimated": 6,
+        "elapsed": 3.4695000000000262,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Canyon sign 1",
+            "seed": 32778,
+            "color": "#ffffff",
+            "emission": 2.2459509187722206,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 0 local accent",
+            "seed": 31847,
+            "color": "#639eff",
+            "emission": 1.6783422504253729,
+            "pulse": 0.8832364552423788
+          },
+          {
+            "name": "North tower 4 local accent",
+            "seed": 32395,
+            "color": "#f89088",
+            "emission": 1.6981495990549402,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 8 local accent",
+            "seed": 32943,
+            "color": "#70e1bf",
+            "emission": 1.6711996357927192,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 12 local accent",
+            "seed": 33491,
+            "color": "#e377c5",
+            "emission": 1.8970051498639957,
+            "pulse": 1
+          }
+        ]
+      }
+    },
+    "storm/day": {
+      "weather": {
+        "mode": "storm",
+        "timeOfDay": "day",
+        "sky": "#617d92",
+        "daylightIntensity": 0.18,
+        "windowIntensity": 1.55,
+        "fogDensity": 0.017,
+        "precipitation": "rain",
+        "rainIntensity": 1,
+        "wetness": 1,
+        "autumn": false,
+        "lighting": {
+          "sunColor": "#b6ccdf",
+          "sunPosition": [
+            18,
+            85,
+            -38
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "ambientColor": "#d7e8f2",
+          "groundColor": "#697881",
+          "ambientIntensity": 0.3,
+          "windowColor": "#b6ccdf",
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "neonIntensity": 0.74,
+          "windowGlow": 0.67,
+          "fixtureIntensity": 0.52,
+          "neonFogDensity": 0.01156,
+          "environmentIntensity": 0.42,
+          "exposure": 1,
+          "bloomStrength": 0.175,
+          "bloomRadius": 0.48,
+          "bloomThreshold": 1.48
+        },
+        "actual": {
+          "sky": "#617d92",
+          "fogColor": "#617d92",
+          "fogDensity": 0.017,
+          "sunPosition": [
+            18,
+            85,
+            -38
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "sunIntensity": 0.18,
+          "sunColor": "#b6ccdf",
+          "ambientColor": "#d7e8f2",
+          "groundColor": "#697881",
+          "ambientIntensity": 0.3,
+          "windowIntensity": 1.55,
+          "shadowEnabled": true,
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "exposure": 1,
+          "environmentIntensity": 0.42,
+          "bloomStrength": 0.175,
+          "bloomRadius": 0.48,
+          "bloomThreshold": 1.48
+        }
+      },
+      "balconyDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 9,
+        "maxAnimated": 12,
+        "elapsed": 9.802800000000083,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Tower 3 crown strip",
+            "seed": 6112,
+            "color": "#70e1bf",
+            "emission": 1.6118355905355515,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 0 business sign",
+            "seed": 19403,
+            "color": "#ffffff",
+            "emission": 1.7036328041112052,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 2 local facade accent",
+            "seed": 7409,
+            "color": "#f89088",
+            "emission": 1.7286954164627195,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 9 local facade accent",
+            "seed": 8116,
+            "color": "#60dff5",
+            "emission": 1.9326047566047126,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 23 local facade accent",
+            "seed": 9530,
+            "color": "#e377c5",
+            "emission": 1.596499517883137,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 30 local facade accent",
+            "seed": 10237,
+            "color": "#b89aff",
+            "emission": 1.841084778932333,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 local facade accent",
+            "seed": 11651,
+            "color": "#ffc47a",
+            "emission": 1.5916531695244833,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 business sign",
+            "seed": 22527,
+            "color": "#ffffff",
+            "emission": 1.6912769807259087,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 107 local facade accent",
+            "seed": 18014,
+            "color": "#60dff5",
+            "emission": 2.104265350257252,
+            "pulse": 1
+          }
+        ]
+      },
+      "northDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 5,
+        "maxAnimated": 6,
+        "elapsed": 9.802800000000083,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Canyon sign 1",
+            "seed": 32778,
+            "color": "#ffffff",
+            "emission": 2.2459509187722206,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 0 local accent",
+            "seed": 31847,
+            "color": "#639eff",
+            "emission": 1.9002184980745616,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 4 local accent",
+            "seed": 32395,
+            "color": "#f89088",
+            "emission": 1.6981495990549402,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 8 local accent",
+            "seed": 32943,
+            "color": "#70e1bf",
+            "emission": 1.6711996357927192,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 12 local accent",
+            "seed": 33491,
+            "color": "#e377c5",
+            "emission": 1.8970051498639957,
+            "pulse": 1
+          }
+        ]
+      }
+    },
+    "clear/night": {
+      "weather": {
+        "mode": "clear",
+        "timeOfDay": "night",
+        "sky": "#192a3a",
+        "daylightIntensity": 0.0442,
+        "windowIntensity": 0.546,
+        "fogDensity": 0.006,
+        "precipitation": "none",
+        "rainIntensity": 0,
+        "wetness": 0,
+        "autumn": false,
+        "lighting": {
+          "sunColor": "#8daed9",
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.0924,
+          "windowColor": "#8daed9",
+          "shadowRadius": 4,
+          "shadowFar": 160,
+          "neonIntensity": 1.65,
+          "windowGlow": 1.4,
+          "fixtureIntensity": 1.3,
+          "neonFogDensity": 0.0016800000000000003,
+          "environmentIntensity": 0.18,
+          "exposure": 0.92,
+          "bloomStrength": 0.075,
+          "bloomRadius": 0.12,
+          "bloomThreshold": 1.8
+        },
+        "actual": {
+          "sky": "#192a3a",
+          "fogColor": "#192a3a",
+          "fogDensity": 0.006,
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "sunIntensity": 0.0442,
+          "sunColor": "#8daed9",
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.0924,
+          "windowIntensity": 0.546,
+          "shadowEnabled": true,
+          "shadowRadius": 4,
+          "shadowFar": 160,
+          "exposure": 0.92,
+          "environmentIntensity": 0.18,
+          "bloomStrength": 0.075,
+          "bloomRadius": 0.12,
+          "bloomThreshold": 1.8
+        }
+      },
+      "balconyDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 9,
+        "maxAnimated": 12,
+        "elapsed": 15.985800000000214,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Tower 3 crown strip",
+            "seed": 6112,
+            "color": "#70e1bf",
+            "emission": 3.5939577356535946,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 0 business sign",
+            "seed": 19403,
+            "color": "#ffffff",
+            "emission": 3.798640711869579,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 2 local facade accent",
+            "seed": 7409,
+            "color": "#f89088",
+            "emission": 3.854523563734442,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 9 local facade accent",
+            "seed": 8116,
+            "color": "#60dff5",
+            "emission": 4.309186281618616,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 23 local facade accent",
+            "seed": 9530,
+            "color": "#e377c5",
+            "emission": 3.5597624385232107,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 30 local facade accent",
+            "seed": 10237,
+            "color": "#b89aff",
+            "emission": 4.10512146653831,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 local facade accent",
+            "seed": 11651,
+            "color": "#ffc47a",
+            "emission": 3.548956391507294,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 business sign",
+            "seed": 22527,
+            "color": "#ffffff",
+            "emission": 3.7710905651320936,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 107 local facade accent",
+            "seed": 18014,
+            "color": "#60dff5",
+            "emission": 4.691943010708737,
+            "pulse": 1
+          }
+        ]
+      },
+      "northDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 5,
+        "maxAnimated": 6,
+        "elapsed": 15.985800000000214,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Canyon sign 1",
+            "seed": 32778,
+            "color": "#ffffff",
+            "emission": 5.007863535100221,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 0 local accent",
+            "seed": 31847,
+            "color": "#639eff",
+            "emission": 4.236973678139225,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 4 local accent",
+            "seed": 32395,
+            "color": "#f89088",
+            "emission": 3.7864146465414206,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 8 local accent",
+            "seed": 32943,
+            "color": "#70e1bf",
+            "emission": 3.7263235122405227,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 12 local accent",
+            "seed": 33491,
+            "color": "#e377c5",
+            "emission": 4.229808780102152,
+            "pulse": 1
+          }
+        ]
+      }
+    },
+    "rain/night": {
+      "weather": {
+        "mode": "rain",
+        "timeOfDay": "night",
+        "sky": "#0f1e2d",
+        "daylightIntensity": 0.008,
+        "windowIntensity": 0.156,
+        "fogDensity": 0.011,
+        "precipitation": "rain",
+        "rainIntensity": 1,
+        "wetness": 1,
+        "autumn": false,
+        "lighting": {
+          "sunColor": "#8daed9",
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.06160000000000001,
+          "windowColor": "#8daed9",
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "neonIntensity": 1.65,
+          "windowGlow": 1.4,
+          "fixtureIntensity": 1.3,
+          "neonFogDensity": 0.0030800000000000003,
+          "environmentIntensity": 0.15839999999999999,
+          "exposure": 0.92,
+          "bloomStrength": 0.075,
+          "bloomRadius": 0.12,
+          "bloomThreshold": 1.8
+        },
+        "actual": {
+          "sky": "#0f1e2d",
+          "fogColor": "#0f1e2d",
+          "fogDensity": 0.011,
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "sunIntensity": 0.008,
+          "sunColor": "#8daed9",
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.06160000000000001,
+          "windowIntensity": 0.156,
+          "shadowEnabled": true,
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "exposure": 0.92,
+          "environmentIntensity": 0.15839999999999999,
+          "bloomStrength": 0.075,
+          "bloomRadius": 0.12,
+          "bloomThreshold": 1.8
+        }
+      },
+      "balconyDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 9,
+        "maxAnimated": 12,
+        "elapsed": 20.969000000000143,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Tower 3 crown strip",
+            "seed": 6112,
+            "color": "#70e1bf",
+            "emission": 3.5939577356535946,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 0 business sign",
+            "seed": 19403,
+            "color": "#ffffff",
+            "emission": 3.798640711869579,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 2 local facade accent",
+            "seed": 7409,
+            "color": "#f89088",
+            "emission": 3.854523563734442,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 9 local facade accent",
+            "seed": 8116,
+            "color": "#60dff5",
+            "emission": 4.309186281618616,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 23 local facade accent",
+            "seed": 9530,
+            "color": "#e377c5",
+            "emission": 3.5597624385232107,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 30 local facade accent",
+            "seed": 10237,
+            "color": "#b89aff",
+            "emission": 4.10512146653831,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 local facade accent",
+            "seed": 11651,
+            "color": "#ffc47a",
+            "emission": 3.548956391507294,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 business sign",
+            "seed": 22527,
+            "color": "#ffffff",
+            "emission": 3.7710905651320936,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 107 local facade accent",
+            "seed": 18014,
+            "color": "#60dff5",
+            "emission": 4.691943010708737,
+            "pulse": 1
+          }
+        ]
+      },
+      "northDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 5,
+        "maxAnimated": 6,
+        "elapsed": 20.969000000000143,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Canyon sign 1",
+            "seed": 32778,
+            "color": "#ffffff",
+            "emission": 5.007863535100221,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 0 local accent",
+            "seed": 31847,
+            "color": "#639eff",
+            "emission": 4.236973678139225,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 4 local accent",
+            "seed": 32395,
+            "color": "#f89088",
+            "emission": 3.7864146465414206,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 8 local accent",
+            "seed": 32943,
+            "color": "#70e1bf",
+            "emission": 3.7263235122405227,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 12 local accent",
+            "seed": 33491,
+            "color": "#e377c5",
+            "emission": 4.229808780102152,
+            "pulse": 1
+          }
+        ]
+      }
+    },
+    "fog/night": {
+      "weather": {
+        "mode": "fog",
+        "timeOfDay": "night",
+        "sky": "#1c2937",
+        "daylightIntensity": 0.008,
+        "windowIntensity": 0.26,
+        "fogDensity": 0.05,
+        "precipitation": "none",
+        "rainIntensity": 0,
+        "wetness": 0,
+        "autumn": false,
+        "lighting": {
+          "sunColor": "#8daed9",
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.08360000000000001,
+          "windowColor": "#8daed9",
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "neonIntensity": 1.9799999999999998,
+          "windowGlow": 1.54,
+          "fixtureIntensity": 1.3,
+          "neonFogDensity": 0.014000000000000002,
+          "environmentIntensity": 0.18,
+          "exposure": 0.92,
+          "bloomStrength": 0.495,
+          "bloomRadius": 0.86,
+          "bloomThreshold": 0.5616
+        },
+        "actual": {
+          "sky": "#1c2937",
+          "fogColor": "#1c2937",
+          "fogDensity": 0.05,
+          "sunPosition": [
+            -32,
+            28,
+            -24
+          ],
+          "sunTarget": [
+            -1,
+            0,
+            2
+          ],
+          "sunIntensity": 0.008,
+          "sunColor": "#8daed9",
+          "ambientColor": "#708aaa",
+          "groundColor": "#172331",
+          "ambientIntensity": 0.08360000000000001,
+          "windowIntensity": 0.26,
+          "shadowEnabled": true,
+          "shadowRadius": 7,
+          "shadowFar": 160,
+          "exposure": 0.92,
+          "environmentIntensity": 0.18,
+          "bloomStrength": 0.495,
+          "bloomRadius": 0.86,
+          "bloomThreshold": 0.5616
+        }
+      },
+      "balconyDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 9,
+        "maxAnimated": 12,
+        "elapsed": 26.285700000000062,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Tower 3 crown strip",
+            "seed": 6112,
+            "color": "#70e1bf",
+            "emission": 4.3127492827843135,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 0 business sign",
+            "seed": 19403,
+            "color": "#ffffff",
+            "emission": 4.558368854243494,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 2 local facade accent",
+            "seed": 7409,
+            "color": "#f89088",
+            "emission": 4.62542827648133,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 9 local facade accent",
+            "seed": 8116,
+            "color": "#60dff5",
+            "emission": 5.171023537942339,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 23 local facade accent",
+            "seed": 9530,
+            "color": "#e377c5",
+            "emission": 3.4952165528609003,
+            "pulse": 0.8182232693948421
+          },
+          {
+            "name": "Tower 30 local facade accent",
+            "seed": 10237,
+            "color": "#b89aff",
+            "emission": 4.926145759845972,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 local facade accent",
+            "seed": 11651,
+            "color": "#ffc47a",
+            "emission": 4.258747669808752,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 44 business sign",
+            "seed": 22527,
+            "color": "#ffffff",
+            "emission": 4.525308678158512,
+            "pulse": 1
+          },
+          {
+            "name": "Tower 107 local facade accent",
+            "seed": 18014,
+            "color": "#60dff5",
+            "emission": 5.630331612850484,
+            "pulse": 1
+          }
+        ]
+      },
+      "northDistantNeon": {
+        "palette": [
+          {
+            "name": "ice cyan",
+            "color": "#60dff5",
+            "intensity": 2.7
+          },
+          {
+            "name": "electric blue",
+            "color": "#639eff",
+            "intensity": 2.45
+          },
+          {
+            "name": "orchid",
+            "color": "#e377c5",
+            "intensity": 2.35
+          },
+          {
+            "name": "violet",
+            "color": "#b89aff",
+            "intensity": 2.4
+          },
+          {
+            "name": "mint",
+            "color": "#70e1bf",
+            "intensity": 2.35
+          },
+          {
+            "name": "amber",
+            "color": "#ffc47a",
+            "intensity": 2.25
+          },
+          {
+            "name": "coral",
+            "color": "#f89088",
+            "intensity": 2.2
+          }
+        ],
+        "animatedEmitterCount": 5,
+        "maxAnimated": 6,
+        "elapsed": 26.285700000000062,
+        "reducedMotion": false,
+        "animation": "Independent local dim-and-recover events every 18–41 seconds; no synchronous flashes",
+        "staticGeometry": true,
+        "animatedTextures": false,
+        "emitters": [
+          {
+            "name": "Canyon sign 1",
+            "seed": 32778,
+            "color": "#ffffff",
+            "emission": 6.009436242120265,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 0 local accent",
+            "seed": 31847,
+            "color": "#639eff",
+            "emission": 5.08436841376707,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 4 local accent",
+            "seed": 32395,
+            "color": "#f89088",
+            "emission": 4.543697575849705,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 8 local accent",
+            "seed": 32943,
+            "color": "#70e1bf",
+            "emission": 4.4715882146886266,
+            "pulse": 1
+          },
+          {
+            "name": "North tower 12 local accent",
+            "seed": 33491,
+            "color": "#e377c5",
+            "emission": 5.075770536122582,
+            "pulse": 1
+          }
+        ]
+      }
+    }
+  },
+  "review": {
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 2,
+    "accepted": true,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.3,
+        "accepted": true,
+        "report": "docs/north-city/revision-22-review-1.md",
+        "sha256": "0f0cfe9e9699fdf7650e48d96e197b29770090f4571ac9a36d3abdea3bbdd89b"
+      },
+      {
+        "round": 2,
+        "score": 8.4,
+        "accepted": true,
+        "report": "docs/north-city/revision-22-review-2.md",
+        "sha256": "010b94197b72067153b0ac4f59a97ca0d99ede575ec92ac910ca3cf72b749460"
+      }
+    ],
+    "scope": "Daytime rain/storm brightness, nighttime neon sharpness and distant light variety/dynamics; prior review boundaries retained"
+  },
+  "artifactHashes": {
+    "test-artifacts/north-city/revision-22/final-2/balcony-clear-night-later.png": "e5156440fb88634044169a91bf476c5ccb10cce43cf11d5cd2834c87581f9ee9",
+    "test-artifacts/north-city/revision-22/final-2/balcony-clear-night.png": "790ee4823bf1ee72afd09814aa484d44b100820f5f67b88c2bc933e4f7419040",
+    "test-artifacts/north-city/revision-22/final-2/balcony-fog-night.png": "c3230cfe740f08c29748073a0c3aab036f39c95ad0876fd6ab7a2bd58260528e",
+    "test-artifacts/north-city/revision-22/final-2/balcony-rain-day.png": "78b5b9c3df5321f95b72445ae51d984ee6b60ff84506372a4e571d96b2ed694e",
+    "test-artifacts/north-city/revision-22/final-2/balcony-rain-night.png": "6d384ea7ed95545ad8ed8cab0dd646cea1d54fac37f977c0b2f4bed4d9d5c92b",
+    "test-artifacts/north-city/revision-22/final-2/balcony-storm-day.png": "57b0a78923e1be5cb0eae244d32d2cc3a2b8faa4e7b7011670789a3187af6b4d",
+    "test-artifacts/north-city/revision-22/final-2/results.json": "5de5d058bd37426c741044abbdea4a3315c8c84c4bbf21bcb5951c8571d59dcb",
+    "test-artifacts/north-city/revision-22/final-2/source-hashes-after.json": "4cfc0efba538c36a04795040441f415d38ad48796735caed43b7a52f350acc13",
+    "test-artifacts/north-city/revision-22/final-2/source-hashes.json": "4cfc0efba538c36a04795040441f415d38ad48796735caed43b7a52f350acc13",
+    "test-artifacts/north-city/revision-22/final-2/window-clear-night-later.png": "81fb3b8d8d3c9f4fee17b7091199540f9f139b28a8a4115aa8a959f37f36763e",
+    "test-artifacts/north-city/revision-22/final-2/window-clear-night.png": "8667895197fbb0d24819f3565d0f64789cafbc231b8f1ce985a0896e67e96fb3",
+    "test-artifacts/north-city/revision-22/final-2/window-fog-night.png": "e5b98d36563dc1828b105a806e71f4f8ac1d838dc9a4d850e2c5e294536e3101",
+    "test-artifacts/north-city/revision-22/final-2/window-rain-day.png": "d686ba6a8ee1876d52533b312e1beba0b75a367141e821636989216ad5497085",
+    "test-artifacts/north-city/revision-22/final-2/window-rain-night.png": "39029541b7dc36b59f9a9331cc4040523e0b797605002f1dda9b62657926922b",
+    "test-artifacts/north-city/revision-22/final-2/window-storm-day.png": "7f45782561af73063ed5cde098f3114ce2620ba6c724732d4cc0f522ffd4eb74",
+    "test-artifacts/north-city/revision-22/final-1/balcony-clear-night-later.png": "7463b993755afe466f43aed51f7b060363af32a67f86e7e0657453f3241e397a",
+    "test-artifacts/north-city/revision-22/final-1/balcony-clear-night.png": "f96f98f9884ad04341bde14c9ae04fae26a79bea4151daff3c7dcdb31da7ee67",
+    "test-artifacts/north-city/revision-22/final-1/balcony-fog-night.png": "bfee901fc153adbeec58b74f379abb76e83af2332ff463bdce180e979a529674",
+    "test-artifacts/north-city/revision-22/final-1/balcony-rain-day.png": "87954da4d740b4553bf4dfc2ca31f06db25fdccc73d111dfae75ea83b2369737",
+    "test-artifacts/north-city/revision-22/final-1/balcony-rain-night.png": "9a340af0d84043b0579d1b68d723a0185885c27167ff1a1499141f500f0740b0",
+    "test-artifacts/north-city/revision-22/final-1/balcony-storm-day.png": "aeb070bdfa1e8f643b0720028ac3eb5512b417cb98f3dc0c06285cb5f13b6085",
+    "test-artifacts/north-city/revision-22/final-1/results.json": "784a0ab204d10cf9ef0eaccf6f1b9c639a4bdda2ee2b6d1c161caecd62c3d597",
+    "test-artifacts/north-city/revision-22/final-1/source-hashes-after.json": "67428a49950023a6609ae6cb81f10a9e509728d98427be6907b76167edd036fd",
+    "test-artifacts/north-city/revision-22/final-1/source-hashes.json": "67428a49950023a6609ae6cb81f10a9e509728d98427be6907b76167edd036fd",
+    "test-artifacts/north-city/revision-22/final-1/window-clear-night-later.png": "229569f8a0d29546fd4ce5b262fdabf416ca1fbeb24669128ce52fca5b1c8040",
+    "test-artifacts/north-city/revision-22/final-1/window-clear-night.png": "c9e2a0b2fe4bf91fd313618ae2c601b26794fcbdb4f160cce49e6d6481a5cb86",
+    "test-artifacts/north-city/revision-22/final-1/window-fog-night.png": "97e03c07a1a2a6bd69095eab3080dad2deabf824f4200ab14685314c3d65f31a",
+    "test-artifacts/north-city/revision-22/final-1/window-rain-day.png": "5fd1823c1aac907ea06f1523a0f687f1034945b45119ceab585603d022457ba8",
+    "test-artifacts/north-city/revision-22/final-1/window-rain-night.png": "f4ef1e06a0925290c6c43ff90da3082f1458cfc5c4a971deb4f55619acee6274",
+    "test-artifacts/north-city/revision-22/final-1/window-storm-day.png": "26443f163e106abc9f1d6477889ddcd95f153710684d9ace3c0e2383d490e5d9",
+    "test-artifacts/north-city/revision-22/profiles/validation.json": "f43a08b3bdcfaca54c03c8ac6de48c52539550d3450fc8279730607686d049f9",
+    "test-artifacts/north-city/revision-22/distant-neon/validation.json": "b50cfb9069a0a28daa4c8af0da936c0e4e2c511541a0ed677a51e9687afcad01",
+    "test-artifacts/north-city/revision-22/bundled-final-2/shot-0.png": "8dae56bdff4725dcddb605e1fa3bbbbb20d5aa32aa212bb92790c4b91b4daafd",
+    "test-artifacts/north-city/revision-22/bundled-final-2/state-0.json": "816ccfff1e42fbe69f1f96c3da66edda7c7191f550c08a2427a44011c9816c72",
+    "docs/north-city/revision-22-review-1.md": "0f0cfe9e9699fdf7650e48d96e197b29770090f4571ac9a36d3abdea3bbdd89b",
+    "docs/north-city/revision-22-review-2.md": "010b94197b72067153b0ac4f59a97ca0d99ede575ec92ac910ca3cf72b749460"
+  }
+}

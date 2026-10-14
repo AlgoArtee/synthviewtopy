@@ -243,16 +243,23 @@ function gradedOceanGeometry(quality: 'low' | 'balanced'): THREE.BufferGeometry 
   // and the fine swash front, retaining sparse geometry toward the horizon.
   const curve = 9;
   const scale = extent / Math.sinh(curve);
-  const geometry = new THREE.PlaneGeometry(2, 2, segments, segments);
+  const axis = Array.from({ length: segments + 1 }, (_, i) => Math.sinh((i * 2 / segments - 1) * curve) * scale);
+  // The logarithmic grid alone grows to >2 m cells only 20 m from the eye.
+  // Keep the visible surf within 1 m (balanced) / 2 m (low) so advancing
+  // crests do not flatten into moving diagonal facets or change as we walk.
+  const surfSpacing = quality === 'low' ? 2 : 1;
+  for (let value = -80; value <= 80; value += surfSpacing) axis.push(value);
+  axis.sort((a, b) => a - b);
+  const values = axis.filter((value, i) => i === 0 || value - axis[i - 1] > 0.025);
+  const geometry = new THREE.PlaneGeometry(2, 2, values.length - 1, values.length - 1);
   geometry.rotateX(-Math.PI / 2);
   const positions = geometry.getAttribute('position');
-  for (let row = 0; row <= segments; row++) {
-    const lateral = Math.sinh((row * 2 / segments - 1) * curve) * scale;
-    for (let column = 0; column <= segments; column++) {
-      const offshore = Math.sinh((column * 2 / segments - 1) * curve) * scale;
-      positions.setXYZ(row * (segments + 1) + column, offshore, 0, lateral);
+  for (let row = 0; row < values.length; row++) {
+    for (let column = 0; column < values.length; column++) {
+      positions.setXYZ(row * values.length + column, values[column], 0, values[row]);
     }
   }
+  geometry.userData = { layout: 'graded-with-resolved-surf', surfSpacing, surfHalfWidth: 80, columns: values.length, rows: values.length };
   geometry.computeBoundingSphere();
   return geometry;
 }

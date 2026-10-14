@@ -1,0 +1,334 @@
+{
+  "revision": 23,
+  "capturedAt": "2026-10-13T15:04:53.313Z",
+  "sourceHashes": {
+    "src/apartments/northCity.css": "ef87df6237dbb2680b042f9ac5a0cde75258a5ec4d44c231867dbd80a7f5c099",
+    "src/apartments/osCityAmbience.ts": "bfb45f59872fd994f5c26936e46ae09d9ad3bdff115724cb1cac9b0f9b8b4061",
+    "src/apartments/osCityApartment.ts": "017f8a94fbd7ded772e5b98568b71e8df7c7f81b262e6e50be1c0b63fa3bfea5",
+    "src/apartments/osCityBalcony.ts": "0b93158bff8e0a8f1c32f52690cc8a869ea5eb18fa8b69c0cf5fb84261a917ec",
+    "src/apartments/osCityBalconyDistrict.ts": "b7caad0888c83a577ffeb1741279970253554174a72cb81129aee4620ec4d50b",
+    "src/apartments/osCityBalconyDoor.ts": "ace176304d9f62fce00d3cb2169603f84293f609c737e1ced49902b1a7a91619",
+    "src/apartments/osCityBalconyWeather.ts": "b86414b2405fb4a89ac7099a5a29556af829d4111388be17abca5aaca8bccc22",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDistantNeon.ts": "37379e593c13a7d934d61a01e2fe6e031d5befc2c2501febe7960aeff3798bd7",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "3f081b890974cd4f9406f26cf510490504ed5f76508d1e0647af7865138bcc65",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "3f000e65a99e67b009a4050de515f9a001b882870bf9432949a1c5309e9aaca4",
+    "src/apartments/osCityLife.ts": "b1bfbc5f2f5fe20b978e3d555eed6df471a178849aa7d53eb30210c63c055543",
+    "src/apartments/osCityNavigation.ts": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565",
+    "src/apartments/osCityNeonAtmosphere.ts": "7ff2fcf24c64532def9c30e04fe2bb414b62c946efba6a2b660847cdd3720383",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCityPlazaLife.ts": "85872a21e9853766ae344741e8a2717642f67982ecd6f0f0aead3f95b7c53321",
+    "src/apartments/osCityPrecipitation.ts": "0b4956aec41fb5f49841b12495a265b0f09572772aab23af336031f8fca2c561",
+    "src/apartments/osCitySoundControls.ts": "f422bfe56a27c2ea6567516adc12ce1542ff6c4b5a3b237381176555cedbb4e4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityTransit.ts": "ba48f1abd977bdf5d18d59853b359f8b1428ba68fc9f9764afd1be8a77a03cdc",
+    "src/apartments/osCityWeather.ts": "e34993b67609573610afcb9cdda1f5bced3147353c1943eb5031f9aa5e3dd7f7",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/room.ts": "716981f824515d6d38834fc56acf924e0eaa8b109aeb50ded01226752ab6cea4",
+    "src/apartments/roomRendering.ts": "582fda9d9616aeb07dc619d69d8e1d9ebc4c6f6042b6abcefe7bdc1bcfc9a2b7",
+    "scripts/north-city-flicker-review.mjs": "11662be082648758208d9817147d2291516437852ff8363b8f15de6ee9443c50"
+  },
+  "sourcesUnchangedAfterCapture": true,
+  "build": {
+    "status": "PASS",
+    "command": "npm run build",
+    "warning": "Existing large-chunk advisory"
+  },
+  "profiles": {
+    "status": "PASS",
+    "scope": "Pure time-dependent flicker sampler, not rendered visibility",
+    "evidence": "test-artifacts/north-city/revision-23/profiles/validation.json"
+  },
+  "browser": {
+    "status": "PASS",
+    "evidence": "test-artifacts/north-city/revision-23/final-1b",
+    "checks": 120,
+    "stills": 10,
+    "nativeClips": [
+      {
+        "file": "balcony-native-12s.webm",
+        "bytes": 3525876,
+        "samples": 60
+      },
+      {
+        "file": "north-native-12s.webm",
+        "bytes": 2388611,
+        "samples": 60
+      }
+    ],
+    "activity": {
+      "night": {
+        "balcony": {
+          "emitters": 31,
+          "samples": 120,
+          "changed": 31,
+          "minimum": 0.1779743294005609,
+          "meanDimming": 0.02681471183137429,
+          "dimSampleFraction": 0.08548387096774193,
+          "maximumSimultaneous": 6
+        },
+        "north": {
+          "emitters": 14,
+          "samples": 120,
+          "changed": 14,
+          "minimum": 0.168453331768047,
+          "meanDimming": 0.02850567094747965,
+          "dimSampleFraction": 0.09166666666666666,
+          "maximumSimultaneous": 4
+        },
+        "plaza": {
+          "emitters": 8,
+          "samples": 120,
+          "changed": 8,
+          "minimum": 0.4382354719644639,
+          "meanDimming": 0.020931384237683523,
+          "dimSampleFraction": 0.08645833333333333,
+          "maximumSimultaneous": 3
+        }
+      },
+      "evening": {
+        "balcony": {
+          "emitters": 31,
+          "samples": 120,
+          "changed": 31,
+          "minimum": 0.20225482847479148,
+          "meanDimming": 0.023895592076858277,
+          "dimSampleFraction": 0.07338709677419354,
+          "maximumSimultaneous": 8
+        },
+        "north": {
+          "emitters": 14,
+          "samples": 120,
+          "changed": 14,
+          "minimum": 0.30522685216916,
+          "meanDimming": 0.02504081598627287,
+          "dimSampleFraction": 0.07976190476190476,
+          "maximumSimultaneous": 4
+        },
+        "plaza": {
+          "emitters": 8,
+          "samples": 120,
+          "changed": 8,
+          "minimum": 0.44180591728368235,
+          "meanDimming": 0.016562358306271768,
+          "dimSampleFraction": 0.07604166666666666,
+          "maximumSimultaneous": 4
+        }
+      },
+      "morning": {
+        "balcony": {
+          "emitters": 31,
+          "samples": 120,
+          "changed": 31,
+          "minimum": 0.3346914655933434,
+          "meanDimming": 0.019188668336148743,
+          "dimSampleFraction": 0.06854838709677419,
+          "maximumSimultaneous": 7
+        },
+        "north": {
+          "emitters": 14,
+          "samples": 120,
+          "changed": 14,
+          "minimum": 0.35474802348549883,
+          "meanDimming": 0.01901784125744295,
+          "dimSampleFraction": 0.07083333333333333,
+          "maximumSimultaneous": 4
+        },
+        "plaza": {
+          "emitters": 8,
+          "samples": 120,
+          "changed": 8,
+          "minimum": 0.5611562693526142,
+          "meanDimming": 0.01344281756570695,
+          "dimSampleFraction": 0.065625,
+          "maximumSimultaneous": 3
+        }
+      },
+      "day": {
+        "balcony": {
+          "emitters": 31,
+          "samples": 120,
+          "changed": 31,
+          "minimum": 0.6839447717071587,
+          "meanDimming": 0.0035087903596560566,
+          "dimSampleFraction": 0.028225806451612902,
+          "maximumSimultaneous": 5
+        },
+        "north": {
+          "emitters": 14,
+          "samples": 120,
+          "changed": 14,
+          "minimum": 0.743365450345421,
+          "meanDimming": 0.00425481779239,
+          "dimSampleFraction": 0.03154761904761905,
+          "maximumSimultaneous": 3
+        },
+        "plaza": {
+          "emitters": 8,
+          "samples": 120,
+          "changed": 8,
+          "minimum": 0.8133987557400852,
+          "meanDimming": 0.002986847183392218,
+          "dimSampleFraction": 0.03125,
+          "maximumSimultaneous": 2
+        }
+      }
+    },
+    "weatherOptions": [
+      "clear",
+      "cloudy",
+      "rain",
+      "storm",
+      "snow",
+      "fog",
+      "academic-autumn",
+      "academic-overcast",
+      "academic-rainy-dusk",
+      "academic-foggy-night"
+    ],
+    "errors": [],
+    "changedSources": [],
+    "note": "Focused four-time flicker, all weather selections, reduced-motion and temporal-image checks. Unchanged audio and geometry were not retested."
+  },
+  "focusedVisibility": {
+    "evidence": "test-artifacts/north-city/revision-23/final-1b/far-visible-evidence.json",
+    "method": "Actual observed scene mesh bounds projected through matching camera; raycast confirms no nearer geometry at patch center. Exact canvas and emission snapshot in same task.",
+    "selected": {
+      "name": "Distant Circuit Market · Tower 4 local window group",
+      "center": [
+        138.959716796875,
+        20.85863208770752,
+        -42.84164619445801
+      ],
+      "rect": {
+        "x": 544.3154738677349,
+        "y": 58.741963541687426,
+        "right": 580.5751282086941,
+        "bottom": 137.51108751005958
+      },
+      "targetDistance": 141.72978645356181,
+      "nearest": {
+        "name": "Distant Circuit Market · Tower 4 local window group",
+        "distance": 141.72978645356184
+      },
+      "visibleAtCenter": true,
+      "inView": true
+    },
+    "frames": [
+      "far-visible-before.png",
+      "far-visible-dim.png",
+      "far-visible-recovered.png"
+    ],
+    "errors": [],
+    "changedSources": []
+  },
+  "initialDiagnostic": {
+    "evidence": "test-artifacts/north-city/revision-23/final-1",
+    "note": "Preserved diagnostic capture. The first QA assertion required too many simultaneous daytime dips; corrected to require independent local behavior and recaptured without changing scene code."
+  },
+  "bundledClient": {
+    "status": "PASS",
+    "evidence": "test-artifacts/north-city/revision-23/bundled-client",
+    "ready": true,
+    "screenshotInspected": true
+  },
+  "review": {
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "accepted": true,
+    "scope": "Visible time-dependent plaza and distant-building light flicker",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-23-review-1.md",
+        "sha256": "139b6379107a4ddb7ae54e0e9792fd53730a9cfa403d2809a09bc56339324993"
+      }
+    ]
+  },
+  "artifactHashes": {
+    "test-artifacts/north-city/revision-23/bundled-client/shot-0.png": "f4dc0b1a97ec1f4b76d1ef190556394aaf994334942265784afe460f1a422a85",
+    "test-artifacts/north-city/revision-23/bundled-client/state-0.json": "e97fa46359450c21ab9540dce70be544ae633ce35c1137016390dd2210595872",
+    "test-artifacts/north-city/revision-23/final-1/balcony-clear-day.png": "72e4fb0f13a5c3540de42340bfaba95591b8f2dbcf3ee10f9df40d83d9e5c91d",
+    "test-artifacts/north-city/revision-23/final-1/balcony-clear-evening.png": "2476b79aa5ec8c8221044a1c3ffb893c0643ea40dd8df749513c08f4b4121bf4",
+    "test-artifacts/north-city/revision-23/final-1/balcony-clear-morning.png": "611a1108c6ed3fd73fb635f3b5defeb87d78669b0077de6725e9e98d29342746",
+    "test-artifacts/north-city/revision-23/final-1/balcony-fog-night.png": "218f0a6f9b84d512947a876beaa91e578100c5ab292d313edcb22890f6bb0766",
+    "test-artifacts/north-city/revision-23/final-1/balcony-native-12s.webm": "29190268ab9a8a4a270a0e241d76bae891e28e6f67efeec3a7e92294db814587",
+    "test-artifacts/north-city/revision-23/final-1/balcony-night-before.png": "aac135e4f96c2033860c119b87741fba30358f119bb87df17db67c20b196ae92",
+    "test-artifacts/north-city/revision-23/final-1/balcony-night-dim.png": "29331e6f3f14a2116381ba9fca4ebdec58105432254b6c639924a2b08cf0d127",
+    "test-artifacts/north-city/revision-23/final-1/balcony-night-recovered.png": "ea132017524e909cb7e1338a5dcd88bd6d03e2264ed8b735797408ac9dfc7918",
+    "test-artifacts/north-city/revision-23/final-1/balcony-temporal-crop-1.png": "d1e92b658f8811d030dcbcd5f1dba0fb287f61634ff9028d169d2d0dcb081904",
+    "test-artifacts/north-city/revision-23/final-1/balcony-temporal-crop-2.png": "af0b49be26eb79d712f0258ecee3a452b329f6090215bf4d1bd4547314b132f4",
+    "test-artifacts/north-city/revision-23/final-1/balcony-temporal-crop-3.png": "b5ba7b5edd43aef2ccdb270eb38f0b1cdc9d8589f6812b2aecc4811dac14a17b",
+    "test-artifacts/north-city/revision-23/final-1/native-event-evidence.json": "7d17e9ff626cbad2d4532ff39435ee011f936ae586166ac0a6cfbdd02451a853",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-before.png": "aaf8dd4cc0842f8cbcfbff9ec55ca5cc8ee8f6e64e966f30e9e09dd0a3779b26",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-dim.png": "323dd9aa7f8b7965c02160169421a34915c7b84ac61f792fc06aa32fe8d1389c",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-pixel-evidence.json": "45b15d2c6978294127f4290aa75b977cbf6348b4fa3f2717ceecb5e20c3e59ee",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-recovered.png": "fab4d73e6306ec710dea7c20ae1b58331e3cd3ed5c51dec9e84f05c44a38a663",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-temporal-crop-1.png": "d493c16ea0d05c7de3796d74884b767ea580568ccdf9aa266e7d7c59d7d517c8",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-temporal-crop-2.png": "9c81b6280b7465bd362f80c0ed13fb92f07d4771afd2645bdd6127682512426b",
+    "test-artifacts/north-city/revision-23/final-1/native-far-window-temporal-crop-3.png": "da2a37b57c68a9b98690c26ccee86efcb0731bb0d1c195e947693989a1046caf",
+    "test-artifacts/north-city/revision-23/final-1/native-plaza-lantern-before.png": "2bbae209c72fcb6383d1ed3eb4d5af1b06b1d5a2cebb86617914138f5825bdca",
+    "test-artifacts/north-city/revision-23/final-1/native-plaza-lantern-dim.png": "3f61f9766e80ac8b35f668a99648eca6518c4c58b8194d77496a1039ff837dea",
+    "test-artifacts/north-city/revision-23/final-1/native-plaza-lantern-recovered.png": "5a3a8a8c446ffcbc1fa83ea3bcf4441a210df055d0b11241f049ec4c3939a298",
+    "test-artifacts/north-city/revision-23/final-1/north-native-12s.webm": "e4381037cf32900e98dbde2dc9d5fa97a4ab3309286396468448f8b1942e6058",
+    "test-artifacts/north-city/revision-23/final-1/north-night-before.png": "5a3058ebaa513fbbf40ecd6a2bbcddf13d7cfec0ae7489d34c5409a5469bfd11",
+    "test-artifacts/north-city/revision-23/final-1/north-night-dim.png": "fb3e9033c4c0d5a9a33209691a539e075a0ef090ec3cdd8832354217bca976bd",
+    "test-artifacts/north-city/revision-23/final-1/north-night-recovered.png": "2344bf8ce5653ca0f0e5e9467baff8050bf5fbee4ac7fc5d85483790ff41a856",
+    "test-artifacts/north-city/revision-23/final-1/north-temporal-crop-1.png": "c57b4561436133d1b0097b3fd1559efe4dd78a7f1a45c658d86e3df3a97b69ae",
+    "test-artifacts/north-city/revision-23/final-1/north-temporal-crop-2.png": "e8a0d67b1337cb525be040dc595ccbef03935e462580a72e26d84c71d260aa04",
+    "test-artifacts/north-city/revision-23/final-1/north-temporal-crop-3.png": "33f7ee2a8276950c562c799d6a4ced32e0db8048a55da3fe7811f8130b365d77",
+    "test-artifacts/north-city/revision-23/final-1/results.json": "618a2250e1ca55447036edd7d60c61b2d0b3ea1eee3cf45767f6e66ec462afe5",
+    "test-artifacts/north-city/revision-23/final-1/source-hashes-after.json": "cb37839451b3a3efe2c6b44e42c861bcd862b90c3fd01a1fc7266b64b11bc107",
+    "test-artifacts/north-city/revision-23/final-1/source-hashes.json": "cb37839451b3a3efe2c6b44e42c861bcd862b90c3fd01a1fc7266b64b11bc107",
+    "test-artifacts/north-city/revision-23/final-1/temporal-pixel-evidence.json": "c9b7a6fefea764da8b813dbb00719bf480ee4b9c8c03bad5a6d7be3ca481b63e",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-clear-day.png": "f6dd036ba9fb712477f09d112841707413f94c1323466119c52442ab56b1f576",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-clear-evening.png": "6769ae64d75c1fab59e7ab106f8353351c988148826e511056c0b51eaaba3f58",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-clear-morning.png": "25aef3b37c1ac7d282bf943320c8ef51914bfd9bafd71bac64969c352b96822b",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-fog-night.png": "5401390e8a52d77382008afa7479656ddb60afd400d02fc8287e41544fd1ebc2",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-native-12s.webm": "b8eec0a8d1257c320aee431c7fffae37dd9d5f9efed00c2ca05dd2c3ab4cbbee",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-night-before.png": "47954502756547af774a8a0f6db5565a3d8ae1370e2d1dbfa8078126e2384cec",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-night-dim.png": "5f34a9f1a654e6137e51a7553ca257a822567d51b8679555c217cf7f40159e2d",
+    "test-artifacts/north-city/revision-23/final-1b/balcony-night-recovered.png": "a9fb77d9d16c2246561ac9141e6a757d1ae3e447577dbe37bc0f89545e6aa1c2",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-before.png": "edca92cc3fd84efbd0da9a848fdd550da1584c37dced341743d537f7b9394c62",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-crop-triplet.png": "3b014f7d02c60003fcc0d164ee962a2a08db6f282d510aa1006a361988f2a56b",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-dim.png": "a42050153684ed3998e49610782f639bbc69d46aace865fc9fe77c92045d7b4b",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-evidence.json": "d9cbf1488166b9ac30b3da62efcf99379ca1395b28219c7e6236032dc2071f29",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-pixel-evidence.json": "160f4ae11337123964eb8f0414035afb9c692d9c6245e44395691a59f92c9ea6",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-recovered.png": "08d36d748280419f6b3eca177823779f9da280d6a7dbcab50e2f9ca4b9f18d60",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-temporal-crop-1.png": "5a8515dc952af4d1213a16fd93ddff787207e90f2b48b65e0200471e3a10a1aa",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-temporal-crop-2.png": "5a1348dddc96067c5fa2114b7d8c61f3f7652d630e6abea033d507a85d2f3bf4",
+    "test-artifacts/north-city/revision-23/final-1b/far-visible-temporal-crop-3.png": "15eca8238127845ce18124110d98d1d1e59e71bae8d57ac956c1cf5ab92b39fa",
+    "test-artifacts/north-city/revision-23/final-1b/native-event-evidence.json": "feecde24429900d7b79c8b19c6062f6c85d21425dc98d204ef34c00a223d49e0",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-before.png": "cd016ee64ef40fe4da25836d6f8ec54c70645a9e7087d9818b896855585bd7dd",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-dim.png": "35e161157a7453ba78568b65c3c5d992ff07619a2c911a60d550c64b3c748c09",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-pixel-evidence.json": "f8bf656b2ef8a919d1a7c609b4122216d4522b40803ac4683b7c26c1edabbde6",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-recovered.png": "934ad2be14e32d739c540fbdad39f3d96c496a982d61e6c0fa2030c13f0cbfcc",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-temporal-crop-1.png": "a87abfd2a048a0f6ee1c64aa0a8b4af7557a9cdf18c782a71437a35bd1f2f106",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-temporal-crop-2.png": "844d126c348f04fb9883e0186787057ec80c63214913fc2f2a7ab2fd3bbbfc98",
+    "test-artifacts/north-city/revision-23/final-1b/native-far-window-temporal-crop-3.png": "4ca45790157520c1fc9b961ec51061c85e153a20b4c5c4e45c6d2623b8036f16",
+    "test-artifacts/north-city/revision-23/final-1b/native-plaza-lantern-before.png": "b7ddaee1f95a8008b4fe23d632316646883e1fa4506f3783e0c70a44a99369e2",
+    "test-artifacts/north-city/revision-23/final-1b/native-plaza-lantern-crop-triplet.png": "793e9486d6cd58cc368dae21f56bc5cdacd09c35478dfeaad16c39ed4c4e5fca",
+    "test-artifacts/north-city/revision-23/final-1b/native-plaza-lantern-dim.png": "c90639e45fbe76dddd2048f52e1a57bdeac5bc05c7f8f7aa9a89e04137ca8925",
+    "test-artifacts/north-city/revision-23/final-1b/native-plaza-lantern-recovered.png": "13518aa4ef1fb4449dd80bd237ac2cc256a7f37ddfd5abb201eba45e098067ff",
+    "test-artifacts/north-city/revision-23/final-1b/north-native-12s.webm": "70df236da45396dfa16ebc1da96af6ca7ae76d8008d91928c7f7682f1e747e7b",
+    "test-artifacts/north-city/revision-23/final-1b/north-night-before.png": "732fe610173004d91887dbdcddf98815bd3781fe267e0262224fa7fcd4fa2b4a",
+    "test-artifacts/north-city/revision-23/final-1b/north-night-dim.png": "518965ad2fa0e6eb975af6e157b4378ea6a81639c595b6c2a730046a0561dd71",
+    "test-artifacts/north-city/revision-23/final-1b/north-night-recovered.png": "69c150d73f40a1d4030095ca47ff28bc9542121726776a66521676a78931c7d3",
+    "test-artifacts/north-city/revision-23/final-1b/results.json": "132320f6b73ce3dbe179caab627457de61fb29d8d97a1ea6a296acd2e20d26ce",
+    "test-artifacts/north-city/revision-23/final-1b/review-crop-bounds.json": "e02268d6a4b83c878143f089de667084aa55eae5de1b33564c93aacdd0b851e7",
+    "test-artifacts/north-city/revision-23/final-1b/source-hashes-after.json": "e9b13223f14a9a5105b930a96bbf5d2e9258687478469dbf833738cc28188f1c",
+    "test-artifacts/north-city/revision-23/final-1b/source-hashes.json": "e9b13223f14a9a5105b930a96bbf5d2e9258687478469dbf833738cc28188f1c",
+    "test-artifacts/north-city/revision-23/profiles/validation.json": "47d4c8dbff26db064c72afd37c06f0b8504208bb7584e29e194ce074d0146e3b",
+    "docs/north-city/revision-23-review-1.md": "139b6379107a4ddb7ae54e0e9792fd53730a9cfa403d2809a09bc56339324993"
+  }
+}

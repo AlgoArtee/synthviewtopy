@@ -15,9 +15,9 @@ function archPath<T extends THREE.Path>(path: T): T {
 }
 
 /** Actual apertures through a thick wall; each window shares the same outdoor world. */
-export function createArchedNorthWall(material: THREE.Material) {
+export function createArchedNorthWall(material: THREE.Material, minX = -8.15, maxX = 8.15, extraOpenings: {center: number; width: number; bottom: number; top: number}[] = []) {
   const outline = new THREE.Shape();
-  outline.moveTo(-8.15, 0); outline.lineTo(8.15, 0); outline.lineTo(8.15, 5.62); outline.lineTo(-8.15, 5.62); outline.closePath();
+  outline.moveTo(minX, 0); outline.lineTo(maxX, 0); outline.lineTo(maxX, 5.62); outline.lineTo(minX, 5.62); outline.closePath();
   for (const center of ROOM_WINDOWS) {
     const hole = new THREE.Path();
     hole.moveTo(center - WINDOW_RADIUS, WINDOW_BASE);
@@ -26,6 +26,10 @@ export function createArchedNorthWall(material: THREE.Material) {
     hole.lineTo(center + WINDOW_RADIUS, WINDOW_BASE);
     hole.closePath();
     outline.holes.push(hole);
+  }
+  for (const opening of extraOpenings) {
+    const hole = new THREE.Path(); const left = opening.center - opening.width / 2, right = opening.center + opening.width / 2;
+    hole.moveTo(left, opening.bottom); hole.lineTo(left, opening.top); hole.lineTo(right, opening.top); hole.lineTo(right, opening.bottom); hole.closePath(); outline.holes.push(hole);
   }
   const wall = new THREE.Mesh(new THREE.ExtrudeGeometry(outline, {depth: .28, bevelEnabled: false, curveSegments: 40}), material);
   wall.name = 'Lux Umbrarum / masonry with three open arches';
@@ -47,10 +51,10 @@ export function createWindowGlass(x: number, material: THREE.Material) {
 }
 
 /** Cloth narrows at the tie-back and fans out into irregular hanging folds. */
-export function createPleatedCurtains(windowX: number, velvet: THREE.Material, cord: THREE.Material) {
+export function createPleatedCurtains(windowX: number, velvet: THREE.Material, cord: THREE.Material, sides: readonly number[] = [-1, 1]) {
   const group = new THREE.Group();
   group.name = 'Hand-sewn velvet curtains with gathered folds';
-  for (const side of [-1, 1]) {
+  for (const side of sides) {
     const columns = 32; const rows = 64;
     const positions: number[] = []; const uvs: number[] = []; const indices: number[] = [];
     for (let iy = 0; iy <= rows; iy++) {

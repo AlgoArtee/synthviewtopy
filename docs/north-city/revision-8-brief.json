@@ -1,0 +1,105 @@
+{
+  "revision": 8,
+  "request": [
+    "Duvet a bit larger than the mattress",
+    "Pushed slightly to one side, natural, very big and soft"
+  ],
+  "authorization": "Local implementation requested; preserve room architecture, no paid services/export/deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "hero": "Large irregular white down duvet loosely gathered towards west / TV wall; hanging open foot edge",
+  "layout": {
+    "bedMetres": [
+      8.55,
+      8.55
+    ],
+    "duvetUnfoldedMetres": [
+      8.65,
+      8.9
+    ],
+    "arrangement": "Off-centre to west; extra fabric gathered above wall-fitted mattress, overhang only through open foot",
+    "pillows": "Four against east wall opposite TV; two low near window, preserved",
+    "duvet": {
+      "nominalCutSizeMetres": [
+        8.65,
+        8.9
+      ],
+      "measuredMaximumSurfaceSpansMetres": [
+        8.625434448307406,
+        8.859153006546435
+      ],
+      "meanFillThicknessMetres": 0.24438462612792397,
+      "projectedBoundsMetres": [
+        8.151501417160034,
+        1.181553602218628,
+        8.655638962984085
+      ],
+      "openFootOverhangMetres": 0.4597677624225617,
+      "floorClearanceMetres": 0.25563108921051025,
+      "gatheredSide": "west / TV",
+      "intentionalAsymmetry": true
+    }
+  },
+  "circulation": "Preserve room footprint and deliberate bed climbing, full-bed walk and solid window boundary",
+  "symmetry": "Existing square architecture preserved; duvet intentionally loose and asymmetric",
+  "productionViews": [
+    "bed-wide",
+    "duvet",
+    "bed-edge",
+    "sleep",
+    "panorama",
+    "pillows",
+    "on-bed",
+    "duvet-drape"
+  ],
+  "budget": {
+    "uniqueTrianglesTarget": 1650000,
+    "paidServices": 0
+  },
+  "review": {
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "formalChecksCompleted": 2,
+    "status": "accepted",
+    "scores": [
+      7.9,
+      8.1
+    ],
+    "acceptedScore": 8.1,
+    "remainingUnusedChecks": 1,
+    "finalReport": "docs/north-city/revision-8-review-2.md",
+    "limitations": [
+      "Broad centre and hanging face remain very smooth",
+      "Large hem wave retains a sculpted appearance rather than fully natural cotton",
+      "Fine fabric response remains weak",
+      "Focused independent review inspected eight bedding and clear-weather views; animation playback not assessed"
+    ]
+  },
+  "validation": {
+    "build": "passed",
+    "runtimeViews": 26,
+    "fullHDReviewCaptures": [
+      1920,
+      1080
+    ],
+    "duvetWeatherCaptures": [
+      "clear",
+      "rain",
+      "snow"
+    ],
+    "mobile": "390px fit passed",
+    "bedNavigation": "deliberate climb, full-bed traversal, three wall/window stops and step-down passed",
+    "finiteGeometry": true,
+    "uniqueTriangles": 1522202,
+    "instanceExpandedTriangles": 1863424,
+    "duvetNonManifoldEdges": 0,
+    "duvetWallCrossingVertices": 0,
+    "duvetMinFillThicknessMetres": 0.029999971389770508,
+    "reducedMotionCity": "passed",
+    "weatherAndCollapsedControls": true,
+    "runtimeErrors": [],
+    "geometryAudit": "test-artifacts/north-city/revision-8/validation-2/audit.json",
+    "actualMeshPlan": "test-artifacts/north-city/revision-8/validation-2/floor-plan.png",
+    "visualEvidence": "test-artifacts/north-city/revision-8/pass-2",
+    "evidenceManifest": "test-artifacts/north-city/revision-8/pass-2/evidence-manifest.json"
+  }
+}

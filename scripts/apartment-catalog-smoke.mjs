@@ -270,7 +270,7 @@ async function galleryChecks() {
     }
     results.push({ check: 'all100 real scene previews decode and belong to their rooms', status: 'passed', previews: decoded });
   }
-  assert(await page.locator('a[href="/liminette.html"]').first().isVisible(), 'Liminette must remain available as the 101st residence');
+  assert(await page.locator('a[href="/liminette.html"]').first().isVisible(), 'Liminette must remain available as an original residence');
   const hrefs = await page.locator('#room-catalog-grid .catalog-room-link').evaluateAll(links => links.map(link => link.getAttribute('href')));
   assert.equal(new Set(hrefs).size, 100, 'Every new card must link to a distinct room route');
   for (let number = 1; number <= 100; number++) assert(hrefs.includes(`/room.html?id=${roomId(number)}`), `Missing gallery route for ${roomId(number)}`);
@@ -302,7 +302,7 @@ async function galleryChecks() {
   await download.saveAs(exportPath);
   const exported = JSON.parse(await readFile(exportPath, 'utf8'));
   assert.equal(exported.format, 'vinculum-room-metadata');
-  assert.equal(exported.rooms.length, 101, 'The metadata export must include the complete residence collection');
+  assert.equal(exported.rooms.length, 103, 'The metadata export must include the complete residence collection');
   assert.equal(exported.rooms.find(room => room.id === 'room-001').name, name);
   await editMetadata('room-001', original.name, original.description);
   await page.locator('#metadata-file').setInputFiles(exportPath);
@@ -346,6 +346,7 @@ async function galleryChecks() {
   assert.equal(await page.locator('#apartment-viewport canvas').count(), 0, 'Unknown rooms must not allocate an unrelated scene');
   assert(await page.locator('#room-loading a[href="/apartments.html"]').isVisible(), 'Unknown room URLs must offer a usable way back');
   await page.locator('#room-loading a').click();
+  await page.locator('#room-catalog-grid .catalog-card').first().waitFor();
   assert.equal(await visibleCards().count(), 100);
   await page.setViewportSize(viewport);
   results.push({ check: 'gallery, search, scoped metadata, persistence, export/import, escaping and mobile layout', status: 'passed' });
@@ -359,6 +360,9 @@ async function roomChecks() {
   const reference = await state();
   assert(typeof reference.exteriorSignature === 'string' && reference.exteriorSignature.length > 0, 'Liminette must expose its actual exterior geometry signature');
   const sharedSky = celestialIdentity(reference);
+  // Liminette's enlarged room translates its courtyard to the new window wall.
+  // The numbered apartments retain their common, original exterior coordinates.
+  let numberedExterior;
   let previousId = 'liminette-student-room';
   let consecutiveFailures = 0;
   const exercisedLayouts = new Set();
@@ -380,9 +384,11 @@ async function roomChecks() {
       assert(snapshot.render.triangles > 1000 && snapshot.render.calls > 10, `${id} must render furnished 3D geometry`);
       assert(snapshot.collisionCount > 10, `${id} must retain interior collision geometry`);
       const neighborLinks = await page.locator('.room-neighbors a').evaluateAll(links => links.map(link => link.getAttribute('href')));
-      assert.deepEqual(neighborLinks, [number === 1 ? '/liminette.html' : `/room.html?id=${roomId(number - 1)}`,
+      assert.deepEqual(neighborLinks, [number === 1 ? '/room.html?id=lux-umbrarum-pool-commons' : `/room.html?id=${roomId(number - 1)}`,
         number === 100 ? '/liminette.html' : `/room.html?id=${roomId(number + 1)}`], `${id} must link to its adjacent residences`);
-      assert.equal(snapshot.exteriorSignature, reference.exteriorSignature, `${id} must share Liminette's outside geometry`);
+      assert(typeof snapshot.exteriorSignature === 'string' && snapshot.exteriorSignature.length > 0, `${id} must expose its outside geometry`);
+      numberedExterior ??= snapshot.exteriorSignature;
+      assert.equal(snapshot.exteriorSignature, numberedExterior, `${id} must share the numbered apartments' outside geometry`);
       assert.deepEqual(celestialIdentity(snapshot), sharedSky, `${id} must use the same island celestial source and configuration`);
       const image = await canvasSnapshot();
       assert.equal(image.width, 640); assert.equal(image.height, 400);
@@ -453,7 +459,7 @@ async function contactSheets(rooms) {
       const image = (await readFile(room.capture)).toString('base64');
       return `<article><img src="data:image/jpeg;base64,${image}" width="240" height="150"><p><strong>${escapeHtml(room.check)}</strong> ${escapeHtml(room.snapshot.style)}</p></article>`;
     }));
-    const html = `<!doctype html><html><meta charset="utf-8"><title>Apartment render audit</title><style>*{box-sizing:border-box}body{margin:0;padding:22px;background:#14231e;color:#f1ead9;font:12px system-ui}h1{font:24px Georgia;margin:0 0 18px}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}article{margin:0;min-width:0;background:#24372c;border:1px solid #8c7e4a}img{width:100%;height:auto;display:block}p{margin:0;padding:8px;font-size:10px;line-height:1.4}strong{color:#d5bd80}</style><h1>Vinculum Apartments — actual scene renders ${offset + 1}–${offset + subset.length}</h1><div class="grid">${tiles.join('')}</div></html>`;
+    const html = `<!doctype html><html><meta charset="utf-8"><title>Apartment render audit</title><style>*{box-sizing:border-box}body{margin:0;padding:22px;background:#14231e;color:#f1ead9;font:12px system-ui}h1{font:24px Georgia;margin:0 0 18px}.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}article{margin:0;min-width:0;background:#24372c;border:1px solid #8c7e4a}img{width:100%;height:auto;display:block}p{margin:0;padding:8px;font-size:10px;line-height:1.4}strong{color:#d5bd80}</style><h1>Lux Umbrarum Student Spaces — actual scene renders ${offset + 1}–${offset + subset.length}</h1><div class="grid">${tiles.join('')}</div></html>`;
     const name = `contact-sheet-${String(offset / 25 + 1).padStart(2, '0')}`;
     await writeFile(`${output}/${name}.html`, html);
     await page.setContent(html, { waitUntil: 'load' });

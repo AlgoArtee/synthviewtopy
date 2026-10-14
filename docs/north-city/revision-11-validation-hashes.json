@@ -1,0 +1,13 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": "revision-11-round-2-source-hashes.json",
+  "files": {
+    "test-artifacts/north-city/revision-11/validation-2/audit.json": "3ae601674c33f2e48dd48075b38df71310b0d42d78e883736fc1bc84b8e6764f",
+    "test-artifacts/north-city/revision-11/room-views-2/bedding-results.json": "767436363fb3b928673118f7bb119df173ee5768069db4c00cf3879155252cfa",
+    "test-artifacts/north-city/revision-11/room-views-2/evidence-manifest.json": "ddbcec45cdb9b1c1ae2b015f8702b7c121b9d3e7303c7463a755f10156e6f0ad",
+    "test-artifacts/north-city/revision-11/review-2/evidence-manifest.json": "d3988624ec52963c342208c0095341cc5a55e78ea336c7876ea34b0d80700d81",
+    "docs/north-city/revision-11-review-1.md": "4c946ebc53450bb15077d21f40d81e10e0f59af90b426aa329f29bdec508ec56",
+    "docs/north-city/revision-11-review-2.md": "0ef74194c3f7eb56b0c998b3ccdc83cea37e909ce8467862540a8be2530a2174",
+    "docs/north-city/revision-11-portrait-asset.json": "9171969b5f4200c9595fd4aaa4753a92ef2b1c3da75de26ecf80ff5eb3c3439c"
+  }
+}

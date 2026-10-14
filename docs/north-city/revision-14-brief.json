@@ -1,0 +1,93 @@
+{
+  "revision": 14,
+  "request": "All island weather modes, at least ten weather-appropriate sound choices per mode, and custom uploads. Preserve opening-window audio and accepted city/apartment design.",
+  "visualChange": "Four Dark Academia weather presets adapted to existing city; external fog, lighting, precipitation/wetness and subtle autumn leaves; weather-filtered audio UI. Architecture, furniture and city scale unchanged.",
+  "weatherCount": 10,
+  "islandWeatherIds": [
+    "clear",
+    "rain",
+    "fog",
+    "storm",
+    "academic-autumn",
+    "academic-overcast",
+    "academic-rainy-dusk",
+    "academic-foggy-night"
+  ],
+  "extraApartmentWeatherIds": [
+    "cloudy",
+    "snow"
+  ],
+  "distinctRecordings": 70,
+  "weatherSoundChoices": 101,
+  "licensedSources": {
+    "CC0": 69,
+    "CC BY 4.0": 1
+  },
+  "evidence": "test-artifacts/north-city/revision-14/review-1-final",
+  "sourceHashes": "revision-14-source-hashes.json",
+  "references": [
+    "test-artifacts/north-city/references/02-bed.jpg",
+    "test-artifacts/north-city/references/07-live-rain-city.jpg",
+    "test-artifacts/north-city/references/09-window-layout.png"
+  ],
+  "baseline": "Revision13 accepted 8.3; previous evidence remains historical. New weather does not request Dark Academia architecture replacement.",
+  "review": {
+    "revision": 14,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.1
+    ],
+    "acceptedScore": 8.1,
+    "remainingUnusedChecks": 2,
+    "report": "revision-14-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-14/review-1-final",
+    "sourceBinding": "revision-14-source-hashes.json",
+    "rubric": {
+      "construction": 1.9,
+      "lighting": 1.55,
+      "materials": 1.45,
+      "fidelity": 2.0,
+      "composition": 1.2
+    },
+    "limitations": [
+      "Regular longitudinal wet-road bands and rounded puddles",
+      "Very dark foggy-night distance",
+      "Autumn leaves subtle in still compositions",
+      "Smooth bedding, repeated facade motifs and simplified traffic",
+      "Expanded phone controls occupy substantial view; landscape panel scrolls"
+    ],
+    "scope": "17 actual runtime stills plus three references; no audio audition or motion claims",
+    "postReviewCopyFix": "Replaced two generic permanent-storage phrases with neutral browser-privacy wording; session-only and saved status stay explicit. Scene sources and frozen review evidence unchanged."
+  },
+  "validation": {
+    "weatherAudio": "test-artifacts/north-city/weather-audio/validation/results.json",
+    "retry": "test-artifacts/north-city/weather-audio/validation/retry-results.json",
+    "touchAndStorageFallback": "test-artifacts/north-city/weather-audio/validation/touch-results.json",
+    "geometry": "test-artifacts/north-city/weather-audio/geometry/audit.json",
+    "weatherEffects": "test-artifacts/north-city/weather-audio/validation/weather-effects.json",
+    "build": "test-artifacts/north-city/weather-audio/build-final.log",
+    "productionAudioHashes": "70 source/production audio assets match SHA256, 92,602,027 bytes"
+  },
+  "limits": [
+    "Sound checks measure functioning output; subjective audio audition is not claimed",
+    "Compatible modes share appropriate actual recordings",
+    "Uploaded files use the browser media loop and keep original loudness",
+    "Custom uploads are local to this browser/origin, up to 25 MB"
+  ],
+  "publication": "Local workspace update; no paid service, commit or deployment",
+  "schemaNote": "Existing custom Three.js room contract is not the generic skill room-package schema; no new Blender or paid asset/export gate is crossed.",
+  "postReviewChanges": [
+    {
+      "file": "src/apartments/osCitySoundControls.ts",
+      "beforeSha256": "6f477a08577a6238af329d6f1da5454e1172d10d1831c6df4da2e61f6d49a813",
+      "afterSha256": "d105534f09242f84254401845c989fc06f63298805c8ad0e57f4c2372ce9e6a4",
+      "change": "Two privacy strings only; no scene, layout, playback or storage behavior changes",
+      "evidence": "Latest weather-audio validation touch captures; original review captures retained"
+    }
+  ],
+  "reviewToolingHistory": "Initial brief read failed sandbox setup, escalated read stalled and was interrupted before any image inspection or grade. Resumed the same first formal review with direct image calls and parent-supplied brief; reviewer returned full report directly for saving. No extra graded round."
+}

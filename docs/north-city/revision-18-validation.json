@@ -1,0 +1,157 @@
+{
+  "date": "2026-10-13T09:25:53.904Z",
+  "sourceHashes": {
+    "src/apartments/osCityAmbience.ts": "c66de0bb1932953e176e883d3a4a5bf968176d561b56bb5be47ff0b677007069",
+    "src/apartments/osCityApartment.ts": "f7e7dde4f1608eca17078a99f15244db910ed34df789e2a7da2bd9c6170a0bb8",
+    "src/apartments/osCityBalcony.ts": "86656f3d460a4ba021e29f549fb28c78648a77f90a3cf3e29df286a771fd3092",
+    "src/apartments/osCityBalconyDistrict.ts": "134a101524376b0b931312f84881eee45fe2ce67c077b54f0e2c2701de26613a",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "5aaa31288512845aa34d9a6a84b41af6bb6b35f319c21d9b12bc613d0a95f8f6",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "3f000e65a99e67b009a4050de515f9a001b882870bf9432949a1c5309e9aaca4",
+    "src/apartments/osCityLife.ts": "6c542d081b581dc6766e234c526111d0f997015a891e717204ab9aa8df369637",
+    "src/apartments/osCityNavigation.ts": "40bc7b92e8ba98301f097f05761841bfe80bf1a905801a210d94b6d0b6c80565",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCitySoundControls.ts": "d105534f09242f84254401845c989fc06f63298805c8ad0e57f4c2372ce9e6a4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityWeather.ts": "4f1dd2b94fad9298ad7a4dd0e2aa70f29c593dc775883d3bdee6969d4efbbec7",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/room.ts": "14f35c81dc468c52bbc5608b7f6d970da0b0a929544a14d4182ce6d7f94e81bc",
+    "src/apartments/roomRendering.ts": "66c65fc538fa66dd1b624a64c64a2ebc46e563b1daf08c69a36a4751cc0a70d5",
+    "public/apartments/assets/north-city/balcony-city-reference.jpg": "b31cdb6ab2ca06aa9ddaaa951c8bcdeeee357954766a611f576220ca27bd3996"
+  },
+  "browser": {
+    "capturedAt": "2026-10-13T09:17:59.914Z",
+    "viewpointScreenshots": 13,
+    "geometryChecks": 38,
+    "sourcesStable": true,
+    "failures": [],
+    "errors": [],
+    "mobileFit": {
+      "width": 390,
+      "scrollWidth": 390
+    },
+    "fullGeometry": "test-artifacts/north-city/revision-18/geometry-final-sky/audit.json",
+    "pillowSupport": "test-artifacts/north-city/revision-18/bedding-geometry/pillows.json",
+    "disposal": "test-artifacts/north-city/revision-18/disposal-final.json"
+  },
+  "build": {
+    "command": "npm run build",
+    "status": "PASS",
+    "warning": "Existing large-chunk advisory"
+  },
+  "geometry": {
+    "triangleBudgets": {
+      "existing": {
+        "uniqueTriangles": 1975696,
+        "submittedTriangles": 2317796,
+        "geometries": 591
+      },
+      "terrace": {
+        "uniqueTriangles": 9126,
+        "submittedTriangles": 9126,
+        "geometries": 399
+      },
+      "district": {
+        "uniqueTriangles": 96468,
+        "submittedTriangles": 99498,
+        "geometries": 59
+      }
+    },
+    "nonFiniteProblems": [],
+    "pillowCount": 13,
+    "duvetNonManifoldEdges": 0,
+    "wallCrossingVertices": 0,
+    "televisionSightlines": [
+      {
+        "view": "sleep",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "bed-wide",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "duvet",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "television",
+        "samples": 54,
+        "duvetOccluded": 0
+      },
+      {
+        "view": "duvet-drape",
+        "samples": 54,
+        "duvetOccluded": 0
+      }
+    ]
+  },
+  "behavior": {
+    "weatherAndCollapsedControls": true,
+    "errors": []
+  },
+  "disposal": {
+    "capturedAt": "2026-10-13T09:11:19.875Z",
+    "method": "Actual room builder, await room.ready, subscribe to resource dispose events, rain to snow, room.dispose",
+    "ready": true,
+    "weatherSequence": [
+      "rain",
+      "snow"
+    ],
+    "disposeCounts": {
+      "steamMaterial": 1,
+      "steamTexture": 1,
+      "rainTexture": 1,
+      "snowTexture": 2
+    },
+    "passed": true
+  },
+  "bundledClient": {
+    "evidence": "test-artifacts/north-city/revision-18/bundled-client",
+    "status": "PASS",
+    "note": "Original bundled action client run before final exterior-material/sky refinements; final-3b supplies current-source live navigation and screenshot evidence."
+  },
+  "review": {
+    "status": "Third and final review: 7.3/10, below the 8/10 minimum. Layout and pillow changes visually satisfied; city realism not accepted. All three formal rounds used; no fourth review.",
+    "minimum": 8,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 6.5,
+        "accepted": false,
+        "report": "revision-18-review-1.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-1"
+      },
+      {
+        "round": 2,
+        "score": 6.8,
+        "accepted": false,
+        "report": "revision-18-review-2.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-2"
+      },
+      {
+        "round": 3,
+        "score": 7.3,
+        "accepted": false,
+        "report": "revision-18-review-3.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-3b"
+      }
+    ],
+    "remainingLimitations": [
+      "Skyline image and modeled buildings differ in perspective and lighting, especially in clear weather.",
+      "Shop and roof geometry is simplified and repetitive compared with reference 3.",
+      "Circuit plaza and terrace materials retain a clean geometric appearance."
+    ]
+  },
+  "unchanged": "Historical 100-image Snapshots preserved; no commit or deployment."
+}

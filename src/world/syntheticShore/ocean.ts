@@ -108,9 +108,10 @@ export const oceanFragmentShader = /* glsl */`
   ${sceneReflectionGLSL}
 
   float hash(vec2 p) {
-    // Bounded coordinates avoid the loss of precision in a large-world hash.
-    p = mod(p, 4096.0);
-    return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+    // Avoid sine/large-product precision bands, especially in close-up foam.
+    vec3 q = fract(vec3(p.xyx) * 0.1031);
+    q += dot(q, q.yzx + 33.33);
+    return fract((q.x + q.y) * q.z);
   }
   float noise(vec2 p) {
     vec2 i = floor(p);
@@ -119,31 +120,42 @@ export const oceanFragmentShader = /* glsl */`
     return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), f.x),
       mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0)), f.x), f.y);
   }
-  float foamTurbulence(vec2 p) {
-    // Rotated octaves and domain warping avoid visible square noise cells.
-    mat2 turn = mat2(0.8, -0.6, 0.6, 0.8);
-    float value = noise(p) * 0.53;
-    p = turn * p * 2.07 + 17.3;
-    value += noise(p) * 0.27;
-    p = turn * p * 2.13 - 8.1;
-    value += noise(p) * 0.13;
-    return value + noise(turn * p * 2.03 + 29.7) * 0.07;
+  float filteredFoamNoise(vec2 p, float footprint) {
+    return mix(0.5, noise(p), 1.0 - smoothstep(0.18, 0.65, footprint));
   }
-  // Millimetre/centimetre pores inside froth. Draw variable round openings,
-  // never nearest-neighbour polygon edges: those produced the honeycomb.
-  float foamPores(vec2 p, float aa) {
+  float foamTurbulence(vec2 p, float footprint) {
+    // Filter EVERY octave before thresholding. Merely blurring the threshold
+    // still aliases sub-pixel octaves into a repeated stippled carpet.
+    mat2 turn = mat2(0.8, -0.6, 0.6, 0.8);
+    float value = filteredFoamNoise(p, footprint) * 0.53;
+    p = turn * p * 2.07 + 17.3;
+    footprint *= 2.07;
+    value += filteredFoamNoise(p, footprint) * 0.27;
+    p = turn * p * 2.13 - 8.1;
+    footprint *= 2.13;
+    value += filteredFoamNoise(p, footprint) * 0.13;
+    return value + filteredFoamNoise(turn * p * 2.03 + 29.7, footprint * 2.03) * 0.07;
+  }
+  // Centimetre openings in froth. Filter each radius, not just the cell:
+  // a sub-pixel circle must lose contrast rather than become a dark pixel.
+  float foamPores(vec2 p, float footprint) {
     vec2 cell = floor(p), local = fract(p);
-    float signedDistance = 8.0;
+    float coverage = 0.0;
+    float aa = max(0.012, footprint * 0.65);
     for (int y = -1; y <= 1; y++) {
       for (int x = -1; x <= 1; x++) {
         vec2 neighbor = vec2(float(x), float(y));
         vec2 point = vec2(hash(cell + neighbor + 3.1), hash(cell + neighbor + 83.7));
-        float radius = mix(0.055, 0.38, pow(hash(cell + neighbor + 57.8), 2.0));
+        float radius = mix(0.12, 0.42, pow(hash(cell + neighbor + 57.8), 2.0));
         vec2 delta = neighbor + 0.08 + point * 0.84 - local;
-        signedDistance = min(signedDistance, length(delta) - radius);
+        float opening = 1.0 - smoothstep(-aa, aa, length(delta) - radius);
+        float resolved = smoothstep(1.5, 3.0, radius * 2.0 / max(0.0001, footprint));
+        coverage = max(coverage, opening * resolved);
       }
     }
-    return 1.0 - smoothstep(-aa, aa, signedDistance);
+    // Unresolved pores contribute an even average instead of disappearing
+    // with distance or shimmering between dark/bright pixels while moving.
+    return mix(0.16, coverage, 1.0 - smoothstep(0.10, 0.32, footprint));
   }
   float linearDepth(float depth) {
     return uCameraNear * uCameraFar / max(0.0001, uCameraFar - depth * (uCameraFar - uCameraNear));
@@ -198,7 +210,11 @@ export const oceanFragmentShader = /* glsl */`
     vec2 p = vWorldPosition.xz;
     vec4 coast = coastCoordinates(p);
     float floorY = seafloorHeightGLSL(p.x, p.y);
-    float waterDepth = vWorldPosition.y - floorY;
+    vec3 normalSurface = normalWaveSurfaceGLSL(p);
+    vec3 giantSurface = millerWave(p);
+    // Fragment depth must use the same continuous surface as buoyancy and
+    // foam. Interpolated triangle heights stamp diagonal cells into the wash.
+    float waterDepth = normalSurface.x + giantSurface.x - floorY;
     // A genuine wet/dry boundary. Raising a whole ocean mesh onto the sand
     // creates a reflective carpet extending uphill, so dry fragments are cut.
     if (waterDepth <= 0.008) discard;
@@ -207,9 +223,7 @@ export const oceanFragmentShader = /* glsl */`
     vec3 viewDir = normalize(uCameraPosition - vWorldPosition);
     vec3 spectrum = waveSpectrumGLSL(p);
     float amplitude = normalWaveAmplitudeGLSL(p);
-    vec3 normalSurface = normalWaveSurfaceGLSL(p);
     vec4 shoreState = shoreFoamState(p);
-    vec3 giantSurface = millerWave(p);
     float giantFace = smoothstep(25.0, 130.0, giantSurface.x);
     float regularNormalWeight = 1.0 - giantFace;
     vec2 slopes = normalSurface.yz * regularNormalWeight;
@@ -366,27 +380,27 @@ export const oceanFragmentShader = /* glsl */`
     float steepness = length(spectrum.yz) * amplitude;
     float breaking = smoothstep(0.24, 0.60, steepness) * smoothstep(0.30, 0.95, spectrum.x);
     float shoreFoam = 0.0, shoreFoamLight = 1.0;
+    // Evaluate derivatives outside the spatially varying foam branch.
+    vec4 wash = shoreWashAtTimeGLSL(coast.xy, uTime);
+    float surfBlend = smoothstep(4.0, 22.0, coast.x);
+    float travel = mix(wash.x * 5.0, shoreState.w * 3.2, surfBlend);
+    vec2 flow = vec2(coast.x + travel, coast.y);
+    float flowFootprint = max(length(dFdx(flow)), length(dFdy(flow)));
     if (shoreState.x + shoreState.y + shoreState.z > 0.001 && giantFace < 0.99) {
-      float arrival = shoreLocalPhaseGLSL(vec2(0.0, coast.y), uTime) - 1.45;
-      float swashPhase = arrival + 0.52 * cos(arrival);
-      float wash = 0.5 + 0.5 * cos(swashPhase);
-      float washRate = -0.5 * sin(swashPhase) * (1.0 - 0.52 * sin(arrival));
-      float uprush = smoothstep(-0.025, 0.18, washRate);
+      float uprush = smoothstep(-0.015, 0.135, wash.y);
       // The shallow foam reverses with the real wash, slows at maximum runup,
       // then stretches seaward. Outer whitewater follows the incoming bore.
-      float travel = mix(wash * 5.0, shoreState.w * 3.2, smoothstep(4.0, 22.0, coast.x));
-      vec2 flow = vec2(coast.x + travel, coast.y);
-      vec2 warp = vec2(noise(flow * 0.71 + uTime * 0.025),
-        noise(flow * 0.63 + 19.4 - uTime * 0.018)) - 0.5;
-      vec2 foamUV = flow * 3.8 + warp * 2.4;
-      float broadPatches = foamTurbulence(flow * 0.64 + warp * 1.3 + 47.1);
-      float flecks = foamTurbulence(foamUV + vec2(uTime * 0.045, -uTime * 0.018));
-      float detailAA = clamp(footprint * 1.4, 0.018, 0.11);
+      vec2 warp = vec2(filteredFoamNoise(flow * 0.71 + uTime * 0.025, flowFootprint * 0.71),
+        filteredFoamNoise(flow * 0.63 + 19.4 - uTime * 0.018, flowFootprint * 0.63)) - 0.5;
+      vec2 foamUV = flow * 2.2 + warp * 1.7;
+      float broadPatches = foamTurbulence(flow * 0.44 + warp * 1.3 + 47.1, flowFootprint * 0.9);
+      float flecks = foamTurbulence(foamUV + vec2(uTime * 0.045, -uTime * 0.018), flowFootprint * 3.3);
+      float detailAA = clamp(flowFootprint * 0.65, 0.018, 0.18);
       float rafts = smoothstep(0.49 - detailAA, 0.63 + detailAA, flecks + (broadPatches - 0.5) * 0.42);
       // Open holes have curved, turbulent boundaries, with no closed-cell
       // network. Higher-frequency texture breaks small clumps off their edges.
-      float brokenRafts = rafts * smoothstep(0.22, 0.43, foamTurbulence(foamUV * 3.1 + 8.4));
-      float fringeShape = foamTurbulence(vec2(coast.y * 3.1, uTime * 0.16));
+      float brokenRafts = rafts * smoothstep(0.22, 0.43, foamTurbulence(foamUV * 3.1 + 8.4, flowFootprint * 10.2));
+      float fringeShape = foamTurbulence(vec2(coast.y * 1.9, uTime * 0.16), footprint * 1.9);
       float fringeDepth = waterDepth - 0.008 - fringeShape * 0.014;
       float fringeWet = smoothstep(0.0, 0.008 + min(0.012, footprint * 0.04), fringeDepth);
       float rolledEdge = exp(-pow((fringeDepth - 0.008) / (0.006 + fringeShape * 0.008), 2.0)) * fringeWet;
@@ -394,23 +408,26 @@ export const oceanFragmentShader = /* glsl */`
       float advancingFringe = max(rolledEdge * (0.20 + 0.65 * flecks),
         swashBand * brokenRafts * 0.62) * (0.12 + uprush * 0.88)
         * (1.0 - smoothstep(3.0, 11.0, coast.x));
-      float freshFoam = shoreState.x * (0.04 + brokenRafts * 0.76)
-        * smoothstep(0.30, 0.59, broadPatches);
-      float rills = foamTurbulence(vec2(flow.x * 0.75, flow.y * 5.6) + warp * 2.0);
+      // A coherent whitewater shoulder breaks into larger irregular rafts.
+      // Clear water remains visible between those rafts and in the spent wash.
+      float freshFoam = shoreState.x * (0.30 + brokenRafts * 0.60)
+        * smoothstep(0.30, 0.56, broadPatches);
+      float rills = foamTurbulence(vec2(flow.x * 0.55, flow.y * 2.8) + warp * 1.5, flowFootprint * 4.1);
       float stretchedFlecks = smoothstep(0.54 - detailAA, 0.70 + detailAA, rills);
-      float remnants = max(brokenRafts * 0.24, stretchedFlecks * (1.0 - uprush) * 0.48);
+      float remnants = max(brokenRafts * 0.16, stretchedFlecks * (1.0 - uprush) * 0.34)
+        * smoothstep(0.48, 0.68, broadPatches);
       float backwashFoam = shoreState.z * remnants * (1.0 - smoothstep(0.22, 0.75, waterDepth));
       shoreFoam = max(freshFoam, advancingFringe) + backwashFoam * (1.0 - freshFoam);
-      float bubbleScale = 42.0;
-      float bubbleVisibility = 1.0 - smoothstep(0.13, 0.65, footprint * bubbleScale);
-      if (bubbleVisibility > 0.01) {
-        float bubbleAA = max(0.025, footprint * bubbleScale * 0.6);
-        float pores = foamPores((flow + warp * 0.06) * bubbleScale, bubbleAA);
-        shoreFoam *= 1.0 - pores * bubbleVisibility * 0.64;
-        shoreFoamLight = 1.0 - pores * bubbleVisibility * 0.12;
+      float bubbleScale = 18.0;
+      float poreFootprint = flowFootprint * bubbleScale * 1.15;
+      float pores = 0.16;
+      if (poreFootprint < 0.32) {
+        pores = foamPores((flow + warp * 0.06) * bubbleScale, poreFootprint);
       }
-      vec3 frothNormal = normalize(normal + vec3(noise(foamUV * 4.1) - 0.5, 0.0,
-        noise(foamUV * 3.9 + 31.6) - 0.5) * 0.32);
+      shoreFoam *= 1.0 - pores * 0.42;
+      shoreFoamLight = 1.0 - pores * 0.08;
+      vec3 frothNormal = normalize(normal + vec3(filteredFoamNoise(foamUV * 4.1, flowFootprint * 13.5) - 0.5, 0.0,
+        filteredFoamNoise(foamUV * 3.9 + 31.6, flowFootprint * 12.9) - 0.5) * 0.20);
       shoreFoamLight *= (0.82 + 0.18 * max(0.0, dot(frothNormal, uSunDirection)))
         * (0.90 + flecks * 0.10);
       shoreFoam *= seaActivity * regularNormalWeight;

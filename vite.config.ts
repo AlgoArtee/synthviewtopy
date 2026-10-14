@@ -6,6 +6,7 @@ export default defineConfig({
       input: {
         island: 'index.html',
         apartments: 'apartments.html',
+        northCity: 'north-city.html',
         liminette: 'liminette.html',
         room: 'room.html',
       },

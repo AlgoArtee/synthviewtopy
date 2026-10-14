@@ -1,0 +1,101 @@
+{
+  "revision": 7,
+  "request": [
+    "Move four pillows to the wall across from the TV, clearing most of the window",
+    "Add a large white filled duvet blanket"
+  ],
+  "authorization": "Local runtime implementation explicitly authorized; no paid services, asset export or deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "layout": {
+    "bedMetres": [
+      8.55,
+      8.55
+    ],
+    "pillows": {
+      "count": 6,
+      "eastWallOppositeTV": 4,
+      "relaxed": 2,
+      "uprightAtWindow": 0
+    },
+    "duvet": {
+      "widthMetres": 7.47,
+      "depthMetres": 7.55,
+      "nominalLoftMetres": 0.19,
+      "construction": "Closed down-filled cotton shell over relaxed sheet; softly gathered loft, faint baffle depressions, closed thick folded-back head edge and fine sewn perimeter; evaluated pillow surface contact"
+    }
+  },
+  "hero": "Clear full-wall city panorama, large filled white duvet and side-wall lounging pillows facing TV",
+  "circulation": "Preserve deliberate bed climb, full-bed walking and solid window boundary",
+  "productionViews": [
+    "sleep",
+    "bed-wide",
+    "panorama",
+    "pillows",
+    "duvet",
+    "television",
+    "on-bed"
+  ],
+  "budget": {
+    "uniqueTrianglesTarget": 1650000,
+    "paidServices": 0
+  },
+  "review": {
+    "revision": 7,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.2
+    ],
+    "acceptedScore": 8.2,
+    "report": "revision-7-reviews.md",
+    "finalReport": "revision-7-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-7/final-pass-1-contact",
+    "rubric": {
+      "construction": 1.9,
+      "lighting": 1.55,
+      "materials": 1.45,
+      "fidelity": 2.0,
+      "composition": 1.3
+    },
+    "remainingUnusedChecks": 2,
+    "limitations": [
+      "Duvet centre remains broad, smooth and evenly lit compared with rumpled cotton reference",
+      "Turned-back edge remains regular with a conspicuous dark seam",
+      "Pillow faces and stuffing deformation remain cushion-like and simplified",
+      "Visible city retains repeated modules, simplified people/vehicles and patterned reflections",
+      "Focused independent review inspected four final bedding images, not all rooms/weather/ceiling views"
+    ]
+  },
+  "validation": {
+    "build": "passed",
+    "runtimeViews": 25,
+    "fullHDReviewCaptures": [
+      1920,
+      1080
+    ],
+    "weatherModesCapturedForDuvet": [
+      "clear",
+      "rain",
+      "snow"
+    ],
+    "bedNavigation": "passed",
+    "mobile": "passed at 390px",
+    "geometryFinite": true,
+    "uniqueTriangles": 1533402,
+    "instanceExpandedTriangles": 1874624,
+    "duvetClosedShell": true,
+    "duvetNonManifoldEdges": 0,
+    "duvetMinThicknessMetres": 0.02199995517730713,
+    "duvetMeanThicknessMetres": 0.20018333692000384,
+    "fourPillowWallClearanceMetres": 0.004,
+    "pillowBounds": "exact transformed mesh vertices",
+    "reducedMotion": "city passed",
+    "runtimeErrors": [],
+    "geometryAudit": "test-artifacts/north-city/revision-7/validation-contact/audit.json",
+    "actualMeshPlan": "test-artifacts/north-city/revision-7/validation-contact/floor-plan.png",
+    "visualEvidence": "test-artifacts/north-city/revision-7/final-pass-1-contact"
+  }
+}

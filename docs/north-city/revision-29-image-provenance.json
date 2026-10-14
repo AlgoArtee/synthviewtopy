@@ -1,0 +1,16 @@
+{
+  "revision": 29,
+  "mode": "Built-in image_gen; reference-directed generation followed by a transparent, unlit edit. No CLI/API fallback.",
+  "reference": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-2e588dd9-3cf6-4e53-84d6-a058ce0c687c.jpg",
+  "assets": [
+    {"path":"public/apartments/assets/north-city/skyline-r29/lit-source.png","role":"Intermediate artwork, retained for window placement analysis only","dimensions":[2172,724],"sha256":"5e33b1231c6a9af873d13e096d252f286b54d9f7913650aea5576e9d07b656b4","original":"C:/Users/Admin/.codex/generated_images/01a13455-b989-7070-b62d-f6925f19e3a4/exec-b43eb1d5-35e1-43ba-b9bb-3276e39031ac.png"},
+    {"path":"public/apartments/assets/north-city/skyline-r29/unlit-city.png","role":"Final runtime architecture plate; native transparent sky preserved","dimensions":[2172,724],"sha256":"8189babbab3045c93d66e79cc9c2cca253871fbb20d65b9142a25fe3ef7b129a","original":"C:/Users/Admin/.codex/generated_images/01a13455-b989-7070-b62d-f6925f19e3a4/exec-c7cbfef2-417d-4249-a19b-3eb15f65158b.png"},
+    {"path":"public/apartments/assets/north-city/skyline-r29/windows.json","role":"1276 normalized window placements extracted by read-only analysis of lit-source.png; not an edited bitmap"}
+  ],
+  "promptSet": [
+    {"operation":"Reference-directed generation","promptSpecification":"Create an ultra-wide 3:1 clean city skyline texture for a realtime balcony, using the supplied reference's dense cyberpunk graphite metal towers, antennae, industrial roofs, sculptural tops, technical paneling and cyan/magenta/violet vocabulary. Straight-on level architectural camera, upright verticals, no barrel distortion or tilt. Remove foreground balcony, railing, cables, floor, platforms, streets, rails and trains; fill with distant facades. No people, vehicles, rain, snow, fog or smoke. Simple dark blue #071423 sky with space above tallest spires. Mostly dark readable glass windows, restrained baked lighting. Remove readable text and bright billboards; leave dark empty framed panels for 3D signs. Neutral dim blue ambient architecture, cinematic realistic matte, no watermark or UI."},
+    {"operation":"Edit; transparent_background=true","promptSpecification":"Edit the exact generated skyline while preserving its wide 3:1 composition, tower positions, perspective, silhouette, details, window locations and empty screen frames. Remove all sky between buildings and antennae to real alpha with clean antialiased edges. Turn off all window, sign and neon lights. Dark glass with subtle neutral room/reflection detail; empty navy panels; dim unlit colored tubes without glow. The app supplies active window lights and signs; no bright baked light grid. Readable neutral blue ambient albedo, not crushed black. No new structures, position changes, words, vehicles, rails, fog, rain or snow. Transparent PNG, same aspect ratio."}
+  ],
+  "runtime": "One shared final RGBA texture across three upright planar sectors, with separate editable instanced boards, batched architectural lights and controllable room quads. Weather tint, shared atmospheric fog and roof-edge snow are applied at runtime. No baked railway or foreground balcony.",
+  "processing": "Generated assets copied byte-for-byte into workspace. Pillow used only for read-only pixel validation and placement extraction; no post-generation bitmap editing."
+}

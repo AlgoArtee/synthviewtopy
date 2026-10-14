@@ -1,0 +1,43 @@
+{
+  "revision": 21,
+  "date": "2026-10-13",
+  "request": "Selectable Night, Morning, Day and Evening, each supporting Clear, Overcast, Rain, Storm, Snow, Fog and the separate Dark Academia group. Adjust sky, atmosphere, lighting and shadows; warm Dark Academia morning/day; clear distant neon at night/evening/in fog and softer daytime emission.",
+  "authorization": "Explicit request authorizes local UI, atmosphere, lighting and shader changes. No new assets, paid generation, external export, commit or deployment requested.",
+  "runtime": "Existing procedural Three.js room.html?id=os-city-apartment",
+  "contract": {
+    "hero": "Coherent time and weather across the north window and covered balcony, with distant neon visible through atmospheric haze",
+    "input": "Separate time selector, six standard conditions grouped under the selected time, four existing presets in Dark Academia. Weather selection survives time changes and time selection survives weather changes.",
+    "combinations": 40,
+    "circulation": "Existing room, balcony, door states and collisions retained",
+    "camera": "Existing 62-degree production camera and room viewpoints",
+    "readiness": "Actual room.ready plus render_game_to_text.ready before captures",
+    "performance": "Cached combined profiles, existing instanced geometry, shared material uniforms, existing bloom pass; no additional per-frame geometry",
+    "opening": "Existing 1.5m by 2.62m balcony aperture retained; secondary residential-door exception documented previously",
+    "paidServiceBudget": 0
+  },
+  "diagnosis": {
+    "weather": "Weather modes encoded time in a few Dark Academia names, while the standard six lacked a time dimension",
+    "neon": "Constant emission and body fog extinction obscured distant signs and windows, especially in dense fog"
+  },
+  "references": [
+    "test-artifacts/north-city/revision-18/references/city.jpg",
+    "test-artifacts/north-city/revision-20/final-2"
+  ],
+  "review": {
+    "scope": "Revision21 time/weather controls, four lighting states, warmer Dark Academia morning/day and atmospheric neon visibility",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-21-review-1.md",
+        "sha256": "d0f6d9f4501f34ad15c06d8c2bb0a11fbca499f1e84032fa82b2ea751f5dc8df"
+      }
+    ],
+    "status": "Accepted for revision21 scope"
+  },
+  "skillAdapter": "Project-specific procedural runtime contract and existing opening/layout package retained. Generic Blender validator schema does not match this runtime; no generic validator pass claimed. Existing source and historical review results remain preserved."
+}

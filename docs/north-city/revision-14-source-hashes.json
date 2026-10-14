@@ -1,0 +1,43 @@
+{
+  "revision": 14,
+  "files": {
+    "src/apartments/osCityWeather.ts": "4f1dd2b94fad9298ad7a4dd0e2aa70f29c593dc775883d3bdee6969d4efbbec7",
+    "src/apartments/osCityApartment.ts": "3157e9f5dd20c21e7cb2d15f46e3f84d38ac1db94d4d88910f54342f17306793",
+    "src/apartments/osCityExterior.ts": "5aaa31288512845aa34d9a6a84b41af6bb6b35f319c21d9b12bc613d0a95f8f6",
+    "src/apartments/osCityLife.ts": "6c542d081b581dc6766e234c526111d0f997015a891e717204ab9aa8df369637",
+    "src/apartments/osCityAmbience.ts": "c66de0bb1932953e176e883d3a4a5bf968176d561b56bb5be47ff0b677007069",
+    "src/apartments/osCitySoundControls.ts": "6f477a08577a6238af329d6f1da5454e1172d10d1831c6df4da2e61f6d49a813",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/room.ts": "eab66cc89c761b4ace057c699275b98996d8ec913e78184ded541bf72152e27a",
+    "src/apartments/northCity.css": "573985146e229af702b8122bac947d58ec8a07107f203fbe22d5f6d417153954",
+    "public/audio/north-city/weather-library.json": "7342e819ccac3af391733a5ece37927854c16e5b5a1b7c83293f2655800af331",
+    "public/audio/north-city/WEATHER_ATTRIBUTION.md": "518ddcddc8e6735b7030eb23a1a51a372bb3a492a764d7161cbc73b42151b9ea"
+  },
+  "evidence": {
+    "test-artifacts/north-city/revision-14/review-1-final/desktop-sound-controls.png": "29ce890b1a1df41cb889d24d68bf43738204c84f375541ea493ebfa895f38545",
+    "test-artifacts/north-city/revision-14/review-1-final/touch-375x667.png": "5e90db801d72e8484b3f986ac8e7fb99d8e0edefd17ebf1f59ab7d495107ee81",
+    "test-artifacts/north-city/revision-14/review-1-final/touch-390x844.png": "0715cc60b98e14802c0042c02bf7dedf071ac9ad4ea22a302a19b49862f8fa57",
+    "test-artifacts/north-city/revision-14/review-1-final/touch-844x390.png": "7827e8f434118b7280fad444ac782917f9c30aa70fb5591ced50e7494557bc9f",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-autumn-entrance.png": "4228ea67e78f64ec0be933ce3ab5e9ad730d9732ec38f7049027460155067a82",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-autumn-outlook.png": "f2574d22ae4655f5e4090bd7e32ca0adff687cdc29674f21824cda14f30493dc",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-foggy-night-entrance.png": "eda50932c540d9eea872432d7ba3924e914024e76a8611ddd9918774dcfe58ab",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-foggy-night-outlook.png": "5743feaa9393a1e9892ec5482706387e9dfc808982b20ede9b039baad137de6e",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-overcast-entrance.png": "17057dddfdc784e101cf36149affa114da65b3648f172aece6675a42e7d368b8",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-overcast-outlook.png": "80f32da63e40d478f0301d05bd76bda4f62c35b99d95cfe7f47933a8cdf86b1e",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-rainy-dusk-entrance.png": "f788cb9e59c3af7e337e945aeee80dcaf44bec020c2421c5cb0c5defb0bac0f4",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-academic-rainy-dusk-outlook.png": "bd7e7bd6326aac2319a5695728c1d3f00b87380d9daf355ca65d094b87c88682",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-clear-entrance.png": "2873614279d35eadd0825a5f7175060f649eebb4f935f070c7487c7f91819d55",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-clear-outlook.png": "11f0c192f214ba08a7a268dad58a2ffb715c70c8a1ee56e5561e13bb88abbc4d",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-cloudy-entrance.png": "a9d23a6e1fec0a79aeaaf7df6e05d51dca838d2faa4869edc77854e829171eb8",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-cloudy-outlook.png": "ab8a86780e615a598c0dada2d8862e0df2e1cba866b0dafadaca9619961b44e7",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-fog-entrance.png": "534b7dd2d7f493b2bbbc28da5b51ead70cd879249b28a9d592c3285973e252be",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-fog-outlook.png": "ca7ea971d1649d28cf04f6316c6289b1fb99a5da9db3d0d605d0998d955d913a",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-rain-entrance.png": "ee127cb51a5bff4c5d1627f0ed1d4faa70542b3d06903bc958ccaa7fa4ad0a92",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-rain-outlook.png": "6d5632418fad810f8fcec055dc084f6bc567a9d581935e0b7640048c9639c729",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-snow-entrance.png": "3fe158bcedb73344177fad5ebf83e38e9b1e32a14af08eba090eb60453c62830",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-snow-outlook.png": "5e76e65c9a3456f2c91f52ea7976306d9a0b54e7b4bde1be35a1ac03c4b1ebdd",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-storm-entrance.png": "b1881e350def691b56e7e63737f55326e5cfb60467029a17491490c6ab360c71",
+    "test-artifacts/north-city/revision-14/review-1-final/weather-storm-outlook.png": "3476d639f7d5df0c27f78b677c06cc5f73212308b7e46af4fbb04b57d6704165"
+  }
+}

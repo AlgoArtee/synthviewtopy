@@ -20,7 +20,37 @@ The source wording is retained as `sourceLabel` where a display name was normali
 
 ## Run locally
 
-Node.js 20.19+ or 22.12+ is recommended.
+Use Node.js 20.19+ or 22.12+.
+
+### Windows: double-click launchers
+
+Double-click **Start SynthViewTopy.cmd** in the project folder. It installs the
+locked dependencies on the first launch if needed, starts Vite in the background,
+waits for the server to be ready, and opens [http://127.0.0.1:5178](http://127.0.0.1:5178).
+Double-click **Stop SynthViewTopy.cmd** when finished. Closing the browser does
+not stop the server. Starting again reopens the existing server.
+
+The equivalent terminal commands on Windows are `npm start` and `npm stop`.
+Use `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1 -NoBrowser`
+to start without opening a browser. Logs and the
+managed process record are kept in `.runtime/` (ignored by Git). Stop checks the
+process identity before terminating it. If port 5178 is occupied by a server
+started separately, close that server first; the launcher will report the conflict.
+
+### Why opening index.html directly does not work
+
+Double-clicking `index.html` opens a `file://` URL; it does not start a server.
+This file is the source application shell. Its entry point is `src/main.ts`,
+which imports the stylesheet, Three.js, and the rest of the app. Vite serves
+these sources as browser-ready JavaScript and resolves their module and asset
+URLs. Without Vite, the raw HTML can appear without styling or a working 3D scene.
+
+All scene rendering and editing run in the browser. The local server serves and
+transforms files; a separate application backend is not required for the current
+features. Save data stays in the browser's storage for that URL, so use the same
+`http://127.0.0.1:5178` address to keep accessing the same saved layouts.
+
+### Development terminal (Windows, macOS, Linux)
 
 ```bash
 npm install
@@ -28,6 +58,8 @@ npm run dev
 ```
 
 Open [http://127.0.0.1:5178](http://127.0.0.1:5178). The fixed local-only port avoids colliding with other Vite projects that commonly use `5173`.
+Keep the terminal open and press **Ctrl+C** to stop this foreground server.
+Source changes reload automatically through Vite.
 
 ```bash
 npm run build     # Type-check and create the production bundle in dist/
@@ -49,6 +81,11 @@ npm run test:district-walkability # Probe every district delimiter and current g
 npm run export:unreal-bootstrap # Generate the one-way Unreal bootstrap manifest
 ```
 
+Production preview uses [http://127.0.0.1:5179](http://127.0.0.1:5179) and is
+stopped with Ctrl+C in its terminal. The files in `dist/` are compiled static
+assets and can be hosted by a static HTTP server; they should also be opened
+over HTTP rather than by double-clicking `dist/index.html`.
+
 ## Streamed browser preview and Unreal migration
 
 The browser is now explicitly a **sandbox editor and lightweight preview**.
@@ -69,7 +106,27 @@ quality configuration, and Cerebrum vertical-slice definition are documented in
 
 ## Editor modes and controls
 
-### Island menu and Vinculum Apartments
+### North City and O’s City Apartment
+
+Choose **Interiors → North City → O’s City Apartment**, or open
+`/room.html?id=os-city-apartment`. The 8.55 × 8.55 m sleeping platform has a
+full-wall city window, a holographic TV on the left wall and four oversized
+pillows against the opposite wall. Two low pillows leave most of the window
+clear. Seven smaller puffy cushions form a staggered front row opposite the TV,
+with blue and magenta abstract cat line art. An oversized white down-filled duvet lies loosely gathered toward the TV,
+with soft uneven folds and a hanging foot edge. The mattress and duvet fill the
+alcove to its walls, including the return opposite the window; lower gathers
+beneath the TV leave the complete screen clear.
+
+The Room guide includes **Oversized cotton pillows**, **Filled white duvet** and
+**Soft oversized duvet** views, plus **Blue and magenta cat cushions** and
+**Full staggered cat cushion row**. Use **Space** at the bed’s
+foot or the touch **Climb bed** control to climb up. The weather panel controls
+clear, cloudy, rain, storm, snow and fog; **H** or the chevron beside the North City
+back link collapses the panels. Room dimensions, evidence and realism reviews
+are recorded in [the North City room contract](docs/north-city/room-layout.json).
+
+### Island menu and Lux Umbrarum Student Spaces
 
 The **Island menu** starts closed. It contains the view modes, district Atlas,
 scene information, environment, layers, rendering status and project tools in
@@ -77,12 +134,23 @@ one scrollable drawer. Choose a mode or district to close it, or press Escape.
 Press `/` to open district search. Contextual editing tools remain available
 when working in Edit mode.
 
-Choose **Vinculum Apartments** in the menu to open the character residence
+Choose **Interiors → Lux Umbrarum Student Spaces** in the menu to open the student space
 directory at `/apartments.html`, then **Liminette Student Room** to visit
 `/liminette.html`. These pages also support direct navigation and browser
 Back/Forward. The apartment loads independently from the island and includes
 a library/study, lounge, sleeping area, kitchen and bathroom in a spacious
 retro-futuristic dark academia interior.
+
+Liminette's west library corner now follows the ivory reference photograph:
+pale built-in bookshelves, brass television and illuminated vacuum-valve display,
+a rolling ladder, a broad rounded cream sofa-bed with a huge cable-knit wool
+blanket, patterned rug, globe sconces and one walnut-framed corner window.
+The sofa sits about four metres from the screen. The existing writing and
+astronomy desks keep their L-shaped arrangement. Editable Blender source,
+generator and comparison notes are in
+[the ivory library authoring folder](tools/blender/liminette-library/README.md).
+Run `node scripts/liminette-library-smoke.mjs` to check loading, all viewpoints,
+movement, collisions, phone layout, missing-asset recovery and resource disposal.
 
 Drag to look, use **WASD** or **arrow keys** to walk, scroll or pinch to zoom,
 and press **F** for fullscreen. Touch screens have directional walking buttons.
@@ -115,7 +183,31 @@ window dressings, shelving, ceilings, pendants and sculptural objects.
 Every room retains study, library, lounge, sleeping, kitchen and washroom spaces.
 The north façade, courtyard coordinates and exterior geometry are shared.
 
-Every apartment includes an advanced research workstation with a curved ultrawide
+The **Lux Umbrarum Community Room** is a separate shared lounge at
+`/room.html?id=lux-umbrarum-community-room`. Its Blender-authored interior follows
+the supplied reference: a sunken ivory boucle conversation pit, oak coffee table,
+music and constellation wall, circular window, library, brass botanical sculptures
+and crystal chandeliers. Walking follows the two sets of steps into the pit.
+The editable Blender scene, deterministic generator and embedded texture sources
+are in [the community room authoring folder](tools/blender/lux-umbrarum-commons/README.md).
+Run `node scripts/community-room-smoke.mjs` with the local server running to
+check the GLB, viewpoints, stairs, collisions, mobile UI, loading failure and disposal.
+
+The **Lux Umbrarum Pool Commons** at `/room.html?id=lux-umbrarum-pool-commons`
+adds a wide classical indoor pool hall, with arched garden windows, inward-facing
+pearl and platinum canvas loungers on all four sides, a flat coffered ceiling,
+a live local-time brass clock with pressure, O₂ and CO₂ concentration dials, and
+a mechanical diving platform with access steps. **WASD / arrows** move or swim,
+**Space** jumps, and holding **C** dives. Use **Space** at the pool ladder to climb
+out. Jumping from the board produces droplets, a splash crown and fading ripples. Two
+long pearl reclining pods hang from platinum double-helix ceiling suspensions
+and matching floor tethers. Source, generation and asset budgets are documented
+in [the pool commons authoring folder](tools/blender/lux-umbrarum-pool/README.md).
+Run `node scripts/pool-commons-smoke.mjs` for room-scoped checks and
+`node scripts/pool-swimming-smoke.mjs` for keyboard/touch swimming and diving.
+`node scripts/pool-instruments-smoke.mjs` checks the ceiling and live clock.
+
+Every private apartment includes an advanced research workstation with a curved ultrawide
 display, two auxiliary screens, a glass touch deck and titanium hardware, regardless
 of the room's style. Design references, structural families and verification are
 documented in [the design notes](docs/apartment-design-references.md).
@@ -570,3 +662,18 @@ For masterplan changes, start in `src/data/districts.ts`. Definitions are stable
 - District ring-road radii: 84, 126, 177, 240, and 309 world units
 - Original sketch boundary radii: 14, 21, 29.5, 40, and 51.5 world units before the 6x masterplan expansion
 - Three continuous radial roads connect opposite biome domes through the origin, producing the six visible spoke boundaries used with the concentric roads
+
+The two North City holograms have original Asian feminine portraits with independent blinking and gentle head turns, nods and tilts. Their long spectral dresses continue to flow in the wind. Reduced-motion mode freezes the animation. Review and motion previews are documented in `docs/north-city/revision-10-reviews.md`.
+
+North City hologram faces now follow the supplied photographic portrait, with detailed swept-back hair, real blinking and gentle head motion. Revision 11 realism review: 8.3/10 after two rounds; provenance and limitations are in [the revision record](docs/north-city/revision-11-reviews.md).
+
+
+O’s City Apartment now has one uninterrupted panorama beside a left tilt-and-turn window. Use **Left city window** for Closed, Fully open or Kippöffnung; press **H** to show or hide apartment controls. The operating sash sits above fixed lower glazing to clear the bed. The west TV is centred along the square bed, and 24 city interior variants mix warm/cool light, dark rooms, blinds and occasional neon. [Revision 13 review and verification](docs/north-city/revision-13-brief.json): independent realism accepted at 8.3/10 in one round. The 100-image Snapshots archive remains the earlier revision-12 capture.
+
+O’s City Apartment offers all eight island weather modes, including four **Dark Academia** presets, plus overcast and snow. Choose **Sound for this weather** below **Left city window**: 70 distinct local recordings provide at least ten choices per weather, with each selection remembered independently. Open or tilt the window to hear the city; closing fades it to silence. **Use your own sound** accepts audio up to 25 MB and saves it privately in this browser, with a session-only fallback when storage is unavailable. [Weather, audio behavior, credits and verification](docs/north-city/weather-audio-library.md).
+
+
+O’s City Apartment has full rounded wall pillows supported on fitted sheet, with compressed bases and a duvet that ends at their fronts. The original hollow side profile and detached corner traces are corrected. [Focused bedding research, reviews and validation](docs/north-city/revision-15-reviews.md): independent scores8.4→8.7→8.8/10 across the three permitted rounds. The final8.8 is below the requested9/10; seam grooves, pointed lower toes and the fitted duvet outline remain documented visual limits.
+
+
+O’s City Apartment now has seven smaller puffy cat cushions in front of and between the four large pillows opposite the TV. Original blue/magenta abstract cat prints echo the city lights; plain cotton backs and compressed bases retain depth. The duvet ends in front of the added row. [Focused revision16 review and checks](docs/north-city/revision-16-reviews.md): independent8.8/10 accepted against8; no whole-room9 claim.

@@ -1,0 +1,40 @@
+{
+  "revision": 22,
+  "request": "Brighten daytime rain and storm; make nighttime neon sharp except in fog; add varied distant city lights and occasional independent flicker.",
+  "authorization": "User-requested local appearance and animation refinement of the existing procedural apartment.",
+  "runtime": "room.html?id=os-city-apartment",
+  "contract": {
+    "hero": "Legible city daylight in wet weather and distinct, lively distant neon",
+    "layout": "Existing apartment shell, openings, walkable balcony and circulation retained",
+    "camera": "Existing 62-degree runtime camera and authored viewpoints",
+    "input": "Existing independent time and weather selectors; reduced motion keeps new flicker steady",
+    "readiness": "Capture actual room only after render_game_to_text.ready",
+    "performance": "Bounded material animation; no per-frame geometry or texture generation",
+    "paidServiceBudget": 0
+  },
+  "evidenceBaseline": "test-artifacts/north-city/revision-21/final-1b",
+  "skillAdapter": "Existing custom procedural Three.js runtime package and opening schedule retained. No geometry export or deployment gate crossed; generic Blender package validation is not claimed.",
+  "review": {
+    "scope": "Revision22 daylight brightness, nighttime neon sharpness and distant light variety/dynamics",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 2,
+    "status": "Accepted for revision22 scope",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.3,
+        "accepted": true,
+        "report": "docs/north-city/revision-22-review-1.md",
+        "sha256": "0f0cfe9e9699fdf7650e48d96e197b29770090f4571ac9a36d3abdea3bbdd89b"
+      },
+      {
+        "round": 2,
+        "score": 8.4,
+        "accepted": true,
+        "report": "docs/north-city/revision-22-review-2.md",
+        "sha256": "010b94197b72067153b0ac4f59a97ca0d99ede575ec92ac910ca3cf72b749460"
+      }
+    ]
+  }
+}

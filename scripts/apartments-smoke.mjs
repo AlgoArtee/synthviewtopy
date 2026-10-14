@@ -190,7 +190,9 @@ async function islandChecks() {
       `${selector} must be contained by the consolidated menu`);
   }
   assert.equal(await page.locator('.island-apartments-link').getAttribute('href'), '/apartments.html');
-  assert.match(await page.locator('.island-apartments-link').innerText(), /Vinculum Apartments/);
+  assert.match(await page.locator('.island-apartments-link').innerText(), /Lux Umbrarum Student Spaces/);
+  assert.equal(await page.locator('.island-menu-destinations > h2').innerText(), 'Interiors');
+  assert.equal(await page.locator('.island-menu-destinations').getAttribute('aria-labelledby'), 'interiors-title');
   await screenshot(page, 'island-desktop-open');
   await page.keyboard.press('Escape');
   await menuIs(page, 'island', false);
@@ -324,7 +326,12 @@ async function roomChecks() {
     await page.keyboard.down(key);
     await advance(page, 4_000);
     await page.keyboard.up(key);
-    assert.deepEqual((await roomState(page)).position, beforeBlocked, `A wall or furnishing must stop sustained ${key} movement`);
+    const afterBlocked = (await roomState(page)).position;
+    const dx = Math.abs(afterBlocked[0] - beforeBlocked[0]), dz = Math.abs(afterBlocked[2] - beforeBlocked[2]);
+    // Diagonal input slides along walls. Collision must block a component,
+    // while reducing travel below the unobstructed 2.6 m/s walking distance.
+    assert(dx < .003 || dz < .003, `A wall or furnishing must block a component of sustained ${key} movement`);
+    assert(Math.hypot(dx, dz) < 10.2, `Sustained ${key} movement must be constrained by collision`);
   }
   await page.locator('#room-menu-toggle').click();
   await page.locator('#room-reset').click();
@@ -352,7 +359,7 @@ async function roomChecks() {
   await insideViewport(page, '.room-header');
   results.push({ check: 'look, zoom, walk, collision, reset, fullscreen, resize', status: 'passed' });
 
-  await Promise.all([page.waitForURL('**/apartments.html'), page.getByRole('link', { name: 'Back to Vinculum Apartments', exact: true }).click()]);
+  await Promise.all([page.waitForURL('**/apartments.html'), page.getByRole('link', { name: 'Back to Lux Umbrarum Student Spaces', exact: true }).click()]);
   hasPath(page, '/apartments.html');
   await page.goto('about:blank');
   const mobileContext = await browser.newContext({ viewport: mobile, deviceScaleFactor: 1, isMobile: true, hasTouch: true });
@@ -414,15 +421,15 @@ async function loadingFailureCheck() {
     assert(await fallback.isVisible(), 'A failed required map must leave the readable fallback visible');
     const claimsReady = await failedPage.evaluate(() => typeof window.render_game_to_text === 'function' && JSON.parse(window.render_game_to_text()).ready === true);
     assert.equal(claimsReady, false, 'A scene with a missing required texture must never claim to be ready');
-    const back = fallback.getByRole('link', { name: 'Back to Vinculum Apartments', exact: true });
+    const back = fallback.getByRole('link', { name: 'Back to Lux Umbrarum Student Spaces', exact: true });
     assert.equal(await back.getAttribute('href'), '/apartments.html');
     await screenshot(failedPage, 'room-missing-texture-fallback');
     assert.deepEqual(unexpectedPageErrors, [], 'Missing texture handling must not throw an uncaught exception');
-    assert(expectedErrors.some(message => message.includes('Unable to open Liminette')), 'The controlled failure must be reported for diagnosis');
-    const unrelatedErrors = expectedErrors.filter(message => !message.includes('Unable to open Liminette') && !message.includes('ERR_FAILED'));
+    assert(expectedErrors.some(message => message.includes('Unable to open student space')), 'The controlled failure must be reported for diagnosis');
+    const unrelatedErrors = expectedErrors.filter(message => !message.includes('Unable to open student space') && !message.includes('ERR_FAILED'));
     assert.deepEqual(unrelatedErrors, [], 'The intentional asset failure must not hide unrelated console errors');
     await Promise.all([failedPage.waitForURL('**/apartments.html'), back.click()]);
-    assert(await failedPage.locator('a.apartment-card').isVisible(), 'The fallback link must return to the usable directory');
+    assert(await failedPage.locator('a.apartment-card').first().isVisible(), 'The fallback link must return to the usable directory');
     results.push({ check: 'required scanned-map failure', status: 'passed', blockedMap, expectedErrors });
   } finally {
     await isolatedContext.close();

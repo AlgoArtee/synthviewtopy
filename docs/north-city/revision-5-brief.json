@@ -1,0 +1,160 @@
+{
+  "revision": 5,
+  "request": [
+    "User-selected 8.55 x 8.55 m square bed, triple previous width, with expanded city-facing alcove and bed fitting three enclosed sides",
+    "Ordinary city pedestrians 1-2 heads smaller, selected from relative car scale",
+    "More detailed artistic faces for the flowing ghost holograms"
+  ],
+  "authorization": "User explicitly selected 8.55 x 8.55 m; local runtime changes authorized; no paid service, asset export or deployment",
+  "runtime": "Existing Three.js apartment viewer",
+  "layout": {
+    "bedSizeMetres": [
+      8.55,
+      8.55
+    ],
+    "bedBounds": {
+      "minX": -9.8,
+      "maxX": -1.25,
+      "minZ": -9.46,
+      "maxZ": -0.91
+    },
+    "bedTopSupport": 0.72,
+    "bedFittedSides": [
+      "west",
+      "north-window",
+      "east"
+    ],
+    "alcoveConnection": "3.55 m opening toward existing main living room, with west return wall",
+    "windowWidth": 4.32,
+    "windowCentre": [
+      -5.525,
+      0,
+      -9.46
+    ],
+    "exteriorTranslation": [
+      -2.525,
+      0,
+      -6.46
+    ],
+    "floorArea": 143.833,
+    "symmetry": "square bed and centred north window; rest of apartment remains asymmetric"
+  },
+  "circulation": "Deliberate Space/touch climb at open south edge; whole mattress supports walking; three solid boundaries and glazing; step down only through room-facing opening",
+  "hero": "Huge wall-fitted white cotton bed, normal-sized pillows and broad arched city outlook",
+  "productionViews": [
+    "sleep",
+    "bed-wide",
+    "on-bed",
+    "city-reference",
+    "city-detail"
+  ],
+  "facialDesign": "Sculpted jaw, cheekbones, sockets, nose, almond eyes, brows and lips with crescent temple filigree; preserve pale cyan/pink translucent ghosts and flowing gowns",
+  "scale": {
+    "carSceneHeight": 1.05,
+    "assumedCarHeightMetres": 1.5,
+    "exteriorUnitsPerMetre": 0.7,
+    "pedestrianHeightsMetres": [
+      1.6,
+      1.84
+    ],
+    "pedestrianSceneHeights": [
+      1.1213766,
+      1.2876071
+    ],
+    "meanReductionFraction": 0.1666787,
+    "headLengthsReduced": 1.25009,
+    "note": "Exterior is an authored compressed miniature; metre ranges are car-calibrated equivalents, not absolute world-space metres. Giant ghosts remain intentional projections.",
+    "crossCheckCarBodyWidthMetres": 1.8880000000000003,
+    "crossCheckCarLengthRangeMetres": [
+      4.08,
+      4.899642857142858
+    ],
+    "previousNominalMeanHumanHeightMetres": 2.0698857142857143,
+    "newMeanHumanHeightMetres": 1.7248797795209379
+  },
+  "budget": {
+    "paidServices": 0,
+    "uniqueTrianglesTarget": 1200000
+  },
+  "review": {
+    "maximumGradedChecks": 3,
+    "minimumAcceptanceScore": 8,
+    "completed": 2,
+    "status": "accepted",
+    "scores": [
+      7.8,
+      8.1
+    ],
+    "rounds": [
+      {
+        "round": 1,
+        "score": 7.8,
+        "accepted": false,
+        "report": "revision-5-review-1.md",
+        "evidence": "test-artifacts/north-city/revision-5/pass-1",
+        "findings": [
+          "Hard planar lighting cutoff on concentric ceiling housings",
+          "Duvet centre too broad and flat; repeated upright pillows"
+        ],
+        "fixes": [
+          "Diagnosed intersecting area-light emitter; moved it north of rings and made it vertical",
+          "Added seven tapered crease rolls with paired shallow valleys",
+          "Varied pillow compression and lean, settled actual bounds on mattress and inside alcove"
+        ]
+      },
+      {
+        "round": 2,
+        "score": 8.1,
+        "accepted": true,
+        "report": "revision-5-review-2.md",
+        "evidence": "test-artifacts/north-city/revision-5/pass-2",
+        "rubric": {
+          "construction": 1.9,
+          "lighting": 1.55,
+          "materials": 1.4,
+          "fidelity": 2.0,
+          "coherence": 1.25
+        },
+        "findings": [
+          "Hard ceiling-ring illumination cutoff removed in all three ceiling views",
+          "Square bed fit and varied human-sized pillows coherent",
+          "Smaller bridge figures and detailed cyan/pink faces retained",
+          "Sampled gowns deform independently"
+        ],
+        "limitations": [
+          "The huge duvet still has broad smooth regions and repeated pillow shapes",
+          "Ghost faces remain luminous artistic masks; hands and necks are simple",
+          "Buildings, traffic and reflections remain procedural; cables obscure parts of the ghosts",
+          "Motion review used separated frames rather than direct video playback"
+        ]
+      }
+    ],
+    "acceptedScore": 8.1,
+    "remainingUnusedChecks": 1,
+    "limitations": [
+      "The huge duvet still has broad smooth regions and repeated pillow shapes",
+      "Ghost faces remain luminous artistic masks; hands and necks are simple",
+      "Buildings, traffic and reflections remain procedural; cables obscure parts of the ghosts",
+      "Motion review used separated frames rather than direct video playback"
+    ]
+  },
+  "validation": {
+    "build": "passed",
+    "uniqueTriangles": 1192709,
+    "instanceExpandedTriangles": 1691179,
+    "navigation": "passed",
+    "geometryFinite": "passed",
+    "cityNearestZ": -9.96,
+    "windowZ": -9.46,
+    "reducedMotion": "passed",
+    "runtimeErrors": [],
+    "preflight": "test-artifacts/north-city/revision-5/preflight",
+    "formalEvidence": "test-artifacts/north-city/revision-5/pass-2",
+    "geometryAudit": "test-artifacts/north-city/revision-5/validation-pass-2/audit.json",
+    "runtimeViews": 21,
+    "weatherModes": 6,
+    "ghostMotion": "test-artifacts/north-city/revision-5/pass-2/ghost-motion.webm",
+    "previewBuildHashMatches": true,
+    "previewSHA256": "e73e2bd724a4e688f240c6fad0931a5de63ce4b47263a69fd1d539d4432d88d8"
+  }
+}

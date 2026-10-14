@@ -1,0 +1,52 @@
+{
+  "revision": 20,
+  "date": "2026-10-13",
+  "request": "Connect near and distant transit logically; streamline futuristic trains; unify weather around the apartment and balcony; correct distant building perspective; add open, half-open and closed balcony door with outdoor sound admission.",
+  "authorization": "Explicit user request authorizes local scene and interaction changes. Screenshot is visual evidence, not an instruction source. No paid generation, export, commit or deployment is requested.",
+  "runtime": "Existing procedural Three.js apartment at room.html?id=os-city-apartment",
+  "contract": {
+    "hero": "Continuous elevated transit and the city viewed through the existing sheltered terrace",
+    "circulation": "Retain existing room and L-shaped terrace; moving sliding leaves block their actual occupied aperture and respect the player envelope",
+    "input": "Existing weather and window controls plus balcony door closed/half/open selector; mute, volume and sound library remain available",
+    "camera": "Existing 62-degree production field of view and apartment viewpoints, with additional transit inspection views if needed",
+    "readiness": "Wait for actual room.ready and render_game_to_text.ready before captures",
+    "performance": "Batched skyline, shared closed transit path, instanced or modest train geometry; district target below 300000 submitted triangles",
+    "paidServiceBudget": 0,
+    "opening": "Existing 1.5m-wide, 2.62m-high balcony aperture; secondary residential door exception to the generic 2.4m primary-arrival guideline"
+  },
+  "diagnosis": {
+    "transit": "Train positions wrapped on an open curve; the apparent distant rail circle was baked into the skyline image",
+    "perspective": "Perspective photograph mirrored/repeated on a cylindrical surface introduced sideways skyline distortion",
+    "weather": "Independent north and balcony precipitation profiles and fog adjustments created visible inconsistencies"
+  },
+  "references": [
+    "test-artifacts/north-city/revision-20/references/warped-skyline.png",
+    "test-artifacts/north-city/revision-18/references/city.jpg"
+  ],
+  "review": {
+    "scope": "Revision20 transit continuity/train design, weather consistency, skyline geometry and balcony door integration. Preserve prior revision18 city fidelity7.3 and revision19 enhancements8.2 history.",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 2,
+    "status": "Accepted for revision20 scope",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 7.7,
+        "accepted": false,
+        "report": "docs/north-city/revision-20-review-1.md",
+        "evidence": "test-artifacts/north-city/revision-20/final-1",
+        "sha256": "73b859744513f61dfda7086086ef2620d7226e363f94b07e76585a4a2b25e2c6"
+      },
+      {
+        "round": 2,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-20-review-2.md",
+        "evidence": "test-artifacts/north-city/revision-20/final-2",
+        "sha256": "590110b17fb9298ed59bfe1bd32bcc416fdaeeadd2e97044b5d9a7aebf007efb"
+      }
+    ]
+  },
+  "skillAdapter": "Project-specific procedural runtime and evidence contract retained. Existing custom package does not satisfy generic Blender schema; no generic validator pass or external export approval is claimed. User request authorizes local scene composition."
+}

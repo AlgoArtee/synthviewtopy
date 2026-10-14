@@ -1,0 +1,57 @@
+{
+  "revision": 16,
+  "request": "Add smaller puffy pillows in front of and between the four big pillows opposite the TV, with blue and magenta abstract cat lineart matching the city colors.",
+  "scope": "New decorative cushion row, original textile artwork, arrangement, material response and duvet contact. Historical revision-15 large-pillow score 8.8 and exhausted 3 rounds remain unchanged. This is a distinct user-requested addition.",
+  "implementation": {
+    "count": 7,
+    "alignment": "Four aligned in front of big east-wall pillows, three recessed into the intervening gaps; no new pillows by the window.",
+    "nominalWidthMetres": [
+      0.8,
+      0.86
+    ],
+    "nominalHeightMetres": [
+      0.69,
+      0.75
+    ],
+    "construction": "Closed puffy cotton front/rear panels with compressed sheet-supported base, narrow sewn seam, slightly unequal crown and local cotton wrinkles. Back support follows sampled actual large-pillow surfaces.",
+    "art": "Original seated, sleeping and stretching cats, continuous abstract linework with alternating blue/magenta gradients; matte front-panel cotton ink and plain white backs. No emission.",
+    "palette": [
+      "#287fa8",
+      "#b13b82"
+    ],
+    "duvet": "Pulled back to the new lower cushion fronts; fitted sheet remains below the pillow row."
+  },
+  "comparison": [
+    "test-artifacts/north-city/revision-15/review-3/pillow-row.png",
+    "test-artifacts/north-city/revision-15/review-3/pillow-low.png"
+  ],
+  "researchRetained": "revision-15-research.md (large pillow fill and cotton study; no new external asset)",
+  "evidence": "test-artifacts/north-city/revision-16/review-1",
+  "geometry": "test-artifacts/north-city/revision-16/geometry-final/pillows.json",
+  "review": {
+    "reviewer": "/root/realism_reviewer",
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "aspirationalTarget": 9,
+    "formalChecksCompleted": 1,
+    "status": "accepted at8.8 against8 minimum; below9 aspiration",
+    "finalScore": 8.8,
+    "remainingUnusedChecks": 2,
+    "report": "revision-16-review-1.md"
+  },
+  "limitations": "Static authored cloth; sampled contact tests are not exhaustive triangle intersection proofs. Historical 100 Snapshot files are unchanged.",
+  "measured": {
+    "totalPillows": 13,
+    "newCushions": 7,
+    "uniqueTriangles": 1975680,
+    "instanceExpandedTriangles": 2317780,
+    "duvetEastMaxInsetMetres": 1.1067426204681396,
+    "duvetPillowSamplePenetration": 0,
+    "cushionPillowSamplePenetration": [],
+    "phone": {
+      "width": 390,
+      "scroll": 390
+    },
+    "browserErrors": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "revision": 13,
+  "files": {
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/osCityApartment.ts": "1ed6d1376b6087ae581d1756d9c61dcc0e9c469a3db801ff071621f6a4f112bf",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityDuvet.ts": "991cb72b9a12eb545fd0bdb1d640783e224d9cb96e50e06140296d352fef6357",
+    "src/apartments/osCityExterior.ts": "a08b6f75a7bf4d17e39b0ffcc61965d2496dd13438136f72bb35ac0d107a0c58",
+    "src/apartments/room.ts": "f006ff2d5370f58eb7d99311d74b503b25263fff746f2c183c99fdffa4185290",
+    "src/apartments/liminetteRoom.ts": "c4396fd24982ca748dc9bc6a47132d511d61b23506ba73e1d7ac2c37110e393c",
+    "src/apartments/northCity.css": "b0d353bbeedb193bfbbb4787c4d288049d7642951458b63a2ccd612aca280242",
+    "src/apartments/osCityLayout.ts": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityLife.ts": "6f12e0319cb916a156a1a99430e49438330f5ac3a6c932e72ff4cf2a4123dc7f",
+    "scripts/north-city-window-review.mjs": "5db93e36a306a391d8aec41bec475c87269a2e0a23519e384ce3f427038f89a6",
+    "scripts/north-city-live-audit.mjs": "e8603c59e96a1a733e010d7ee14f784adc3090e3db084a8391a063ecf1c448cf"
+  }
+}

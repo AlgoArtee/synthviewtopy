@@ -1,0 +1,12 @@
+{
+  "algorithm": "SHA256",
+  "hashes": {
+    "docs/north-city/revision-10-brief.json": "a39bb2ea6db4f35466ecedfd2c346296d1ccc426ecd8376032f46d2bb907f7da",
+    "docs/north-city/revision-10-review-1.md": "b4b6ccf19935b61160a3eb68db6642afd59a5a3a720845afba4e9b7807241540",
+    "docs/north-city/revision-10-review-2.md": "2baaeffb2bab44324dc5f93b7befbd5796d9dd84828f970ace3d8fe86324561d",
+    "docs/north-city/revision-10-reviews.md": "b3208fe5edf1208e9ea06e2f357d927a6953a430a81f173c0a9ba914f9c9da6e",
+    "docs/north-city/room-layout.json": "6ead677579d20af88f1e72fbe09471daa8aee5c9bc5e81b5c17e3b9495a7cd84",
+    "test-artifacts/north-city/revision-10/validation-2/audit.json": "470f3d55b54b10726dd197cdedde9df728e7a18b556d1d1d918c7487e4d718cc",
+    "test-artifacts/north-city/revision-10/validation-2/floor-plan.png": "73ebe8db01f7dbf6c196f17339d5b9bba9b2b25086d3c5837e46e8bb782a0323"
+  }
+}

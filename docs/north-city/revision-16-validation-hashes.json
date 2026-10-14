@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "path": "test-artifacts/north-city/revision-16/geometry-final/pillows.json",
+      "bytes": 19490,
+      "sha256": "f6fdb149efb146a206578e66983bffb7772c470e8f064ba65343f0a65d9fb0c3"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/geometry-final/audit.json",
+      "bytes": 14421,
+      "sha256": "6cc7c8d1112ee9c935607e32ca3bcd57a8e60e686813f929341f27ddf5761cd4"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/bedding-results.json",
+      "bytes": 11480,
+      "sha256": "f3e0924ec8d2ffbe06f20fb76b7cc9db0703f0a58fe6f8a32f0660ed1ceedb58"
+    }
+  ]
+}

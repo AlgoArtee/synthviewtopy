@@ -1,0 +1,25 @@
+{
+  "revision": 26,
+  "request": "Merge the eastern Circuit Dive with Data Mall, add mall lighting and boards, three independent city-window percentage sliders, plaza hairstyles and continuously moving circuit-board lights.",
+  "contract": {
+    "runtime": "room.html?id=os-city-apartment",
+    "hero": "One continuous 51.5m Data Mall facing the circuit plaza",
+    "layout": "Existing apartment and balcony circulation; combined eastern retail footprint, mall height retained at 11.2m",
+    "railVisibility": "Existing continuous guideway and trains retained above the mall roof; actual balcony camera is authoritative",
+    "input": "0–100% shadow, illuminated-window and TV sliders; TV/shadows are independent percentages of lit residential rooms; values persist locally",
+    "camera": "Production balcony and north-window viewpoints at 951x892; actual-scene inspection camera for hair and mall interiors",
+    "readiness": "render_game_to_text.ready",
+    "performance": "Shared shader uniforms, cached department atlas, instanced hair and circuit light packets; one extra area light; no animated textures",
+    "paidServiceBudget": 0
+  },
+  "skillAdapter": "Existing custom Three.js runtime contract and apartment opening schedule retained. User directly authorized the retail composition change. No generated assets, Meshy, export or deployment gate crossed; generic Blender validation is not claimed.",
+  "review": {
+    "scope": "Requested mall, window controls, hairstyles, moving circuit lights and rail visibility",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "accepted": true,
+    "score": 8.2,
+    "report": "docs/north-city/revision-26-review-1.md"
+  }
+}

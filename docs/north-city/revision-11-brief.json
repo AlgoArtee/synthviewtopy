@@ -1,0 +1,104 @@
+{
+  "revision": 11,
+  "request": "Match both holographic faces to the supplied realistic cyan portrait reference",
+  "reference": "test-artifacts/north-city/references/08-hologram-portrait.jpg",
+  "runtime": "Existing Three.js apartment viewer",
+  "method": "Reference-derived high-detail open/closed portrait atlas on sculpted relief geometry, articulated head and real eyelid morphs",
+  "scope": "Both faces and swept-back hair; retain colors, placement, scale, dresses, wind, head movement, blinking, reduced-motion support and room geometry",
+  "asset": "public/apartments/holograms/reference-portrait-atlas-v11.png",
+  "assetSha256": "ac0d5df76ce663220d64431b1ff789e8243b49c4ca9399ef907e006bdbb33e52",
+  "generator": "Built-in imagegen; user reference supplied as identity/style input",
+  "budget": {
+    "uniqueTrianglesTarget": 1650000,
+    "paidMeshServices": 0
+  },
+  "review": {
+    "revision": 11,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 2,
+    "scores": [
+      7.8,
+      8.3
+    ],
+    "acceptedScore": 8.3,
+    "remainingUnusedChecks": 1,
+    "report": "revision-11-reviews.md",
+    "round1Report": "revision-11-review-1.md",
+    "finalReport": "revision-11-review-2.md",
+    "evidence": "test-artifacts/north-city/revision-11/review-2",
+    "rubric": {
+      "construction": 1.75,
+      "lighting": 1.6,
+      "materials": 1.7,
+      "fidelity": 2.0,
+      "composition": 1.25
+    },
+    "limitations": [
+      "Close interpretation rather than exact dimensional replica",
+      "Shallow portrait relief with some fixed image-like shading and hair detail; unrestricted viewing angles not established",
+      "Central face more solid than reference volumetric glow",
+      "Facial detail subtle at normal apartment viewing distance",
+      "Independent reviewer assessed sampled poses, not direct motion playback"
+    ]
+  },
+  "validation": {
+    "build": "passed TypeScript/Vite; existing large-chunk warning",
+    "portraitFrames": "10 actual production-renderer 1920x1080 frames, including known open/closed and turned-head states",
+    "liveClips": [
+      "test-artifacts/north-city/revision-11/review-2/cyan-motion.webm",
+      "test-artifacts/north-city/revision-11/review-2/pink-motion.webm"
+    ],
+    "eyeApertureHeightsMetres": {
+      "open": [
+        0.011962890625,
+        0.011962890625
+      ],
+      "closed": [
+        0,
+        0
+      ]
+    },
+    "upperLidMotionMetres": [
+      0.00717771053314209,
+      0.00717771053314209
+    ],
+    "headMotion": "Actual local quaternion changes independently within body",
+    "blinkRhythms": "Two unequal independent interval sequences, checked across 40 seconds at 30 samples/s",
+    "reducedMotion": "Actual runtime snapshot unchanged after advancing 12 seconds",
+    "ghostTriangles": 182580,
+    "sceneUniqueTriangles": 1590062,
+    "sceneInstanceExpandedTriangles": 1931284,
+    "errors": [],
+    "preservedFit": "All 270 TV rays clear; fitted bedding gaps below 0.001mm; no nightstand intersection",
+    "audit": "test-artifacts/north-city/revision-11/validation-2/audit.json",
+    "portraitMeasurements": "test-artifacts/north-city/revision-11/review-2/portrait-measurements.json",
+    "animationResults": "test-artifacts/north-city/revision-11/review-2/animation-results.json",
+    "sourceHashes": "revision-11-round-2-source-hashes.json",
+    "evidenceHashes": "test-artifacts/north-city/revision-11/review-2/evidence-manifest.json",
+    "finalRoomViews": {
+      "status": "passed",
+      "viewpoints": 28,
+      "captures": 33,
+      "errors": [],
+      "weather": [
+        "clear",
+        "rain",
+        "snow"
+      ],
+      "mobileWidth": 390,
+      "evidence": "test-artifacts/north-city/revision-11/room-views-2",
+      "evidenceManifest": "test-artifacts/north-city/revision-11/room-views-2/evidence-manifest.json"
+    },
+    "actualMeshFloorPlan": "test-artifacts/north-city/revision-10/validation-2/floor-plan.png",
+    "floorPlanParity": "Architecture, circulation and furnishing placement unchanged; prior actual-mesh plan retained"
+  },
+  "round2Corrections": [
+    "Reduce and broaden nose relief to agree with portrait landmarks",
+    "Share exact face/core tessellation to remove diverging depth edges",
+    "Raise lid surfaces 0.75mm and feather closed-atlas corners to ensure continuous closure"
+  ],
+  "status": "complete"
+}

@@ -1,0 +1,39 @@
+{
+  "files": [
+    {
+      "path": "docs/north-city/revision-16-brief.json",
+      "bytes": 2611,
+      "sha256": "a7b9e464ed19592a55726cfad2cd2d021b3bf3d7154aa73f624a3ec1ec53120b"
+    },
+    {
+      "path": "docs/north-city/revision-16-review-1-evidence-hashes.json",
+      "bytes": 5543,
+      "sha256": "8c8ced023e48b74c0fffbba81b8b99188bb57cdf6bce1593754a72ca58429033"
+    },
+    {
+      "path": "docs/north-city/revision-16-review-1-source-hashes.json",
+      "bytes": 4081,
+      "sha256": "ff34bca630ed0ab3d6ea2d095c3ff5ad69a1388bd31712b1219ef2321a2d0c34"
+    },
+    {
+      "path": "docs/north-city/revision-16-review-1.md",
+      "bytes": 4007,
+      "sha256": "3908678461f3a8e7d2247942b348f15005dcd81b4fdfdd8bb58147c3614d2969"
+    },
+    {
+      "path": "docs/north-city/revision-16-reviews.md",
+      "bytes": 1135,
+      "sha256": "5971b8b80eb7d20f6cbb29ab97566ebe82821768a49e08c4084fd15e0a307847"
+    },
+    {
+      "path": "docs/north-city/revision-16-validation-hashes.json",
+      "bytes": 623,
+      "sha256": "64096753d7dc6797e03b7795ba06139327d74bac8fbff391180785f58fa162b3"
+    },
+    {
+      "path": "docs/north-city/revision-16-validation.md",
+      "bytes": 2197,
+      "sha256": "3674ec48e769555122316c42a2468af307838d0754da5d96194fad21063709a3"
+    }
+  ]
+}

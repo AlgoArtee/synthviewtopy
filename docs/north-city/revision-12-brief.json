@@ -1,0 +1,63 @@
+{
+  "revision": 12,
+  "request": "Shift the cyan hologram nose slightly left and improve the bridge/adjacent face transition",
+  "scope": "Localized cyan portrait deformation only",
+  "method": "12 source-pixel left displacement, smoothly feathered below the eye corners and above the mouth; photographic UV shading and geometric nasal relief move together",
+  "priorRevision": 11,
+  "review": {
+    "revision": 12,
+    "maximumFormalChecks": 3,
+    "minimumAcceptedRealismScore": 8,
+    "reviewer": "independent realism agent /root/realism_reviewer",
+    "status": "accepted",
+    "formalChecksCompleted": 1,
+    "scores": [
+      8.3
+    ],
+    "acceptedScore": 8.3,
+    "remainingUnusedChecks": 2,
+    "report": "revision-12-review-1.md",
+    "evidence": "test-artifacts/north-city/revision-12/review-1",
+    "rubric": {
+      "construction": 1.75,
+      "lighting": 1.6,
+      "materials": 1.7,
+      "fidelity": 2.0,
+      "composition": 1.25
+    },
+    "limitations": [
+      "Shallow portrait relief and some fixed photographic shading/hair detail",
+      "Central face more solid than reference volumetric glow",
+      "Independent reviewer assessed sampled still poses, not direct motion playback"
+    ]
+  },
+  "validation": {
+    "build": "passed TypeScript/Vite",
+    "actualRendererFrames": 10,
+    "liveClips": 2,
+    "errors": [],
+    "blinkHeadAndReducedMotionChecks": "passed",
+    "ghostTriangles": 182580,
+    "changedSourceFiles": [
+      "src/apartments/osCityGhostFace.ts"
+    ],
+    "sourceHashes": "revision-12-source-hashes.json",
+    "evidence": "test-artifacts/north-city/revision-12/review-1",
+    "eyeApertureHeightsMetres": {
+      "open": [
+        0.011962890625,
+        0.011962890625
+      ],
+      "closed": [
+        0,
+        0
+      ]
+    },
+    "finiteGeometryProblems": [],
+    "portraitMeasurements": "test-artifacts/north-city/revision-12/review-1/portrait-measurements.json",
+    "animationResults": "test-artifacts/north-city/revision-12/review-1/animation-results.json",
+    "evidenceHashes": "test-artifacts/north-city/revision-12/review-1/evidence-manifest.json",
+    "priorRoomValidation": "Revision 11 full-room validation retained; architecture, room materials, city placement and bedding unchanged. Only the cyan nose region is deformed."
+  },
+  "status": "complete"
+}

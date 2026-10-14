@@ -35,6 +35,10 @@ export const coastFieldGLSL = /* glsl */`
 `;
 
 const OMEGA = Math.PI * 2 / SHORE_SURF_PERIOD;
+const GRAVITY = 9.81;
+// Finite bore depth prevents an infinite wavenumber at the dry shoreline.
+const BORE_DEPTH = 0.32;
+const CAPACITY_SLOPE = 0.020;
 const smooth = (a: number, b: number, x: number): number => {
   const t = Math.max(0, Math.min(1, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -46,11 +50,35 @@ const smoothDerivative = (a: number, b: number, x: number): number => {
 
 export interface ShoreSurfaceSample { height: number; dx: number; dz: number; }
 export interface ShoreFoamSample { breaker: number; swashFront: number; residualFoam: number; phase: number; }
+export interface ShoreWashSample { amount: number; rate: number; dx: number; dz: number; }
+
+export function shoreWaveSpeed(x: number): number {
+  return Math.sqrt(GRAVITY * (BORE_DEPTH + Math.max(0, x) * SHORE_SEAFLOOR_SLOPE));
+}
+
+const phaseDxAt = (x: number): number => OMEGA / shoreWaveSpeed(x);
+const phaseDzAt = (z: number): number => 0.008 + 0.00475 * Math.cos(z * 0.025)
+  + 0.0108 * Math.cos(z * 0.09);
 
 export function shorePhase(x: number, z: number, time: number): number {
-  // Wavelength shortens in shallow water. Positive time carries crests toward -X.
-  return 0.14 * x + 2.4 * Math.atan(x / 32) + OMEGA * time + 0.008 * z
-    + 0.19 * Math.sin(z * 0.025) + 0.16 * Math.sin(z * 0.32) + 0.055 * Math.sin(z * 0.91);
+  // Integrate k = omega / sqrt(g h) over the sloping shelf. The crest slows
+  // and its wavelength contracts shoreward, with coherent alongshore variation.
+  const travelPhase = x < 0 ? x * phaseDxAt(0)
+    : 2 * OMEGA / (GRAVITY * SHORE_SEAFLOOR_SLOPE) * (shoreWaveSpeed(x) - shoreWaveSpeed(0));
+  return travelPhase + OMEGA * time + 0.008 * z
+    + 0.19 * Math.sin(z * 0.025) + 0.12 * Math.sin(z * 0.09);
+}
+
+/** One asymmetric, travelling wash drives the sheet and its foam advection. */
+export function sampleShoreWash(x: number, z: number, time: number): ShoreWashSample {
+  const shift = smooth(0, 12, x);
+  const arrivalX = Math.max(0, x) * shift;
+  const arrivalDx = x > 0 ? shift + x * smoothDerivative(0, 12, x) : 0;
+  const arrival = shorePhase(arrivalX, z, time) - 1.45;
+  const phase = arrival + 0.52 * Math.cos(arrival);
+  const derivative = -0.5 * Math.sin(phase) * (1 - 0.52 * Math.sin(arrival));
+  return { amount: 0.5 + 0.5 * Math.cos(phase), rate: derivative * OMEGA,
+    dx: derivative * phaseDxAt(arrivalX) * arrivalDx, dz: derivative * phaseDzAt(z) };
 }
 
 export function sampleShoreSurface(x: number, z: number, time: number, waveHeight: number): ShoreSurfaceSample {
@@ -59,8 +87,8 @@ export function sampleShoreSurface(x: number, z: number, time: number, waveHeigh
   const landFadeDx = smoothDerivative(-12, -8, x);
   const runup = 0.245 * (1 - Math.exp(-waveHeight * 0.7));
   const growth = smooth(0, 6, x);
-  const capacity = runup + Math.max(0, x) * 0.006 * growth;
-  const capacityDx = x > 0 ? 0.006 * (growth + x * smoothDerivative(0, 6, x)) : 0;
+  const capacity = runup + Math.max(0, x) * CAPACITY_SLOPE * growth;
+  const capacityDx = x > 0 ? CAPACITY_SLOPE * (growth + x * smoothDerivative(0, 6, x)) : 0;
   const requested = waveHeight * 0.60;
   const limit = Math.sqrt(capacity * capacity + requested * requested);
   const amplitude = capacity * requested / limit;
@@ -71,9 +99,8 @@ export function sampleShoreSurface(x: number, z: number, time: number, waveHeigh
   const phase = shorePhase(x, z, time);
   const wave = Math.cos(phase) + 0.18 * Math.cos(2 * phase) + 0.10 * Math.sin(2 * phase);
   const waveDerivative = -Math.sin(phase) - 0.36 * Math.sin(2 * phase) + 0.20 * Math.cos(2 * phase);
-  const phaseDx = 0.14 + 0.075 / (1 + (x / 32) ** 2);
-  const phaseDz = 0.008 + 0.00475 * Math.cos(z * 0.025)
-    + 0.0512 * Math.cos(z * 0.32) + 0.05005 * Math.cos(z * 0.91);
+  const phaseDx = phaseDxAt(x);
+  const phaseDz = phaseDzAt(z);
   let height = amplitude * group * wave * landFade;
   let dx = group * ((amplitudeDx * landFade + amplitude * landFadeDx) * wave + amplitude * landFade * waveDerivative * phaseDx);
   let dz = amplitude * landFade * (groupDz * wave + group * waveDerivative * phaseDz);
@@ -90,21 +117,18 @@ export function sampleShoreSurface(x: number, z: number, time: number, waveHeigh
     height *= depthLimit / radius;
   }
   // The final shallow wash is a connected sheet of water. It arrives after the
-  // breaking front and drains more slowly than it advances (about 5s / 3.4s).
+  // breaking front and drains more slowly than it advances (about 5.5s / 2.9s).
   // Only its physical intersection with the sloping sand controls the wet edge.
-  const arrivalPhase = shorePhase(0, z, time) - 1.45;
-  const swashPhase = arrivalPhase + 0.52 * Math.cos(arrivalPhase);
-  const wash = 0.5 + 0.5 * Math.cos(swashPhase);
-  const washDerivative = -0.5 * Math.sin(swashPhase) * (1 - 0.52 * Math.sin(arrivalPhase));
+  const wash = sampleShoreWash(x, z, time);
   // Centimetre-high wash fingers create a scalloped physical intersection.
   // The same terms/derivatives run on CPU and GPU, rather than painting foam
   // over dry sand or moving an unrelated alpha mask ahead of the actual wave.
-  const fingers = 0.08 * Math.sin(z * 1.7 + time * 0.42) + 0.04 * Math.sin(z * 4.3 - time * 0.21);
-  const fingersDz = 0.136 * Math.cos(z * 1.7 + time * 0.42) + 0.172 * Math.cos(z * 4.3 - time * 0.21);
-  const sheetProfile = (1.18 + fingers) * wash - 0.06;
+  const fingers = 0.06 * Math.sin(z * 0.72) + 0.025 * Math.sin(z * 1.63);
+  const fingersDz = 0.0432 * Math.cos(z * 0.72) + 0.04075 * Math.cos(z * 1.63);
+  const sheetProfile = (1.18 + fingers) * wash.amount - 0.06;
   const sheetHeight = runup * group * sheetProfile * landFade;
-  const sheetDx = runup * group * sheetProfile * landFadeDx;
-  const sheetDz = runup * (groupDz * sheetProfile + group * ((1.18 + fingers) * washDerivative * phaseDz + fingersDz * wash)) * landFade;
+  const sheetDx = runup * group * (sheetProfile * landFadeDx + (1.18 + fingers) * wash.dx * landFade);
+  const sheetDz = runup * (groupDz * sheetProfile + group * ((1.18 + fingers) * wash.dz + fingersDz * wash.amount)) * landFade;
   const blend = smooth(4, 24, x);
   const blendDx = smoothDerivative(4, 24, x);
   return {
@@ -123,15 +147,17 @@ export function sampleShoreFoam(x: number, z: number, time: number, waveHeight: 
   const surfaceDepth = sampleShoreSurface(x, z, time, waveHeight).height - shoreFloor(x);
   const activity = smooth(0, 0.8, waveHeight);
   const water = smooth(0.008, 0.035, surfaceDepth);
-  const breakerBand = smooth(2, 8, x) * (1 - smooth(36, 74, x));
+  const breakDistance = Math.max(10, waveHeight / (0.78 * SHORE_SEAFLOOR_SLOPE));
+  const breakerBand = smooth(4, 10, x) * (1 - smooth(breakDistance * 0.85, breakDistance * 1.45, x));
   const crest = smooth(0.78, 0.98, Math.cos(phase));
   const front = 0.50 + 0.50 * smooth(-0.15, 0.65, -Math.sin(phase));
   const swashDistance = (surfaceDepth - 0.022) / 0.024;
-  const wake = smooth(0.02, 0.70, Math.sin(phase)) * smooth(-0.65, 0.8, Math.cos(phase));
+  const age = ((phase % (Math.PI * 2) + Math.PI * 2) % (Math.PI * 2)) / OMEGA;
+  const wake = smooth(0.12, 0.5, age) * (1 - smooth(1.4, 3.8, age));
   return {
     breaker: breakerBand * crest * front * water * activity,
     swashFront: Math.exp(-swashDistance * swashDistance) * (1 - smooth(6, 18, x)) * water * activity,
-    residualFoam: wake * smooth(-8, 0, x) * (1 - smooth(32, 85, x)) * water * activity * 0.32,
+    residualFoam: wake * smooth(-8, 0, x) * (1 - smooth(breakDistance, breakDistance * 1.5, x)) * water * activity * 0.22,
     phase,
   };
 }
@@ -154,9 +180,29 @@ const localShoreGLSL = /* glsl */`
     return 6.0 * t * (1.0 - t) / (b - a);
   }
   float shorePhaseGLSL(vec2 p, float time) {
-    return p.x * 0.14 + 2.4 * atan(p.x / 32.0) + time * ${OMEGA}
-      + p.y * 0.008 + 0.19 * sin(p.y * 0.025)
-      + 0.16 * sin(p.y * 0.32) + 0.055 * sin(p.y * 0.91);
+    float speed0 = sqrt(${GRAVITY * BORE_DEPTH});
+    float speed = sqrt(${GRAVITY} * (${BORE_DEPTH} + max(0.0, p.x) * ${SHORE_SEAFLOOR_SLOPE}));
+    float travel = p.x < 0.0 ? p.x * ${OMEGA} / speed0
+      : ${2 * OMEGA / (GRAVITY * SHORE_SEAFLOOR_SLOPE)} * (speed - speed0);
+    return travel + time * ${OMEGA} + p.y * 0.008
+      + 0.19 * sin(p.y * 0.025) + 0.12 * sin(p.y * 0.09);
+  }
+  float shorePhaseDxGLSL(float x) {
+    return ${OMEGA} / sqrt(${GRAVITY} * (${BORE_DEPTH} + max(0.0, x) * ${SHORE_SEAFLOOR_SLOPE}));
+  }
+  float shorePhaseDzGLSL(float z) {
+    return 0.008 + 0.00475 * cos(z * 0.025) + 0.0108 * cos(z * 0.09);
+  }
+  // amount, time derivative, cross-shore derivative, alongshore derivative.
+  vec4 shoreWashAtTimeGLSL(vec2 p, float time) {
+    float shift = smoothstep(0.0, 12.0, p.x);
+    float arrivalX = max(0.0, p.x) * shift;
+    float arrivalDx = p.x > 0.0 ? shift + p.x * shoreSmoothDerivative(0.0, 12.0, p.x) : 0.0;
+    float arrival = shorePhaseGLSL(vec2(arrivalX, p.y), time) - 1.45;
+    float phase = arrival + 0.52 * cos(arrival);
+    float derivative = -0.5 * sin(phase) * (1.0 - 0.52 * sin(arrival));
+    return vec4(0.5 + 0.5 * cos(phase), derivative * ${OMEGA},
+      derivative * shorePhaseDxGLSL(arrivalX) * arrivalDx, derivative * shorePhaseDzGLSL(p.y));
   }
   vec3 shoreSurfaceAtTimeGLSL(vec2 p, float time) {
     if (uWaveHeight <= 0.0 || p.x <= -12.0) return vec3(0.0);
@@ -164,8 +210,8 @@ const localShoreGLSL = /* glsl */`
     float landFadeDx = shoreSmoothDerivative(-12.0, -8.0, p.x);
     float runup = 0.245 * (1.0 - exp(-uWaveHeight * 0.7));
     float growth = smoothstep(0.0, 6.0, p.x);
-    float capacity = runup + max(0.0, p.x) * 0.006 * growth;
-    float capacityDx = p.x > 0.0 ? 0.006 * (growth + p.x * shoreSmoothDerivative(0.0, 6.0, p.x)) : 0.0;
+    float capacity = runup + max(0.0, p.x) * ${CAPACITY_SLOPE} * growth;
+    float capacityDx = p.x > 0.0 ? ${CAPACITY_SLOPE} * (growth + p.x * shoreSmoothDerivative(0.0, 6.0, p.x)) : 0.0;
     float requested = uWaveHeight * 0.60;
     float limit = sqrt(capacity * capacity + requested * requested);
     float amplitude = capacity * requested / limit;
@@ -176,9 +222,8 @@ const localShoreGLSL = /* glsl */`
     float phase = shorePhaseGLSL(p, time);
     float wave = cos(phase) + 0.18 * cos(2.0 * phase) + 0.10 * sin(2.0 * phase);
     float derivative = -sin(phase) - 0.36 * sin(2.0 * phase) + 0.20 * cos(2.0 * phase);
-    float phaseDx = 0.14 + 0.075 / (1.0 + (p.x / 32.0) * (p.x / 32.0));
-    float phaseDz = 0.008 + 0.00475 * cos(p.y * 0.025)
-      + 0.0512 * cos(p.y * 0.32) + 0.05005 * cos(p.y * 0.91);
+    float phaseDx = shorePhaseDxGLSL(p.x);
+    float phaseDz = shorePhaseDzGLSL(p.y);
     vec3 ocean = vec3(amplitude * group * wave * landFade,
       group * ((amplitudeDx * landFade + amplitude * landFadeDx) * wave + amplitude * landFade * derivative * phaseDx),
       amplitude * landFade * (groupDz * wave + group * derivative * phaseDz));
@@ -192,16 +237,13 @@ const localShoreGLSL = /* glsl */`
       ocean.z *= heightGain;
       ocean.x *= heightRatio;
     }
-    float arrivalPhase = shorePhaseGLSL(vec2(0.0, p.y), time) - 1.45;
-    float swashPhase = arrivalPhase + 0.52 * cos(arrivalPhase);
-    float wash = 0.5 + 0.5 * cos(swashPhase);
-    float washDerivative = -0.5 * sin(swashPhase) * (1.0 - 0.52 * sin(arrivalPhase));
-    float fingers = 0.08 * sin(p.y * 1.7 + time * 0.42) + 0.04 * sin(p.y * 4.3 - time * 0.21);
-    float fingersDz = 0.136 * cos(p.y * 1.7 + time * 0.42) + 0.172 * cos(p.y * 4.3 - time * 0.21);
-    float sheetProfile = (1.18 + fingers) * wash - 0.06;
+    vec4 wash = shoreWashAtTimeGLSL(p, time);
+    float fingers = 0.06 * sin(p.y * 0.72) + 0.025 * sin(p.y * 1.63);
+    float fingersDz = 0.0432 * cos(p.y * 0.72) + 0.04075 * cos(p.y * 1.63);
+    float sheetProfile = (1.18 + fingers) * wash.x - 0.06;
     vec3 sheet = vec3(runup * group * sheetProfile * landFade,
-      runup * group * sheetProfile * landFadeDx,
-      runup * (groupDz * sheetProfile + group * ((1.18 + fingers) * washDerivative * phaseDz + fingersDz * wash)) * landFade);
+      runup * group * (sheetProfile * landFadeDx + (1.18 + fingers) * wash.z * landFade),
+      runup * (groupDz * sheetProfile + group * ((1.18 + fingers) * wash.w + fingersDz * wash.x)) * landFade);
     float blend = smoothstep(4.0, 24.0, p.x);
     vec3 result = mix(sheet, ocean, blend);
     result.y += (ocean.x - sheet.x) * shoreSmoothDerivative(4.0, 24.0, p.x);
@@ -216,14 +258,16 @@ const localShoreGLSL = /* glsl */`
     float depth = shoreSurfaceGLSL(p).x - shoreFloorGLSL(p.x);
     float activity = smoothstep(0.0, 0.8, uWaveHeight);
     float water = smoothstep(0.008, 0.035, depth);
-    float breakerBand = smoothstep(2.0, 8.0, p.x) * (1.0 - smoothstep(36.0, 74.0, p.x));
+    float breakDistance = max(10.0, uWaveHeight / ${0.78 * SHORE_SEAFLOOR_SLOPE});
+    float breakerBand = smoothstep(4.0, 10.0, p.x) * (1.0 - smoothstep(breakDistance * 0.85, breakDistance * 1.45, p.x));
     float crest = smoothstep(0.78, 0.98, cos(phase));
     float front = 0.50 + 0.50 * smoothstep(-0.15, 0.65, -sin(phase));
     float swashDistance = (depth - 0.022) / 0.024;
-    float wake = smoothstep(0.02, 0.70, sin(phase)) * smoothstep(-0.65, 0.8, cos(phase));
+    float age = mod(phase, ${Math.PI * 2}) / ${OMEGA};
+    float wake = smoothstep(0.12, 0.5, age) * (1.0 - smoothstep(1.4, 3.8, age));
     return vec4(vec3(breakerBand * crest * front,
       exp(-swashDistance * swashDistance) * (1.0 - smoothstep(6.0, 18.0, p.x)),
-      wake * smoothstep(-8.0, 0.0, p.x) * (1.0 - smoothstep(32.0, 85.0, p.x)) * 0.32) * water * activity, phase);
+      wake * smoothstep(-8.0, 0.0, p.x) * (1.0 - smoothstep(breakDistance, breakDistance * 1.5, p.x)) * 0.22) * water * activity, phase);
   }
   float shoreWetnessAtTimeGLSL(vec2 p, float lag) {
     return smoothstep(-0.018, 0.04, shoreSurfaceAtTimeGLSL(p, uTime - lag).x - shoreFloorGLSL(p.x));

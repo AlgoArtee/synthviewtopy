@@ -53,7 +53,8 @@
 .island-menu-section { padding: 18px 20px; border-bottom: 1px solid var(--line); }
 .island-menu-section > h2 { font-size: 13px; font-weight: 500; margin: 0 0 14px; }
 .island-menu-foot { padding: 0 20px 14px; margin: 16px 0 0; color: var(--muted); font-size: 10px; line-height: 1.8; }
-.island-menu-destinations { padding: 0 20px 18px; border-bottom: 1px solid var(--line); }
+.island-menu-destinations { padding: 18px 20px; border-bottom: 1px solid var(--line); }
+.island-menu-destinations > h2 { font-size: 13px; font-weight: 500; margin: 0 0 14px; }
 .island-apartments-link { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 17px 15px; background: rgba(88, 221, 209, .07); border: 1px solid rgba(88, 221, 209, .26); border-radius: 4px; color: var(--ink); text-decoration: none; transition: background 150ms; }
 .island-apartments-link:hover { background: rgba(88, 221, 209, .14); }
 .island-apartments-link small { display: block; font-size: 9px; color: var(--muted); margin-bottom: 7px; }

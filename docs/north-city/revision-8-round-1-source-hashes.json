@@ -1,0 +1,11 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityDuvet.ts": "eb15559718562840922ad94f5d4da4cdfff95d96d1ce83f23f14befeb0fed3ea",
+    "src/apartments/osCityFurnishings.ts": "4340df5b5067c3f9d43d35a9193392d7b565f22bca894f3afe8063d6a7b07db6",
+    "src/apartments/osCityApartment.ts": "54ed1007410e9020cb7d0611dad50e4425a01c36b6df0593d3361fe7f6a8def2",
+    "scripts/north-city-bedding-review.mjs": "7cf0f999c866bdb2a17c0a6b309123bfc1c7bef4501fc3e8621b37cce25ffe08",
+    "scripts/north-city-live-audit.mjs": "c4b0e1215041bddeb1c08b71ddf9becbfb843994ab2fe3c35d9de545a3e45436"
+  },
+  "evidence": "test-artifacts/north-city/revision-8/pass-1"
+}

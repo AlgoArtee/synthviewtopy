@@ -1,0 +1,346 @@
+{
+  "revision": 14,
+  "verified": "2026-10-12T17:26:57.854452+00:00",
+  "weatherModes": 10,
+  "distinctRecordings": 70,
+  "weatherChoices": 101,
+  "productionAudioMatches": true,
+  "autoplayBypass": false,
+  "noBrowserErrors": true,
+  "files": {
+    "test-artifacts/north-city/weather-audio/validation/results.json": "034602b4a11d6565d39d8b64c490fc6f37f4a114798b37697bbd3161bbb4d4ac",
+    "test-artifacts/north-city/weather-audio/validation/retry-results.json": "4ec5ad7d85e8435fb4e087e3c0e6d62619a8fe04f032c76994bbb779ef868793",
+    "test-artifacts/north-city/weather-audio/validation/touch-results.json": "c7fde733e14bfc3faa16dad9ef04a038a4059aacd5649d9a486585a760841fc3",
+    "test-artifacts/north-city/weather-audio/validation/weather-effects.json": "466e994d7bfb0276f7b03434c46535b5d6c639562b84190a6a2cc1f8bbbc2711",
+    "test-artifacts/north-city/weather-audio/geometry/audit.json": "c793155eea8c251dba017d5616cef10f9901e8efaa0ef18f12b3dc762d163ec4",
+    "test-artifacts/north-city/weather-audio/build-final.log": "047bd92c514ea93127d654afc4c1f7f181cf44896d1331ce67575cd7cb53ad7c",
+    "scripts/north-city-weather-audio-smoke.mjs": "19f68fb799c5dc3fb1f3cb7019ecfcdeab9e2f4fdc5e8840ff2d8da64a488915",
+    "scripts/north-city-audio-retry-smoke.mjs": "5176f667eb473bd6f185d8e732029d81228e95c4a5dee08500589799ffe4ee07",
+    "scripts/north-city-weather-effects-audit.mjs": "91083896356c459505fa907b1a3bc30ffcade41d410648f7ce1fa68dfe1f56c4",
+    "scripts/north-city-live-audit.mjs": "e8603c59e96a1a733e010d7ee14f784adc3090e3db084a8391a063ecf1c448cf",
+    "scripts/build-city-weather-library.py": "5215105824bbbbb8413124697e2e2b53305fc91f09a76711e66b21c4968aa2ee",
+    "scripts/research-city-weather-audio.py": "6ed09da875b33897107dd20db8a3b20441c89437d65c902574c77d8c74ca3a67"
+  },
+  "assets": {
+    "/audio/north-city/library/fs-164213.mp3": {
+      "bytes": 994785,
+      "sha256": "417127aac4b1ce2f4894da311285919102755f1e48964dc8d769eefe422e3c34"
+    },
+    "/audio/north-city/library/fs-171980.mp3": {
+      "bytes": 1441166,
+      "sha256": "0cfee2cd422c52409de0d9e6decdfeb6494e29613d8aab972385e0ab16001742"
+    },
+    "/audio/north-city/library/fs-109485.mp3": {
+      "bytes": 1441166,
+      "sha256": "2602d2ff6ac31c7bc3cba4222e0f29727e82f223693cff667a90f829ad45d90b"
+    },
+    "/audio/north-city/library/fs-209763.mp3": {
+      "bytes": 884862,
+      "sha256": "d0b4e875325f636a91e5fa37b5e079e3f2c505f087bd374b37f81ef847c73174"
+    },
+    "/audio/north-city/library/fs-212146.mp3": {
+      "bytes": 438064,
+      "sha256": "4c1dbeb4bcaf69775cba0e5eea0243e793cd13b8acf8527943701c003f0cbe4f"
+    },
+    "/audio/north-city/library/fs-197213.mp3": {
+      "bytes": 1441166,
+      "sha256": "2de114a213b88c1331ff132113f4ddf520a3142e0d8662c0e4f3cf1983cb4bf7"
+    },
+    "/audio/north-city/library/fs-26221.mp3": {
+      "bytes": 1441166,
+      "sha256": "52ec16832eebd085e6b76ca24738101a105819c8f05abca19d48eedb9eaecf46"
+    },
+    "/audio/north-city/library/fs-263496.mp3": {
+      "bytes": 1441166,
+      "sha256": "12c36103f074866bfb942bb37a7401c7be695d1b96d671011c4df888daee1f23"
+    },
+    "/audio/north-city/library/fs-263497.mp3": {
+      "bytes": 1322883,
+      "sha256": "2216c682c25884eddfa02702617efc6033841860116f3a032099d3f0dea2fd45"
+    },
+    "/audio/north-city/library/fs-330427.mp3": {
+      "bytes": 1441166,
+      "sha256": "74074aa5b3c041c9402d8744eb07b34437b6d9b64cddeb564c273d60beb208fb"
+    },
+    "/audio/north-city/library/fs-336503.mp3": {
+      "bytes": 642864,
+      "sha256": "02b07f0a0e13a88743aa682216dbd6a1ec7a72c37dee5be58f56b749c1a34592"
+    },
+    "/audio/north-city/library/fs-326652.mp3": {
+      "bytes": 1441166,
+      "sha256": "66b0fb792ba7f742185cd41cdf61a7fc8622ec69b9aa7e6304a82a65af49eab6"
+    },
+    "/audio/north-city/library/fs-360775.mp3": {
+      "bytes": 1441166,
+      "sha256": "601eb21956daefc953b4093a08d5952ced8ca2615c8da206979902bedae899ae"
+    },
+    "/audio/north-city/library/fs-360783.mp3": {
+      "bytes": 1441166,
+      "sha256": "d0123a439ed9590e50b9709b884d961cf21670c145d4f71ac8d74fe55bb16dc5"
+    },
+    "/audio/north-city/library/fs-352790.mp3": {
+      "bytes": 1441166,
+      "sha256": "0def1fc60322c028a667d45f0ea67ea0971bcc285867e632d938d09445180157"
+    },
+    "/audio/north-city/library/fs-380687.mp3": {
+      "bytes": 1441166,
+      "sha256": "7129523d316dd3cad9de94b9ecb2c27587c5959f1ee618a894ff8bb65b8807ac"
+    },
+    "/audio/north-city/library/fs-413386.mp3": {
+      "bytes": 1441166,
+      "sha256": "6785914988f9499e4eb933c093109a30b4ce2c5a98db20561d884bf356e4902b"
+    },
+    "/audio/north-city/library/fs-385104.mp3": {
+      "bytes": 1441166,
+      "sha256": "3d547751cfbdbad0c2288fecd87de005bc0ce5b2151bc47f2b4a8ff6fcf2191c"
+    },
+    "/audio/north-city/library/fs-427841.mp3": {
+      "bytes": 1441166,
+      "sha256": "24ffc8d1ce3a1c3f0a9d81ff3c3459704b5840efa8f05529ea7dc23c673e6f23"
+    },
+    "/audio/north-city/library/fs-429189.mp3": {
+      "bytes": 1441166,
+      "sha256": "c61427049bf5874e9233a8a42a94a2a7b76cb7c431d5978328b0a197c15a47f2"
+    },
+    "/audio/north-city/library/fs-451079.mp3": {
+      "bytes": 812555,
+      "sha256": "592fca783abb9870b5a92fbd2019320279561b9f9c991c6d8406369deb588700"
+    },
+    "/audio/north-city/library/fs-450239.mp3": {
+      "bytes": 1441166,
+      "sha256": "ab19ee842fcc79760bfd951adfb1f66f1df0ce247cb5e54abcae31ecfca32a45"
+    },
+    "/audio/north-city/library/fs-452407.mp3": {
+      "bytes": 1441166,
+      "sha256": "fbd2757258b5c7acb353707e196550b3e8a56e0de432d257a638bdbd358cfdaa"
+    },
+    "/audio/north-city/library/fs-452434.mp3": {
+      "bytes": 1441166,
+      "sha256": "9991a63731e9dca56f32260848b310cde04b789f0e0738a15f38a32efdb57ae5"
+    },
+    "/audio/north-city/library/fs-454377.mp3": {
+      "bytes": 1441166,
+      "sha256": "66482e9723c87182ee5dba5e3780a2ce8911b99af9a15bdd272e765723a05204"
+    },
+    "/audio/north-city/library/fs-457318.mp3": {
+      "bytes": 687585,
+      "sha256": "4371d102f4d55c28c82527fa73d6fa37314c74c87a92fe8f8d0b57a6f01f1baa"
+    },
+    "/audio/north-city/library/fs-465785.mp3": {
+      "bytes": 1441166,
+      "sha256": "d739e19f587d6152b94286cb91eafb506c3ee91415b40de134f5db0038c4f703"
+    },
+    "/audio/north-city/library/fs-455949.mp3": {
+      "bytes": 1441166,
+      "sha256": "5cb83ac39bc28c12ab317c39d6144f4ea9b2d568b35c5feb983185c3684fd266"
+    },
+    "/audio/north-city/library/fs-470030.mp3": {
+      "bytes": 1441166,
+      "sha256": "f8e0e8d46b40f51ad8d0d2cdcfe84c12845bca2115ee4b5cc5d7b623ae3844ad"
+    },
+    "/audio/north-city/library/fs-488060.mp3": {
+      "bytes": 947138,
+      "sha256": "2d5df747786289d0cf8fed0d02fbbe01a70794162f33e57b713887b54673fc25"
+    },
+    "/audio/north-city/library/fs-486877.mp3": {
+      "bytes": 1441166,
+      "sha256": "5ce9e7a505e7889ee73d21ffde5885d41882d5cff57b20c79d8fdc3bdaa395cb"
+    },
+    "/audio/north-city/library/fs-500804.mp3": {
+      "bytes": 1441166,
+      "sha256": "834c6dbadab63a0849000c46d168d55235e8b2666a6a56c6374493c3dd829233"
+    },
+    "/audio/north-city/library/fs-500805.mp3": {
+      "bytes": 1441166,
+      "sha256": "9ae1d29478f200aca8b559de37d8a8438ae909a8743ba4fc596b14343fb4779c"
+    },
+    "/audio/north-city/library/fs-518459.mp3": {
+      "bytes": 1441166,
+      "sha256": "07f5d2c7261c7d0108ed33c0dd61df8ed1d73be16a56b80c9bdb21fd69e38248"
+    },
+    "/audio/north-city/library/fs-518460.mp3": {
+      "bytes": 1441166,
+      "sha256": "def06d3e6a073bca4a7a224f330e66a0e359a71b46367c9132a0347856e7e3d8"
+    },
+    "/audio/north-city/library/fs-546524.mp3": {
+      "bytes": 441407,
+      "sha256": "7567d84008b74e15cbe74a682275b3930f3ae3472300179a5e04e8046c8a3974"
+    },
+    "/audio/north-city/library/fs-537333.mp3": {
+      "bytes": 1441166,
+      "sha256": "a52e598f46754876b38748c0cbc3dc38f7ad711607a6b0e75c45a37ce3aba263"
+    },
+    "/audio/north-city/library/fs-557376.mp3": {
+      "bytes": 1441166,
+      "sha256": "c3effd793fbf6422c662aafd78d6dd17f7d4ddb4e1db3bfb61f45132d0e71689"
+    },
+    "/audio/north-city/library/fs-563546.mp3": {
+      "bytes": 1441166,
+      "sha256": "1c389bb88970489da4d1c5d5970c622ba8b31b8bae93719948370fe2a70a3ab2"
+    },
+    "/audio/north-city/library/fs-572530.mp3": {
+      "bytes": 1441166,
+      "sha256": "40323193e5e89ff7b65557dfdff750d213bb043c3814f01636226938977fe7ff"
+    },
+    "/audio/north-city/library/fs-568973.mp3": {
+      "bytes": 1441166,
+      "sha256": "62b81cf77bb105061e00b52c8969ac529e84bc35c7486b997dcd4b02f72664f5"
+    },
+    "/audio/north-city/library/fs-574552.mp3": {
+      "bytes": 1441166,
+      "sha256": "edd64790969eb11d21c405ea851f58dba9eeb12d0472fd66a37b5a1a9146fc27"
+    },
+    "/audio/north-city/library/fs-580646.mp3": {
+      "bytes": 1441166,
+      "sha256": "2062ac2b7a9452039d0a14540f90c1a8f90ab2750b746a2f82f2f9b5cf48c410"
+    },
+    "/audio/north-city/library/fs-574553.mp3": {
+      "bytes": 1441166,
+      "sha256": "083dfe65443a657cafd9c5a560dcfd530d08a5bcf9c1831b24f10cf42b79a960"
+    },
+    "/audio/north-city/library/fs-596454.mp3": {
+      "bytes": 1441166,
+      "sha256": "f97c40b6870f38a3f2c4be57e555e8d6b9113d444bb7e001db7a281ce6404fa2"
+    },
+    "/audio/north-city/library/fs-607228.mp3": {
+      "bytes": 1441166,
+      "sha256": "b742c79d388c35b47c106d87118a15bf93c2a0c634a7e970f83e577169ea4fab"
+    },
+    "/audio/north-city/library/fs-627076.mp3": {
+      "bytes": 1441166,
+      "sha256": "9282e2859a84b30666f429a6298416e90ce8bf0bdcafc890ced7cc06f4ec9cc7"
+    },
+    "/audio/north-city/library/fs-631474.mp3": {
+      "bytes": 1441166,
+      "sha256": "d6cada8c2ed5b0711643007619a68e3c75d46879283f24085dccdff8c47e66d8"
+    },
+    "/audio/north-city/library/fs-630584.mp3": {
+      "bytes": 1441166,
+      "sha256": "9f33a7aafee4c1ba224467ac5b2027d42dfaf98ba080d2e20ec1d6dffd4e38ed"
+    },
+    "/audio/north-city/library/fs-631479.mp3": {
+      "bytes": 1441166,
+      "sha256": "0175e8fc1d92396daebc462df946f16b9a860c24cebb4f17d503d1a66f2f4338"
+    },
+    "/audio/north-city/library/fs-637566.mp3": {
+      "bytes": 884444,
+      "sha256": "6aed6ee7d22acc0f59da9cd9964e784637cbe3c9c413682c22cb13624f4e9ee5"
+    },
+    "/audio/north-city/library/fs-632203.mp3": {
+      "bytes": 1441166,
+      "sha256": "183c4284e366cf6f2c5afb2b743b6f988e1bae78d108c2be3c36253ea86b82d5"
+    },
+    "/audio/north-city/library/fs-638872.mp3": {
+      "bytes": 1441166,
+      "sha256": "a607d1dfa28c9cd3cf510ecd661297ab62b9a3fbc4d3e3c20eba755a15ed7234"
+    },
+    "/audio/north-city/library/fs-640635.mp3": {
+      "bytes": 967200,
+      "sha256": "eeb696ddd065b5bc18f45382765bb3e99a7f1fc09e2170cd0ba67c2d883c204d"
+    },
+    "/audio/north-city/library/fs-638873.mp3": {
+      "bytes": 1441166,
+      "sha256": "e72bef8742b3cf3c03c2ed50e8d9479bcc92731599867c56e724fa85dfc12dce"
+    },
+    "/audio/north-city/library/fs-641185.mp3": {
+      "bytes": 1441166,
+      "sha256": "de6667a304a894877b4b6ec11650f64e7ed564f47d85cdbe4b04806c7f7201a6"
+    },
+    "/audio/north-city/library/fs-649072.mp3": {
+      "bytes": 1441166,
+      "sha256": "e6e243da1a81783f9881c5d0ad0ce20a4c12162268d1df9ed57746b562b75014"
+    },
+    "/audio/north-city/library/fs-700358.mp3": {
+      "bytes": 1441166,
+      "sha256": "6fd708d3d8a58f58ca9e2a9441149e351124c69f0249647cc37fda6f1a3bfc0f"
+    },
+    "/audio/north-city/library/fs-704603.mp3": {
+      "bytes": 1441166,
+      "sha256": "d4bbec8dda6820632b866061537f59478c2dd36375aec29889968688f295a1fd"
+    },
+    "/audio/north-city/library/fs-706686.mp3": {
+      "bytes": 779118,
+      "sha256": "3b956ee26399e4080377af9f6cdafc2814ef2c50f333ac9e765cede24b9f32fb"
+    },
+    "/audio/north-city/library/fs-719961.mp3": {
+      "bytes": 1441166,
+      "sha256": "c85862846e5eefd15fa2f5c7d6da6a854c89f51b67c57b7805fd9f3bbfb489ee"
+    },
+    "/audio/north-city/library/fs-732690.mp3": {
+      "bytes": 539628,
+      "sha256": "70782f453f777262b2e91124d09f77125bf42de4a7bb27f4863b891b27208516"
+    },
+    "/audio/north-city/library/fs-733843.mp3": {
+      "bytes": 698034,
+      "sha256": "0159502b7c854c05d03e85c7ea6a304d12652f63de16c34c146ab0fed937d6b8"
+    },
+    "/audio/north-city/library/fs-710536.mp3": {
+      "bytes": 1441166,
+      "sha256": "460d875a692aa65095b838b581f15cce008e2f66df5d02a1cad504626577b221"
+    },
+    "/audio/north-city/library/fs-817606.mp3": {
+      "bytes": 1441166,
+      "sha256": "55342a7daf9839f10082cb9d38ee19a46c134111007c63e4d2e2f09b5c600a4d"
+    },
+    "/audio/north-city/library/fs-756756.mp3": {
+      "bytes": 1441166,
+      "sha256": "97fc729ef39c1d3e448ead5213b3e003c024f9f1b6443f5841c7e613805f2a30"
+    },
+    "/audio/north-city/library/fs-839943.mp3": {
+      "bytes": 1441166,
+      "sha256": "b80d6c1e9ac24b3b69609c3ada53b6a591cbbdef83d6ecdf179bf1b68a8164ec"
+    },
+    "/audio/north-city/library/fs-856779.mp3": {
+      "bytes": 976813,
+      "sha256": "617ebbe3905127f36d40e7a8ed58d69de6d7893d0772e39027adccc9d9db7f83"
+    },
+    "/audio/north-city/library/fs-852236.mp3": {
+      "bytes": 1441166,
+      "sha256": "59493780430bbb8b04feebae2c83537edcdd004211681b7e38d674d6bce37ac4"
+    },
+    "/audio/north-city/cyberpunk-city-ambience.mp3": {
+      "bytes": 2761683,
+      "sha256": "fde1cb3e16561c070d068929044ba2b12ff377e160fe0f27dd94342126d437f1"
+    }
+  },
+  "frozenVisualSourceBinding": "revision-14-source-hashes.json",
+  "visualReview": {
+    "score": 8.1,
+    "status": "accepted",
+    "formalRound": 1,
+    "maximumRounds": 3,
+    "report": "revision-14-review-1.md",
+    "scope": "17 actual runtime stills/three references; no audio audition or motion points"
+  },
+  "finalSourceHashes": {
+    "src/apartments/osCityWeather.ts": "4f1dd2b94fad9298ad7a4dd0e2aa70f29c593dc775883d3bdee6969d4efbbec7",
+    "src/apartments/osCityApartment.ts": "3157e9f5dd20c21e7cb2d15f46e3f84d38ac1db94d4d88910f54342f17306793",
+    "src/apartments/osCityExterior.ts": "5aaa31288512845aa34d9a6a84b41af6bb6b35f319c21d9b12bc613d0a95f8f6",
+    "src/apartments/osCityLife.ts": "6c542d081b581dc6766e234c526111d0f997015a891e717204ab9aa8df369637",
+    "src/apartments/osCityAmbience.ts": "c66de0bb1932953e176e883d3a4a5bf968176d561b56bb5be47ff0b677007069",
+    "src/apartments/osCitySoundControls.ts": "d105534f09242f84254401845c989fc06f63298805c8ad0e57f4c2372ce9e6a4",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/room.ts": "eab66cc89c761b4ace057c699275b98996d8ec913e78184ded541bf72152e27a",
+    "src/apartments/northCity.css": "573985146e229af702b8122bac947d58ec8a07107f203fbe22d5f6d417153954",
+    "public/audio/north-city/weather-library.json": "7342e819ccac3af391733a5ece37927854c16e5b5a1b7c83293f2655800af331",
+    "public/audio/north-city/WEATHER_ATTRIBUTION.md": "518ddcddc8e6735b7030eb23a1a51a372bb3a492a764d7161cbc73b42151b9ea"
+  },
+  "postReviewChange": {
+    "files": [
+      "src/apartments/osCitySoundControls.ts"
+    ],
+    "reason": "Two neutral upload-privacy strings; original scene review sources/evidence remain historical",
+    "actualTouchCapture": "test-artifacts/north-city/weather-audio/validation/touch-390x844.png",
+    "sha256": "f66db5803e7f8e18cd0fe1a17b0e1323b2c2a073d960a32549800978dcca9b2b",
+    "repeatedBuildRetryTouchChecks": "passed"
+  },
+  "documents": {
+    "README.md": "a33d3476a5ca38c49f3ed9be905e9de32d80b0ed482d2066df0d89233017d51a",
+    "progress.md": "2131302b89237510c79ad2128b271cd04b295f820549e50e91c8521b2bfd7b04",
+    "docs/north-city/room-layout.json": "0342db6fdb1c12f7d2a1168760162666ae53dfe3075872ad7bb250b4b20439fe",
+    "docs/north-city/revision-14-brief.json": "c728726e84fc7abeca84e91a6d48ca646e211b1f25cd477565b172d0e91368f8",
+    "docs/north-city/revision-14-review-1.md": "8efabd64423a52479252b9cc8ea37cc66f1d963a379ba565e3545e092cf322a0",
+    "docs/north-city/weather-audio-library.md": "b1564cd5253fb1c387a6989a182e03fffddc54ea24891b2b524827a4068945f3"
+  }
+}

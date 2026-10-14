@@ -1,0 +1,19 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityGhostFace.ts": "617dba798ab40fe2e7dbf532ee53e5a7a716bec5848d2ec8ea549ef0c210527f",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityApartment.ts": "824ff1b27d13a68ed6e0adede836cdf4dd28a6cd072c9380828a155da7588811",
+    "src/apartments/osCityLife.ts": "6f12e0319cb916a156a1a99430e49438330f5ac3a6c932e72ff4cf2a4123dc7f",
+    "src/apartments/osCityExterior.ts": "02c8ba5541480da96d19077a49b25625405136b1314bc9fb0f1972a289d19a1b",
+    "src/apartments/osCityDuvet.ts": "83752d2a076ad6d53da8fbe563694308fa0b1d2258e8b23934034d6009a494d8",
+    "src/apartments/osCityFurnishings.ts": "49823105932b9bbb03402228b3cea4e3d53f6607384b23171d5a20e14e7bc953",
+    "src/apartments/osCityLayout.ts": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614",
+    "scripts/north-city-portrait-review.mjs": "87b6fd4693029d6beb03cf8fb47047f35ffe8e3a8d476b071f871cebbd440cd0",
+    "scripts/north-city-bedding-review.mjs": "9f439c50b74bd5eb068e86dc36222f9b5a2c20c1d56ff200d3d1a6a559735307",
+    "scripts/north-city-live-audit.mjs": "ad6e04de73a4e57638fe1e6fa6b56b13976f051b9c15d05debd01cdd1c94dbf9",
+    "public/apartments/holograms/reference-portrait-atlas-v11.png": "ac0d5df76ce663220d64431b1ff789e8243b49c4ca9399ef907e006bdbb33e52"
+  },
+  "evidence": "test-artifacts/north-city/revision-11/review-1",
+  "origin": "Unmodified actual production-renderer captures from preflight-2, promoted after build and animation preflight passed"
+}

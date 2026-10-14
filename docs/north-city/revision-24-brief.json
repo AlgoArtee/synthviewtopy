@@ -1,0 +1,34 @@
+{
+  "revision": 24,
+  "request": "Changing interior shadows, as if someone is watching television, in about 40% of distant city windows.",
+  "contract": {
+    "runtime": "room.html?id=os-city-apartment",
+    "hero": "Independent TV-lit interior shadow patterns visible in distant windows",
+    "coverage": "Approximately 40% of window cells on distant balcony tower facades and far north-city residential windows",
+    "layout": "Existing apartment, balcony, openings, collision and circulation",
+    "camera": "Production balcony and panoramic north-window viewpoints",
+    "input": "Existing time/weather controls; reduced motion produces steady TV light",
+    "readiness": "Wait for actual render_game_to_text.ready before runtime evidence",
+    "performance": "Static existing geometry and texture maps; bounded material variants; shared GPU uniforms; no additional pointlights",
+    "paidServiceBudget": 0
+  },
+  "baseline": "test-artifacts/north-city/revision-23/final-1b",
+  "skillAdapter": "Existing custom Three.js runtime contract and opening schedule retained. No assets, export or deployment gate crossed. Generic Blender schema validation is not claimed.",
+  "review": {
+    "scope": "TV-like lighting and changing interior shadows in approximately 40% of distant windows",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "status": "Accepted for revision24 scope",
+    "accepted": true,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 8.2,
+        "accepted": true,
+        "report": "docs/north-city/revision-24-review-1.md",
+        "sha256": "a311dd0bf8915e061e7cffe58a815fe69fde5ab9a3212c9ac9e55abfe88ad775"
+      }
+    ]
+  }
+}

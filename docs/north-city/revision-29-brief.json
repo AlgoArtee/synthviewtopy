@@ -1,0 +1,42 @@
+{
+  "revision": 29,
+  "request": "Triple Data Mall height, lift its connected transit route and replace the far balcony city with an image-backed skyline beyond about three real building layers, retaining editable neon and controlled windows/weather.",
+  "runtime": "room.html?id=os-city-apartment",
+  "hero": {
+    "mallHeight": 33.6,
+    "previousHeight": 11.2,
+    "ratio": 3,
+    "retailLevels": 4,
+    "routeElevationLift": 34,
+    "guidewayWidth": 2.8
+  },
+  "skyline": {
+    "depthBands": 3,
+    "bands": [
+      "foreground retail",
+      "intermediate towers",
+      "final tower row"
+    ],
+    "background": "three upright planar image sectors with transparent sky and unlit architecture",
+    "neon": "39 individually editable 3D instances, two draw calls including mounts",
+    "windows": "3828 image-mounted 3D room quads sharing existing illumination/shadow/TV controls",
+    "weather": "existing40 time/weather profiles; image albedo tint, shared fog, snow roof edges, real precipitation and active emission",
+    "far3dTowers": 10
+  },
+  "camera": "Upright architectural projection retained; main aim raised to frame tall mall, plaza and elevated trains",
+  "performance": "Far modeled tower count reduced from 64 to 10; share static image/graphic maps; batch window quads; 39 editable screen instances plus mounts in two draw calls; no new realtime lights. Whole-room submission and frame timings measured separately; no proportional FPS claim.",
+  "input": "Existing navigation, weather/time, window sliders, stream speed, balcony door and sound",
+  "circulation": "Existing apartment and balcony bounds/colliders",
+  "readiness": "All room/material/image/window-data promises resolved and render_game_to_text.ready",
+  "reference": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-2e588dd9-3cf6-4e53-84d6-a058ce0c687c.jpg",
+  "adapter": "Existing custom Three.js runtime contract. User directly authorized composition and image-backed far skyline. No Meshy generation, paid Meshy budget, Blender export or deployment gate crossed. No generic Blender validator claim. Other apartment openings and ceiling are unchanged.",
+  "review": {
+    "scope": "Tripled mall, visible raised transit and hybrid city composition/performance/weather/controls",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "accepted": true,
+    "score": 8,
+    "report": "docs/north-city/revision-29-review-1.md"
+  }
+}

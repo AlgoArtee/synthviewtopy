@@ -3,14 +3,24 @@ import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeom
 import { Reflector } from 'three/addons/objects/Reflector.js';
 import { createBankerLamp, createBath, createBed, createChesterfield, createCoffeeTable, createDeskChair, createKitchenSink, createMug, createReadingChair, createTeapot, createToilet, createVanity, createWritingDesk, type FurnitureMaterials } from './realisticFurniture';
 import { createAdvancedWorkstation, ADVANCED_WORKSTATION_SPEC } from './advancedWorkstation';
+import { createReferenceAstronomyDesk, REFERENCE_DESK_PLACEMENT } from './referenceAstronomyDesk';
+import { createReferenceLibrary } from './referenceLibrary';
 import { getRoomDesign } from './roomDesign';
 import { ROOM_CATALOG } from './roomCatalog';
 import { createRoomMaterials, enableWorldSpaceUV } from './roomMaterials';
 import { createAcademicOutlook, ACADEMIC_OUTLOOK_METADATA } from './academicOutlook';
 import { createArchedNorthWall, createWindowGlass, createPleatedCurtains } from './roomArchitecture';
 import { fingerprintScene } from './sceneAudit';
+import type { CityWindowSettings } from './osCityWindowTv';
+import type { CityMallSigns } from './osCityMall';
 
 /** Custom modelled interior with local scanned materials. Dimensions are in metres. */
+export interface RoomNavigation {
+  reset: (position: THREE.Vector3) => void;
+  step: (position: THREE.Vector3, direction: THREE.Vector3, dt: number, jump: boolean, dive: boolean) => void;
+  snapshot: () => Record<string, unknown>;
+  controls: string;
+}
 export interface LiminetteRoom {
   scene: THREE.Scene;
   spawn: THREE.Vector3;
@@ -20,6 +30,16 @@ export interface LiminetteRoom {
   viewpoints: { id: string; label: string; position: THREE.Vector3; target: THREE.Vector3 }[];
   update: (elapsedSeconds: number) => void;
   ready: Promise<void>;
+  floorHeight?: (x: number, z: number) => number;
+  canWalk?: (x: number, z: number, radius: number) => boolean;
+  fieldOfView?: number;
+  navigation?: RoomNavigation;
+  environment?: { weatherOptions: {id:string;label:string}[]; setWeather:(value:string)=>void; timeOptions?:{id:string;label:string}[]; setTimeOfDay?:(value:string)=>void; getSnapshot:()=>Record<string,unknown> };
+  windowFixture?: { options:{id:string;label:string}[]; setMode:(value:string)=>void; getSnapshot:()=>Record<string,unknown> };
+  doorFixture?: { options:{id:string;label:string}[]; setMode:(value:string)=>void; update:(dt:number,listener?:{x:number;y:number;z:number})=>void; getSnapshot:()=>Record<string,unknown> };
+  windowAppearance?: { getSettings: () => CityWindowSettings; setSettings: (value: Partial<CityWindowSettings>) => void };
+  plazaStreams?: {getSpeed:()=>number;setSpeed:(value:number)=>void};
+  mallSigns?: CityMallSigns;
   dispose: () => void;
 }
 
@@ -35,6 +55,10 @@ export function createLiminetteRoom(): LiminetteRoom {
   const materials = new Set<THREE.Material>();
   const batches = new Map<string, { geometry: THREE.BufferGeometry; material: THREE.Material; matrices: THREE.Matrix4[] }>();
   const transform = new THREE.Object3D();
+  // Move whole furnishing zones without changing furniture dimensions.
+  const layoutOffset = new THREE.Vector3();
+  const westExtension = 3;
+  const northExtension = 3;
   let seed = 8271;
   const random = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; };
 
@@ -116,7 +140,7 @@ export function createLiminetteRoom(): LiminetteRoom {
     geometries.add(geometry); materials.add(mat);
     const key = `${geometry.uuid}/${mat.uuid}`;
     if (!batches.has(key)) batches.set(key, { geometry, material: mat, matrices: [] });
-    transform.position.set(x, y, z); transform.rotation.set(rx, ry, rz); transform.scale.set(sx, sy, sz); transform.updateMatrix();
+    transform.position.set(x, y, z).add(layoutOffset); transform.rotation.set(rx, ry, rz); transform.scale.set(sx, sy, sz); transform.updateMatrix();
     batches.get(key)!.matrices.push(transform.matrix.clone());
   }
   function box(mat: THREE.Material, x: number, y: number, z: number, w: number, h: number, d: number, ry = 0) { place(unitBox, mat, x, y, z, w, h, d, 0, ry); }
@@ -128,16 +152,16 @@ export function createLiminetteRoom(): LiminetteRoom {
   }
   function rod(mat: THREE.Material, start: THREE.Vector3, end: THREE.Vector3, r: number) {
     const direction = end.clone().sub(start);
-    transform.position.copy(start).add(end).multiplyScalar(0.5);
+    transform.position.copy(start).add(end).multiplyScalar(0.5).add(layoutOffset);
     transform.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction.clone().normalize());
     transform.scale.set(r, direction.length(), r); transform.updateMatrix();
     const key = `${unitCylinder.uuid}/${mat.uuid}`;
     if (!batches.has(key)) batches.set(key, { geometry: unitCylinder, material: mat, matrices: [] });
     batches.get(key)!.matrices.push(transform.matrix.clone()); geometries.add(unitCylinder);
   }
-  function collider(x: number, z: number, w: number, d: number, height = 3) { colliders.push(new THREE.Box3(new THREE.Vector3(x - w / 2, 0, z - d / 2), new THREE.Vector3(x + w / 2, height, z + d / 2))); }
+  function collider(x: number, z: number, w: number, d: number, height = 3) { colliders.push(new THREE.Box3(new THREE.Vector3(x - w / 2, 0, z - d / 2), new THREE.Vector3(x + w / 2, height, z + d / 2)).translate(layoutOffset)); }
   function light(color: THREE.ColorRepresentation, intensity: number, x: number, y: number, z: number, distance = 16) {
-    const lamp = new THREE.PointLight(color, intensity, distance, 2); lamp.position.set(x, y, z); scene.add(lamp); return lamp;
+    const lamp = new THREE.PointLight(color, intensity, distance, 2); lamp.position.set(x, y, z).add(layoutOffset); scene.add(lamp); return lamp;
   }
   function plaque(text: string, x: number, y: number, z: number, width: number, height: number, ry = 0, luminousText = false) {
     const map = canvasTexture(512, 160, ctx => {
@@ -164,7 +188,7 @@ export function createLiminetteRoom(): LiminetteRoom {
       ctx.fillStyle = type === 'stars' ? '#d2c095' : '#414734'; ctx.font = '25px Georgia'; ctx.textAlign = 'center'; ctx.fillText(type === 'stars' ? 'ATLAS OF QUIET ORBITS' : 'HERBARIUM · NO. 07', 256, 567);
       ctx.font = '13px Georgia'; ctx.fillText('V I N C U L U M   A C A D E M Y', 256, 592);
     });
-    const group = new THREE.Group(); group.position.set(x, y, z); group.rotation.y = ry; scene.add(group);
+    const group = new THREE.Group(); group.position.set(x, y, z).add(layoutOffset); group.rotation.y = ry; scene.add(group);
     const mesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h), material('#ffffff', 0.85, 0, map)); group.add(mesh); geometries.add(mesh.geometry);
     for (const [px, py, pw, ph] of [[0, h / 2, w + 0.09, 0.07], [0, -h / 2, w + 0.09, 0.07], [-w / 2, 0, 0.07, h], [w / 2, 0, 0.07, h]]) {
       const frame = new THREE.Mesh(unitBox, brass); frame.position.set(px, py, 0.016); frame.scale.set(pw, ph, 0.065); group.add(frame);
@@ -172,45 +196,52 @@ export function createLiminetteRoom(): LiminetteRoom {
   }
 
   // Continuous architecture: warm parquet, panelled walls and a shallow plaster vault.
-  box(pbr.parquet, 0, -0.09, 0, 16.3, 0.18, 12.3);
-  scene.add(createArchedNorthWall(plaster));
-  box(plaster, -8.07, 2.8, 0, 0.18, 5.6, 12.3);
-  box(plaster, 8.07, 2.8, 0, 0.18, 5.6, 12.3);
-  box(plaster, 0, 2.8, 6.07, 16.3, 5.6, 0.18);
-  box(plaster, 0, 5.55, 0, 16.3, 0.15, 12.3);
+  box(pbr.parquet, -westExtension / 2, -0.09, -northExtension / 2, 16.3 + westExtension, 0.18, 12.3 + northExtension);
+  const northWall = createArchedNorthWall(plaster, -8.15 - westExtension, 8.15, [{center: -8.70, width: 4.45, bottom: 1.04, top: 4.72}]);
+  northWall.position.z -= northExtension; scene.add(northWall);
+  box(plaster, -8.07 - westExtension, 2.8, -northExtension / 2, 0.18, 5.6, 12.3 + northExtension);
+  box(plaster, 8.07, 2.8, -northExtension / 2, 0.18, 5.6, 12.3 + northExtension);
+  box(plaster, -westExtension / 2, 2.8, 6.07, 16.3 + westExtension, 5.6, 0.18);
+  box(plaster, -westExtension / 2, 5.55, -northExtension / 2, 16.3 + westExtension, 0.15, 12.3 + northExtension);
   function panelWall(z: number, rotation: number, length: number, centerX = 0, centerZ = 0) {
     const sign = rotation === 0 ? 1 : -1;
     for (let n = 0; n < Math.floor(length / 1.12); n++) {
       const p = -length / 2 + 0.59 + n * 1.12;
       const x = rotation === 0 ? centerX + p : centerX;
       const zz = rotation === 0 ? z : centerZ + p;
+      if (rotation === 0 && z < -8 && x < -6.5) continue;
+      if (rotation === 1 && centerX < -10 && zz < -.8) continue;
       box(walnut, x, 0.66, zz, rotation === 0 ? 1.08 : 0.12, 1.24, rotation === 0 ? 0.12 : 1.08);
       box(insetWood, x + (rotation ? sign * 0.075 : 0), 0.67, zz + (rotation ? 0 : 0.075), rotation === 0 ? 0.89 : 0.025, 0.92, rotation === 0 ? 0.025 : 0.89);
     }
     const x = rotation === 0 ? centerX : centerX; const zz = rotation === 0 ? z : centerZ;
     for (const [y, h, depth] of [[0.09, 0.16, 0.19], [1.29, 0.065, 0.2], [1.36, 0.055, 0.15], [4.9, 0.12, 0.2], [5.02, 0.1, 0.3]]) {
-      box(walnut, x, y, zz, rotation === 0 ? length : depth, h, rotation === 0 ? depth : length);
+      const libraryWindowWall = rotation === 0 && z < -8;
+      const libraryWestWall = rotation === 1 && centerX < -10;
+      box(walnut, libraryWindowWall ? .75 : x, y, libraryWestWall ? 2.6 : zz, rotation === 0 ? (libraryWindowWall ? 14.5 : length) : depth, h, rotation === 0 ? depth : (libraryWestWall ? 6.8 : length));
     }
   }
-  panelWall(-5.93, 0, 16); panelWall(5.92, 0, 16);
-  panelWall(0, 1, 12, -7.93, 0); panelWall(0, 1, 12, 7.93, 0);
-  for (const x of [-7.8, -6.8, -3.5, -0.1, 3.3, 7.8]) {
-    box(walnut, x, 2.85, -5.8, 0.16, 4.2, 0.24);
-    box(brass, x, 4.75, -5.68, 0.2, 0.035, 0.25);
+  panelWall(-5.93 - northExtension, 0, 16 + westExtension, -westExtension / 2); panelWall(5.92, 0, 16 + westExtension, -westExtension / 2);
+  panelWall(0, 1, 12 + northExtension, -7.93 - westExtension, -northExtension / 2); panelWall(0, 1, 12 + northExtension, 7.93, -northExtension / 2);
+  for (const x of [-10.8, -9, -6.8, -3.5, -0.1, 3.3, 7.8]) {
+    if (x < -6.5) continue; // The new ivory library's real window opening.
+    box(walnut, x, 2.85, -5.8 - northExtension, 0.16, 4.2, 0.24);
+    box(brass, x, 4.75, -5.68 - northExtension, 0.2, 0.035, 0.25);
   }
   // Vault ribs and structural crossbeams.
   const ribPoints: THREE.Vector3[] = [];
-  for (let i = 0; i <= 48; i++) { const x = -7.9 + i / 48 * 15.8; ribPoints.push(new THREE.Vector3(x, 4.96 + 0.48 * Math.sin(i / 48 * Math.PI), 0)); }
-  for (const z of [-5.7, -1.8, 2.1, 5.65]) {
-    const curve = new THREE.CatmullRomCurve3(ribPoints.map(p => new THREE.Vector3(p.x, p.y, z)));
+  for (let i = 0; i <= 48; i++) { const x = -7.9 - westExtension + i / 48 * (15.8 + westExtension); ribPoints.push(new THREE.Vector3(x, 4.96 + 0.48 * Math.sin(i / 48 * Math.PI), 0)); }
+  for (const z of [-8.7, -4.8, -.9, 2.1, 5.65]) {
+    const curve = new THREE.CatmullRomCurve3(ribPoints.filter(p => z > -.8 || p.x > -6.25).map(p => new THREE.Vector3(p.x, p.y, z)));
     place(new THREE.TubeGeometry(curve, 48, 0.065, 8, false), walnut, 0, 0, 0);
   }
-  for (const x of [-6.2, -2.1, 2.1, 6.2]) box(walnut, x, 5.34, 0, 0.09, 0.12, 11.8);
+  for (const x of [-5.1, -1, 3.1, 7.2]) box(walnut, x, 5.34, -northExtension / 2, 0.09, 0.12, 11.8 + northExtension);
 
   // Three tall rain-glazed arched windows, visible copper tracery and deep sills.
+  layoutOffset.set(0, 0, -northExtension);
   for (const x of [-5.25, -1.85, 1.55]) {
     const radius = 1.08; const base = 1.15; const spring = 3.57;
-    scene.add(createWindowGlass(x, windowGlass));
+    const glass = createWindowGlass(x, windowGlass); glass.position.add(layoutOffset); scene.add(glass);
     box(darkWood, x - radius - 0.055, 2.35, -5.68, 0.12, 2.5, 0.23);
     box(darkWood, x + radius + 0.055, 2.35, -5.68, 0.12, 2.5, 0.23);
     torus(walnut, x, spring, -5.68, radius + 0.05, 0.083, 0, 0, 0, Math.PI);
@@ -221,49 +252,18 @@ export function createLiminetteRoom(): LiminetteRoom {
       box(brass, x + dx, (top + base) / 2, -5.65, 0.033, top - base, 0.055);
     }
     for (const y of [2.14, 3.17, 3.57]) box(brass, x, y, -5.65, 2.16, 0.035, 0.05);
-    scene.add(createPleatedCurtains(x, teal, brass));
-    rod(brass, new THREE.Vector3(x - 1.75, 4.87, -5.43), new THREE.Vector3(x + 1.75, 4.87, -5.43), 0.032);
-    for (const side of [-1, 1]) sphere(brass, x + side * 1.79, 4.87, -5.43, 0.065);
+    const curtains = createPleatedCurtains(x, teal, brass, x === -5.25 ? [1] : [-1, 1]); curtains.position.add(layoutOffset); scene.add(curtains);
+    rod(brass, new THREE.Vector3(x - (x === -5.25 ? 1.12 : 1.75), 4.87, -5.43), new THREE.Vector3(x + 1.75, 4.87, -5.43), 0.032);
+    for (const side of (x === -5.25 ? [1] : [-1, 1])) sphere(brass, x + side * 1.79, 4.87, -5.43, 0.065);
   }
 
-  // Library: three furniture bays with hundreds of individually varied gilt-spined volumes.
+  // The original dark bookcases are replaced by the Blender reference ensemble.
+  layoutOffset.set(-westExtension, 0, 0);
   const bookMaterials = ['#334943', '#583939', '#264454', '#79634d', '#3c3935', '#805d43', '#566252', '#725155'].map(c => material(c, 0.86));
-  function book(x: number, y: number, z: number, w: number, h: number, d: number, color: number, ry = 0) {
-    box(bookMaterials[color % bookMaterials.length], x, y + h / 2, z, w, h, d, ry);
-    // Library spines face into the room (+x).
-    if (ry === Math.PI / 2) {
-      for (const yy of [0.07, h - 0.07]) box(brass, x + d / 2 + 0.006, y + yy, z, 0.008, 0.009, w * 0.86);
-      box(paper, x + d / 2 + 0.008, y + h * 0.59, z, 0.01, h * 0.12, w * 0.49);
-    }
-  }
-  function shelfBay(z: number) {
-    box(darkWood, -7.72, 2.0, z, 0.2, 3.8, 2.38);
-    for (const zz of [z - 1.16, z + 1.16]) {
-      box(walnut, -7.47, 2.0, zz, 0.66, 3.96, 0.12);
-      box(brass, -7.105, 2.0, zz, 0.025, 3.65, 0.025);
-    }
-    for (let level = 0; level < 7; level++) {
-      const y = 0.26 + level * 0.53;
-      box(walnut, -7.42, y, z, 0.79, 0.065, 2.35);
-      if (level === 6) continue;
-      let zz = z - 1.04;
-      while (zz < z + 1.03) {
-        const width = 0.065 + random() * 0.065; const height = 0.32 + random() * 0.14;
-        book(-7.29, y + 0.033, zz + width / 2, width, height, 0.34 + random() * 0.06, Math.floor(random() * 8), Math.PI / 2);
-        zz += width + 0.009;
-      }
-    }
-    box(walnut, -7.4, 3.94, z, 0.9, 0.13, 2.53);
-    box(brass, -6.98, 3.86, z, 0.025, 0.024, 2.47);
-    collider(-7.44, z, 1.02, 2.52);
-  }
-  [-3.86, -1.29, 1.28].forEach(shelfBay);
-  plaque('THE LIMINETTE COLLECTION', -6.955, 3.71, -1.29, 1.45, 0.14, Math.PI / 2);
-  // Rolling library ladder with brass rails and wooden rungs.
-  for (const z of [-0.64, 0.02]) rod(brass, new THREE.Vector3(-6.5, 0.12, z), new THREE.Vector3(-7.05, 3.4, z), 0.029);
-  for (let i = 0; i < 10; i++) box(oak, -6.52 - i * 0.05, 0.3 + i * 0.29, -0.31, 0.18, 0.055, 0.7);
-  rod(brass, new THREE.Vector3(-7.01, 3.49, -5.05), new THREE.Vector3(-7.01, 3.49, 2.46), 0.025);
-  collider(-6.71, -0.31, 0.56, 0.9);
+  const referenceLibrary = createReferenceLibrary(); scene.add(referenceLibrary.group); colliders.push(...referenceLibrary.colliders);
+  light('#ffc477', 8, -10.25, 1.08, -4.8, 4.0);
+  light('#e0edf9', 22, -8.4, 3.85, -8.2, 10);
+  light('#ffeccc', 12, -7.1, 4.25, -3.0, 10);
   // The front door faces the foyer; brass details echo the apartment directory.
   box(darkWood, -7.785, 1.34, 4.06, 0.17, 2.67, 1.42);
   for (const z of [3.28, 4.84]) box(walnut, -7.65, 1.4, z, 0.22, 2.8, 0.14);
@@ -281,14 +281,19 @@ export function createLiminetteRoom(): LiminetteRoom {
   // The central study, made for a student who works between paper and retro technology.
   const furnishingPalette: FurnitureMaterials = { walnut, darkWood, brass, iron, upholstery: green, leather, linen, teal, burgundy, ceramic, paper, black, luminous };
   function furnish(object: THREE.Group, x: number, y: number, z: number, ry = 0) {
-    object.position.set(x, y, z); object.rotation.y = ry; scene.add(object);
+    object.position.set(x, y, z).add(layoutOffset); object.rotation.y = ry; scene.add(object);
   }
-  const dx = -1.55; const dz = -3.44;
+  // The writing desk meets the north end of the astronomy console in a compact L.
+  layoutOffset.set(0, 0, 0);
+  const dx = 1.15; const dz = -7.05;
   furnish(createWritingDesk(furnishingPalette), dx, 0, dz);
   collider(dx, dz, 3.5, 1.17, 0.94);
   const workstation = createAdvancedWorkstation();
   furnish(workstation, dx + 0.23, 0.907, dz - 0.17);
   const projection = workstation.getObjectByName('Atlas volumetric model');
+  const referenceDesk = createReferenceAstronomyDesk();
+  scene.add(referenceDesk.group);
+  colliders.push(...referenceDesk.colliders);
   // Green glass banker's lamp.
   furnish(createBankerLamp(furnishingPalette), dx - 1.07, 0.913, dz - 0.03);
   light('#ffe4b0', 5, dx - 1.07, 1.32, dz + 0.05, 3);
@@ -302,12 +307,14 @@ export function createLiminetteRoom(): LiminetteRoom {
   cylinder(brass, dx + 0.81, 1.024, dz - 0.3, 0.032, 0.025);
   rod(iron, new THREE.Vector3(dx + 0.92, 0.978, dz + 0.23), new THREE.Vector3(dx + 1.14, 0.978, dz + 0.04), 0.008);
   // Desk chair, open approach from the main room.
-  furnish(createDeskChair(furnishingPalette), dx + 0.04, 0, -2.31);
-  collider(dx + 0.04, -2.31, 0.77, 0.83, 1.5);
+  furnish(createDeskChair(furnishingPalette), dx + 0.04, 0, dz + 1.13);
+  collider(dx + 0.04, dz + 1.13, 0.77, 0.83, 1.5);
   // A pinned noticeboard and an astronomical atlas near the desk.
+  layoutOffset.set(0, 0, -northExtension);
   picture(3.37, 2.86, -5.76, 0.77, 1.13, 'stars');
 
   // Persian carpet and a lived-in lounge, with a clear walking ring around it.
+  layoutOffset.set(0, 0, 0);
   box(material('#c6a5a4', 0.98, 0, rugMap), -1.4, 0.016, 1.38, 5.4, 0.024, 4.25);
   for (let i = 0; i < 85; i++) for (const sign of [-1, 1]) box(linen, -4.08 + i * 0.063, 0.018, 1.38 + sign * 2.18, 0.016, 0.01, 0.11);
   furnish(createChesterfield(furnishingPalette), -1.35, 0, 2.88);
@@ -319,8 +326,8 @@ export function createLiminetteRoom(): LiminetteRoom {
   furnish(createMug(furnishingPalette), -0.93, 0.534, 1.02, 0.44);
   furnish(createTeapot(furnishingPalette), -0.7, 0.503, 1.21, -0.13);
   // Reading chair angled toward the table.
-  furnish(createReadingChair(furnishingPalette), -4.64, 0, 0.4, -Math.PI / 2 + 0.15);
-  collider(-4.64, 0.4, 1.18, 1.24, 1.5);
+  furnish(createReadingChair(furnishingPalette), -5.64, 0, 0.4, -Math.PI / 2 + 0.15);
+  collider(-5.64, 0.4, 1.18, 1.24, 1.5);
   // Floor lamps, each with a real diffuser and exposed brass structure.
   function floorLamp(x: number, z: number) {
     cylinder(darkBrass, x, 0.04, z, 0.23, 0.07); cylinder(brass, x, 1.08, z, 0.022, 2.09);
@@ -329,14 +336,15 @@ export function createLiminetteRoom(): LiminetteRoom {
     torus(brass, x, 1.775, z, 0.35, 0.013, Math.PI / 2);
     sphere(brass, x, 2.22, z, 0.04);
   }
-  floorLamp(-5.48, 1.8); floorLamp(0.82, 3.43);
-  light('#ffd8a1', 24, -4.7, 2.3, 1.1, 9);
+  floorLamp(-6.48, 1.8); floorLamp(0.82, 3.43);
+  light('#ffd8a1', 24, -5.7, 2.3, 1.1, 9);
 
-  // Brass armillary orrery on its own museum-like plinth.
+  // Brass armillary display in the foyer, clear of both desk approaches.
+  layoutOffset.set(3.35, 0, 1.88);
   cylinder(darkWood, 1.85, 0.48, -0.88, 0.35, 0.92);
   cylinder(brass, 1.85, 0.94, -0.88, 0.43, 0.075);
   cylinder(brass, 1.85, 0.08, -0.88, 0.45, 0.09);
-  const orrery = new THREE.Group(); orrery.position.set(1.85, 1.47, -0.88); scene.add(orrery);
+  const orrery = new THREE.Group(); orrery.position.set(1.85, 1.47, -0.88).add(layoutOffset); scene.add(orrery);
   const centralSun = new THREE.Mesh(new THREE.SphereGeometry(0.13, 24, 16), glow('#d9ad59', 0.3)); orrery.add(centralSun); geometries.add(centralSun.geometry);
   for (let i = 0; i < 4; i++) {
     const orbit = new THREE.Group(); orbit.rotation.set(0.45 + i * 0.4, i * 0.72, i * 0.35); orrery.add(orbit);
@@ -349,15 +357,17 @@ export function createLiminetteRoom(): LiminetteRoom {
   collider(1.85, -0.88, 0.93, 0.93, 2.1);
 
   // Northeast sleeping alcove, separated with a panelled partition and an open archway.
-  box(plaster, 4.42, 2.5, -4.1, 0.18, 5, 3.8);
-  box(walnut, 4.3, 0.68, -4.1, 0.08, 1.35, 3.8);
+  layoutOffset.set(0, 0, 0);
+  box(plaster, 4.42, 2.5, -4.1 - northExtension / 2, 0.18, 5, 3.8 + northExtension);
+  box(walnut, 4.3, 0.68, -4.1 - northExtension / 2, 0.08, 1.35, 3.8 + northExtension);
   box(walnut, 4.42, 4.25, -0.89, 0.27, 1.5, 2.7);
   for (const z of [-2.2, 0.41]) {
     box(walnut, 4.42, 2.15, z, 0.34, 4.3, 0.24);
     box(brass, 4.225, 2.03, z, 0.027, 3.68, 0.027);
     box(walnut, 4.42, 0.16, z, 0.46, 0.31, 0.4);
   }
-  collider(4.42, -4.1, 0.29, 3.8, 5); collider(4.42, -2.2, 0.44, 0.27, 5); collider(4.42, 0.41, 0.44, 0.27, 5);
+  collider(4.42, -4.1 - northExtension / 2, 0.29, 3.8 + northExtension, 5); collider(4.42, -2.2, 0.44, 0.27, 5); collider(4.42, 0.41, 0.44, 0.27, 5);
+  layoutOffset.set(0, 0, -northExtension);
   picture(4.301, 2.74, -3.55, 1.1, 1.48, 'stars', -Math.PI / 2);
   const bx = 6.17; const bz = -3.95;
   furnish(createBed(furnishingPalette), bx, 0, bz);
@@ -378,6 +388,7 @@ export function createLiminetteRoom(): LiminetteRoom {
   collider(6.29, -1.64, 1.21, 0.59, 0.6);
 
   // Wardrobe, hanging coat and the entry foyer.
+  layoutOffset.set(-westExtension, 0, 0);
   box(darkWood, -6.65, 1.38, 5.44, 2.2, 2.73, 0.92);
   for (const x of [-7.19, -6.11]) {
     box(walnut, x, 1.41, 4.964, 1.025, 2.58, 0.055);
@@ -394,6 +405,7 @@ export function createLiminetteRoom(): LiminetteRoom {
   collider(-5.26, 5.24, 0.7, 0.65);
 
   // A complete compact kitchen, facing the room along the south wall.
+  layoutOffset.set(0, 0, 0);
   const counterMat = material('#96988c', 0.38);
   for (let i = 0; i < 5; i++) {
     const x = -3.94 + i * 1.02;
@@ -527,7 +539,7 @@ export function createLiminetteRoom(): LiminetteRoom {
     }
     if (floorY === 0 && scale > 0.8) collider(x, z, 0.55 * scale, 0.55 * scale, 1.8 * scale);
   }
-  plant(-5.7, -5.2, 1.0); plant(3.1, -4.97, 1.25); plant(-5.8, 3.15, 1.2); plant(3.55, 0.65, .9); plant(1.1, 5.59, 0.5, 1.02); plant(5.08, 5.72, 0.36, 0.95);
+  plant(-4.1, -4.2, 1.0); plant(3.1, -4.97 - northExtension, 1.25); plant(-6.8, 3.15, 1.2); plant(3.55, 0.65, .9); plant(1.1, 5.59, 0.5, 1.02); plant(5.08, 5.72, 0.36, 0.95);
 
   // A small breakfast table at the boundary between kitchen and lounge.
   cylinder(walnut, 2.35, 0.78, 3.39, 0.63, 0.075);
@@ -553,8 +565,8 @@ export function createLiminetteRoom(): LiminetteRoom {
     cylinder(brass, x, 4.02, z, 0.035, 0.19); sphere(luminous, x, 3.87, z, 0.15);
   }
   light('#ffe0ae', 48, -1.32, 3.92, 0.49, 20);
-  light('#c4dce7', 22, -2.8, 3.55, -5.0, 12);
-  light('#c4dce7', 14, -5.8, 3.3, -3.8, 10);
+  light('#c4dce7', 22, -3.8, 3.55, -5.0 - northExtension, 12);
+  light('#c4dce7', 14, -8.8, 3.3, -3.8 - northExtension, 10);
   scene.add(new THREE.HemisphereLight('#c4dce7', '#504034', 0.38));
   scene.add(new THREE.AmbientLight('#ede0cb', 0.08));
   // The single shadow-casting key avoids the cost and self-shadowing of many point lights.
@@ -564,13 +576,13 @@ export function createLiminetteRoom(): LiminetteRoom {
   keyLight.shadow.camera.near = 0.4; keyLight.shadow.camera.far = 18;
   scene.add(keyLight, keyLight.target);
   const daylight = new THREE.DirectionalLight('#e1ecf0', 2.2);
-  daylight.position.set(-12, 20, -36); daylight.target.position.set(-1, 0, 0);
+  daylight.position.set(-12, 20, -36 - northExtension); daylight.target.position.set(-1, 0, -northExtension);
   daylight.castShadow = true;
   daylight.shadow.mapSize.set(2048, 2048);
-  Object.assign(daylight.shadow.camera, {left: -13, right: 13, top: 13, bottom: -13, near: 1, far: 100});
+  Object.assign(daylight.shadow.camera, {left: -16, right: 16, top: 16, bottom: -16, near: 1, far: 100});
   daylight.shadow.bias = -.00015; daylight.shadow.normalBias = .025;
   scene.add(daylight, daylight.target);
-  const exterior = createAcademicOutlook(); scene.add(exterior);
+  const exterior = createAcademicOutlook(); exterior.position.z -= northExtension; scene.add(exterior);
 
   // Finalize all static repeats into instanced batches (books, trim, appliances, foliage).
   for (const batch of batches.values()) {
@@ -581,26 +593,36 @@ export function createLiminetteRoom(): LiminetteRoom {
     mesh.receiveShadow = true;
     mesh.computeBoundingSphere(); scene.add(mesh);
   }
-  scene.userData.apartment = { id: 'liminette-student-room', name: 'Liminette Student Room', location: 'Lux Umbrarum · Academic District', style: 'Retro-futuristic dark academia', floorArea: 192, outlook: ACADEMIC_OUTLOOK_METADATA, design: {...getRoomDesign(ROOM_CATALOG[0]), wallTreatment:'panels', ceilingTreatment:'beams'}, workstation: ADVANCED_WORKSTATION_SPEC, audit: {interior: fingerprintScene(scene), exterior: fingerprintScene(exterior)} };
+  scene.userData.apartment = { id: 'liminette-student-room', name: 'Liminette Student Room', location: 'Lux Umbrarum · Academic District', style: 'Retro-futuristic dark academia', floorArea: (16 + westExtension) * (12 + northExtension), outlook: ACADEMIC_OUTLOOK_METADATA, design: {...getRoomDesign(ROOM_CATALOG[0]), wallTreatment:'panels', ceilingTreatment:'beams'}, workstation: ADVANCED_WORKSTATION_SPEC, referenceDesk: referenceDesk.metadata, referenceLibrary: referenceLibrary.metadata, audit: {interior: fingerprintScene(scene), exterior: fingerprintScene(exterior)} };
+  let disposed = false;
+  const ready = Promise.all([pbr.ready, referenceDesk.ready, referenceLibrary.ready]).then(() => {
+    if (!disposed) scene.userData.apartment.audit.interior = fingerprintScene(scene);
+  });
 
   return {
     scene,
-    ready: pbr.ready,
+    ready,
     spawn: new THREE.Vector3(2.7, 1.65, 2.04),
-    lookAt: new THREE.Vector3(-2.5, 1.75, -3.3),
-    bounds: { minX: -7.65, maxX: 7.65, minZ: -5.65, maxZ: 5.65 },
+    lookAt: new THREE.Vector3(1.4, 1.3, -5.7),
+    bounds: { minX: -7.65 - westExtension, maxX: 7.65, minZ: -5.65 - northExtension, maxZ: 5.65 },
     colliders,
     viewpoints: [
-      { id: 'outlook', label: 'Lux Umbrarum outlook', position: new THREE.Vector3(-1.85, 1.65, -4.72), target: new THREE.Vector3(-3, -.8, -45) },
-      { id: 'study', label: 'The study', position: new THREE.Vector3(0.92, 1.65, -1.37), target: new THREE.Vector3(-1.8, 1.18, -3.7) },
-      { id: 'library', label: 'The library', position: new THREE.Vector3(-3.97, 1.65, -2.04), target: new THREE.Vector3(-7.15, 2.08, -2.25) },
+      { id: 'outlook', label: 'Lux Umbrarum outlook', position: new THREE.Vector3(-1.85, 1.65, -4.72 - northExtension), target: new THREE.Vector3(-3, -.8, -45 - northExtension) },
+      { id: 'study', label: 'The study', position: new THREE.Vector3(-.6, 1.65, -4.7), target: new THREE.Vector3(1.25, 1.18, -7.15) },
+      { id: 'astronomy-desk', label: 'Astronomy desk', position: new THREE.Vector3(...REFERENCE_DESK_PLACEMENT.viewpoint), target: new THREE.Vector3(...REFERENCE_DESK_PLACEMENT.target) },
+      { id: 'library', label: 'Ivory library & analog engine', position: new THREE.Vector3(-4.45, 1.75, -1.25), target: new THREE.Vector3(-10.15, 2.05, -5.0) },
+      { id: 'library-detail', label: 'Brass television & valves', position: new THREE.Vector3(-8.10, 1.75, -2.35), target: new THREE.Vector3(-10.65, 2.30, -4.8) },
       { id: 'lounge', label: 'The lounge', position: new THREE.Vector3(0.69, 1.65, -0.15), target: new THREE.Vector3(-2.26, 0.96, 2.17) },
-      { id: 'sleep', label: 'Sleeping alcove', position: new THREE.Vector3(5.07, 1.65, -0.7), target: new THREE.Vector3(6.27, 1.02, -4.26) },
+      { id: 'sleep', label: 'Sleeping alcove', position: new THREE.Vector3(5.07, 1.65, -0.7), target: new THREE.Vector3(6.27, 1.02, -4.26 - northExtension) },
       { id: 'kitchen', label: 'The kitchen', position: new THREE.Vector3(-3.22, 1.65, 3.71), target: new THREE.Vector3(-0.6, 1.38, 5.48) },
       { id: 'bathroom', label: 'Bath & wash', position: new THREE.Vector3(5.02, 1.65, 3.01), target: new THREE.Vector3(6.65, 1.2, 4.88) },
     ],
     update: elapsedSeconds => { orrery.rotation.y = elapsedSeconds * 0.085; if(projection)projection.rotation.y=elapsedSeconds*.28; },
     dispose: () => {
+      if (disposed) return;
+      disposed = true;
+      referenceDesk.dispose();
+      referenceLibrary.dispose();
       mirror.dispose();
       scene.traverse(object => {
         if (object instanceof THREE.Mesh || object instanceof THREE.Line || object instanceof THREE.Points) { geometries.add(object.geometry); const objectMaterials = Array.isArray(object.material) ? object.material : [object.material]; objectMaterials.forEach(mat => materials.add(mat)); }

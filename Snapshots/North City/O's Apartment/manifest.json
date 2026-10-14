@@ -1,0 +1,5143 @@
+{
+  "title": "O's City Apartment",
+  "hierarchy": [
+    "North City",
+    "O's Apartment"
+  ],
+  "sceneRevision": 12,
+  "expectedPictures": 100,
+  "format": "PNG",
+  "nativeRender": true,
+  "upscaled": false,
+  "interfaceHidden": true,
+  "formats": [
+    {
+      "id": "ultrawide",
+      "folder": "Ultrawide",
+      "width": 5120,
+      "height": 2160,
+      "label": "Ultrawide · 5120 × 2160"
+    },
+    {
+      "id": "phone",
+      "folder": "Phone",
+      "width": 2160,
+      "height": 3840,
+      "label": "Vertical phone · 2160 × 3840"
+    }
+  ],
+  "capturedAt": "2026-10-11T23:26:07.841Z",
+  "source": "http://127.0.0.1:5178/room.html?id=os-city-apartment",
+  "sourceHashes": {
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityApartment.ts": "824ff1b27d13a68ed6e0adede836cdf4dd28a6cd072c9380828a155da7588811",
+    "src/apartments/osCityFurnishings.ts": "49823105932b9bbb03402228b3cea4e3d53f6607384b23171d5a20e14e7bc953",
+    "src/apartments/osCityDuvet.ts": "83752d2a076ad6d53da8fbe563694308fa0b1d2258e8b23934034d6009a494d8",
+    "src/apartments/osCityTV.ts": "c1afe3969edc3bc02865afd54a11c9ae0a5c4955df57b85aea133265f28310a6",
+    "public/apartments/holograms/reference-portrait-atlas-v11.png": "ac0d5df76ce663220d64431b1ff789e8243b49c4ca9399ef907e006bdbb33e52"
+  },
+  "pictures": [
+    {
+      "number": 1,
+      "filename": "Ultrawide/001-entrance-and-expanded-living-room.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Entrance and expanded living room",
+      "position": [
+        -2.16,
+        1.65,
+        3.72
+      ],
+      "target": [
+        -2.9,
+        1.35,
+        -1.3
+      ],
+      "fov": 58,
+      "weather": "rain",
+      "time": 24,
+      "actual": {
+        "position": [
+          -2.16,
+          1.65,
+          3.72
+        ],
+        "target": [
+          -2.9,
+          1.35,
+          -1.3
+        ],
+        "fov": 58,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 24
+      },
+      "bytes": 6286326,
+      "sha256": "319dee63367f83df859e3e31a8e4565eceea8ffc15f54e5ea186bcba02573e76"
+    },
+    {
+      "number": 2,
+      "filename": "Ultrawide/002-southwest-living-room-panorama.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Southwest living room panorama",
+      "position": [
+        -4.43,
+        1.72,
+        5.68
+      ],
+      "target": [
+        -0.15,
+        1.4,
+        0.05
+      ],
+      "fov": 55,
+      "weather": "clear",
+      "time": 24.37,
+      "actual": {
+        "position": [
+          -4.43,
+          1.72,
+          5.68
+        ],
+        "target": [
+          -0.15,
+          1.4,
+          0.05
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 24.37
+      },
+      "bytes": 6464035,
+      "sha256": "561f5e676f5b91202915b3d42eb1845359491170d7f0197463825d8483d5ae62"
+    },
+    {
+      "number": 3,
+      "filename": "Ultrawide/003-southeast-apartment-panorama.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Southeast apartment panorama",
+      "position": [
+        4.36,
+        1.7,
+        5.65
+      ],
+      "target": [
+        -2.9,
+        1.3,
+        0.4
+      ],
+      "fov": 56,
+      "weather": "rain",
+      "time": 24.74,
+      "actual": {
+        "position": [
+          4.36,
+          1.7,
+          5.65
+        ],
+        "target": [
+          -2.9,
+          1.3,
+          0.4
+        ],
+        "fov": 56,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 24.74
+      },
+      "bytes": 4706347,
+      "sha256": "4cfa2e63321b326327a09da1fafbbfe2d64a1762e1055081c9d999465b4e97a7"
+    },
+    {
+      "number": 4,
+      "filename": "Ultrawide/004-living-room-towards-the-square-bed.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Living room towards the square bed",
+      "position": [
+        -0.42,
+        1.75,
+        2.87
+      ],
+      "target": [
+        -4.5,
+        1.32,
+        -3.9
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 25.11,
+      "actual": {
+        "position": [
+          -0.42,
+          1.75,
+          2.87
+        ],
+        "target": [
+          -4.5,
+          1.32,
+          -3.9
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 25.11
+      },
+      "bytes": 6620395,
+      "sha256": "7212b0603fb3f89ad63fa876d4abdfaef8f12cbe627a603f4d108e9d5209c3a2"
+    },
+    {
+      "number": 5,
+      "filename": "Ultrawide/005-living-room-towards-the-kitchen.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Living room towards the kitchen",
+      "position": [
+        -3.67,
+        1.7,
+        3.43
+      ],
+      "target": [
+        3.3,
+        1.4,
+        1.65
+      ],
+      "fov": 53,
+      "weather": "fog",
+      "time": 25.48,
+      "actual": {
+        "position": [
+          -3.67,
+          1.7,
+          3.43
+        ],
+        "target": [
+          3.3,
+          1.4,
+          1.65
+        ],
+        "fov": 53,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 25.48
+      },
+      "bytes": 4451993,
+      "sha256": "5af16e02240b5b4f8989e8350ae88162e07948637f5fb39759464fc6edb7366e"
+    },
+    {
+      "number": 6,
+      "filename": "Ultrawide/006-workstation-across-the-living-room.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Workstation across the living room",
+      "position": [
+        0.77,
+        1.62,
+        0.68
+      ],
+      "target": [
+        -0.3,
+        1.3,
+        5.72
+      ],
+      "fov": 52,
+      "weather": "rain",
+      "time": 25.85,
+      "actual": {
+        "position": [
+          0.77,
+          1.62,
+          0.68
+        ],
+        "target": [
+          -0.3,
+          1.3,
+          5.72
+        ],
+        "fov": 52,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 25.85
+      },
+      "bytes": 4317447,
+      "sha256": "69337bf0327b1d03beb9dcdf09781fd0e3457c5ff28d87a99b01f042287ff11f"
+    },
+    {
+      "number": 7,
+      "filename": "Ultrawide/007-desk-and-ceiling-from-the-west.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Desk and ceiling from the west",
+      "position": [
+        -4.32,
+        1.77,
+        3.34
+      ],
+      "target": [
+        -0.1,
+        1.8,
+        5.72
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 26.22,
+      "actual": {
+        "position": [
+          -4.32,
+          1.77,
+          3.34
+        ],
+        "target": [
+          -0.1,
+          1.8,
+          5.72
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 26.22
+      },
+      "bytes": 3952365,
+      "sha256": "74d2286f04727f42d95f3bb6f22040d7ab2b4d906983b58268bf2ae8daf7cd74"
+    },
+    {
+      "number": 8,
+      "filename": "Ultrawide/008-kitchen-towards-the-floating-lounge.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Kitchen towards the floating lounge",
+      "position": [
+        3.62,
+        1.7,
+        2.97
+      ],
+      "target": [
+        -3.2,
+        1.2,
+        1.66
+      ],
+      "fov": 55,
+      "weather": "cloudy",
+      "time": 26.59,
+      "actual": {
+        "position": [
+          3.62,
+          1.7,
+          2.97
+        ],
+        "target": [
+          -3.2,
+          1.2,
+          1.66
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "cloudy",
+          "sky": "#9eafbd",
+          "daylightIntensity": 0.35,
+          "windowIntensity": 2.5,
+          "fogDensity": 0.012
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 26.59
+      },
+      "bytes": 5052678,
+      "sha256": "aedfb8bde0eac1d9bdc5895ff763976228a6d7f72b5f2d6f6a8d4609b681f96c"
+    },
+    {
+      "number": 9,
+      "filename": "Ultrawide/009-bed-entrance-and-helix-nightstand.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bed entrance and helix nightstand",
+      "position": [
+        -3.08,
+        1.5,
+        1.43
+      ],
+      "target": [
+        -2.8,
+        1.12,
+        -1.8
+      ],
+      "fov": 50,
+      "weather": "rain",
+      "time": 26.96,
+      "actual": {
+        "position": [
+          -3.08,
+          1.5,
+          1.43
+        ],
+        "target": [
+          -2.8,
+          1.12,
+          -1.8
+        ],
+        "fov": 50,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 26.96
+      },
+      "bytes": 6204333,
+      "sha256": "4cd240c4db50a9f903429a4f200222db4ba601dfacc23825bf8e79742eac0ee3"
+    },
+    {
+      "number": 10,
+      "filename": "Ultrawide/010-elevated-apartment-composition.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Elevated apartment composition",
+      "position": [
+        3.58,
+        2.98,
+        5.53
+      ],
+      "target": [
+        -2.35,
+        1,
+        0.65
+      ],
+      "fov": 56,
+      "weather": "rain",
+      "time": 27.33,
+      "actual": {
+        "position": [
+          3.58,
+          2.98,
+          5.53
+        ],
+        "target": [
+          -2.35,
+          1,
+          0.65
+        ],
+        "fov": 56,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 27.33
+      },
+      "bytes": 4764749,
+      "sha256": "65121753d6f8404f7fc26c2b2693e8ba3fa8f564d10a27a53329dfb9e2d4eb3e"
+    },
+    {
+      "number": 11,
+      "filename": "Ultrawide/011-full-oversized-square-bed.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Full oversized square bed",
+      "position": [
+        -1.7,
+        3.02,
+        -1.32
+      ],
+      "target": [
+        -6.05,
+        0.85,
+        -5.72
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 27.7,
+      "actual": {
+        "position": [
+          -1.7,
+          3.02,
+          -1.32
+        ],
+        "target": [
+          -6.05,
+          0.85,
+          -5.72
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 27.7
+      },
+      "bytes": 5174311,
+      "sha256": "64516fe11bbac0273b5b6564a20d7b0e7f30382b6911d3dad4e631960084671c"
+    },
+    {
+      "number": 12,
+      "filename": "Ultrawide/012-wall-wide-window-from-the-bed-foot.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Wall-wide window from the bed foot",
+      "position": [
+        -5.43,
+        2.25,
+        -1.31
+      ],
+      "target": [
+        -5.53,
+        1.7,
+        -9.44
+      ],
+      "fov": 54,
+      "weather": "rain",
+      "time": 28.07,
+      "actual": {
+        "position": [
+          -5.43,
+          2.25,
+          -1.31
+        ],
+        "target": [
+          -5.53,
+          1.7,
+          -9.44
+        ],
+        "fov": 54,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 28.07
+      },
+      "bytes": 4591992,
+      "sha256": "f9b5b2d9fd092c8a267d38cec99a72bf6bacb7c322410034488c717e2f176f1c"
+    },
+    {
+      "number": 13,
+      "filename": "Ultrawide/013-white-duvet-from-the-west.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "White duvet from the west",
+      "position": [
+        -9.07,
+        2.42,
+        -2.18
+      ],
+      "target": [
+        -5,
+        1.02,
+        -7.6
+      ],
+      "fov": 56,
+      "weather": "clear",
+      "time": 28.439999999999998,
+      "actual": {
+        "position": [
+          -9.07,
+          2.42,
+          -2.18
+        ],
+        "target": [
+          -5,
+          1.02,
+          -7.6
+        ],
+        "fov": 56,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 28.439999999999998
+      },
+      "bytes": 5505460,
+      "sha256": "dfde46606e9c97d9ac7b39e8a36079bdfd999eb5b1d753ca408eaf9ea47e2a59"
+    },
+    {
+      "number": 14,
+      "filename": "Ultrawide/014-white-duvet-from-the-east.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "White duvet from the east",
+      "position": [
+        -1.69,
+        2.4,
+        -3.28
+      ],
+      "target": [
+        -6.85,
+        1.12,
+        -7.45
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 28.81,
+      "actual": {
+        "position": [
+          -1.69,
+          2.4,
+          -3.28
+        ],
+        "target": [
+          -6.85,
+          1.12,
+          -7.45
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 28.81
+      },
+      "bytes": 5042713,
+      "sha256": "4313d9af0c9d1cba20549941faf70527ffc90fc857988e356531d837460c55de"
+    },
+    {
+      "number": 15,
+      "filename": "Ultrawide/015-bed-towards-living-room-from-northwest.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bed towards living room from northwest",
+      "position": [
+        -9.12,
+        2.42,
+        -8.78
+      ],
+      "target": [
+        -2,
+        1.35,
+        3.5
+      ],
+      "fov": 58,
+      "weather": "rain",
+      "time": 29.18,
+      "actual": {
+        "position": [
+          -9.12,
+          2.42,
+          -8.78
+        ],
+        "target": [
+          -2,
+          1.35,
+          3.5
+        ],
+        "fov": 58,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 29.18
+      },
+      "bytes": 4337430,
+      "sha256": "dbfde63e0b595586b521c4846a1f80c57ba2d1a4a64a2f42dc503c3944476254"
+    },
+    {
+      "number": 16,
+      "filename": "Ultrawide/016-bed-towards-living-room-from-northeast.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bed towards living room from northeast",
+      "position": [
+        -1.74,
+        2.41,
+        -8.76
+      ],
+      "target": [
+        -3.25,
+        1.35,
+        2.2
+      ],
+      "fov": 56,
+      "weather": "fog",
+      "time": 29.55,
+      "actual": {
+        "position": [
+          -1.74,
+          2.41,
+          -8.76
+        ],
+        "target": [
+          -3.25,
+          1.35,
+          2.2
+        ],
+        "fov": 56,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 29.55
+      },
+      "bytes": 3125393,
+      "sha256": "b8cee9b0c7b95a9fe4d22cbb0ebb0dd61e695111148481c6c668ee7e188ac9c4"
+    },
+    {
+      "number": 17,
+      "filename": "Ultrawide/017-holographic-tv-and-wall-fitted-duvet.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Holographic TV and wall-fitted duvet",
+      "position": [
+        -5.82,
+        2.08,
+        -4.68
+      ],
+      "target": [
+        -9.65,
+        2.03,
+        -6.1
+      ],
+      "fov": 47,
+      "weather": "rain",
+      "time": 29.92,
+      "actual": {
+        "position": [
+          -5.82,
+          2.08,
+          -4.68
+        ],
+        "target": [
+          -9.65,
+          2.03,
+          -6.1
+        ],
+        "fov": 47,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 29.92
+      },
+      "bytes": 4646672,
+      "sha256": "515077d954dee8f6287fe68e1f52e05d697cbbc1498d7616fb5710640fbc2a72"
+    },
+    {
+      "number": 18,
+      "filename": "Ultrawide/018-holographic-tv-oblique-across-the-bed.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Holographic TV oblique across the bed",
+      "position": [
+        -3.7,
+        2.15,
+        -7.75
+      ],
+      "target": [
+        -9.64,
+        2.06,
+        -6.1
+      ],
+      "fov": 46,
+      "weather": "cloudy",
+      "time": 30.29,
+      "actual": {
+        "position": [
+          -3.7,
+          2.15,
+          -7.75
+        ],
+        "target": [
+          -9.64,
+          2.06,
+          -6.1
+        ],
+        "fov": 46,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "cloudy",
+          "sky": "#9eafbd",
+          "daylightIntensity": 0.35,
+          "windowIntensity": 2.5,
+          "fogDensity": 0.012
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 30.29
+      },
+      "bytes": 4241077,
+      "sha256": "faae30bd2c21af02ba9b44e753a5367a22958e23881dcdeecddaee2f6ccbcbc9"
+    },
+    {
+      "number": 19,
+      "filename": "Ultrawide/019-four-large-pillows-opposite-the-tv.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Four large pillows opposite the TV",
+      "position": [
+        -5.18,
+        2.5,
+        -4.88
+      ],
+      "target": [
+        -1.8,
+        1.3,
+        -5.65
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 30.66,
+      "actual": {
+        "position": [
+          -5.18,
+          2.5,
+          -4.88
+        ],
+        "target": [
+          -1.8,
+          1.3,
+          -5.65
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 30.66
+      },
+      "bytes": 3606646,
+      "sha256": "33fc77d94273fe72cef248c1cbb1b23ac78f5c1c599ccd73b75f3c731f34afd4"
+    },
+    {
+      "number": 20,
+      "filename": "Ultrawide/020-clear-daylight-on-white-bedding.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Clear daylight on white bedding",
+      "position": [
+        -5.55,
+        2.32,
+        -2.02
+      ],
+      "target": [
+        -5.53,
+        1.35,
+        -8.85
+      ],
+      "fov": 54,
+      "weather": "clear",
+      "time": 31.03,
+      "actual": {
+        "position": [
+          -5.55,
+          2.32,
+          -2.02
+        ],
+        "target": [
+          -5.53,
+          1.35,
+          -8.85
+        ],
+        "fov": 54,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 31.03
+      },
+      "bytes": 4828996,
+      "sha256": "bdaa589963ad78569a7bc8fe78c71ed02c926f278a570d5a68786857c18f9404"
+    },
+    {
+      "number": 21,
+      "filename": "Ultrawide/021-floating-chair-above-circular-white-rug.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Floating chair above circular white rug",
+      "position": [
+        -1.74,
+        1.42,
+        3.68
+      ],
+      "target": [
+        -3.3,
+        1.1,
+        1.65
+      ],
+      "fov": 52,
+      "weather": "rain",
+      "time": 31.4,
+      "actual": {
+        "position": [
+          -1.74,
+          1.42,
+          3.68
+        ],
+        "target": [
+          -3.3,
+          1.1,
+          1.65
+        ],
+        "fov": 52,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 31.4
+      },
+      "bytes": 7400012,
+      "sha256": "4d1df1afc6fcd8494759f26ffe74297375091b55f7291513781b5a2d09b2fa17"
+    },
+    {
+      "number": 22,
+      "filename": "Ultrawide/022-transparent-chair-facing-the-kitchen.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Transparent chair facing the kitchen",
+      "position": [
+        -1.4,
+        1.35,
+        1.49
+      ],
+      "target": [
+        -3.36,
+        1.1,
+        1.69
+      ],
+      "fov": 47,
+      "weather": "rain",
+      "time": 31.77,
+      "actual": {
+        "position": [
+          -1.4,
+          1.35,
+          1.49
+        ],
+        "target": [
+          -3.36,
+          1.1,
+          1.69
+        ],
+        "fov": 47,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 31.77
+      },
+      "bytes": 6626017,
+      "sha256": "7bb3a66e6ce6e8e1fcd8613e8f6fd1483ef9d787325feaffa7ca2e40db1cbe34"
+    },
+    {
+      "number": 23,
+      "filename": "Ultrawide/023-floating-chair-rear-and-bed-beyond.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Floating chair rear and bed beyond",
+      "position": [
+        -4.41,
+        1.36,
+        2.87
+      ],
+      "target": [
+        -3.35,
+        1.1,
+        1.5
+      ],
+      "fov": 50,
+      "weather": "rain",
+      "time": 32.14,
+      "actual": {
+        "position": [
+          -4.41,
+          1.36,
+          2.87
+        ],
+        "target": [
+          -3.35,
+          1.1,
+          1.5
+        ],
+        "fov": 50,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 32.14
+      },
+      "bytes": 6008121,
+      "sha256": "2636ec073e35f92365cab469f12da3ec9c3bace461f42cdfaeb9edd0baaea0a4"
+    },
+    {
+      "number": 24,
+      "filename": "Ultrawide/024-soft-cushions-within-clear-chair-shell.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Soft cushions within clear chair shell",
+      "position": [
+        -1.91,
+        1.52,
+        1.15
+      ],
+      "target": [
+        -3.36,
+        1.08,
+        1.65
+      ],
+      "fov": 40,
+      "weather": "rain",
+      "time": 32.51,
+      "actual": {
+        "position": [
+          -1.91,
+          1.52,
+          1.15
+        ],
+        "target": [
+          -3.36,
+          1.08,
+          1.65
+        ],
+        "fov": 40,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 32.51
+      },
+      "bytes": 6324317,
+      "sha256": "49f8595f66fb0dfac9efacf0e9cf4bbbd70e034c5e26d623ce4e090662c35491"
+    },
+    {
+      "number": 25,
+      "filename": "Ultrawide/025-brilliant-white-circular-rug.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Brilliant white circular rug",
+      "position": [
+        -1.47,
+        2.88,
+        3.78
+      ],
+      "target": [
+        -3.2,
+        0.22,
+        1.75
+      ],
+      "fov": 49,
+      "weather": "clear",
+      "time": 32.879999999999995,
+      "actual": {
+        "position": [
+          -1.47,
+          2.88,
+          3.78
+        ],
+        "target": [
+          -3.2,
+          0.22,
+          1.75
+        ],
+        "fov": 49,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 32.879999999999995
+      },
+      "bytes": 5884736,
+      "sha256": "ed4a7d1feebf54b32979c08e167d6f76ddbb9eb4f5182e138317083eccb41435"
+    },
+    {
+      "number": 26,
+      "filename": "Ultrawide/026-kitchen-facing-lounge-and-bed-entrance.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Kitchen-facing lounge and bed entrance",
+      "position": [
+        -4.39,
+        1.72,
+        4.27
+      ],
+      "target": [
+        -1.25,
+        1.25,
+        1.5
+      ],
+      "fov": 54,
+      "weather": "rain",
+      "time": 33.25,
+      "actual": {
+        "position": [
+          -4.39,
+          1.72,
+          4.27
+        ],
+        "target": [
+          -1.25,
+          1.25,
+          1.5
+        ],
+        "fov": 54,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 33.25
+      },
+      "bytes": 5540185,
+      "sha256": "2734c1cc7f1b075e6a7e9fd332b23b52bd9f5cbefe293b495aa2f2fa5d8a3aae"
+    },
+    {
+      "number": 27,
+      "filename": "Ultrawide/027-holographic-workstation-front.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Holographic workstation front",
+      "position": [
+        -0.13,
+        1.45,
+        3.82
+      ],
+      "target": [
+        -0.05,
+        1.3,
+        5.77
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 33.62,
+      "actual": {
+        "position": [
+          -0.13,
+          1.45,
+          3.82
+        ],
+        "target": [
+          -0.05,
+          1.3,
+          5.77
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 33.62
+      },
+      "bytes": 5213234,
+      "sha256": "1cd88d85efecb9ebe50bf56b8210cd2604352c48549f229f1e05b016d3162b95"
+    },
+    {
+      "number": 28,
+      "filename": "Ultrawide/028-holographic-workstation-left-oblique.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Holographic workstation left oblique",
+      "position": [
+        -2.22,
+        1.63,
+        4.22
+      ],
+      "target": [
+        -0.15,
+        1.25,
+        5.65
+      ],
+      "fov": 50,
+      "weather": "rain",
+      "time": 33.99,
+      "actual": {
+        "position": [
+          -2.22,
+          1.63,
+          4.22
+        ],
+        "target": [
+          -0.15,
+          1.25,
+          5.65
+        ],
+        "fov": 50,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 33.99
+      },
+      "bytes": 4537160,
+      "sha256": "ff191d24ce7b1303baf5c2912dec2c9f3367f4cc4923417f81c59d9433f0caab"
+    },
+    {
+      "number": 29,
+      "filename": "Ultrawide/029-holographic-workstation-right-oblique.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Holographic workstation right oblique",
+      "position": [
+        1.88,
+        1.59,
+        4.32
+      ],
+      "target": [
+        -0.05,
+        1.3,
+        5.7
+      ],
+      "fov": 50,
+      "weather": "rain",
+      "time": 34.36,
+      "actual": {
+        "position": [
+          1.88,
+          1.59,
+          4.32
+        ],
+        "target": [
+          -0.05,
+          1.3,
+          5.7
+        ],
+        "fov": 50,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 34.36
+      },
+      "bytes": 4955233,
+      "sha256": "1c0de4678463fc9e69483c417e67093c35c39a5746c2a4873171db20ee7d6872"
+    },
+    {
+      "number": 30,
+      "filename": "Ultrawide/030-projected-keyboard-and-desktop.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Projected keyboard and desktop",
+      "position": [
+        -0.43,
+        1.45,
+        4.92
+      ],
+      "target": [
+        -0.16,
+        0.89,
+        5.52
+      ],
+      "fov": 43,
+      "weather": "rain",
+      "time": 34.730000000000004,
+      "actual": {
+        "position": [
+          -0.43,
+          1.45,
+          4.92
+        ],
+        "target": [
+          -0.16,
+          0.89,
+          5.52
+        ],
+        "fov": 43,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 34.730000000000004
+      },
+      "bytes": 3666990,
+      "sha256": "fc0bc0ca397d29b8dfa3d3cf7be5b0896cb771318b5f38df104b746bcacf5550"
+    },
+    {
+      "number": 31,
+      "filename": "Ultrawide/031-floating-computer-information-panels.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Floating computer information panels",
+      "position": [
+        -0.12,
+        1.55,
+        4.67
+      ],
+      "target": [
+        0,
+        1.49,
+        5.82
+      ],
+      "fov": 44,
+      "weather": "rain",
+      "time": 35.1,
+      "actual": {
+        "position": [
+          -0.12,
+          1.55,
+          4.67
+        ],
+        "target": [
+          0,
+          1.49,
+          5.82
+        ],
+        "fov": 44,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 35.1
+      },
+      "bytes": 5416301,
+      "sha256": "614e665884c80a7166cd95955e5653abd3bf67b2e234f3f2f779838a56bc2db0"
+    },
+    {
+      "number": 32,
+      "filename": "Ultrawide/032-workstation-stool-and-clear-desktop.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Workstation stool and clear desktop",
+      "position": [
+        -1.47,
+        1.34,
+        4.22
+      ],
+      "target": [
+        0,
+        0.95,
+        5.25
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 35.47,
+      "actual": {
+        "position": [
+          -1.47,
+          1.34,
+          4.22
+        ],
+        "target": [
+          0,
+          0.95,
+          5.25
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 35.47
+      },
+      "bytes": 4693869,
+      "sha256": "a5b87e2252ef0616369fc4a4bcde0384aaf8bd672e6f8b8be6ccc224599b3985"
+    },
+    {
+      "number": 33,
+      "filename": "Ultrawide/033-bathroom-through-the-sliding-doorway.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bathroom through the sliding doorway",
+      "position": [
+        0.63,
+        1.65,
+        0.15
+      ],
+      "target": [
+        0.05,
+        1.3,
+        -2.18
+      ],
+      "fov": 53,
+      "weather": "rain",
+      "time": 35.84,
+      "actual": {
+        "position": [
+          0.63,
+          1.65,
+          0.15
+        ],
+        "target": [
+          0.05,
+          1.3,
+          -2.18
+        ],
+        "fov": 53,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 35.84
+      },
+      "bytes": 4524832,
+      "sha256": "0cecd4e861f67caac82db5900d2c343271cf77b875779a4932991dd7a2bfcccb"
+    },
+    {
+      "number": 34,
+      "filename": "Ultrawide/034-bathroom-pastel-luminous-grid.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bathroom pastel luminous grid",
+      "position": [
+        0.94,
+        1.74,
+        -0.46
+      ],
+      "target": [
+        -0.35,
+        1.35,
+        -1.9
+      ],
+      "fov": 58,
+      "weather": "rain",
+      "time": 36.21,
+      "actual": {
+        "position": [
+          0.94,
+          1.74,
+          -0.46
+        ],
+        "target": [
+          -0.35,
+          1.35,
+          -1.9
+        ],
+        "fov": 58,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 36.21
+      },
+      "bytes": 5372767,
+      "sha256": "c2d83fc4ef9a203b78f6ea4be675427e5443e5439a4b656e65fe09378459be61"
+    },
+    {
+      "number": 35,
+      "filename": "Ultrawide/035-bathroom-mirror-and-luminous-panel-seams.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Bathroom mirror and luminous panel seams",
+      "position": [
+        -0.62,
+        1.87,
+        -1.12
+      ],
+      "target": [
+        0.75,
+        1.94,
+        -2.8
+      ],
+      "fov": 49,
+      "weather": "rain",
+      "time": 36.58,
+      "actual": {
+        "position": [
+          -0.62,
+          1.87,
+          -1.12
+        ],
+        "target": [
+          0.75,
+          1.94,
+          -2.8
+        ],
+        "fov": 49,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 36.58
+      },
+      "bytes": 2879458,
+      "sha256": "e910b1f178873c72bbeebfcca97114b03f2138a2b9d885888bd5035c7f2f6dc0"
+    },
+    {
+      "number": 36,
+      "filename": "Ultrawide/036-porcelain-soaking-tub-and-neon-walls.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Porcelain soaking tub and neon walls",
+      "position": [
+        0.49,
+        1.78,
+        -1.21
+      ],
+      "target": [
+        0.04,
+        0.77,
+        -2.35
+      ],
+      "fov": 50,
+      "weather": "rain",
+      "time": 36.95,
+      "actual": {
+        "position": [
+          0.49,
+          1.78,
+          -1.21
+        ],
+        "target": [
+          0.04,
+          0.77,
+          -2.35
+        ],
+        "fov": 50,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 36.95
+      },
+      "bytes": 5110485,
+      "sha256": "cf44054a7964e3456648a7232946fbfe77be826323802db4b3d9fd50f948b121"
+    },
+    {
+      "number": 37,
+      "filename": "Ultrawide/037-floating-basin-and-reflective-mirror.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Floating basin and reflective mirror",
+      "position": [
+        0.37,
+        1.39,
+        -0.72
+      ],
+      "target": [
+        -0.89,
+        1.12,
+        -1.03
+      ],
+      "fov": 49,
+      "weather": "rain",
+      "time": 37.32,
+      "actual": {
+        "position": [
+          0.37,
+          1.39,
+          -0.72
+        ],
+        "target": [
+          -0.89,
+          1.12,
+          -1.03
+        ],
+        "fov": 49,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 37.32
+      },
+      "bytes": 5648751,
+      "sha256": "91bf8cd13d0fafe35cca69ea3cc53e929b9c2e4cd95fae43e1655f130f73c4a9"
+    },
+    {
+      "number": 38,
+      "filename": "Ultrawide/038-kitchen-quartz-and-satin-fittings.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Kitchen quartz and satin fittings",
+      "position": [
+        1.77,
+        1.63,
+        2.08
+      ],
+      "target": [
+        4.3,
+        1.35,
+        1.25
+      ],
+      "fov": 52,
+      "weather": "clear",
+      "time": 37.69,
+      "actual": {
+        "position": [
+          1.77,
+          1.63,
+          2.08
+        ],
+        "target": [
+          4.3,
+          1.35,
+          1.25
+        ],
+        "fov": 52,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 37.69
+      },
+      "bytes": 4670480,
+      "sha256": "8da7714c8b625a0838b9e34d7423bd91b6185113dd0778c520cded61cabb839f"
+    },
+    {
+      "number": 39,
+      "filename": "Ultrawide/039-kitchen-from-the-south.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Kitchen from the south",
+      "position": [
+        2.69,
+        1.68,
+        3.38
+      ],
+      "target": [
+        4.25,
+        1.4,
+        1.35
+      ],
+      "fov": 49,
+      "weather": "fog",
+      "time": 38.06,
+      "actual": {
+        "position": [
+          2.69,
+          1.68,
+          3.38
+        ],
+        "target": [
+          4.25,
+          1.4,
+          1.35
+        ],
+        "fov": 49,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 38.06
+      },
+      "bytes": 4587311,
+      "sha256": "773c3388e0348b41c45cba4d10bd33f17c6a0703efee62246c0b182dc7ddf6f1"
+    },
+    {
+      "number": 40,
+      "filename": "Ultrawide/040-kitchen-tap-worktop-and-ceramic-cup.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Kitchen tap worktop and ceramic cup",
+      "position": [
+        3.12,
+        1.63,
+        1.78
+      ],
+      "target": [
+        4.32,
+        1.11,
+        0.92
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 38.43,
+      "actual": {
+        "position": [
+          3.12,
+          1.63,
+          1.78
+        ],
+        "target": [
+          4.32,
+          1.11,
+          0.92
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 38.43
+      },
+      "bytes": 3573191,
+      "sha256": "26b4afee6a26ab81f2919dce1426fbb4037538270622e9eab39bca1fb89b61e6"
+    },
+    {
+      "number": 41,
+      "filename": "Ultrawide/041-concentric-ceiling-rings.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Concentric ceiling rings",
+      "position": [
+        -1.69,
+        1.6,
+        2.38
+      ],
+      "target": [
+        -2.75,
+        3.45,
+        0.34
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 38.8,
+      "actual": {
+        "position": [
+          -1.69,
+          1.6,
+          2.38
+        ],
+        "target": [
+          -2.75,
+          3.45,
+          0.34
+        ],
+        "fov": 55,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 38.8
+      },
+      "bytes": 6150857,
+      "sha256": "ca05e3792a2db451e4f246d098087dcf78d860ff964044f2f3c14ca2169072cf"
+    },
+    {
+      "number": 42,
+      "filename": "Ultrawide/042-ceiling-fixture-and-living-room.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Ceiling fixture and living room",
+      "position": [
+        -4.27,
+        1.53,
+        2.53
+      ],
+      "target": [
+        -2.7,
+        3.25,
+        0.25
+      ],
+      "fov": 54,
+      "weather": "rain",
+      "time": 39.17,
+      "actual": {
+        "position": [
+          -4.27,
+          1.53,
+          2.53
+        ],
+        "target": [
+          -2.7,
+          3.25,
+          0.25
+        ],
+        "fov": 54,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 39.17
+      },
+      "bytes": 6125607,
+      "sha256": "db0d0a38911205a112d3202323ca2c818ad232255c547f56803541b23bb4cb7c"
+    },
+    {
+      "number": 43,
+      "filename": "Ultrawide/043-helix-nightlight-glass-construction.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Helix nightlight glass construction",
+      "position": [
+        -2.1,
+        1.15,
+        0.68
+      ],
+      "target": [
+        -1.66,
+        0.95,
+        -0.4
+      ],
+      "fov": 34,
+      "weather": "rain",
+      "time": 39.54,
+      "actual": {
+        "position": [
+          -2.1,
+          1.15,
+          0.68
+        ],
+        "target": [
+          -1.66,
+          0.95,
+          -0.4
+        ],
+        "fov": 34,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 39.54
+      },
+      "bytes": 5363467,
+      "sha256": "4dc66ddc87567aab883990dff5e2e58e425463cfd4b50a26b282dbcf2bdc9bf1"
+    },
+    {
+      "number": 44,
+      "filename": "Ultrawide/044-nightstand-soft-pink-reflected-light.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Nightstand soft pink reflected light",
+      "position": [
+        -2.44,
+        1.2,
+        0.51
+      ],
+      "target": [
+        -1.66,
+        0.91,
+        -0.4
+      ],
+      "fov": 42,
+      "weather": "rain",
+      "time": 39.91,
+      "actual": {
+        "position": [
+          -2.44,
+          1.2,
+          0.51
+        ],
+        "target": [
+          -1.66,
+          0.91,
+          -0.4
+        ],
+        "fov": 42,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 39.91
+      },
+      "bytes": 5519683,
+      "sha256": "bb4ccdef5d4701a7fb6bcec70f0d09b0fea51d43ce9297f6fe5fb8d26b467bf0"
+    },
+    {
+      "number": 45,
+      "filename": "Ultrawide/045-full-city-window-and-duvet-foreground.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Full city window and duvet foreground",
+      "position": [
+        -5.5,
+        2.34,
+        -5.34
+      ],
+      "target": [
+        -5.53,
+        1.52,
+        -22
+      ],
+      "fov": 51,
+      "weather": "rain",
+      "time": 40.28,
+      "actual": {
+        "position": [
+          -5.5,
+          2.34,
+          -5.34
+        ],
+        "target": [
+          -5.53,
+          1.52,
+          -22
+        ],
+        "fov": 51,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 40.28
+      },
+      "bytes": 5807148,
+      "sha256": "3bf1b0373a6c5c898c8af721842900152bdafc4ee32de4a718b21f4298b54707"
+    },
+    {
+      "number": 46,
+      "filename": "Ultrawide/046-rainy-traffic-bridges-and-neon.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Rainy traffic bridges and neon",
+      "position": [
+        -5.42,
+        2.38,
+        -9.02
+      ],
+      "target": [
+        -5.5,
+        -2,
+        -42
+      ],
+      "fov": 39,
+      "weather": "rain",
+      "time": 40.65,
+      "actual": {
+        "position": [
+          -5.42,
+          2.38,
+          -9.02
+        ],
+        "target": [
+          -5.5,
+          -2,
+          -42
+        ],
+        "fov": 39,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 40.65
+      },
+      "bytes": 6822743,
+      "sha256": "79895c02b401b1d6e2f2f3bbc81a8543bb7932dbad6b55d9c1157a5dec10fee2"
+    },
+    {
+      "number": 47,
+      "filename": "Ultrawide/047-snowy-city-beyond-the-white-bed.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Snowy city beyond the white bed",
+      "position": [
+        -6.07,
+        2.15,
+        -8.37
+      ],
+      "target": [
+        -5.5,
+        0.4,
+        -39
+      ],
+      "fov": 45,
+      "weather": "snow",
+      "time": 41.019999999999996,
+      "actual": {
+        "position": [
+          -6.07,
+          2.15,
+          -8.37
+        ],
+        "target": [
+          -5.5,
+          0.4,
+          -39
+        ],
+        "fov": 45,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "snow",
+          "sky": "#bad0df",
+          "daylightIntensity": 0.6,
+          "windowIntensity": 2.8,
+          "fogDensity": 0.019
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 41.019999999999996
+      },
+      "bytes": 7156440,
+      "sha256": "791a8b424cbf53571fc483ff98fa8548ca704d66deff36167afa6fc9fc2c4ac3"
+    },
+    {
+      "number": 48,
+      "filename": "Ultrawide/048-storm-city-and-flowing-spectral-figures.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Storm city and flowing spectral figures",
+      "position": [
+        -4.97,
+        2.33,
+        -8.87
+      ],
+      "target": [
+        -4.4,
+        2.9,
+        -45
+      ],
+      "fov": 28,
+      "weather": "storm",
+      "time": 41.39,
+      "actual": {
+        "position": [
+          -4.97,
+          2.33,
+          -8.87
+        ],
+        "target": [
+          -4.4,
+          2.9,
+          -45
+        ],
+        "fov": 28,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "storm",
+          "sky": "#293e55",
+          "daylightIntensity": 0.06,
+          "windowIntensity": 0.5,
+          "fogDensity": 0.025
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 41.39
+      },
+      "bytes": 6730100,
+      "sha256": "b1d3103de4266f57abe55df1c177e17144e72473e4f151859558920d49c451d2"
+    },
+    {
+      "number": 49,
+      "filename": "Ultrawide/049-blue-hologram-updated-facial-portrait.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Blue hologram updated facial portrait",
+      "position": [
+        -1.7,
+        4.48,
+        -39.78
+      ],
+      "target": [
+        -1.805,
+        4.48,
+        -41.46
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 41.76,
+      "actual": {
+        "position": [
+          -1.7,
+          4.48,
+          -39.78
+        ],
+        "target": [
+          -1.805,
+          4.48,
+          -41.46
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 41.76
+      },
+      "bytes": 6068141,
+      "sha256": "b3bec27e410edf9993dddc913e4f904817da56133e5d4d6e845cc595ab22dd74"
+    },
+    {
+      "number": 50,
+      "filename": "Ultrawide/050-pink-hologram-artistic-facial-portrait.png",
+      "format": "ultrawide",
+      "resolution": [
+        5120,
+        2160
+      ],
+      "title": "Pink hologram artistic facial portrait",
+      "position": [
+        -8.93,
+        3.66,
+        -53.74
+      ],
+      "target": [
+        -8.825,
+        3.66,
+        -55.46
+      ],
+      "fov": 48,
+      "weather": "rain",
+      "time": 42.129999999999995,
+      "actual": {
+        "position": [
+          -8.93,
+          3.66,
+          -53.74
+        ],
+        "target": [
+          -8.825,
+          3.66,
+          -55.46
+        ],
+        "fov": 48,
+        "aspect": 2.3703703703703702,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          5120,
+          2160
+        ],
+        "time": 42.129999999999995
+      },
+      "bytes": 6165316,
+      "sha256": "dee6c6f32dfaca4decf394003a9ba453c86f7a285c2cda23d60f8e20037a9d74"
+    },
+    {
+      "number": 51,
+      "filename": "Phone/051-entrance-vertical-room-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Entrance vertical room portrait",
+      "position": [
+        -2.33,
+        1.72,
+        4.95
+      ],
+      "target": [
+        -3,
+        1.65,
+        -0.35
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 24.19,
+      "actual": {
+        "position": [
+          -2.33,
+          1.72,
+          4.95
+        ],
+        "target": [
+          -3,
+          1.65,
+          -0.35
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 24.19
+      },
+      "bytes": 5442552,
+      "sha256": "ef1662717d40aa48b90416a9f730d72b2135a6be05d6bcbc8eb979bdddda0958"
+    },
+    {
+      "number": 52,
+      "filename": "Phone/052-living-room-from-southwest.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Living room from southwest",
+      "position": [
+        -4.48,
+        1.78,
+        5.75
+      ],
+      "target": [
+        -2.3,
+        1.5,
+        0.5
+      ],
+      "fov": 72,
+      "weather": "clear",
+      "time": 24.560000000000002,
+      "actual": {
+        "position": [
+          -4.48,
+          1.78,
+          5.75
+        ],
+        "target": [
+          -2.3,
+          1.5,
+          0.5
+        ],
+        "fov": 72,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 24.560000000000002
+      },
+      "bytes": 5010243,
+      "sha256": "33230dbd65a243fb8571d0964f954eb7f80ab128e89954f9a397ca33da4395f7"
+    },
+    {
+      "number": 53,
+      "filename": "Phone/053-living-room-from-southeast.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Living room from southeast",
+      "position": [
+        4.42,
+        1.75,
+        5.78
+      ],
+      "target": [
+        -1.9,
+        1.5,
+        0.1
+      ],
+      "fov": 72,
+      "weather": "rain",
+      "time": 24.93,
+      "actual": {
+        "position": [
+          4.42,
+          1.75,
+          5.78
+        ],
+        "target": [
+          -1.9,
+          1.5,
+          0.1
+        ],
+        "fov": 72,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 24.93
+      },
+      "bytes": 3136073,
+      "sha256": "55f45eaf8f6ff5827e4c7840902489a07411afdf427bb3ba305800031745bc94"
+    },
+    {
+      "number": 54,
+      "filename": "Phone/054-bed-entrance-beneath-the-ceiling.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bed entrance beneath the ceiling",
+      "position": [
+        -0.15,
+        1.78,
+        4.35
+      ],
+      "target": [
+        -3.5,
+        1.6,
+        -2
+      ],
+      "fov": 72,
+      "weather": "rain",
+      "time": 25.3,
+      "actual": {
+        "position": [
+          -0.15,
+          1.78,
+          4.35
+        ],
+        "target": [
+          -3.5,
+          1.6,
+          -2
+        ],
+        "fov": 72,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 25.3
+      },
+      "bytes": 4478328,
+      "sha256": "dddc6dbbe88961a8f4bf0ba55bcc4b7abad77009fa30a383f8ad6f56ae3eeb7d"
+    },
+    {
+      "number": 55,
+      "filename": "Phone/055-kitchen-beyond-the-white-lounge.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Kitchen beyond the white lounge",
+      "position": [
+        -4.24,
+        1.75,
+        3.58
+      ],
+      "target": [
+        3.8,
+        1.6,
+        1.6
+      ],
+      "fov": 68,
+      "weather": "fog",
+      "time": 25.67,
+      "actual": {
+        "position": [
+          -4.24,
+          1.75,
+          3.58
+        ],
+        "target": [
+          3.8,
+          1.6,
+          1.6
+        ],
+        "fov": 68,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 25.67
+      },
+      "bytes": 2372297,
+      "sha256": "e29f5b8d3ac5237bebab1350f7e9d108f6c73043f7b2fae44c9c17840633fa31"
+    },
+    {
+      "number": 56,
+      "filename": "Phone/056-desk-across-the-room.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Desk across the room",
+      "position": [
+        0.63,
+        1.7,
+        -0.02
+      ],
+      "target": [
+        -0.15,
+        1.5,
+        5.65
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 26.040000000000003,
+      "actual": {
+        "position": [
+          0.63,
+          1.7,
+          -0.02
+        ],
+        "target": [
+          -0.15,
+          1.5,
+          5.65
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 26.040000000000003
+      },
+      "bytes": 2879421,
+      "sha256": "fa4177993471f294231e53dab614edb7649d100d99ae72c0d29a377ac257e04b"
+    },
+    {
+      "number": 57,
+      "filename": "Phone/057-ceiling-and-workstation-from-west.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Ceiling and workstation from west",
+      "position": [
+        -3.8,
+        1.65,
+        3.12
+      ],
+      "target": [
+        -0.1,
+        1.9,
+        5.65
+      ],
+      "fov": 72,
+      "weather": "rain",
+      "time": 26.41,
+      "actual": {
+        "position": [
+          -3.8,
+          1.65,
+          3.12
+        ],
+        "target": [
+          -0.1,
+          1.9,
+          5.65
+        ],
+        "fov": 72,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 26.41
+      },
+      "bytes": 3087652,
+      "sha256": "3895030b0d324dea2411a4220028714a7694195654377e1a7579d6fdbe82f2ef"
+    },
+    {
+      "number": 58,
+      "filename": "Phone/058-floating-lounge-from-the-kitchen.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Floating lounge from the kitchen",
+      "position": [
+        3.9,
+        1.72,
+        2.72
+      ],
+      "target": [
+        -3.3,
+        1.3,
+        1.6
+      ],
+      "fov": 65,
+      "weather": "cloudy",
+      "time": 26.78,
+      "actual": {
+        "position": [
+          3.9,
+          1.72,
+          2.72
+        ],
+        "target": [
+          -3.3,
+          1.3,
+          1.6
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "cloudy",
+          "sky": "#9eafbd",
+          "daylightIntensity": 0.35,
+          "windowIntensity": 2.5,
+          "fogDensity": 0.012
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 26.78
+      },
+      "bytes": 3329653,
+      "sha256": "bfc4d764b49dca5d9caf6c56000757939d0db3bc94d1c82132c36c08964ac083"
+    },
+    {
+      "number": 59,
+      "filename": "Phone/059-alcove-opening-and-nightlight.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Alcove opening and nightlight",
+      "position": [
+        -3,
+        1.65,
+        2.1
+      ],
+      "target": [
+        -2.7,
+        1.45,
+        -1.3
+      ],
+      "fov": 68,
+      "weather": "rain",
+      "time": 27.150000000000002,
+      "actual": {
+        "position": [
+          -3,
+          1.65,
+          2.1
+        ],
+        "target": [
+          -2.7,
+          1.45,
+          -1.3
+        ],
+        "fov": 68,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 27.150000000000002
+      },
+      "bytes": 4008026,
+      "sha256": "bf33735253a402c4487ff6cdd6f90c06582a0a3b0165c8b594c911a532e7e84b"
+    },
+    {
+      "number": 60,
+      "filename": "Phone/060-apartment-vertical-overview.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Apartment vertical overview",
+      "position": [
+        3.9,
+        2.9,
+        5.78
+      ],
+      "target": [
+        -2.45,
+        1.2,
+        0.6
+      ],
+      "fov": 75,
+      "weather": "rain",
+      "time": 27.52,
+      "actual": {
+        "position": [
+          3.9,
+          2.9,
+          5.78
+        ],
+        "target": [
+          -2.45,
+          1.2,
+          0.6
+        ],
+        "fov": 75,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 27.52
+      },
+      "bytes": 3198795,
+      "sha256": "7f041041b7fed78eb096a5fe88eea272e4c2a0c5a3586bdd9a7ec155027a5796"
+    },
+    {
+      "number": 61,
+      "filename": "Phone/061-square-bed-diagonal-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Square bed diagonal portrait",
+      "position": [
+        -1.6,
+        3.05,
+        -1.1
+      ],
+      "target": [
+        -5.6,
+        1.1,
+        -6
+      ],
+      "fov": 75,
+      "weather": "rain",
+      "time": 27.89,
+      "actual": {
+        "position": [
+          -1.6,
+          3.05,
+          -1.1
+        ],
+        "target": [
+          -5.6,
+          1.1,
+          -6
+        ],
+        "fov": 75,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 27.89
+      },
+      "bytes": 2755117,
+      "sha256": "301bf2cc98048ba548a8518f4eea4b1f7ea4e1a618eec5fd8acd7f5fdc46a753"
+    },
+    {
+      "number": 62,
+      "filename": "Phone/062-bed-and-modern-city-window.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bed and modern city window",
+      "position": [
+        -5.3,
+        2.38,
+        -1.42
+      ],
+      "target": [
+        -5.525,
+        1.65,
+        -9.45
+      ],
+      "fov": 68,
+      "weather": "rain",
+      "time": 28.26,
+      "actual": {
+        "position": [
+          -5.3,
+          2.38,
+          -1.42
+        ],
+        "target": [
+          -5.525,
+          1.65,
+          -9.45
+        ],
+        "fov": 68,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 28.26
+      },
+      "bytes": 3326948,
+      "sha256": "c9b23f7cea3415a67bdf0502a312d800c012a23c6d933db0f57f054fb400df23"
+    },
+    {
+      "number": 63,
+      "filename": "Phone/063-soft-duvet-west-diagonal.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Soft duvet west diagonal",
+      "position": [
+        -9.23,
+        2.48,
+        -1.52
+      ],
+      "target": [
+        -5.6,
+        1,
+        -6
+      ],
+      "fov": 70,
+      "weather": "clear",
+      "time": 28.63,
+      "actual": {
+        "position": [
+          -9.23,
+          2.48,
+          -1.52
+        ],
+        "target": [
+          -5.6,
+          1,
+          -6
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 28.63
+      },
+      "bytes": 2884922,
+      "sha256": "daf8f1392dfbef0eef01b250b0de5bc8f95b7413604117395fbe6fb53448366e"
+    },
+    {
+      "number": 64,
+      "filename": "Phone/064-soft-duvet-east-diagonal.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Soft duvet east diagonal",
+      "position": [
+        -1.57,
+        2.44,
+        -3.05
+      ],
+      "target": [
+        -6.6,
+        1.2,
+        -7.3
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 29,
+      "actual": {
+        "position": [
+          -1.57,
+          2.44,
+          -3.05
+        ],
+        "target": [
+          -6.6,
+          1.2,
+          -7.3
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 29
+      },
+      "bytes": 2801543,
+      "sha256": "60b51e50568ce5b3457a307a99d2d838226287aa05edcf62cf6acdd9d3ace4b7"
+    },
+    {
+      "number": 65,
+      "filename": "Phone/065-bed-to-lounge-northwest-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bed to lounge northwest portrait",
+      "position": [
+        -9.32,
+        2.39,
+        -8.91
+      ],
+      "target": [
+        -2.5,
+        1.55,
+        2.8
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 29.37,
+      "actual": {
+        "position": [
+          -9.32,
+          2.39,
+          -8.91
+        ],
+        "target": [
+          -2.5,
+          1.55,
+          2.8
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 29.37
+      },
+      "bytes": 2548367,
+      "sha256": "3ba8f5e729a420bd2c7aa984fb2676205a009ddc8ee6eec60d199f1d501e4f61"
+    },
+    {
+      "number": 66,
+      "filename": "Phone/066-bed-to-lounge-northeast-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bed to lounge northeast portrait",
+      "position": [
+        -1.53,
+        2.43,
+        -9
+      ],
+      "target": [
+        -3.2,
+        1.65,
+        2.1
+      ],
+      "fov": 70,
+      "weather": "fog",
+      "time": 29.740000000000002,
+      "actual": {
+        "position": [
+          -1.53,
+          2.43,
+          -9
+        ],
+        "target": [
+          -3.2,
+          1.65,
+          2.1
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 29.740000000000002
+      },
+      "bytes": 3306276,
+      "sha256": "1f216f7728358f74ac3f3767337b0a5323e0399b3098cdaa27cbe69d31278862"
+    },
+    {
+      "number": 67,
+      "filename": "Phone/067-left-wall-holographic-television.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Left-wall holographic television",
+      "position": [
+        -3.5,
+        2.12,
+        -5.9
+      ],
+      "target": [
+        -9.65,
+        2.12,
+        -6.1
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 30.110000000000003,
+      "actual": {
+        "position": [
+          -3.5,
+          2.12,
+          -5.9
+        ],
+        "target": [
+          -9.65,
+          2.12,
+          -6.1
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 30.110000000000003
+      },
+      "bytes": 2794896,
+      "sha256": "88c10fa5724615aa0c3d99627e48e299a53d36c3e7ed4bd5eaf9c9193277e7b9"
+    },
+    {
+      "number": 68,
+      "filename": "Phone/068-tv-over-gently-gathered-duvet.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "TV over gently gathered duvet",
+      "position": [
+        -4.15,
+        2.3,
+        -8.1
+      ],
+      "target": [
+        -9.64,
+        1.75,
+        -6.1
+      ],
+      "fov": 65,
+      "weather": "cloudy",
+      "time": 30.48,
+      "actual": {
+        "position": [
+          -4.15,
+          2.3,
+          -8.1
+        ],
+        "target": [
+          -9.64,
+          1.75,
+          -6.1
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "cloudy",
+          "sky": "#9eafbd",
+          "daylightIntensity": 0.35,
+          "windowIntensity": 2.5,
+          "fogDensity": 0.012
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 30.48
+      },
+      "bytes": 3223276,
+      "sha256": "9f25572ca5703395328d70fe931878bde0043ca1887a4f16ea8e2866efa15b23"
+    },
+    {
+      "number": 69,
+      "filename": "Phone/069-oversized-pillows-along-opposite-wall.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Oversized pillows along opposite wall",
+      "position": [
+        -5.4,
+        2.62,
+        -4.4
+      ],
+      "target": [
+        -1.8,
+        1.35,
+        -5.5
+      ],
+      "fov": 69,
+      "weather": "rain",
+      "time": 30.85,
+      "actual": {
+        "position": [
+          -5.4,
+          2.62,
+          -4.4
+        ],
+        "target": [
+          -1.8,
+          1.35,
+          -5.5
+        ],
+        "fov": 69,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 30.85
+      },
+      "bytes": 2467220,
+      "sha256": "8e6abe8e6356c8d96d0ff581674fcc721bbebc188a46fe27168566dd7172af9d"
+    },
+    {
+      "number": 70,
+      "filename": "Phone/070-white-bed-in-clear-city-daylight.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "White bed in clear city daylight",
+      "position": [
+        -5.6,
+        2.52,
+        -2.4
+      ],
+      "target": [
+        -5.525,
+        1.45,
+        -9
+      ],
+      "fov": 68,
+      "weather": "clear",
+      "time": 31.220000000000002,
+      "actual": {
+        "position": [
+          -5.6,
+          2.52,
+          -2.4
+        ],
+        "target": [
+          -5.525,
+          1.45,
+          -9
+        ],
+        "fov": 68,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 31.220000000000002
+      },
+      "bytes": 3821086,
+      "sha256": "5212250ba79648081aef56b8e21a2d3fc36abecc54506df0122eb1d60d81a4df"
+    },
+    {
+      "number": 71,
+      "filename": "Phone/071-floating-chair-and-brilliant-round-rug.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Floating chair and brilliant round rug",
+      "position": [
+        -0.85,
+        1.55,
+        4.2
+      ],
+      "target": [
+        -3.3,
+        1.15,
+        1.65
+      ],
+      "fov": 69,
+      "weather": "rain",
+      "time": 31.59,
+      "actual": {
+        "position": [
+          -0.85,
+          1.55,
+          4.2
+        ],
+        "target": [
+          -3.3,
+          1.15,
+          1.65
+        ],
+        "fov": 69,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 31.59
+      },
+      "bytes": 5792985,
+      "sha256": "f73935ee103602ecc40c03d2987db6e3f9efa85659531e6d34173d3f6c768db4"
+    },
+    {
+      "number": 72,
+      "filename": "Phone/072-transparent-chair-front-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Transparent chair front portrait",
+      "position": [
+        -0.65,
+        1.35,
+        1.72
+      ],
+      "target": [
+        -3.35,
+        1.18,
+        1.65
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 31.96,
+      "actual": {
+        "position": [
+          -0.65,
+          1.35,
+          1.72
+        ],
+        "target": [
+          -3.35,
+          1.18,
+          1.65
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 31.96
+      },
+      "bytes": 5667157,
+      "sha256": "1d352fcfd1769f28ccf601cf25141f8330311e32acf434f221808c8c086a4d15"
+    },
+    {
+      "number": 73,
+      "filename": "Phone/073-transparent-chair-rear-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Transparent chair rear portrait",
+      "position": [
+        -4.5,
+        1.4,
+        3.8
+      ],
+      "target": [
+        -3.35,
+        1.16,
+        1.65
+      ],
+      "fov": 67,
+      "weather": "rain",
+      "time": 32.33,
+      "actual": {
+        "position": [
+          -4.5,
+          1.4,
+          3.8
+        ],
+        "target": [
+          -3.35,
+          1.16,
+          1.65
+        ],
+        "fov": 67,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 32.33
+      },
+      "bytes": 5402158,
+      "sha256": "a255f6ca31beab67c90e4a903bc8529b4241f660c6789d71aea1d94652d60cd6"
+    },
+    {
+      "number": 74,
+      "filename": "Phone/074-chair-clear-rim-and-soft-white-cushion.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Chair clear rim and soft white cushion",
+      "position": [
+        -1.3,
+        1.55,
+        0.85
+      ],
+      "target": [
+        -3.36,
+        1.14,
+        1.65
+      ],
+      "fov": 60,
+      "weather": "rain",
+      "time": 32.699999999999996,
+      "actual": {
+        "position": [
+          -1.3,
+          1.55,
+          0.85
+        ],
+        "target": [
+          -3.36,
+          1.14,
+          1.65
+        ],
+        "fov": 60,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 32.699999999999996
+      },
+      "bytes": 5580807,
+      "sha256": "60fe37a2a48caf543ff9f3fbf7ee836f14eb0f4a54ae7a22dabc2987e23c8575"
+    },
+    {
+      "number": 75,
+      "filename": "Phone/075-round-luminous-rug-and-chair.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Round luminous rug and chair",
+      "position": [
+        -0.55,
+        2.9,
+        4.4
+      ],
+      "target": [
+        -3.3,
+        0.6,
+        1.65
+      ],
+      "fov": 70,
+      "weather": "clear",
+      "time": 33.06999999999999,
+      "actual": {
+        "position": [
+          -0.55,
+          2.9,
+          4.4
+        ],
+        "target": [
+          -3.3,
+          0.6,
+          1.65
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 33.06999999999999
+      },
+      "bytes": 4340342,
+      "sha256": "94391f6bec21f3da1386e2b6182f5f5bbb80897d1bdb7a9ee3dc87c53ff1f38d"
+    },
+    {
+      "number": 76,
+      "filename": "Phone/076-floating-chair-with-kitchen-view.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Floating chair with kitchen view",
+      "position": [
+        -4.43,
+        1.7,
+        4.75
+      ],
+      "target": [
+        -2.6,
+        1.25,
+        1.7
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 33.44,
+      "actual": {
+        "position": [
+          -4.43,
+          1.7,
+          4.75
+        ],
+        "target": [
+          -2.6,
+          1.25,
+          1.7
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 33.44
+      },
+      "bytes": 5549733,
+      "sha256": "a55505a7fb9139866b232d611e3ae3ba16517373704157ed9e2f08bb4f9746b1"
+    },
+    {
+      "number": 77,
+      "filename": "Phone/077-holographic-workstation-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Holographic workstation portrait",
+      "position": [
+        -0.08,
+        1.55,
+        2.1
+      ],
+      "target": [
+        -0.05,
+        1.3,
+        5.77
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 33.809999999999995,
+      "actual": {
+        "position": [
+          -0.08,
+          1.55,
+          2.1
+        ],
+        "target": [
+          -0.05,
+          1.3,
+          5.77
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 33.809999999999995
+      },
+      "bytes": 3457408,
+      "sha256": "1f7b35bf86c0b9bdc5b3a59860fde015ae78715fb690c12fdaa0c39bcbe652cf"
+    },
+    {
+      "number": 78,
+      "filename": "Phone/078-workstation-luminous-left-panels.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Workstation luminous left panels",
+      "position": [
+        -2.7,
+        1.65,
+        3.7
+      ],
+      "target": [
+        -0.2,
+        1.4,
+        5.7
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 34.18,
+      "actual": {
+        "position": [
+          -2.7,
+          1.65,
+          3.7
+        ],
+        "target": [
+          -0.2,
+          1.4,
+          5.7
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 34.18
+      },
+      "bytes": 3678538,
+      "sha256": "45646e86c985ccc66c917465679d79d3f8730cdeaa9e9a76358fef18cc3949c5"
+    },
+    {
+      "number": 79,
+      "filename": "Phone/079-workstation-right-profile.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Workstation right profile",
+      "position": [
+        2.35,
+        1.63,
+        3.85
+      ],
+      "target": [
+        -0.1,
+        1.4,
+        5.7
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 34.55,
+      "actual": {
+        "position": [
+          2.35,
+          1.63,
+          3.85
+        ],
+        "target": [
+          -0.1,
+          1.4,
+          5.7
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 34.55
+      },
+      "bytes": 3733589,
+      "sha256": "1c73215fcf9f875f5f839b252022ab5a31e9f1b1de1a5e949eb7965e5d3e4cbd"
+    },
+    {
+      "number": 80,
+      "filename": "Phone/080-keyboard-and-floating-screen-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Keyboard and floating screen portrait",
+      "position": [
+        -0.35,
+        1.65,
+        4.3
+      ],
+      "target": [
+        -0.1,
+        1.18,
+        5.6
+      ],
+      "fov": 64,
+      "weather": "rain",
+      "time": 34.92,
+      "actual": {
+        "position": [
+          -0.35,
+          1.65,
+          4.3
+        ],
+        "target": [
+          -0.1,
+          1.18,
+          5.6
+        ],
+        "fov": 64,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 34.92
+      },
+      "bytes": 3383551,
+      "sha256": "dca825e7db13f22267ec40be4bd8e5855dbb120e83b293c640cc727a02b7c15c"
+    },
+    {
+      "number": 81,
+      "filename": "Phone/081-clear-information-displays.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Clear information displays",
+      "position": [
+        -0.3,
+        1.58,
+        4.05
+      ],
+      "target": [
+        0,
+        1.55,
+        5.82
+      ],
+      "fov": 62,
+      "weather": "rain",
+      "time": 35.29,
+      "actual": {
+        "position": [
+          -0.3,
+          1.58,
+          4.05
+        ],
+        "target": [
+          0,
+          1.55,
+          5.82
+        ],
+        "fov": 62,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 35.29
+      },
+      "bytes": 3714577,
+      "sha256": "b94a564ce08a190ad1c5992912cb404c1e74bbb11f0e44421ae9b76c260a0dec"
+    },
+    {
+      "number": 82,
+      "filename": "Phone/082-desk-and-sculpted-stool-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Desk and sculpted stool portrait",
+      "position": [
+        -1.8,
+        1.45,
+        3.6
+      ],
+      "target": [
+        0,
+        1.08,
+        5.4
+      ],
+      "fov": 65,
+      "weather": "rain",
+      "time": 35.66,
+      "actual": {
+        "position": [
+          -1.8,
+          1.45,
+          3.6
+        ],
+        "target": [
+          0,
+          1.08,
+          5.4
+        ],
+        "fov": 65,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 35.66
+      },
+      "bytes": 3666517,
+      "sha256": "9dbd25c91ff69094e77473333c96daf9e8c77e8966cf286ff06413665421b7d1"
+    },
+    {
+      "number": 83,
+      "filename": "Phone/083-pastel-bathroom-doorway-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Pastel bathroom doorway portrait",
+      "position": [
+        0.58,
+        1.68,
+        0.32
+      ],
+      "target": [
+        0,
+        1.4,
+        -2
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 36.03,
+      "actual": {
+        "position": [
+          0.58,
+          1.68,
+          0.32
+        ],
+        "target": [
+          0,
+          1.4,
+          -2
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 36.03
+      },
+      "bytes": 3214007,
+      "sha256": "0fb48c8cadef8df0375ca08fee388433ead03fc44fd16e1c786ec63e7c007ffe"
+    },
+    {
+      "number": 84,
+      "filename": "Phone/084-bathroom-neon-panel-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bathroom neon panel portrait",
+      "position": [
+        1.12,
+        1.72,
+        -0.35
+      ],
+      "target": [
+        -0.42,
+        1.45,
+        -1.85
+      ],
+      "fov": 76,
+      "weather": "rain",
+      "time": 36.4,
+      "actual": {
+        "position": [
+          1.12,
+          1.72,
+          -0.35
+        ],
+        "target": [
+          -0.42,
+          1.45,
+          -1.85
+        ],
+        "fov": 76,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 36.4
+      },
+      "bytes": 3985681,
+      "sha256": "c1e30604bdd4b53e97ab3406a7e4310cdb2038f4727a7224545895dfb9346044"
+    },
+    {
+      "number": 85,
+      "filename": "Phone/085-bathroom-grid-and-mirrored-light.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bathroom grid and mirrored light",
+      "position": [
+        -0.73,
+        1.68,
+        -0.55
+      ],
+      "target": [
+        0.62,
+        1.75,
+        -2.82
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 36.769999999999996,
+      "actual": {
+        "position": [
+          -0.73,
+          1.68,
+          -0.55
+        ],
+        "target": [
+          0.62,
+          1.75,
+          -2.82
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 36.769999999999996
+      },
+      "bytes": 3162457,
+      "sha256": "6a2dfd9c6f74e460b0c2d06215b3f3ac4b6fe15605469c463067bd98cd64f0ec"
+    },
+    {
+      "number": 86,
+      "filename": "Phone/086-soaking-tub-vertical-detail.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Soaking tub vertical detail",
+      "position": [
+        0.8,
+        1.95,
+        -0.55
+      ],
+      "target": [
+        0,
+        0.85,
+        -2.35
+      ],
+      "fov": 72,
+      "weather": "rain",
+      "time": 37.14,
+      "actual": {
+        "position": [
+          0.8,
+          1.95,
+          -0.55
+        ],
+        "target": [
+          0,
+          0.85,
+          -2.35
+        ],
+        "fov": 72,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 37.14
+      },
+      "bytes": 3083435,
+      "sha256": "b32ce68c0488e097521b446dc250740edcd09f95aafba4f56ecbdb0efe915a95"
+    },
+    {
+      "number": 87,
+      "filename": "Phone/087-floating-basin-and-mirror-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Floating basin and mirror portrait",
+      "position": [
+        0.6,
+        1.55,
+        -0.5
+      ],
+      "target": [
+        -0.94,
+        1.3,
+        -1.05
+      ],
+      "fov": 70,
+      "weather": "rain",
+      "time": 37.51,
+      "actual": {
+        "position": [
+          0.6,
+          1.55,
+          -0.5
+        ],
+        "target": [
+          -0.94,
+          1.3,
+          -1.05
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 37.51
+      },
+      "bytes": 4067974,
+      "sha256": "def035f9ca71e88a92451a665b53a5072ebe8f5d4e2bf02f5434341eb8460732"
+    },
+    {
+      "number": 88,
+      "filename": "Phone/088-kitchen-full-height-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Kitchen full-height portrait",
+      "position": [
+        1.36,
+        1.7,
+        2.7
+      ],
+      "target": [
+        4.3,
+        1.5,
+        1.3
+      ],
+      "fov": 70,
+      "weather": "clear",
+      "time": 37.879999999999995,
+      "actual": {
+        "position": [
+          1.36,
+          1.7,
+          2.7
+        ],
+        "target": [
+          4.3,
+          1.5,
+          1.3
+        ],
+        "fov": 70,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "clear",
+          "sky": "#9fc8df",
+          "daylightIntensity": 2.6,
+          "windowIntensity": 4.2,
+          "fogDensity": 0.006
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 37.879999999999995
+      },
+      "bytes": 3269865,
+      "sha256": "610639dd65c04fb93ea772c25b790c5142c5cff204d03dd5739475c617c7fff2"
+    },
+    {
+      "number": 89,
+      "filename": "Phone/089-kitchen-in-atmospheric-fog.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Kitchen in atmospheric fog",
+      "position": [
+        2.4,
+        1.72,
+        4.2
+      ],
+      "target": [
+        4.3,
+        1.5,
+        1.3
+      ],
+      "fov": 68,
+      "weather": "fog",
+      "time": 38.25,
+      "actual": {
+        "position": [
+          2.4,
+          1.72,
+          4.2
+        ],
+        "target": [
+          4.3,
+          1.5,
+          1.3
+        ],
+        "fov": 68,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "fog",
+          "sky": "#b4c2ca",
+          "daylightIntensity": 0.08,
+          "windowIntensity": 2,
+          "fogDensity": 0.05
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 38.25
+      },
+      "bytes": 3239990,
+      "sha256": "473b27569aa5e9056498359258e49813b470b3c03ee814f549d38011565349d8"
+    },
+    {
+      "number": 90,
+      "filename": "Phone/090-tap-and-white-worktop-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Tap and white worktop portrait",
+      "position": [
+        2.95,
+        1.68,
+        2.25
+      ],
+      "target": [
+        4.28,
+        1.12,
+        0.9
+      ],
+      "fov": 67,
+      "weather": "rain",
+      "time": 38.62,
+      "actual": {
+        "position": [
+          2.95,
+          1.68,
+          2.25
+        ],
+        "target": [
+          4.28,
+          1.12,
+          0.9
+        ],
+        "fov": 67,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 38.62
+      },
+      "bytes": 2913186,
+      "sha256": "da13daa94d6411056744941b557847b13a9c1c87e455c98a9940d9c6ad978539"
+    },
+    {
+      "number": 91,
+      "filename": "Phone/091-concentric-ceiling-sculptural-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Concentric ceiling sculptural portrait",
+      "position": [
+        -1.55,
+        1.48,
+        3.15
+      ],
+      "target": [
+        -2.75,
+        3.35,
+        0.34
+      ],
+      "fov": 78,
+      "weather": "rain",
+      "time": 38.989999999999995,
+      "actual": {
+        "position": [
+          -1.55,
+          1.48,
+          3.15
+        ],
+        "target": [
+          -2.75,
+          3.35,
+          0.34
+        ],
+        "fov": 78,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 38.989999999999995
+      },
+      "bytes": 4577830,
+      "sha256": "a43fd0833ec04a53e959c0bcc0a3e05a0bba233b05599a568073840f1e26552f"
+    },
+    {
+      "number": 92,
+      "filename": "Phone/092-ceiling-rings-from-the-alcove.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Ceiling rings from the alcove",
+      "position": [
+        -1.61,
+        1.53,
+        -2.35
+      ],
+      "target": [
+        -2.7,
+        3.35,
+        0.25
+      ],
+      "fov": 78,
+      "weather": "rain",
+      "time": 39.36,
+      "actual": {
+        "position": [
+          -1.61,
+          1.53,
+          -2.35
+        ],
+        "target": [
+          -2.7,
+          3.35,
+          0.25
+        ],
+        "fov": 78,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 39.36
+      },
+      "bytes": 4196037,
+      "sha256": "d91b05d3149d19e5e9e1deff00099da274803dcd33efe08b3aa0be5c9e71e714"
+    },
+    {
+      "number": 93,
+      "filename": "Phone/093-glassy-helix-pink-nightlight-portrait.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Glassy helix pink nightlight portrait",
+      "position": [
+        -2.48,
+        1.12,
+        1.1
+      ],
+      "target": [
+        -1.66,
+        0.96,
+        -0.4
+      ],
+      "fov": 44,
+      "weather": "rain",
+      "time": 39.73,
+      "actual": {
+        "position": [
+          -2.48,
+          1.12,
+          1.1
+        ],
+        "target": [
+          -1.66,
+          0.96,
+          -0.4
+        ],
+        "fov": 44,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 39.73
+      },
+      "bytes": 3892928,
+      "sha256": "1dab685b95abb65654e71658eae6968fa4b20756affed65a9926a681cf52ef35"
+    },
+    {
+      "number": 94,
+      "filename": "Phone/094-bedside-cabinet-and-soft-light.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Bedside cabinet and soft light",
+      "position": [
+        -2.75,
+        1.25,
+        0.93
+      ],
+      "target": [
+        -1.66,
+        0.85,
+        -0.4
+      ],
+      "fov": 58,
+      "weather": "rain",
+      "time": 40.099999999999994,
+      "actual": {
+        "position": [
+          -2.75,
+          1.25,
+          0.93
+        ],
+        "target": [
+          -1.66,
+          0.85,
+          -0.4
+        ],
+        "fov": 58,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 40.099999999999994
+      },
+      "bytes": 3942865,
+      "sha256": "aba364eaccd36de6e40279dab4bb0de95eadc9fde4e01d0a27ef33ccd62dc2bc"
+    },
+    {
+      "number": 95,
+      "filename": "Phone/095-city-window-vertical-from-the-bed.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "City window vertical from the bed",
+      "position": [
+        -5.2,
+        2.38,
+        -6.25
+      ],
+      "target": [
+        -5.525,
+        1,
+        -30
+      ],
+      "fov": 66,
+      "weather": "rain",
+      "time": 40.47,
+      "actual": {
+        "position": [
+          -5.2,
+          2.38,
+          -6.25
+        ],
+        "target": [
+          -5.525,
+          1,
+          -30
+        ],
+        "fov": 66,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 40.47
+      },
+      "bytes": 5106914,
+      "sha256": "a315358962dd21d72e8052e68906a93396d7ed28fd20ee3f06e3388c8bfa87b7"
+    },
+    {
+      "number": 96,
+      "filename": "Phone/096-rainy-neon-street-vertical-outlook.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Rainy neon street vertical outlook",
+      "position": [
+        -5.6,
+        2.4,
+        -8.95
+      ],
+      "target": [
+        -5.6,
+        -3.2,
+        -43
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 40.839999999999996,
+      "actual": {
+        "position": [
+          -5.6,
+          2.4,
+          -8.95
+        ],
+        "target": [
+          -5.6,
+          -3.2,
+          -43
+        ],
+        "fov": 55,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 40.839999999999996
+      },
+      "bytes": 5410492,
+      "sha256": "6348f0117fd466b8bbde7299cb44e3a6d85c2e83ed1a5b4f303fdb50529b869d"
+    },
+    {
+      "number": 97,
+      "filename": "Phone/097-snow-and-neon-towers-vertical.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Snow and neon towers vertical",
+      "position": [
+        -6.4,
+        2.25,
+        -8.55
+      ],
+      "target": [
+        -5.6,
+        0.7,
+        -41
+      ],
+      "fov": 62,
+      "weather": "snow",
+      "time": 41.209999999999994,
+      "actual": {
+        "position": [
+          -6.4,
+          2.25,
+          -8.55
+        ],
+        "target": [
+          -5.6,
+          0.7,
+          -41
+        ],
+        "fov": 62,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "snow",
+          "sky": "#bad0df",
+          "daylightIntensity": 0.6,
+          "windowIntensity": 2.8,
+          "fogDensity": 0.019
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 41.209999999999994
+      },
+      "bytes": 5945502,
+      "sha256": "d62c23dcac25c216845e62431a26026b7d2f062c5bfc6fe3ca4ed9583a6259ea"
+    },
+    {
+      "number": 98,
+      "filename": "Phone/098-storm-bridges-and-flowing-holograms.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Storm bridges and flowing holograms",
+      "position": [
+        -4.75,
+        2.4,
+        -8.8
+      ],
+      "target": [
+        -4.2,
+        2.1,
+        -46
+      ],
+      "fov": 46,
+      "weather": "storm",
+      "time": 41.58,
+      "actual": {
+        "position": [
+          -4.75,
+          2.4,
+          -8.8
+        ],
+        "target": [
+          -4.2,
+          2.1,
+          -46
+        ],
+        "fov": 46,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "storm",
+          "sky": "#293e55",
+          "daylightIntensity": 0.06,
+          "windowIntensity": 0.5,
+          "fogDensity": 0.025
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 41.58
+      },
+      "bytes": 5209821,
+      "sha256": "27e2cc31ed5d6d2a32055acb36548a0f75fee86527988252c4f56e560624e116"
+    },
+    {
+      "number": 99,
+      "filename": "Phone/099-blue-ghost-face-and-fine-swept-hair.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Blue ghost face and fine swept hair",
+      "position": [
+        -1.71,
+        4.37,
+        -38.55
+      ],
+      "target": [
+        -1.805,
+        4.38,
+        -41.46
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 41.949999999999996,
+      "actual": {
+        "position": [
+          -1.71,
+          4.37,
+          -38.55
+        ],
+        "target": [
+          -1.805,
+          4.38,
+          -41.46
+        ],
+        "fov": 55,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 41.949999999999996
+      },
+      "bytes": 5251400,
+      "sha256": "49cafb8cec94d8b89d9bee3b8791c70ec697228e05765838aff1f9bec52d078a"
+    },
+    {
+      "number": 100,
+      "filename": "Phone/100-pink-ghost-face-and-flowing-gown.png",
+      "format": "phone",
+      "resolution": [
+        2160,
+        3840
+      ],
+      "title": "Pink ghost face and flowing gown",
+      "position": [
+        -8.94,
+        3.5,
+        -52.5
+      ],
+      "target": [
+        -8.825,
+        3.5,
+        -55.46
+      ],
+      "fov": 55,
+      "weather": "rain",
+      "time": 42.31999999999999,
+      "actual": {
+        "position": [
+          -8.94,
+          3.5,
+          -52.5
+        ],
+        "target": [
+          -8.825,
+          3.5,
+          -55.46
+        ],
+        "fov": 55,
+        "aspect": 0.5625,
+        "weather": {
+          "mode": "rain",
+          "sky": "#46647a",
+          "daylightIntensity": 0.12,
+          "windowIntensity": 1.2,
+          "fogDensity": 0.018
+        },
+        "canvas": [
+          2160,
+          3840
+        ],
+        "time": 42.31999999999999
+      },
+      "bytes": 6092430,
+      "sha256": "42377b123d56c49576233c210746cf60895bc1957b61d73accb2e4431084a18a"
+    }
+  ],
+  "errors": []
+}

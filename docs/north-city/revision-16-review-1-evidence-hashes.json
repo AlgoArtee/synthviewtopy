@@ -1,0 +1,141 @@
+{
+  "revision": 16,
+  "formalRound": 1,
+  "files": [
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/bed-wide.png",
+      "bytes": 1196111,
+      "sha256": "a37a95563bc651de36decfada70af6d144f5752d594def6ee2ec147b9fb51f7a"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/bedding-results.json",
+      "bytes": 11480,
+      "sha256": "f3e0924ec8d2ffbe06f20fb76b7cc9db0703f0a58fe6f8a32f0660ed1ceedb58"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushion-row-clear.png",
+      "bytes": 887042,
+      "sha256": "48aabfc330d448ebc305a07afc11e46955f834be6bd50a381ba5a1516afc40f1"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushion-row-evening.png",
+      "bytes": 807437,
+      "sha256": "19031bd23ac960534ae4290834ec450fd9f2b6883b3ef3352e14a02538c067d4"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushion-row.png",
+      "bytes": 832549,
+      "sha256": "894887c8d3ecf8b01539db493e5bc4ccd07e7001e19dd37e5d46a8e0e149a216"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushions-clear.png",
+      "bytes": 808046,
+      "sha256": "f8f97ff97ad8f0c893af9edea72a9b0be2614f0ffb4fb74f17fee079531ab515"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushions-evening.png",
+      "bytes": 726616,
+      "sha256": "847413d49260480331ed111a49b34f0b5609df438d0e03c7f239cd9a78416a9d"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/cat-cushions.png",
+      "bytes": 739914,
+      "sha256": "4ecaa88eb23258705bd0ddeae6d7180d6cdf957b2964b75e3052bf99209c196a"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-clear.png",
+      "bytes": 1132411,
+      "sha256": "bed5b9be2528d93095780ef7bf79684d471aa4a4580e5bbefbbc86d56d9ab09e"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-pillow-edge-clear.png",
+      "bytes": 1219467,
+      "sha256": "c4ed8113896426f474fdad55dcc6f73702edc890ab005d52378d2fab16834a33"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-pillow-edge-evening.png",
+      "bytes": 1124872,
+      "sha256": "ae792c3d491d46ecafcd1d9ff0708d5d88e882eecb88799eb1291f986cf4a3dc"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-pillow-edge.png",
+      "bytes": 1139258,
+      "sha256": "0e13adac88e9eb7cf5cd9be8e56531656c90634cd0f84c8b286df31059d4939e"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-rain.png",
+      "bytes": 1053957,
+      "sha256": "f10f4ec22c88687d38b4e0017b5abc4f24ae8bd7fa1cad4eaf7f6dfad41500fc"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/duvet-snow.png",
+      "bytes": 1062230,
+      "sha256": "97f6725f4503434494c2459114167bf4072df1b150e9b3f69273511256fdcec4"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/entrance.png",
+      "bytes": 1291390,
+      "sha256": "d0caf5ec330875aa5651cdcda72370ccd089a402926064259a5523ea0e66c0e8"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/mobile-cat-cushions.png",
+      "bytes": 124682,
+      "sha256": "714e5cdb7ef8cc2edb846775efbc94a072e2b236192af3f5471dd9fc2a03bded"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/mobile-panorama.png",
+      "bytes": 296259,
+      "sha256": "c0e5b3268d35bc2d33bd192d1770c6497afaf16cc57abdb5f6c6bbe4d9c7662d"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/panorama.png",
+      "bytes": 1435982,
+      "sha256": "440d69cb12d1b872d8f567f6c3bd0531488287898e53f3bb5ffce567e277e8d4"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-low-clear.png",
+      "bytes": 916026,
+      "sha256": "74d694db25a8d736202dbc748c03c7db9491b646b41d2511c3a805ef5e803042"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-low-evening.png",
+      "bytes": 888953,
+      "sha256": "c89a407de86e4ae311437671501564150480e4a972098256164c354218b199e9"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-low.png",
+      "bytes": 895169,
+      "sha256": "ceaca4c145bb9e39be7beaab26b806b6a9bbef9a445250b2ae7b39a81275eed9"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-row.png",
+      "bytes": 1204799,
+      "sha256": "2ad71da5656160a921c8873ffb321b649f772e0b3e290334abe03272fde48db6"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-side-clear.png",
+      "bytes": 1190395,
+      "sha256": "4ff52d12ced05b78bb3f380698be36dae973e7b40633e9c22b903304a57bf9e8"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-side-evening.png",
+      "bytes": 1204980,
+      "sha256": "dac6b4111ebd2c0bf83a26b3740fbba5b9a13a7e3eb57fb7b80c17136e7128e7"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillow-side.png",
+      "bytes": 1205322,
+      "sha256": "82aaf75cabce93367291c03e26e7cdb9729c6b3eab01345cfafdefe717824b21"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/pillows.png",
+      "bytes": 925908,
+      "sha256": "e5d37e4a24f9e18c04bf7d02014d6a77703e0b9a2fa9a493e97b8eaaa46a95f7"
+    },
+    {
+      "path": "test-artifacts/north-city/revision-16/review-1/television.png",
+      "bytes": 799328,
+      "sha256": "ba3459ff5aae24f02574d9a6812684d29c49dd3399218bfb2b342b0b6bdcd5dd"
+    }
+  ]
+}

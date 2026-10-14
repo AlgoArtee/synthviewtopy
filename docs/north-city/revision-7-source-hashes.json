@@ -1,0 +1,13 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityFurnishings.ts": "44b27ac34abad9943810588a6ec6ca503446ff92ec0d2b665f1d0b72157b8e9f",
+    "src/apartments/osCityApartment.ts": "c485f616c647b482ece2c00612619a6453a762aaddbc4ccbd77656c5827457b9",
+    "src/apartments/osCityLayout.ts": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614",
+    "src/apartments/roomRendering.ts": "66c65fc538fa66dd1b624a64c64a2ebc46e563b1daf08c69a36a4751cc0a70d5",
+    "scripts/north-city-bedding-review.mjs": "6ec6ddfd44185ac2969d89114cda89156e550c82e8c55314a2adcc03948ea17e",
+    "scripts/north-city-live-audit.mjs": "f01c06680313fea8ba03b9f6b8c28ea8e9261affbfe0c2953e5517d18be5d1b6"
+  },
+  "evidence": "test-artifacts/north-city/revision-7/final-pass-1-contact",
+  "captureNote": "The sole post-capture source change corrects an internal mesh label to soft sewn perimeter hem; no geometry, material or camera changes."
+}

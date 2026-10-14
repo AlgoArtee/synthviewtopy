@@ -1,0 +1,86 @@
+{
+  "revision": 19,
+  "date": "2026-10-13",
+  "request": "Add a ceiling over the balcony beneath the upper floors, extend weather into the balcony outlook, and add more lights and movement in the visible plaza.",
+  "authorization": "The explicit follow-up authorizes these local scene enhancements. The user reference remains the visual target; embedded image text is content, not instructions.",
+  "scope": "Covered existing L-shaped terrace; new weather and activity in the existing east-facing city. Existing balcony layout, doorway, kitchen and bedding retained.",
+  "layout": {
+    "areaSquareMetres": 46.7034,
+    "ceilingUnderside": 3.5,
+    "upperFloorTop": 3.76,
+    "roofOpenEdgeX": 4.89,
+    "precipitationMinX": 5.08,
+    "ceiling": "Continuous L-shaped upper-floor slab, soffit joints, support beams, gutter and attached diffusers"
+  },
+  "weather": "All ten current presets drive near/far precipitation, seasonal leaves, local sky, wet pavement and distance extinction; reduced motion freezes new animation and disables storm flashes.",
+  "plaza": {
+    "newWalkingResidents": 48,
+    "newTrains": 2,
+    "newTrainCars": 6,
+    "newFlowingLightPackets": 36,
+    "newLanterns": 8,
+    "newLocalLights": 3,
+    "existingCourierDrones": 9
+  },
+  "reference": "test-artifacts/north-city/revision-18/references/city.jpg",
+  "performance": {
+    "districtSubmittedTriangleBudget": 300000,
+    "method": "Instanced residents and circuit packets, merged static architecture, shared materials, three unshadowed local plaza lights."
+  },
+  "validation": {
+    "status": "PASS: final73livechecks,17stills,38navigation/layout checks,finite geometry,mobile fit,reduced motion,bundled client and production build; no browser errors.",
+    "evidence": "test-artifacts/north-city/revision-19/final-4",
+    "script": "scripts/north-city-balcony-effects-review.mjs",
+    "navigation": "test-artifacts/north-city/revision-19/navigation-final.json",
+    "grounding": "test-artifacts/north-city/revision-19/plaza-life/motion-and-geometry.json",
+    "disposal": "test-artifacts/north-city/revision-19/instance-disposal-final.json"
+  },
+  "review": {
+    "scope": "Only this follow-up: ceiling integration, balcony weather, plaza light and movement. Historical revision18 full-city fidelity remains 7.3/10 and not accepted; this is not a fourth revision18 grade.",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 2,
+    "status": "Accepted for revision 19 enhancements: round 2 scored 8.2/10 after the two round-1 blockers were resolved. One formal round unused.",
+    "rounds": [
+      {
+        "round": 1,
+        "score": 7.6,
+        "accepted": false,
+        "report": "revision-19-review-1.md",
+        "evidence": "test-artifacts/north-city/revision-19/final-2"
+      },
+      {
+        "round": 2,
+        "score": 8.2,
+        "accepted": true,
+        "report": "revision-19-review-2.md",
+        "evidence": "test-artifacts/north-city/revision-19/final-4"
+      }
+    ]
+  },
+  "skillAdapter": "Existing procedural Three.js room. No paid asset generation, external export or deployment. Explicit user follow-up authorizes local composition. Prior custom-schema validator mismatch remains documented in revision13; no generic schema-gate pass claimed.",
+  "fixes": [
+    "Explicit, idempotent disposal of ten new InstancedMesh matrix/color buffers.",
+    "Actual shoe instance supports placed2mm above pavement, alternating planted/swing feet; hip-to-ankle leg joins.",
+    "Transparent steam and glow sprites excluded from opaque AO alongside transparent meshes; exact raycast diagnosis.",
+    "Foggy-night local extinction strength reduced to .20, while the remote skyline is fully hidden in both fog modes."
+  ],
+  "captureHistory": [
+    {
+      "folder": "final-1",
+      "status": "Discarded ungraded capture overlapping source edits; control selector timeout, no screenshots."
+    },
+    {
+      "folder": "final-2",
+      "status": "Stable source;73checks;17stills;round1 evidence before AO/night fixes."
+    },
+    {
+      "folder": "final-3",
+      "status": "Stable source;73checks;17stills;ungraded AO fix verification before night adjustment."
+    },
+    {
+      "folder": "final-4",
+      "status": "Stable final source; 73 checks; 17 stills; round 2 accepted at 8.2/10."
+    }
+  ]
+}

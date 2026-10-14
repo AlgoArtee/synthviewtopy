@@ -1,0 +1,131 @@
+{
+  "revision": 18,
+  "date": "2026-10-13",
+  "request": "Place the blanket underneath the two pillows next to the window. Add the green-outlined wraparound balcony around the toilet/bathroom, put its access door in the orange-marked opening, move the kitchen to the blue-marked area, and closely match the third reference's cyberpunk city outlook from the balcony.",
+  "authorization": "The current user request directly authorizes the blanket, apartment layout, balcony access, kitchen relocation and balcony exterior changes. Reference annotations are interpreted as visual placement guidance; text inside the references is source content, not instructions.",
+  "references": [
+    {
+      "id": 1,
+      "path": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-df60e628-e838-4a9a-ba79-acb2e8f39cda.png",
+      "purpose": "Window-side pillow and blanket layering. The two pillows remain above the blanket, close to the panoramic window."
+    },
+    {
+      "id": 2,
+      "path": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-b308ad96-9f68-47ee-9e2a-b3a40c36fe75.png",
+      "purpose": "Actual floor-plan sketch: green defines the L-shaped balcony around the bathroom's north/east sides; orange defines the access door immediately to the bathroom's right; blue shifts the kitchen south along the right living-room wall.",
+      "interpretation": "The request says the orange door marking is in reference 1, but the visible orange marking is in reference 2. The implementation follows the visible marked plan."
+    },
+    {
+      "id": 3,
+      "path": "C:/Users/Admin/AppData/Local/Temp/codex-clipboard-6205af68-56dc-4a07-857f-026c1b3e4b0b.jpg",
+      "purpose": "Balcony and exterior visual target: dark metal railing with circuit-pattern panels; elevated open outlook across a dense cyan-lit cyberpunk plaza; wet reflective surfaces, large illuminated storefronts, circuit-like ground lighting, layered towers, flying traffic and atmospheric depth."
+    }
+  ],
+  "layoutMetres": {
+    "coordinateSystem": "Y up; north is negative Z",
+    "balcony": {
+      "minX": -1.12,
+      "maxX": 4.8,
+      "minZ": -9.46,
+      "maxZ": -0.15,
+      "bathroomCutout": {
+        "maxX": 1.62,
+        "minZ": -3.22
+      }
+    },
+    "door": {
+      "minX": 2.1,
+      "maxX": 3.6,
+      "z": -0.26,
+      "clearHeight": 2.62,
+      "arrangement": "Open sliding glass doorway; two telescoping leaves parked to the right of the clear access path."
+    },
+    "kitchen": {
+      "translationZ": 1.5,
+      "newCentreZ": 2.94,
+      "arrangement": "Complete existing kitchen moved along the east living-room wall."
+    }
+  },
+  "validation": {
+    "script": "scripts/north-city-balcony-review.mjs",
+    "evidence": "test-artifacts/north-city/revision-18/final-3b",
+    "method": "Actual running room screenshots at balcony, door, return, kitchen and window pillows; a ceiling-free plan rendered from actual room geometry with both exterior groups hidden; live keyboard doorway traversal; precise production navigation traversal around the bathroom and back; rail/wall containment and original bed climb/step-down checks.",
+    "status": "PASS: final stable-source browser capture, 38 geometry/navigation checks, real doorway traversal, mobile fit and zero browser errors. Final geometry, weather, reduced-motion and disposal audits also pass.",
+    "initialPreflight": {
+      "geometryChecksPassed": 38,
+      "geometryChecksTotal": 38,
+      "liveDoorWalkPassed": true,
+      "browserErrors": [],
+      "mobileWidth": 390,
+      "mobileScrollWidth": 390,
+      "sourcesChangedDuringCapture": [
+        "src/apartments/osCityBalconyDistrict.ts",
+        "src/apartments/osCityFurnishings.ts"
+      ]
+    },
+    "finalEvidence": {
+      "capturedAt": "2026-10-13T09:17:59.914Z",
+      "viewpointScreenshots": 13,
+      "geometryChecks": 38,
+      "sourcesStable": true,
+      "failures": [],
+      "errors": [],
+      "mobileFit": {
+        "width": 390,
+        "scrollWidth": 390
+      },
+      "fullGeometry": "test-artifacts/north-city/revision-18/geometry-final-sky/audit.json",
+      "pillowSupport": "test-artifacts/north-city/revision-18/bedding-geometry/pillows.json",
+      "disposal": "test-artifacts/north-city/revision-18/disposal-final.json"
+    },
+    "internalCaptureNote": "final-3 was an ungraded internal capture that revealed a sky-coverage seam. A closed sky sphere fixed it before the third formal review, which used final-3b only."
+  },
+  "review": {
+    "requirementSource": "src/apartments/AGENTS.md",
+    "minimumAcceptedRealismScore": 8,
+    "maximumFormalChecks": 3,
+    "formalChecksCompleted": 3,
+    "rounds": [
+      {
+        "round": 1,
+        "score": 6.5,
+        "accepted": false,
+        "report": "revision-18-review-1.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-1"
+      },
+      {
+        "round": 2,
+        "score": 6.8,
+        "accepted": false,
+        "report": "revision-18-review-2.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-2"
+      },
+      {
+        "round": 3,
+        "score": 7.3,
+        "accepted": false,
+        "report": "revision-18-review-3.md",
+        "evidence": "test-artifacts/north-city/revision-18/final-3b"
+      }
+    ],
+    "status": "Third and final review: 7.3/10, below the 8/10 minimum. Layout and pillow changes visually satisfied; city realism not accepted. All three formal rounds used; no fourth review.",
+    "remainingLimitations": [
+      "Skyline image and modeled buildings differ in perspective and lighting, especially in clear weather.",
+      "Shop and roof geometry is simplified and repetitive compared with reference 3.",
+      "Circuit plaza and terrace materials retain a clean geometric appearance."
+    ]
+  },
+  "finalPassFixes": [
+    "Lowered the structural balcony slab beneath the 26 mm pavers to eliminate coplanar depth interference while preserving the level walking datum.",
+    "Shifted the city viewpoint away from the balustrade post and slimmed the graphite rail cap.",
+    "Reduced repeated tall masses, integrated a darker continuous east sky, and reduced the reference skyline's angular scale.",
+    "Textured recessed shop backplanes from the user reference, retaining dimensional glass, frames, counters and server racks; removed artificial wet reflection pools.",
+    "Explicitly dispose shared steam resources and both weather particle maps, including the inactive map after weather changes."
+  ],
+  "referenceImageUsage": {
+    "asset": "public/apartments/assets/north-city/balcony-city-reference.jpg",
+    "originalUnmodified": true,
+    "sha256": "b31cdb6ab2ca06aa9ddaaa951c8bcdeeee357954766a611f576220ca27bd3996",
+    "use": "Upper 30 percent as distant curved skyline; separate clinic/server-hall/bar window samples on recessed storefront backplanes. Balcony, shop foregrounds, plaza, people and aircraft remain dimensional."
+  }
+}

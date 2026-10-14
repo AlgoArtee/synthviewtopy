@@ -1,0 +1,17 @@
+{
+  "algorithm": "SHA256",
+  "sourceHashes": {
+    "src/apartments/osCityDuvet.ts": "83752d2a076ad6d53da8fbe563694308fa0b1d2258e8b23934034d6009a494d8",
+    "src/apartments/osCityFurnishings.ts": "49823105932b9bbb03402228b3cea4e3d53f6607384b23171d5a20e14e7bc953",
+    "src/apartments/osCityApartment.ts": "54ed1007410e9020cb7d0611dad50e4425a01c36b6df0593d3361fe7f6a8def2",
+    "src/apartments/osCityTV.ts": "c1afe3969edc3bc02865afd54a11c9ae0a5c4955df57b85aea133265f28310a6",
+    "src/apartments/osCityLayout.ts": "914c6db6b8ee06ed917e1405bce64f436106292719f80dc2a70fc3e90b901614",
+    "scripts/north-city-bedding-review.mjs": "9f439c50b74bd5eb068e86dc36222f9b5a2c20c1d56ff200d3d1a6a559735307",
+    "scripts/north-city-live-audit.mjs": "ad6e04de73a4e57638fe1e6fa6b56b13976f051b9c15d05debd01cdd1c94dbf9"
+  },
+  "evidence": "test-artifacts/north-city/revision-9/review-1",
+  "ungradedPreflights": [
+    "test-artifacts/north-city/revision-9/preflight",
+    "test-artifacts/north-city/revision-9/pass-1"
+  ]
+}

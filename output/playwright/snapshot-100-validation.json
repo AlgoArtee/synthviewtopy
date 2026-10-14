@@ -1,0 +1,31 @@
+{
+  "expectedPictures": 100,
+  "actualPictures": 100,
+  "formats": {
+    "ultrawide": 50,
+    "phone": 50
+  },
+  "weather": {
+    "rain": 76,
+    "clear": 10,
+    "fog": 6,
+    "cloudy": 4,
+    "snow": 2,
+    "storm": 2
+  },
+  "totalBytes": 459867177,
+  "uniqueCameras": 100,
+  "uniqueImages": 100,
+  "nativeRender": true,
+  "upscaled": false,
+  "errors": [],
+  "sceneRevision": 12,
+  "sceneReview": "docs/north-city/revision-12-review-1.md",
+  "sceneScore": 8.3,
+  "captureContactSheets": [
+    "output/playwright/snapshot-ultrawide-contact-1.jpg",
+    "output/playwright/snapshot-ultrawide-contact-2.jpg",
+    "output/playwright/snapshot-phone-contact-1.jpg",
+    "output/playwright/snapshot-phone-contact-2.jpg"
+  ]
+}

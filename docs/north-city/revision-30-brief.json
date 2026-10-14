@@ -1,0 +1,41 @@
+{
+  "revision": 30,
+  "request": "Raise the apartment to see the city behind the mall, rename its displayed level to 0.8.0, and align Data Mall with the plaza's main chip.",
+  "runtime": "room.html?id=os-city-apartment",
+  "levelName": "0.8.0",
+  "elevation": {
+    "residenceLift": 24,
+    "floorAbovePlaza": 38,
+    "implementation": "Apartment/navigation remain in local metres; both complete city roots translate down 24m. Weather volumes extend to cover the higher residence and continue down to their ground."
+  },
+  "mall": {
+    "center": [
+      70,
+      -14,
+      -5
+    ],
+    "chipCenter": [
+      34,
+      -14,
+      -5
+    ],
+    "axis": "Same Z=-5 centreline, front faces the main chip",
+    "clearance": "Mall moved 2m back as well as 8.25m north to clear the neighbouring club's canopy and stoop."
+  },
+  "camera": {
+    "main": "Higher residence, upright view aimed across mall roof to far city",
+    "alignment": "Additional downward plaza/chip preset; steeper views retain normal perspective"
+  },
+  "preserved": "Apartment dimensions, ceilings, colliders, door/sound, window controls, image assets, mall height and shared rail route",
+  "performanceBudget": "Existing revision29 district <250k triangles; no added realtime lights, geometry tiers or meshes",
+  "customAdapter": "Existing custom Three.js room contract. User directly authorizes these layout/name changes. No paid service, new opening, export or deployment gate crossed.",
+  "review": {
+    "scope": "Higher apartment outlook, centered mall/plaza and coherent weather/navigation",
+    "minimum": 8,
+    "maximumRounds": 3,
+    "completedRounds": 1,
+    "score": 8.2,
+    "accepted": true,
+    "report": "docs/north-city/revision-30-review-1.md"
+  }
+}

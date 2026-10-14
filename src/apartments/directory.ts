@@ -17,7 +17,10 @@ const nameInput = find<HTMLInputElement>('#metadata-room-name');
 const descriptionInput = find<HTMLTextAreaElement>('#metadata-room-description');
 const feedback = find<HTMLElement>('#metadata-feedback');
 const status = find<HTMLElement>('#catalog-status');
-const newRooms = ROOM_CATALOG.filter(room => room.number > 0);
+const studentRooms = ROOM_CATALOG.filter(room => room.kind !== 'city');
+const newRooms = studentRooms.filter(room => room.number > 0);
+const communityRoom = ROOM_CATALOG.find(room => room.kind === 'community')!;
+const poolRoom = ROOM_CATALOG.find(room => room.id === 'lux-umbrarum-pool-commons')!;
 let editedId: string | null = null;
 let visibleRooms: RoomDefinition[] = [];
 
@@ -93,6 +96,13 @@ function renderCollection() {
   const featured = ROOM_CATALOG[0]; const display = getRoomDisplay(featured);
   find('#featured-room-name').textContent = display.name; find('#featured-room-description').textContent = display.description;
   find('#featured-room-link').setAttribute('aria-label', `${display.name} — enter the 3D apartment`);
+  const shared = getRoomDisplay(communityRoom);
+  find('#community-room-name').textContent = shared.name; find('#community-room-description').textContent = shared.description;
+  find('#community-room-link').setAttribute('aria-label', `${shared.name} — enter the shared lounge`);
+  const pool = getRoomDisplay(poolRoom);
+  find('#pool-room-name').textContent = pool.name; find('#pool-room-description').textContent = pool.description;
+  find('#pool-room-link').setAttribute('aria-label', `${pool.name} — enter the shared pool hall`);
+  find('#collection-count').textContent = `${studentRooms.length} student spaces to explore`;
   const query = search.value.trim().toLocaleLowerCase();
   visibleRooms = newRooms.filter(room => {
     if (filter.value !== 'all' && room.motif !== filter.value) return false;
@@ -105,12 +115,12 @@ function renderCollection() {
 }
 function openEditor(room: RoomDefinition) {
   editedId = room.id; const display = getRoomDisplay(room); nameInput.value = display.name; descriptionInput.value = display.description;
-  find('#metadata-style').textContent = `${room.style} × Dark Academia`;
-  find('#metadata-reset').textContent = room.number === 0 ? 'Restore original text' : 'Restore generic text';
+  find('#metadata-style').textContent = room.kind === 'community' ? 'Lux Umbrarum · Shared spaces' : `${room.style} × Dark Academia`;
+  find('#metadata-reset').textContent = room.number <= 0 ? 'Restore original text' : 'Restore generic text';
   feedback.textContent = ''; dialog.showModal(); nameInput.focus(); nameInput.select();
 }
 dialog.addEventListener('close', () => {
-  const button = editedId === ROOM_CATALOG[0].id ? document.querySelector<HTMLButtonElement>('#edit-liminette') : Array.from(grid.querySelectorAll<HTMLButtonElement>('[data-edit-room]')).find(button => button.dataset.editRoom === editedId);
+  const button = editedId === poolRoom.id ? document.querySelector<HTMLButtonElement>('#edit-pool') : editedId === communityRoom.id ? document.querySelector<HTMLButtonElement>('#edit-community') : editedId === ROOM_CATALOG[0].id ? document.querySelector<HTMLButtonElement>('#edit-liminette') : Array.from(grid.querySelectorAll<HTMLButtonElement>('[data-edit-room]')).find(button => button.dataset.editRoom === editedId);
   (button ?? search).focus({ preventScroll: true }); editedId = null;
 });
 find('#room-metadata-form').addEventListener('submit', event => {
@@ -125,11 +135,13 @@ find('#metadata-reset').addEventListener('click', () => {
 });
 find('#metadata-cancel').addEventListener('click', () => dialog.close());
 find('#edit-liminette').addEventListener('click', () => openEditor(ROOM_CATALOG[0]));
+find('#edit-community').addEventListener('click', () => openEditor(communityRoom));
+find('#edit-pool').addEventListener('click', () => openEditor(poolRoom));
 search.addEventListener('input', renderCollection); filter.addEventListener('change', renderCollection);
 find('#catalog-clear').addEventListener('click', () => { search.value = ''; filter.value = 'all'; renderCollection(); search.focus(); });
 find('#metadata-export').addEventListener('click', () => {
   const blob = new Blob([exportRoomMetadata()], { type: 'application/json' }); const url = URL.createObjectURL(blob);
-  const link = document.createElement('a'); link.href = url; link.download = 'vinculum-room-names.json'; document.body.append(link); link.click(); link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const link = document.createElement('a'); link.href = url; link.download = 'lux-umbrarum-room-names.json'; document.body.append(link); link.click(); link.remove(); window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   status.textContent = 'Names and descriptions exported. Room styles and layouts stay with the collection.';
 });
 const importFile = find<HTMLInputElement>('#metadata-file');
@@ -143,4 +155,4 @@ importFile.addEventListener('change', async () => {
 window.addEventListener('vinculum-room-metadata-change', renderCollection);
 window.addEventListener('storage', event => { if (event.key === ROOM_METADATA_STORAGE_KEY || event.key === null) renderCollection(); });
 renderCollection();
-window.render_game_to_text = () => JSON.stringify({ page: 'Vinculum Apartments', totalRooms: ROOM_CATALOG.length, additionalRooms: newRooms.length, visibleRooms: visibleRooms.map(room => room.id), filter: filter.value, query: search.value, editor: dialog.open ? editedId : null, apartments: ROOM_CATALOG.map(room => ({ id: room.id, name: getRoomDisplay(room).name, style: `${room.style} × Dark Academia`, href: roomHref(room) })) });
+window.render_game_to_text = () => JSON.stringify({ page: 'Lux Umbrarum Student Spaces', category: 'Interiors', totalRooms: studentRooms.length, sharedRooms: ROOM_CATALOG.filter(room => room.kind === 'community').length, additionalRooms: newRooms.length, visibleRooms: visibleRooms.map(room => room.id), filter: filter.value, query: search.value, editor: dialog.open ? editedId : null, apartments: studentRooms.map(room => ({ id: room.id, name: getRoomDisplay(room).name, style: room.kind === 'community' ? room.style : `${room.style} × Dark Academia`, href: roomHref(room) })) });

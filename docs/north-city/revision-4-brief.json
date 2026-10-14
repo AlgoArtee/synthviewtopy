@@ -1,0 +1,46 @@
+{
+  "revision": 4,
+  "request": "Two filigree ghostlike holograms with long dresses moving in wind; flowing and hypnotic",
+  "runtime": "Existing local Three.js apartment viewer",
+  "scope": "City hologram pair only; retain cyan right/pink left and full head silhouettes beneath upper bridge",
+  "hero": "Delicate transparent figures in layered long gauze gowns",
+  "motion": "Slow traveling cloth waves, trailing veil and hair, subtle floating sway; independent phases; reduced-motion freeze",
+  "productionViews": [
+    "city-reference",
+    "city-detail",
+    "on-bed",
+    "sleep"
+  ],
+  "bounds": "Existing room shell, opening schedule and city placement",
+  "circulation": "No navigation changes; figures remain beyond glazing",
+  "budget": {
+    "paidServices": 0,
+    "uniqueTrianglesTarget": 1200000,
+    "newDrawCallsTarget": 24
+  },
+  "review": {
+    "maximumGradedChecks": 3,
+    "minimumAcceptanceScore": 8,
+    "completed": 1,
+    "status": "accepted",
+    "scores": [
+      8.2
+    ],
+    "finalScore": 8.2,
+    "report": "revision-4-review-1.md",
+    "motionEvidence": "Normal-speed capture and separated samples; reviewer assessed sampled frames, not direct video playback"
+  },
+  "authorization": "User explicitly requests local hologram style and animation change; no export or deployment",
+  "validation": {
+    "build": "passed",
+    "runtimeErrors": [],
+    "weatherModes": 6,
+    "mobileWidth": 390,
+    "reducedMotion": "passed",
+    "uniqueTriangles": 1103257,
+    "instanceExpandedTriangles": 1444479,
+    "cityNearestZ": -3.5,
+    "normalSpeedClipSeconds": 26.208,
+    "evidence": "test-artifacts/north-city/revision-4/pass-1"
+  }
+}

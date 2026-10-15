@@ -9,7 +9,8 @@ import { createCityNeonAtmosphere } from './osCityNeonAtmosphere';
 import { createCityDistantNeon } from './osCityDistantNeon';
 import { createCityWindowTv, type CityWindowSettings } from './osCityWindowTv';
 import { createOsCitySkylineDetail } from './osCitySkylineDetail';
-import { CITY_RESIDENCE_ELEVATION } from './osCityLayout';
+import { createCityWindowHolograms, type WindowHologramRooftop } from './osCityWindowHolograms';
+import { CITY_RESIDENCE_ELEVATION, CITY_EXTERIOR_OFFSET } from './osCityLayout';
 export type { OsCityWeather } from './osCityWeather';
 export interface OsCityExterior {
   group: THREE.Group;
@@ -33,6 +34,7 @@ export function createOsCityExterior(): OsCityExterior {
   const rnd = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
   const v = (x: number, y: number, z: number) => new THREE.Vector3(x, y, z);
   const batches = new Map<THREE.Material, THREE.BufferGeometry[]>();
+  const hologramRooftops: WindowHologramRooftop[] = [];
   const mat = (color: string, roughness = .68, metalness = .05) => new THREE.MeshStandardMaterial({ color, roughness, metalness });
   function texture(size: number, draw: (c: CanvasRenderingContext2D, size: number) => void) {
     const canvas = document.createElement('canvas'); canvas.width = canvas.height = size; draw(canvas.getContext('2d')!, size);
@@ -272,6 +274,12 @@ export function createOsCityExterior(): OsCityExterior {
     for (const dz of [-depth / 2, depth / 2]) { box(concrete, x, top + .23, z + dz, w, .43, .15); snowCap(x, top + .48, z + dz, w + .12, .23, .12); }
     const hutW = w * .47, hutD = depth * .43;
     box(wall, x + side * w * .12, top + .74, z - depth * .13, hutW, 1.48, hutD, .04);
+    if (index === 2 || index === 1 || index === 3) {
+      hologramRooftops.push({ buildingId: index,
+        position: index === 1
+          ? [x - w * .28, top + .08, z - depth * .13]
+          : [x + side * w * .12, top + 1.48, z - depth * .13] });
+    }
     snowCap(x + side * w * .12, top + 1.51, z - depth * .13, hutW + .16, hutD + .17, .18);
     box(vent, x - w * .22, top + .41, z + depth * .12, 1.15, .74, .84);
     for (let l = 0; l < 7; l++) box(metal, x - w * .22, top + .15 + l * .087, z + depth * .12 + .44, 1.07, .025, .025);
@@ -456,7 +464,12 @@ export function createOsCityExterior(): OsCityExterior {
     }
     pipe(seam,[v(b.x-b.w*.42,5.8,face+.3),v(b.x,4.3,face+.5),v(b.x+b.w*.42,5.7,face+.3)],.022,20);
   }
-  box(concrete,-3,-10.79,-21,56,.16,32);
+  // The street podium is 3.22m above Circuit Market. Its unused southeast
+  // corner must stop at the plaza edge, otherwise it roofs over four near
+  // circuit lanes. Retain the full rear slab beneath the lateral buildings.
+  const podiumFront=-9.4,plazaEdge=8-CITY_EXTERIOR_OFFSET.x;
+  box(concrete,-3,-10.79,(-37+podiumFront)/2,56,.16,podiumFront+37);
+  box(concrete,(-31+plazaEdge)/2,-10.79,(podiumFront-5)/2,plazaEdge+31,.16,-5-podiumFront);
   // Single mesh per material keeps detailed facades affordable in the room renderer.
   for (const [material, geometries] of batches) {
     const merged = mergeGeometries(geometries, false); geometries.forEach(g => g.dispose());
@@ -472,7 +485,10 @@ export function createOsCityExterior(): OsCityExterior {
   ]);
   group.add(precipitation.group);
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
-  const life=createOsCityLife();group.add(life.group);group.userData.life=life.group.userData.animation;group.userData.ready=life.group.userData.ready;
+  const life=createOsCityLife();group.add(life.group);group.userData.life=life.group.userData.animation;
+  const windowHolograms=createCityWindowHolograms(hologramRooftops);group.add(windowHolograms.group);
+  group.userData.windowHolograms=windowHolograms.snapshot;
+  group.userData.ready=Promise.all([life.group.userData.ready,windowHolograms.ready]);
   // Small physical leaves stay outside the glazing; seven restrained autumn tones.
   const autumnGroup=new THREE.Group();autumnGroup.name='Dark Academia · late-autumn wind and leaf collections';group.add(autumnGroup);
   const leafMap=texture(64,c=>{c.fillStyle='#fff';c.beginPath();c.moveTo(8,34);c.bezierCurveTo(14,13,35,8,57,12);c.bezierCurveTo(57,37,39,54,8,34);c.fill();c.strokeStyle='#72624b';c.lineWidth=1.7;c.beginPath();c.moveTo(8,34);c.lineTo(53,15);c.stroke();for(let n=0;n<4;n++){c.beginPath();c.moveTo(16+n*8,30-n*3);c.lineTo(20+n*8,17-n);c.stroke();}});
@@ -486,6 +502,7 @@ export function createOsCityExterior(): OsCityExterior {
   updateLeaves(0);
   let timeOfDay:CityTimeOfDay='day';
   function setWeather(mode: OsCityWeather,time:CityTimeOfDay='day') {
+    windowHolograms.setWeather(mode,time);
     timeOfDay=time;life.setWeather(mode,time);precipitation.setWeather(mode,time);neonAtmosphere.setWeather(mode,time);skylineDetails.setWeather(mode,time);const p=getCityWeatherPreset(mode,time),raining=p.precipitation==='rain';
     snowGroup.visible=mode==='snow';wetGroup.visible=p.wetness>.2;autumnGroup.visible=p.autumn;
     fallingLeaves.count=mode==='academic-rainy-dusk'?40:120;
@@ -500,6 +517,7 @@ export function createOsCityExterior(): OsCityExterior {
   setWeather('rain');
   group.userData.exterior = { buildingCount: 34, panoramicLateralBlocks: 6, businessSignCount, windowLighting:{variants:glass.length,counts:windowCounts,emissiveRange:[Math.min(...glass.map(m=>m.emissiveIntensity)),Math.max(...glass.map(m=>m.emissiveIntensity))],independentRoomLayouts:4,variableCurtainsAndBlinds:true,seed:57431}, precipitationBoundaryZ: -4.8, seeded: true, features: ['Individually varied dark, warm, cool and occasional neon interiors','Variable curtains, blind depths and local room shadows','Six detailed lateral blocks for the full-wall panorama','Recessed multi-elevation glazing', 'Balconies and HVAC fans', 'Setback roofs, tanks and antennas', 'Framed typography and pictograms', 'Dimensional skybridges and conduits', 'Weather-dependent snow and wet materials','Moving lane traffic and reflected lights','Occupied pedestrian bridges','Cyan and pink dimensional human holograms','Dense anchored cable bundles','Rising vent steam'] };
   return { group, setWeather, setWindowSettings: tvWindows.setSettings, update(delta, elapsed) {
+    windowHolograms.update(elapsed);
     distantNeon.update(elapsed,reducedMotion.matches,timeOfDay);
     tvWindows.update(elapsed,reducedMotion.matches,timeOfDay);
     if(!reducedMotion.matches){life.update(elapsed);if(autumnGroup.visible)updateLeaves(elapsed);}

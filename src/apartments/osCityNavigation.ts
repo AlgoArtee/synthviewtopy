@@ -1,14 +1,15 @@
 import * as THREE from 'three';
 import type { RoomNavigation } from './liminetteRoom';
 
-import { CITY_BED, insideCityFootprint } from './osCityLayout';
+import { CITY_BED, insideCityFootprint, insideCityBalcony } from './osCityLayout';
 export { CITY_BED } from './osCityLayout';
 export function cityFloorHeight(x: number, z: number) {
   return x >= CITY_BED.minX && x <= CITY_BED.maxX && z >= CITY_BED.minZ && z <= CITY_BED.maxZ ? CITY_BED.height : 0;
 }
 /** Deliberate climb at the mattress edge, then normal walking on its elevated surface. */
-export function createCityNavigation(colliders: THREE.Box3[]): RoomNavigation {
+export function createCityNavigation(colliders: THREE.Box3[], guardrails: THREE.Box3[] = []): RoomNavigation {
   const radius = .24, eye = 1.65;
+  const rails = new Set(guardrails), railEyeInset = .02;
   let lastJump = false, climbing = false, settling = false, progress = 0, lastPosition = new THREE.Vector3();
   const from = new THREE.Vector3(), to = new THREE.Vector3();
   function nearBed(p: THREE.Vector3) {
@@ -16,8 +17,13 @@ export function createCityNavigation(colliders: THREE.Box3[]): RoomNavigation {
     return Math.hypot(p.x - x, p.z - CITY_BED.maxZ) < .85 && p.z > CITY_BED.maxZ - .15;
   }
   function clear(x: number, z: number, support: number) {
-    if (!insideCityFootprint(x, z, radius)) return false;
+    // This position is the eye, above the waist-high guard. Allow the head to
+    // lean over its cap, but contain it inside the slab. Keep ordinary body
+    // clearance at the walls, doorway, planter and balcony's inner edges.
+    if (!insideCityFootprint(x, z, radius)
+      && !(rails.size && insideCityBalcony(x, z, radius, railEyeInset))) return false;
     for (const box of colliders) {
+      if (rails.has(box)) continue;
       if (box.max.y < support + .18 || box.min.y > support + 1.8) continue;
       const nx = THREE.MathUtils.clamp(x, box.min.x, box.max.x), nz = THREE.MathUtils.clamp(z, box.min.z, box.max.z);
       if ((nx - x) ** 2 + (nz - z) ** 2 < radius ** 2) return false;
@@ -45,8 +51,21 @@ export function createCityNavigation(colliders: THREE.Box3[]): RoomNavigation {
           const next = cityFloorHeight(x, z);
           return next <= support + .2 && clear(x, z, next);
         };
-        if (tryMove(position.x + dx, position.z)) position.x += dx;
-        if (tryMove(position.x, position.z + dz)) position.z += dz;
+        const moveAxis = (axis: 'x' | 'z', distance: number) => {
+          if (!distance) return;
+          const start = position[axis];
+          const allowed = (fraction: number) => tryMove(axis === 'x' ? start + distance * fraction : position.x, axis === 'z' ? start + distance * fraction : position.z);
+          let fraction = 1;
+          if (!allowed(1)) {
+            // Resolve the remaining safe part of a step instead of stopping a
+            // whole frame short of the rail (up to 12cm on a slow frame).
+            let low = 0, high = 1;
+            for (let i = 0; i < 8; i++) { const mid = (low + high) / 2; if (allowed(mid)) low = mid; else high = mid; }
+            fraction = low;
+          }
+          position[axis] = start + distance * fraction;
+        };
+        moveAxis('x', dx);moveAxis('z', dz);
         settling = true;
       }
       if (settling && !climbing) {

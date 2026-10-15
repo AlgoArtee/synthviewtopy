@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import type { createCityNeonAtmosphere } from './osCityNeonAtmosphere';
 import { createCityStreamClock } from './osCityStreamClock';
+import { createOsCityMallVisitors, type CityMallVisitorLane } from './osCityMallVisitors';
 
 export type CityMallSignSide = 'left' | 'right';
 export interface CityMallLevelLabel { level:number; left:string; right:string }
@@ -33,8 +34,8 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
   const rail=material('brushed steel handrails','#91b2bf',.32,.65);
   const blue=material('blue circuit channels','#48b3ff',.3,.15,2.4);
   const pink=material('pink circuit channels','#ff79c7',.3,.15,2.1);
-  const clothes=material('gallery visitors','#1d2a36',.88,.02);
-  const skin=material('visitor faces','#bfa394',.78,.01);
+  const clothes=material('gallery visitors','#ffffff',.88,.02);
+  const skin=material('visitor faces','#ffffff',.78,.01);
   const glass=new THREE.MeshPhysicalMaterial({color:'#72b4cc',transparent:true,opacity:.13,roughness:.14,metalness:.08,depthWrite:false,side:THREE.DoubleSide,clearcoat:.6});
   glass.name='Data Mall · recessed glazing and balustrades';materials.push(glass);
   function push(g:THREE.BufferGeometry,m:THREE.Material,x=0,y=0,z=0) {
@@ -68,13 +69,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
   box(edge,0,height/2,-depth/2+.16,width,height,.32);
   for(const side of [-1,1])box(shell,side*(width/2-.18),height/2,0,.36,height,depth);
   box(floor,0,.08,0,width,.16,depth);
-  const peoplePositions:number[][]=[];
-  function person(x:number,y:number,z:number,n:number) {
-    const h=1.45+(n%3)*.08;peoplePositions.push([x,y,z]);
-    box(clothes,x,y+h*.57,z,.35,h*.40,.23);
-    push(new THREE.SphereGeometry(.135,6,5),skin,x,y+h-.14,z);
-    for(const side of [-1,1]){line(clothes,[x+side*.10,y+.08,z],[x+side*.085,y+h*.40,z],.064);line(clothes,[x+side*.20,y+h*.74,z],[x+side*.27,y+h*.40,z+.05],.055);}
-  }
+  const visitorLanes:CityMallVisitorLane[]=[];
   const paths:{points:THREE.Vector3[];lengths:number[];length:number;color:number;offset:number}[]=[];
   function circuit(points:number[][],color:number,radius=.041) {
     const m=color?pink:blue;for(let i=1;i<points.length;i++)line(m,points[i-1],points[i],radius);
@@ -88,7 +83,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
     slab(0,base+.14,17.1,5.8,-3.4,.25);
     box(dark,0,base+1.55,-5.85,17,2.85,.16);interior(0,base+1.65,-5.74,16.4,2.65,level+1);
     box(glass,0,base+.72,-.45,16.9,1.08,.025);box(rail,0,base+1.27,-.44,17,.035,.045);
-    for(let i=0;i<4;i++)person(-6+i*4.1,base+.27,-1.35,level+i);
+    visitorLanes.push({x:0,y:base+.27,z:-2.45,halfLength:6.0,radius:.8,count:4,seed:level*3});
     for(const side of [-1,1]){
       const wingWidth=17.6,center=side*17.0,front=level<=3?7.65:6.7;
       slab(center,base+.16,wingWidth,13.4,0,.30);
@@ -117,7 +112,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
       }
       box(floor,center-side*1.6,base+.78,3.45,3.2,.18,.7);
       for(const x of [center-side*2.8,center-side*.4])box(edge,x,base+.37,3.45,.08,.74,.4);
-      for(let i=0;i<3;i++)person(center-4.2+i*3.6+(level%2)*.35,base+.31,5.45,level+i);
+      visitorLanes.push({x:center,y:base+.31,z:5.70,halfLength:6.3,radius:.36,count:3,seed:level*3+(side<0?1:2)});
       // Feed traces follow balcony edges and turn into the atrium, as in the reference.
       for(let lane=0;lane<3;lane++){
         const y=top-.42-lane*.11,inner=side*(8.45+lane*.16);
@@ -150,7 +145,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
   box(edge,0,2.25,5.6,11.4,4.5,.16);interior(0,2.2,5.70,11,4.2,2);
   for(let pane=0;pane<6;pane++){box(glass,(pane-2.5)*1.75,2.1,7.15,1.67,4.1,.03);box(rail,(pane-3)*1.75,2.1,7.2,.065,4.2,.1);}
   box(rail,0,4.27,7.2,10.6,.09,.2);
-  for(let n=0;n<6;n++)person((n-2.5)*1.4,.18,6.3,n);
+  visitorLanes.push({x:0,y:.18,z:6.35,halfLength:4.1,radius:.28,count:6,seed:33});
   for(let step=0;step<3;step++)box(shell,0,.06+step*.07,8.2-step*.25,13.3,.12,1.5-step*.3);
   // Roof fascia, exposed mechanical plant and return walls complete the silhouette.
   slab(0,height,51.8,13.6,0,.30);
@@ -183,6 +178,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
   const persist=()=>{try{localStorage.setItem(STORAGE_KEY,JSON.stringify(labels));saved=true;}catch{saved=false;}};
   const signs:CityMallSigns={getLabels:()=>labels.map(l=>({...l})),setLabel:(level,side,text)=>{if(!Number.isInteger(level)||level<1||level>10||!['left','right'].includes(side))return;labels[level-1][side]=normalize(text);drawLabel(level,side);persist();},resetLevel:level=>{if(!Number.isInteger(level)||level<1||level>10)return;labels[level-1].left=labels[level-1].right=levelText(level);drawLabel(level,'left');drawLabel(level,'right');persist();},isSaved:()=>saved};
   for(const [m,geometries] of batches){const merged=mergeGeometries(geometries,false);geometries.forEach(g=>g.dispose());const mesh=new THREE.Mesh(merged,m);mesh.name=m.name;group.add(mesh);}
+  const visitors=createOsCityMallVisitors(visitorLanes,clothes,skin,dark);group.add(visitors.group);
   // Constant-speed luminous packets travel along the actual bent channels, with short tapered tails.
   const packetMaterial=new THREE.MeshBasicMaterial({color:new THREE.Color('#ffffff').multiplyScalar(3),toneMapped:false});packetMaterial.name='Data Mall · moving blue and pink data';materials.push(packetMaterial);neon.register(packetMaterial,'neon',packetMaterial.name);
   const packetsPerPath=2,tailCount=5,packets=new THREE.InstancedMesh(new THREE.BoxGeometry(.075,.075,.50),packetMaterial,paths.length*packetsPerPath*tailCount);packets.name='Data Mall · travelling data stream packets';packets.instanceMatrix.setUsage(THREE.DynamicDrawUsage);packets.frustumCulled=false;group.add(packets);
@@ -190,6 +186,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
   const packetColors=[new THREE.Color('#8bd7ff'),new THREE.Color('#ff9cdb')];
   for(let i=0;i<packets.count;i++)packets.setColorAt(i,packetColors[paths[Math.floor(i/(packetsPerPath*tailCount))].color]);
   function update(elapsed:number,reducedMotion=false){
+    visitors.update(elapsed,reducedMotion);
     const t=clock.step(elapsed,reducedMotion);let instance=0;
     for(const path of paths)for(let stream=0;stream<packetsPerPath;stream++)for(let tail=0;tail<tailCount;tail++){
       const distance=((t*3.8+path.offset+stream*path.length/packetsPerPath-tail*.33)%path.length+path.length)%path.length;
@@ -201,7 +198,7 @@ export function createOsCityMall(neon:ReturnType<typeof createCityNeonAtmosphere
     packets.instanceMatrix.needsUpdate=true;
   }
   update(0);
-  const snapshot=()=>({width,depth,height,retailLevels:10,interiorBays:30,atriumDepth:6.6,labels:signs.getLabels(),labelPositions,labelsSaved:saved,editableLabels:20,visitorCount:peoplePositions.length,circuitPaths:paths.length,circuitPalette:['#48b3ff','#ff79c7'],stream:{...clock.snapshot(),packets:packets.count,speedMetresPerSecond:3.8,headPositions:paths.slice(0,4).map((_,i)=>{packets.getMatrixAt(i*packetsPerPath*tailCount,matrix);return new THREE.Vector3().setFromMatrixPosition(matrix).toArray();})},reference:'data-mall-reference.png'});
+  const snapshot=()=>({width,depth,height,retailLevels:10,interiorBays:30,atriumDepth:6.6,labels:signs.getLabels(),labelPositions,labelsSaved:saved,editableLabels:20,visitorCount:visitors.count,visitors:visitors.snapshot(),circuitPaths:paths.length,circuitPalette:['#48b3ff','#ff79c7'],stream:{...clock.snapshot(),packets:packets.count,speedMetresPerSecond:3.8,headPositions:paths.slice(0,4).map((_,i)=>{packets.getMatrixAt(i*packetsPerPath*tailCount,matrix);return new THREE.Vector3().setFromMatrixPosition(matrix).toArray();})},reference:'data-mall-reference.png'});
   group.userData.snapshot=snapshot;
-  return {group,ready,signs,update,setStreamSpeed:clock.setSpeed,snapshot,dispose:()=>packets.dispose()};
+  return {group,ready,signs,update,setStreamSpeed:clock.setSpeed,snapshot,dispose:()=>{packets.dispose();visitors.dispose();}};
 }

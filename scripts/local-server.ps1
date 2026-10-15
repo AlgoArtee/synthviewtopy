@@ -5,6 +5,20 @@ $serverStatePath = Join-Path $runtimeDirectory 'dev-server.json'
 $viteEntryPath = Join-Path $projectRoot 'node_modules\vite\bin\vite.js'
 $serverUrl = 'http://127.0.0.1:5178'
 
+function Get-DevServerNetworkUrl {
+    $addresses = foreach ($adapter in [Net.NetworkInformation.NetworkInterface]::GetAllNetworkInterfaces()) {
+        if ($adapter.OperationalStatus -ne [Net.NetworkInformation.OperationalStatus]::Up) { continue }
+        if ($adapter.NetworkInterfaceType -eq [Net.NetworkInformation.NetworkInterfaceType]::Loopback) { continue }
+        foreach ($unicast in $adapter.GetIPProperties().UnicastAddresses) {
+            $address = $unicast.Address
+            if ($address.AddressFamily -ne [Net.Sockets.AddressFamily]::InterNetwork) { continue }
+            if ([Net.IPAddress]::IsLoopback($address) -or $address.ToString().StartsWith('169.254.')) { continue }
+            "http://${address}:5178"
+        }
+    }
+    $addresses | Sort-Object -Unique
+}
+
 function Get-ManagedDevServer {
     if (-not (Test-Path -LiteralPath $serverStatePath)) { return $null }
     try {

@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict';
+import {mkdir,writeFile} from 'node:fs/promises';
+import {chromium} from 'playwright';
+
+const output='test-artifacts/north-city/revision-48/native';await mkdir(output,{recursive:true});
+const report={checks:[],errors:[],captures:[]};
+const check=(condition,name,evidence)=>{report.checks.push({passed:!!condition,name,evidence});assert.ok(condition,name);};
+const browser=await chromium.launch({headless:true,executablePath:'C:/Program Files/Google/Chrome/Application/chrome.exe',args:['--enable-gpu','--ignore-gpu-blocklist']});
+const context=await browser.newContext({viewport:{width:1440,height:1000},reducedMotion:'no-preference'}),page=await context.newPage();
+page.setDefaultTimeout(60000);
+page.on('pageerror',e=>report.errors.push(e.message));page.on('console',m=>{if(m.type()==='error')report.errors.push(m.text());});
+try{
+  await page.route(/\/src\/apartments\/room\.ts(?:\?.*)?$/,async route=>{const response=await route.fetch(),source=await response.text();await route.fulfill({response,body:source.replace('await room.ready;','await room.ready; window.__qaRoom=room;')});});
+  await page.goto('http://127.0.0.1:5178/room.html?id=os-city-apartment',{waitUntil:'domcontentloaded',timeout:120000});
+  const ready=()=>page.waitForFunction(()=>window.render_game_to_text&&JSON.parse(window.render_game_to_text()).ready,null,{timeout:300000});await ready();console.log('Room ready');
+  const state=()=>page.evaluate(()=>JSON.parse(window.render_game_to_text()).holidays);
+  const weather=()=>page.evaluate(()=>{const s=JSON.parse(window.render_game_to_text()).weather;return {mode:s.mode,timeOfDay:s.timeOfDay};});
+  const advance=t=>page.evaluate(t=>window.advanceTime(t*1000),t);
+  const show=async()=>{if(await page.locator('body').evaluate(el=>el.classList.contains('city-controls-collapsed')))await page.locator('#city-controls-toggle').click();};
+  const select=async v=>{await show();await page.locator('#city-holiday-select').selectOption(v);};
+  const view=async v=>{await show();await page.locator('#room-menu-toggle').click();await page.locator(`[data-viewpoint="${v}"]`).click();};
+  const shot=async name=>{await show();await page.locator('#city-controls-toggle').click();await page.screenshot({path:`${output}/${name}.png`});report.captures.push(name);};
+  const finish=()=>page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+  const fixtures=()=>page.evaluate(()=>{
+    const room=window.__qaRoom,light=room.scene.getObjectByName('Ceiling ring illumination'),mat=room.scene.getObjectByName('Broken arc opal ceiling diffuser').material;
+    return {color:light.color.getHexString(),intensity:light.intensity,diffuserColor:mat.color.getHexString(),diffuserEmission:mat.emissive.getHexString(),activeColliders:room.colliders.filter(b=>!b.isEmpty()).length};
+  });
+  check((await state()).holiday==='none'&&!(await state()).active,'New sessions start with everyday decor');
+  const original=await fixtures(),originalWeather=await weather();
+  await select('halloween');await finish();
+  check((await state()).active&&(await state()).holiday==='halloween','Holidays menu enables the installation',await state());
+  check(JSON.stringify(await weather())===JSON.stringify(originalWeather),'Selecting Halloween preserves time and weather');
+  const lit=await fixtures();check(lit.color!==original.color&&lit.diffuserEmission!==original.diffuserEmission,'Seasonal fixture and diffuser colors change');
+  check(lit.activeColliders===original.activeColliders+2,'Floor lantern collision bounds activate');
+  const transforms=()=>page.evaluate(()=>{const g=window.__qaRoom.scene.getObjectByName('Halloween · cyberpunk apartment installation');return g.children.filter(o=>o.name.includes('holographic bat')||o.name.includes('friendly holographic ghost')).map(o=>({p:o.position.toArray(),r:o.rotation.toArray(),w:o.children[0].rotation.toArray()}));});
+  const before=await transforms();await advance(3);check(JSON.stringify(before)!==JSON.stringify(await transforms()),'Ghosts drift and bats articulate');
+  await view('plan');await shot('halloween-day-living');
+  await show();await page.locator('#city-time-select').selectOption('night');await shot('halloween-night-living');
+  await view('kitchen');await shot('halloween-kitchen');
+  await view('study');await shot('halloween-desk');
+  await view('television');await shot('halloween-bedroom');
+  await page.emulateMedia({reducedMotion:'reduce'});await finish();const still=await transforms(),playhead=(await state()).elapsed;await advance(4);
+  check((await state()).reducedMotion&&(await state()).elapsed===playhead&&JSON.stringify(still)===JSON.stringify(await transforms()),'Reduced motion freezes every seasonal animation');
+  await page.emulateMedia({reducedMotion:'no-preference'});await show();await page.locator('#city-time-select').selectOption('day');
+  await select('none');const restored=await fixtures();
+  check(JSON.stringify(restored)===JSON.stringify(original),'None restores exact original light colors, diffuser colors, intensity and collisions',{original,restored});
+  const hidden=await page.evaluate(()=>!window.__qaRoom.scene.getObjectByName('Halloween · cyberpunk apartment installation').visible);
+  check(hidden,'All Halloween geometry switches off');
+  await view('plan');await shot('everyday-restored');
+  await select('halloween');await show();await page.locator('#city-weather-select').selectOption('snow');
+  check((await state()).active&&(await fixtures()).color===lit.color,'Weather changes retain selected seasonal decor');
+  await page.reload({waitUntil:'domcontentloaded',timeout:120000});await ready();
+  check((await state()).holiday==='halloween'&&(await state()).saved&&(await state()).active,'Halloween selection survives a reload',await state());
+  await page.setViewportSize({width:390,height:844});await show();await page.locator('#city-holiday-select').scrollIntoViewIfNeeded();
+  const rect=await page.locator('#city-holiday-panel').boundingBox();check(rect.x>=0&&rect.x+rect.width<=390,'Holiday controls fit a phone viewport',rect);
+  await page.screenshot({path:`${output}/mobile-menu.png`});report.captures.push('mobile-menu');
+  await select('none');check(!(await state()).active,'Holiday can also be disabled on mobile');
+  check(report.errors.length===0,'No browser or WebGL errors',report.errors);
+}catch(e){report.failure=e.stack;await page.screenshot({path:`${output}/failure.png`,timeout:10000}).catch(()=>{});}
+finally{await writeFile(`${output}/results.json`,JSON.stringify(report,null,2));await browser.close();}
+console.log(JSON.stringify(report,null,2));assert.equal(report.failure,undefined);

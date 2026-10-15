@@ -9,6 +9,14 @@ $startedServer = $false
 try {
     $launcherLock = Lock-DevServerLauncher
     $serverProcess = Get-ManagedDevServer
+    # Older launchers passed a loopback-only host that overrides vite.config.ts.
+    if ($serverProcess -and $serverProcess.CommandLine -match '(?:^|\s)--host(?:\s+|=)"?(?:127\.0\.0\.1|localhost)"?(?=\s|$)') {
+        Write-Host 'Restarting SynthViewTopy to enable local-network access...'
+        $previousServer = Get-Process -Id $serverProcess.ProcessId
+        Stop-Process -InputObject $previousServer
+        if (-not $previousServer.WaitForExit(5000)) { throw 'The previous server did not stop within five seconds. Try Start again.' }
+        $serverProcess = $null
+    }
     if ($serverProcess) {
         Write-Host "SynthViewTopy is already running at $serverUrl (PID $($serverProcess.ProcessId))."
     } else {
@@ -40,7 +48,7 @@ try {
 
         $stdoutPath = Join-Path $runtimeDirectory 'dev-server.stdout.log'
         $stderrPath = Join-Path $runtimeDirectory 'dev-server.stderr.log'
-        $child = Start-Process -FilePath $nodeCommand.Source -ArgumentList @(('"' + $viteEntryPath + '"'), '--host', '127.0.0.1', '--port', '5178', '--strictPort') -WorkingDirectory $projectRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -PassThru
+        $child = Start-Process -FilePath $nodeCommand.Source -ArgumentList ('"' + $viteEntryPath + '"') -WorkingDirectory $projectRoot -WindowStyle Hidden -RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath -PassThru
         $serverProcess = Get-CimInstance Win32_Process -Filter "ProcessId = $($child.Id)"
         if (-not $serverProcess) { throw "The local server exited immediately. See $stderrPath" }
         @{
@@ -65,6 +73,17 @@ try {
         }
         if (-not $ready) { throw "The local server did not become ready within 30 seconds. See $stderrPath" }
         Write-Host "SynthViewTopy is running at $serverUrl (PID $($child.Id))."
+    }
+    try {
+        $networkUrls = @(Get-DevServerNetworkUrl)
+        if ($networkUrls.Count -gt 0) {
+            Write-Host 'On another device connected to the same network, open:'
+            foreach ($networkUrl in $networkUrls) { Write-Host "  $networkUrl" }
+        } else {
+            Write-Host 'No active LAN IPv4 address found. Connect to Wi-Fi or Ethernet, then run Start again to show network links.'
+        }
+    } catch {
+        Write-Warning 'Could not list network addresses. Run ipconfig and open http://<your IPv4 address>:5178 on the other device.'
     }
     Write-Host 'The server runs in the background. Use Stop SynthViewTopy.cmd when finished.'
 } catch {

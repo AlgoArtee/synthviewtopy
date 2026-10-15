@@ -14,9 +14,9 @@ export const CITY_RESIDENCE_ELEVATION = 24;
 export const CITY_BALCONY = { minX: -1.12, maxX: 4.8, minZ: -9.46, maxZ: -.15, elbowX: 1.62, elbowZ: -3.22, area: 46.7034 };
 export const CITY_BALCONY_DOOR = { minX: 2.1, maxX: 3.6, z: -.26, height: 2.62 };
 export const CITY_KITCHEN_OFFSET_Z = 1.5;
-export function insideCityBalcony(x: number, z: number, inset = 0) {
+export function insideCityBalcony(x: number, z: number, inset = 0, outerInset = inset) {
   const b = CITY_BALCONY;
-  return x >= b.minX + inset && x <= b.maxX - inset && z >= b.minZ + inset && z <= b.maxZ
+  return x >= b.minX + inset && x <= b.maxX - outerInset && z >= b.minZ + outerInset && z <= b.maxZ
     && (x >= b.elbowX + inset || z <= b.elbowZ - inset);
 }
 export function insideCityFootprint(x: number, z: number, inset = 0) {

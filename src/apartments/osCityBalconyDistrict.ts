@@ -14,6 +14,9 @@ import { CITY_PLAZA_SCALE, CITY_CIRCUIT_COLORS, plazaX, plazaZ } from './osCityP
 import { createOsCityTransitRoute, CITY_TRANSIT_ELEVATION_LIFT } from './osCityTransit';
 import { applyCityTransitDistanceFade, CITY_TRANSIT_FADE_START, CITY_TRANSIT_FADE_END } from './osCityTransitDistance';
 import { createOsCityMall } from './osCityMall';
+import { createOsCityMarketStalls, cityMarketFootprints } from './osCityMarketStalls';
+import { createOsCityOuterMarketLights } from './osCityOuterMarketLights';
+import { createCityHolograms } from './osCityPlazaHolograms';
 
 /** Dimensional circuit market with upright buildings and one physically connected transit circuit. */
 export function createOsCityBalconyDistrict(): THREE.Group {
@@ -22,6 +25,10 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   const snowGroup=new THREE.Group();snowGroup.name='Circuit Market · snow on exposed roof surfaces';snowGroup.visible=false;district.add(snowGroup);
   const snowCaps:{name:string;x:number;z:number;supportY:number;width:number;depth:number;rotation:number;thickness:number}[]=[];
   const groundY = -14;
+  const pedestrianObstacles:{x:number;z:number;halfWidth:number;halfDepth:number}[]=[];
+  const reserveFootprint=(x:number,z:number,width:number,depth:number)=>pedestrianObstacles.push({x,z,halfWidth:width/2,halfDepth:depth/2});
+  // The neighboring street's raised podium overlaps the northwest market edge.
+  reserveFootprint(18,-29.7,20,28);
   let referenceTexture!:THREE.Texture;
   const referenceReady=new Promise<void>((resolve,reject)=>{
     referenceTexture=new THREE.TextureLoader().load('/apartments/assets/north-city/balcony-city-reference.jpg',()=>resolve(),undefined,()=>reject(new Error('Balcony reference materials did not load')));
@@ -183,8 +190,13 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     base+=texture2D(tDiffuse,projectedUv+vec2(.0044,.0014))*.16;
     base+=texture2D(tDiffuse,projectedUv-vec2(.0044,.0014))*.16;`).replace('vec4( blendOverlay( base.rgb, color ), 1.0 )','vec4( blendOverlay( base.rgb, color ), wetness*(.10+.24*(1.0-ripple)) )');
   district.add(wetReflection);
-  for(const z of [-28,20])box(gunmetal,plazaX(34),groundY+.055,plazaZ(z),53*CITY_PLAZA_SCALE,.10,.3);
-  for(let x=9;x<71;x+=2.2)for(const z of [-28,20])box(drain,plazaX(x),groundY+.115,plazaZ(z),1.55,.03,.34);
+  // Delimit the whole square behind the four shops, including their rear walls.
+  // Keep both channels inside the paving and their grilles within the same span.
+  const plazaBoundary={minX:plazaX(9),maxX:plazaX(70),northZ:plazaZ(-48),southZ:plazaZ(38)};
+  for(const z of [plazaBoundary.northZ,plazaBoundary.southZ]){
+    box(gunmetal,(plazaBoundary.minX+plazaBoundary.maxX)/2,groundY+.055,z,plazaBoundary.maxX-plazaBoundary.minX,.10,.3);
+    for(let x=plazaBoundary.minX+.8;x<=plazaBoundary.maxX-.8;x+=2.2*CITY_PLAZA_SCALE)box(drain,x,groundY+.115,z,1.55,.03,.34);
+  }
 
   // The chip plaza is deliberately legible from eight floors up: parallel tracks
   // bend at 45 degrees, with vias and exclusively neon blue/pink circuits.
@@ -212,6 +224,7 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   }
   // Each processor carries the same blue/pink palette down to its fine contacts.
   function processor(x:number,z:number,size:number){
+    reserveFootprint(plazaX(x),plazaZ(z),(size+.4)*CITY_PLAZA_SCALE,(size+.4)*CITY_PLAZA_SCALE);
     box(edge,x,groundY+.23,z,size,.42,size);box(gunmetal,x,groundY+.49,z,size-.35,.13,size-.35);
     box(glazing,x,groundY+.58,z,size-.8,.06,size-.8);
     const ring=new THREE.EdgesGeometry(new THREE.BoxGeometry(size-1,.07,size-1));
@@ -229,6 +242,10 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     for(let n=0;n<10;n++)strip(circuitMaterials[n%4],[[x-size*.33,z-size*.32+n*size*.065],[x-size*.16,z-size*.32+n*size*.065],[x-size*.10,z-size*.26+n*size*.065]],.024,groundY+.64);
   }
   processor(centerX,centerZ,8.1);processor(18,-19,4.2);processor(49,12,4.9);processor(50,-22,3.6);processor(18,12,3.8);
+  const holograms=createCityHolograms(vector(plazaX(centerX),groundY+.69,plazaZ(centerZ)));
+  district.add(holograms.group);district.userData.plazaHolograms=holograms.controls;
+  district.userData.setHoliday=(holiday:string)=>holograms.setHalloween(holiday==='halloween');
+  district.userData.ready=Promise.all([district.userData.ready,holograms.ready]).then(()=>undefined);
   for(let n=0;n<32;n++){
     const x=14+random()*42,z=-25+random()*41;
     if(Math.hypot(x-centerX,z-centerZ)<7)continue;
@@ -296,20 +313,25 @@ export function createOsCityBalconyDistrict(): THREE.Group {
 
   // Recessed shop interiors: actual ceiling strips, mullions, server cages and counters.
   function retail(x:number,z:number,width:number,depth:number,height:number,rotation:number,tile:number){
+    reserveFootprint(x,z,width+.5,depth+2.6);
     const c=Math.cos(rotation),s=Math.sin(rotation);
     const world=(u:number,y:number,v:number)=>[x+c*u+s*v,y,z-s*u+c*v];
     const localBox=(mat:THREE.Material,u:number,y:number,v:number,w:number,h:number,d:number)=>{const p=world(u,y,v);box(mat,p[0],p[1],p[2],w,h,d,rotation);};
     const wall=material(tile===2?'#657078':tile===1?'#3b5060':'#51616b',.67,.16);
     wall.map=claddingTexture;wall.bumpMap=claddingTexture;wall.bumpScale=.019;
-    localBox(wall,0,groundY+5.2+(height-5.2)/2,tile===2?-1.6:tile===1?0:-.8,width,height-5.2,tile===2?depth-1.6:depth);
-    if(tile===1){
+    const enclosed=tile===1||tile===3||tile===6;
+    if(enclosed)wall.name=`${tile===1?'Neon Loop Club':tile===3?'Circuit Dive':'Neuralware'} · continuous exterior walls`;
+    localBox(wall,0,groundY+5.2+(height-5.2)/2,tile===2?-1.6:enclosed?0:-.8,width,height-5.2,tile===2?depth-1.6:depth);
+    if(enclosed){
       // Enclose the ground floor behind the glazed frontage, including the
       // previously open side/rear elevations visible from the higher balcony.
       for(const side of [-1,1])localBox(wall,side*(width/2-.16),groundY+2.6,.35,.32,5.2,depth+.70);
       localBox(wall,0,groundY+2.6,-depth/2+.16,width,5.2,.32);
       localBox(concrete,0,groundY+.10,.35,width,.20,depth+.70);
       localBox(concrete,0,groundY+5.10,.35,width-.64,.20,depth+.06);
-      district.userData.neonClub={center:[x,groundY,z],width,depth,height,sideWallThickness:.32,rearWallThickness:.32,groundFloorEnclosed:true};
+      const shell={name:tile===1?'Neon Loop Club':tile===3?'Circuit Dive':'Neuralware',center:[x,groundY,z],width,depth,height,rotation,sideWallThickness:.32,rearWallThickness:.32,groundFloorEnclosed:true};
+      (district.userData.retailShells??=[]).push(shell);
+      if(tile===1)district.userData.neonClub=shell;
     }
     localBox(wall,0,groundY+2.55,depth/2-2.3,width,5.1,.22);
     localBox(concrete,0,groundY+.12,depth/2-1,width,.19,2.9);
@@ -425,6 +447,7 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   retail(clubX,clubZ,15,12,12.2,0,1);
   const mallHeight=11.2*3;
   const mallX=plazaX(70),mallZ=centerZ;
+  reserveFootprint(mallX,mallZ,15,53);
   const dataMall=createOsCityMall(neonAtmosphere);dataMall.group.position.set(mallX,groundY,mallZ);dataMall.group.rotation.y=-Math.PI/2;district.add(dataMall.group);
   district.userData.ready=Promise.all([district.userData.ready,dataMall.ready]).then(()=>undefined);
   district.userData.mallSigns=dataMall.signs;
@@ -434,7 +457,7 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   retail(plazaX(33),plazaZ(30),23,13,9.8,Math.PI,3);
   retail(plazaX(17),plazaZ(29),8.7,9,11.7,Math.PI,6);
   district.userData.plaza={scale:CITY_PLAZA_SCALE,areaRatio:CITY_PLAZA_SCALE**2,width:79*CITY_PLAZA_SCALE,depth:88*CITY_PLAZA_SCALE,
-    bounds:{minX:8,maxX:plazaX(87),minZ:plazaZ(-49),maxZ:plazaZ(39)},circuitColors:[...CITY_CIRCUIT_COLORS],
+    bounds:{minX:8,maxX:plazaX(87),minZ:plazaZ(-49),maxZ:plazaZ(39)},delimitation:plazaBoundary,circuitColors:[...CITY_CIRCUIT_COLORS],
     leftBuildings:[{name:'Circuit Clinic',center:[clinicX,groundY,clinicZ],width:24,depth:13},{name:'Neon Loop Club',center:[clubX,groundY,clubZ],width:15,depth:12}]};
   for(const [name,color,intensity,x,y,z,tx,tz,width] of [
     ['Data Mall glazing spill','#83cfee',6.5,mallX-8,-8.2,mallZ,plazaX(36),mallZ,49],
@@ -444,6 +467,7 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   ] as const){const light=new THREE.RectAreaLight(color,intensity,width,3);light.name=`Circuit Market · ${name}`;light.position.set(x,y,z);light.lookAt(tx,groundY,tz);district.add(light);neonAtmosphere.registerLight(light);}
   for(const [baseX,baseZ,tile] of [[43,-20,7],[23,15,4]] as const){
     const x=plazaX(baseX),z=plazaZ(baseZ);
+    reserveFootprint(x,z,4.4,3.5);
     box(concrete,x,groundY+.19,z,4.4,.32,3.5);box(gunmetal,x,groundY+1.1,z,2.6,1.7,1.35);
     box(warmGlass,x-.05,groundY+1.85,z+.73,2.8,.12,1.6);
     for(const side of [-1,1])box(silver,x+side*1.65,groundY+1.75,z,.06,3.5,.06);
@@ -633,6 +657,11 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     distantTower(x,z,7+random()*4,10+random()*5,47+random()*38,100+n);
   }
   skylineDetails.finish();
+  const outerMarket=createOsCityOuterMarketLights(neonAtmosphere,[...pedestrianObstacles,...cityMarketFootprints(),
+    ...nearTowers.map(([x,z,w,d])=>({x,z,halfWidth:w/2,halfDepth:d/2})),
+    ...peripheralTowers.map(([x,z,w,d])=>({x,z,halfWidth:w/2,halfDepth:d/2})),
+    ...skylineTowers.map(t=>({x:t.x,z:t.z,halfWidth:t.width/2,halfDepth:t.depth/2})),
+  ]);district.add(outerMarket.group);
   const skyGeometry=new THREE.SphereGeometry(520,48,24),skyColors=new Float32Array(skyGeometry.getAttribute('position').count*3);
   skyGeometry.setAttribute('color',new THREE.BufferAttribute(skyColors,3));
   const skyMaterial=new THREE.MeshBasicMaterial({vertexColors:true,side:THREE.BackSide,depthWrite:false,toneMapped:false,fog:false});
@@ -693,15 +722,35 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     geo.rotateX(-Math.PI/2);geo.rotateY((random()-.5)*.20);push(geo,reflectionMaterial,x,groundY+.075,z);
   }
   // Small street fixtures, queues and pedestrians supply the human scale in the square.
+  const market=createOsCityMarketStalls(neonAtmosphere);district.add(market.group);
+  pedestrianObstacles.push(...cityMarketFootprints());
+  district.userData.ready=Promise.all([district.userData.ready,market.ready]).then(()=>undefined);
   for(let i=0;i<20;i++){
     const side=i%2?-1:1,x=plazaX(12+Math.floor(i/2)*4.8),z=plazaZ(-5+side*21);
+    reserveFootprint(x,z,.4,.4);reserveFootprint(x+1.8,z,.2,.2);
     cylinder(gunmetal,x,groundY+1.5,z,.055,3);box(edge,x,groundY+3.07,z,.58,.14,.28);box(cyan,x,groundY+3.0,z,.43,.045,.21);
     cylinder(gunmetal,x+1.8,groundY+.45,z,.07,.9);cylinder(cyan,x+1.8,groundY+.87,z,.078,.045);
   }
   const crowdSkin=[material('#ae907b',.95,0,.04),material('#75584a',.95,0,.04),material('#cfac90',.95,0,.04)];
   const crowdHair=[material('#101824',.96,0,.02),material('#30251f',.96,0,.02),material('#756b63',.96,0,.02),material('#45334b',.96,0,.02)];
-  for(let n=0;n<145;n++){
-    const along=n<90, x=plazaX(along?11+random()*49:51+random()*10),z=plazaZ(along?(n%2?-24:17)+(random()-.5)*4:-25+random()*42);
+  for(let i=0;i<7;i++)reserveFootprint(plazaX(18+i*6),plazaZ(i%2?15:-22),1.8,.6);
+  for(const [x,z] of [[22,-27.6],[43,-27.6],[57,-17],[57,5],[34,20.4],[13,8],[13,-11],[43,20.4]])reserveFootprint(plazaX(x),plazaZ(z),.36,.36);
+  // Seed the whole neighborhood rather than lining people up along the old border.
+  // Keep the busiest area near the shops, with a looser spread into both side streets.
+  const standingResidents:number[][]=[];
+  let crowdSeed=360145;
+  const crowdRandom=()=>{crowdSeed=(Math.imul(crowdSeed,1664525)+1013904223)>>>0;return crowdSeed/4294967296;};
+  for(let attempt=0;standingResidents.length<145&&attempt<10000;attempt++){
+    const central=crowdRandom()<.52;
+    const x=plazaX(12+crowdRandom()*51),z=plazaZ(central?-32+crowdRandom()*58:-58+crowdRandom()*105);
+    if(pedestrianObstacles.some(o=>Math.abs(x-o.x)<o.halfWidth+.85&&Math.abs(z-o.z)<o.halfDepth+.85))continue;
+    if(standingResidents.some(([px,pz])=>Math.hypot(x-px,z-pz)<1.25))continue;
+    standingResidents.push([x,z]);
+  }
+  for(let n=0;n<standingResidents.length;n++){
+    // Retain the detail RNG sequence so redistributing people does not change the city.
+    random();random();
+    const [x,z]=standingResidents[n];
     const y=groundY+.10,h=1.50+random()*.28,cloth=n%5?blackClothes:greyClothes;
     const torso=new THREE.CapsuleGeometry(.16,h*.34,2,5);push(torso,cloth,x,y+h*.58,z,random()*6.28);
     push(new THREE.SphereGeometry(.118,6,5),crowdSkin[n%3],x,y+h*.94,z);
@@ -756,6 +805,9 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     skylineDetails.setWeather(mode,time);
     backdrop.setWeather(mode,time);
     snowGroup.visible=mode==='snow';
+    market.setWeather(mode);
+    outerMarket.setWeather(mode,time);
+    holograms.setWeather(mode,time);
     pavement.roughness=THREE.MathUtils.lerp(.88,.42,preset.wetness);pavement.metalness=.04;pavement.clearcoat=preset.wetness*.65;
     reflectionMaterial.opacity=0;reflectionMaterial.visible=false;wetShader.uniforms.wetness.value=preset.wetness;wetReflection.visible=preset.wetness>.05;
     const denseFog=mode==='fog'||mode==='academic-foggy-night';
@@ -772,6 +824,7 @@ export function createOsCityBalconyDistrict(): THREE.Group {
   district.userData.update=(delta:number,elapsed:number)=>{
     if(disposed)return;
     exteriorWeather.update(delta,elapsed);plazaLife.userData.update(delta,elapsed);dataMall.update(elapsed,reducedMotion.matches);
+    holograms.update(delta,reducedMotion.matches);
     const lightning=exteriorWeather.getLightning();
     if(lightning!==lastLightning){
       for(let i=0;i<skyColors.length;i++)skyColors[i]=baseSkyColors[i]+lightning*(i%3===0?.65:i%3===1?.82:1);
@@ -785,13 +838,15 @@ export function createOsCityBalconyDistrict(): THREE.Group {
     for(let n=0;n<steam.length;n++){steam[n].position.y=-2+Math.floor(n/4)*2.4+Math.sin(elapsed*.21+n)*.4;}
   };
   district.userData.getSnapshot=()=>({
-    placement:district.userData.placement,plaza:district.userData.plaza,neonClub:district.userData.neonClub,transitGuideway:district.userData.transitGuideway,weather:exteriorWeather.snapshot(),life:plazaLife.userData.snapshot(),lighting:neonAtmosphere.snapshot(),distantNeon:distantNeon.snapshot(),tvWindows:tvWindows.snapshot(),dataMall:{...district.userData.dataMall,...dataMall.snapshot()},skylineDetails:skylineDetails.snapshot(),backdrop:backdrop.snapshot(),
+    holograms:holograms.controls.getSnapshot(),
+    market:market.snapshot(),outerMarket:outerMarket.snapshot(),
+    placement:district.userData.placement,plaza:district.userData.plaza,neonClub:district.userData.neonClub,retailShells:district.userData.retailShells,transitGuideway:district.userData.transitGuideway,weather:exteriorWeather.snapshot(),life:{...plazaLife.userData.snapshot(),standingResidents,pedestrianObstacles},lighting:neonAtmosphere.snapshot(),distantNeon:distantNeon.snapshot(),tvWindows:tvWindows.snapshot(),dataMall:{...district.userData.dataMall,...dataMall.snapshot()},skylineDetails:skylineDetails.snapshot(),backdrop:backdrop.snapshot(),
     snowAccumulation:{visible:snowGroup.visible,capCount:snowCaps.length,thickness:.03,drawCalls:snowGroup.children.length,shelteredTerrace:false},
     atmosphere:{mode:weather,timeOfDay,fogStrength:distanceFog.strength.value,fogTintMix:distanceFog.tintMix.value,sharedWeather:true,fogDensity:getCityWeatherPreset(weather,timeOfDay).fog,sky:getCityWeatherPreset(weather,timeOfDay).sky,skylineVisible:true,skylineGeometry:'three building depth bands plus image-backed distant district',skylineTowerCount:skylineTowers.length,skyRadius:520,skyCoverage:'closed sphere'},
     droneCount:aircraft.length,dronePositions:aircraft.map(item=>item.group.position.toArray()),disposed,
   });
   district.userData.exterior={groundY,boundaryMinX:8,boundaryExcludesSky:true,skyRadius:520,plazaCenter:[plazaX(centerX),groundY,centerZ],towerCount,businessSignCount:signCount,circuitCount,staticDrawCalls:batches.size,buildingDepthBands:3,far3dTowerCount:skylineTowers.length,referenceFeatures:['Expanded neon blue and pink circuit-board plaza with matching moving data lights','Central raised processor with neon blue and pink contacts','Ripperdoc clinic, Neon Loop Club, tripled Data Mall and southern Circuit Dive','Recessed server-hall storefronts','Image-backed skyline with editable neon and controlled windows','Elevated through railway fading into the north and south distance','Courier drones, umbrellas and pedestrians with hair','Shared weather and atmospheric scattering']};
-  district.userData.dispose=()=>{if(disposed)return;disposed=true;wetReflection.getRenderTarget().dispose();steamMaterial.dispose();steamTexture.dispose();exteriorWeather.dispose();plazaLife.userData.dispose();dataMall.dispose();backdrop.dispose();};
+  district.userData.dispose=()=>{if(disposed)return;disposed=true;wetReflection.getRenderTarget().dispose();steamMaterial.dispose();steamTexture.dispose();exteriorWeather.dispose();plazaLife.userData.dispose();dataMall.dispose();market.dispose();outerMarket.dispose();holograms.dispose();backdrop.dispose();};
   district.userData.setWeather('rain');district.userData.update(0,0);
   return district;
 }

@@ -133,6 +133,57 @@
 .city-mall-panel input:focus-visible,.city-mall-panel summary:focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
 .city-mall-panel button { width:100%; margin-top:12px; min-height:38px; border:1px solid #a8c1d0; border-radius:5px; background:#e2edf2; color:#294a60; font-size:11px; cursor:pointer; }
 .city-mall-panel p { display:block; }
+.city-hologram-panel summary { cursor:pointer; color:#294a60; font-size:13px; font-weight:600; }
+.city-tv-panel summary { cursor:pointer; color:#294a60; font-size:13px; font-weight:600; }
+.city-tv-panel label { margin-top:12px; }
+.city-tv-panel p { display:block; }
+.city-tv-actions { display:flex; gap:8px; margin:12px 0; }
+.city-tv-actions button { flex:1; min-height:38px; border:1px solid #a8c1d0; border-radius:5px; background:#e2edf2; color:#294a60; font-size:12px; cursor:pointer; }
+.city-tv-panel .city-tv-auto { display:flex; align-items:center; gap:8px; font-weight:400; line-height:1.4; }
+.city-tv-auto input { accent-color:#337c98; }
+.city-tv-panel :is(button,input,summary):focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-tv-panel :disabled { opacity:.55; cursor:default; }
+.city-hologram-panel p { display:block; }
+.city-hologram-panel label { margin-top:12px; }
+.city-hologram-panel button { min-height:32px; border:1px solid #a8c1d0; border-radius:5px; background:#e2edf2; color:#294a60; font-size:11px; cursor:pointer; }
+.city-hologram-panel :is(button,input,summary):focus-visible { outline:3px solid #68bbd4; outline-offset:2px; }
+.city-hologram-panel .city-hologram-motion { display:flex; align-items:center; gap:7px; }
+.city-hologram-motion input { accent-color:#337c98; }
+.city-hologram-actions { display:flex; gap:8px; margin:10px 0; }
+.city-hologram-actions button { flex:1; }
+.city-hologram-family { border-top:1px solid #bed2dd; padding-top:10px; margin-top:12px; }
+.city-hologram-entry { position:relative; padding:0 0 9px; }
+.city-hologram-entry label { padding-right:44px; font-size:11px; min-height:23px; margin-bottom:4px; }
+.city-hologram-entry > button { position:absolute; top:-5px; right:0; padding:4px 7px; }
 @media(max-width:760px){.city-control-stack{top:102px;right:12px;bottom:70px;width:220px;gap:12px;}.city-weather-panel #city-time-select{margin-bottom:10px;}}
 @media(max-width:760px) and (pointer:coarse){.city-control-stack{bottom:172px;}}
 @media(max-height:500px){.city-control-stack{top:82px;bottom:65px;}}
+.city-holiday-panel p { display: block; margin: 9px 0 0; line-height: 1.5; }
+.city-radio-open { padding:14px 16px;border:1px solid #a6d4e0;border-radius:12px;background:#122734;color:#b3f4ff;text-align:left;font:600 13px 'DM Sans',sans-serif;cursor:pointer; }
+.city-radio-dialog { box-sizing:border-box;width:min(470px,calc(100vw - 28px));max-height:calc(100dvh - 28px);padding:26px;border:1px solid #487585;border-radius:22px;background:linear-gradient(145deg,#172b39,#091720);color:#e6f5f8;box-shadow:0 24px 100px #0009;font:14px/1.5 'DM Sans',Arial,sans-serif;overflow:auto;color-scheme:dark; }
+.city-radio-dialog::backdrop { background:#06131b80;backdrop-filter:blur(3px); }
+.city-radio-dialog header { display:flex;align-items:center;justify-content:space-between;gap:12px; }
+.city-radio-dialog header p { margin:0 0 4px;font:11px monospace;letter-spacing:.18em;color:#7ed8e8; }
+.city-radio-dialog h2 { margin:0;font-size:25px;font-weight:500; }
+.city-radio-dialog button { border:1px solid #487585;border-radius:10px;min-height:44px;padding:9px 18px;background:#203e4d;color:#e6f5f8;font:600 14px 'DM Sans',Arial,sans-serif;cursor:pointer; }
+.city-radio-dialog button:hover { background:#2b5261; }
+.city-radio-dialog .city-radio-close { padding:0;min-width:44px;font-size:25px;background:transparent; }
+.city-radio-intro { color:#a9bec8;margin:12px 0 20px; }
+.city-radio-dialog fieldset { padding:0;border:0;margin:0;min-width:0; }
+.city-radio-dialog legend { font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:#8faebc;margin-bottom:10px; }
+.city-radio-programs { display:grid;gap:8px; }
+.city-radio-program { display:flex;align-items:center;gap:10px;border:1px solid #294451;border-radius:11px;padding:12px 10px;cursor:pointer;background:#112530; }
+.city-radio-program:has(input:checked) { border-color:#6bdfef;background:#193a46; }
+.city-radio-program input { flex:0 0 auto;accent-color:#75e5f4; }
+.city-radio-program strong,.city-radio-program small { display:block; }
+.city-radio-program strong { font-size:13px;font-weight:600; }
+.city-radio-program small { margin-top:3px;font-size:11px;line-height:1.45;color:#adc4cf; }
+.city-radio-program em { margin-left:auto;font-style:normal;font-size:10px;color:#ffbb8b; }
+.city-radio-transport { display:flex;align-items:center;gap:14px;margin-top:20px; }
+.city-radio-dialog #city-radio-play { background:#8ce5ee;color:#0a2834;min-width:88px;border-color:#8ce5ee; }
+.city-radio-transport p { margin:0;font-size:12px;color:#bdd9e2; }
+.city-radio-volume { display:flex;justify-content:space-between;font-size:12px;margin-top:19px; }
+.city-radio-dialog input[type=range] { display:block;width:100%;height:34px;margin:0;accent-color:#8ce5ee;cursor:pointer; }
+.city-radio-note { font-size:11px;color:#8eabb8;margin:11px 0 0; }
+.city-radio-dialog :focus-visible,.city-radio-open:focus-visible { outline:2px solid #ffbc8b;outline-offset:3px; }
+@media(max-width:480px){.city-radio-dialog{padding:19px;}.city-radio-dialog h2{font-size:23px;}.city-radio-program{padding:10px 8px;}.city-radio-program em{display:none;}}

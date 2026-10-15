@@ -1,0 +1,14 @@
+# Revision 49 — giant Halloween robot pumpkin
+
+Selecting **Holidays → Halloween** projects a huge dimensional robot jack-o-lantern above the central plaza chip. Twelve translucent orange armor lobes, angular optics, mechanical fangs, cyan temple bearings/circuitry, and a piston stem form the head. A rising optical beam and segmented focusing rings connect it to the chip. Hovering, slight yaw and shader scans pause for reduced motion.
+
+The seasonal installation temporarily replaces the everyday projection volume without changing the saved mixer. Selecting None restores the original artwork mix, brightness, size and animation preference. The Halloween selection persists through reload. No new real-time lights, shadow passes, assets or navigation colliders are introduced.
+
+- Production TypeScript/Vite build passed (`room-CqwDH3WB.js`).
+- The original installed web-game action client completed successfully; `bundled/state-0.json` reports `ready: true`, its startup screenshot was inspected, and no error artifact was produced. The local Edge adapter removed the client's forced SwiftShader flags to use the same browser rendering configuration as the focused suite; the installed client and action sequence were unchanged.
+- `scripts/north-city-robot-pumpkin-check.mjs`: **16/16 checks pass**, with no browser/WebGL errors. Covers activation, exact chip origin `[41.8, -37.31, -5]`, preserved time/weather and mixer settings, motion, reduced motion, None restoration, inactive animation, reload persistence, weather changes, mobile switching and resource disposal (44 geometries, 7 materials, each disposed exactly once).
+- Actual-room day/night, fog, phone and restored-mix captures inspected under `test-artifacts/north-city/revision-49/native/`. Primary evidence: `pumpkin-day-balcony.png` and `pumpkin-night-balcony.png`.
+- Independent visual review round 1: **8/10, accepted**. See `revision-49-review-1.md`. Remaining polish: busy background circuitry shows through the face, and the dark face masks read more solid than the shell. Independent source review found no blocking integration issues.
+- The in-app preview was also checked in Day/Rain and Night/Rain, including Halloween → None → Halloween. Left at the nighttime central-chip balcony view with Halloween selected.
+
+Validation environment note: initial Chrome attempts were interrupted while the full city was still rendering, and one startup screenshot timed out (`native/hardware-renderer-failure.json`). The completed unmodified-room suite used installed Edge and allowed approximately four minutes for its cold first render; subsequent captures and reload completed normally. Product behavior was not changed to accommodate the test browser. The last native capture was initially named `final-pumpkin-night.png` although time reset to Day on reload; use the explicitly selected pre-reload `pumpkin-night-balcony.png` for night evidence. The script now uses the neutral final capture name.

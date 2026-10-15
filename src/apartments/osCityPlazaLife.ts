@@ -47,16 +47,19 @@ export function createOsCityPlazaLife(circuitTraces?: number[][][], circuitColor
     const object = new THREE.InstancedMesh(g, mat, count); object.name = name;
     object.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
     // Animated bounds are broad but finite; no CPU bounding-sphere rebuild per frame.
-    object.boundingSphere = new THREE.Sphere(v(plazaX(35), floorY + 1, -5), 43*CITY_PLAZA_SCALE);
+    object.boundingSphere = new THREE.Sphere(v(plazaX(35), floorY + 1, -5), 65*CITY_PLAZA_SCALE);
     life.add(object); return object;
   }
 
-  // Open pedestrian lanes avoid all five raised processor installations and benches.
+  // Neighborhood walks connect the square, shopfronts and streets beyond its border.
+  // The two outer routes pass around the shop blocks, not through their footprints.
   const pathPoints = [
     [[25.4, -14.2], [42.6, -14.2], [43.2, 4.0], [25.0, 4.0]],
-    [[12.3, -26.8], [58.0, -26.8], [58.0, -24.8], [12.3, -24.8]],
-    [[12.2, 17.4], [57.0, 17.4], [57.0, 19.3], [12.2, 19.3]],
+    [[25, -29.5], [38.5, -29.5], [38.5, -24.9], [25, -24.9]],
+    [[12, 18], [20, 18], [21.6, 23], [21.6, 36], [12, 36]],
     [[55.2, -20.2], [58.3, -20.2], [58.3, 13.3], [55.2, 13.3]],
+    [[45, -38], [45, -50], [22, -53], [21, -58], [60, -58], [63, -46], [63, -27], [61, -24.9], [57, -24.9], [49, -24.9], [44.5, -24.9], [44.5, -26.5], [45, -30]],
+    [[12, 23], [12, 42], [48, 45], [62, 42], [62, 26], [52, 23], [24, 23]],
   ];
   const paths = pathPoints.map(points => new THREE.CatmullRomCurve3(points.map(([x, z]) => v(plazaX(x), floorY, plazaZ(z))), true, 'catmullrom', .05));
   const pathLengths = paths.map(path => path.getLength());
@@ -75,14 +78,14 @@ export function createOsCityPlazaLife(circuitTraces?: number[][][], circuitColor
   const coatColors = ['#182737', '#4c5360', '#7e685c', '#314954', '#254855', '#534357'];
   const hairColors=['#111822','#34251e','#72503b','#8b8277','#352b42','#1b323e'];
   const walkers = Array.from({ length: walkerCount }, (_, index) => {
-    const pathIndex = index < 20 ? 0 : index < 30 ? 1 : index < 40 ? 2 : 3;
-    const members = pathIndex === 0 ? 20 : pathIndex === 3 ? 8 : 10;
-    const localIndex = pathIndex === 0 ? index : pathIndex === 1 ? index - 20 : pathIndex === 2 ? index - 30 : index - 40;
+    const pathIndex = index % paths.length;
+    const members = walkerCount / paths.length;
+    const localIndex = Math.floor(index / paths.length);
     const color = new THREE.Color(coatColors[index % coatColors.length]);
     torso.setColorAt(index, color); for (let limb = 0; limb < 4; limb++) limbs.setColorAt(index * 4 + limb, color);
     hairCaps.setColorAt(index,new THREE.Color(hairColors[index%hairColors.length]));hairBacks.setColorAt(index,new THREE.Color(hairColors[index%hairColors.length]));
-    return { pathIndex, phase: (localIndex + random() * .25) / members, speed: .83 + random() * .42,
-      direction: index % 3 === 0 ? -1 : 1, size: .93 + random() * .13, gait: random() * Math.PI * 2,
+    return { pathIndex, phase: (localIndex + random() * .8) / members, speed: .83 + random() * .42,
+      direction: (localIndex + pathIndex) % 3 === 0 ? -1 : 1, size: .93 + random() * .13, gait: random() * Math.PI * 2,
       world: new THREE.Matrix4(), position: new THREE.Vector3() };
   });
   torso.instanceColor!.needsUpdate = true; limbs.instanceColor!.needsUpdate = true;
@@ -98,7 +101,7 @@ export function createOsCityPlazaLife(circuitTraces?: number[][][], circuitColor
       const t = THREE.MathUtils.euclideanModulo(walker.phase + time * walker.speed * walker.direction / pathLengths[walker.pathIndex], 1);
       const p = path.getPointAt(t), tangent = path.getTangentAt(t).multiplyScalar(walker.direction);
       // Opposing walkers use separate sides of the same pavement lane.
-      const side = .28;
+      const side = .28 + (index % 4) * .12;
       p.x += tangent.z * side; p.z -= tangent.x * side;
       const gaitPhase = time * walker.speed * 7.4 + walker.gait;
       const stride = Math.sin(gaitPhase) * .43;

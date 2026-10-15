@@ -6,6 +6,10 @@ import { applyCityCameraProjection } from './osCityCamera';
 import { createOsCityAmbience } from './osCityAmbience';
 import { createCitySoundControls } from './osCitySoundControls';
 import { createCityMallControls } from './osCityMallControls';
+import { createCityHologramControls } from './osCityHologramControls';
+import { createCityTVControls } from './osCityTVControls';
+import { createCityHolidayControls } from './osCityHolidayControls';
+import { createCityRadioControls } from './osCityRadioControls';
 import { createCommunityRoom, COMMUNITY_ROOM_ID } from './communityRoom';
 import { createPoolCommons, POOL_COMMONS_ID } from './poolCommons';
 import { getRoomDefinition, getRoomDisplay, ROOM_CATALOG, roomHref } from './roomCatalog';
@@ -117,6 +121,8 @@ try {
   const touches = new Map<number, {x: number; y: number}>();
   let lastPinchDistance = 0;
   let drag: {id: number; x: number; y: number} | null = null;
+  let radioClick: {id:number;x:number;y:number} | null = null;
+  let radioPanel:ReturnType<typeof createCityRadioControls>|undefined;
   const radius = .24;
   const direction = new THREE.Vector3();
   const candidate = new THREE.Vector3();
@@ -218,6 +224,14 @@ try {
     const note=document.createElement('p');note.textContent='Every weather is available at every time of day.';
     section.append(label,select,note);cityControlStack.append(section);
   }
+  if(room.holidays){const control=createCityHolidayControls(room.holidays,()=>keys.clear());cityControlStack.append(control.element);const disposeRoom=dispose;dispose=()=>{control.dispose();disposeRoom();};}
+  if(room.television)cityControlStack.append(createCityTVControls(room.television,()=>keys.clear()).element);
+  if(room.radio){
+    radioPanel=createCityRadioControls(room.radio.audio,()=>{setMenu(false);keys.clear();touches.clear();drag=null;radioClick=null;},()=>canvas.focus({preventScroll:true}));
+    cityControlStack.append(radioPanel.button);
+    const disposeRoom=dispose;dispose=()=>{radioPanel?.dispose();disposeRoom();};
+    const row=document.createElement('div'),term=document.createElement('dt'),detail=document.createElement('dd');term.textContent='Desk radio';detail.textContent='Click or tap the stereo beside the PC desk to choose Halloween music and sounds.';row.append(term,detail);menu.querySelector('.room-instructions')!.append(row);
+  }
   if(room.windowAppearance){
     const section=document.createElement('section');section.id='city-window-appearance-panel';section.className='city-window-panel city-window-appearance-panel';section.setAttribute('aria-label','City window appearance');
     const heading=document.createElement('h2');heading.textContent='City windows';section.append(heading);
@@ -234,6 +248,7 @@ try {
     }
     const note=document.createElement('p');note.id='city-window-appearance-note';note.textContent='Illuminated windows are open / lit. Shadow and TV percentages apply to these rooms.';section.append(note);cityControlStack.append(section);
   }
+  if(room.plazaHolograms)cityControlStack.append(createCityHologramControls(room.plazaHolograms,()=>keys.clear()));
   if(room.plazaStreams){
     const section=document.createElement('section');section.id='city-stream-panel';section.className='city-window-panel';section.setAttribute('aria-label','Plaza data streams');
     const label=document.createElement('label');label.htmlFor='city-stream-speed';label.textContent='Plaza & mall data stream speed';
@@ -308,6 +323,7 @@ try {
     const button=document.createElement('button');button.type='button';button.dataset.walk='jump';button.textContent='Climb bed';button.setAttribute('aria-label','Climb onto the bed');document.querySelector('.touch-walk')!.append(button);
   }
   window.addEventListener('keydown', event => {
+    if(radioPanel?.isOpen()){keys.clear();return;}
     if (event.key === 'Escape') { setMenu(false, !menu.hidden); keys.clear(); return; }
     if (event.ctrlKey || event.metaKey || event.altKey) return;
     if (event.target instanceof HTMLElement && event.target.closest('button, a, input, select, textarea')) return;
@@ -317,7 +333,7 @@ try {
     if (movementKeys.has(event.code)) { event.preventDefault(); keys.add(event.code); if(!event.repeat)citySound?.prime(); hint.classList.add('quiet'); }
   });
   window.addEventListener('keyup', event => keys.delete(event.code));
-  window.addEventListener('blur', () => { keys.clear(); touches.clear(); drag = null; });
+  window.addEventListener('blur', () => { keys.clear(); touches.clear(); drag = null; radioClick=null; });
   document.addEventListener('visibilitychange', () => keys.clear());
 
   canvas.addEventListener('pointerdown', event => {
@@ -326,12 +342,14 @@ try {
     canvas.focus({preventScroll: true});
     canvas.setPointerCapture(event.pointerId);
     touches.set(event.pointerId, {x: event.clientX, y: event.clientY});
+    radioClick=touches.size===1?{id:event.pointerId,x:event.clientX,y:event.clientY}:null;
     drag = {id: event.pointerId, x: event.clientX, y: event.clientY};
     lastPinchDistance = 0;
     hint.classList.add('quiet');
   });
   canvas.addEventListener('pointermove', event => {
     if (!touches.has(event.pointerId)) return;
+    if(radioClick&&Math.hypot(event.clientX-radioClick.x,event.clientY-radioClick.y)>5)radioClick=null;
     touches.set(event.pointerId, {x: event.clientX, y: event.clientY});
     if (touches.size === 2) {
       const [a, b] = [...touches.values()];
@@ -349,6 +367,21 @@ try {
     drag.y = event.clientY;
   });
   const stopDrag = (event: PointerEvent) => {
+    if(event.type==='pointerup'&&radioClick?.id===event.pointerId&&room.radio&&radioPanel){
+      const rect=canvas.getBoundingClientRect(),pointer=new THREE.Vector2((event.clientX-rect.left)/rect.width*2-1,-(event.clientY-rect.top)/rect.height*2+1);
+      const ray=new THREE.Raycaster();ray.far=8;camera.updateMatrixWorld();ray.setFromCamera(pointer,camera);
+      const interior=room.radio.group.parent!;interior.updateWorldMatrix(true,true);
+      // Respect opaque room geometry so the stereo cannot be selected through a wall.
+      const hit=ray.intersectObject(interior,true).find(hit=>{
+        let object:THREE.Object3D|null=hit.object;while(object){if(!object.visible)return false;object=object.parent;}
+        const material=(hit.object as THREE.Mesh).material;
+        return !material|| (Array.isArray(material)?material:[material]).some(m=>m.visible&&(!m.transparent||m.opacity>.5));
+      });
+      let object:THREE.Object3D|null=hit?.object??null;
+      while(object&&object!==room.radio.pickRoot)object=object.parent;
+      if(object)radioPanel.open();
+    }
+    radioClick=null;
     touches.delete(event.pointerId);
     if (drag?.id === event.pointerId) drag = null;
     lastPinchDistance = 0;
@@ -461,6 +494,10 @@ try {
     windowAppearance:room.windowAppearance?.getSettings(),
     plazaStreams:room.plazaStreams?{speed:room.plazaStreams.getSpeed()}:undefined,
     mallSigns:room.mallSigns?.getLabels(),
+    plazaHolograms:room.plazaHolograms?.getSnapshot(),
+    television:room.television?.getSnapshot(),
+    holidays:room.holidays?.getSnapshot(),
+    radio:room.radio?{...room.radio.audio.getSnapshot(),panelOpen:radioPanel?.isOpen(),position:room.radio.group.position.toArray()}:undefined,
     cityAudio:citySound?.getSnapshot(),
     cityExterior: isCity ? room.scene.getObjectByName('North City · behind the island')?.userData.exterior : undefined,
     cityLife: isCity ? room.scene.getObjectByName('North City · behind the island')?.userData.life : undefined,

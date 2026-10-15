@@ -6,9 +6,9 @@
   "scripts": {
     "start": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
     "stop": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/stop-dev.ps1",
-    "dev": "vite --host 127.0.0.1 --port 5178 --strictPort",
+    "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 127.0.0.1 --port 5179 --strictPort",
+    "preview": "vite preview",
     "test:north-city": "node scripts/north-city-revision-smoke.mjs",
     "test:north-city-integration": "node scripts/north-city-integration-smoke.mjs",
     "test:apartments": "node scripts/apartments-smoke.mjs",

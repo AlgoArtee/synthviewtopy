@@ -332,7 +332,7 @@ export function createOsCityFurnishings(): THREE.Group {
     c.clearRect(0, 0, 1024, 640); c.fillStyle = 'rgba(13,62,80,.37)'; c.fillRect(0, 0, 1024, 640)
     c.strokeStyle = 'rgba(58,222,244,.92)'; c.lineWidth = 2; c.strokeRect(7, 7, 1010, 626)
     const label = (text: string, x: number, y: number, size = 14) => {c.fillStyle = 'rgba(105,231,246,.95)'; c.font = size + 'px monospace'; c.fillText(text, x, y)}
-    label(['O / COMPUTATIONAL WORKSPACE', 'NEURAL FIELD / ORGANIC TOPOLOGY', 'ORBIT / REALTIME TELEMETRY', 'NORTH CITY / SENSOR NETWORK'][variant], 25, 33, 17)
+    label(['O / COMPUTATIONAL WORKSPACE', 'NEURAL FIELD / ORGANIC TOPOLOGY', 'ORBIT / REALTIME TELEMETRY', 'NORTH CITY / SENSOR NETWORK', 'FILES / PROJECT ARCHIVE', 'SYSTEM / RESOURCE MONITOR', 'TERMINAL / ACTIVE SESSIONS', 'TASKS / RENDER QUEUE'][variant], 25, 33, 17)
     c.beginPath(); c.moveTo(20, 49); c.lineTo(1004, 49); c.stroke()
     const graph = (x: number, y: number, w: number, h: number, phase: number) => {
       c.strokeStyle = 'rgba(65,192,216,.26)'; c.lineWidth = 1
@@ -373,24 +373,57 @@ export function createOsCityFurnishings(): THREE.Group {
       label('TRAJECTORY  04.17.09', 29, 86); label('DISTANCE  1.82 AU', 733, 87); label('LOCK / NOMINAL', 405, 460, 16)
       graph(38, 490, 446, 101, 2); graph(543, 490, 440, 101, 5)
       for (let i = 0; i < 11; i++) {label('V' + i + ' ' + (i * 31.791 + 312.6).toFixed(2), 30, 127 + i * 25, 13); label('T+' + i + '  ' + (i * .871 + 18).toFixed(2), 849, 127 + i * 25, 13)}
-    } else {
+    } else if (variant === 3) {
       label('SIGNAL / 48 CHANNELS', 31, 89, 17); label('NETWORK LATENCY  0.8 MS', 614, 89, 16)
       graph(31, 120, 580, 170, 4); graph(31, 345, 580, 169, 7)
       for (let i = 0; i < 16; i++) {const w = 60 + ((i * 43) % 229); c.fillStyle = i % 4 ? 'rgba(50,218,233,.56)' : 'rgba(142,247,255,.81)'; c.fillRect(656, 124 + i * 25, w, 9); label(String(i + 1).padStart(2, '0'), 973, 133 + i * 25, 12)}
       label('SPECTRAL COHERENCE', 35, 330, 14); label('ALL NODES SYNCHRONIZED / 22:48:09.271', 37, 580, 17)
+    } else if (variant === 4) {
+      label('WORKSPACE / O / PROJECTS', 32, 89, 19)
+      for (let i = 0; i < 8; i++) {
+        const y=130+i*55
+        c.fillStyle='rgba(74,206,230,.12)';c.fillRect(26,y-25,969,42)
+        c.strokeStyle='rgba(109,235,248,.85)';c.strokeRect(42,y-14,28,21)
+        label(['city-field','neural-atlas','orbital-study','weather-models','light-maps','render-exports','archive-2087','shared-notes'][i],92,y+3,18)
+        label(i<3?'SYNCED':'LOCAL',744,y+3,15);label((128+i*73)+' MB',873,y+3,14)
+      }
+    } else if (variant === 5) {
+      for (let i=0;i<3;i++) {
+        const x=177+i*330;c.strokeStyle='rgba(89,227,246,.23)';c.lineWidth=18;c.beginPath();c.arc(x,218,100,0,Math.PI*2);c.stroke()
+        c.strokeStyle=i===1?'rgba(241,156,221,.9)':'rgba(102,235,252,.95)';c.beginPath();c.arc(x,218,100,-Math.PI/2,-Math.PI/2+Math.PI*2*[.42,.68,.27][i]);c.stroke()
+        label(['CPU 42%','GPU 68%','RAM 27%'][i],x-63,225,24)
+      }
+      graph(42,385,937,150,3);label('THERMALS NORMAL / ALL SYSTEMS ONLINE',47,585,21)
+    } else if (variant === 6) {
+      const lines=['> connect workspace.local','  secure channel established','> load neural-atlas --stream','  1024 samples / frame','> watch city-field','  telemetry attached','> compile lighting','  completed in 0.84 s','> _']
+      lines.forEach((line,i)=>label(line,38,103+i*53,25))
+    } else {
+      for (let i=0;i<4;i++) {
+        const y=110+i*125;label(['SCENE / NORTH CITY','NEURAL FIELD / SOLVE','ORBIT / SIMULATE','BACKUP / WORKSPACE'][i],35,y,23)
+        c.fillStyle='rgba(51,160,193,.22)';c.fillRect(36,y+24,840,27)
+        c.fillStyle=i===2?'rgba(236,139,211,.82)':'rgba(103,232,247,.86)';c.fillRect(36,y+24,[840,612,445,269][i],27)
+        label(['100%','73%','53%','32%'][i],903,y+47,24)
+      }
     }
     const t = new THREE.CanvasTexture(canvas); t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = 8
     return new THREE.MeshBasicMaterial({map: t, color: new THREE.Color(1.1, 1.36, 1.42), transparent: true, opacity: .97, side: THREE.DoubleSide, depthWrite: false, blending: THREE.NormalBlending, toneMapped: false})
   }
-  const screenSizes: [number, number, number, number, number][] = [[.93, .69, -.9, 1.54, 0], [1.03, .77, .09, 1.49, 1], [.62, .54, .94, 1.56, 2]]
+  // All displays share a wall-parallel plane, 38 mm in front of the plaster.
+  // Coordinates below remain local to the workstation's existing 3.15 m offset.
+  const panelZ=2.962
+  const screenSizes: [number, number, number, number, number][] = [
+    [.90,.64,-.96,1.58,0],[1.02,.72,.07,1.58,1],[.62,.60,.95,1.58,2],
+    [.88,.55,-.96,2.34,4],[1.00,.60,.07,2.34,5],[.62,.55,.95,2.34,3],
+    [1.20,.31,-.79,1.02,6],[1.20,.31,.56,1.02,7],
+  ]
   for (const [w, h, x, y, variant] of screenSizes) {
-    const s = mesh('Hologram · floating translucent computer panel ' + variant, new THREE.PlaneGeometry(w, h), monitor(variant), x, y, 2.68)
+    const s = mesh('Hologram · wall computer panel ' + variant, new THREE.PlaneGeometry(w, h), monitor(variant), x, y, panelZ)
     s.rotation.y = Math.PI; s.castShadow = s.receiveShadow = false
-    for (const dx of [-w / 2, w / 2]) box('Hologram · thin transparent panel edge', .003, h, .003, x + dx, y, 2.682, new THREE.MeshBasicMaterial({color: '#34cce8', transparent: true, opacity: .8, toneMapped: false}), .001)
-    mesh('Hologram · desktop projector lens', new THREE.CylinderGeometry(.039, .05, .011, 24), chrome, x, .813, 2.52)
+    s.userData.wallProjection={variant,wallZ:6.15,clearance:.038}
+    for (const dx of [-w / 2, w / 2]) box('Hologram · thin transparent panel edge', .003, h, .003, x + dx, y, panelZ-.002, new THREE.MeshBasicMaterial({color: variant===7?'#ef9bd7':'#34cce8', transparent: true, opacity: .8, toneMapped: false}), .001)
   }
-  const frontPanel = mesh('Hologram · secondary foreground diagnostics', new THREE.PlaneGeometry(.88, .48), monitor(3), -.48, 1.10, 2.38)
-  frontPanel.rotation.y = Math.PI; frontPanel.castShadow = frontPanel.receiveShadow = false
+  box('Hologram · wall-mounted projection rail',2.66,.035,.022,-.05,.845,2.985,chrome,.006)
+  box('Hologram · recessed cyan rail lens',2.56,.008,.004,-.05,.847,2.972,new THREE.MeshBasicMaterial({color:'#75e5f7',toneMapped:false}),.001).castShadow=false
   const keys = document.createElement('canvas'); keys.width = 1024; keys.height = 320; const kc = keys.getContext('2d')!
   kc.clearRect(0, 0, 1024, 320); kc.strokeStyle = 'rgba(12,183,220,.98)'; kc.lineWidth = 3; kc.strokeRect(3, 3, 1018, 314)
   for (let j = 0; j < 4; j++) for (let i = 0; i < 15; i++) kc.strokeRect(28 + i * 64 + (j % 2) * 7, 24 + j * 56, 49, 38)
@@ -407,6 +440,7 @@ export function createOsCityFurnishings(): THREE.Group {
   const workstation = new THREE.Group(); workstation.name = 'Southern living-room workstation'; workstation.position.z = 3.15
   const workstationParts = group.children.slice(workstationStart)
   for (const part of workstationParts) workstation.add(part)
+  workstation.userData.projections={count:screenSizes.length,wallZ:6.15,panelZ:panelZ+workstation.position.z,wallClearance:.038}
   group.add(workstation)
   return group
 }

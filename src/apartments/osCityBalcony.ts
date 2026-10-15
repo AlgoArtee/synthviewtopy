@@ -15,7 +15,8 @@ export function createOsCityBalcony(colliders: THREE.Box3[]) {
     const o=new THREE.Mesh(new THREE.BoxGeometry(d[0],d[1],d[2]),m);o.name=name;o.position.set(p[0],p[1],p[2]);o.castShadow=true;o.receiveShadow=true;group.add(o);return o;
   }
   function block(x:number,z:number,w:number,d:number,h=1.15) {
-    colliders.push(new THREE.Box3(new THREE.Vector3(x-w/2,-.25,z-d/2),new THREE.Vector3(x+w/2,h,z+d/2)));
+    const bounds=new THREE.Box3(new THREE.Vector3(x-w/2,-.25,z-d/2),new THREE.Vector3(x+w/2,h,z+d/2));
+    colliders.push(bounds);return bounds;
   }
   const outline=new THREE.Shape();outline.moveTo(B.minX,B.minZ);outline.lineTo(B.maxX,B.minZ);outline.lineTo(B.maxX,B.maxZ);outline.lineTo(B.elbowX,B.maxZ);outline.lineTo(B.elbowX,B.elbowZ);outline.lineTo(B.minX,B.elbowZ);outline.closePath();
   const slabGeometry=new THREE.ExtrudeGeometry(outline,{depth:.26,bevelEnabled:false});slabGeometry.rotateX(Math.PI/2);
@@ -109,7 +110,10 @@ export function createOsCityBalcony(colliders: THREE.Box3[]) {
   }
   rail(new THREE.Vector3(B.minX,0,B.minZ+.06),new THREE.Vector3(B.maxX-.055,0,B.minZ+.06));
   rail(new THREE.Vector3(B.maxX-.055,0,B.minZ+.06),new THREE.Vector3(B.maxX-.055,0,B.maxZ));
-  block((B.minX+B.maxX)/2,B.minZ+.06,B.maxX-B.minX,.12);block(B.maxX-.055,(B.minZ+B.maxZ)/2,.12,B.maxZ-B.minZ);
+  group.userData.guardrailColliders=[
+    block((B.minX+B.maxX)/2,B.minZ+.06,B.maxX-B.minX,.12),
+    block(B.maxX-.055,(B.minZ+B.maxZ)/2,.12,B.maxZ-B.minZ),
+  ];
   // Linear drain and small grilles keep the exposed surface physically plausible.
   box('Terrace edge drainage channel',[B.maxX-.23,.002,(B.minZ+B.maxZ)/2],[.065,.008,B.maxZ-B.minZ-.25],dark);
   for(let z=B.minZ+.22;z<B.maxZ-.12;z+=.115)box('Drain crossbar',[B.maxX-.23,.008,z],[.062,.009,.013],metal);

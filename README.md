@@ -28,7 +28,8 @@ Double-click **Start SynthViewTopy.cmd** in the project folder. It installs the
 locked dependencies on the first launch if needed, starts Vite in the background,
 waits for the server to be ready, and opens [http://127.0.0.1:5178](http://127.0.0.1:5178).
 Double-click **Stop SynthViewTopy.cmd** when finished. Closing the browser does
-not stop the server. Starting again reopens the existing server.
+not stop the server. Starting again reopens the existing server. An older server
+started with a loopback-only address is restarted automatically to enable LAN access.
 
 The equivalent terminal commands on Windows are `npm start` and `npm stop`.
 Use `powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/start-dev.ps1 -NoBrowser`
@@ -36,6 +37,30 @@ to start without opening a browser. Logs and the
 managed process record are kept in `.runtime/` (ignored by Git). Stop checks the
 process identity before terminating it. If port 5178 is occupied by a server
 started separately, close that server first; the launcher will report the conflict.
+
+### Open on another device on the same network
+
+Start the app, then open one of the network URLs printed by the launcher or Vite
+on a phone, tablet, or computer connected to the same Wi-Fi or Ethernet network.
+For example, if the host PC's IPv4 address is `192.168.1.20`, open
+`http://192.168.1.20:5178`. All scenes use that same address, such as
+`http://192.168.1.20:5178/room.html?id=os-city-apartment`.
+Production preview (`npm run preview`) uses port `5179` instead.
+The app listens on all IPv4 interfaces; `127.0.0.1` still works on the host PC.
+The network address may change when reconnecting, so use the current printed URL.
+
+If Windows Firewall blocks access on a trusted **Private** network, run this
+from the project folder in PowerShell **as Administrator** to allow only Node.js
+on the app's two ports from the local subnet:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File scripts/enable-lan.ps1
+```
+
+The setup can be rerun safely, including after changing the Node.js install path.
+Both devices must be able to communicate; guest Wi-Fi or access-point client
+isolation can prevent connections. Keep the host PC awake and the server running.
+Layouts and other saved browser data remain separate for each device and URL.
 
 ### Why opening index.html directly does not work
 
@@ -57,7 +82,7 @@ npm install
 npm run dev
 ```
 
-Open [http://127.0.0.1:5178](http://127.0.0.1:5178). The fixed local-only port avoids colliding with other Vite projects that commonly use `5173`.
+Open [http://127.0.0.1:5178](http://127.0.0.1:5178), or use a printed Network URL on another device. The fixed port avoids colliding with other Vite projects that commonly use `5173`.
 Keep the terminal open and press **Ctrl+C** to stop this foreground server.
 Source changes reload automatically through Vite.
 

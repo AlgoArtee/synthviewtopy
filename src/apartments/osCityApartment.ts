@@ -14,6 +14,10 @@ import { createOsCityBalconyDistrict } from './osCityBalconyDistrict';
 import { CITY_WINDOW_DEFAULTS, normalizeCityWindowSettings, type CityWindowSettings } from './osCityWindowTv';
 import type { LiminetteRoom } from './liminetteRoom';
 import { createOsCityFurnishings, OS_CITY_LOUNGE_OFFSET_Z } from './osCityFurnishings';
+import { createOsCityFridge } from './osCityFridge';
+import { createOsCityKettle } from './osCityKettle';
+import { createOsCityHolidays } from './osCityHolidays';
+import { createOsCityRadio } from './osCityRadio';
 
 export const OS_CITY_APARTMENT_ID = 'os-city-apartment';
 
@@ -127,6 +131,7 @@ export function createOsCityApartment(): LiminetteRoom {
   for(const x of [CITY_BED.minX+.10,CITY_BED.maxX-.10])box('Alcove ceiling · recessed opal cove',whiteGlow,[x,3.46,CITY_BED.centerZ],[.025,.025,CITY_BED.depth-.12],.005);
   box('Alcove ceiling · north opal cove',whiteGlow,[CITY_BED.centerX,3.46,CITY_BED.minZ+.10],[CITY_BED.width-.2,.025,.025],.005);
   const furnishings=createOsCityFurnishings(); interior.add(furnishings); materialReady.push(furnishings.userData.ready ?? Promise.resolve());
+  const radio=createOsCityRadio();interior.add(radio.group);block(1.91,5.68,.88,.43,1.1);
   const bedCollider=block(CITY_BED.centerX,CITY_BED.centerZ,CITY_BED.width,CITY_BED.depth,.66);block(-1.65,-.4,.52,.52,.7);block(-3.4,.4+OS_CITY_LOUNGE_OFFSET_Z,1.3,1.3,1.6);block(-.05,5.65,2.75,.64,.85);block(0,4.77,.4,.4,.5);
   // Bathroom: tub north, sink west, WC east; lower doorway faces the main room.
   // The continuous alcove east wall also forms the bedroom/bathroom partition.
@@ -211,9 +216,11 @@ export function createOsCityApartment(): LiminetteRoom {
   const mugGeo=new THREE.LatheGeometry([[0,0],[.067,0],[.073,.13],[.07,.145],[.061,.145],[.059,.02],[0,.02]].map(([r,y])=>new THREE.Vector2(r,y)),48);
   mesh(mugGeo,porcelain,'Ceramic cup on countertop',v(4.12,.939,1.48));
   const handle=mesh(new THREE.TorusGeometry(.04,.009,8,24),porcelain,'Cup handle',v(4.19,1.018,1.48));handle.rotation.y=Math.PI/2;block(4.37,1.44+CITY_KITCHEN_OFFSET_Z,.86,2.84,.95);
+  const kettle=createOsCityKettle();interior.add(kettle);
   const kitchen=new THREE.Group();kitchen.name='Relocated east-wall kitchen';
   for(const child of interior.children.slice(kitchenStart))kitchen.add(child);
   kitchen.position.z=CITY_KITCHEN_OFFSET_Z;interior.add(kitchen);
+  const fridge=createOsCityFridge();interior.add(fridge.group);colliders.push(fridge.collider);
   const balcony=createOsCityBalcony(colliders);interior.add(balcony);
   const balconyDistrict=createOsCityBalconyDistrict();balconyDistrict.position.y=-CITY_RESIDENCE_ELEVATION;scene.add(balconyDistrict);materialReady.push(balconyDistrict.userData.ready ?? Promise.resolve());
   balconyDistrict.userData.placement={cityOffsetY:-CITY_RESIDENCE_ELEVATION,floorAbovePlaza:14+CITY_RESIDENCE_ELEVATION,coordinates:'District snapshots are local; world Y adds cityOffsetY'};
@@ -247,6 +254,8 @@ export function createOsCityApartment(): LiminetteRoom {
     for(let ancestor:THREE.Object3D|null=object;ancestor;ancestor=ancestor.parent)if(ancestor===exterior.group||ancestor===balconyDistrict)return;
     interiorFixtures.push({light:object,intensity:object.intensity});
   });
+  // Seasonal colors reuse room fixtures; weather retains control of their intensity.
+  const holidays=createOsCityHolidays(scene,[cyan,pink,whiteGlow],holiday=>balconyDistrict.userData.setHoliday(holiday));colliders.push(...holidays.colliders);
   let weather: OsCityWeather = 'rain', timeOfDay:CityTimeOfDay='day', lastElapsed=0;
   let weatherProfile=getCityWeatherPreset(weather,timeOfDay);
   const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -286,16 +295,19 @@ export function createOsCityApartment(): LiminetteRoom {
   const viewpoints=[
     {id:'sleep',label:'Square bed & city alcove',position:v(-3.1,1.9,.2),target:v(-5.4,1.1,-5.4)},
     {id:'lounge',label:'Clear chair & soft carpet',position:v(-1.72,1.4,2.36+OS_CITY_LOUNGE_OFFSET_Z),target:v(-3.2,1.15,-.45+OS_CITY_LOUNGE_OFFSET_Z)},
-    {id:'study',label:'Holographic workstation',position:v(-1.65,1.48,3.75),target:v(-.05,1.27,5.77)},
+    {id:'study',label:'Holographic workstation',position:v(-1.5,1.65,3.25),target:v(-.05,1.65,6.112)},
+    {id:'radio',label:'Desk radio · Nocturne 01',position:v(.84,1.46,4.28),target:v(1.91,.99,5.68)},
     {id:'bathroom',label:'Pastel bathroom',position:v(.61,1.62,.08),target:v(.05,1.22,-2.18)},
-    {id:'kitchen',label:'Kitchen',position:v(1.75,1.6,3.55),target:v(4.3,1.3,2.75)},
+    {id:'kitchen',label:'Kitchen',position:v(1.25,1.6,4.9),target:v(4.3,1.3,3.4)},
     {id:'balcony-door',label:'Door to the balcony',position:v(2.85,1.65,1),target:v(2.85,1.65,-3)},
     {id:'balcony',label:'Balcony · circuit city panorama',position:v(3.8,1.65,-5),target:v(55,-17,-5)},
     {id:'balcony-left',label:'Balcony · northern skyline',position:v(3.8,1.65,-5),target:v(80,2,-62)},
     {id:'balcony-right',label:'Balcony · southern skyline',position:v(3.8,1.65,-5),target:v(80,2,56)},
     {id:'balcony-transit',label:'City maglev through line',position:v(3.9,1.7,-3),target:v(102,37.5-CITY_RESIDENCE_ELEVATION,5)},
-    {id:'balcony-plaza',label:'Balcony · main chip and mall alignment',position:v(3.8,1.65,-5),target:v(44,-28,-5)},
+    {id:'balcony-plaza',label:'Balcony · main chip and mall alignment',position:v(4.775,1.65,-5),target:v(44,-28,-5)},
     {id:'balcony-mall',label:'Balcony · Data Mall facade',position:v(3.8,1.65,-5),target:v(88.6,-20,-5)},
+      {id:'balcony-market-north',label:'Balcony · north market stalls',position:v(4.775,1.65,-5),target:v(48,-35,-39)},
+      {id:'balcony-market-south',label:'Balcony · south market stalls',position:v(4.775,1.65,-5),target:v(46,-35,31)},
     {id:'balcony-return',label:'Balcony around the bathroom',position:v(3.5,1.65,-7.9),target:v(2.6,1.2,-.2)},
     {id:'balcony-corner',label:'Balcony planted corner',position:v(3.25,1.65,-4.9),target:v(-.6,1.1,-8.1)},
     {id:'balcony-ceiling',label:'Covered balcony & upstairs floor',position:v(3.2,1.65,-2.35),target:v(.25,3.4,-7.7)},
@@ -334,15 +346,22 @@ export function createOsCityApartment(): LiminetteRoom {
     {id:'ceiling-oblique-b',label:'Ceiling attachment B',position:v(-1.6,1.5,-2.4),target:v(-2.7,3.35,.25)}
   );
   scene.userData.apartment={floorArea:143.833,location:{residence:'0.8.0',district:'North City',space:'City apartment'},design:{palette:'Pearl white, icy blue, pale pink, satin chrome',reference:'Six room references and rainy living-city reference; L-shaped floor plan',materials:'Microtextured plaster, porcelain, wrinkled cotton, acrylic, brushed chrome, shag wool'},outlook:{type:'Animated rainy North City with traffic, pedestrians, filigree ghosts in flowing long dresses, neon, cable bundles and steam'},northCity:{id:OS_CITY_APARTMENT_ID,level:'0.8.0',residenceElevation:CITY_RESIDENCE_ELEVATION,floorAbovePlaza:14+CITY_RESIDENCE_ELEVATION,cityOffsetY:-CITY_RESIDENCE_ELEVATION,livingArea:60.48,previousLivingArea:30.24,livingAreaRatio:2,referenceCount:10,balcony:{...CITY_BALCONY,door:CITY_BALCONY_DOOR,ceiling:balcony.userData.layout.ceiling},kitchen:{offsetZ:CITY_KITCHEN_OFFSET_Z},bed:{...CITY_BED,previousWidth:2.85,widthRatio:3,wallFittedSides:3},window:cityWindow.snapshot(),features:['Covered walkable wraparound balcony','Upper-floor slab and illuminated soffit','Weather-responsive circuit plaza','Walking plaza residents and elevated trains','Circuit plaza city panorama','Balcony sliding glass door','Relocated east-wall kitchen','Blanket beneath north-window pillows','Tilt-and-turn left window','Uninterrupted large panorama','Centred left-wall television','Varied illuminated city interiors','Expanded city-facing sleeping alcove','Full-wall modern glazing','Left-wall holographic TV','Large down-filled white duvet','Six oversized pillows, four opposite the TV','Seven puffy blue and magenta cat cushions in a staggered east-wall row','Pastel bathroom','Holographic desk','Helix night light','Concentric ceiling lights','Floating transparent chair','Circular luminous white rug','Kitchen','Walkable bed','Four times of day with six weather conditions and four Dark Academia presets','Moving city traffic','Occupied skybridges','Cyan and pink filigree ghosts with wind-blown gowns','Rising vent steam']}};
-  return {scene,spawn:v(-2.18,1.65,3.7),lookAt:v(-3,1.47,-1.5),bounds:{minX:CITY_BED.minX+.18,maxX:4.62,minZ:CITY_BED.minZ+.18,maxZ:5.97},colliders,viewpoints,fieldOfView:62,ready:Promise.all(materialReady).then(()=>undefined),navigation:createCityNavigation(colliders.filter(box=>box!==bedCollider)),floorHeight:cityFloorHeight,environment:{weatherOptions:CITY_WEATHER_OPTIONS,timeOptions:CITY_TIME_OPTIONS,setWeather,setTimeOfDay,getSnapshot:getWeatherSnapshot},
+  scene.userData.apartment.workstation=furnishings.getObjectByName('Southern living-room workstation')?.userData.projections;
+  scene.userData.apartment.northCity.kitchen.fridge=fridge.group.userData.appliance;
+  scene.userData.apartment.northCity.kitchen.kettle=kettle.userData.appliance;
+  return {scene,spawn:v(-2.18,1.65,3.7),lookAt:v(-3,1.47,-1.5),bounds:{minX:CITY_BED.minX+.18,maxX:CITY_BALCONY.maxX,minZ:CITY_BALCONY.minZ,maxZ:5.97},colliders,viewpoints,fieldOfView:62,ready:Promise.all(materialReady).then(()=>undefined),navigation:createCityNavigation(colliders.filter(box=>box!==bedCollider),balcony.userData.guardrailColliders),floorHeight:cityFloorHeight,environment:{weatherOptions:CITY_WEATHER_OPTIONS,timeOptions:CITY_TIME_OPTIONS,setWeather,setTimeOfDay,getSnapshot:getWeatherSnapshot},
     windowFixture:{options:cityWindow.options,setMode:cityWindow.setMode,getSnapshot:cityWindow.snapshot},
+    television:television.controls,
+    radio,
+    holidays:holidays.controls,
     doorFixture:balcony.userData.doorFixture,
     windowAppearance:{getSettings:()=>({...windowSettings}),setSettings:setWindowSettings},
     plazaStreams:{getSpeed:()=>balconyDistrict.userData.getStreamSpeed(),setSpeed:setStreamSpeed},
     mallSigns:balconyDistrict.userData.mallSigns,
+    plazaHolograms:balconyDistrict.userData.plazaHolograms,
     canWalk:(x,z,r)=>insideCityFootprint(x,z,r),
-    update:(t)=>{cityWindow.update(t);television.update(t);balconyDistrict.userData.update?.(Math.min(.05,Math.max(0,t-lastElapsed)),t);exterior.update(Math.min(.05,Math.max(0,t-lastElapsed)),t);lastElapsed=t;daylight.intensity=weatherProfile.sun+getCityWeatherLightning(weather,t,reducedMotion.matches)*7;},
-    dispose:()=>{balconyDistrict.userData.dispose?.();mirror.getRenderTarget().dispose();const gs=new Set<THREE.BufferGeometry>(),ms=new Set<THREE.Material>(),ts=new Set<THREE.Texture>();scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Points||o instanceof THREE.Line){gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){ms.add(m);Object.values(m).forEach(a=>{if(a instanceof THREE.Texture)ts.add(a);});if(m instanceof THREE.ShaderMaterial)Object.values(m.uniforms).forEach(u=>{if(u.value instanceof THREE.Texture)ts.add(u.value);});}}});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();}
+    update:(t)=>{radio.update(t);cityWindow.update(t);television.update(t);holidays.update(t);balconyDistrict.userData.update?.(Math.min(.05,Math.max(0,t-lastElapsed)),t);exterior.update(Math.min(.05,Math.max(0,t-lastElapsed)),t);lastElapsed=t;daylight.intensity=weatherProfile.sun+getCityWeatherLightning(weather,t,reducedMotion.matches)*7;},
+    dispose:()=>{radio.dispose();holidays.dispose();television.dispose();balconyDistrict.userData.dispose?.();mirror.getRenderTarget().dispose();const gs=new Set<THREE.BufferGeometry>(),ms=new Set<THREE.Material>(),ts=new Set<THREE.Texture>();scene.traverse(o=>{if(o instanceof THREE.Mesh||o instanceof THREE.Points||o instanceof THREE.Line){gs.add(o.geometry);for(const m of Array.isArray(o.material)?o.material:[o.material]){ms.add(m);Object.values(m).forEach(a=>{if(a instanceof THREE.Texture)ts.add(a);});if(m instanceof THREE.ShaderMaterial)Object.values(m.uniforms).forEach(u=>{if(u.value instanceof THREE.Texture)ts.add(u.value);});}}});gs.forEach(g=>g.dispose());ms.forEach(m=>m.dispose());ts.forEach(t=>t.dispose());scene.clear();}
   };
 }
 

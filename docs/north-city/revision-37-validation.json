@@ -1,0 +1,375 @@
+{
+  "revision": 37,
+  "date": "2026-10-14T15:30:50.401Z",
+  "request": "Add small reference-inspired market stands in the open ground on both sides of the plaza",
+  "build": {
+    "passed": true,
+    "artifact": "dist/assets/room-DalWGKsb.js"
+  },
+  "native": {
+    "capture": "final-4",
+    "checks": [
+      {
+        "passed": true,
+        "description": "Ten themed stalls in the actual scene",
+        "evidence": {
+          "count": 10,
+          "stalls": [
+            {
+              "name": "NOODLES",
+              "type": "noodles",
+              "x": 32,
+              "z": -41,
+              "width": 5.4,
+              "depth": 3.2,
+              "rotation": -0.18,
+              "reference": "image_20261014_152320.jpg"
+            },
+            {
+              "name": "CYBERWARE",
+              "type": "cyberware",
+              "x": 40,
+              "z": -42,
+              "width": 5.8,
+              "depth": 3,
+              "rotation": -0.1,
+              "reference": "image_20261014_152321.jpg"
+            },
+            {
+              "name": "HOLO FISH",
+              "type": "fish",
+              "x": 48,
+              "z": -40.8,
+              "width": 5.4,
+              "depth": 2.8,
+              "rotation": -0.26,
+              "reference": "image_20261014_152321_1.jpg"
+            },
+            {
+              "name": "MYCO · NEO",
+              "type": "myco",
+              "x": 64,
+              "z": -35.5,
+              "width": 5,
+              "depth": 2.8,
+              "rotation": -0.18,
+              "reference": "image_20261014_152322.jpg"
+            },
+            {
+              "name": "BIO · SPICE",
+              "type": "spice",
+              "x": 74,
+              "z": -36,
+              "width": 5.6,
+              "depth": 3,
+              "rotation": -0.42,
+              "reference": "image_20261014_152322_1.jpg"
+            },
+            {
+              "name": "SMART FABRIC",
+              "type": "fabric",
+              "x": 30,
+              "z": 28.3,
+              "width": 5.6,
+              "depth": 3,
+              "rotation": 3.221592653589793,
+              "reference": "image_20261014_152322_2.jpg"
+            },
+            {
+              "name": "MEMORY DREAM",
+              "type": "memory",
+              "x": 38.3,
+              "z": 28.3,
+              "width": 5.5,
+              "depth": 2.8,
+              "rotation": 3.221592653589793,
+              "reference": "image_20261014_152324.jpg"
+            },
+            {
+              "name": "RETRO / VINYL",
+              "type": "vinyl",
+              "x": 48,
+              "z": 28.3,
+              "width": 5.5,
+              "depth": 2.8,
+              "rotation": 3.221592653589793,
+              "reference": "image_20261014_152324_1.jpg"
+            },
+            {
+              "name": "SYNTH FRUIT",
+              "type": "fruit",
+              "x": 60,
+              "z": 38,
+              "width": 6.2,
+              "depth": 3.4,
+              "rotation": 3.4215926535897934,
+              "reference": "image_20261014_152326.jpg"
+            },
+            {
+              "name": "KURO · MECH",
+              "type": "repair",
+              "x": 70,
+              "z": 43,
+              "width": 5.8,
+              "depth": 3,
+              "rotation": 3.691592653589793,
+              "reference": "image_20261014_152341.jpg"
+            }
+          ],
+          "footprints": [
+            {
+              "x": 32,
+              "z": -41,
+              "halfWidth": 3.12620775661263,
+              "halfDepth": 2.2811529312822176
+            },
+            {
+              "x": 40,
+              "z": -42,
+              "halfWidth": 3.2044795123975867,
+              "halfDepth": 1.9959990017454696
+            },
+            {
+              "x": 48,
+              "z": -40.8,
+              "halfWidth": 3.165540320710811,
+              "halfDepth": 2.278903537907863
+            },
+            {
+              "x": 64,
+              "z": -35.5,
+              "halfWidth": 2.89363310336984,
+              "halfDepth": 2.0485782780394284
+            },
+            {
+              "x": 74,
+              "z": -36,
+              "halfWidth": 3.386805144122578,
+              "halfDepth": 2.755144535056656
+            },
+            {
+              "x": 30,
+              "z": 28.3,
+              "halfWidth": 3.0764200133403206,
+              "halfDepth": 1.9303112479235123
+            },
+            {
+              "x": 38.3,
+              "z": 28.3,
+              "halfWidth": 3.0185884586282725,
+              "halfDepth": 1.8266353425947917
+            },
+            {
+              "x": 48,
+              "z": 28.3,
+              "halfWidth": 3.0185884586282725,
+              "halfDepth": 1.8266353425947917
+            },
+            {
+              "x": 60,
+              "z": 38,
+              "halfWidth": 3.6485059067818217,
+              "halfDepth": 2.7241611906238345
+            },
+            {
+              "x": 70,
+              "z": 43,
+              "halfWidth": 3.488768081463613,
+              "halfDepth": 3.04348773573967
+            }
+          ],
+          "partCount": 2437,
+          "drawCalls": 31,
+          "triangles": 88302,
+          "snowVisible": false,
+          "referenceUse": "Recessed merchandise panels behind dimensional shelves, counters and products"
+        }
+      },
+      {
+        "passed": true,
+        "description": "Five stalls on each side"
+      },
+      {
+        "passed": true,
+        "description": "Market geometry stays within 40 draw calls / 100k triangles",
+        "evidence": {
+          "drawCalls": 31,
+          "triangles": 88302
+        }
+      },
+      {
+        "passed": true,
+        "description": "Existing neighborhood population retained"
+      },
+      {
+        "passed": true,
+        "description": "Residents continue walking around the market"
+      },
+      {
+        "passed": true,
+        "description": "Stall canopies respond to snow"
+      },
+      {
+        "passed": true,
+        "description": "Through railway and enclosed club preserved"
+      },
+      {
+        "passed": true,
+        "description": "Sources unchanged during captures",
+        "evidence": []
+      },
+      {
+        "passed": true,
+        "description": "No browser/WebGL errors",
+        "evidence": []
+      }
+    ],
+    "screenshots": [
+      "north-market-day.png",
+      "south-market-day.png",
+      "whole-plaza-day.png",
+      "north-market-night-rain.png",
+      "south-market-night-rain.png",
+      "north-market-snow.png",
+      "detail-noodles.png",
+      "detail-cyberware.png",
+      "detail-fish.png",
+      "detail-myco.png",
+      "detail-spice.png",
+      "detail-fabric.png",
+      "detail-memory.png",
+      "detail-vinyl.png",
+      "detail-fruit.png",
+      "detail-repair.png"
+    ],
+    "errors": [],
+    "sourceDrift": []
+  },
+  "geometry": {
+    "samples": 18000,
+    "collisions": [],
+    "standingCollisions": [],
+    "stallConflicts": [],
+    "groundContactY": -14.020000457763672
+  },
+  "market": {
+    "count": 10,
+    "drawCalls": 31,
+    "triangles": 88302
+  },
+  "bundledClient": {
+    "ready": true,
+    "errorArtifacts": []
+  },
+  "review": {
+    "round1": {
+      "score": 7.5,
+      "record": "docs/north-city/revision-37-review-1.md"
+    },
+    "round2": {
+      "record": "docs/north-city/revision-37-review-2.md",
+      "text": "# Revision 37 — formal visual review 2\n\nReviewer: separate `market_visual_review` agent. Date: 2026-10-14.\n\n**Score: 8.0/10. Accepted for the requested market addition.** This is formal round 2 of at most 3, following round 1 at 7.5/10. The score applies to visual and physical integration of the new small cyberpunk market stands at the intended balcony viewing scale. It is not a claim that the close-up assets are photorealistic replicas of the supplied references. The requirement in `src/apartments/AGENTS.md` is met; no further graded round is required.\n\n## Findings\n\nThe ten stands remain appropriately scaled against people and surrounding shops, occupy both requested side areas and preserve the central plaza composition. The public balcony captures show recognizable merchandise clusters and neon signs rather than a wall of new buildings. Gaps between stands and the shop approaches remain visually clear. Day, night/rain and snow captures show coherent atmosphere and visibility.\n\nThe concrete round-1 findings have been addressed:\n\n- **Structural variety:** the repair stall now reads as an open workbench/gantry with its sign on the front, the produce stall has a distinct canopy edge and timber crate frontage, the record stall has a different hood/sign profile and wooden storage, and the data stall exposes lower stock shelving. Food and fabric roof/sign treatments differ from the rigid tech displays. Some modular framing remains, but the repeated identical-box effect is reduced.\n- **Functional surfaces and merchandise:** darker worktops reduce the large blank pale slabs. Price cards, segmented fronts, folded textiles, chips, tools, repair parts and small containers make the counters more usable and occupied. The repair bench in particular is materially and compositionally different from round 1.\n- **Backdrop prominence:** reference imagery has been reduced to smaller framed panels, leaving actual structural walls, shelving and foreground objects to define the stalls. The photo/geometry mismatch is now subordinate to the physical display.\n- **Fabric cloth:** the customer-facing sheet is clearly visible on the loom at the right of `detail-fabric.png`, along with the added folded stock. The existing foreground lamp still occludes part of this supplemental camera view, but it does not prevent assessment of the cloth correction.\n\nNo obvious floating merchandise, unsupported elevated trays, ground separation or blocking collision is visible in this set. The primary balcony views retain clear sightlines to the existing shop signs and the mall. I found no concrete blocker requiring another implementation iteration.\n\n## Remaining limitations\n\nThe merchandise remains intentionally simplified: fruit and mushroom shapes, robot limbs, garments, fish graphics and luminous memory tubes do not reproduce the references' fine surface detail. Worktops and framing remain cleaner and more regular than the heavily weathered reference assets. Some photo panels remain visibly photographic when inspected close up. These limit the score to 8.0 rather than a higher realism rating, but do not prevent the requested small market stands from working coherently in this scene.\n\nNight captures are dark away from neon and street lights, as is the surrounding district. The new lights and merchandise silhouettes remain discernible; this is not a new market-specific defect. The fruit boat reference is reasonably adapted to a ground stand. No new canal or boat is implied by this acceptance.\n\nThis review uses actual running-room captures. The six overview/weather shots are primary public-view evidence; the ten detail shots are supplemental QA camera positions within the same runtime scene and do not imply added street-level navigation. Animation and exhaustive collision correctness remain the responsibility of functional checks.\n\nThe implementation agent reports native 9/9 checks, bundled-client readiness with ten stands, and unchanged final source hashes. Those reports are separate from this visual score. The earlier `final-3` first-frame timeout was not treated as a visual result; this review examines only the successful `final-4` capture set.\n\n## Exact inspected runtime screenshots\n\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/north-market-day.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/south-market-day.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/whole-plaza-day.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/north-market-night-rain.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/south-market-night-rain.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/north-market-snow.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-noodles.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-cyberware.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-fish.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-myco.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-spice.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-fabric.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-memory.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-vinyl.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-fruit.png`\n- `F:/001_YouTopy/SynthViewTopy/test-artifacts/north-city/revision-37/final-4/detail-repair.png`\n\n## Reference comparison\n\nThe same two user placement screenshots and all ten market design images explicitly inspected in [round 1](revision-37-review-1.md) were used for comparison. Their exact paths are preserved in that record. The revised captures were compared against the noodle counter, cyberware display, holo fish, mushroom, spice, textile, memory, vinyl, fruit and salvage references, and against the three round-1 correction categories. No unrelated historical city feature was regraded.\n\nNo product code was edited by the reviewer. Acceptance is based on this frozen screenshot set, with the limitations above retained.\n\n"
+    }
+  },
+  "limitations": [
+    "Real-time stylized interpretations, not photorealistic replicas.",
+    "Close detail cameras are supplemental QA views; public views remain on the apartment balcony.",
+    "One earlier capture timed out at readiness; failure evidence is retained in final-3."
+  ],
+  "sourceHashes": {
+    "src/apartments/osCityAmbience.ts": "bfb45f59872fd994f5c26936e46ae09d9ad3bdff115724cb1cac9b0f9b8b4061",
+    "src/apartments/osCityApartment.ts": "2688c3cacb045ea2403b39a23e4f9991cb704c8ee3b103b1f219f91b8cb55eed",
+    "src/apartments/osCityBackdrop.ts": "8b73f88ec286effcc6e69a630c6cf8e98dfd3e2ff3c8d585a8c9511a0bc7e02a",
+    "src/apartments/osCityBalcony.ts": "8005534024148d93bb1d58a55db64b1f24acaf68db9c413551c8d668e8cbfe13",
+    "src/apartments/osCityBalconyDistrict.ts": "117a4a484012dc7d2beccbeea9f6b0893982e2e46f97d2517a8f1cb9525fc8a1",
+    "src/apartments/osCityBalconyDoor.ts": "ace176304d9f62fce00d3cb2169603f84293f609c737e1ced49902b1a7a91619",
+    "src/apartments/osCityBalconyWeather.ts": "1ae9d342e723de00cdd885241fbd95d0e229d6d404fcc8e575d27ae3eaa782a4",
+    "src/apartments/osCityCamera.ts": "aaaa154b73ab5f05af98057007a095825999e7760dabb60797db8bbf2af93ca2",
+    "src/apartments/osCityCatPillowArt.ts": "8f560c68da7628dd5819c3f8b3688c76243e0d06b7f759f0369a2c7136943188",
+    "src/apartments/osCityDistantNeon.ts": "dcb2f0f400fbff307ff9c63714cce2ac77f42e2719c54df6da98b738e80cef83",
+    "src/apartments/osCityDuvet.ts": "b3fc51722b2d473899f5e595dbdb5fa8cfd18279ad817174ceec791e67b28881",
+    "src/apartments/osCityExterior.ts": "a8992bf2ae6c0c64b048a016598512dc8303dfc3b771ad0b9aee1b94ac8bccd2",
+    "src/apartments/osCityFurnishings.ts": "306310abe474e89dea7c094d4e1cf6331643d34b5f08995117b1c6d11150fb05",
+    "src/apartments/osCityGeometry.ts": "a16c16b6cc93116b9c5242f8f9eab06e5aee4b2617dc8ff6f6bbd190ed5cf2a4",
+    "src/apartments/osCityGhostFace.ts": "373bbfc2fb36c4e520629136dcb776041389e85b5176406e918a3552f12b31fc",
+    "src/apartments/osCityHolograms.ts": "40ab2b2f0bfbcdfa062712ec8f084bdd3d3e78f04297a4fed108b98357caaaea",
+    "src/apartments/osCityLayout.ts": "df5fc9f5edc1a243d2063e8f0f3e840ffa3b396fede214542f3cfaeb2dcbc7b1",
+    "src/apartments/osCityLife.ts": "b1bfbc5f2f5fe20b978e3d555eed6df471a178849aa7d53eb30210c63c055543",
+    "src/apartments/osCityMall.ts": "aabce6ded1639a92851da51e3f0132cae2546dec0459ed83a74a95c9121f199c",
+    "src/apartments/osCityMallControls.ts": "0104798f7566269e61823e2e098e728306230b4e9640dc4bc003b483cd49856e",
+    "src/apartments/osCityMarketStalls.ts": "9ee4c900d8b0fdce6e366074512700a97d48e8a1ffcfee9f730eb59dbfa40b17",
+    "src/apartments/osCityNavigation.ts": "3d2bb824bcc8b5e571a416b591e88fec9d3f76a346f7bc461745ff7c15fa810b",
+    "src/apartments/osCityNeonAtmosphere.ts": "7ff2fcf24c64532def9c30e04fe2bb414b62c946efba6a2b660847cdd3720383",
+    "src/apartments/osCityPillows.ts": "fa679d824d2278ea7699ba9c51d0d9f05fdee00df72bac002b84db7e1ce69821",
+    "src/apartments/osCityPlazaLayout.ts": "a86b5e876a3101376b0b36508df154b26a95db68ac4a51fb24bb24c82de9ebb1",
+    "src/apartments/osCityPlazaLife.ts": "baecae371608fa4f39705ef1301ea865c2724b7130780b322db4bd7119ac08d9",
+    "src/apartments/osCityPrecipitation.ts": "0b4956aec41fb5f49841b12495a265b0f09572772aab23af336031f8fca2c561",
+    "src/apartments/osCitySkylineDetail.ts": "acae3b2319953445a6f8b4bdd70f289f1e1e878bd9ff64b30f7aa5765941f14a",
+    "src/apartments/osCitySoundControls.ts": "f422bfe56a27c2ea6567516adc12ce1542ff6c4b5a3b237381176555cedbb4e4",
+    "src/apartments/osCitySoundLibrary.ts": "64039bab5070e14cd1b040b488741eebdaab89f0ca3b012f10d86a845a3500b5",
+    "src/apartments/osCitySoundUploads.ts": "1ad29fc3458a6d3deaf0e9405117bbea63c2523cb77f21da6cdbec407d89943f",
+    "src/apartments/osCityStreamClock.ts": "1c12abf23f95d9fc85d44ef277c3945ab36f09f847b8a5cdf75c1cd956e351e7",
+    "src/apartments/osCityTransit.ts": "06f45b2eea56f541da13e237156606bc6bc5434c92e03eecc0da9842abcafb1a",
+    "src/apartments/osCityTransitDistance.ts": "11ced8ebdae91b25fab8b7d43805953372fb50900a104bbf09b32313d7473818",
+    "src/apartments/osCityTV.ts": "fbe0e09ff118ea961c22ac4da9e40baec83a4e414eb3a8c419ec553eb8bbe99b",
+    "src/apartments/osCityWeather.ts": "e34993b67609573610afcb9cdda1f5bced3147353c1943eb5031f9aa5e3dd7f7",
+    "src/apartments/osCityWindow.ts": "739899f7954547440ba4dcfb028ef252feac9dcf0ba8c7c3cd7e961ddebd2b95",
+    "src/apartments/osCityWindowTv.ts": "c8ed5ee09cc690668f8831b3616078d407c3f609ae78eb178ad0ce9eb0e65bfe",
+    "src/apartments/room.ts": "c2c6781944cd2e37ae9ac8f1273e054a5b0876f1ff569c86f4c56105cdecc58a",
+    "src/apartments/roomRendering.ts": "582fda9d9616aeb07dc619d69d8e1d9ebc4c6f6042b6abcefe7bdc1bcfc9a2b7"
+  },
+  "assets": {
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152320.jpg": "856ed501f6819d3755e3c817e16df9c574374c3c6d1887e1cb02bb946a0c4ef3",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152321.jpg": "0b38b8eccbb525425acd512da1b997df99a9683ab59ef9a1706c104a318f5e93",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152321_1.jpg": "3f2a2e6c555da6908146fd90fc60aadff5ea1a5b46e09991637b15ce9df6f264",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152322.jpg": "e3988ed8448fb2880405d5121b876a169100097cb122c50707a995597dac0c1a",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152322_1.jpg": "f6cb80f3533e9ed41396cebb3d4b22f25128c87a3151bc0bf382be722792d6b4",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152322_2.jpg": "0b110a6b2e32392a0052028ac16179c55184843fbf32a80105b03cf7bbe1344f",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152324.jpg": "1ae6f6fa6a34cfafe7ff58c6dab6a044c42ff0b700fa4c5fa3975cc0d5ea42ab",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152324_1.jpg": "6d228a2ba3373186c0666b1a7d3d2057640706d374649d976b506e6bf4cc5afc",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152326.jpg": "37561872a9adc3c332118f5d1a0cd7ebedabdac3b96f49695b8f5e074cc654e2",
+    "public/apartments/assets/north-city/market-stalls/image_20261014_152341.jpg": "1be2ffd684b2a810bc67bcf638258c2fef1ec6cf23d7f5b7d269476810d65d96"
+  },
+  "evidence": {
+    "test-artifacts/north-city/revision-37/final-4/detail-cyberware.png": "aeb077f2a58786d7cbf1da3e6ffd92788c2387415c35a377de4ec359ced98eb9",
+    "test-artifacts/north-city/revision-37/final-4/detail-fabric.png": "d623da41cefea19b68de63a3f930b157db5e94013bbe80b6b6f6fab9842f927a",
+    "test-artifacts/north-city/revision-37/final-4/detail-fish.png": "ebb926ecb4068a7d1eb72254dcbee959b72898c4b3b7b77249022be625cfb64a",
+    "test-artifacts/north-city/revision-37/final-4/detail-fruit.png": "70a9b757520cfe46de0a1cd7c8f767456d0133ac6433561ca0416ce6fa215b28",
+    "test-artifacts/north-city/revision-37/final-4/detail-memory.png": "0dd5684470426411dc6bb94bb284266cdafd417d7aa87fb59b78140571e989f3",
+    "test-artifacts/north-city/revision-37/final-4/detail-myco.png": "7ed376c0137e58f5bb79bb87b57f2f933cdafe68d63d724346dc981337b8390a",
+    "test-artifacts/north-city/revision-37/final-4/detail-noodles.png": "ef81509c157545b733a76c3422aac9011a213f599daf6c670bbadc32983b46ce",
+    "test-artifacts/north-city/revision-37/final-4/detail-repair.png": "0df0391d9ee324f871fc8b1cdeff0713ac9f924203664273e94c557cc27e61d1",
+    "test-artifacts/north-city/revision-37/final-4/detail-spice.png": "8d23919a4348a93950eb9278d6e1713abd7ba3ff67f9cf69c7b7bae5f8ec2f7a",
+    "test-artifacts/north-city/revision-37/final-4/detail-vinyl.png": "5854aa0f7910108f617656cfcbd812ab4cf2f2a8a2bd44fcffe3f5453291cae1",
+    "test-artifacts/north-city/revision-37/final-4/north-market-day.png": "863cf916bd7f9cf49a1f4be66bf91fb15b9d5ab931452e3f92ef67f2356a2aee",
+    "test-artifacts/north-city/revision-37/final-4/north-market-night-rain.png": "281482f3e751508057cd937ccb67b3e56623f259fec523479ab8ad0e35ccbdde",
+    "test-artifacts/north-city/revision-37/final-4/north-market-snow.png": "04740f99ac99395f300286f2d029ecb7993b716ed94904479b1e755c2b2dd6d9",
+    "test-artifacts/north-city/revision-37/final-4/results.json": "b05e43e19e1769d9b6d3b8c5ed33bb2b65f2f2bf2a15c10e76fc8a2fbefe92db",
+    "test-artifacts/north-city/revision-37/final-4/south-market-day.png": "c9b9e5760956da2952cc81c03fa49192a972dc54714d3fe43a9af0f6441de843",
+    "test-artifacts/north-city/revision-37/final-4/south-market-night-rain.png": "4e43f8c12bafb3ee11b1955be6518498a527faf21bf35f3f44e339c227754c51",
+    "test-artifacts/north-city/revision-37/final-4/whole-plaza-day.png": "574b7d33f7bd040839ac980c6f9808856cca5bf90262bab50a1a188fa79b1468",
+    "test-artifacts/north-city/revision-37/bundled-client-final-3/shot-0.png": "6ea1872a3e69a0718da238861fb85eed0ace97397ce1a7ac1ec882c9c78cba69",
+    "test-artifacts/north-city/revision-37/bundled-client-final-3/state-0.json": "e098c1d50c7bfadd414601d2fa9c935a1f3246b7b91083746d9d7067031bcf56",
+    "test-artifacts/north-city/revision-37/layout.json": "c731affaeb0da0317890837b681f578a1daadc57bf81774f89f6d0e49ea13b45",
+    "test-artifacts/north-city/revision-37/reference-provenance.json": "c30c7c3c70b3781e985b037e72e01a017fa1810e32fcfc8d40429d16095ed976",
+    "test-artifacts/north-city/revision-37/north-market-final-live.jpg": "b0a8101fecee0a8deed70a71f0f59059477171e7b5e87c8d842a848eae24a5ca",
+    "test-artifacts/north-city/revision-37/south-market-final-live.jpg": "45803e4c2598528bbbb09069126efed5a6a9fd53342ef07147fa8ebaaed87512"
+  },
+  "userBrowser": {
+    "time": "day",
+    "weather": "rain",
+    "sound": "off",
+    "volume": 88,
+    "windows": [
+      35,
+      49,
+      71
+    ],
+    "streamSpeed": 0.8,
+    "view": "balcony-market-north"
+  },
+  "git": {
+    "committed": false,
+    "pushed": false
+  }
+}

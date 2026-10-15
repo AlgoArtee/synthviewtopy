@@ -13,6 +13,10 @@ import { createArchedNorthWall, createWindowGlass, createPleatedCurtains } from 
 import { fingerprintScene } from './sceneAudit';
 import type { CityWindowSettings } from './osCityWindowTv';
 import type { CityMallSigns } from './osCityMall';
+import type { CityHologramControls } from './osCityPlazaHolograms';
+import type { CityTVControls } from './osCityTV';
+import type { CityHolidayControls } from './osCityHolidays';
+import type { CityRadio } from './osCityRadio';
 
 /** Custom modelled interior with local scanned materials. Dimensions are in metres. */
 export interface RoomNavigation {
@@ -40,6 +44,10 @@ export interface LiminetteRoom {
   windowAppearance?: { getSettings: () => CityWindowSettings; setSettings: (value: Partial<CityWindowSettings>) => void };
   plazaStreams?: {getSpeed:()=>number;setSpeed:(value:number)=>void};
   mallSigns?: CityMallSigns;
+  plazaHolograms?: CityHologramControls;
+  television?: CityTVControls;
+  holidays?: CityHolidayControls;
+  radio?: CityRadio;
   dispose: () => void;
 }
 

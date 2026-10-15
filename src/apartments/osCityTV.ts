@@ -1,7 +1,16 @@
 import * as THREE from 'three';
 import { CITY_BED } from './osCityLayout';
+import { CITY_TV_CHANNELS, CITY_TV_FRAGMENT, CITY_TV_STORIES, drawTVGraphics, type CityTVChannel } from './osCityTVProgramming';
 
-/** A wall-mounted optical rail projects a translucent, slowly moving art channel. */
+export interface CityTVSettings { channel: CityTVChannel; paused: boolean; autoCycle: boolean }
+export interface CityTVControls {
+  getSnapshot: () => CityTVSettings & { playing: boolean; reducedMotion: boolean; elapsed: number; headline: string | null; saved: boolean };
+  setSettings: (settings: Partial<CityTVSettings>) => void;
+  nextStory: () => void;
+  subscribe: (listener: () => void) => () => void;
+}
+
+/** A wall-mounted optical rail with local animated programming and fictional news. */
 export function createOsCityTV() {
   const group=new THREE.Group();group.name='Left-wall holographic television';
   // Local +Z is the inward-facing optical front; local X follows the west wall.
@@ -16,49 +25,66 @@ export function createOsCityTV() {
   add('TV · wall-mounted optical projector rail',new THREE.BoxGeometry(3.86,.065,.12),alloy,0,-1.06);
   add('TV · black optical aperture',new THREE.BoxGeometry(3.70,.012,.095),black,0,-1.021,.005);
   add('TV · recessed cyan optical slit',new THREE.BoxGeometry(3.55,.004,.008),led,0,-1.012,.035);
-  const uniforms={time:{value:0}};
+  const storageKey='north-city-bed-tv-v1';
+  const settings:CityTVSettings={channel:'news',paused:false,autoCycle:false};
+  let saved=false;
+  const validChannel=(id:unknown):id is CityTVChannel=>CITY_TV_CHANNELS.some(item=>item.id===id);
+  try { const stored=JSON.parse(localStorage.getItem(storageKey)??'null');
+    if(stored&&typeof stored==='object'){
+      saved=true;
+      if(validChannel(stored.channel))settings.channel=stored.channel;
+      if(typeof stored.paused==='boolean')settings.paused=stored.paused;
+      if(typeof stored.autoCycle==='boolean')settings.autoCycle=stored.autoCycle;
+    }
+  } catch { /* Storage is optional; the TV still works for this visit. */ }
+  const motion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  let playhead=0,lastTime:number|undefined,cycleElapsed=0,lastDraw=-Infinity;
+  const listeners=new Set<()=>void>();
+  const persist=()=>{try{localStorage.setItem(storageKey,JSON.stringify(settings));saved=true;}catch{saved=false;}};
+  const notify=()=>listeners.forEach(listener=>listener());
+  const canvas=document.createElement('canvas');canvas.width=1280;canvas.height=696;
+  const c=canvas.getContext('2d')!;
+  const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;map.generateMipmaps=false;map.minFilter=THREE.LinearFilter;
+  const uniforms={time:{value:0},programme:{value:0},graphics:{value:map}};
   const film=new THREE.ShaderMaterial({uniforms,transparent:true,depthWrite:false,side:THREE.DoubleSide,
     vertexShader:`varying vec2 q;void main(){q=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`,
-    fragmentShader:`
-      varying vec2 q;uniform float time;
-      float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
-      float noise(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(hash(i),hash(i+vec2(1.,0.)),f.x),mix(hash(i+vec2(0.,1.)),hash(i+1.),f.x),f.y);}
-      float fbm(vec2 p){return noise(p)*.57+noise(p*2.13+7.3)*.28+noise(p*4.27+1.8)*.15;}
-      void main(){
-        vec2 p=q;float t=time*.035;
-        vec3 col=mix(vec3(.008,.035,.073),vec3(.055,.18,.24),p.y);
-        // Filmy aurora curtains behind an island horizon, with an uneven reflected ocean.
-        float curtain=sin(p.x*7.2+t+fbm(vec2(p.x*5.5,t))*3.6)*.12+.70;
-        float veil=exp(-pow((p.y-curtain)/(.058+noise(vec2(p.x*18.,t))*.06),2.));
-        veil*=smoothstep(.35,.9,p.y)*(.35+.65*fbm(vec2(p.x*32.,p.y*10.-t)));
-        col+=mix(vec3(.07,.55,.66),vec3(.42,.18,.57),p.x)*veil*.7;
-        float moon=1.-smoothstep(.045,.048,length((p-vec2(.73,.73))*vec2(1.78,1.)));
-        col+=vec3(.42,.60,.65)*moon;
-        for(int i=0;i<4;i++){
-          float k=float(i),h=.24+k*.045+fbm(vec2(p.x*(8.+k*3.)+k*7.,k))*(.05+k*.025);
-          float ridge=1.-smoothstep(h-.005,h+.004,p.y);
-          col=mix(col,vec3(.018+k*.012,.06+k*.014,.09+k*.022),ridge*.8);
-        }
-        if(p.y<.27){float r=fbm(vec2(p.x*31.,p.y*130.-time*.13));
-          col=mix(vec3(.014,.072,.10),vec3(.08,.30,.36),r*.68);
-          col+=vec3(.12,.26,.28)*exp(-pow((p.x-.73)/(.016+(.27-p.y)*.24),2.))*r*.5;
-        }
-        float scan=.96+.04*sin(p.y*1600.-time*.4);
-        float edge=smoothstep(0.,.008,p.x)*smoothstep(1.,.992,p.x)*smoothstep(0.,.012,p.y)*smoothstep(1.,.988,p.y);
-        gl_FragColor=vec4(col*scan*1.55,.76*edge);
-      }`});
+    fragmentShader:CITY_TV_FRAGMENT});
   add('TV · translucent animated art channel',new THREE.PlaneGeometry(3.72,2.02),film,0,0,.055);
   // Thin light corners describe a floating television without a heavy opaque chassis.
   for(const sx of [-1,1])for(const sy of [-1,1]){
     add('TV · holographic corner marker',new THREE.PlaneGeometry(.15,.002),led,sx*1.77,sy*.995,.06);
     add('TV · holographic corner marker',new THREE.PlaneGeometry(.002,.10),led,sx*1.845,sy*.945,.06);
   }
-  const canvas=document.createElement('canvas');canvas.width=1024;canvas.height=64;
-  const c=canvas.getContext('2d')!;c.font='20px sans-serif';c.fillStyle='#a3d7e3';c.fillText('NORTH   /   ART CHANNEL',22,40);
-  c.textAlign='right';c.fillStyle='#91b1c5';c.fillText('AURORA   ·   LIVE',1000,40);
-  const map=new THREE.CanvasTexture(canvas);map.colorSpace=THREE.SRGBColorSpace;
-  add('TV · quiet channel identifier',new THREE.PlaneGeometry(3.54,.22),new THREE.MeshBasicMaterial({map,transparent:true,opacity:.65,depthWrite:false}),0,-.86,.06);
-  const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  group.userData.television={wall:'west / left when facing city',centreZ:CITY_BED.centerZ,bedCentreAligned:true,width:3.72,height:2.02,panelClearance:.2,channel:'Aurora / atmospheric ocean',animated:true};
-  return {group,update(t:number){uniforms.time.value=reduced?0:t;}};
+  const draw=()=>{drawTVGraphics(c,settings.channel,playhead);map.needsUpdate=true;lastDraw=playhead;};
+  const sync=()=>{uniforms.programme.value=CITY_TV_CHANNELS.find(item=>item.id===settings.channel)!.programme;uniforms.time.value=playhead;draw();};
+  const controls:CityTVControls={
+    getSnapshot:()=>({...settings,playing:!settings.paused&&!motion.matches,reducedMotion:motion.matches,elapsed:Math.round(playhead*1000)/1000,saved,
+      headline:settings.channel==='news'?CITY_TV_STORIES[Math.floor(playhead/14)%CITY_TV_STORIES.length].title.join(' '):null}),
+    setSettings(patch){
+      if(validChannel(patch.channel)){settings.channel=patch.channel;playhead=0;cycleElapsed=0;}
+      if(typeof patch.paused==='boolean')settings.paused=patch.paused;
+      if(typeof patch.autoCycle==='boolean'){settings.autoCycle=patch.autoCycle;cycleElapsed=0;}
+      persist();sync();notify();
+    },
+    nextStory(){if(settings.channel!=='news')return;playhead=(Math.floor(playhead/14)+1)*14;sync();notify();},
+    subscribe(listener){listeners.add(listener);return()=>{listeners.delete(listener);};},
+  };
+  // Prefer reduced motion immediately, including when it changes while the room is open.
+  const onMotion=()=>notify();motion.addEventListener('change',onMotion);
+  group.userData.television={wall:'west / left when facing city',centreZ:CITY_BED.centerZ,bedCentreAligned:true,width:3.72,height:2.02,panelClearance:.2,channels:CITY_TV_CHANNELS.map(item=>item.id),news:'Fictional North City bulletins'};
+  sync();
+  return {group,controls,dispose(){motion.removeEventListener('change',onMotion);listeners.clear();},update(t:number){
+    const dt=lastTime===undefined?0:Math.max(0,t-lastTime);lastTime=t;
+    if(settings.paused||motion.matches)return;
+    const previousStory=Math.floor(playhead/14);playhead+=dt;cycleElapsed+=dt;
+    if(settings.autoCycle&&cycleElapsed>=60){
+      const index=CITY_TV_CHANNELS.findIndex(item=>item.id===settings.channel);
+      settings.channel=CITY_TV_CHANNELS[(index+Math.floor(cycleElapsed/60))%CITY_TV_CHANNELS.length].id;
+      cycleElapsed%=60;playhead=cycleElapsed;persist();sync();notify();
+    }
+    uniforms.time.value=playhead;
+    // Only the news graphic uploads a changing texture, capped at 24 fps.
+    if(settings.channel==='news'&&playhead-lastDraw>=1/24)draw();
+    if(settings.channel==='news'&&Math.floor(playhead/14)!==previousStory)notify();
+  }};
 }
